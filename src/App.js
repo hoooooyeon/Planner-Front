@@ -15,6 +15,7 @@ import RegisterPage from './pages/account/RegisterPage';
 import MyPage from './pages/account/MyPage';
 import MyLikePage from './pages/account/MyLikePage';
 
+<<<<<<< HEAD
 const App = () => {
   return (
     <>
@@ -34,6 +35,27 @@ const App = () => {
       <Route path="/My" component={MyPage} />
       <Route path="/MyLike" component={MyLikePage} />
     </>
+=======
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
+function App() {
+  const [result, setResult] = useState();
+
+  useEffect(() => {
+    axios.get("planner/").then((response) => {
+      setResult(response.data);
+    })
+      .catch((error) => {
+        setResult(error);
+      })
+  });
+
+  return (
+    <div>
+      {result}
+    </div>
+>>>>>>> 06cacd6bc3f92272e5ddf30b573f4ccb265c4f15
   );
 };
 
