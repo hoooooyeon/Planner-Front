@@ -13,6 +13,10 @@ const HeaderBlock = styled.div`
   background-color: white;
   z-index: 999;
   padding: 0 80px;
+  a {
+    color: black;
+    text-decoration: none;
+  }
 `;
 
 const MenuList = styled.ul`
@@ -33,37 +37,32 @@ const AccountList = styled.ul`
   }
 `;
 
-const StyledLink = styled(Link)`
-  color: black;
-  text-decoration: none;
-`;
-
 const Header = () => {
   return (
     <HeaderBlock>
       <h1>
-        <StyledLink to="/">낭만닷컴</StyledLink>
+        <Link to="/">낭만닷컴</Link>
       </h1>
       <MenuList>
         <li>
-          <StyledLink to="/PlannerList">플래너</StyledLink>
+          <Link to="/PlannerList">플래너</Link>
         </li>
         <li>
-          <StyledLink to="/ShareList">공유</StyledLink>
+          <Link to="/ShareList">공유</Link>
         </li>
         <li>
-          <StyledLink to="/ReviewList">여행후기</StyledLink>
+          <Link to="/ReviewList">여행후기</Link>
         </li>
         <li>
-          <StyledLink to="/Spot">여행지</StyledLink>
+          <Link to="/Spot">여행지</Link>
         </li>
       </MenuList>
       <AccountList>
         <li>
-          <StyledLink to="/Login">로그인</StyledLink>
+          <Link to="/Login">로그인</Link>
         </li>
         <li>
-          <StyledLink to="/Register">회원가입</StyledLink>
+          <Link to="/Register">회원가입</Link>
         </li>
       </AccountList>
     </HeaderBlock>

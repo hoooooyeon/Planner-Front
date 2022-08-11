@@ -1,5 +1,7 @@
+import Auth from '../../components/account/Auth';
+
 const LoginPage = () => {
-  return;
+  return <Auth />;
 };
 
 export default LoginPage;

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const PlannerListBlock = styled.div`
-  margin: 100px auto;
+  margin: 75px auto;
   width: 1300px;
 `;
 
