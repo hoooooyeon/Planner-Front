@@ -1,6 +1,6 @@
 import styled from 'styled-components';
+import PlannerItem from './PlannerItem';
 
-import Planner from './Planner';
 const PlannerListBlock = styled.div`
   margin: 75px auto;
   width: 80%;
@@ -18,10 +18,10 @@ const PlannerList = () => {
       <h2>나의 플래너</h2>
       <hr />
       <Planners>
-        <Planner />
-        <Planner />
-        <Planner />
-        <Planner />
+        <PlannerItem />
+        <PlannerItem />
+        <PlannerItem />
+        <PlannerItem />
       </Planners>
     </PlannerListBlock>
   );

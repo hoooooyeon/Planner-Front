@@ -1,5 +1,7 @@
+import Spot from '../components/spot/Spot';
+
 const SpotPage = () => {
-  return;
+  return <Spot />;
 };
 
 export default SpotPage;

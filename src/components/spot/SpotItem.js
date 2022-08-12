@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const ReviewBlock = styled.div`
+const SpotItemBlock = styled.div`
   width: 280px;
   height: 320px;
   margin: 10px;
@@ -17,13 +17,13 @@ const SimpleImg = styled.div`
   border: 1px solid red;
 `;
 
-const Review = () => {
+const SpotItem = () => {
   return (
-    <ReviewBlock>
+    <SpotItemBlock>
       <SimpleImg />
-      <h3>천안문 갔다온 일</h3>
-    </ReviewBlock>
+      <h3>천안 사거리</h3>
+    </SpotItemBlock>
   );
 };
 
-export default Review;
+export default SpotItem;
