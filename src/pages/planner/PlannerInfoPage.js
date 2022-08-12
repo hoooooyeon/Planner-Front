@@ -1,13 +1,7 @@
-import Header from '../../components/common/Header';
-import PlannerInfo from '../../components/planner/PlannerInfo';
+import PlannerInfo from '../../components/planner/info/PlannerInfo';
 
 const PlannerInfoPage = () => {
-  return (
-    <>
-      <Header />
-      <PlannerInfo />
-    </>
-  );
+  return <PlannerInfo />;
 };
 
 export default PlannerInfoPage;

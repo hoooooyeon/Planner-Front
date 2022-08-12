@@ -1,5 +1,7 @@
+import Auth from '../../components/account/Auth';
+
 const RegisterPage = () => {
-  return;
+  return <Auth type="register" />;
 };
 
 export default RegisterPage;

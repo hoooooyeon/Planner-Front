@@ -12,7 +12,7 @@ import ShareListPage from './pages/share/ShareListPage';
 import SpotPage from './pages/SpotPage';
 import LoginPage from './pages/account/LoginPage';
 import RegisterPage from './pages/account/RegisterPage';
-import MyPage from './pages/account/MyPage';
+import ProfilePage from './pages/account/ProfilePage';
 import MyLikePage from './pages/account/MyLikePage';
 
 const App = () => {
@@ -31,7 +31,7 @@ const App = () => {
       <Route path="/Spot" component={SpotPage} />
       <Route path="/Login" component={LoginPage} />
       <Route path="/Register" component={RegisterPage} />
-      <Route path="/My" component={MyPage} />
+      <Route path="/Profile" component={ProfilePage} />
       <Route path="/MyLike" component={MyLikePage} />
     </>
   );

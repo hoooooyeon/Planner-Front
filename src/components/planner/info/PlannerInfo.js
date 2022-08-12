@@ -4,7 +4,7 @@ import InfoMap from './InfoMap';
 
 const PlannerInfoBlock = styled.div`
   margin: 75px auto;
-  width: 1300px;
+  width: 80%;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;

@@ -1,32 +1,15 @@
 import styled from 'styled-components';
 
+import Planner from './Planner';
 const PlannerListBlock = styled.div`
   margin: 75px auto;
-  width: 1300px;
+  width: 80%;
 `;
-
-const PlannerBoxs = styled.div`
+const Planners = styled.div`
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
   border: 1px solid yellow;
-`;
-
-const PlannerBox = styled.div`
-  width: 300px;
-  height: 350px;
-  margin: 10px;
-  text-align: center;
-  border: 1px solid blue;
-  h3 {
-    margin: 10px;
-  }
-`;
-
-const SimpleMap = styled.div`
-  width: 300px;
-  height: 270px;
-  border: 1px solid red;
 `;
 
 const PlannerList = () => {
@@ -34,33 +17,12 @@ const PlannerList = () => {
     <PlannerListBlock>
       <h2>나의 플래너</h2>
       <hr />
-      <PlannerBoxs>
-        <PlannerBox>
-          <SimpleMap />
-          <h3>천안문 일대기</h3>
-          <p>2020년 11월 11일 ~ 2022년 7월 29일</p>
-        </PlannerBox>
-        <PlannerBox>
-          <SimpleMap />
-          <h3>천안문 일대기</h3>
-          <p>2020년 11월 11일 ~ 2022년 7월 29일</p>
-        </PlannerBox>
-        <PlannerBox>
-          <SimpleMap />
-          <h3>천안문 일대기</h3>
-          <p>2020년 11월 11일 ~ 2022년 7월 29일</p>
-        </PlannerBox>
-        <PlannerBox>
-          <SimpleMap />
-          <h3>천안문 일대기</h3>
-          <p>2020년 11월 11일 ~ 2022년 7월 29일</p>
-        </PlannerBox>
-        <PlannerBox>
-          <SimpleMap />
-          <h3>천안문 일대기</h3>
-          <p>2020년 11월 11일 ~ 2022년 7월 29일</p>
-        </PlannerBox>
-      </PlannerBoxs>
+      <Planners>
+        <Planner />
+        <Planner />
+        <Planner />
+        <Planner />
+      </Planners>
     </PlannerListBlock>
   );
 };

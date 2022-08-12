@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBus } from '@fortawesome/free-solid-svg-icons';
-import { faTaxi } from '@fortawesome/free-solid-svg-icons';
-import { faPlane } from '@fortawesome/free-solid-svg-icons';
-import { faPersonWalking } from '@fortawesome/free-solid-svg-icons';
-import { faBicycle } from '@fortawesome/free-solid-svg-icons';
+// import { faTaxi } from '@fortawesome/free-solid-svg-icons';
+// import { faPlane } from '@fortawesome/free-solid-svg-icons';
+// import { faPersonWalking } from '@fortawesome/free-solid-svg-icons';
+// import { faBicycle } from '@fortawesome/free-solid-svg-icons';
 
 const ItineraryBlock = styled.div`
   border: 1px solid green;
