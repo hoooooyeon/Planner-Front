@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import RecommendSpot from './RecommendSpot';
+import SpotSlider from './SpotSlider';
 import SpotInfo from './SpotInfo';
 import SpotMenu from './SpotMenu';
 
 const SpotBlock = styled.div`
-  margin: 75px auto;
+  margin: 100px auto;
   width: 80%;
   border: 1px solid blue;
 `;
@@ -12,7 +12,7 @@ const SpotBlock = styled.div`
 const Spot = () => {
   return (
     <SpotBlock>
-      <RecommendSpot />
+      <SpotSlider />
       <SpotMenu />
       <SpotInfo />
     </SpotBlock>
