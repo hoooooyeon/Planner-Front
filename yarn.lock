@@ -8977,6 +8977,11 @@
   "resolved" "https://registry.npmjs.org/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz"
   "version" "1.2.0"
 
+"useref@^1.4.4":
+  "integrity" "sha512-Hcr9SSq1OsLSa9VAVtA28j8HrpFB2AdbRAkFPbBArDe6y54jQmgulQRxphdi5TAjVPj0mmEJfjBUuZArsmfsqQ=="
+  "resolved" "https://registry.npmjs.org/useref/-/useref-1.4.4.tgz"
+  "version" "1.4.4"
+
 "util-deprecate@^1.0.1", "util-deprecate@^1.0.2", "util-deprecate@~1.0.1":
   "integrity" "sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw=="
   "resolved" "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"

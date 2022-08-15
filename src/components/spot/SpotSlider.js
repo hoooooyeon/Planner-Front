@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import SliderImg from './SliderImg';
+import { useRef } from 'react';
 
 const SpotSliderBlock = styled.div`
   width: 1215px;
@@ -41,15 +42,32 @@ const NextButton = styled(StyledFontAwesomeIcon)`
 `;
 
 const SpotSlider = () => {
+  const imgsRef = useRef();
+  const imgIndex = useRef(1);
+
+  const prevHandle = () => {
+    imgsRef.current.style.transform = 'translate3d(-1215px, 0px, 0px)';
+    imgIndex.current -= 1;
+    // if (imgIndex > 1) {
+    // }
+  };
+
+  const nextHandle = () => {
+    imgsRef.current.style.transform = 'translate3d(1215px, 0px, 0px)';
+    imgIndex.current += 1;
+    // if (imgIndex < 3) {
+    // }
+  };
+
   return (
     <>
       <SpotSliderBlock>
-        <SliderImgs>
+        <SliderImgs ref={imgsRef}>
           <SliderImg />
         </SliderImgs>
       </SpotSliderBlock>
-      <PrevButton icon={faAngleLeft} />
-      <NextButton icon={faAngleRight} />
+      <PrevButton icon={faAngleLeft} onClick={prevHandle} />
+      <NextButton icon={faAngleRight} onClick={nextHandle} />
     </>
   );
 };
