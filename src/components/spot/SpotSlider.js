@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import SliderImg from './SliderImg';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 const SpotSliderBlock = styled.div`
   width: 1215px;
@@ -42,23 +42,33 @@ const NextButton = styled(StyledFontAwesomeIcon)`
 `;
 
 const SpotSlider = () => {
+  const [currentIndex, setCurrentIndex] = useState(1);
   const imgsRef = useRef();
-  const imgIndex = useRef(1);
 
-  const prevHandle = () => {
-    imgsRef.current.style.transform = 'translate3d(-1215px, 0px, 0px)';
-    imgIndex.current -= 1;
-    // if (imgIndex > 1) {
-    // }
+  const handleSlide = (currentIndex) => {
+    if (currentIndex > 3) {
+      currentIndex = 1;
+    } else if (currentIndex === 0) {
+      currentIndex = 3;
+    }
+    setCurrentIndex(currentIndex);
   };
 
-  const nextHandle = () => {
-    imgsRef.current.style.transform = 'translate3d(1215px, 0px, 0px)';
-    imgIndex.current += 1;
-    // if (imgIndex < 3) {
-    // }
+  const handleSwipe = (direction) => {
+    handleSlide(currentIndex + direction);
   };
-
+  const handlePrev = (direction) => {
+    handleSlide(currentIndex + direction);
+    console.log('prev' + currentIndex);
+    imgsRef.current.style =
+      'transform: translateX(-' + 1215 * currentIndex + 'px)';
+  };
+  const handleNext = (direction) => {
+    handleSlide(currentIndex + direction);
+    console.log('next' + currentIndex);
+    imgsRef.current.style =
+      'transform: translateX(' + 1215 * currentIndex + 'px)';
+  };
   return (
     <>
       <SpotSliderBlock>
@@ -66,8 +76,8 @@ const SpotSlider = () => {
           <SliderImg />
         </SliderImgs>
       </SpotSliderBlock>
-      <PrevButton icon={faAngleLeft} onClick={prevHandle} />
-      <NextButton icon={faAngleRight} onClick={nextHandle} />
+      <PrevButton icon={faAngleLeft} onClick={() => handlePrev(-1)} />
+      <NextButton icon={faAngleRight} onClick={() => handleNext(1)} />
     </>
   );
 };
