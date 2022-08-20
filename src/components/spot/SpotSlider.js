@@ -73,49 +73,58 @@ const SpotSlider = () => {
       if (currentIndex < TOTAL_SLIDES) {
         setCurrentIndex((currentIndex) => currentIndex + 1);
       } else {
-        setCurrentIndex(2);
+        setCurrentIndex(1);
       }
     }, 2500);
-    return () => clearInterval(timeoutId);
-  }, [currentIndex]);
 
-  // 이미지 슬라이더 스타일 변경
-  useEffect(() => {
     if (currentIndex === 1) {
       setTimeout(() => {
         imgsRef.current.style = 'transform: translateX(-' + 1215 * (TOTAL_SLIDES - 2) + 'px)';
         imgsRef.current.style.transition = '0s';
         setCurrentIndex(TOTAL_SLIDES - 1);
-      }, 2500);
-    } else {
-      imgsRef.current.style = 'transform: translateX(-' + 1215 * (currentIndex - 1) + 'px)';
-      imgsRef.current.style.transition = 'all 0.5s ease-in-out';
+      }, 800);
     }
-
     if (currentIndex === TOTAL_SLIDES) {
       setTimeout(() => {
         imgsRef.current.style = 'transform: translateX(-' + 1215 + 'px)';
         imgsRef.current.style.transition = '0s';
         setCurrentIndex(2);
-      }, 2500);
-    } else {
-      imgsRef.current.style = 'transform: translateX(-' + 1215 * (currentIndex - 1) + 'px)';
-      imgsRef.current.style.transition = 'all 0.5s ease-in-out';
+      }, 800);
     }
+    return () => clearInterval(timeoutId);
   }, [currentIndex]);
 
+  // 이미지 슬라이더 스타일 변경
   // useEffect(() => {
-  // imgsRef.current.style = 'transform: translateX(-'+ 1215 * (currentIndex - 1) + 'px)';
-  //   imgsRef.current.style.transition = 'all 0.5s ease-in-out';
+  //   if (currentIndex === 1) {
+  //     setTimeout(() => {
+  //       imgsRef.current.style = 'transform: translateX(-' + 1215 * (TOTAL_SLIDES - 2) + 'px)';
+  //       imgsRef.current.style.transition = '0s';
+  //       setCurrentIndex(TOTAL_SLIDES - 1);
+  //     }, 1000);
+  //   }
+
+  //   if (currentIndex === TOTAL_SLIDES) {
+  //     setTimeout(() => {
+  //       imgsRef.current.style = 'transform: translateX(-' + 1215 + 'px)';
+  //       imgsRef.current.style.transition = '0s';
+  //       setCurrentIndex(2);
+  //     }, 1000);
+  //   }
   // }, [currentIndex]);
+
+  useEffect(() => {
+    imgsRef.current.style = 'transform: translateX(-' + 1215 * (currentIndex - 1) + 'px)';
+    imgsRef.current.style.transition = 'all 0.5s ease-in-out';
+  }, [currentIndex]);
 
   return (
     <>
       <SpotSliderBlock>
         <SliderImgs ref={imgsRef}>
           <SliderImg>
-            <div>clone5</div>
-            <h1>clone5</h1>
+            <div>clone3</div>
+            <h1>clone3</h1>
           </SliderImg>
           <SliderImg>
             <div>1</div>
