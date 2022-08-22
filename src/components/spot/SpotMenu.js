@@ -5,45 +5,56 @@ const SpotMenuBlock = styled.div`
   margin: 50px auto;
   border: 1px solid red;
   width: 90%;
-  height: 400px;
+  height: auto;
   padding: 10px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   div {
     display: flex;
-  }
-  p {
-    width: 70px;
+    flex-direction: column;
   }
   ul {
     list-style: none;
-    line-height: 10px;
     li {
-      float: left;
-      margin: 0 15px 10px 0;
+      margin-right: 15px;
     }
   }
 `;
 
+const CatalogUl = styled.ul`
+  width: 70px;
+`;
+
+const ListUl = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
 const StyledButton = styled(Button)`
   width: auto;
+  height: auto;
 `;
 
 const SpotMenu = () => {
   return (
     <SpotMenuBlock>
       <div>
-        <p>나라</p>
-        <ul>
+        <CatalogUl>
+          <li>나라</li>
+        </CatalogUl>
+        <CatalogUl>
+          <li>도시</li>
+        </CatalogUl>
+        <CatalogUl>
+          <li>관광지</li>
+        </CatalogUl>
+      </div>
+      <div>
+        <ListUl>
           <li>
             <StyledButton>대한민국</StyledButton>
           </li>
-        </ul>
-      </div>
-      <div>
-        <p>도시</p>
-        <ul>
+        </ListUl>
+        <ListUl>
           <li>
             <StyledButton>서울</StyledButton>
           </li>
@@ -62,11 +73,38 @@ const SpotMenu = () => {
           <li>
             <StyledButton>성남</StyledButton>
           </li>
-        </ul>
-      </div>
-      <div>
-        <p>관광지</p>
-        <ul>
+        </ListUl>
+        <ListUl>
+          <li>
+            <StyledButton>천안 시내</StyledButton>
+          </li>
+          <li>
+            <StyledButton>천안 은행나무의 맹세</StyledButton>
+          </li>
+          <li>
+            <StyledButton>천안 시내</StyledButton>
+          </li>
+          <li>
+            <StyledButton>천안 은행나무의 맹세</StyledButton>
+          </li>
+          <li>
+            <StyledButton>천안 시내</StyledButton>
+          </li>
+          <li>
+            <StyledButton>천안 은행나무의 맹세</StyledButton>
+          </li>
+          <li>
+            <StyledButton>천안 시내</StyledButton>
+          </li>
+          <li>
+            <StyledButton>천안 은행나무의 맹세</StyledButton>
+          </li>
+          <li>
+            <StyledButton>천안 시내</StyledButton>
+          </li>
+          <li>
+            <StyledButton>천안 은행나무의 맹세</StyledButton>
+          </li>
           <li>
             <StyledButton>천안 시내</StyledButton>
           </li>
@@ -85,7 +123,7 @@ const SpotMenu = () => {
           <li>
             <StyledButton>천안 언저리</StyledButton>
           </li>
-        </ul>
+        </ListUl>
       </div>
     </SpotMenuBlock>
   );
