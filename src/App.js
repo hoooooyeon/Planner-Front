@@ -1,6 +1,6 @@
 import './App.css';
 import { Route } from 'react-router-dom';
-import MainPage from './pages/MainPage';
+import HomePage from './pages/HomePage';
 import PlannerListPage from './pages/planner/PlannerListPage';
 import PlannerInfoPage from './pages/planner/PlannerInfoPage';
 import PlannerEditPage from './pages/planner/PlannerEditPage';
@@ -14,12 +14,13 @@ import LoginPage from './pages/account/LoginPage';
 import RegisterPage from './pages/account/RegisterPage';
 import ProfilePage from './pages/account/ProfilePage';
 import MyLikePage from './pages/account/MyLikePage';
+import Header from './components/common/Header';
 
 const App = () => {
   return (
     <>
-      <MainPage />
-      <Route path="/" component={MainPage} exact />
+      <Header />
+      <Route path="/" component={HomePage} exact />
       <Route path="/PlannerList" component={PlannerListPage} />
       <Route path="/PlannerInfo" component={PlannerInfoPage} />
       <Route path="/PlannerEdit" component={PlannerEditPage} />

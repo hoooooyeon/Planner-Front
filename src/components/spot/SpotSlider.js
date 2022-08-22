@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
@@ -31,12 +31,17 @@ const SliderImg = styled.div`
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   z-index: 100;
+  font-size: 30px;
   position: absolute;
   top: 50%;
-  font-size: 30px;
   &:hover {
     cursor: pointer;
   }
+  ${(props) =>
+    props.home &&
+    css`
+      top: 280%;
+    `}
 `;
 
 const PrevButton = styled(StyledFontAwesomeIcon)`
@@ -47,7 +52,7 @@ const NextButton = styled(StyledFontAwesomeIcon)`
 `;
 
 const TOTAL_SLIDES = 5;
-const SpotSlider = () => {
+const SpotSlider = ({ home }) => {
   const [currentIndex, setCurrentIndex] = useState(2);
   const imgsRef = useRef();
 
@@ -117,8 +122,8 @@ const SpotSlider = () => {
           </SliderImg>
         </SliderImgs>
       </SpotSliderBlock>
-      <PrevButton icon={faAngleLeft} onClick={() => handleSwipe(-1)} />
-      <NextButton icon={faAngleRight} onClick={() => handleSwipe(1)} />
+      <PrevButton home icon={faAngleLeft} onClick={() => handleSwipe(-1)} />
+      <NextButton home icon={faAngleRight} onClick={() => handleSwipe(1)} />
     </>
   );
 };
