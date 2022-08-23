@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 const SpotInfoBlock = styled.div`
   margin: auto;
-  border: 1px solid black;
   width: 90%;
   height: auto;
   display: flex;
@@ -10,7 +9,6 @@ const SpotInfoBlock = styled.div`
 `;
 
 const SpotImg = styled.div`
-  border: 1px solid red;
   width: 500px;
   height: 500px;
 `;

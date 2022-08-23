@@ -5,9 +5,9 @@ import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 
 const SpotSliderBlock = styled.div`
+  margin-top: 50px;
   width: 100%;
   height: 600px;
-  border: 1px solid green;
   overflow: hidden;
   h1 {
     color: white;
@@ -52,7 +52,7 @@ const NextButton = styled(StyledFontAwesomeIcon)`
 `;
 
 const TOTAL_SLIDES = 5;
-const SpotSlider = ({ home }) => {
+const SpotSlider = (props) => {
   const [currentIndex, setCurrentIndex] = useState(2);
   const imgsRef = useRef();
 
@@ -122,8 +122,8 @@ const SpotSlider = ({ home }) => {
           </SliderImg>
         </SliderImgs>
       </SpotSliderBlock>
-      <PrevButton home icon={faAngleLeft} onClick={() => handleSwipe(-1)} />
-      <NextButton home icon={faAngleRight} onClick={() => handleSwipe(1)} />
+      <PrevButton {...props} icon={faAngleLeft} onClick={() => handleSwipe(-1)} />
+      <NextButton {...props} icon={faAngleRight} onClick={() => handleSwipe(1)} />
     </>
   );
 };

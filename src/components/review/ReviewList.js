@@ -2,13 +2,12 @@ import styled from 'styled-components';
 import ReviewItem from './ReviewItem';
 
 const ReviewListBlock = styled.div`
-  margin: 75px auto;
+  margin-top: 50px;
 `;
 const Reviews = styled.div`
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  border: 1px solid yellow;
 `;
 
 const ReviewList = () => {

@@ -1,7 +1,7 @@
-import PlannerList from '../../components/planner/PlannerList';
+import Planner from '../../components/planner/Planner';
 
 const PlannerListPage = () => {
-  return <PlannerList />;
+  return <Planner />;
 };
 
 export default PlannerListPage;

@@ -5,7 +5,6 @@ const SpotItemBlock = styled.div`
   height: 320px;
   margin: 10px;
   text-align: center;
-  border: 1px solid blue;
   h3 {
     margin: 10px;
   }
@@ -14,7 +13,6 @@ const SpotItemBlock = styled.div`
 const SimpleImg = styled.div`
   width: 280px;
   height: 270px;
-  border: 1px solid red;
 `;
 
 const SpotItem = () => {

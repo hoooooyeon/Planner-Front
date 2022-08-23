@@ -5,7 +5,6 @@ const Spots = styled.div`
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  border: 1px solid yellow;
 `;
 
 const LikeSpots = () => {

@@ -6,7 +6,6 @@ import SpotMenu from './SpotMenu';
 const SpotBlock = styled.div`
   margin: 100px auto;
   width: 80%;
-  border: 1px solid blue;
 `;
 
 const Spot = () => {

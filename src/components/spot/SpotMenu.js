@@ -3,7 +3,6 @@ import Button from '../common/Button';
 
 const SpotMenuBlock = styled.div`
   margin: 50px auto;
-  border: 1px solid red;
   width: 90%;
   height: auto;
   padding: 10px;

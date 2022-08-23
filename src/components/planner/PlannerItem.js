@@ -5,7 +5,6 @@ const PlannerItemBlock = styled.div`
   height: 350px;
   margin: 10px;
   text-align: center;
-  border: 1px solid blue;
   h3 {
     margin: 10px;
   }
@@ -14,7 +13,6 @@ const PlannerItemBlock = styled.div`
 const SimpleMap = styled.div`
   width: 280px;
   height: 270px;
-  border: 1px solid red;
 `;
 
 const PlannerItem = () => {
