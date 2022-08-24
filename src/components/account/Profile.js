@@ -6,6 +6,9 @@ import Button from '../common/Button';
 const ProfileBlock = styled.div`
   margin: 100px auto;
   width: 80%;
+  height: auto;
+  min-height: 100%;
+  padding-bottom: 210px;
 `;
 const MyMenu = styled.div`
   a {

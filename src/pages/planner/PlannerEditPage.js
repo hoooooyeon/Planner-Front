@@ -1,5 +1,7 @@
+import PlannerEdit from '../../components/planner/edit/PlannerEdit';
+
 const PlannerEditPage = () => {
-  return;
+  return <PlannerEdit />;
 };
 
 export default PlannerEditPage;

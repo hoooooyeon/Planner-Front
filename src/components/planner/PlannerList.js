@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import PlannerItem from './PlannerItem';
 
 const PlannerListBlock = styled.div`

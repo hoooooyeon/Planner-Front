@@ -3,21 +3,11 @@ import { Link } from 'react-router-dom';
 import Button from '../common/Button';
 
 const AuthBlock = styled.div`
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Template = styled.div`
   width: 400px;
   text-align: center;
   border: 1px solid lightgray;
   border-radius: 5px;
+  margin: 150px auto;
   form {
     display: flex;
     flex-direction: column;
@@ -65,32 +55,20 @@ const Auth = ({ type }) => {
   const AuthText = AuthType[type];
   return (
     <AuthBlock>
-      <Template>
-        <h2>{AuthText}</h2>
-        <form>
-          <StyledInput name="email" placeholder="이메일" type="email" />
-          <StyledInput name="password" placeholder="비밀번호" type="password" />
-          {type === 'register' && (
-            <>
-              <StyledInput
-                name="passwordConfirm"
-                placeholder="비밀번호 확인"
-                type="password"
-              />
-              <StyledInput name="username" placeholder="이름" type="text" />
-              <StyledInput name="nickname" placeholder="닉네임" type="text" />
-            </>
-          )}
-          <ButtonWithMarginTop big>{AuthText}</ButtonWithMarginTop>
-        </form>
-        <Footer>
-          {type === 'login' ? (
-            <Link to="/Register">회원가입</Link>
-          ) : (
-            <Link to="/Login">로그인</Link>
-          )}
-        </Footer>
-      </Template>
+      <h2>{AuthText}</h2>
+      <form>
+        <StyledInput name="email" placeholder="이메일" type="email" />
+        <StyledInput name="password" placeholder="비밀번호" type="password" />
+        {type === 'register' && (
+          <>
+            <StyledInput name="passwordConfirm" placeholder="비밀번호 확인" type="password" />
+            <StyledInput name="username" placeholder="이름" type="text" />
+            <StyledInput name="nickname" placeholder="닉네임" type="text" />
+          </>
+        )}
+        <ButtonWithMarginTop big>{AuthText}</ButtonWithMarginTop>
+      </form>
+      <Footer>{type === 'login' ? <Link to="/Register">회원가입</Link> : <Link to="/Login">로그인</Link>}</Footer>
     </AuthBlock>
   );
 };

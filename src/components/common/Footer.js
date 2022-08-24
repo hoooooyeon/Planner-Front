@@ -5,8 +5,10 @@ const FooterBlock = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  bottom: 0;
-  border-top: 1px solid lightgray;
+  /* transform: translateY(-100%); */
+  /* bottom: 0; */
+  /* border-top: 1px solid lightgray; */
+  border: 1px solid lightgray;
 `;
 const Logo = styled.div`
   font-size: 2rem;
