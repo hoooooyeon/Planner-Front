@@ -14,13 +14,10 @@ import LoginPage from './pages/account/LoginPage';
 import RegisterPage from './pages/account/RegisterPage';
 import ProfilePage from './pages/account/ProfilePage';
 import MyLikePage from './pages/account/MyLikePage';
-import Header from './components/common/Header';
-import Footer from './components/common/Footer';
 
 const App = () => {
   return (
     <>
-      <Header />
       <Route path="/" component={HomePage} exact />
       <Route path="/PlannerList" component={PlannerListPage} />
       <Route path="/PlannerInfo" component={PlannerInfoPage} />
@@ -35,7 +32,6 @@ const App = () => {
       <Route path="/Register" component={RegisterPage} />
       <Route path="/Profile" component={ProfilePage} />
       <Route path="/MyLike" component={MyLikePage} />
-      <Footer />
     </>
   );
 };

@@ -4,7 +4,7 @@ import EditList from './EditList';
 import EditMap from './EditMap';
 
 const PlannerEditBlock = styled.div`
-  margin: 100px auto;
+  display: flex;
 `;
 
 const PlannerEdit = () => {

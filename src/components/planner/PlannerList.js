@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Button from '../common/Button';
 import PlannerItem from './PlannerItem';
 
 const PlannerListBlock = styled.div`
@@ -16,12 +17,19 @@ const PlannerType = {
   share: '공유 플래너',
   planner: '나의 플래너',
 };
+
+const StyledButton = styled(Button)`
+  width: 7rem;
+  float: right;
+`;
+
 const PlannerList = ({ type }) => {
   const PlannerText = PlannerType[type];
   return (
     <PlannerListBlock {...type}>
       <h2>{PlannerText}</h2>
       <hr />
+      <StyledButton big>플래너 생성</StyledButton>
       <Planners>
         <PlannerItem />
         <PlannerItem />

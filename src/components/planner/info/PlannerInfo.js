@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Button from '../../common/Button';
 import InfoItinerary from './InfoItinerary';
 import InfoMap from './InfoMap';
 
@@ -18,9 +19,18 @@ const MemoBox = styled.div`
   padding: 10px;
 `;
 
+const StyledButton = styled(Button)`
+  width: 7rem;
+  position: absolute;
+  left: 45%;
+  top: 20%;
+  z-index: 999;
+`;
+
 const PlannerInfo = () => {
   return (
     <PlannerInfoBlock>
+      <StyledButton big>플래너 수정</StyledButton>
       <InfoMap />
       <InfoItinerary />
       <MemoBox>
