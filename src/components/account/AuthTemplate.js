@@ -1,9 +1,14 @@
 import styled from 'styled-components';
 
 const AuthTemplateBlock = styled.div`
-  height: auto;
+  /* height: auto;
   min-height: 100%;
-  padding-bottom: 170px;
+  padding-bottom: 170px; */
+  /* height: 100vh; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 `;
 
 const AuthTemplate = ({ children }) => {

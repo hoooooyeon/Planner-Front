@@ -10,7 +10,7 @@ const Planners = styled.div`
 const LikePlanners = () => {
   return (
     <>
-      <h2>플래너</h2>
+      <h3>플래너</h3>
       <hr />
       <Planners>
         <PlannerItem />

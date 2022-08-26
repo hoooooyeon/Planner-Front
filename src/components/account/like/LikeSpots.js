@@ -10,7 +10,7 @@ const Spots = styled.div`
 const LikeSpots = () => {
   return (
     <>
-      <h2>여행지</h2>
+      <h3>여행지</h3>
       <hr />
       <Spots>
         <SpotItem />

@@ -12,7 +12,7 @@ const ReviewBlock = styled.div`
 const Review = () => {
   return (
     <ReviewBlock>
-      <ReviewList />
+      <ReviewList type="review" />
     </ReviewBlock>
   );
 };

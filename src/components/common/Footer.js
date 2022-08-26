@@ -4,11 +4,10 @@ const FooterBlock = styled.div`
   height: 150px;
   display: flex;
   align-items: center;
+  flex: 1;
   position: relative;
-  /* transform: translateY(-100%); */
-  /* bottom: 0; */
-  /* border-top: 1px solid lightgray; */
-  border: 1px solid lightgray;
+  /* transform: translateY(100%); */
+  background-color: lightblue;
 `;
 const Logo = styled.div`
   font-size: 2rem;

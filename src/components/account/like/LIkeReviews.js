@@ -10,7 +10,7 @@ const Reviews = styled.div`
 const LikeReviews = () => {
   return (
     <>
-      <h2>여행후기</h2>
+      <h3>여행후기</h3>
       <hr />
       <Reviews>
         <ReviewItem />

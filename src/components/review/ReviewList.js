@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Button from '../common/Button';
 import ReviewItem from './ReviewItem';
 
 const ReviewListBlock = styled.div`
@@ -8,12 +9,28 @@ const Reviews = styled.div`
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
+  margin-top: 60px;
 `;
 
-const ReviewList = () => {
+const StyledButton = styled(Button)`
+  width: 7.5rem;
+  float: right;
+`;
+
+const ReviewList = ({ type }) => {
   return (
     <ReviewListBlock>
-      <h2>여행 후기</h2>
+      {type === 'review' && (
+        <>
+          <h3>나의 여행 후기</h3>
+          <hr />
+          <StyledButton big>여행 후기 작성</StyledButton>
+          <Reviews>
+            <ReviewItem />
+          </Reviews>
+        </>
+      )}
+      <h3>여행 후기</h3>
       <hr />
       <Reviews>
         <ReviewItem />

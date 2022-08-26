@@ -10,6 +10,12 @@ const Planners = styled.div`
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
+  margin-top: 60px;
+`;
+
+const StyledButton = styled(Button)`
+  width: 7rem;
+  float: right;
 `;
 
 const PlannerType = {
@@ -18,18 +24,13 @@ const PlannerType = {
   planner: '나의 플래너',
 };
 
-const StyledButton = styled(Button)`
-  width: 7rem;
-  float: right;
-`;
-
 const PlannerList = ({ type }) => {
   const PlannerText = PlannerType[type];
   return (
-    <PlannerListBlock {...type}>
-      <h2>{PlannerText}</h2>
+    <PlannerListBlock>
+      <h3>{PlannerText}</h3>
       <hr />
-      <StyledButton big>플래너 생성</StyledButton>
+      {type === 'planner' && <StyledButton big>플래너 생성</StyledButton>}
       <Planners>
         <PlannerItem />
         <PlannerItem />

@@ -7,7 +7,7 @@ const AuthBlock = styled.div`
   text-align: center;
   border: 1px solid lightgray;
   border-radius: 5px;
-  margin: 150px auto;
+  /* margin: auto; */
   form {
     display: flex;
     flex-direction: column;

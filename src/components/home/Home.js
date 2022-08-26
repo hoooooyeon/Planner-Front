@@ -14,7 +14,7 @@ const Home = () => {
     <HomeBlock>
       <Intro />
       <PlannerList type="home" />
-      <ReviewList />
+      <ReviewList type="home" />
       <SpotSlider home="true" />
     </HomeBlock>
   );
