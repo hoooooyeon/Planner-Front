@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import palette from '../../lib/styles/palette';
 
 const HeaderBlock = styled.div`
   height: 75px;
@@ -23,7 +25,7 @@ const MenuList = styled.ul`
   display: flex;
   list-style: none;
   li {
-    font-size: 20px;
+    font-size: 1.2rem;
     margin: 0 30px;
   }
 `;
@@ -32,16 +34,28 @@ const AccountList = styled.ul`
   display: flex;
   list-style: none;
   li {
-    font-size: 12px;
+    font-size: 0.8rem;
     margin: 0 8px;
   }
 `;
 
 const Header = () => {
+  const headerRef = useRef();
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset === 0) {
+        headerRef.current.style.boxShadow = 'none';
+      } else {
+        headerRef.current.style.boxShadow = `1px 5px 7px 1px ${palette.gray[0]}`;
+      }
+    });
+  }, []);
+
   return (
-    <HeaderBlock>
+    <HeaderBlock ref={headerRef}>
       <h1>
-        <Link to="/">낭만닷컴</Link>
+        <Link to="/">한국다봄</Link>
       </h1>
       <MenuList>
         <li>

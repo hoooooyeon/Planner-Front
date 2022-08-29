@@ -7,9 +7,8 @@ const AuthBlock = styled.div`
   width: 600px;
   height: 500px;
   text-align: center;
-  border: 1px solid lightgray;
+  border: 1px solid ${palette.gray[0]};
   border-radius: 5px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,12 +23,12 @@ const StyledInput = styled.input`
   text-indent: 10px;
   border-radius: 5px;
   font-size: 0.7rem;
-  background-color: ${palette.lightivory[0]};
+  background-color: ${palette.ivory[1]};
   &::placeholder {
-    color: ${palette.lightblue[0]};
+    color: ${palette.gray[0]};
   }
   &:focus {
-    color: lightblue;
+    color: ${palette.blue[1]};
   }
   & + & {
     margin-top: 0.5rem;
@@ -41,8 +40,8 @@ const ButtonWithMarginTop = styled(Button)`
 `;
 
 const ChangeRegister = styled.div`
-  background-color: lightblue;
-  border: 1px solid lightblue;
+  background-color: ${palette.blue[1]};
+  border: 1px solid ${palette.blue[1]};
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -51,13 +50,14 @@ const ChangeRegister = styled.div`
   width: 300px;
   height: 500px;
   p {
-    color: gray;
+    color: ${palette.gray[0]};
   }
   a {
     width: 120px;
     height: 40px;
     border-radius: 50px;
-    background-color: red;
+    background-color: ${palette.ivory[0]};
+    color: ${palette.blue[1]};
     text-decoration: none;
     text-align: center;
     line-height: 40px;

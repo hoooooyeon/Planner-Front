@@ -1,10 +1,12 @@
 import styled, { css } from 'styled-components';
+import palette from '../../lib/styles/palette';
 
 const StyledButton = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  background-color: lightblue;
+  background-color: ${palette.blue[1]};
+
   color: white;
   outline: none;
   width: 3.5rem;
