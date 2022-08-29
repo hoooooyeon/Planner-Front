@@ -7,6 +7,8 @@ const SpotMenuBlock = styled.div`
   height: auto;
   padding: 10px;
   display: flex;
+  border: 1px solid lightblue;
+  border-radius: 10px;
   div {
     display: flex;
     flex-direction: column;
@@ -14,7 +16,7 @@ const SpotMenuBlock = styled.div`
   ul {
     list-style: none;
     li {
-      margin-right: 15px;
+      margin: 0 15px 5px 0;
     }
   }
 `;

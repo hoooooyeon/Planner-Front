@@ -17,7 +17,7 @@ const SpotTitle = styled.div`
   width: 500px;
   height: 50px;
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin-top: 10px;
 `;
 const SpotDetail = styled.div`

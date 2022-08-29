@@ -5,9 +5,13 @@ const PlannerItemBlock = styled.div`
   height: 350px;
   margin: 10px;
   text-align: center;
-  h3 {
-    margin: 10px;
-  }
+  border: 1px solid lightblue;
+  border-radius: 5%;
+`;
+
+const Title = styled.p`
+  font-size: 1.2rem;
+  margin: 10px;
 `;
 
 const SimpleMap = styled.div`
@@ -19,7 +23,7 @@ const PlannerItem = () => {
   return (
     <PlannerItemBlock>
       <SimpleMap />
-      <h3>천안문 일대기</h3>
+      <Title>천안문 일대기</Title>
       <p>2020년 11월 11일 ~ 2022년 7월 29일</p>
     </PlannerItemBlock>
   );

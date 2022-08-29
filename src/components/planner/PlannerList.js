@@ -2,10 +2,10 @@ import styled from 'styled-components';
 import Button from '../common/Button';
 import PlannerItem from './PlannerItem';
 
-const PlannerListBlock = styled.div`
-  /* margin: 100px auto;
-  width: 80%; */
+const PageTitle = styled.p`
+  font-size: 1.3rem;
 `;
+
 const Planners = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -27,8 +27,8 @@ const PlannerType = {
 const PlannerList = ({ type }) => {
   const PlannerText = PlannerType[type];
   return (
-    <PlannerListBlock>
-      <h3>{PlannerText}</h3>
+    <>
+      <PageTitle>{PlannerText}</PageTitle>
       <hr />
       {type === 'planner' && <StyledButton big>플래너 생성</StyledButton>}
       <Planners>
@@ -37,7 +37,7 @@ const PlannerList = ({ type }) => {
         <PlannerItem />
         <PlannerItem />
       </Planners>
-    </PlannerListBlock>
+    </>
   );
 };
 

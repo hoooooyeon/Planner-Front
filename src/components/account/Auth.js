@@ -1,18 +1,19 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import Button from '../common/Button';
+import { Link } from 'react-router-dom';
+import palette from '../../lib/styles/palette';
 
 const AuthBlock = styled.div`
-  width: 400px;
+  width: 600px;
+  height: 500px;
   text-align: center;
   border: 1px solid lightgray;
   border-radius: 5px;
-  /* margin: auto; */
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 `;
 
 const StyledInput = styled.input`
@@ -20,10 +21,12 @@ const StyledInput = styled.input`
   outline: none;
   width: 20rem;
   height: 2rem;
-  border-bottom: 1px solid gray;
-  font-size: 1rem;
+  text-indent: 10px;
+  border-radius: 5px;
+  font-size: 0.7rem;
+  background-color: ${palette.lightivory[0]};
   &::placeholder {
-    color: lightgray;
+    color: ${palette.lightblue[0]};
   }
   &:focus {
     color: lightblue;
@@ -37,12 +40,28 @@ const ButtonWithMarginTop = styled(Button)`
   margin-top: 2rem;
 `;
 
-const Footer = styled.div`
-  text-align: right;
-  padding: 20px;
+const ChangeRegister = styled.div`
+  background-color: lightblue;
+  border: 1px solid lightblue;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: 500px;
+  p {
+    color: gray;
+  }
   a {
-    color: lightblue;
+    width: 120px;
+    height: 40px;
+    border-radius: 50px;
+    background-color: red;
     text-decoration: none;
+    text-align: center;
+    line-height: 40px;
+    font-weight: bold;
   }
 `;
 
@@ -54,22 +73,37 @@ const AuthType = {
 const Auth = ({ type }) => {
   const AuthText = AuthType[type];
   return (
-    <AuthBlock>
-      <h2>{AuthText}</h2>
-      <form>
-        <StyledInput name="email" placeholder="이메일" type="email" />
-        <StyledInput name="password" placeholder="비밀번호" type="password" />
-        {type === 'register' && (
-          <>
-            <StyledInput name="passwordConfirm" placeholder="비밀번호 확인" type="password" />
-            <StyledInput name="username" placeholder="이름" type="text" />
-            <StyledInput name="nickname" placeholder="닉네임" type="text" />
-          </>
-        )}
+    <>
+      {type === 'login' && (
+        <ChangeRegister>
+          <h2>Welcome Back!</h2>
+          <p>아직 회원이 아니신가요?</p>
+          <Link to="/Register">회원가입</Link>
+        </ChangeRegister>
+      )}
+      <AuthBlock>
+        <h2>{AuthText}</h2>
+        <form>
+          <StyledInput name="email" placeholder="이메일" type="email" />
+          <StyledInput name="password" placeholder="비밀번호" type="password" />
+          {type === 'register' && (
+            <>
+              <StyledInput name="passwordConfirm" placeholder="비밀번호 확인" type="password" />
+              <StyledInput name="username" placeholder="이름" type="text" />
+              <StyledInput name="nickname" placeholder="닉네임" type="text" />
+            </>
+          )}
+        </form>
         <ButtonWithMarginTop big>{AuthText}</ButtonWithMarginTop>
-      </form>
-      <Footer>{type === 'login' ? <Link to="/Register">회원가입</Link> : <Link to="/Login">로그인</Link>}</Footer>
-    </AuthBlock>
+      </AuthBlock>
+      {type === 'register' && (
+        <ChangeRegister>
+          <h2>Hello, Guest!</h2>
+          <p>이미 회원이신가요?</p>
+          <Link to="/Login">로그인</Link>
+        </ChangeRegister>
+      )}
+    </>
   );
 };
 

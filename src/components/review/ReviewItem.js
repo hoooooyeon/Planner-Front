@@ -5,7 +5,10 @@ const ReviewItemBlock = styled.div`
   height: 320px;
   margin: 10px;
   text-align: center;
-  h3 {
+  border: 1px solid lightblue;
+  border-radius: 5%;
+  p {
+    font-size: 1.2rem;
     margin: 10px;
   }
 `;
@@ -19,7 +22,7 @@ const ReviewItem = () => {
   return (
     <ReviewItemBlock>
       <SimpleImg />
-      <h3>천안문 갔다온 일</h3>
+      <p>천안문 갔다온 일</p>
     </ReviewItemBlock>
   );
 };

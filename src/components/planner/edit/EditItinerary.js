@@ -10,7 +10,7 @@ const EditItineraryBlock = styled.div`
 
 const Title = styled.div`
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 `;
 const Date = styled.div`
   text-align: center;

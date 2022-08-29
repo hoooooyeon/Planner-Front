@@ -5,6 +5,10 @@ import ReviewItem from './ReviewItem';
 const ReviewListBlock = styled.div`
   margin-top: 50px;
 `;
+
+const PageTitle = styled.p`
+  font-size: 1.3rem;
+`;
 const Reviews = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -22,7 +26,7 @@ const ReviewList = ({ type }) => {
     <ReviewListBlock>
       {type === 'review' && (
         <>
-          <h3>나의 여행 후기</h3>
+          <PageTitle>나의 여행 후기</PageTitle>
           <hr />
           <StyledButton big>여행 후기 작성</StyledButton>
           <Reviews>
@@ -30,7 +34,7 @@ const ReviewList = ({ type }) => {
           </Reviews>
         </>
       )}
-      <h3>여행 후기</h3>
+      <PageTitle>여행 후기</PageTitle>
       <hr />
       <Reviews>
         <ReviewItem />

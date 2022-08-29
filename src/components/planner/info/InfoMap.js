@@ -11,11 +11,15 @@ const MapBlock = styled.div`
   }
 `;
 
+const Title = styled.p`
+  font-size: 1.2rem;
+`;
+
 const InfoMap = () => {
   return (
     <MapBlock>
       <div>
-        <h2>천안문 일대기</h2>
+        <Title>천안문 일대기</Title>
         <p>참여 인원: 4명</p>
         <p>여행 자금: 100만원</p>
       </div>

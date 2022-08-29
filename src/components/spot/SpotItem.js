@@ -5,8 +5,9 @@ const SpotItemBlock = styled.div`
   height: 320px;
   margin: 10px;
   text-align: center;
-  h3 {
+  p {
     margin: 10px;
+    font-size: 1.2rem;
   }
 `;
 
@@ -19,7 +20,7 @@ const SpotItem = () => {
   return (
     <SpotItemBlock>
       <SimpleImg />
-      <h3>천안 사거리</h3>
+      <p>천안 사거리</p>
     </SpotItemBlock>
   );
 };
