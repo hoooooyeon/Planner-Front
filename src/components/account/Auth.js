@@ -37,7 +37,8 @@ const StyledInput = styled.input`
 `;
 
 const ButtonWithMarginTop = styled(Button)`
-  margin-top: 2rem;
+  display: block;
+  margin: 2rem auto;
 `;
 
 const ChangeRegister = styled.div`
@@ -65,12 +66,17 @@ const ChangeRegister = styled.div`
   }
 `;
 
+const ErrorDiv = styled.div`
+  color: red;
+  margin-top: 2rem;
+`;
+
 const AuthType = {
   login: '로그인',
   register: '회원가입',
 };
 
-const Auth = ({ type }) => {
+const Auth = ({ type, onChange, onSubmit, authError }) => {
   const AuthText = AuthType[type];
   return (
     <>
@@ -83,9 +89,9 @@ const Auth = ({ type }) => {
       )}
       <AuthBlock>
         <h2>{AuthText}</h2>
-        <form>
-          <StyledInput name="email" placeholder="이메일" type="email" />
-          <StyledInput name="password" placeholder="비밀번호" type="password" />
+        <form onSubmit={onSubmit}>
+          <StyledInput name="email" placeholder="이메일" type="email" onChange={onChange} />
+          <StyledInput name="password" placeholder="비밀번호" type="password" onChange={onChange} />
           {type === 'register' && (
             <>
               <StyledInput name="passwordConfirm" placeholder="비밀번호 확인" type="password" />
@@ -93,8 +99,9 @@ const Auth = ({ type }) => {
               <StyledInput name="nickname" placeholder="닉네임" type="text" />
             </>
           )}
+          {authError && <ErrorDiv>{authError}</ErrorDiv>}
+          <ButtonWithMarginTop big>{AuthText}</ButtonWithMarginTop>
         </form>
-        <ButtonWithMarginTop big>{AuthText}</ButtonWithMarginTop>
       </AuthBlock>
       {type === 'register' && (
         <ChangeRegister>
