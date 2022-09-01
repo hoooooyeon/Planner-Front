@@ -9,12 +9,6 @@ const SpotSliderBlock = styled.div`
   width: 100%;
   height: 600px;
   overflow: hidden;
-  h1 {
-    color: white;
-    position: relative;
-    top: 80%;
-    left: 45%;
-  }
 `;
 
 const SliderImgs = styled.div`
@@ -27,6 +21,12 @@ const SliderImg = styled.div`
   height: 600px;
   background-color: lightgray;
   float: left;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  h1 {
+    color: white;
+  }
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
