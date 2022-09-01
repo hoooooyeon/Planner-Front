@@ -19,7 +19,7 @@ const LoginContainer = () => {
             field: name,
             value: value
         }));
-    }
+    };
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -29,7 +29,7 @@ const LoginContainer = () => {
 
     useEffect(() => {
         dispatch(initialize());
-    }, [dispatch]);
+    }, [dispatch, authError]);
 
     useEffect(() => {
         if (token) {
@@ -40,7 +40,7 @@ const LoginContainer = () => {
 
 
     return (
-        <Auth type="login" onChange={onChange} onSubmit={onSubmit} authError={authError} />
+        <Auth type="login" form={form} onChange={onChange} onSubmit={onSubmit} authError={authError} />
     );
 };
 

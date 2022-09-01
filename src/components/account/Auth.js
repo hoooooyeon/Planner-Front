@@ -76,7 +76,7 @@ const AuthType = {
   register: '회원가입',
 };
 
-const Auth = ({ type, onChange, onSubmit, authError }) => {
+const Auth = ({ type, form, onChange, onSubmit, authError }) => {
   const AuthText = AuthType[type];
   return (
     <>
@@ -90,13 +90,13 @@ const Auth = ({ type, onChange, onSubmit, authError }) => {
       <AuthBlock>
         <h2>{AuthText}</h2>
         <form onSubmit={onSubmit}>
-          <StyledInput name="email" placeholder="이메일" type="email" onChange={onChange} />
-          <StyledInput name="password" placeholder="비밀번호" type="password" onChange={onChange} />
+          <StyledInput name="email" placeholder="이메일" type="email" onChange={onChange} value={form.email} />
+          <StyledInput name="password" placeholder="비밀번호" type="password" onChange={onChange} value={form.password} />
           {type === 'register' && (
             <>
-              <StyledInput name="passwordConfirm" placeholder="비밀번호 확인" type="password" />
-              <StyledInput name="username" placeholder="이름" type="text" />
-              <StyledInput name="nickname" placeholder="닉네임" type="text" />
+              <StyledInput name="passwordConfirm" placeholder="비밀번호 확인" type="password" onChange={onChange} value={form.passwordConfirm} />
+              <StyledInput name="username" placeholder="이름" type="text" onChange={onChange} value={form.username} />
+              <StyledInput name="nickname" placeholder="닉네임" type="text" onChange={onChange} value={form.nickname} />
             </>
           )}
           {authError && <ErrorDiv>{authError}</ErrorDiv>}

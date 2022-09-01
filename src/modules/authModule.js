@@ -10,7 +10,7 @@ const loginType = "auth/LOGIN";
 const loginSuccessType = "auth/LOGIN_SUCCESS";
 const loginFailureType = "auth/LOGIN_FAILURE";
 
-const registerType = "auth/REGISTRY";
+const registerType = "auth/REGISTER";
 const registerSuccessType = "auth/REGISTER_SUCCESS";
 const registerFailureType = "auth/REGISTER_FAILURE";
 
@@ -56,6 +56,7 @@ const initialState = {
     register: {
         email: '',
         password: '',
+        passwordConfirm: '',
         username: '',
         nickname: ''
     },
@@ -67,10 +68,10 @@ const initialState = {
 function authReducer(state = initialState, action) {
     switch (action.type) {
         case initializeType: {
-            return { ...state, login: initialState.login, register: initialState.register }
+            return { ...state, login: initialState.login, register: initialState.register };
         }
         case changeFieldType: {
-            return { ...state, [action.form]: { ...state[action.form], [action.field]: action.value } }
+            return { ...state, [action.form]: { ...state[action.form], [action.field]: action.value } };
         }
         case loginSuccessType: {
             return { ...state, account: action.payload.data, token: action.payload.token };
@@ -82,7 +83,7 @@ function authReducer(state = initialState, action) {
             return { ...state };
         }
         case registerFailureType: {
-            return { ...state, authError: action.payload.data.message }
+            return { ...state, authError: action.payload.message };
         }
         default: {
             return state;
