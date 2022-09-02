@@ -11,13 +11,12 @@ const SpotBlock = styled.div`
   padding-bottom: 170px;
 `;
 
-const Spot = () => {
+const Spot = ({ children }) => {
   return (
-    <SpotBlock>
-      <SpotSlider />
-      <SpotMenu />
-      <SpotInfo />
-    </SpotBlock>
+    <SpotBlock>{children}</SpotBlock>
+    // <SpotSlider />
+    // <SpotMenu />
+    // <SpotInfo />
   );
 };
 

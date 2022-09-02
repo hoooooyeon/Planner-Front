@@ -25,15 +25,23 @@ const SpotDetail = styled.div`
   height: auto;
 `;
 
-const SpotInfo = () => {
+const SpotInfo = ({ spot, error, loading, readSpot }) => {
+  if (error) {
+    if (error.response && error.response.status === 404) {
+      return <SpotInfoBlock>존재하지 않는 여행지 정보입니다.</SpotInfoBlock>;
+    }
+    return <SpotInfoBlock>오류 발생!</SpotInfoBlock>;
+  }
+  if (loading || !spot) {
+    return null;
+  }
+  const { spotName, spotImage, detail } = spot;
   return (
     <SpotInfoBlock>
-      <SpotImg />
+      <SpotImg>{spotImage}</SpotImg>
       <div>
-        <SpotTitle>천안 김태수의 언덕</SpotTitle>
-        <SpotDetail>
-          김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야김태수그는신이야
-        </SpotDetail>
+        <SpotTitle>{spotName}</SpotTitle>
+        <SpotDetail>{detail}</SpotDetail>
       </div>
     </SpotInfoBlock>
   );

@@ -1,45 +1,40 @@
 import createRequestSaga, { createRequestActionTypes } from '../lib/createRequestSaga';
-import * as spotAPI from '../lib/api/spot';
+import * as spotAPI from '../lib/api/spots';
 import { takeLatest } from 'redux-saga/effects';
 
-const [SPOTINFO, SPOTINFO_SUCCESS, SPOTINFO_FAILURE] = createRequestActionTypes('spot/SPOTINFO');
+const [READ_SPOT, READ_SPOT_SUCCESS, READ_SPOT_FAILURE] = createRequestActionTypes('spot/READ_SPOT');
 
-export const spotInfo = (spotName, spotImage, detail) => ({
-  type: SPOTINFO,
-  spotName,
-  spotImage,
-  detail,
+export const readSpot = (id) => ({
+  type: READ_SPOT,
+  id,
 });
 
-const spotInfoSaga = createRequestSaga(SPOTINFO, spotAPI.spotInfo);
+const readSpotSaga = createRequestSaga(READ_SPOT, spotAPI.readSpot);
 export function* spotSaga() {
-  yield takeLatest(SPOTINFO, spotInfoSaga);
+  yield takeLatest(READ_SPOT, readSpotSaga);
 }
 
 const initialState = {
-  spotInfo: {
-    spotName: '',
-    spotImage: '',
-    detail: '',
-  },
   spot: null,
   spotError: null,
 };
 
 function spot(state = initialState, action) {
   switch (action.type) {
-    case SPOTINFO_SUCCESS:
+    case READ_SPOT_SUCCESS:
       return {
         ...state,
         spotError: null,
         spot,
       };
-    case SPOTINFO_FAILURE:
+    case READ_SPOT_FAILURE:
       return {
         ...state,
-        spotError: error,
+        spotError: action.error,
       };
     default:
       return state;
   }
 }
+
+export default spot;

@@ -16,7 +16,7 @@ function loading(state = initialState, action) {
     case FINISH_LOADING:
       return {
         ...state,
-        requestType: true,
+        requestType: false,
       };
     default:
       return state;
