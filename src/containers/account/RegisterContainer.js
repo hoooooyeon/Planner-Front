@@ -1,20 +1,20 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Auth from "../../components/account/Auth";
-import { changeField, initialize, registerAction } from "../../modules/authModule";
+import { changeField, initialize, initializeError, registerAction } from "../../modules/authModule";
 
 
-const RegisterContainer = () => {
+const RegisterContainer = ({ type }) => {
     const dispatch = useDispatch();
     const { form, authError } = useSelector(({ authReducer }) => ({
-        form: authReducer['register'],
+        form: authReducer[type],
         authError: authReducer.authError
     }));
 
     const onChange = (e) => {
         const { name, value } = e.target;
         dispatch(changeField({
-            form: 'register',
+            form: type,
             field: name,
             value: value
         }));
@@ -23,6 +23,7 @@ const RegisterContainer = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         const { email, password, username, nickname } = form;
+        dispatch(initializeError());
         dispatch(registerAction({ email, password, username, nickname }));
     };
 
@@ -31,7 +32,7 @@ const RegisterContainer = () => {
     }, [dispatch, authError]);
 
     return (
-        <Auth type="register" form={form} onChange={onChange} onSubmit={onSubmit} authError={authError} />
+        <Auth type={type} form={form} onChange={onChange} onSubmit={onSubmit} authError={authError} />
     );
 };
 

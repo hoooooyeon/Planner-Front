@@ -10,7 +10,7 @@ const LoginPage = () => {
       <Header />
       <AuthTemplate>
         {/* <Auth type="login" /> */}
-        <LoginContainer />
+        <LoginContainer type="login" />
       </AuthTemplate>
       <Footer />
     </>

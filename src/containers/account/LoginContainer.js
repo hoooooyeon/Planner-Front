@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router';
 import Auth from "../../components/account/Auth";
 import { tokenUse } from '../../lib/api/client';
-import { changeField, initialize, loginAction } from "../../modules/authModule";
+import { changeField, initialize, initializeError, loginAction } from "../../modules/authModule";
 
-const LoginContainer = () => {
+const LoginContainer = ({ history, type }) => {
     const dispatch = useDispatch();
-    const { form, token, authError } = useSelector(({ authReducer }) => ({
-        form: authReducer['login'],
+    const { form, token, account, authError } = useSelector(({ authReducer }) => ({
+        form: authReducer[type],
+        account: authReducer.account,
         token: authReducer.token,
         authError: authReducer.authError
     }));
@@ -15,7 +17,7 @@ const LoginContainer = () => {
     const onChange = (e) => {
         const { name, value } = e.target;
         dispatch(changeField({
-            form: 'login',
+            form: type,
             field: name,
             value: value
         }));
@@ -24,6 +26,7 @@ const LoginContainer = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         const { email, password } = form;
+        dispatch(initializeError());
         dispatch(loginAction({ email, password }));
     };
 
@@ -38,10 +41,16 @@ const LoginContainer = () => {
         }
     }, [token]);
 
+    useEffect(() => {
+        if (account) {
+            history.push("/");
+        }
+    });
+
 
     return (
-        <Auth type="login" form={form} onChange={onChange} onSubmit={onSubmit} authError={authError} />
+        <Auth type={type} form={form} onChange={onChange} onSubmit={onSubmit} authError={authError} />
     );
 };
 
-export default LoginContainer;
+export default withRouter(LoginContainer);

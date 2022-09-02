@@ -10,7 +10,7 @@ const RegisterPage = () => {
       <Header />
       <AuthTemplate>
         {/* <Auth type="register" /> */}
-        <RegisterContainer />
+        <RegisterContainer type="register" />
       </AuthTemplate>
       <Footer />
     </>

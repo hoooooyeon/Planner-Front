@@ -4,6 +4,7 @@ import * as authAPI from '../lib/api/authAPI';
 
 // 액션 타입
 const initializeType = 'auth/INITIALIZE';
+const initializeErrorType = 'auth/INITIALIZE_ERROR';
 const changeFieldType = 'auth/CHANGE_FIELD';
 
 const loginType = "auth/LOGIN";
@@ -17,6 +18,10 @@ const registerFailureType = "auth/REGISTER_FAILURE";
 // 액션함수
 export const initialize = () => ({
     type: initializeType
+});
+
+export const initializeError = () => ({
+    type: initializeErrorType
 });
 
 export const changeField = ({ form, field, value }) => ({
@@ -69,6 +74,9 @@ function authReducer(state = initialState, action) {
     switch (action.type) {
         case initializeType: {
             return { ...state, login: initialState.login, register: initialState.register };
+        }
+        case initializeErrorType: {
+            return { ...state, authError: initialState.authError };
         }
         case changeFieldType: {
             return { ...state, [action.form]: { ...state[action.form], [action.field]: action.value } };

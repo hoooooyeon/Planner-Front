@@ -37,7 +37,20 @@ const AccountList = styled.ul`
   }
 `;
 
-const Header = () => {
+const Account = styled.div`
+  display: flex;
+  align-items: center;
+
+  .user-img {
+    background-color: skyblue;
+    border-radius: 10px;
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+  }
+`;
+
+const Header = ({ account }) => {
   return (
     <HeaderBlock>
       <h1>
@@ -57,14 +70,21 @@ const Header = () => {
           <Link to="/Spot">여행지</Link>
         </li>
       </MenuList>
-      <AccountList>
-        <li>
-          <Link to="/Login">로그인</Link>
-        </li>
-        <li>
-          <Link to="/Register">회원가입</Link>
-        </li>
-      </AccountList>
+      {account ? (
+        <Account>
+          <div className='user-img'></div>
+          <div>{account.nickname}</div>
+        </Account>
+      ) : (
+        <AccountList>
+          <li>
+            <Link to="/Login">로그인</Link>
+          </li>
+          <li>
+            <Link to="/Register">회원가입</Link>
+          </li>
+        </AccountList>
+      )}
     </HeaderBlock>
   );
 };
