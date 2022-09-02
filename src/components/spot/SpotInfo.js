@@ -25,7 +25,7 @@ const SpotDetail = styled.div`
   height: auto;
 `;
 
-const SpotInfo = ({ spot, error, loading, readSpot }) => {
+const SpotInfo = ({ spot, error, loading }) => {
   if (error) {
     if (error.response && error.response.status === 404) {
       return <SpotInfoBlock>존재하지 않는 여행지 정보입니다.</SpotInfoBlock>;
@@ -35,14 +35,23 @@ const SpotInfo = ({ spot, error, loading, readSpot }) => {
   if (loading || !spot) {
     return null;
   }
-  const { spotName, spotImage, detail } = spot;
+  //const { spotName, spotImage, detail } = spot;
   return (
     <SpotInfoBlock>
-      <SpotImg>{spotImage}</SpotImg>
+      {spot.map((s) => (
+        <div key={s}>
+          <SpotImg>{s.spotImage}</SpotImg>
+          <div>
+            <SpotTitle>{s.spotName}</SpotTitle>
+            <SpotDetail>{s.detail}</SpotDetail>
+          </div>
+        </div>
+      ))}
+      {/* <SpotImg>{spotImage}</SpotImg>
       <div>
         <SpotTitle>{spotName}</SpotTitle>
         <SpotDetail>{detail}</SpotDetail>
-      </div>
+      </div> */}
     </SpotInfoBlock>
   );
 };

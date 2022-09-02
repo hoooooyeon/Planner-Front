@@ -4,19 +4,17 @@ import { readSpot } from '../../modules/spot';
 import { useEffect } from 'react';
 
 const SpotInfoContainer = ({ spot, error, loading, readSpot }) => {
-  //const dispatch = useDispatch();
-  const { spotId } = spot;
   useEffect(() => {
-    readSpot(spotId);
-  }, [readSpot, spotId]);
+    readSpot();
+  }, [readSpot]);
 
   return <SpotInfo spot={spot} loading={loading} error={error} />;
 };
 
-const mapStateToProps = (spot, loading) => ({
+const mapStateToProps = ({ spot }) => ({
   spot: spot.spot,
   error: spot.spotError,
-  loading: loading['spot/READ_SPOT'],
+  //loading: spot.loading['spot/READ_SPOT'],
 });
 const mapDispatchToProps = (dispatch) => ({
   readSpot: () => {

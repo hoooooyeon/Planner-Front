@@ -4,9 +4,8 @@ import { takeLatest } from 'redux-saga/effects';
 
 const [READ_SPOT, READ_SPOT_SUCCESS, READ_SPOT_FAILURE] = createRequestActionTypes('spot/READ_SPOT');
 
-export const readSpot = (id) => ({
+export const readSpot = () => ({
   type: READ_SPOT,
-  id,
 });
 
 const readSpotSaga = createRequestSaga(READ_SPOT, spotAPI.readSpot);
@@ -15,7 +14,26 @@ export function* spotSaga() {
 }
 
 const initialState = {
-  spot: null,
+  spot: [
+    {
+      spotId: 1,
+      spotName: '테스트',
+      spotImage: 'imagepath',
+      contryName: '테스트',
+      cityName: '테스트',
+      detail: '테스트',
+      likeCount: 0,
+    },
+    {
+      spotId: 2,
+      spotName: '천안 터미널',
+      spotImage: 'ㅁㅁㅁ',
+      contryName: '대한민국',
+      cityName: '천안',
+      detail: '서울같은 천안',
+      likeCount: 50,
+    },
+  ],
   spotError: null,
 };
 
@@ -25,7 +43,7 @@ function spot(state = initialState, action) {
       return {
         ...state,
         spotError: null,
-        spot,
+        // spot,
       };
     case READ_SPOT_FAILURE:
       return {
