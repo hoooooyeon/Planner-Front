@@ -25,33 +25,27 @@ const SpotDetail = styled.div`
   height: auto;
 `;
 
-const SpotInfo = ({ spot, error, loading }) => {
-  if (error) {
-    if (error.response && error.response.status === 404) {
-      return <SpotInfoBlock>존재하지 않는 여행지 정보입니다.</SpotInfoBlock>;
-    }
-    return <SpotInfoBlock>오류 발생!</SpotInfoBlock>;
-  }
-  if (loading || !spot) {
-    return null;
-  }
-  //const { spotName, spotImage, detail } = spot;
+const SpotInfo = () => {
+  // if (error) {
+  //   if (error.response && error.response.status === 404) {
+  //     return <SpotInfoBlock>존재하지 않는 여행지 정보입니다.</SpotInfoBlock>;
+  //   }
+  //   return <SpotInfoBlock>오류 발생!</SpotInfoBlock>;
+  // }
+  // if (loading || !spots) {
+  //   return null;
+  // }
   return (
     <SpotInfoBlock>
-      {spot.map((s) => (
-        <div key={s}>
-          <SpotImg>{s.spotImage}</SpotImg>
+      {/* {spots.map((spot) => (
+        <div key={spot.spotId}>
+          <SpotImg>{spot.spotImage}</SpotImg>
           <div>
-            <SpotTitle>{s.spotName}</SpotTitle>
-            <SpotDetail>{s.detail}</SpotDetail>
+            <SpotTitle>{spot.spotName}</SpotTitle>
+            <SpotDetail>{spot.detail}</SpotDetail>
           </div>
         </div>
-      ))}
-      {/* <SpotImg>{spotImage}</SpotImg>
-      <div>
-        <SpotTitle>{spotName}</SpotTitle>
-        <SpotDetail>{detail}</SpotDetail>
-      </div> */}
+      ))} */}
     </SpotInfoBlock>
   );
 };

@@ -35,7 +35,16 @@ const StyledButton = styled(Button)`
   height: auto;
 `;
 
-const SpotMenu = () => {
+const SpotMenu = ({ spots, error, loading }) => {
+  if (error) {
+    if (error.response && error.response.status === 404) {
+      return <SpotMenuBlock>존재하지 않는 여행지 정보입니다.</SpotMenuBlock>;
+    }
+    return <SpotMenuBlock>오류 발생!</SpotMenuBlock>;
+  }
+  if (loading || !spots) {
+    return null;
+  }
   return (
     <SpotMenuBlock>
       <div>
@@ -56,24 +65,11 @@ const SpotMenu = () => {
           </li>
         </ListUl>
         <ListUl>
-          <li>
-            <StyledButton>서울</StyledButton>
-          </li>
-          <li>
-            <StyledButton>대전</StyledButton>
-          </li>
-          <li>
-            <StyledButton>대구</StyledButton>
-          </li>
-          <li>
-            <StyledButton>부산</StyledButton>
-          </li>
-          <li>
-            <StyledButton>천안</StyledButton>
-          </li>
-          <li>
-            <StyledButton>성남</StyledButton>
-          </li>
+          {spots.map((spot) => (
+            <li key={spot.spotId}>
+              <StyledButton>{spot.cityName}</StyledButton>
+            </li>
+          ))}
         </ListUl>
         <ListUl>
           <li>
