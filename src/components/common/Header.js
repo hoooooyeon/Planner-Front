@@ -73,7 +73,7 @@ const Header = ({ account }) => {
       {account ? (
         <Account>
           <div className='user-img'></div>
-          <div>{account.nickname}</div>
+          <Link to="/Profile">{account.nickname}</Link>
         </Account>
       ) : (
         <AccountList>
