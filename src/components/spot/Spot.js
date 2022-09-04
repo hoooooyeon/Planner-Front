@@ -1,7 +1,4 @@
 import styled from 'styled-components';
-import SpotSlider from './SpotSlider';
-import SpotInfo from './SpotInfo';
-import SpotMenu from './SpotMenu';
 
 const SpotBlock = styled.div`
   margin: 100px auto;
@@ -12,12 +9,7 @@ const SpotBlock = styled.div`
 `;
 
 const Spot = ({ children }) => {
-  return (
-    <SpotBlock>{children}</SpotBlock>
-    // <SpotSlider />
-    // <SpotMenu />
-    // <SpotInfo />
-  );
+  return <SpotBlock>{children}</SpotBlock>;
 };
 
 export default Spot;
