@@ -18,7 +18,7 @@ const Info = styled.div``;
 const Footer = () => {
   return (
     <FooterBlock>
-      <Logo>낭만닷컴</Logo>
+      <Logo>한국다봄</Logo>
       <Info>
         <p>Phone: 010-9412-4113, 010-7368-3401</p>
         <p>Email: BlueBear@gmail.com, lhy3476@gmail.com</p>

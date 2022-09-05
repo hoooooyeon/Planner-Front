@@ -20,9 +20,9 @@ const SimpleImg = styled.div`
   height: 270px;
 `;
 
-const SpotItem = () => {
+const SpotItem = ({ modalToggle }) => {
   return (
-    <SpotItemBlock>
+    <SpotItemBlock onClick={modalToggle}>
       <SimpleImg />
       <p>천안 사거리</p>
     </SpotItemBlock>

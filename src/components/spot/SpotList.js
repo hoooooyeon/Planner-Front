@@ -1,11 +1,16 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../common/Button';
 import SpotItem from './SpotItem';
+import SpotModal from './SpotModal';
 
 const SpotListBlock = styled.div`
   margin: 50px auto;
   height: auto;
-
+  p {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
   ul {
     list-style: none;
     li {
@@ -32,8 +37,13 @@ const List = styled.div`
 `;
 
 const SpotList = () => {
+  const [showModal, setShowModal] = useState(false);
+  const modalToggle = () => {
+    setShowModal(!showModal);
+  };
   return (
     <SpotListBlock>
+      <p>추천 여행지</p>
       <Menu>
         <li>
           <StyledButton>천안바닷가</StyledButton>
@@ -112,7 +122,7 @@ const SpotList = () => {
         </li>
       </Menu>
       <List>
-        <SpotItem />
+        <SpotItem modalToggle={modalToggle} />
         <SpotItem />
         <SpotItem />
         <SpotItem />
@@ -123,6 +133,7 @@ const SpotList = () => {
         <SpotItem />
         <SpotItem />
       </List>
+      <SpotModal showModal={showModal} modalToggle={modalToggle} />
     </SpotListBlock>
   );
 };
