@@ -1,34 +1,30 @@
 import { useState } from 'react';
-import styled from 'styled-components';
-import Button from '../common/Button';
+import styled, { css } from 'styled-components';
 import SpotItem from './SpotItem';
 import SpotModal from './SpotModal';
 
 const SpotListBlock = styled.div`
   margin: 50px auto;
   height: auto;
-  p {
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-  ul {
-    list-style: none;
-    li {
-      margin: 0 15px 5px 0;
-    }
-  }
+`;
+
+const MenuTitle = styled.p`
+  font-size: 1.2rem;
+  font-weight: bold;
 `;
 
 const Menu = styled.ul`
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 50px;
-`;
-
-const StyledButton = styled(Button)`
-  width: auto;
-  height: auto;
-  padding: 10px;
+  list-style: none;
+  li {
+    margin: 0 15px 5px 0;
+    /* background-color: lightblue; */
+    padding: 10px;
+    border-radius: 2rem;
+    background-color: ${(props) => (props.active ? 'red' : 'lightblue')};
+  }
 `;
 
 const List = styled.div`
@@ -38,87 +34,21 @@ const List = styled.div`
 
 const SpotList = () => {
   const [showModal, setShowModal] = useState(false);
+  const [active, setActive] = useState(true);
+
   const modalToggle = () => {
     setShowModal(!showModal);
   };
+
+  const focusButton = () => {
+    setActive(!active);
+  };
   return (
     <SpotListBlock>
-      <p>추천 여행지</p>
+      <MenuTitle>추천 여행지</MenuTitle>
       <Menu>
-        <li>
-          <StyledButton>천안바닷가</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안바닷가</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안바닷가</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안바닷가</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안바닷가</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안바닷가</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안바닷가</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안바닷가</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안바닷가</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안바닷가</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안바닷가</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안</StyledButton>
-        </li>
-        <li>
-          <StyledButton>천안</StyledButton>
+        <li active="true" onClick={focusButton}>
+          천안바닷가
         </li>
       </Menu>
       <List>
