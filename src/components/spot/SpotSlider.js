@@ -102,7 +102,7 @@ const SpotSlider = (props) => {
         <SliderImgs ref={imgsRef}>
           <SliderImg>
             <div>clone3</div>
-            <h1>clone3</h1>
+            <h1>마계인천</h1>
           </SliderImg>
           <SliderImg>
             <div>1</div>
@@ -118,7 +118,7 @@ const SpotSlider = (props) => {
           </SliderImg>
           <SliderImg>
             <div>clone1</div>
-            <h1>clone1</h1>
+            <h1>천안시장</h1>
           </SliderImg>
         </SliderImgs>
       </SpotSliderBlock>

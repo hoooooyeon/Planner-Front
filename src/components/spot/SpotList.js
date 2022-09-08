@@ -20,10 +20,9 @@ const Menu = styled.ul`
   list-style: none;
   li {
     margin: 0 15px 5px 0;
-    /* background-color: lightblue; */
     padding: 10px;
     border-radius: 2rem;
-    background-color: ${(props) => (props.active ? 'red' : 'lightblue')};
+    background-color: ${(active) => (active.children.map((elm) => elm.props) ? 'red' : 'lightblue')};
   }
 `;
 
@@ -33,23 +32,34 @@ const List = styled.div`
 `;
 
 const SpotList = () => {
+  const arr = ['천안', '성남', '서울', '부산', '머구'];
+
   const [showModal, setShowModal] = useState(false);
-  const [active, setActive] = useState(true);
+  const [active, setActive] = useState(Array(arr.length).fill(false));
 
   const modalToggle = () => {
     setShowModal(!showModal);
   };
 
-  const focusButton = () => {
-    setActive(!active);
+  const focusButton = (index) => {
+    const newArr = Array(arr.length).fill(false);
+    newArr[index] = true;
+    setActive(newArr);
   };
+
   return (
     <SpotListBlock>
       <MenuTitle>추천 여행지</MenuTitle>
       <Menu>
-        <li active="true" onClick={focusButton}>
+        {arr.map((elm, index) => (
+          <li key={index} active={active[index]} onClick={() => focusButton(index)}>
+            {elm}
+            {console.log(active[index])}
+          </li>
+        ))}
+        {/* <li active={active} onClick={focusButton}>
           천안바닷가
-        </li>
+        </li> */}
       </Menu>
       <List>
         <SpotItem modalToggle={modalToggle} />
