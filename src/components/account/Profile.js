@@ -80,7 +80,7 @@ const ButtonBlock = styled.div`
   text-align: right;
 `;
 
-const My = () => {
+const Profile = ({ profile, profileError }) => {
   return (
     <ProfileBlock>
       <MyMenu>
@@ -91,25 +91,25 @@ const My = () => {
       <EditProfileBlock>
         <div>
           <img src='logo192.png' alt='프로필 이미지' />
-          <div className='nick'>별명</div>
+          <div className='nick'>{profile.nickname}</div>
         </div>
         <form>
           <ul>
             <li>
               <label for="email">이메일</label>
-              <input id="email" name="email" type="email" value="test@naver.com" readOnly />
+              <input id="email" name="email" type="email" defaultValue={profile.email} readOnly />
             </li>
             <li>
               <label for="username">이름</label>
-              <input id="username" name="username" type="text" value="aaa" readOnly />
+              <input id="username" name="username" type="text" defaultValue={profile.username} readOnly />
             </li>
             <li>
               <label for="nickname" type="text">별명</label>
-              <input id="nickname" name="nickname" type="text" value="aaa" />
+              <input id="nickname" name="nickname" type="text" defaultValue={profile.nickname} />
             </li>
             <li>
               <label for="phone" type="text">전화번호</label>
-              <input id="phone" name="phone" type="text" value="01012345678" />
+              <input id="phone" name="phone" type="text" defaultValue={profile.phone} />
             </li>
           </ul>
           <ButtonBlock>
@@ -123,4 +123,4 @@ const My = () => {
   );
 };
 
-export default My;
+export default Profile;
