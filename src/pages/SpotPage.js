@@ -2,7 +2,7 @@ import Spot from '../components/spot/Spot';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import SpotSlider from '../components/spot/SpotSlider';
-import SpotList from '../components/spot/SpotList';
+import SpotListContainer from '../containers/spot/SpotListContainer';
 
 const SpotPage = () => {
   return (
@@ -10,7 +10,7 @@ const SpotPage = () => {
       <Header />
       <Spot>
         <SpotSlider />
-        <SpotList />
+        <SpotListContainer />
       </Spot>
       <Footer />
     </>
