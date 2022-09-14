@@ -10,9 +10,9 @@ const profileLoadSuccessType = 'profile/PROFILE_LOAD_SUCCESS';
 const profileLoadFailureType = 'profile/PROFILE_LOAD_FAILURE';
 
 // 액션 함수
-export const changeFieldAction = ({ form, value }) => ({
+export const changeFieldAction = ({ name, value }) => ({
     type: changeFieldType,
-    form,
+    name,
     value
 });
 
@@ -29,7 +29,6 @@ export function* profileSaga() {
 
 const initialState = {
     profileFiled: {
-        username: '',
         nickname: '',
         phone: ''
     },
@@ -40,10 +39,14 @@ const initialState = {
 function profileReducer(state = initialState, action) {
     switch (action.type) {
         case changeFieldType: {
-            return { ...state, profileFiled: { ...state.profileFiled, [action.filed]: action.value } };
+            return { ...state, profileFiled: { ...state.profileFiled, [action.name]: action.value } };
         }
         case profileLoadSuccessType: {
-            return { ...state, profile: action.payload.data };
+            return {
+                ...state,
+                profile: action.payload.data,
+                profileFiled: { ...state.profileFiled, nickname: action.payload.data.nickname, phone: action.payload.data.phone || '' }
+            }
         }
         case profileLoadFailureType: {
             return { ...state, profileError: action.payload.data };

@@ -8,7 +8,6 @@ const ProfileContainer = () => {
     const { loading, accountId, profileFiled, profile, profileError } = useSelector(({ loadingReducer, authReducer, profileReducer }) => ({
         loading: loadingReducer.loading,
         accountId: authReducer.account.accountId,
-        profileFiled: profileReducer.profileFiled,
         profile: profileReducer.profile,
         profileError: profileReducer.profileError
     }));
@@ -18,14 +17,16 @@ const ProfileContainer = () => {
         dispatch(changeFieldAction({ name, value }));
     };
 
+    const onSubmit = (e) => {
+        e.preventDefault();
+    }
+
     useEffect(() => {
         dispatch(profileLoadAction(accountId));
     }, [accountId]);
 
     return (
-        loading || (
-            <Profile profile={profile} profileError={profileError} />
-        )
+        <Profile profile={profile} profileError={profileError} onChange={onChange} onSubmit={onSubmit} />
     );
 };
 
