@@ -31,13 +31,12 @@ const List = styled.div`
   flex-wrap: wrap;
 `;
 
-const SpotList = () => {
+const SpotList = ({ areas, spots, spotError, listSpots }) => {
   const [showModal, setShowModal] = useState(false);
   const modalToggle = () => {
     setShowModal(!showModal);
   };
 
-  // const arr = ['천안', '성남', '서울', '부산', '머구'];
   // const [active, setActive] = useState(Array(arr.length).fill(false));
 
   // const focusButton = (index) => {
@@ -46,22 +45,22 @@ const SpotList = () => {
   //   setActive(newArr);
   // };
 
+  if (spotError) {
+    return <SpotListBlock>에러가 발생했습니다.</SpotListBlock>;
+  }
   return (
     <SpotListBlock>
       <MenuTitle>추천 여행지</MenuTitle>
-      <Menu>
-        {/* {arr.map((elm, index) => (
-          <li key={index} active={active[index]} onClick={() => focusButton(index)}>
-            {elm}
-            {console.log(active[index])}
-          </li>
-        ))} */}
-        <li>서울</li>
-      </Menu>
+      {areas && (
+        <Menu>
+          {areas.map((area) => (
+            <li key={area.code}>{area.name}</li>
+          ))}
+        </Menu>
+      )}
       <List>
-        <SpotItem modalToggle={modalToggle} />
-        <SpotItem />
-        <SpotItem />
+        {spots && spots.map((spot) => <SpotItem spot={spot} key={spot.contentid} />)}
+        {/* <SpotItem modalToggle={modalToggle} /> */}
       </List>
       <SpotModal showModal={showModal} modalToggle={modalToggle} />
     </SpotListBlock>
