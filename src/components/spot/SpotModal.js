@@ -13,6 +13,7 @@ const Background = styled.div`
 `;
 
 const ModalContainer = styled.div`
+  border-radius: 10px;
   background-color: white;
   position: fixed;
   left: 50%;
@@ -23,14 +24,13 @@ const ModalContainer = styled.div`
   display: flex;
 `;
 
-const Img = styled.div`
-  border: 1px solid red;
+const Img = styled.img`
   width: 30rem;
   height: 35rem;
+  border-radius: 10px 0 0 10px;
 `;
 
 const Title = styled.div`
-  border: 1px solid blue;
   width: 30rem;
   height: 5rem;
   text-align: center;
@@ -38,7 +38,6 @@ const Title = styled.div`
   line-height: 5rem;
 `;
 const Detail = styled.div`
-  border: 1px solid green;
   width: 28rem;
   height: 28rem;
   padding: 1rem;
@@ -48,25 +47,20 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   height: 2rem;
   float: right;
 `;
-const SpotModal = ({ showModal, modalToggle }) => {
+const SpotModal = ({ detail, onErrorImg, onloadDetailSpot }) => {
+  const { title, firstimage, overview } = detail;
+
   return (
-    <>
-      {showModal ? (
-        <Background onClick={modalToggle}>
-          <ModalContainer onClick={(e) => e.stopPropagation()}>
-            <Img />
-            <div>
-              <StyledFontAwesomeIcon icon={faXmark} onClick={modalToggle} />
-              <Title>천안 바닷가</Title>
-              <Detail>
-                천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요
-                천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요천안바다가래요
-              </Detail>
-            </div>
-          </ModalContainer>
-        </Background>
-      ) : null}
-    </>
+    <Background onClick={onloadDetailSpot}>
+      <ModalContainer onClick={(e) => e.stopPropagation()}>
+        <Img src={firstimage} alt={title} onError={onErrorImg} />
+        <div>
+          <StyledFontAwesomeIcon icon={faXmark} onClick={onloadDetailSpot} />
+          <Title>{title}</Title>
+          <Detail>{overview}</Detail>
+        </div>
+      </ModalContainer>
+    </Background>
   );
 };
 

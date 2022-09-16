@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import SpotItem from './SpotItem';
 import SpotModal from './SpotModal';
+import defaultImg from '../../lib/images/defaultImg.jpg';
 
 const SpotListBlock = styled.div`
   margin: 50px auto;
@@ -31,14 +32,14 @@ const List = styled.div`
   flex-wrap: wrap;
 `;
 
-const SpotList = ({ areas, spots, spotError, listSpots }) => {
-  const [showModal, setShowModal] = useState(false);
-  const modalToggle = () => {
-    setShowModal(!showModal);
+const SpotList = ({ areas, spots, detail, spotError, listSpots, detailSpot, unloadDetailSpot }) => {
+  const [page, setpage] = useState(1);
+
+  const onErrorImg = (e) => {
+    e.target.src = defaultImg;
   };
 
   // const [active, setActive] = useState(Array(arr.length).fill(false));
-
   // const focusButton = (index) => {
   //   const newArr = Array(arr.length).fill(false);
   //   newArr[index] = true;
@@ -54,15 +55,23 @@ const SpotList = ({ areas, spots, spotError, listSpots }) => {
       {areas && (
         <Menu>
           {areas.map((area) => (
-            <li key={area.code}>{area.name}</li>
+            <li key={area.code} onClick={() => listSpots(area.code)}>
+              {area.name}
+            </li>
           ))}
         </Menu>
       )}
-      <List>
-        {spots && spots.map((spot) => <SpotItem spot={spot} key={spot.contentid} />)}
-        {/* <SpotItem modalToggle={modalToggle} /> */}
-      </List>
-      <SpotModal showModal={showModal} modalToggle={modalToggle} />
+      {spots && (
+        <List>
+          {spots.item.map((spot) => (
+            <SpotItem spot={spot} key={spot.contentid} onErrorImg={onErrorImg} detailSpot={detailSpot} />
+          ))}
+        </List>
+      )}
+      {detail &&
+        detail.map((data) => (
+          <SpotModal detail={data} key={data.contentid} onErrorImg={onErrorImg} onloadDetailSpot={unloadDetailSpot} />
+        ))}
     </SpotListBlock>
   );
 };

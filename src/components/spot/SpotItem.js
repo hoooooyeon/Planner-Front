@@ -15,16 +15,17 @@ const SpotItemBlock = styled.div`
   }
 `;
 
-const SimpleImg = styled.div`
+const SimpleImg = styled.img`
   width: 280px;
   height: 270px;
+  border-radius: 5% 5% 0 0;
 `;
 
-const SpotItem = ({ spot }) => {
-  const { title, firstimage } = spot;
+const SpotItem = ({ spot, onErrorImg, detailSpot }) => {
+  const { title, firstimage, contentid } = spot;
   return (
-    <SpotItemBlock>
-      <SimpleImg>{firstimage}</SimpleImg>
+    <SpotItemBlock onClick={() => detailSpot(contentid)}>
+      <SimpleImg src={firstimage} alt={title} onError={onErrorImg} />
       <p>{title}</p>
     </SpotItemBlock>
   );
