@@ -41,6 +41,7 @@ const Detail = styled.div`
   width: 28rem;
   height: 28rem;
   padding: 1rem;
+  overflow: auto;
 `;
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   width: 2rem;

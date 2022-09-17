@@ -6,8 +6,8 @@ export const getAreas = () => {
 };
 
 // 지역에 따른 여행지
-export const listSpots = ({ areacode }) => {
-  return client.get(`/api/tours/lists-area?areaCode=${areacode}&contentTypeId=12&index=1`);
+export const listSpots = ({ areaCode, page }) => {
+  return client.get(`/api/tours/lists-area?areaCode=${areaCode}&contentTypeId=12&index=${page}`);
 };
 
 // 여행지 상세 정보

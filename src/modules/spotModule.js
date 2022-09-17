@@ -16,7 +16,7 @@ const DETAIL_SPOT_FAILURE = 'spot/DETAIL_SPOT_FAILURE';
 const UNLOAD_DETAIL_SPOT = 'spot/UNLOAD_DETAIL_SPOT';
 
 export const getAreas = () => ({ type: GET_AREAS });
-export const listSpots = (areacode) => ({ type: LIST_SPOTS, areacode });
+export const listSpots = (areaCode, page) => ({ type: LIST_SPOTS, areaCode, page });
 export const detailSpot = (id) => ({ type: DETAIL_SPOT, id });
 export const unloadDetailSpot = () => ({ type: UNLOAD_DETAIL_SPOT });
 
@@ -73,6 +73,7 @@ function spotReducer(state = initialState, action) {
         ...state,
         detail: null,
       };
+
     default:
       return state;
   }

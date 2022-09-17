@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import SpotItem from './SpotItem';
 import SpotModal from './SpotModal';
 import defaultImg from '../../lib/images/defaultImg.jpg';
+import SpotPagination from './SpotPagination';
 
 const SpotListBlock = styled.div`
   margin: 50px auto;
@@ -33,8 +33,6 @@ const List = styled.div`
 `;
 
 const SpotList = ({ areas, spots, detail, spotError, listSpots, detailSpot, unloadDetailSpot }) => {
-  const [page, setpage] = useState(1);
-
   const onErrorImg = (e) => {
     e.target.src = defaultImg;
   };
@@ -55,18 +53,21 @@ const SpotList = ({ areas, spots, detail, spotError, listSpots, detailSpot, unlo
       {areas && (
         <Menu>
           {areas.map((area) => (
-            <li key={area.code} onClick={() => listSpots(area.code)}>
+            <li key={area.code} onClick={() => listSpots(area.code, 1)}>
               {area.name}
             </li>
           ))}
         </Menu>
       )}
       {spots && (
-        <List>
-          {spots.item.map((spot) => (
-            <SpotItem spot={spot} key={spot.contentid} onErrorImg={onErrorImg} detailSpot={detailSpot} />
-          ))}
-        </List>
+        <>
+          <List>
+            {spots.item.map((spot) => (
+              <SpotItem spot={spot} key={spot.contentid} onErrorImg={onErrorImg} detailSpot={detailSpot} />
+            ))}
+            <SpotPagination totalCount={spots.totalCount} areaCode={spots.item[0].areacode} listSpots={listSpots} />
+          </List>
+        </>
       )}
       {detail &&
         detail.map((data) => (

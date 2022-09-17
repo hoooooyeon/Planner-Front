@@ -26,13 +26,14 @@ const mapStateToProps = (state) => ({
   spots: state.spotReducer.spots,
   detail: state.spotReducer.detail,
   spotError: state.spotReducer.spotError,
+  page: state.spotReducer.page,
 });
 const mapDispatchToProps = (dispatch) => ({
   getAreas: () => {
     dispatch(getAreas());
   },
-  listSpots: (areacode) => {
-    dispatch(listSpots(areacode));
+  listSpots: (areaCode, page) => {
+    dispatch(listSpots(areaCode, page));
   },
   detailSpot: (id) => {
     dispatch(detailSpot(id));
