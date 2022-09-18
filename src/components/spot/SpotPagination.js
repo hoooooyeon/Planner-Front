@@ -29,10 +29,15 @@ const PageButton = styled.div`
 const SpotPagination = ({ totalCount, areaCode, listSpots }) => {
   const [page, setPage] = useState(1);
   const totalPage = Math.ceil(totalCount / 10);
+
   useEffect(() => {
     listSpots(areaCode, page);
   }, [areaCode, page, listSpots]);
 
+  /**
+   * page가 1~10사이면 1~10페이지, 11이상이면 11~20
+   *
+   *  */
   return (
     <SpotPaginationBlock>
       <PageButton
@@ -40,7 +45,7 @@ const SpotPagination = ({ totalCount, areaCode, listSpots }) => {
           setPage(page - 1);
           listSpots(areaCode, page);
         }}
-        disabled={page === 1 ? true : false}
+        disabled={page === 1}
       >
         &lt;
       </PageButton>
