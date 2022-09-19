@@ -28,7 +28,22 @@ const PageButton = styled.div`
 
 const SpotPagination = ({ totalCount, areaCode, listSpots }) => {
   const [page, setPage] = useState(1);
+  const [startPage, setStartPage] = useState();
+  const [endPage, setEndPage] = useState();
   const totalPage = Math.ceil(totalCount / 10);
+  // useEffect(() => {
+  //   if (page < 1) {
+  //     setPage(1);
+  //   }
+  //   if (page > totalPage) {
+  //     setPage(totalPage);
+  //   }
+  // }, [setPage, page, totalPage]);
+  // const onListSpots = () => {
+  //   if (page > 1 && page < totalPage) {
+  //     listSpots(areaCode, page);
+  //   }
+  // };
 
   useEffect(() => {
     listSpots(areaCode, page);
