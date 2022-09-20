@@ -3,6 +3,7 @@ import SpotItem from './SpotItem';
 import SpotModal from './SpotModal';
 import defaultImg from '../../lib/images/defaultImg.jpg';
 import SpotPagination from './SpotPagination';
+import { useEffect, useState } from 'react';
 
 const SpotListBlock = styled.div`
   margin: 50px auto;
@@ -23,6 +24,15 @@ const Menu = styled.ul`
     margin: 0 15px 5px 0;
     padding: 10px;
     border-radius: 2rem;
+    &:hover {
+      background: lightblue;
+      cursor: pointer;
+    }
+    &[aria-current] {
+      background: lightblue;
+      font-weight: bold;
+      cursor: rever;
+    }
   }
 `;
 /* background-color: ${(active) => (active.children.map((elm) => elm.props.active) ? 'red' : 'lightblue')}; */
@@ -33,6 +43,7 @@ const List = styled.div`
 `;
 
 const SpotList = ({ areas, spots, detail, spotError, listSpots, detailSpot, unloadDetailSpot }) => {
+  const [areaNum, setAreaNum] = useState();
   const onErrorImg = (e) => {
     e.target.src = defaultImg;
   };
@@ -53,7 +64,14 @@ const SpotList = ({ areas, spots, detail, spotError, listSpots, detailSpot, unlo
       {areas && (
         <Menu>
           {areas.map((area) => (
-            <li key={area.code} onClick={() => listSpots(area.code, 1)}>
+            <li
+              key={area.code}
+              onClick={() => {
+                listSpots(area.code, 1);
+                setAreaNum(area.rnum);
+              }}
+              aria-current={areaNum === area.rnum ? 'page' : null}
+            >
               {area.name}
             </li>
           ))}
