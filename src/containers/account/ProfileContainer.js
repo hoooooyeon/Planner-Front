@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Profile from "../../components/account/Profile";
-import { changeFieldAction, profileLoadAction } from "../../modules/profileModule";
+import { changeFieldAction, initializeAction, profileLoadAction, profileUpdateAction } from "../../modules/profileModule";
 
 const ProfileContainer = () => {
     const dispatch = useDispatch();
-    const { loading, accountId, profileFiled, profile, profileError } = useSelector(({ loadingReducer, authReducer, profileReducer }) => ({
-        loading: loadingReducer.loading,
+    const { accountId, profile, profileField, profileError } = useSelector(({ authReducer, profileReducer }) => ({
         accountId: authReducer.account.accountId,
         profile: profileReducer.profile,
+        profileField: profileReducer.profileField,
         profileError: profileReducer.profileError
     }));
 
@@ -19,7 +19,14 @@ const ProfileContainer = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-    }
+        const { username, nickname } = profileField;
+
+        dispatch(profileUpdateAction({ accountId, username, nickname }));
+    };
+
+    useEffect(() => {
+        dispatch(initializeAction());
+    }, []);
 
     useEffect(() => {
         dispatch(profileLoadAction(accountId));

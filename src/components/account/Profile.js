@@ -89,6 +89,9 @@ const ProfileImageButton = styled(Button)`
 `;
 
 const Profile = ({ profile, profileError, onChange, onSubmit }) => {
+  if (profileError) {
+    alert(profileError);
+  }
   return (
     <ProfileBlock>
       <MyMenu>

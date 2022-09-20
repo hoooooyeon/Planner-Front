@@ -1,7 +1,7 @@
 import Header from "../../components/common/Header";
 import { useSelector } from "react-redux";
 
-const HeaderConatiner = () => {
+const HeaderContainer = () => {
     const { account } = useSelector(({ authReducer }) => ({
         account: authReducer.account
     }));
@@ -11,4 +11,4 @@ const HeaderConatiner = () => {
     );
 }
 
-export default HeaderConatiner;
+export default HeaderContainer;
