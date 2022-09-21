@@ -4,6 +4,7 @@ import * as profileAPI from "../lib/api/profileAPI";
 
 // 액션 타입
 const initializeType = 'profile/INITIALIZE';
+const initializeErrorType = 'profile/INITIALIZERROR';
 const changeFieldType = 'profile/CHANGE_FIELD';
 
 const profileLoadType = 'profile/PROFILE_LOAD';
@@ -18,6 +19,10 @@ export const initializeAction = () => ({
     type: initializeType
 });
 
+export const initializeErrorAction = () => ({
+    type: initializeErrorType
+})
+
 export const changeFieldAction = ({ name, value }) => ({
     type: changeFieldType,
     name,
@@ -29,11 +34,11 @@ export const profileLoadAction = (accountId) => ({
     accountId
 });
 
-export const profileUpdateAction = ({ accountId, username, nickname }) => ({
+export const profileUpdateAction = ({ accountId, nickname, phone }) => ({
     type: profileUpdateType,
     accountId,
-    username,
-    nickname
+    nickname,
+    phone
 });
 
 const profileLoad = createSaga(profileLoadType, profileAPI.profileLoad);
@@ -50,6 +55,7 @@ const initialState = {
         phone: ''
     },
     profile: null,
+    profileUpdate: false,
     profileError: null
 };
 
@@ -57,6 +63,9 @@ function profileReducer(state = initialState, action) {
     switch (action.type) {
         case initializeType: {
             return { ...initialState };
+        }
+        case initializeErrorType: {
+            return { ...state, profileError: '' };
         }
         case changeFieldType: {
             return { ...state, profileField: { ...state.profileField, [action.name]: action.value } };
@@ -72,10 +81,10 @@ function profileReducer(state = initialState, action) {
             return { ...state, profileError: action.payload.data };
         }
         case profileUpdateSuccessType: {
-            return { ...state };
+            return { ...state, profileUpdate: true };
         }
         case profileUpdateFailureType: {
-            return { ...state, profileError: action.payload.message };
+            return { ...state, profileUpdate: false, profileError: action.payload.message };
         }
         default: {
             return state;

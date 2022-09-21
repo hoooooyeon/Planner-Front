@@ -1,15 +1,17 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Profile from "../../components/account/Profile";
-import { changeFieldAction, initializeAction, profileLoadAction, profileUpdateAction } from "../../modules/profileModule";
+import { changeFieldAction, initializeAction, initializeErrorAction, profileLoadAction, profileUpdateAction } from "../../modules/profileModule";
 
 const ProfileContainer = () => {
     const dispatch = useDispatch();
-    const { accountId, profile, profileField, profileError } = useSelector(({ authReducer, profileReducer }) => ({
+    const { loading, accountId, profileField, profile, profileUpdate, profileError } = useSelector(({ loadingReducer, authReducer, profileReducer }) => ({
+        loading: loadingReducer.loading,
         accountId: authReducer.account.accountId,
-        profile: profileReducer.profile,
         profileField: profileReducer.profileField,
-        profileError: profileReducer.profileError
+        profile: profileReducer.profile,
+        profileUpdate: profileReducer.profileUpdate,
+        profileError: profileReducer.profileError,
     }));
 
     const onChange = (e) => {
@@ -19,21 +21,23 @@ const ProfileContainer = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const { username, nickname } = profileField;
-
-        dispatch(profileUpdateAction({ accountId, username, nickname }));
+        const { nickname, phone } = profileField;
+        dispatch(initializeErrorAction());
+        dispatch(profileUpdateAction({ accountId, nickname, phone }));
     };
 
     useEffect(() => {
-        dispatch(initializeAction());
-    }, []);
+        return () => {
+            dispatch(initializeErrorAction());
+        }
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(profileLoadAction(accountId));
-    }, [accountId]);
+    }, [dispatch, accountId, profileUpdate]);
 
     return (
-        <Profile profile={profile} profileError={profileError} onChange={onChange} onSubmit={onSubmit} />
+        <Profile loading={loading} profile={profile} profileError={profileError} onChange={onChange} onSubmit={onSubmit} />
     );
 };
 

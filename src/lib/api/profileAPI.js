@@ -4,6 +4,6 @@ export const profileLoad = ({ accountId }) => {
     return client.get(`/api/users/${accountId}`);
 };
 
-export const profileUpdate = ({ accountId, username, nickname }) => {
-    return client.put(`/api/users/${accountId}`, { username, nickname });
+export const profileUpdate = ({ accountId, nickname, phone }) => {
+    return client.put(`/api/users/${accountId}`, { accountId, nickname, phone });
 };

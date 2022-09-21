@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import EditProfile from './EditProfile';
 import Button from '../common/Button';
+import Modal from '../common/Modal';
 
 const ProfileBlock = styled.div`
   margin: 100px auto 0px;
@@ -88,52 +89,55 @@ const ProfileImageButton = styled(Button)`
   margin-top: 10px;
 `;
 
-const Profile = ({ profile, profileError, onChange, onSubmit }) => {
-  if (profileError) {
+const Profile = ({ loading, profile, profileError, onChange, onSubmit }) => {
+  if (!loading && profileError) {
     alert(profileError);
   }
   return (
-    <ProfileBlock>
-      <MyMenu>
-        <Link to="/Profile">프로필</Link>
-        <Link to="/MyLike">좋아요</Link>
-        <hr />
-      </MyMenu>
-      {profile && (
-        <EditProfileBlock>
-          <ProfileImageBlock>
-            <img src='logo192.png' alt='프로필 이미지' />
-            <div>{profile.nickname}</div>
-            <ProfileImageButton>변경</ProfileImageButton>
-          </ProfileImageBlock>
-          <form onSubmit={onSubmit}>
-            <ul>
-              <li>
-                <label for="email">이메일</label>
-                <input id="email" name="email" type="email" defaultValue={profile.email} readOnly />
-              </li>
-              <li>
-                <label for="username">이름</label>
-                <input id="username" name="username" type="text" defaultValue={profile.username} readOnly />
-              </li>
-              <li>
-                <label for="nickname" type="text">별명</label>
-                <input id="nickname" name="nickname" type="text" defaultValue={profile.nickname} onChange={onChange} />
-              </li>
-              <li>
-                <label for="phone" type="text">전화번호</label>
-                <input id="phone" name="phone" type="text" defaultValue={profile.phone} onChange={onChange} />
-              </li>
-            </ul>
-            <ButtonBlock>
-              <Button big>저장</Button>
-            </ButtonBlock>
-          </form>
-        </EditProfileBlock>
-      )}
-      {/* <EditProfile /> */}
-      {/* <StyledButton big>회원 탈퇴</StyledButton> */}
-    </ProfileBlock>
+    <>
+      <ProfileBlock>
+        <MyMenu>
+          <Link to="/Profile">프로필</Link>
+          <Link to="/MyLike">좋아요</Link>
+          <hr />
+        </MyMenu>
+        {profile && (
+          <EditProfileBlock>
+            <ProfileImageBlock>
+              <img src='logo192.png' alt='프로필 이미지' />
+              <div>{profile.nickname}</div>
+              <ProfileImageButton>변경</ProfileImageButton>
+            </ProfileImageBlock>
+            <form onSubmit={onSubmit}>
+              <ul>
+                <li>
+                  <label for="email">이메일</label>
+                  <input id="email" name="email" type="email" defaultValue={profile.email} readOnly />
+                </li>
+                <li>
+                  <label for="username">이름</label>
+                  <input id="username" name="username" type="text" defaultValue={profile.username} readOnly />
+                </li>
+                <li>
+                  <label for="nickname" type="text">별명</label>
+                  <input id="nickname" name="nickname" type="text" defaultValue={profile.nickname} onChange={onChange} />
+                </li>
+                <li>
+                  <label for="phone" type="text">전화번호</label>
+                  <input id="phone" name="phone" type="text" defaultValue={profile.phone} onChange={onChange} />
+                </li>
+              </ul>
+              <ButtonBlock>
+                <Button big>저장</Button>
+              </ButtonBlock>
+            </form>
+          </EditProfileBlock>
+        )}
+        {/* <EditProfile /> */}
+        {/* <StyledButton big>회원 탈퇴</StyledButton> */}
+      </ProfileBlock>
+      <Modal />
+    </>
   );
 };
 

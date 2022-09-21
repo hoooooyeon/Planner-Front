@@ -6,9 +6,9 @@ import { authSaga } from "./authModule";
 import loadingReducer from "./loadingModule";
 
 const rootReducer = combineReducers({
+    loadingReducer,
     authReducer,
     profileReducer,
-    loadingReducer
 });
 
 export function* rootSaga() {
