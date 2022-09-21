@@ -35,8 +35,6 @@ const Menu = styled.ul`
     }
   }
 `;
-/* background-color: ${(active) => (active.children.map((elm) => elm.props.active) ? 'red' : 'lightblue')}; */
-
 const List = styled.div`
   display: felx;
   flex-wrap: wrap;
@@ -47,14 +45,6 @@ const SpotList = ({ areas, spots, detail, spotError, listSpots, detailSpot, unlo
   const onErrorImg = (e) => {
     e.target.src = defaultImg;
   };
-
-  // const [active, setActive] = useState(Array(arr.length).fill(false));
-  // const focusButton = (index) => {
-  //   const newArr = Array(arr.length).fill(false);
-  //   newArr[index] = true;
-  //   setActive(newArr);
-  // };
-
   if (spotError) {
     return <SpotListBlock>에러가 발생했습니다.</SpotListBlock>;
   }
