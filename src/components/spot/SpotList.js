@@ -41,6 +41,8 @@ const List = styled.div`
 `;
 
 const SpotList = ({ areas, spots, detail, spotError, listSpots, detailSpot, unloadDetailSpot }) => {
+  const [page, setPage] = useState(1); // 현재 페이지
+  const [blockNum, setBlockNum] = useState(0); // 페이지네이션 구역 숫자로 지정. (0, 1, ...)
   const [areaNum, setAreaNum] = useState();
   const onErrorImg = (e) => {
     e.target.src = defaultImg;
@@ -59,6 +61,8 @@ const SpotList = ({ areas, spots, detail, spotError, listSpots, detailSpot, unlo
               onClick={() => {
                 listSpots(area.code, 1);
                 setAreaNum(area.rnum);
+                setPage(1);
+                setBlockNum(0);
               }}
               aria-current={areaNum === area.rnum ? 'page' : null}
             >
@@ -73,7 +77,15 @@ const SpotList = ({ areas, spots, detail, spotError, listSpots, detailSpot, unlo
             {spots.item.map((spot) => (
               <SpotItem spot={spot} key={spot.contentid} onErrorImg={onErrorImg} detailSpot={detailSpot} />
             ))}
-            <SpotPagination totalCount={spots.totalCount} areaCode={spots.item[0].areacode} listSpots={listSpots} />
+            <SpotPagination
+              totalCount={spots.totalCount}
+              areaCode={spots.item[0].areacode}
+              listSpots={listSpots}
+              page={page}
+              setPage={setPage}
+              blockNum={blockNum}
+              setBlockNum={setBlockNum}
+            />
           </List>
         </>
       )}
