@@ -13,6 +13,9 @@ const profileLoadFailureType = 'profile/PROFILE_LOAD_FAILURE';
 const profileUpdateType = 'profile/PROFILE_UPDATE';
 const profileUpdateSuccessType = 'profile/PROFILE_UPDATE_SUCCESS';
 const profileUpdateFailureType = 'profile/PROFILE_UPDATE_FAILURE';
+const profileImageUpdateType = 'profile/PROFILE_IMAGE_UPDATE';
+const profileImageUpdateSuccessType = 'profile/PROFILE_IMAGE_UPDATE_SUCCESS';
+const profileImageUpdateFailureType = 'profile/PROFILE_IMAGE_UPDATE_FAILURE';
 
 // 액션 함수
 export const initializeAction = () => ({
@@ -41,12 +44,20 @@ export const profileUpdateAction = ({ accountId, nickname, phone }) => ({
     phone
 });
 
+export const profileImageUpdateAction = ({ accountId, formData }) => ({
+    type: profileImageUpdateType,
+    accountId,
+    formData
+});
+
 const profileLoad = createSaga(profileLoadType, profileAPI.profileLoad);
 const profileUpdate = createSaga(profileUpdateType, profileAPI.profileUpdate);
+const profileImageUpdate = createSaga(profileImageUpdateType, profileAPI.profileImageUpdate);
 
 export function* profileSaga() {
     yield takeLatest(profileLoadType, profileLoad);
     yield takeLatest(profileUpdateType, profileUpdate);
+    yield takeLatest(profileImageUpdateType, profileImageUpdate)
 };
 
 const initialState = {
@@ -84,6 +95,12 @@ function profileReducer(state = initialState, action) {
             return { ...state, profileUpdate: true };
         }
         case profileUpdateFailureType: {
+            return { ...state, profileUpdate: false, profileError: action.payload.message };
+        }
+        case profileImageUpdateSuccessType: {
+            return { ...state, profileUpdate: true };
+        }
+        case profileImageUpdateFailureType: {
             return { ...state, profileUpdate: false, profileError: action.payload.message };
         }
         default: {

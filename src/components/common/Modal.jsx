@@ -77,22 +77,7 @@ const ModalButton = styled.button`
     }
 `;
 
-const FooterType = ({ type, onModalHide }) => {
-    if (type === 'normal') {
-        return <ModalButton onClick={onModalHide}>확인</ModalButton>;
-    } else if (type === 'edit') {
-        return (
-            <>
-                <ModalButton onClick={onModalHide}>닫기</ModalButton>
-                <ModalButton onClick={onModalHide}>변경</ModalButton>
-            </>
-        );
-    } else {
-        return <ModalButton onClick={onModalHide}>확인</ModalButton>;
-    }
-};
-
-const Modal = ({ modalVisible, title, children, onModalShow, onModalHide, type }) => {
+const Modal = ({ modalVisible, title, children, modalCloseText = '닫기', modalConfirmText = '확인', onModalClose, onModalConfirm }) => {
     if (!modalVisible) return null;
     return (
         <Modalbackground>
@@ -103,7 +88,8 @@ const Modal = ({ modalVisible, title, children, onModalShow, onModalHide, type }
                 </ModalHeader>
                 <ModalBody>{children}</ModalBody>
                 <ModalFooter>
-                    <FooterType type={type} onModalHide={onModalHide} />
+                    <ModalButton onClick={onModalClose}>{modalCloseText}</ModalButton>
+                    <ModalButton onClick={onModalConfirm}>{modalConfirmText}</ModalButton>
                 </ModalFooter>
             </ModalBox>
         </Modalbackground>

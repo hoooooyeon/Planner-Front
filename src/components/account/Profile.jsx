@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import EditProfile from './EditProfile';
 import Button from '../common/Button';
-import Modal from '../common/Modal';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import ImageSelectModal from './ImageSelectModal';
+import { forwardRef } from 'react';
 
 const ProfileBlock = styled.div`
     margin: 100px auto 0px;
@@ -83,18 +84,38 @@ const ButtonBlock = styled.div`
 
 const ProfileImageBlock = styled.div`
     text-align: center;
+
+    img {
+        width: 120px;
+        height: 120px;
+        border: none;
+        border-radius: 6px;
+    }
 `;
 
 const ProfileImageButton = styled(Button)`
     margin-top: 10px;
 `;
 
-const Profile = ({ loading, profile, profileError, onChange, onSubmit }) => {
+// const ImageSelectModal = forwardRef((ref, modalVisible, onModalClose, onModalConfirm) => {
+//     return <ImageSelectModal ref={ref} modalVisible={modalVisible} onModalClose={onModalClose} onModalConfirm={onModalConfirm} />;
+// });
+
+const Profile = ({ loading, profile, profileError, onChange, onSubmit, onImageSubmit }) => {
+    const inputRef = useRef(null);
     const [modalVisible, setModalVisible] = useState(false);
     const onModalShow = () => {
         setModalVisible(true);
     };
     const onModalClose = () => {
+        setModalVisible(false);
+    };
+    const onModalConfirm = () => {
+        // 할 일
+        const data = inputRef.current.files[0];
+        const formData = new FormData();
+        formData.append('image', data);
+        onImageSubmit(formData);
         setModalVisible(false);
     };
 
@@ -112,26 +133,26 @@ const Profile = ({ loading, profile, profileError, onChange, onSubmit }) => {
                 {profile && (
                     <EditProfileBlock>
                         <ProfileImageBlock>
-                            <img src="logo192.png" alt="프로필 이미지" />
+                            <img src={`images/${profile.image}` || 'logo192.jpg'} alt="프로필 이미지" />
                             <div>{profile.nickname}</div>
                             <ProfileImageButton onClick={onModalShow}>변경</ProfileImageButton>
                         </ProfileImageBlock>
                         <form onSubmit={onSubmit}>
                             <ul>
                                 <li>
-                                    <label for="email">이메일</label>
+                                    <label htmlFor="email">이메일</label>
                                     <input id="email" name="email" type="email" defaultValue={profile.email} readOnly />
                                 </li>
                                 <li>
-                                    <label for="username">이름</label>
+                                    <label htmlFor="username">이름</label>
                                     <input id="username" name="username" type="text" defaultValue={profile.username} readOnly />
                                 </li>
                                 <li>
-                                    <label for="nickname">별명</label>
+                                    <label htmlFor="nickname">별명</label>
                                     <input id="nickname" name="nickname" type="text" defaultValue={profile.nickname} onChange={onChange} />
                                 </li>
                                 <li>
-                                    <label for="phone">전화번호</label>
+                                    <label htmlFor="phone">전화번호</label>
                                     <input id="phone" name="phone" type="text" defaultValue={profile.phone} onChange={onChange} />
                                 </li>
                             </ul>
@@ -144,7 +165,7 @@ const Profile = ({ loading, profile, profileError, onChange, onSubmit }) => {
                 {/* <EditProfile /> */}
                 {/* <StyledButton big>회원 탈퇴</StyledButton> */}
             </ProfileBlock>
-            <Modal modalVisible={modalVisible} onModalShow={onModalShow} onModalHide={onModalClose} type="edit" />
+            <ImageSelectModal ref={inputRef} modalVisible={modalVisible} onModalClose={onModalClose} onModalConfirm={onModalConfirm} />
         </>
     );
 };
