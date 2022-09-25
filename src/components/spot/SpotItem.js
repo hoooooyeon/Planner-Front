@@ -20,6 +20,7 @@ const SpotItemBlock = styled.div`
         overflow: hidden;
         text-overflow: ellipsis;
         padding: 0 10px;
+        font-weight: bold;
     }
     &:hover {
         cursor: pointer;

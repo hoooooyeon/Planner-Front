@@ -37,6 +37,7 @@ const Title = styled.div`
     text-align: center;
     font-size: 1.5rem;
     line-height: 5rem;
+    font-weight: bold;
 `;
 const Detail = styled.div`
     /* width: 28rem; */
