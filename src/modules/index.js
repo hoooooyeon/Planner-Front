@@ -1,17 +1,21 @@
 import { combineReducers } from 'redux';
 import authReducer from './authModule';
-import spotReducer from './spotModule';
+import profileReducer, { profileSaga } from './ProfileModule';
 import { all } from 'redux-saga/effects';
 import { authSaga } from './authModule';
+import loadingReducer from './loadingModule';
 import { spotSaga } from './spotModule';
+import spotReducer from './spotModule';
 
 const rootReducer = combineReducers({
-  authReducer,
-  spotReducer,
+    loadingReducer,
+    authReducer,
+    profileReducer,
+    spotReducer,
 });
 
 export function* rootSaga() {
-  yield all([authSaga(), spotSaga()]);
+    yield all([authSaga(), profileSaga(), spotSaga()]);
 }
 
 export default rootReducer;

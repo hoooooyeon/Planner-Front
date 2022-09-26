@@ -44,7 +44,7 @@ const Account = styled.div`
     align-items: center;
 
     .user-img {
-        background-color: skyblue;
+        //background-color: skyblue;
         border-radius: 10px;
         margin-right: 10px;
         width: 40px;
@@ -87,8 +87,8 @@ const Header = ({ account }) => {
             </MenuList>
             {account ? (
                 <Account>
-                    <div className="user-img"></div>
-                    <div>{account.nickname}</div>
+                    {/* <img className="user-img" src="logo192.png"></img> */}
+                    <Link to="/Profile">{account.nickname}</Link>
                 </Account>
             ) : (
                 <AccountList>

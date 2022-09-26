@@ -27,45 +27,22 @@ const EditProfileBlock = styled.div`
 const EditProfile = () => {
   return (
     <EditProfileBlock>
-      <ul>
-        <li>이메일</li>
-        <li>비밀번호</li>
-        <li>이름</li>
-        <li>닉네임</li>
-      </ul>
-      <ul>
-        <form>
+      <form>
+        <ul>
           <li>
-            <input
-              name="email"
-              value="bluebeer@naver.com"
-              type="email"
-              readOnly
-            />
+            <input name="email" value="bluebeer@naver.com" type="email" readOnly />
           </li>
           <li>
-            <input name="password" value="*********" type="password" />
+            <input name="password" value="" type="password" />
           </li>
           <li>
-            <input name="username" value="길태수" type="text" />
+            <input name="username" value="" type="text" />
           </li>
           <li>
-            <input name="nickname" value="기무짜수" type="text" />
+            <input name="nickname" value="" type="text" />
           </li>
-        </form>
-      </ul>
-      <ul>
-        <li></li>
-        <li>
-          <Button>변경</Button>
-        </li>
-        <li>
-          <Button>변경</Button>
-        </li>
-        <li>
-          <Button>변경</Button>
-        </li>
-      </ul>
+        </ul>
+      </form>
     </EditProfileBlock>
   );
 };

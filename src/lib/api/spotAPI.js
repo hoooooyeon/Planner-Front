@@ -16,8 +16,11 @@ export const detailSpot = ({ id }) => {
 };
 
 // 여행지 즐겨찾기 추가
-export const favoritesSpot = ({ accountId }) => {
-    return client.post(`/api/spots/likes/${accountId}`);
+export const addFavoritesSpot = ({ spotId }) => {
+    return client.post(`/api/spots/likes/${spotId}`);
 };
 
 // 여행지 즐겨찾기 삭제
+export const deleteFavoritesSpot = ({ spotId }) => {
+    return client.delete(`/api/spots/likes/${spotId}`);
+};
