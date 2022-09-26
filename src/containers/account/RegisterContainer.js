@@ -1,14 +1,16 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { withRouter } from "react-router";
 import Auth from "../../components/account/Auth";
-import { changeField, initialize, initializeError, registerAction } from "../../modules/authModule";
+import { changeField, initialize, initializeError, initializeForm, registerAction } from "../../modules/authModule";
 
 
-const RegisterContainer = ({ type }) => {
+const RegisterContainer = ({ history, type }) => {
     const dispatch = useDispatch();
-    const { form, authError } = useSelector(({ authReducer }) => ({
+    const { form, authError, state } = useSelector(({ authReducer }) => ({
         form: authReducer[type],
-        authError: authReducer.authError
+        authError: authReducer.authError,
+        state: authReducer.state
     }));
 
     const onChange = (e) => {
@@ -22,18 +24,30 @@ const RegisterContainer = ({ type }) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const { email, password, username, nickname } = form;
+        const { email, password, username, nickname, phone } = form;
         dispatch(initializeError());
-        dispatch(registerAction({ email, password, username, nickname }));
+        dispatch(registerAction({ email, password, username, nickname, phone }));
     };
 
     useEffect(() => {
-        dispatch(initialize());
+        dispatch(initializeForm('register'));
     }, [dispatch, authError]);
 
+    useEffect(() => {
+        if (state.state) {
+            history.push('/login');
+        }
+    }, [dispatch, state.state]);
+
+    useEffect(() => {
+        return () => {
+            dispatch(initialize());
+        }
+    }, [dispatch]);
+
     return (
-        <Auth type={type} form={form} onChange={onChange} onSubmit={onSubmit} authError={authError} />
+        <Auth type={type} form={form} onChange={onChange} onSubmit={onSubmit} authError={state.message} />
     );
 };
 
-export default RegisterContainer;
+export default withRouter(RegisterContainer);
