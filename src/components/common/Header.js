@@ -55,15 +55,22 @@ const Account = styled.div`
 const Header = ({ account }) => {
   const headerRef = useRef();
 
+  const headerShadow = () => {
+    if (window.pageYOffset === 0) {
+      headerRef.current.style.boxShadow = 'none';
+
+    } else {
+      headerRef.current.style.boxShadow = `1px 5px 7px 1px ${palette.gray[0]}`;
+    }
+  };
+
   useEffect(() => {
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset === 0) {
-        headerRef.current.style.boxShadow = 'none';
-      } else {
-        headerRef.current.style.boxShadow = `1px 5px 7px 1px ${palette.gray[0]}`;
-      }
-    });
-  }, []);
+    window.addEventListener('scroll', headerShadow);
+
+    return () => {
+      window.removeEventListener('scroll', headerShadow);
+    };
+  });
 
   return (
     <HeaderBlock ref={headerRef}>
