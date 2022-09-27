@@ -65,13 +65,12 @@ const Header = ({ account }) => {
   };
 
   useEffect(() => {
-    console.log('aaaa');
     window.addEventListener('scroll', headerShadow);
 
     return () => {
       window.removeEventListener('scroll', headerShadow);
     };
-  }, [headerRef]);
+  });
 
   return (
     <HeaderBlock ref={headerRef}>
