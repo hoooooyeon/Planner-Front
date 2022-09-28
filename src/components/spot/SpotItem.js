@@ -38,14 +38,16 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     bottom: 30px;
     left: 255px;
     color: white;
+    color: ${(props) => (props ? 'yellow' : 'white')};
 `;
 
-const SpotItem = ({ spot, onErrorImg, detailSpot }) => {
+const SpotItem = ({ spot, onChangeErrorImg, onLoadDetailSpot, onToggle }) => {
     const { title, firstimage, contentid } = spot;
+
     return (
-        <SpotItemBlock onClick={() => detailSpot(contentid)}>
-            <SimpleImg src={firstimage} alt={title} onError={onErrorImg} />
-            <StyledFontAwesomeIcon icon={faStar} />
+        <SpotItemBlock onClick={onLoadDetailSpot(contentid)}>
+            <SimpleImg src={firstimage} alt={title} onError={onChangeErrorImg} />
+            <StyledFontAwesomeIcon icon={faStar} onClick={() => onToggle(contentid)} />
             <p>{title}</p>
         </SpotItemBlock>
     );

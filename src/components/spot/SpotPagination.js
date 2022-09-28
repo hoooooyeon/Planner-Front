@@ -29,7 +29,7 @@ const PageButton = styled.div`
     }
 `;
 
-const SpotPagination = ({ totalCount, areaCode, listSpots, page, setPage, blockNum, setBlockNum }) => {
+const SpotPagination = ({ totalCount, areaCode, page, blockNum, onLoadSpots }) => {
     const createArr = () => {
         const iArr = [];
         for (let i = 0; i < totalPage; i++) {
@@ -44,14 +44,14 @@ const SpotPagination = ({ totalCount, areaCode, listSpots, page, setPage, blockN
     let pArr = nArr.slice(blockArea, pageLimit + blockArea); // blockArea별로 페이지네이션 배열을 잘라준다.
 
     const firstPage = () => {
-        setPage(1);
-        setBlockNum(0);
-        listSpots(areaCode, page);
+        // setPage(1);
+        // setBlockNum(0);
+        // listSpots(areaCode, page);
     };
     const lastPage = () => {
-        setPage(totalPage);
-        setBlockNum(Math.floor(totalPage / pageLimit));
-        listSpots(areaCode, page);
+        // setPage(totalPage);
+        // setBlockNum(Math.floor(totalPage / pageLimit));
+        // listSpots(areaCode, page);
     };
 
     const prevPage = () => {
@@ -59,25 +59,25 @@ const SpotPagination = ({ totalCount, areaCode, listSpots, page, setPage, blockN
             return;
         }
         if (page - 1 <= pageLimit * blockNum) {
-            setBlockNum(blockNum - 1);
+            // setBlockNum(blockNum - 1);
         }
-        setPage(page - 1);
-        listSpots(areaCode, page);
+        // setPage(page - 1);
+        // listSpots(areaCode, page);
     };
     const nextPage = () => {
         if (page >= totalPage) {
             return;
         }
         if (pageLimit * (blockNum + 1) < page + 1) {
-            setBlockNum(blockNum + 1);
+            // setBlockNum(blockNum + 1);
         }
-        setPage(page + 1);
-        listSpots(areaCode, page);
+        // setPage(page + 1);
+        // listSpots(areaCode, page);
     };
 
-    useEffect(() => {
-        listSpots(areaCode, page);
-    }, [areaCode, page, listSpots]);
+    // useEffect(() => {
+    //     // listSpots(areaCode, page);
+    // }, [areaCode, page]);
 
     return (
         <SpotPaginationBlock>
@@ -89,8 +89,8 @@ const SpotPagination = ({ totalCount, areaCode, listSpots, page, setPage, blockN
                 <PageButton
                     key={n}
                     onClick={() => {
-                        setPage(n);
-                        listSpots(areaCode, page);
+                        // setPage(n);
+                        // listSpots(areaCode, page);
                     }}
                     aria-current={page === n ? 'page' : null}
                 >

@@ -55,7 +55,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
         cursor: pointer;
     }
 `;
-const SpotModal = ({ detail, onErrorImg, onloadDetailSpot }) => {
+const SpotModal = ({ detail, onChangeErrorImg, onUnloadDetailSpot }) => {
     const { title, firstimage, overview } = detail;
     // 모달 외부 스크롤 고정
     useEffect(() => {
@@ -72,11 +72,11 @@ const SpotModal = ({ detail, onErrorImg, onloadDetailSpot }) => {
     }, []);
 
     return (
-        <Background onClick={onloadDetailSpot}>
+        <Background onClick={onUnloadDetailSpot}>
             <ModalContainer onClick={(e) => e.stopPropagation()}>
-                <Img src={firstimage} alt={title} onError={onErrorImg} />
+                <Img src={firstimage} alt={title} onError={onChangeErrorImg} />
                 <div>
-                    <StyledFontAwesomeIcon icon={faXmark} onClick={onloadDetailSpot} />
+                    <StyledFontAwesomeIcon icon={faXmark} onClick={onUnloadDetailSpot} />
                     <Title>{title}</Title>
                     <Detail>{overview}</Detail>
                 </div>

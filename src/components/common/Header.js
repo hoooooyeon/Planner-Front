@@ -56,15 +56,19 @@ const Header = ({ account }) => {
     const headerRef = useRef();
 
     useEffect(() => {
-        window.addEventListener('scroll', () => {
+        const onScroll = () => {
             if (window.pageYOffset === 0) {
                 headerRef.current.style.boxShadow = 'none';
             }
             if (window.pageYOffset !== 0) {
                 headerRef.current.style.boxShadow = `1px 5px 7px 1px ${palette.gray[0]}`;
             }
-        });
-    }, []);
+        };
+        window.addEventListener('scroll', onScroll);
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+        };
+    });
 
     return (
         <HeaderBlock ref={headerRef}>
