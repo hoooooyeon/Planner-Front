@@ -7,14 +7,12 @@ const SpotItemBlock = styled.div`
     width: 280px;
     height: 320px;
     margin: 10px;
-    /* text-align: center; */
     border: 1px solid ${palette.ivory[0]};
     border-radius: 5%;
     box-shadow: 3px 3px 7px 1px ${palette.gray[1]};
     p {
         position: relative;
         bottom: 30px;
-        /* left: 10px; */
         font-size: 1.2rem;
         white-space: nowrap;
         overflow: hidden;
@@ -37,17 +35,17 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     position: relative;
     bottom: 30px;
     left: 255px;
-    color: white;
-    color: ${(props) => (props ? 'yellow' : 'white')};
+    color: lightgray;
 `;
+// color: ${(props) => (props ? 'yellow' : 'white')};
 
-const SpotItem = ({ spot, onChangeErrorImg, onLoadDetailSpot, onToggle }) => {
+const SpotItem = ({ spot, onChangeErrorImg, onLoadDetailSpot }) => {
     const { title, firstimage, contentid } = spot;
 
     return (
-        <SpotItemBlock onClick={onLoadDetailSpot(contentid)}>
+        <SpotItemBlock onClick={() => onLoadDetailSpot(contentid)}>
             <SimpleImg src={firstimage} alt={title} onError={onChangeErrorImg} />
-            <StyledFontAwesomeIcon icon={faStar} onClick={() => onToggle(contentid)} />
+            <StyledFontAwesomeIcon icon={faStar} />
             <p>{title}</p>
         </SpotItemBlock>
     );

@@ -64,7 +64,10 @@ export function* spotSaga() {
 
 const initialState = {
     areas: null,
-    spots: null,
+    spots: {
+        info: null,
+        favorites: false,
+    },
     detail: null,
     spotError: null,
     favoritesSpot: null,
@@ -88,7 +91,7 @@ function spotReducer(state = initialState, action) {
         case LOAD_SPOTS_SUCCESS:
             return {
                 ...state,
-                spots: action.payload.data,
+                spots: { info: action.payload.data.item, favorites: action.payload },
             };
         case LOAD_SPOTS_FAILURE:
             return {
@@ -97,15 +100,18 @@ function spotReducer(state = initialState, action) {
             };
         case UPDATE_AREA_NUM:
             return {
-                areaNum: action.payload,
+                ...state,
+                areaNum: action.num,
             };
         case UPDATE_PAGE_NUM:
             return {
-                pageNum: action.payload,
+                ...state,
+                pageNum: action.num,
             };
         case UPDATE_BLOCK_NUM:
             return {
-                blockNum: action.payload,
+                ...state,
+                blockNum: action.num,
             };
         case LOAD_DETAIL_SPOT_SUCCESS:
             return {

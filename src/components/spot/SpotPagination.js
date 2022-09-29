@@ -29,7 +29,7 @@ const PageButton = styled.div`
     }
 `;
 
-const SpotPagination = ({ totalCount, areaCode, page, blockNum, onLoadSpots }) => {
+const SpotPagination = ({ totalCount, areaNum, pageNum, blockNum, onLoadSpots, onUpdatePageNum, onUpdateBlockNum }) => {
     const createArr = () => {
         const iArr = [];
         for (let i = 0; i < totalPage; i++) {
@@ -44,63 +44,59 @@ const SpotPagination = ({ totalCount, areaCode, page, blockNum, onLoadSpots }) =
     let pArr = nArr.slice(blockArea, pageLimit + blockArea); // blockArea별로 페이지네이션 배열을 잘라준다.
 
     const firstPage = () => {
-        // setPage(1);
-        // setBlockNum(0);
-        // listSpots(areaCode, page);
+        onUpdatePageNum(1);
+        onUpdateBlockNum(0);
+        onLoadSpots(areaNum, pageNum);
     };
     const lastPage = () => {
-        // setPage(totalPage);
-        // setBlockNum(Math.floor(totalPage / pageLimit));
-        // listSpots(areaCode, page);
+        onUpdatePageNum(totalPage);
+        onUpdateBlockNum(Math.floor(totalPage / pageLimit));
+        onLoadSpots(areaNum, pageNum);
     };
 
     const prevPage = () => {
-        if (page <= 1) {
-            return;
+        if (pageNum <= 1) return;
+        if (pageNum - 1 <= pageLimit * blockNum) {
+            onUpdateBlockNum(blockNum - 1);
         }
-        if (page - 1 <= pageLimit * blockNum) {
-            // setBlockNum(blockNum - 1);
-        }
-        // setPage(page - 1);
-        // listSpots(areaCode, page);
+        onUpdatePageNum(pageNum - 1);
+        onLoadSpots(areaNum, pageNum);
     };
     const nextPage = () => {
-        if (page >= totalPage) {
-            return;
+        if (pageNum >= totalPage) return;
+        if (pageLimit * (blockNum + 1) < pageNum + 1) {
+            onUpdateBlockNum(blockNum + 1);
         }
-        if (pageLimit * (blockNum + 1) < page + 1) {
-            // setBlockNum(blockNum + 1);
-        }
-        // setPage(page + 1);
-        // listSpots(areaCode, page);
+        onUpdatePageNum(pageNum + 1);
+        onLoadSpots(areaNum, pageNum);
     };
 
-    // useEffect(() => {
-    //     // listSpots(areaCode, page);
-    // }, [areaCode, page]);
+    useEffect(() => {
+        onLoadSpots(areaNum, pageNum);
+    }, [onLoadSpots, areaNum, pageNum]);
 
     return (
         <SpotPaginationBlock>
-            <PageButton onClick={() => firstPage()}>&lt;&lt;</PageButton>
-            <PageButton onClick={() => prevPage()} disabled={page === 1}>
+            <PageButton onClick={firstPage}>&lt;&lt;</PageButton>
+            <PageButton onClick={prevPage} disabled={pageNum === 1}>
                 &lt;
             </PageButton>
             {pArr.map((n) => (
                 <PageButton
                     key={n}
                     onClick={() => {
-                        // setPage(n);
-                        // listSpots(areaCode, page);
+                        onUpdatePageNum(n);
+                        onLoadSpots(areaNum, pageNum);
                     }}
-                    aria-current={page === n ? 'page' : null}
+                    aria-current={pageNum === n ? 'page' : null}
                 >
                     {n}
                 </PageButton>
             ))}
-            <PageButton onClick={() => nextPage()} disabled={page === totalPage}>
+            <PageButton onClick={nextPage} disabled={pageNum === totalPage}>
                 &gt;
             </PageButton>
-            <PageButton onClick={() => lastPage()}>&gt;&gt;</PageButton>
+            <PageButton onClick={lastPage}>&gt;&gt;</PageButton>
         </SpotPaginationBlock>
     );
 };

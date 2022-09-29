@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 
 const Background = styled.div`
@@ -20,42 +21,56 @@ const ModalContainer = styled.div`
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 60rem;
-    height: 35rem;
+    width: 70rem;
+    height: 30rem;
     display: flex;
 `;
 
 const Img = styled.img`
     width: 30rem;
-    height: 35rem;
+    height: 30rem;
     border-radius: 10px 0 0 10px;
 `;
 
+const Info = styled.div`
+    padding: 3rem;
+    border: 1px solid red;
+`;
+
 const Title = styled.div`
-    width: 30rem;
-    height: 5rem;
-    text-align: center;
     font-size: 1.5rem;
-    line-height: 5rem;
     font-weight: bold;
 `;
 const Detail = styled.div`
-    /* width: 28rem; */
-    height: 28rem;
-    padding: 0 1.5rem 1rem 1.5rem;
+    height: 20rem;
     overflow: auto;
+    margin-top: 30px;
 `;
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+const CloseButton = styled(FontAwesomeIcon)`
     width: 2rem;
     height: 2rem;
     position: absolute;
-    left: 925px;
-    top: 5px;
+    left: 1080px;
+    top: 10px;
     &:hover {
         cursor: pointer;
     }
 `;
-const SpotModal = ({ detail, onChangeErrorImg, onUnloadDetailSpot }) => {
+
+const FavoritesButton = styled(FontAwesomeIcon)`
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    left: 1050px;
+    top: 50px;
+    color: lightgray;
+    &:hover {
+        cursor: pointer;
+    }
+`;
+// color: ${(props) => (props ? 'yellow' : 'white')};
+
+const SpotModal = ({ detail, onChangeErrorImg, onUnloadDetailSpot, onToggle }) => {
     const { title, firstimage, overview } = detail;
     // 모달 외부 스크롤 고정
     useEffect(() => {
@@ -75,11 +90,12 @@ const SpotModal = ({ detail, onChangeErrorImg, onUnloadDetailSpot }) => {
         <Background onClick={onUnloadDetailSpot}>
             <ModalContainer onClick={(e) => e.stopPropagation()}>
                 <Img src={firstimage} alt={title} onError={onChangeErrorImg} />
-                <div>
-                    <StyledFontAwesomeIcon icon={faXmark} onClick={onUnloadDetailSpot} />
+                <Info>
+                    <CloseButton icon={faXmark} onClick={onUnloadDetailSpot} />
                     <Title>{title}</Title>
+                    <FavoritesButton icon={faStar} onClick={onToggle} />
                     <Detail>{overview}</Detail>
-                </div>
+                </Info>
             </ModalContainer>
         </Background>
     );

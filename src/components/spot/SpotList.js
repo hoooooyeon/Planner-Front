@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import SpotItem from './SpotItem';
 import SpotModal from './SpotModal';
 import SpotPagination from './SpotPagination';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const SpotListBlock = styled.div`
     margin: 50px auto;
@@ -40,9 +41,16 @@ const List = styled.div`
 `;
 
 const SpotList = ({ areas, spots, detail, spotError, areaNum, pageNum, blockNum, onLoadSpots, onUpdateAreaNum, onUpdatePageNum, onUpdateBlockNum, onLoadDetailSpot, onUnloadDetailSpot, onToggle, onChangeErrorImg }) => {
-    // const [page, setPage] = useState(1); // 현재 페이지
-    // const [blockNum, setBlockNum] = useState(0); // 페이지네이션 구역 숫자로 지정. (0, 1, ...)
-    // const [areaNum, setAreaNum] = useState();
+    useEffect(() => {
+        onUpdateAreaNum();
+    }, [onUpdateAreaNum]);
+
+    // const [fArr, setFArr] = useState();
+    // useEffect(() => {
+    //     if (spots) {
+    //         setFArr(Array(spots.length).fill(false));
+    //     }
+    // }, [spots]);
 
     if (spotError) {
         return <SpotListBlock>에러가 발생했습니다.</SpotListBlock>;
@@ -56,10 +64,10 @@ const SpotList = ({ areas, spots, detail, spotError, areaNum, pageNum, blockNum,
                         <li
                             key={area.code}
                             onClick={() => {
-                                onLoadSpots(area.code, 1);
                                 onUpdatePageNum(1);
                                 onUpdateBlockNum(0);
                                 onUpdateAreaNum(area.code);
+                                onLoadSpots(area.code, 1);
                             }}
                             aria-current={areaNum === area.code ? 'page' : null}
                         >
@@ -71,14 +79,14 @@ const SpotList = ({ areas, spots, detail, spotError, areaNum, pageNum, blockNum,
             {spots && (
                 <>
                     <List>
-                        {spots.item.map((spot, i) => (
+                        {spots.map((spot, i) => (
                             <SpotItem spot={spot} key={spot.contentid} onChangeErrorImg={onChangeErrorImg} onLoadDetailSpot={onLoadDetailSpot} onToggle={onToggle} />
                         ))}
-                        <SpotPagination totalCount={spots.totalCount} areaCode={spots.item[0].areacode} pageNum={pageNum} blockNum={blockNum} onLoadSpots={onLoadSpots} />
+                        <SpotPagination totalCount={spots.totalCount} areaNum={areaNum} pageNum={pageNum} blockNum={blockNum} onLoadSpots={onLoadSpots} onUpdatePageNum={onUpdatePageNum} onUpdateBlockNum={onUpdateBlockNum} />
                     </List>
                 </>
             )}
-            {detail && detail.map((data) => <SpotModal detail={data} key={data.contentid} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} />)}
+            {detail && detail.map((data) => <SpotModal detail={data} key={data.contentid} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} onToggle={onToggle} />)}
         </SpotListBlock>
     );
 };

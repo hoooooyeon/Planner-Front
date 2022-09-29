@@ -27,19 +27,13 @@ const SpotListContainer = ({
     updatePageNum,
     updateBlockNum,
 }) => {
+    useEffect(() => {
+        loadAreas();
+    }, [loadAreas]);
+
     const onChangeErrorImg = (e) => {
         e.target.src = defaultImg;
     };
-
-    useEffect(() => {
-        loadAreas();
-    });
-
-    // useEffect(() => {
-    //     if (spots) {
-    //         listSpots();
-    //     }
-    // }, [spots, listSpots, pageNum]);
 
     // useEffect(() => {
     //     if (account) {
