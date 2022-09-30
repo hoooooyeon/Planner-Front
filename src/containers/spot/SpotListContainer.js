@@ -2,12 +2,28 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
-import { addFavoritesSpot, favoritesArray, loadAreas, loadDetailSpot, loadFavoritesSpot, loadSpots, removeFavoritesSpot, unloadDetailSpot, updateAreaNum, updateBlockNum, updatePageNum } from '../../modules/spotModule';
+import {
+    addFavoritesSpot,
+    clearSpotId,
+    loadAreas,
+    loadDetailSpot,
+    loadFavoritesSpot,
+    loadSpots,
+    removeFavoritesSpot,
+    unloadDetailSpot,
+    updateAreaNum,
+    updateBlockNum,
+    updatePageNum,
+    updateSpot,
+    updateSpotId,
+} from '../../modules/spotModule';
 import defaultImg from '../../lib/images/defaultImg.jpg';
 
 const SpotListContainer = ({
     areas,
     spots,
+    spot,
+    spotId,
     detail,
     spotError,
     favoritesSpot,
@@ -17,22 +33,45 @@ const SpotListContainer = ({
     blockNum,
     loadAreas,
     loadSpots,
+    updateSpot,
+    updateSpotId,
+    clearSpotId,
     loadDetailSpot,
     unloadDetailSpot,
     loadFavoritesSpot,
     addFavoritesSpot,
     removeFavoritesSpot,
-    favoritesArray,
     updateAreaNum,
     updatePageNum,
     updateBlockNum,
 }) => {
+    // 지역 가져오기
     useEffect(() => {
         loadAreas();
     }, [loadAreas]);
 
+    // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
         e.target.src = defaultImg;
+    };
+
+    // 지역 코드 최신화
+    useEffect(() => {
+        updateAreaNum();
+    }, [updateAreaNum]);
+
+    // 여행지 불러오기 최신화
+    useEffect(() => {
+        if (spots) {
+            loadSpots(areaNum, pageNum);
+        }
+    }, [spots, loadSpots, areaNum, pageNum]);
+
+    const onUpdateSpotId = () => {
+        // if (spots) {
+        //     clearSpotId();
+        //     spots.item.map((spot) => updateSpotId(spot.contentid));
+        // }
     };
 
     // useEffect(() => {
@@ -54,6 +93,8 @@ const SpotListContainer = ({
         <SpotList
             areas={areas}
             spots={spots}
+            spot={spot}
+            spotId={spotId}
             detail={detail}
             spotError={spotError}
             favoritesSpot={favoritesSpot}
@@ -68,6 +109,8 @@ const SpotListContainer = ({
             onUnloadDetailSpot={unloadDetailSpot}
             onToggle={onToggle}
             onChangeErrorImg={onChangeErrorImg}
+            onUpdateSpot={updateSpot}
+            onUpdateSpotId={onUpdateSpotId}
         />
     );
 };
@@ -75,6 +118,8 @@ const SpotListContainer = ({
 const mapStateToProps = (state) => ({
     areas: state.spotReducer.areas,
     spots: state.spotReducer.spots,
+    spot: state.spotReducer.spot,
+    spotId: state.spotReducer.spotId,
     detail: state.spotReducer.detail,
     spotError: state.spotReducer.spotError,
     page: state.spotReducer.page,
@@ -100,6 +145,15 @@ const mapDispatchToProps = (dispatch) => ({
     updateBlockNum: (num) => {
         dispatch(updateBlockNum(num));
     },
+    updateSpot: (item) => {
+        dispatch(updateSpot(item));
+    },
+    updateSpotId: (id) => {
+        dispatch(updateSpotId(id));
+    },
+    clearSpotId: () => {
+        dispatch(clearSpotId());
+    },
     loadDetailSpot: (id) => {
         dispatch(loadDetailSpot(id));
     },
@@ -114,9 +168,6 @@ const mapDispatchToProps = (dispatch) => ({
     },
     removeFavoritesSpot: (spotId) => {
         dispatch(removeFavoritesSpot(spotId));
-    },
-    favoritesArray: () => {
-        dispatch(favoritesArray());
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);

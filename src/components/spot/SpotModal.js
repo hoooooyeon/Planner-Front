@@ -34,7 +34,6 @@ const Img = styled.img`
 
 const Info = styled.div`
     padding: 3rem;
-    border: 1px solid red;
 `;
 
 const Title = styled.div`

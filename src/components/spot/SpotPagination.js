@@ -3,6 +3,10 @@ import styled from 'styled-components';
 
 const SpotPaginationBlock = styled.div`
     display: flex;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 5rem;
 `;
 const PageButton = styled.div`
     border-radius: 8px;
@@ -29,7 +33,7 @@ const PageButton = styled.div`
     }
 `;
 
-const SpotPagination = ({ totalCount, areaNum, pageNum, blockNum, onLoadSpots, onUpdatePageNum, onUpdateBlockNum }) => {
+const SpotPagination = ({ totalCount, areaNum, pageNum, blockNum, spots, onLoadSpots, onUpdatePageNum, onUpdateBlockNum, onUpdateSpotId }) => {
     const createArr = () => {
         const iArr = [];
         for (let i = 0; i < totalPage; i++) {
@@ -47,11 +51,13 @@ const SpotPagination = ({ totalCount, areaNum, pageNum, blockNum, onLoadSpots, o
         onUpdatePageNum(1);
         onUpdateBlockNum(0);
         onLoadSpots(areaNum, pageNum);
+        onUpdateSpotId(spots);
     };
     const lastPage = () => {
         onUpdatePageNum(totalPage);
         onUpdateBlockNum(Math.floor(totalPage / pageLimit));
         onLoadSpots(areaNum, pageNum);
+        onUpdateSpotId(spots);
     };
 
     const prevPage = () => {
@@ -61,6 +67,7 @@ const SpotPagination = ({ totalCount, areaNum, pageNum, blockNum, onLoadSpots, o
         }
         onUpdatePageNum(pageNum - 1);
         onLoadSpots(areaNum, pageNum);
+        onUpdateSpotId(spots);
     };
     const nextPage = () => {
         if (pageNum >= totalPage) return;
@@ -69,11 +76,12 @@ const SpotPagination = ({ totalCount, areaNum, pageNum, blockNum, onLoadSpots, o
         }
         onUpdatePageNum(pageNum + 1);
         onLoadSpots(areaNum, pageNum);
+        onUpdateSpotId(spots);
     };
 
-    useEffect(() => {
-        onLoadSpots(areaNum, pageNum);
-    }, [onLoadSpots, areaNum, pageNum]);
+    // useEffect(() => {
+    //     onLoadSpots(areaNum, pageNum);
+    // }, [onLoadSpots, areaNum, pageNum]);
 
     return (
         <SpotPaginationBlock>
@@ -87,6 +95,7 @@ const SpotPagination = ({ totalCount, areaNum, pageNum, blockNum, onLoadSpots, o
                     onClick={() => {
                         onUpdatePageNum(n);
                         onLoadSpots(areaNum, pageNum);
+                        onUpdateSpotId(spots);
                     }}
                     aria-current={pageNum === n ? 'page' : null}
                 >

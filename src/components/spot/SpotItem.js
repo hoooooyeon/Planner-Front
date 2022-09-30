@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import palette from '../../lib/styles/palette';
+import { useEffect, useState } from 'react';
 
 const SpotItemBlock = styled.div`
     width: 280px;
@@ -39,8 +40,13 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 `;
 // color: ${(props) => (props ? 'yellow' : 'white')};
 
-const SpotItem = ({ spot, onChangeErrorImg, onLoadDetailSpot }) => {
-    const { title, firstimage, contentid } = spot;
+const SpotItem = ({ s, spot, onChangeErrorImg, onLoadDetailSpot, onUpdateSpot }) => {
+    const { title, firstimage, contentid } = s;
+
+    // useEffect(() => {
+    //     onUpdateSpot(s);
+    // }, [onUpdateSpot, s]);
+    // console.log(spot);
 
     return (
         <SpotItemBlock onClick={() => onLoadDetailSpot(contentid)}>

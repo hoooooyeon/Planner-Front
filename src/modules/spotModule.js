@@ -16,6 +16,11 @@ const UPDATE_PAGE_NUM = 'spot/UPDATE_PAGE_NUM';
 
 const UPDATE_BLOCK_NUM = 'spot/UPDATE_BLOCK_NUM';
 
+const UPDATE_SPOT = 'spot/UPDATE_SPOT';
+
+const UPDATE_SPOT_ID = 'spot/UPDATE_SPOT_ID';
+const CLEAR_SPOT_ID = 'spot/REMOVE_SPOT_ID';
+
 const LOAD_DETAIL_SPOT = 'spot/LOAD_DETAIL_SPOT';
 const LOAD_DETAIL_SPOT_SUCCESS = 'spot/LOAD_DETAIL_SPOT_SUCCESS';
 const LOAD_DETAIL_SPOT_FAILURE = 'spot/LOAD_DETAIL_SPOT_FAILURE';
@@ -33,19 +38,19 @@ const REMOVE_FAVORITES_SPOT = 'spot/REMOVE_FAVORITES_SPOT';
 const REMOVE_FAVORITES_SPOT_SUCCESS = 'spot/REMOVE_FAVORITES_SPOT_SUCCESS';
 const REMOVE_FAVORITES_SPOT_FAILURE = 'spot/REMOVE_FAVORITES_SPOT_FAILURE';
 
-const FAVORITES_ARRAY = 'spot/FAVORITES_ARRAY';
-
 export const loadAreas = () => ({ type: LOAD_AREAS });
 export const loadSpots = (areaCode, page) => ({ type: LOAD_SPOTS, areaCode, page });
 export const updateAreaNum = (num) => ({ type: UPDATE_AREA_NUM, num });
 export const updatePageNum = (num) => ({ type: UPDATE_PAGE_NUM, num });
 export const updateBlockNum = (num) => ({ type: UPDATE_BLOCK_NUM, num });
+export const updateSpot = (spots) => ({ type: UPDATE_SPOT, spots });
+export const updateSpotId = (id) => ({ type: UPDATE_SPOT_ID, id });
+export const clearSpotId = () => ({ type: CLEAR_SPOT_ID });
 export const loadDetailSpot = (id) => ({ type: LOAD_DETAIL_SPOT, id });
 export const unloadDetailSpot = () => ({ type: UNLOAD_DETAIL_SPOT });
 export const loadFavoritesSpot = (id) => ({ type: LOAD_FAVORITES_SPOT, id });
 export const addFavoritesSpot = (spotId) => ({ type: ADD_FAVORITES_SPOT, spotId });
 export const removeFavoritesSpot = (spotId) => ({ type: REMOVE_FAVORITES_SPOT, spotId });
-export const favoritesArray = () => ({ type: FAVORITES_ARRAY });
 
 const loadAreasSaga = createRequestSaga(LOAD_AREAS, spotAPI.loadAreas);
 const loadSpotsSaga = createRequestSaga(LOAD_SPOTS, spotAPI.loadSpots);
@@ -64,10 +69,12 @@ export function* spotSaga() {
 
 const initialState = {
     areas: null,
-    spots: {
+    spots: null,
+    spot: {
         info: null,
         favorites: false,
     },
+    spotId: [],
     detail: null,
     spotError: null,
     favoritesSpot: null,
@@ -91,12 +98,19 @@ function spotReducer(state = initialState, action) {
         case LOAD_SPOTS_SUCCESS:
             return {
                 ...state,
-                spots: { info: action.payload.data.item, favorites: action.payload },
+                spots: action.payload.data,
             };
         case LOAD_SPOTS_FAILURE:
             return {
                 ...state,
                 spotError: action.payload.error,
+            };
+        case UPDATE_SPOT:
+            return {
+                spot: {
+                    info: action.payload,
+                    favorites: action.payload,
+                },
             };
         case UPDATE_AREA_NUM:
             return {
@@ -112,6 +126,17 @@ function spotReducer(state = initialState, action) {
             return {
                 ...state,
                 blockNum: action.num,
+            };
+
+        case UPDATE_SPOT_ID:
+            return {
+                ...state,
+                spotId: [...state.spotId, action.id],
+            };
+        case CLEAR_SPOT_ID:
+            return {
+                ...state,
+                spotId: [],
             };
         case LOAD_DETAIL_SPOT_SUCCESS:
             return {
@@ -156,10 +181,7 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 spotError: action.payload.error,
             };
-        case FAVORITES_ARRAY:
-            return {
-                ...state,
-            };
+
         default:
             return state;
     }
