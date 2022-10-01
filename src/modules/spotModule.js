@@ -98,7 +98,15 @@ function spotReducer(state = initialState, action) {
         case LOAD_SPOTS_SUCCESS:
             return {
                 ...state,
-                spots: action.payload.data,
+                spots: {
+                    list: action.payload.data.item.map((item) => {
+                        return {
+                            info: item,
+                            favorites: false,
+                        };
+                    }),
+                    totalCount: action.payload.data.totalCount,
+                },
             };
         case LOAD_SPOTS_FAILURE:
             return {

@@ -60,18 +60,11 @@ const SpotListContainer = ({
         updateAreaNum();
     }, [updateAreaNum]);
 
-    // 여행지 불러오기 최신화
-    useEffect(() => {
-        if (spots) {
-            loadSpots(areaNum, pageNum);
-        }
-    }, [spots, loadSpots, areaNum, pageNum]);
-
     const onUpdateSpotId = () => {
-        // if (spots) {
-        //     clearSpotId();
-        //     spots.item.map((spot) => updateSpotId(spot.contentid));
-        // }
+        if (spots) {
+            clearSpotId();
+            spots.item.map((spot) => updateSpotId(spot.contentid));
+        }
     };
 
     // useEffect(() => {

@@ -92,11 +92,11 @@ const SpotList = ({
             {spots && (
                 <SpotsBox>
                     <List>
-                        {spots.item.map((s) => (
+                        {spots.map((s) => (
                             <SpotItem s={s} spot={spot} key={s.contentid} onChangeErrorImg={onChangeErrorImg} onLoadDetailSpot={onLoadDetailSpot} onUpdateSpot={onUpdateSpot} onUpdateSpotId={onUpdateSpotId} />
                         ))}
                     </List>
-                    <SpotPagination
+                    {/* <SpotPagination
                         totalCount={spots.totalCount}
                         areaNum={areaNum}
                         pageNum={pageNum}
@@ -106,7 +106,7 @@ const SpotList = ({
                         onUpdatePageNum={onUpdatePageNum}
                         onUpdateBlockNum={onUpdateBlockNum}
                         onUpdateSpotId={onUpdateSpotId}
-                    />
+                    /> */}
                 </SpotsBox>
             )}
             {detail && detail.map((data) => <SpotModal detail={data} key={data.contentid} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} onToggle={onToggle} />)}

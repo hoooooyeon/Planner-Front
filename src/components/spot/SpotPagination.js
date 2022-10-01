@@ -79,9 +79,10 @@ const SpotPagination = ({ totalCount, areaNum, pageNum, blockNum, spots, onLoadS
         onUpdateSpotId(spots);
     };
 
-    // useEffect(() => {
-    //     onLoadSpots(areaNum, pageNum);
-    // }, [onLoadSpots, areaNum, pageNum]);
+    // 여행지 불러오기 최신화
+    useEffect(() => {
+        onLoadSpots(areaNum, pageNum);
+    }, [onLoadSpots, areaNum, pageNum]);
 
     return (
         <SpotPaginationBlock>
