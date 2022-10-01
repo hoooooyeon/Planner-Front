@@ -47,7 +47,6 @@ const SpotsBox = styled.div`
 const SpotList = ({
     areas,
     spots,
-    spot,
     detail,
     spotError,
     areaNum,
@@ -92,8 +91,8 @@ const SpotList = ({
             {spots && (
                 <SpotsBox>
                     <List>
-                        {spots.map((s) => (
-                            <SpotItem s={s} spot={spot} key={s.contentid} onChangeErrorImg={onChangeErrorImg} onLoadDetailSpot={onLoadDetailSpot} onUpdateSpot={onUpdateSpot} onUpdateSpotId={onUpdateSpotId} />
+                        {spots.list.map((spot) => (
+                            <SpotItem spot={spot.info} key={spot.info.contentid} onChangeErrorImg={onChangeErrorImg} onLoadDetailSpot={onLoadDetailSpot} onUpdateSpot={onUpdateSpot} onUpdateSpotId={onUpdateSpotId} />
                         ))}
                     </List>
                     {/* <SpotPagination

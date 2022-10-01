@@ -26,18 +26,6 @@ const LOAD_DETAIL_SPOT_SUCCESS = 'spot/LOAD_DETAIL_SPOT_SUCCESS';
 const LOAD_DETAIL_SPOT_FAILURE = 'spot/LOAD_DETAIL_SPOT_FAILURE';
 const UNLOAD_DETAIL_SPOT = 'spot/UNLOAD_DETAIL_SPOT';
 
-const LOAD_FAVORITES_SPOT = 'spot/LOAD_FAVORITES_SPOT';
-const LOAD_FAVORITES_SPOT_SUCCESS = 'spot/LOAD_FAVORITES_SPOT_SUCCESS';
-const LOAD_FAVORITES_SPOT_FAILURE = 'spot/LOAD_FAVORITES_SPOT_FAILURE';
-
-const ADD_FAVORITES_SPOT = 'spot/ADD_FAVORITES_SPOT';
-const ADD_FAVORITES_SPOT_SUCCESS = 'spot/ADD_FAVORITES_SPOT_SUCCESS';
-const ADD_FAVORITES_SPOT_FAILURE = 'spot/ADD_FAVORITES_SPOT_FAILURE';
-
-const REMOVE_FAVORITES_SPOT = 'spot/REMOVE_FAVORITES_SPOT';
-const REMOVE_FAVORITES_SPOT_SUCCESS = 'spot/REMOVE_FAVORITES_SPOT_SUCCESS';
-const REMOVE_FAVORITES_SPOT_FAILURE = 'spot/REMOVE_FAVORITES_SPOT_FAILURE';
-
 export const loadAreas = () => ({ type: LOAD_AREAS });
 export const loadSpots = (areaCode, page) => ({ type: LOAD_SPOTS, areaCode, page });
 export const updateAreaNum = (num) => ({ type: UPDATE_AREA_NUM, num });
@@ -48,36 +36,22 @@ export const updateSpotId = (id) => ({ type: UPDATE_SPOT_ID, id });
 export const clearSpotId = () => ({ type: CLEAR_SPOT_ID });
 export const loadDetailSpot = (id) => ({ type: LOAD_DETAIL_SPOT, id });
 export const unloadDetailSpot = () => ({ type: UNLOAD_DETAIL_SPOT });
-export const loadFavoritesSpot = (id) => ({ type: LOAD_FAVORITES_SPOT, id });
-export const addFavoritesSpot = (spotId) => ({ type: ADD_FAVORITES_SPOT, spotId });
-export const removeFavoritesSpot = (spotId) => ({ type: REMOVE_FAVORITES_SPOT, spotId });
 
 const loadAreasSaga = createRequestSaga(LOAD_AREAS, spotAPI.loadAreas);
 const loadSpotsSaga = createRequestSaga(LOAD_SPOTS, spotAPI.loadSpots);
 const loadDetailSpotSaga = createRequestSaga(LOAD_DETAIL_SPOT, spotAPI.loadDetailSpot);
-const loadFavoritesSpotSaga = createRequestSaga(LOAD_FAVORITES_SPOT, spotAPI.loadFavoritesSpot);
-const addFavoritesSpotSaga = createRequestSaga(ADD_FAVORITES_SPOT, spotAPI.addFavoritesSpot);
-const removeFavoritesSpotSaga = createRequestSaga(REMOVE_FAVORITES_SPOT, spotAPI.removeFavoritesSpot);
 export function* spotSaga() {
     yield takeLatest(LOAD_AREAS, loadAreasSaga);
     yield takeLatest(LOAD_SPOTS, loadSpotsSaga);
     yield takeLatest(LOAD_DETAIL_SPOT, loadDetailSpotSaga);
-    yield takeLatest(LOAD_FAVORITES_SPOT, loadFavoritesSpotSaga);
-    yield takeLatest(ADD_FAVORITES_SPOT, addFavoritesSpotSaga);
-    yield takeLatest(REMOVE_FAVORITES_SPOT, removeFavoritesSpotSaga);
 }
 
 const initialState = {
     areas: null,
     spots: null,
-    spot: {
-        info: null,
-        favorites: false,
-    },
     spotId: [],
     detail: null,
     spotError: null,
-    favoritesSpot: null,
     areaNum: null,
     pageNum: 1,
     blockNum: 0,
@@ -160,34 +134,6 @@ function spotReducer(state = initialState, action) {
             return {
                 ...state,
                 detail: null,
-            };
-        case LOAD_FAVORITES_SPOT_SUCCESS:
-            return {
-                ...state,
-                favoritesSpot: action.paylod.data,
-            };
-        case LOAD_FAVORITES_SPOT_FAILURE:
-            return {
-                ...state,
-                spotError: action.payload.error,
-            };
-        case ADD_FAVORITES_SPOT_SUCCESS:
-            return {
-                ...state,
-            };
-        case ADD_FAVORITES_SPOT_FAILURE:
-            return {
-                ...state,
-                spotError: action.payload.error,
-            };
-        case REMOVE_FAVORITES_SPOT_SUCCESS:
-            return {
-                ...state,
-            };
-        case REMOVE_FAVORITES_SPOT_FAILURE:
-            return {
-                ...state,
-                spotError: action.payload.error,
             };
 
         default:

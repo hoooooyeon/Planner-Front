@@ -40,8 +40,8 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 `;
 // color: ${(props) => (props ? 'yellow' : 'white')};
 
-const SpotItem = ({ s, spot, onChangeErrorImg, onLoadDetailSpot, onUpdateSpot }) => {
-    const { title, firstimage, contentid } = s;
+const SpotItem = ({ spot, onChangeErrorImg, onLoadDetailSpot, onUpdateSpot }) => {
+    const { title, firstimage, contentid } = spot;
 
     // useEffect(() => {
     //     onUpdateSpot(s);

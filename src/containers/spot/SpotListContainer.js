@@ -2,45 +2,25 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
-import {
-    addFavoritesSpot,
-    clearSpotId,
-    loadAreas,
-    loadDetailSpot,
-    loadFavoritesSpot,
-    loadSpots,
-    removeFavoritesSpot,
-    unloadDetailSpot,
-    updateAreaNum,
-    updateBlockNum,
-    updatePageNum,
-    updateSpot,
-    updateSpotId,
-} from '../../modules/spotModule';
+import { clearSpotId, loadAreas, loadDetailSpot, loadSpots, unloadDetailSpot, updateAreaNum, updateBlockNum, updatePageNum, updateSpot, updateSpotId } from '../../modules/spotModule';
 import defaultImg from '../../lib/images/defaultImg.jpg';
 
 const SpotListContainer = ({
     areas,
     spots,
-    spot,
     spotId,
     detail,
     spotError,
-    favoritesSpot,
     account,
     areaNum,
     pageNum,
     blockNum,
     loadAreas,
     loadSpots,
-    updateSpot,
     updateSpotId,
     clearSpotId,
     loadDetailSpot,
     unloadDetailSpot,
-    loadFavoritesSpot,
-    addFavoritesSpot,
-    removeFavoritesSpot,
     updateAreaNum,
     updatePageNum,
     updateBlockNum,
@@ -86,11 +66,9 @@ const SpotListContainer = ({
         <SpotList
             areas={areas}
             spots={spots}
-            spot={spot}
             spotId={spotId}
             detail={detail}
             spotError={spotError}
-            favoritesSpot={favoritesSpot}
             areaNum={areaNum}
             pageNum={pageNum}
             blockNum={blockNum}
@@ -102,7 +80,6 @@ const SpotListContainer = ({
             onUnloadDetailSpot={unloadDetailSpot}
             onToggle={onToggle}
             onChangeErrorImg={onChangeErrorImg}
-            onUpdateSpot={updateSpot}
             onUpdateSpotId={onUpdateSpotId}
         />
     );
@@ -115,8 +92,6 @@ const mapStateToProps = (state) => ({
     spotId: state.spotReducer.spotId,
     detail: state.spotReducer.detail,
     spotError: state.spotReducer.spotError,
-    page: state.spotReducer.page,
-    favoritesSpot: state.spotReducer.favoritesSpot,
     account: state.authReducer.account,
     areaNum: state.spotReducer.areaNum,
     pageNum: state.spotReducer.pageNum,
@@ -152,15 +127,6 @@ const mapDispatchToProps = (dispatch) => ({
     },
     unloadDetailSpot: () => {
         dispatch(unloadDetailSpot());
-    },
-    loadFavoritesSpot: (id) => {
-        dispatch(loadFavoritesSpot(id));
-    },
-    addFavoritesSpot: (spotId) => {
-        dispatch(addFavoritesSpot(spotId));
-    },
-    removeFavoritesSpot: (spotId) => {
-        dispatch(removeFavoritesSpot(spotId));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);
