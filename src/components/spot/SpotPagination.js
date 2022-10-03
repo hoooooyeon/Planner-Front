@@ -50,13 +50,13 @@ const SpotPagination = ({ totalCount, areaNum, pageNum, blockNum, spots, onLoadS
     const firstPage = () => {
         onUpdatePageNum(1);
         onUpdateBlockNum(0);
-        onLoadSpots(areaNum, pageNum);
+        // onLoadSpots(areaNum, pageNum);
         onUpdateSpotId(spots);
     };
     const lastPage = () => {
         onUpdatePageNum(totalPage);
         onUpdateBlockNum(Math.floor(totalPage / pageLimit));
-        onLoadSpots(areaNum, pageNum);
+        // onLoadSpots(areaNum, pageNum);
         onUpdateSpotId(spots);
     };
 
@@ -66,7 +66,7 @@ const SpotPagination = ({ totalCount, areaNum, pageNum, blockNum, spots, onLoadS
             onUpdateBlockNum(blockNum - 1);
         }
         onUpdatePageNum(pageNum - 1);
-        onLoadSpots(areaNum, pageNum);
+        // onLoadSpots(areaNum, pageNum);
         onUpdateSpotId(spots);
     };
     const nextPage = () => {
@@ -75,14 +75,9 @@ const SpotPagination = ({ totalCount, areaNum, pageNum, blockNum, spots, onLoadS
             onUpdateBlockNum(blockNum + 1);
         }
         onUpdatePageNum(pageNum + 1);
-        onLoadSpots(areaNum, pageNum);
+        // onLoadSpots(areaNum, pageNum);
         onUpdateSpotId(spots);
     };
-
-    // 여행지 불러오기 최신화
-    useEffect(() => {
-        onLoadSpots(areaNum, pageNum);
-    }, [onLoadSpots, areaNum, pageNum]);
 
     return (
         <SpotPaginationBlock>
@@ -95,7 +90,7 @@ const SpotPagination = ({ totalCount, areaNum, pageNum, blockNum, spots, onLoadS
                     key={n}
                     onClick={() => {
                         onUpdatePageNum(n);
-                        onLoadSpots(areaNum, pageNum);
+                        // onLoadSpots(areaNum, pageNum);
                         onUpdateSpotId(spots);
                     }}
                     aria-current={pageNum === n ? 'page' : null}

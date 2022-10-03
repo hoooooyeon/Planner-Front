@@ -78,7 +78,7 @@ const SpotList = ({
                                 onUpdatePageNum(1);
                                 onUpdateBlockNum(0);
                                 onUpdateAreaNum(area.code);
-                                onLoadSpots(area.code, 1);
+                                // onLoadSpots(area.code, 1);
                                 onUpdateSpotId(spots);
                             }}
                             aria-current={areaNum === area.code ? 'page' : null}
@@ -95,7 +95,7 @@ const SpotList = ({
                             <SpotItem spot={spot.info} key={spot.info.contentid} onChangeErrorImg={onChangeErrorImg} onLoadDetailSpot={onLoadDetailSpot} onUpdateSpot={onUpdateSpot} onUpdateSpotId={onUpdateSpotId} />
                         ))}
                     </List>
-                    {/* <SpotPagination
+                    <SpotPagination
                         totalCount={spots.totalCount}
                         areaNum={areaNum}
                         pageNum={pageNum}
@@ -105,7 +105,7 @@ const SpotList = ({
                         onUpdatePageNum={onUpdatePageNum}
                         onUpdateBlockNum={onUpdateBlockNum}
                         onUpdateSpotId={onUpdateSpotId}
-                    /> */}
+                    />
                 </SpotsBox>
             )}
             {detail && detail.map((data) => <SpotModal detail={data} key={data.contentid} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} onToggle={onToggle} />)}

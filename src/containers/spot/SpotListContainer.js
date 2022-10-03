@@ -25,15 +25,22 @@ const SpotListContainer = ({
     updatePageNum,
     updateBlockNum,
 }) => {
+    // 대체 이미지 넣기
+    const onChangeErrorImg = (e) => {
+        e.target.src = defaultImg;
+    };
+
     // 지역 가져오기
     useEffect(() => {
         loadAreas();
     }, [loadAreas]);
 
-    // 대체 이미지 넣기
-    const onChangeErrorImg = (e) => {
-        e.target.src = defaultImg;
-    };
+    // 여행지 가져오기
+    useEffect(() => {
+        // if (spots) {
+        loadSpots(areaNum, pageNum);
+        // }
+    }, [loadSpots, areaNum, pageNum]);
 
     // 지역 코드 최신화
     useEffect(() => {
@@ -41,10 +48,10 @@ const SpotListContainer = ({
     }, [updateAreaNum]);
 
     const onUpdateSpotId = () => {
-        if (spots) {
-            clearSpotId();
-            spots.item.map((spot) => updateSpotId(spot.contentid));
-        }
+        // if (spots) {
+        //     clearSpotId();
+        //     spots.item.map((spot) => updateSpotId(spot.contentid));
+        // }
     };
 
     // useEffect(() => {
