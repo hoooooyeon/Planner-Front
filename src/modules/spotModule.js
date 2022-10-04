@@ -16,10 +16,7 @@ const UPDATE_PAGE_NUM = 'spot/UPDATE_PAGE_NUM';
 
 const UPDATE_BLOCK_NUM = 'spot/UPDATE_BLOCK_NUM';
 
-const UPDATE_SPOT = 'spot/UPDATE_SPOT';
-
-const UPDATE_SPOT_ID = 'spot/UPDATE_SPOT_ID';
-const CLEAR_SPOT_ID = 'spot/REMOVE_SPOT_ID';
+const UPDATE_TOTAL_COUNT = 'spot/UPDATE_TOTAL_COUNT';
 
 const LOAD_DETAIL_SPOT = 'spot/LOAD_DETAIL_SPOT';
 const LOAD_DETAIL_SPOT_SUCCESS = 'spot/LOAD_DETAIL_SPOT_SUCCESS';
@@ -31,9 +28,7 @@ export const loadSpots = (areaCode, page) => ({ type: LOAD_SPOTS, areaCode, page
 export const updateAreaNum = (num) => ({ type: UPDATE_AREA_NUM, num });
 export const updatePageNum = (num) => ({ type: UPDATE_PAGE_NUM, num });
 export const updateBlockNum = (num) => ({ type: UPDATE_BLOCK_NUM, num });
-export const updateSpot = (spots) => ({ type: UPDATE_SPOT, spots });
-export const updateSpotId = (id) => ({ type: UPDATE_SPOT_ID, id });
-export const clearSpotId = () => ({ type: CLEAR_SPOT_ID });
+export const updateTotalCount = (num) => ({ type: UPDATE_TOTAL_COUNT, num });
 export const loadDetailSpot = (id) => ({ type: LOAD_DETAIL_SPOT, id });
 export const unloadDetailSpot = () => ({ type: UNLOAD_DETAIL_SPOT });
 
@@ -48,13 +43,15 @@ export function* spotSaga() {
 
 const initialState = {
     areas: null,
-    spots: null,
-    spotId: [],
+    spots: undefined,
     detail: null,
     spotError: null,
-    areaNum: null,
-    pageNum: 1,
-    blockNum: 0,
+    currentInfo: {
+        areaNum: null,
+        pageNum: 1,
+        blockNum: 0,
+        totalCount: null,
+    },
 };
 
 function spotReducer(state = initialState, action) {
@@ -87,39 +84,39 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 spotError: action.payload.error,
             };
-        case UPDATE_SPOT:
+        case UPDATE_TOTAL_COUNT:
             return {
-                spot: {
-                    info: action.payload,
-                    favorites: action.payload,
+                ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                    totalCount: action.num,
                 },
             };
         case UPDATE_AREA_NUM:
             return {
                 ...state,
-                areaNum: action.num,
+                currentInfo: {
+                    ...state.currentInfo,
+                    areaNum: action.num,
+                },
             };
         case UPDATE_PAGE_NUM:
             return {
                 ...state,
-                pageNum: action.num,
+                currentInfo: {
+                    ...state.currentInfo,
+                    pageNum: action.num,
+                },
             };
         case UPDATE_BLOCK_NUM:
             return {
                 ...state,
-                blockNum: action.num,
+                currentInfo: {
+                    ...state.currentInfo,
+                    blockNum: action.num,
+                },
             };
 
-        case UPDATE_SPOT_ID:
-            return {
-                ...state,
-                spotId: [...state.spotId, action.id],
-            };
-        case CLEAR_SPOT_ID:
-            return {
-                ...state,
-                spotId: [],
-            };
         case LOAD_DETAIL_SPOT_SUCCESS:
             return {
                 ...state,
