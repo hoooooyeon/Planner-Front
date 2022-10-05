@@ -51,8 +51,8 @@ const NextButton = styled(StyledFontAwesomeIcon)`
     right: 11%;
 `;
 
-const TOTAL_SLIDES = 5;
 const SpotSlider = (props) => {
+    const TOTAL_SLIDES = 5;
     const [currentIndex, setCurrentIndex] = useState(2);
     const imgsRef = useRef();
 

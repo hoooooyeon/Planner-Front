@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
@@ -20,11 +19,12 @@ const SpotListContainer = ({ areas, spots, detail, spotError, account, currentIn
 
     // 여행지 가져오기
     useEffect(() => {
-        // if (spots) {
-        loadSpots(areaNum, pageNum);
-        // }
-    }, [loadSpots, areaNum, pageNum]);
+        if (areas) {
+            loadSpots(areaNum, pageNum);
+        }
+    }, [areas, loadSpots, areaNum, pageNum]);
 
+    // 여행지 아이디 적출
     useEffect(() => {
         if (spots) {
             const contentIdArr = spots.list.map((spot) => {

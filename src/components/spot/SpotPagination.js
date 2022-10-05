@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const SpotPaginationBlock = styled.div`
@@ -33,31 +32,35 @@ const PageButton = styled.div`
     }
 `;
 
-const SpotPagination = ({ currentInfo, spots, onUpdatePageNum, onFirstPage, onLastPage, onNextPage, onPrevPage, pageArr, totalPage }) => {
-    const { pageNum } = currentInfo;
+const SpotPagination = ({ currentInfo, spots, onUpdatePageNum, onFirstPage, onLastPage, onNextPage, onPrevPage }) => {
+    const { pageNum, totalPage, pagination } = currentInfo;
 
     return (
-        <SpotPaginationBlock>
-            <PageButton onClick={onFirstPage}>&lt;&lt;</PageButton>
-            <PageButton onClick={onPrevPage} disabled={pageNum === 1}>
-                &lt;
-            </PageButton>
-            {pageArr.map((n) => (
-                <PageButton
-                    key={n}
-                    onClick={() => {
-                        onUpdatePageNum(n);
-                    }}
-                    aria-current={pageNum === n ? 'page' : null}
-                >
-                    {n}
-                </PageButton>
-            ))}
-            <PageButton onClick={onNextPage} disabled={pageNum === totalPage}>
-                &gt;
-            </PageButton>
-            <PageButton onClick={onLastPage}>&gt;&gt;</PageButton>
-        </SpotPaginationBlock>
+        <>
+            {spots && pagination && (
+                <SpotPaginationBlock>
+                    <PageButton onClick={onFirstPage}>&lt;&lt;</PageButton>
+                    <PageButton onClick={onPrevPage} disabled={pageNum === 1}>
+                        &lt;
+                    </PageButton>
+                    {pagination.map((n) => (
+                        <PageButton
+                            key={n}
+                            onClick={() => {
+                                onUpdatePageNum(n);
+                            }}
+                            aria-current={pageNum === n ? 'page' : null}
+                        >
+                            {n}
+                        </PageButton>
+                    ))}
+                    <PageButton onClick={onNextPage} disabled={pageNum === totalPage}>
+                        &gt;
+                    </PageButton>
+                    <PageButton onClick={onLastPage}>&gt;&gt;</PageButton>
+                </SpotPaginationBlock>
+            )}
+        </>
     );
 };
 

@@ -11,12 +11,10 @@ const LOAD_SPOTS_SUCCESS = 'spot/LOAD_SPOTS_SUCCESS';
 const LOAD_SPOTS_FAILURE = 'spot/LOAD_SPOTS_FAILURE';
 
 const UPDATE_AREA_NUM = 'spot/UPDATE_AREA_NUM';
-
 const UPDATE_PAGE_NUM = 'spot/UPDATE_PAGE_NUM';
-
 const UPDATE_BLOCK_NUM = 'spot/UPDATE_BLOCK_NUM';
-
-const UPDATE_TOTAL_COUNT = 'spot/UPDATE_TOTAL_COUNT';
+const UPDATE_TOTAL_PAGE = 'spot/UPDATE_TOTAL_PAGE';
+const UPDATE_PAGINATION = 'spot/UPDATE_PAGINATION';
 
 const LOAD_DETAIL_SPOT = 'spot/LOAD_DETAIL_SPOT';
 const LOAD_DETAIL_SPOT_SUCCESS = 'spot/LOAD_DETAIL_SPOT_SUCCESS';
@@ -28,7 +26,8 @@ export const loadSpots = (areaCode, page) => ({ type: LOAD_SPOTS, areaCode, page
 export const updateAreaNum = (num) => ({ type: UPDATE_AREA_NUM, num });
 export const updatePageNum = (num) => ({ type: UPDATE_PAGE_NUM, num });
 export const updateBlockNum = (num) => ({ type: UPDATE_BLOCK_NUM, num });
-export const updateTotalCount = (num) => ({ type: UPDATE_TOTAL_COUNT, num });
+export const updateTotalPage = (num) => ({ type: UPDATE_TOTAL_PAGE, num });
+export const updatePagination = (num) => ({ type: UPDATE_PAGINATION, num });
 export const loadDetailSpot = (id) => ({ type: LOAD_DETAIL_SPOT, id });
 export const unloadDetailSpot = () => ({ type: UNLOAD_DETAIL_SPOT });
 
@@ -43,14 +42,15 @@ export function* spotSaga() {
 
 const initialState = {
     areas: null,
-    spots: undefined,
+    spots: null,
     detail: null,
     spotError: null,
     currentInfo: {
         areaNum: null,
         pageNum: 1,
         blockNum: 0,
-        totalCount: null,
+        totalPage: null,
+        pagination: null,
     },
 };
 
@@ -84,14 +84,6 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 spotError: action.payload.error,
             };
-        case UPDATE_TOTAL_COUNT:
-            return {
-                ...state,
-                currentInfo: {
-                    ...state.currentInfo,
-                    totalCount: action.num,
-                },
-            };
         case UPDATE_AREA_NUM:
             return {
                 ...state,
@@ -116,7 +108,22 @@ function spotReducer(state = initialState, action) {
                     blockNum: action.num,
                 },
             };
-
+        case UPDATE_TOTAL_PAGE:
+            return {
+                ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                    totalPage: action.num,
+                },
+            };
+        case UPDATE_PAGINATION:
+            return {
+                ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                    pagination: action.num,
+                },
+            };
         case LOAD_DETAIL_SPOT_SUCCESS:
             return {
                 ...state,

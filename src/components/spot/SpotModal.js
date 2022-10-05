@@ -59,27 +59,25 @@ const CloseButton = styled(FontAwesomeIcon)`
 const FavoritesBox = styled.div`
     background-color: lightgray;
     border-radius: 5px;
-    color: yellow;
-    /* padding: 10px; */
+    color: white;
+    padding: 10px;
     display: inline-block;
     height: 1rem;
     position: absolute;
     left: 1000px;
     top: 50px;
-    p {
-        display: inline-block;
-    }
-`;
-
-const FavoritesButton = styled(FontAwesomeIcon)`
-    display: inline-block;
-    color: yellow;
-    margin-right: 5px;
     &:hover {
         cursor: pointer;
     }
+    div {
+        float: right;
+        margin-left: 5px;
+    }
 `;
-// color: ${(props) => (props ? 'yellow' : 'white')};
+// ${props => props && css`
+//     background-color: lightblue;
+//     color: yellow;
+// `}
 
 const SpotModal = ({ detail, onChangeErrorImg, onUnloadDetailSpot, onToggle }) => {
     const { title, firstimage, overview } = detail;
@@ -105,8 +103,8 @@ const SpotModal = ({ detail, onChangeErrorImg, onUnloadDetailSpot, onToggle }) =
                     <CloseButton icon={faXmark} onClick={onUnloadDetailSpot} />
                     <Title>{title}</Title>
                     <FavoritesBox onClick={onToggle}>
-                        <FavoritesButton icon={faStar} />
-                        <p>111</p>
+                        <FontAwesomeIcon icon={faStar} />
+                        <div>111</div>
                     </FavoritesBox>
                     <Detail>{overview}</Detail>
                 </Info>

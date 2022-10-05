@@ -1,9 +1,6 @@
 import styled from 'styled-components';
 import SpotItem from './SpotItem';
 import SpotModal from './SpotModal';
-import SpotPagination from './SpotPagination';
-import { useEffect } from 'react';
-import { useState } from 'react';
 
 const SpotListBlock = styled.div`
     margin: 50px auto;
@@ -40,10 +37,6 @@ const List = styled.div`
     flex-wrap: wrap;
 `;
 
-const SpotsBox = styled.div`
-    /* display: flex; */
-`;
-
 const SpotList = ({ areas, spots, detail, spotError, currentInfo, onLoadDetailSpot, onUnloadDetailSpot, onChangeErrorImg, onFirstSpotsPage }) => {
     const { areaNum } = currentInfo;
 
@@ -63,13 +56,11 @@ const SpotList = ({ areas, spots, detail, spotError, currentInfo, onLoadDetailSp
                 </Menu>
             )}
             {spots && (
-                <SpotsBox>
-                    <List>
-                        {spots.list.map((spot) => (
-                            <SpotItem spot={spot.info} key={spot.info.contentid} onChangeErrorImg={onChangeErrorImg} onLoadDetailSpot={onLoadDetailSpot} />
-                        ))}
-                    </List>
-                </SpotsBox>
+                <List>
+                    {spots.list.map((spot) => (
+                        <SpotItem spot={spot.info} key={spot.info.contentid} onChangeErrorImg={onChangeErrorImg} onLoadDetailSpot={onLoadDetailSpot} />
+                    ))}
+                </List>
             )}
             {detail && detail.map((data) => <SpotModal detail={data} key={data.contentid} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} />)}
         </SpotListBlock>
