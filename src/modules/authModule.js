@@ -4,6 +4,7 @@ import * as authAPI from '../lib/api/authAPI';
 
 // 액션 타입
 const initializeType = 'auth/INITIALIZE';
+const initializeFormType = 'auth/INITIALIZE_FORM';
 const initializeErrorType = 'auth/INITIALIZE_ERROR';
 const changeFieldType = 'auth/CHANGE_FIELD';
 
@@ -18,6 +19,11 @@ const registerFailureType = "auth/REGISTER_FAILURE";
 // 액션함수
 export const initialize = () => ({
     type: initializeType
+});
+
+export const initializeForm = (form) => ({
+    type: initializeFormType,
+    form
 });
 
 export const initializeError = () => ({
@@ -37,12 +43,13 @@ export const loginAction = ({ email, password }) => ({
     password
 });
 
-export const registerAction = ({ email, password, username, nickname }) => ({
+export const registerAction = ({ email, password, username, nickname, phone }) => ({
     type: registerType,
     email,
     password,
     username,
-    nickname
+    nickname,
+    phone
 });
 
 export const loginSaga = createSaga(loginType, authAPI.login);
@@ -63,17 +70,25 @@ const initialState = {
         password: '',
         passwordConfirm: '',
         username: '',
-        nickname: ''
+        nickname: '',
+        phone: ''
     },
     account: null,
     token: '',
-    authError: null
+    authError: null,
+    state: {
+        state: false,
+        message: ''
+    }
 };
 
 function authReducer(state = initialState, action) {
     switch (action.type) {
         case initializeType: {
-            return { ...state, login: initialState.login, register: initialState.register };
+            return { ...state, login: initialState.login, register: initialState.register, state: initialState.state };
+        }
+        case initializeFormType: {
+            return { ...state, [action.form]: initialState[action.form] }
         }
         case initializeErrorType: {
             return { ...state, authError: initialState.authError };
@@ -82,16 +97,16 @@ function authReducer(state = initialState, action) {
             return { ...state, [action.form]: { ...state[action.form], [action.field]: action.value } };
         }
         case loginSuccessType: {
-            return { ...state, account: action.payload.data, token: action.payload.token };
+            return { ...state, account: action.payload.data, state: { ...action.payload }, token: action.payload.token };
         }
         case loginFailureType: {
-            return { ...state, authError: action.payload.message };
+            return { ...state, authError: action.payload.message, state: { ...action.payload } };
         }
         case registerSuccessType: {
-            return { ...state };
+            return { ...state, state: { ...action.payload } };
         }
         case registerFailureType: {
-            return { ...state, authError: action.payload.message };
+            return { ...state, authError: action.payload.message, state: { ...action.payload } };
         }
         default: {
             return state;

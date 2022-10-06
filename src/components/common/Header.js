@@ -55,6 +55,7 @@ const Account = styled.div`
 const Header = ({ account }) => {
     const headerRef = useRef();
 
+<<<<<<< HEAD
     useEffect(() => {
         const onScroll = () => {
             if (window.pageYOffset === 0) {
@@ -69,6 +70,24 @@ const Header = ({ account }) => {
             window.removeEventListener('scroll', onScroll);
         };
     });
+=======
+  const headerShadow = () => {
+    if (window.pageYOffset === 0) {
+      headerRef.current.style.boxShadow = 'none';
+
+    } else {
+      headerRef.current.style.boxShadow = `1px 5px 7px 1px ${palette.gray[0]}`;
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', headerShadow);
+
+    return () => {
+      window.removeEventListener('scroll', headerShadow);
+    };
+  });
+>>>>>>> 24168b01bd684cd7f038ef07338f88fbd00aa2f2
 
     return (
         <HeaderBlock ref={headerRef}>

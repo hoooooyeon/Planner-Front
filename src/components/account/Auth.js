@@ -97,6 +97,7 @@ const Auth = ({ type, form, onChange, onSubmit, authError }) => {
               <StyledInput name="passwordConfirm" placeholder="비밀번호 확인" type="password" onChange={onChange} value={form.passwordConfirm} />
               <StyledInput name="username" placeholder="이름" type="text" onChange={onChange} value={form.username} />
               <StyledInput name="nickname" placeholder="닉네임" type="text" onChange={onChange} value={form.nickname} />
+              <StyledInput name="phone" placeholder="전화번호" type="text" onChange={onChange} value={form.phone} />
             </>
           )}
           {authError && <ErrorDiv>{authError}</ErrorDiv>}
