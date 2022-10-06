@@ -73,7 +73,7 @@ function spotReducer(state = initialState, action) {
                     list: action.payload.data.item.map((item) => {
                         return {
                             info: item,
-                            favorites: false,
+                            likes: false,
                         };
                     }),
                     totalCount: action.payload.data.totalCount,

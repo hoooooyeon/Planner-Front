@@ -56,7 +56,7 @@ const CloseButton = styled(FontAwesomeIcon)`
     }
 `;
 
-const FavoritesBox = styled.div`
+const LikesBox = styled.div`
     background-color: lightgray;
     border-radius: 5px;
     color: white;
@@ -102,10 +102,10 @@ const SpotModal = ({ detail, onChangeErrorImg, onUnloadDetailSpot, onToggle }) =
                 <Info>
                     <CloseButton icon={faXmark} onClick={onUnloadDetailSpot} />
                     <Title>{title}</Title>
-                    <FavoritesBox onClick={onToggle}>
+                    <LikesBox onClick={onToggle}>
                         <FontAwesomeIcon icon={faStar} />
                         <div>111</div>
-                    </FavoritesBox>
+                    </LikesBox>
                     <Detail>{overview}</Detail>
                 </Info>
             </ModalContainer>
