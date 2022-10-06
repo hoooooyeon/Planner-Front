@@ -15,17 +15,12 @@ export const loadDetailSpot = ({ id }) => {
     return client.get(`/api/tours/lists/${id}`);
 };
 
-// 사용자의 즐겨찾기된 여행지 가져오기
-export const loadFavoritesSpot = ({ id }) => {
-    return client.get(`/api/spots/${id}`);
-};
-
 // 여행지 즐겨찾기 추가
-export const addFavoritesSpot = ({ spotId }) => {
-    return client.post(`/api/spots/likes/${spotId}`);
+export const addlikeSpot = ({ accountId, spotId }) => {
+    return client.post(`/api/spots/likes/${accountId}`, spotId);
 };
 
 // 여행지 즐겨찾기 삭제
-export const removeFavoritesSpot = ({ spotId }) => {
-    return client.delete(`/api/spots/likes/${spotId}`);
+export const removeLikeSpot = ({ accountId, spotId }) => {
+    return client.delete(`/api/spots/likes/${accountId}`, spotId);
 };

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
+import defaultImg from '../../lib/images/defaultImg.jpg';
 
 const Background = styled.div`
     position: fixed;
@@ -79,8 +80,12 @@ const LikesBox = styled.div`
 //     color: yellow;
 // `}
 
-const SpotModal = ({ detail, onChangeErrorImg, onUnloadDetailSpot, onToggle }) => {
-    const { title, firstimage, overview } = detail;
+const SpotDetailModal = ({ detail, onUnloadDetailSpot, onAddLikeSpot }) => {
+    const { title, firstimage, overview, contentid } = detail;
+    // 대체 이미지 넣기
+    const onChangeErrorImg = (e) => {
+        e.target.src = defaultImg;
+    };
     // 모달 외부 스크롤 고정
     useEffect(() => {
         document.body.style.cssText = `
@@ -96,21 +101,29 @@ const SpotModal = ({ detail, onChangeErrorImg, onUnloadDetailSpot, onToggle }) =
     }, []);
 
     return (
-        <Background onClick={onUnloadDetailSpot}>
-            <ModalContainer onClick={(e) => e.stopPropagation()}>
-                <Img src={firstimage} alt={title} onError={onChangeErrorImg} />
-                <Info>
-                    <CloseButton icon={faXmark} onClick={onUnloadDetailSpot} />
-                    <Title>{title}</Title>
-                    <LikesBox onClick={onToggle}>
-                        <FontAwesomeIcon icon={faStar} />
-                        <div>111</div>
-                    </LikesBox>
-                    <Detail>{overview}</Detail>
-                </Info>
-            </ModalContainer>
-        </Background>
+        <>
+            {detail && (
+                <Background onClick={onUnloadDetailSpot}>
+                    <ModalContainer onClick={(e) => e.stopPropagation()}>
+                        <Img src={firstimage} alt={title} onError={onChangeErrorImg} />
+                        <Info>
+                            <CloseButton icon={faXmark} onClick={onUnloadDetailSpot} />
+                            <Title>{title}</Title>
+                            <LikesBox
+                                onClick={() => {
+                                    onAddLikeSpot(contentid);
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faStar} />
+                                <div>111</div>
+                            </LikesBox>
+                            <Detail>{overview}</Detail>
+                        </Info>
+                    </ModalContainer>
+                </Background>
+            )}
+        </>
     );
 };
 
-export default SpotModal;
+export default SpotDetailModal;

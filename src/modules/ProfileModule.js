@@ -1,6 +1,6 @@
-import createSaga from "../lib/createSaga";
+import createSaga from '../lib/createSaga';
 import { takeLatest } from 'redux-saga/effects';
-import * as profileAPI from "../lib/api/profileAPI";
+import * as profileAPI from '../lib/api/profileAPI';
 
 // 액션 타입
 const initializeType = 'profile/INITIALIZE';
@@ -16,58 +16,70 @@ const profileUpdateFailureType = 'profile/PROFILE_UPDATE_FAILURE';
 const profileImageUpdateType = 'profile/PROFILE_IMAGE_UPDATE';
 const profileImageUpdateSuccessType = 'profile/PROFILE_IMAGE_UPDATE_SUCCESS';
 const profileImageUpdateFailureType = 'profile/PROFILE_IMAGE_UPDATE_FAILURE';
+const likeSpotIdCheckType = 'profile/LIKE_SPOT_ID_CHECK';
+const likeSpotIdCheckSuccessType = 'profile/LIKE_SPOT_ID_CHECK_SUCCESS';
+const likeSpotIdCheckFailureType = 'profile/LIKE_SPOT_ID_CHECK_FAILURE';
 
 // 액션 함수
 export const initializeAction = () => ({
-    type: initializeType
+    type: initializeType,
 });
 
 export const initializeErrorAction = () => ({
-    type: initializeErrorType
-})
+    type: initializeErrorType,
+});
 
 export const changeFieldAction = ({ name, value }) => ({
     type: changeFieldType,
     name,
-    value
+    value,
 });
 
 export const profileLoadAction = (accountId) => ({
     type: profileLoadType,
-    accountId
+    accountId,
 });
 
 export const profileUpdateAction = ({ accountId, nickname, phone }) => ({
     type: profileUpdateType,
     accountId,
     nickname,
-    phone
+    phone,
 });
 
 export const profileImageUpdateAction = ({ accountId, formData }) => ({
     type: profileImageUpdateType,
     accountId,
-    formData
+    formData,
+});
+
+export const likeSpotIdCheckAction = (accountId, spotId) => ({
+    type: likeSpotIdCheckType,
+    accountId,
+    spotId,
 });
 
 const profileLoad = createSaga(profileLoadType, profileAPI.profileLoad);
 const profileUpdate = createSaga(profileUpdateType, profileAPI.profileUpdate);
 const profileImageUpdate = createSaga(profileImageUpdateType, profileAPI.profileImageUpdate);
+const likeSpotIdCheck = createSaga(likeSpotIdCheckType, profileAPI.likeSpotIdCheck);
 
 export function* profileSaga() {
     yield takeLatest(profileLoadType, profileLoad);
     yield takeLatest(profileUpdateType, profileUpdate);
-    yield takeLatest(profileImageUpdateType, profileImageUpdate)
-};
+    yield takeLatest(profileImageUpdateType, profileImageUpdate);
+    yield takeLatest(likeSpotIdCheckType, likeSpotIdCheck);
+}
 
 const initialState = {
     profileField: {
         nickname: '',
-        phone: ''
+        phone: '',
     },
     profile: null,
     profileUpdate: false,
-    profileError: null
+    profileError: null,
+    likeSpotId: null,
 };
 
 function profileReducer(state = initialState, action) {
@@ -85,7 +97,7 @@ function profileReducer(state = initialState, action) {
             return {
                 ...state,
                 profile: action.payload.data,
-                profileField: { ...state.profileField, nickname: action.payload.data.nickname, phone: action.payload.data.phone || '' }
+                profileField: { ...state.profileField, nickname: action.payload.data.nickname, phone: action.payload.data.phone || '' },
             };
         }
         case profileLoadFailureType: {
@@ -102,6 +114,12 @@ function profileReducer(state = initialState, action) {
         }
         case profileImageUpdateFailureType: {
             return { ...state, profileUpdate: false, profileError: action.payload.message };
+        }
+        case likeSpotIdCheckSuccessType: {
+            return { ...state, likeSpotId: action.payload.contentIds };
+        }
+        case likeSpotIdCheckFailureType: {
+            return { ...state, profileError: action.payload.data };
         }
         default: {
             return state;

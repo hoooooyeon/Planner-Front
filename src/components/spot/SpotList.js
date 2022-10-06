@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import SpotItem from './SpotItem';
-import SpotModal from './SpotModal';
+import defaultImg from '../../lib/images/defaultImg.jpg';
+import SpotDetailModal from './SpotDetailModal';
 
 const SpotListBlock = styled.div`
     margin: 50px auto;
@@ -37,12 +38,16 @@ const List = styled.div`
     flex-wrap: wrap;
 `;
 
-const SpotList = ({ areas, spots, detail, spotError, currentInfo, onLoadDetailSpot, onUnloadDetailSpot, onChangeErrorImg, onFirstSpotsPage }) => {
-    const { areaNum } = currentInfo;
+const SpotList = ({ areas, spots, spotError, detail, currentInfo, onLoadDetailSpot, onFirstSpotsPage, onUnloadDetailSpot, onAddLikeSpot }) => {
+    // 대체 이미지 넣기
+    const onChangeErrorImg = (e) => {
+        e.target.src = defaultImg;
+    };
 
     if (spotError) {
         return <SpotListBlock>에러가 발생했습니다.</SpotListBlock>;
     }
+    const { areaNum } = currentInfo;
     return (
         <SpotListBlock>
             <MenuTitle>추천 여행지</MenuTitle>
@@ -62,7 +67,7 @@ const SpotList = ({ areas, spots, detail, spotError, currentInfo, onLoadDetailSp
                     ))}
                 </List>
             )}
-            {detail && detail.map((data) => <SpotModal detail={data} key={data.contentid} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} />)}
+            {detail && detail.map((data) => <SpotDetailModal detail={data} key={data.contentid} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} onAddLikeSpot={onAddLikeSpot} />)}
         </SpotListBlock>
     );
 };

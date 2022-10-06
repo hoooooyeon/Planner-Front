@@ -34,7 +34,6 @@ const PageButton = styled.div`
 
 const SpotPagination = ({ currentInfo, spots, onUpdatePageNum, onFirstPage, onLastPage, onNextPage, onPrevPage }) => {
     const { pageNum, totalPage, pagination } = currentInfo;
-
     return (
         <>
             {spots && pagination && (

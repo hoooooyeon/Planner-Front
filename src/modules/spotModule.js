@@ -1,6 +1,6 @@
-import createRequestSaga from '../lib/createRequestSaga';
 import * as spotAPI from '../lib/api/spotAPI';
 import { takeLatest } from 'redux-saga/effects';
+import createSaga from '../lib/createSaga';
 
 const LOAD_AREAS = 'spot/LOAD_AREAS';
 const LOAD_AREAS_SUCCESS = 'spot/LOAD_AREAS_SUCCESS';
@@ -21,6 +21,14 @@ const LOAD_DETAIL_SPOT_SUCCESS = 'spot/LOAD_DETAIL_SPOT_SUCCESS';
 const LOAD_DETAIL_SPOT_FAILURE = 'spot/LOAD_DETAIL_SPOT_FAILURE';
 const UNLOAD_DETAIL_SPOT = 'spot/UNLOAD_DETAIL_SPOT';
 
+const ADD_LIKE_SPOT = 'spot/ADD_LIKE_SPOT';
+const ADD_LIKE_SPOT_SUCCESS = 'spot/ADD_LIKE_SPOT_SUCCESS';
+const ADD_LIKE_SPOT_FAILURE = 'spot/ADD_LIKE_SPOT_FAILURE';
+
+const REMOVE_LIKE_SPOT = 'spot/REMOVE_LIKE_SPOT';
+const REMOVE_LIKE_SPOT_SUCCESS = 'spot/REMOVE_LIKE_SPOT_SUCCESS';
+const REMOVE_LIKE_SPOT_FAILURE = 'spot/REMOVE_LIKE_SPOT_FAILURE';
+
 export const loadAreas = () => ({ type: LOAD_AREAS });
 export const loadSpots = (areaCode, page) => ({ type: LOAD_SPOTS, areaCode, page });
 export const updateAreaNum = (num) => ({ type: UPDATE_AREA_NUM, num });
@@ -30,14 +38,20 @@ export const updateTotalPage = (num) => ({ type: UPDATE_TOTAL_PAGE, num });
 export const updatePagination = (num) => ({ type: UPDATE_PAGINATION, num });
 export const loadDetailSpot = (id) => ({ type: LOAD_DETAIL_SPOT, id });
 export const unloadDetailSpot = () => ({ type: UNLOAD_DETAIL_SPOT });
+export const addLikeSpot = (accountId, spotId) => ({ type: ADD_LIKE_SPOT, accountId, spotId });
+export const removeLikeSpot = (accountId, spotId) => ({ type: REMOVE_LIKE_SPOT, accountId, spotId });
 
-const loadAreasSaga = createRequestSaga(LOAD_AREAS, spotAPI.loadAreas);
-const loadSpotsSaga = createRequestSaga(LOAD_SPOTS, spotAPI.loadSpots);
-const loadDetailSpotSaga = createRequestSaga(LOAD_DETAIL_SPOT, spotAPI.loadDetailSpot);
+const loadAreasSaga = createSaga(LOAD_AREAS, spotAPI.loadAreas);
+const loadSpotsSaga = createSaga(LOAD_SPOTS, spotAPI.loadSpots);
+const loadDetailSpotSaga = createSaga(LOAD_DETAIL_SPOT, spotAPI.loadDetailSpot);
+const addLikeSpotSaga = createSaga(ADD_LIKE_SPOT, spotAPI.addlikeSpot);
+const removeLikeSpotSaga = createSaga(REMOVE_LIKE_SPOT, spotAPI.removeLikeSpot);
 export function* spotSaga() {
     yield takeLatest(LOAD_AREAS, loadAreasSaga);
     yield takeLatest(LOAD_SPOTS, loadSpotsSaga);
     yield takeLatest(LOAD_DETAIL_SPOT, loadDetailSpotSaga);
+    yield takeLatest(ADD_LIKE_SPOT, addLikeSpotSaga);
+    yield takeLatest(REMOVE_LIKE_SPOT, removeLikeSpotSaga);
 }
 
 const initialState = {
@@ -73,7 +87,7 @@ function spotReducer(state = initialState, action) {
                     list: action.payload.data.item.map((item) => {
                         return {
                             info: item,
-                            likes: false,
+                            like: false,
                         };
                     }),
                     totalCount: action.payload.data.totalCount,
@@ -139,7 +153,24 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 detail: null,
             };
-
+        case ADD_LIKE_SPOT_SUCCESS:
+            return {
+                ...state,
+            };
+        case ADD_LIKE_SPOT_FAILURE:
+            return {
+                ...state,
+                spotError: action.payload.error,
+            };
+        case REMOVE_LIKE_SPOT_SUCCESS:
+            return {
+                ...state,
+            };
+        case REMOVE_LIKE_SPOT_FAILURE:
+            return {
+                ...state,
+                spotError: action.payload.error,
+            };
         default:
             return state;
     }

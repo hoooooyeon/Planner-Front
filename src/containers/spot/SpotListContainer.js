@@ -1,16 +1,11 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
-import { loadAreas, loadDetailSpot, loadSpots, unloadDetailSpot, updateAreaNum, updateBlockNum, updatePageNum, updateSpot, updateSpotId, updateTotalCount } from '../../modules/spotModule';
-import defaultImg from '../../lib/images/defaultImg.jpg';
+import { addLikeSpot, loadAreas, loadDetailSpot, loadSpots, removeLikeSpot, unloadDetailSpot, updateAreaNum, updateBlockNum, updatePageNum } from '../../modules/spotModule';
+import { likeSpotIdCheckAction } from '../../modules/ProfileModule';
 
-const SpotListContainer = ({ areas, spots, detail, spotError, account, currentInfo, loadAreas, loadSpots, loadDetailSpot, unloadDetailSpot, updateAreaNum, updatePageNum, updateBlockNum }) => {
+const SpotListContainer = ({ areas, spots, spotError, detail, currentInfo, account, loadAreas, loadSpots, loadDetailSpot, updateAreaNum, updatePageNum, updateBlockNum, likeSpotIdCheck, addLikeSpot, removeLikeSpot, unloadDetailSpot }) => {
     const { areaNum, pageNum } = currentInfo;
-
-    // 대체 이미지 넣기
-    const onChangeErrorImg = (e) => {
-        e.target.src = defaultImg;
-    };
 
     // 지역 가져오기
     useEffect(() => {
@@ -24,15 +19,6 @@ const SpotListContainer = ({ areas, spots, detail, spotError, account, currentIn
         }
     }, [areas, loadSpots, areaNum, pageNum]);
 
-    // 여행지 아이디 적출
-    useEffect(() => {
-        if (spots) {
-            const contentIdArr = spots.list.map((spot) => {
-                return spot.info.contentid;
-            });
-        }
-    });
-
     // 여행지 첫페이지
     const onFirstSpotsPage = (areaCode) => {
         updateAreaNum(areaCode);
@@ -40,17 +26,28 @@ const SpotListContainer = ({ areas, spots, detail, spotError, account, currentIn
         updateBlockNum(0);
     };
 
+    // 여행지 아이디 적출
+    // useEffect(() => {
+    //     if (spots && account) {
+    //         const { accountId } = account;
+    //         const contentIdArr = spots.list.map((spot) => {
+    //             return spot.info.contentid;
+    //         });
+    //         likeSpotIdCheck(accountId, contentIdArr);
+    //     }
+    // }, [spots, likeSpotIdCheck, account]);
+
     return (
         <SpotList
             areas={areas}
             spots={spots}
-            detail={detail}
             spotError={spotError}
+            detail={detail}
             currentInfo={currentInfo}
             onLoadDetailSpot={loadDetailSpot}
-            onUnloadDetailSpot={unloadDetailSpot}
-            onChangeErrorImg={onChangeErrorImg}
             onFirstSpotsPage={onFirstSpotsPage}
+            onUnloadDetailSpot={unloadDetailSpot}
+            onAddLikeSpot={addLikeSpot}
         />
     );
 };
@@ -60,8 +57,9 @@ const mapStateToProps = (state) => ({
     spots: state.spotReducer.spots,
     detail: state.spotReducer.detail,
     spotError: state.spotReducer.spotError,
-    account: state.authReducer.account,
     currentInfo: state.spotReducer.currentInfo,
+    likeSpotId: state.profileReducer.likeSpotId,
+    account: state.authReducer.account,
 });
 const mapDispatchToProps = (dispatch) => ({
     loadAreas: () => {
@@ -84,6 +82,15 @@ const mapDispatchToProps = (dispatch) => ({
     },
     unloadDetailSpot: () => {
         dispatch(unloadDetailSpot());
+    },
+    likeSpotIdCheck: (accountId, spotId) => {
+        dispatch(likeSpotIdCheckAction(accountId, spotId));
+    },
+    addLikeSpot: (accountId, spotId) => {
+        dispatch(addLikeSpot(accountId, spotId));
+    },
+    removeLikeSpot: (accountId, spotId) => {
+        dispatch(removeLikeSpot(accountId, spotId));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);
