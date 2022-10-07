@@ -36,22 +36,17 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     position: relative;
     bottom: 30px;
     left: 255px;
-    color: lightgray;
+    color: ${(props) => (props.like ? 'yellow' : 'lightgray')};
 `;
-// color: ${(props) => (props ? 'yellow' : 'white')};
 
-const SpotItem = ({ spot, onChangeErrorImg, onLoadDetailSpot, onUpdateSpot }) => {
-    const { title, firstimage, contentid } = spot;
-
-    // useEffect(() => {
-    //     onUpdateSpot(s);
-    // }, [onUpdateSpot, s]);
-    // console.log(spot);
+const SpotItem = ({ spot, onChangeErrorImg, onLoadDetailSpot }) => {
+    const { title, firstimage, contentid } = spot.info;
+    const { like } = spot;
 
     return (
         <SpotItemBlock onClick={() => onLoadDetailSpot(contentid)}>
             <SimpleImg src={firstimage} alt={title} onError={onChangeErrorImg} />
-            <StyledFontAwesomeIcon icon={faStar} />
+            <StyledFontAwesomeIcon icon={faStar} like={like} />
             <p>{title}</p>
         </SpotItemBlock>
     );

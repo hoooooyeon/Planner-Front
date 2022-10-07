@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
@@ -59,14 +59,20 @@ const CloseButton = styled(FontAwesomeIcon)`
 
 const LikesBox = styled.div`
     background-color: lightgray;
-    border-radius: 5px;
     color: white;
+    border-radius: 5px;
     padding: 10px;
     display: inline-block;
     height: 1rem;
     position: absolute;
     left: 1000px;
     top: 50px;
+    ${(props) =>
+        props.like &&
+        css`
+            background-color: lightblue;
+            color: yellow;
+        `}
     &:hover {
         cursor: pointer;
     }
@@ -75,13 +81,12 @@ const LikesBox = styled.div`
         margin-left: 5px;
     }
 `;
-// ${props => props && css`
-//     background-color: lightblue;
-//     color: yellow;
-// `}
 
-const SpotDetailModal = ({ detail, onUnloadDetailSpot, onAddLikeSpot }) => {
-    const { title, firstimage, overview, contentid } = detail;
+const SpotDetailModal = ({ detail, likeSpotId, onUnloadDetailSpot, onAddLikeSpot }) => {
+    // const { title, firstimage, overview, contentid } = detail;
+    const { title, firstimage, overview, contentid } = detail.info;
+    const { like } = detail.like;
+
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
         e.target.src = defaultImg;
@@ -110,6 +115,7 @@ const SpotDetailModal = ({ detail, onUnloadDetailSpot, onAddLikeSpot }) => {
                             <CloseButton icon={faXmark} onClick={onUnloadDetailSpot} />
                             <Title>{title}</Title>
                             <LikesBox
+                                like={like}
                                 onClick={() => {
                                     onAddLikeSpot(contentid);
                                 }}

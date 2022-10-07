@@ -4,7 +4,25 @@ import SpotList from '../../components/spot/SpotList';
 import { addLikeSpot, loadAreas, loadDetailSpot, loadSpots, removeLikeSpot, unloadDetailSpot, updateAreaNum, updateBlockNum, updatePageNum } from '../../modules/spotModule';
 import { likeSpotIdCheckAction } from '../../modules/ProfileModule';
 
-const SpotListContainer = ({ areas, spots, spotError, detail, currentInfo, account, loadAreas, loadSpots, loadDetailSpot, updateAreaNum, updatePageNum, updateBlockNum, likeSpotIdCheck, addLikeSpot, removeLikeSpot, unloadDetailSpot }) => {
+const SpotListContainer = ({
+    areas,
+    spots,
+    spotError,
+    detail,
+    currentInfo,
+    account,
+    likeSpotId,
+    loadAreas,
+    loadSpots,
+    loadDetailSpot,
+    updateAreaNum,
+    updatePageNum,
+    updateBlockNum,
+    likeSpotIdCheck,
+    addLikeSpot,
+    removeLikeSpot,
+    unloadDetailSpot,
+}) => {
     const { areaNum, pageNum } = currentInfo;
 
     // 지역 가져오기
@@ -26,16 +44,33 @@ const SpotListContainer = ({ areas, spots, spotError, detail, currentInfo, accou
         updateBlockNum(0);
     };
 
-    // 여행지 아이디 적출
+    // 사용자의 좋아요 여행지 비교
+    useEffect(() => {
+        if (spots && account) {
+            const { accountId } = account;
+            const contentIdArr = spots.list.map((spot) => {
+                return spot.info.contentid;
+            });
+            likeSpotIdCheck(accountId, contentIdArr);
+        }
+    }, [spots, likeSpotIdCheck, account]);
+
+    useEffect(() => {
+        if (spots && likeSpotId) {
+            spots.list.map((spot, i) => (spot.like = likeSpotId[i].state));
+        }
+    }, [spots, likeSpotId]);
+
     // useEffect(() => {
-    //     if (spots && account) {
-    //         const { accountId } = account;
-    //         const contentIdArr = spots.list.map((spot) => {
-    //             return spot.info.contentid;
+    //     if (detail && likeSpotId) {
+    //         likeSpotId.map((spotId) => {
+    //             if (spotId.contentId === detail.contentid) {
+    //                 detail.like = true;
+    //             }
+    //             return null;
     //         });
-    //         likeSpotIdCheck(accountId, contentIdArr);
     //     }
-    // }, [spots, likeSpotIdCheck, account]);
+    // });
 
     return (
         <SpotList
@@ -44,6 +79,7 @@ const SpotListContainer = ({ areas, spots, spotError, detail, currentInfo, accou
             spotError={spotError}
             detail={detail}
             currentInfo={currentInfo}
+            likeSpotId={likeSpotId}
             onLoadDetailSpot={loadDetailSpot}
             onFirstSpotsPage={onFirstSpotsPage}
             onUnloadDetailSpot={unloadDetailSpot}

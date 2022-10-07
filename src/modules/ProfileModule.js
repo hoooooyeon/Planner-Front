@@ -116,7 +116,7 @@ function profileReducer(state = initialState, action) {
             return { ...state, profileUpdate: false, profileError: action.payload.message };
         }
         case likeSpotIdCheckSuccessType: {
-            return { ...state, likeSpotId: action.payload.contentIds };
+            return { ...state, likeSpotId: action.payload.data };
         }
         case likeSpotIdCheckFailureType: {
             return { ...state, profileError: action.payload.data };

@@ -141,7 +141,10 @@ function spotReducer(state = initialState, action) {
         case LOAD_DETAIL_SPOT_SUCCESS:
             return {
                 ...state,
-                detail: action.payload.data.item,
+                detail: {
+                    info: action.payload.data.item[0],
+                    like: false,
+                },
             };
         case LOAD_DETAIL_SPOT_FAILURE:
             return {

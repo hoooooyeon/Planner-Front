@@ -13,5 +13,5 @@ export const profileImageUpdate = ({ accountId, formData }) => {
 };
 
 export const likeSpotIdCheck = ({ accountId, spotId }) => {
-    //return client.post(`/api/users/likes/${accountId}/check?contentIds=0,1,2,3,5,6`, spotId);
+    return client.get(`/api/users/likes/${accountId}/check?contentIds=${spotId}`);
 };
