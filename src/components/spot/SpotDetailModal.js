@@ -57,7 +57,7 @@ const CloseButton = styled(FontAwesomeIcon)`
     }
 `;
 
-const LikesBox = styled.div`
+const LikeBox = styled.div`
     background-color: lightgray;
     color: white;
     border-radius: 5px;
@@ -73,6 +73,7 @@ const LikesBox = styled.div`
             background-color: lightblue;
             color: yellow;
         `}
+
     &:hover {
         cursor: pointer;
     }
@@ -82,10 +83,9 @@ const LikesBox = styled.div`
     }
 `;
 
-const SpotDetailModal = ({ detail, likeSpotId, onUnloadDetailSpot, onAddLikeSpot }) => {
-    // const { title, firstimage, overview, contentid } = detail;
+const SpotDetailModal = ({ detail, onUnloadDetailSpot, onAddLikeSpot, onLikeToggle }) => {
     const { title, firstimage, overview, contentid } = detail.info;
-    const { like } = detail.like;
+    const { like } = detail;
 
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
@@ -114,15 +114,16 @@ const SpotDetailModal = ({ detail, likeSpotId, onUnloadDetailSpot, onAddLikeSpot
                         <Info>
                             <CloseButton icon={faXmark} onClick={onUnloadDetailSpot} />
                             <Title>{title}</Title>
-                            <LikesBox
+                            <LikeBox
                                 like={like}
                                 onClick={() => {
-                                    onAddLikeSpot(contentid);
+                                    // onAddLikeSpot(contentid);
+                                    onLikeToggle();
                                 }}
                             >
                                 <FontAwesomeIcon icon={faStar} />
                                 <div>111</div>
-                            </LikesBox>
+                            </LikeBox>
                             <Detail>{overview}</Detail>
                         </Info>
                     </ModalContainer>

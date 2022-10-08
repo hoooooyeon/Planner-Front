@@ -29,6 +29,9 @@ const REMOVE_LIKE_SPOT = 'spot/REMOVE_LIKE_SPOT';
 const REMOVE_LIKE_SPOT_SUCCESS = 'spot/REMOVE_LIKE_SPOT_SUCCESS';
 const REMOVE_LIKE_SPOT_FAILURE = 'spot/REMOVE_LIKE_SPOT_FAILURE';
 
+const UPDATE_SPOTS_LIKE = 'spot/UPDATE_SPOTS_LIKE';
+const UPDATE_DETAIL_LIKE = 'spot/UPDATE_DETAIL_LIKE';
+
 export const loadAreas = () => ({ type: LOAD_AREAS });
 export const loadSpots = (areaCode, page) => ({ type: LOAD_SPOTS, areaCode, page });
 export const updateAreaNum = (num) => ({ type: UPDATE_AREA_NUM, num });
@@ -40,6 +43,8 @@ export const loadDetailSpot = (id) => ({ type: LOAD_DETAIL_SPOT, id });
 export const unloadDetailSpot = () => ({ type: UNLOAD_DETAIL_SPOT });
 export const addLikeSpot = (accountId, spotId) => ({ type: ADD_LIKE_SPOT, accountId, spotId });
 export const removeLikeSpot = (accountId, spotId) => ({ type: REMOVE_LIKE_SPOT, accountId, spotId });
+export const updateSpotsLike = (likes) => ({ type: UPDATE_SPOTS_LIKE, likes });
+export const updateDetailLike = (like) => ({ type: UPDATE_DETAIL_LIKE, like });
 
 const loadAreasSaga = createSaga(LOAD_AREAS, spotAPI.loadAreas);
 const loadSpotsSaga = createSaga(LOAD_SPOTS, spotAPI.loadSpots);
@@ -173,6 +178,27 @@ function spotReducer(state = initialState, action) {
             return {
                 ...state,
                 spotError: action.payload.error,
+            };
+        case UPDATE_SPOTS_LIKE:
+            return {
+                ...state,
+                spots: {
+                    list: action.likes.map((like, i) => {
+                        return {
+                            info: state.spots.list[i].info,
+                            like: String(like.contentId) === state.spots.list[i].info.contentid ? like.state : false,
+                        };
+                    }),
+                    totalCount: state.spots.totalCount,
+                },
+            };
+        case UPDATE_DETAIL_LIKE:
+            return {
+                ...state,
+                detail: {
+                    info: state.detail.info,
+                    like: action.like,
+                },
             };
         default:
             return state;

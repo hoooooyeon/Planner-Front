@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
-import { addLikeSpot, loadAreas, loadDetailSpot, loadSpots, removeLikeSpot, unloadDetailSpot, updateAreaNum, updateBlockNum, updatePageNum } from '../../modules/spotModule';
+import { addLikeSpot, loadAreas, loadDetailSpot, loadSpots, removeLikeSpot, unloadDetailSpot, updateAreaNum, updateBlockNum, updateDetailLike, updatePageNum, updateSpotsLike } from '../../modules/spotModule';
 import { likeSpotIdCheckAction } from '../../modules/ProfileModule';
 
 const SpotListContainer = ({
@@ -22,6 +22,8 @@ const SpotListContainer = ({
     addLikeSpot,
     removeLikeSpot,
     unloadDetailSpot,
+    updateSpotsLike,
+    updateDetailLike,
 }) => {
     const { areaNum, pageNum } = currentInfo;
 
@@ -57,20 +59,28 @@ const SpotListContainer = ({
 
     useEffect(() => {
         if (spots && likeSpotId) {
-            spots.list.map((spot, i) => (spot.like = likeSpotId[i].state));
+            updateSpotsLike(likeSpotId);
         }
-    }, [spots, likeSpotId]);
+    }, [spots, likeSpotId, updateSpotsLike]);
 
-    // useEffect(() => {
-    //     if (detail && likeSpotId) {
-    //         likeSpotId.map((spotId) => {
-    //             if (spotId.contentId === detail.contentid) {
-    //                 detail.like = true;
-    //             }
-    //             return null;
-    //         });
-    //     }
-    // });
+    useEffect(() => {
+        if (detail && spots) {
+            spots.list.map((spot) => {
+                if (spot.info.contentid === detail.info.contentid) {
+                    updateDetailLike(spot.like);
+                }
+                return null;
+            });
+        }
+    }, [detail, spots, updateDetailLike]);
+
+    const onLikeToggle = () => {
+        if (detail && detail.like === true && account) {
+            removeLikeSpot(account.accountId, detail.contentid);
+        } else if (detail && detail.likk === false && account) {
+            addLikeSpot(account.accountId, detail.contentid);
+        }
+    };
 
     return (
         <SpotList
@@ -79,11 +89,11 @@ const SpotListContainer = ({
             spotError={spotError}
             detail={detail}
             currentInfo={currentInfo}
-            likeSpotId={likeSpotId}
             onLoadDetailSpot={loadDetailSpot}
             onFirstSpotsPage={onFirstSpotsPage}
             onUnloadDetailSpot={unloadDetailSpot}
             onAddLikeSpot={addLikeSpot}
+            onLikeToggle={onLikeToggle}
         />
     );
 };
@@ -127,6 +137,12 @@ const mapDispatchToProps = (dispatch) => ({
     },
     removeLikeSpot: (accountId, spotId) => {
         dispatch(removeLikeSpot(accountId, spotId));
+    },
+    updateSpotsLike: (likes) => {
+        dispatch(updateSpotsLike(likes));
+    },
+    updateDetailLike: (like) => {
+        dispatch(updateDetailLike(like));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);
