@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
 import { addLikeSpot, loadAreas, loadDetailSpot, loadSpots, removeLikeSpot, unloadDetailSpot, updateAreaNum, updateBlockNum, updateDetailLike, updatePageNum, updateSpotsLike } from '../../modules/spotModule';
@@ -34,10 +34,10 @@ const SpotListContainer = ({
 
     // 여행지 가져오기
     useEffect(() => {
-        if (areas) {
+        if (areaNum) {
             loadSpots(areaNum, pageNum);
         }
-    }, [areas, loadSpots, areaNum, pageNum]);
+    }, [loadSpots, areaNum, pageNum]);
 
     // 여행지 첫페이지
     const onFirstSpotsPage = (areaCode) => {
@@ -53,33 +53,36 @@ const SpotListContainer = ({
             const contentIdArr = spots.list.map((spot) => {
                 return spot.info.contentid;
             });
+
             likeSpotIdCheck(accountId, contentIdArr);
         }
     }, [spots, likeSpotIdCheck, account]);
 
-    useEffect(() => {
-        if (spots && likeSpotId) {
-            updateSpotsLike(likeSpotId);
-        }
-    }, [spots, likeSpotId, updateSpotsLike]);
+    // 여행지 좋아요 최신화
+    // useEffect(() => {
+    //     if (spots && likeSpotId) {
+    //         updateSpotsLike(likeSpotId);
+    //     }
+    // }, [spots, likeSpotId, updateSpotsLike]);
 
-    useEffect(() => {
-        if (detail && spots) {
-            spots.list.map((spot) => {
-                if (spot.info.contentid === detail.info.contentid) {
-                    updateDetailLike(spot.like);
-                }
-                return null;
-            });
-        }
-    }, [detail, spots, updateDetailLike]);
+    // 디테일 좋아요 최신화
+    // useEffect(() => {
+    //     if (detail && spots) {
+    //         spots.list.map((spot) => {
+    //             if (spot.info.contentid === detail.info.contentid) {
+    //                 updateDetailLike(spot.like);
+    //             }
+    //             return null;
+    //         });
+    //     }
+    // }, [detail, spots, updateDetailLike]);
 
     const onLikeToggle = () => {
-        if (detail && detail.like === true && account) {
-            removeLikeSpot(account.accountId, detail.contentid);
-        } else if (detail && detail.likk === false && account) {
-            addLikeSpot(account.accountId, detail.contentid);
-        }
+        // if (detail && detail.like === true && account) {
+        //     removeLikeSpot(account.accountId, detail.contentid);
+        // } else if (detail && detail.likk === false && account) {
+        //     addLikeSpot(account.accountId, detail.contentid);
+        // }
     };
 
     return (

@@ -6,18 +6,20 @@ import { updateAreaNum, updateBlockNum, updatePageNum, updateTotalPage, updatePa
 const SpotPaginationContainer = ({ spots, currentInfo, updatePageNum, updateBlockNum, updateTotalPage, updatePagination }) => {
     const { pageNum, blockNum, totalPage } = currentInfo;
 
-    const [blockArea, setBlockArea] = useState(0); //
+    const [blockArea, setBlockArea] = useState(0); // 페이지네이션 block의 기준
     const [countArr, setCountArr] = useState(); // 페이지네이션의 총합 배열
     const pageLimit = 10; // 보여질 페이지네이션의 개수
 
-    // 페이지네이션 함수
+    // 페이지네이션 배열 생성
     useEffect(() => {
         const createArr = () => {
-            const iArr = [];
-            for (let i = 0; i < totalPage; i++) {
-                iArr[i] = i + 1;
+            if (totalPage) {
+                const iArr = [];
+                for (let i = 0; i < totalPage; i++) {
+                    iArr[i] = i + 1;
+                }
+                return iArr;
             }
-            return iArr;
         };
         setCountArr(createArr);
     }, [totalPage]);
@@ -27,7 +29,6 @@ const SpotPaginationContainer = ({ spots, currentInfo, updatePageNum, updateBloc
             const { totalCount } = spots;
             updateTotalPage(Math.ceil(totalCount / 10));
             setBlockArea(blockNum * pageLimit);
-
             if (countArr) {
                 updatePagination(countArr.slice(blockArea, pageLimit + blockArea));
             }
