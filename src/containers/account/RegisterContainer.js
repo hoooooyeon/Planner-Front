@@ -1,12 +1,22 @@
+import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router";
 import Auth from "../../components/account/Auth";
+import validUtil from "../../lib/utils/validationCheck";
 import { changeField, initialize, initializeError, initializeForm, registerAction } from "../../modules/authModule";
 
+const defualtValidMsg = {
+    email: false,
+    passwordConfirm: '',
+    username: '',
+    nickname: '',
+    phone: '',
+}
 
 const RegisterContainer = ({ history, type }) => {
     const dispatch = useDispatch();
+    const [valid, setValidMsg] = useState(defualtValidMsg);
     const { form, authError, state } = useSelector(({ authReducer }) => ({
         form: authReducer[type],
         authError: authReducer.authError,
@@ -20,6 +30,20 @@ const RegisterContainer = ({ history, type }) => {
             field: name,
             value: value
         }));
+
+        if (validUtil.valid(name, value)) {
+            setValidMsg({
+                ...valid,
+                [name]: true
+            });
+        }
+        else {
+            setValidMsg({
+                ...valid,
+                [name]: false
+            });
+        }
+
     };
 
     const onSubmit = (e) => {
@@ -46,7 +70,7 @@ const RegisterContainer = ({ history, type }) => {
     }, [dispatch]);
 
     return (
-        <Auth type={type} form={form} onChange={onChange} onSubmit={onSubmit} authError={state.message} />
+        <Auth type={type} form={form} onChange={onChange} onSubmit={onSubmit} valid={valid} authError={state.message} />
     );
 };
 

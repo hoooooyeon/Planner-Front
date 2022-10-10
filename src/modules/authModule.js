@@ -69,8 +69,8 @@ const initialState = {
         email: '',
         password: '',
         passwordConfirm: '',
-        username: '',
-        nickname: '',
+        userName: '',
+        nickName: '',
         phone: ''
     },
     account: null,
