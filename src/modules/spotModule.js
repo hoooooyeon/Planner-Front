@@ -192,6 +192,7 @@ function spotReducer(state = initialState, action) {
                     totalCount: state.spots.totalCount,
                 },
             };
+
         case UPDATE_DETAIL_LIKE:
             return {
                 ...state,
