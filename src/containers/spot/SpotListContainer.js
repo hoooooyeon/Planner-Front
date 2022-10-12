@@ -1,8 +1,21 @@
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
-import { addLikeSpot, loadAreas, loadDetailSpot, loadSpots, removeLikeSpot, unloadDetailSpot, updateAreaNum, updateBlockNum, updateDetailLike, updatePageNum, updateSpotsLike } from '../../modules/spotModule';
-import { likeSpotIdCheckAction } from '../../modules/ProfileModule';
+import {
+    addLikeSpotAction,
+    checkLikeSpotIdAction,
+    cleanLikeSpotIdAction,
+    loadAreasAction,
+    loadDetailSpotAction,
+    loadSpotsAction,
+    removeLikeSpotAction,
+    unloadDetailSpotAction,
+    updateAreaNumAction,
+    updateBlockNumAction,
+    updateDetailLikeAction,
+    updatePageNumAction,
+    updateSpotsLikeAction,
+} from '../../modules/spotModule';
 
 const SpotListContainer = ({
     areas,
@@ -18,12 +31,13 @@ const SpotListContainer = ({
     updateAreaNum,
     updatePageNum,
     updateBlockNum,
-    likeSpotIdCheck,
+    checkLikeSpotId,
     addLikeSpot,
     removeLikeSpot,
     unloadDetailSpot,
     updateSpotsLike,
     updateDetailLike,
+    cleanLikeSpotId,
 }) => {
     const { areaNum, pageNum } = currentInfo;
 
@@ -37,7 +51,8 @@ const SpotListContainer = ({
         if (areaNum) {
             loadSpots(areaNum, pageNum);
         }
-    }, [loadSpots, areaNum, pageNum]);
+        cleanLikeSpotId();
+    }, [loadSpots, areaNum, pageNum, cleanLikeSpotId]);
 
     // 여행지 첫페이지
     const onFirstSpotsPage = (areaCode) => {
@@ -53,17 +68,18 @@ const SpotListContainer = ({
             const contentIdArr = spots.list.map((spot) => {
                 return spot.info.contentid;
             });
-
-            likeSpotIdCheck(accountId, contentIdArr);
+            if (!likeSpotId && spots) {
+                checkLikeSpotId(accountId, contentIdArr);
+            }
         }
-    }, [spots, likeSpotIdCheck, account]);
+    }, [spots, account, checkLikeSpotId, likeSpotId]);
 
     // 여행지 좋아요 최신화
-    // useEffect(() => {
-    //     if (spots && likeSpotId) {
-    //         updateSpotsLike(likeSpotId);
-    //     }
-    // }, [spots, likeSpotId, updateSpotsLike]);
+    useEffect(() => {
+        if (likeSpotId) {
+            updateSpotsLike(likeSpotId);
+        }
+    }, [likeSpotId, updateSpotsLike]);
 
     // 디테일 좋아요 최신화
     // useEffect(() => {
@@ -80,7 +96,7 @@ const SpotListContainer = ({
     const onLikeToggle = () => {
         // if (detail && detail.like === true && account) {
         //     removeLikeSpot(account.accountId, detail.contentid);
-        // } else if (detail && detail.likk === false && account) {
+        // } else if (detail && detail.like === false && account) {
         //     addLikeSpot(account.accountId, detail.contentid);
         // }
     };
@@ -97,6 +113,7 @@ const SpotListContainer = ({
             onUnloadDetailSpot={unloadDetailSpot}
             onAddLikeSpot={addLikeSpot}
             onLikeToggle={onLikeToggle}
+            onUpdateDetailLike={updateDetailLike}
         />
     );
 };
@@ -107,45 +124,48 @@ const mapStateToProps = (state) => ({
     detail: state.spotReducer.detail,
     spotError: state.spotReducer.spotError,
     currentInfo: state.spotReducer.currentInfo,
-    likeSpotId: state.profileReducer.likeSpotId,
+    likeSpotId: state.spotReducer.likeSpotId,
     account: state.authReducer.account,
 });
 const mapDispatchToProps = (dispatch) => ({
     loadAreas: () => {
-        dispatch(loadAreas());
+        dispatch(loadAreasAction());
     },
     loadSpots: (areaCode, page) => {
-        dispatch(loadSpots(areaCode, page));
+        dispatch(loadSpotsAction(areaCode, page));
     },
     updateAreaNum: (num) => {
-        dispatch(updateAreaNum(num));
+        dispatch(updateAreaNumAction(num));
     },
     updatePageNum: (num) => {
-        dispatch(updatePageNum(num));
+        dispatch(updatePageNumAction(num));
     },
     updateBlockNum: (num) => {
-        dispatch(updateBlockNum(num));
+        dispatch(updateBlockNumAction(num));
     },
     loadDetailSpot: (id) => {
-        dispatch(loadDetailSpot(id));
+        dispatch(loadDetailSpotAction(id));
     },
     unloadDetailSpot: () => {
-        dispatch(unloadDetailSpot());
+        dispatch(unloadDetailSpotAction());
     },
-    likeSpotIdCheck: (accountId, spotId) => {
-        dispatch(likeSpotIdCheckAction(accountId, spotId));
+    checkLikeSpotId: (accountId, spotId) => {
+        dispatch(checkLikeSpotIdAction(accountId, spotId));
     },
     addLikeSpot: (accountId, spotId) => {
-        dispatch(addLikeSpot(accountId, spotId));
+        dispatch(addLikeSpotAction(accountId, spotId));
     },
     removeLikeSpot: (accountId, spotId) => {
-        dispatch(removeLikeSpot(accountId, spotId));
+        dispatch(removeLikeSpotAction(accountId, spotId));
     },
     updateSpotsLike: (likes) => {
-        dispatch(updateSpotsLike(likes));
+        dispatch(updateSpotsLikeAction(likes));
     },
     updateDetailLike: (like) => {
-        dispatch(updateDetailLike(like));
+        dispatch(updateDetailLikeAction(like));
+    },
+    cleanLikeSpotId: () => {
+        dispatch(cleanLikeSpotIdAction());
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);

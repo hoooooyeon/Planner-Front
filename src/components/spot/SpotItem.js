@@ -39,12 +39,17 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: ${(props) => (props.like ? 'yellow' : 'lightgray')};
 `;
 
-const SpotItem = ({ spot, onChangeErrorImg, onLoadDetailSpot }) => {
+const SpotItem = ({ spot, onChangeErrorImg, onLoadDetailSpot, onUpdateDetailLike }) => {
     const { title, firstimage, contentid } = spot.info;
     const { like } = spot;
 
     return (
-        <SpotItemBlock onClick={() => onLoadDetailSpot(contentid)}>
+        <SpotItemBlock
+            onClick={() => {
+                onLoadDetailSpot(contentid);
+                // onUpdateDetailLike(like);
+            }}
+        >
             <SimpleImg src={firstimage} alt={title} onError={onChangeErrorImg} />
             <StyledFontAwesomeIcon icon={faStar} like={like} />
             <p>{title}</p>

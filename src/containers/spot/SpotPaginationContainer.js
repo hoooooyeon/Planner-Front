@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import SpotPagination from '../../components/spot/SpotPagination';
-import { updateAreaNum, updateBlockNum, updatePageNum, updateTotalPage, updatePagination } from '../../modules/spotModule';
+import { updateBlockNumAction, updatePageNumAction, updateTotalPageAction, updatePaginationAction } from '../../modules/spotModule';
 
-const SpotPaginationContainer = ({ spots, currentInfo, updatePageNum, updateBlockNum, updateTotalPage, updatePagination }) => {
+const SpotPaginationContainer = ({ spots, currentInfo, updatePageNumAction, updateBlockNumAction, updateTotalPageAction, updatePaginationAction }) => {
     const { pageNum, blockNum, totalPage } = currentInfo;
 
     const [blockArea, setBlockArea] = useState(0); // 페이지네이션 block의 기준
@@ -27,38 +27,38 @@ const SpotPaginationContainer = ({ spots, currentInfo, updatePageNum, updateBloc
     useEffect(() => {
         if (spots) {
             const { totalCount } = spots;
-            updateTotalPage(Math.ceil(totalCount / 10));
+            updateTotalPageAction(Math.ceil(totalCount / 10));
             setBlockArea(blockNum * pageLimit);
             if (countArr) {
-                updatePagination(countArr.slice(blockArea, pageLimit + blockArea));
+                updatePaginationAction(countArr.slice(blockArea, pageLimit + blockArea));
             }
         }
-    }, [blockNum, spots, updateTotalPage, blockArea, countArr, updatePagination]);
+    }, [blockNum, spots, updateTotalPageAction, blockArea, countArr, updatePaginationAction]);
 
     const onFirstPage = () => {
-        updatePageNum(1);
-        updateBlockNum(0);
+        updatePageNumAction(1);
+        updateBlockNumAction(0);
     };
     const onLastPage = () => {
-        updatePageNum(totalPage);
-        updateBlockNum(Math.floor(totalPage / pageLimit));
+        updatePageNumAction(totalPage);
+        updateBlockNumAction(Math.floor(totalPage / pageLimit));
     };
 
     const onPrevPage = () => {
         if (pageNum <= 1) return;
         if (pageNum - 1 <= pageLimit * blockNum) {
-            updateBlockNum(blockNum - 1);
+            updateBlockNumAction(blockNum - 1);
         }
-        updatePageNum(pageNum - 1);
+        updatePageNumAction(pageNum - 1);
     };
     const onNextPage = () => {
         if (pageNum >= totalPage) return;
         if (pageLimit * (blockNum + 1) < pageNum + 1) {
-            updateBlockNum(blockNum + 1);
+            updateBlockNumAction(blockNum + 1);
         }
-        updatePageNum(pageNum + 1);
+        updatePageNumAction(pageNum + 1);
     };
-    return <SpotPagination spots={spots} currentInfo={currentInfo} onFirstPage={onFirstPage} onLastPage={onLastPage} onNextPage={onNextPage} onPrevPage={onPrevPage} onUpdatePageNum={updatePageNum} />;
+    return <SpotPagination spots={spots} currentInfo={currentInfo} onFirstPage={onFirstPage} onLastPage={onLastPage} onNextPage={onNextPage} onPrevPage={onPrevPage} onUpdatePageNum={updatePageNumAction} />;
 };
 
 export default connect(
@@ -67,10 +67,9 @@ export default connect(
         currentInfo: state.spotReducer.currentInfo,
     }),
     {
-        updateAreaNum,
-        updatePageNum,
-        updateBlockNum,
-        updateTotalPage,
-        updatePagination,
+        updatePageNumAction,
+        updateBlockNumAction,
+        updateTotalPageAction,
+        updatePaginationAction,
     },
 )(SpotPaginationContainer);

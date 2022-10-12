@@ -15,6 +15,11 @@ export const loadDetailSpot = ({ id }) => {
     return client.get(`/api/tours/lists/${id}`);
 };
 
+// 여행지 좋아요 체크
+export const checkLikeSpotId = ({ accountId, spotId }) => {
+    return client.get(`/api/users/likes/${accountId}/check?contentIds=${spotId}`);
+};
+
 // 여행지 즐겨찾기 추가
 export const addlikeSpot = ({ accountId, spotId }) => {
     return client.post(`/api/spots/likes/${accountId}`, spotId);

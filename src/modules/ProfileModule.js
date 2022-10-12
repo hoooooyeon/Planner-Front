@@ -16,9 +16,6 @@ const profileUpdateFailureType = 'profile/PROFILE_UPDATE_FAILURE';
 const profileImageUpdateType = 'profile/PROFILE_IMAGE_UPDATE';
 const profileImageUpdateSuccessType = 'profile/PROFILE_IMAGE_UPDATE_SUCCESS';
 const profileImageUpdateFailureType = 'profile/PROFILE_IMAGE_UPDATE_FAILURE';
-const likeSpotIdCheckType = 'profile/LIKE_SPOT_ID_CHECK';
-const likeSpotIdCheckSuccessType = 'profile/LIKE_SPOT_ID_CHECK_SUCCESS';
-const likeSpotIdCheckFailureType = 'profile/LIKE_SPOT_ID_CHECK_FAILURE';
 
 // 액션 함수
 export const initializeAction = () => ({
@@ -53,22 +50,14 @@ export const profileImageUpdateAction = ({ accountId, formData }) => ({
     formData,
 });
 
-export const likeSpotIdCheckAction = (accountId, spotId) => ({
-    type: likeSpotIdCheckType,
-    accountId,
-    spotId,
-});
-
 const profileLoad = createSaga(profileLoadType, profileAPI.profileLoad);
 const profileUpdate = createSaga(profileUpdateType, profileAPI.profileUpdate);
 const profileImageUpdate = createSaga(profileImageUpdateType, profileAPI.profileImageUpdate);
-const likeSpotIdCheck = createSaga(likeSpotIdCheckType, profileAPI.likeSpotIdCheck);
 
 export function* profileSaga() {
     yield takeLatest(profileLoadType, profileLoad);
     yield takeLatest(profileUpdateType, profileUpdate);
     yield takeLatest(profileImageUpdateType, profileImageUpdate);
-    yield takeLatest(likeSpotIdCheckType, likeSpotIdCheck);
 }
 
 const initialState = {
@@ -79,7 +68,6 @@ const initialState = {
     profile: null,
     profileUpdate: false,
     profileError: null,
-    likeSpotId: null,
 };
 
 function profileReducer(state = initialState, action) {
@@ -115,12 +103,7 @@ function profileReducer(state = initialState, action) {
         case profileImageUpdateFailureType: {
             return { ...state, profileUpdate: false, profileError: action.payload.message };
         }
-        case likeSpotIdCheckSuccessType: {
-            return { ...state, likeSpotId: action.payload.data };
-        }
-        case likeSpotIdCheckFailureType: {
-            return { ...state, profileError: action.payload.data };
-        }
+
         default: {
             return state;
         }

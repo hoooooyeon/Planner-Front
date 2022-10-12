@@ -117,8 +117,8 @@ const SpotDetailModal = ({ detail, onUnloadDetailSpot, onAddLikeSpot, onLikeTogg
                             <LikeBox
                                 like={like}
                                 onClick={() => {
-                                    // onAddLikeSpot(contentid);
-                                    onLikeToggle();
+                                    onAddLikeSpot(contentid);
+                                    // onLikeToggle();
                                 }}
                             >
                                 <FontAwesomeIcon icon={faStar} />
