@@ -32,10 +32,10 @@ const REMOVE_LIKE_SPOT_FAILURE_TYPE = 'spot/REMOVE_LIKE_SPOT_FAILURE';
 const UPDATE_SPOTS_LIKE_TYPE = 'spot/UPDATE_SPOTS_LIKE';
 const UPDATE_DETAIL_LIKE_TYPE = 'spot/UPDATE_DETAIL_LIKE';
 
-const CHECK_LIKE_SPOT_ID_TYPE = 'spot/CHECK_LIKE_SPOT_ID';
-const CHECK_LIKE_SPOT_ID_SUCCESS_TYPE = 'spot/CHECK_LIKE_SPOT_ID_SUCCESS';
-const CHECK_LIKE_SPOT_ID_FAILURE_TYPE = 'spot/CHECK_LIKE_SPOT_ID_FAILURE';
-const CLEAN_LIKE_SPOT_ID_TYPE = 'spot/CLEAN_LIKE_SPOT_ID';
+const CHECK_LIKE_SPOTS_TYPE = 'spot/CHECK_LIKE_SPOTS';
+const CHECK_LIKE_SPOTS_SUCCESS_TYPE = 'spot/CHECK_LIKE_SPOTS_SUCCESS';
+const CHECK_LIKE_SPOTS_FAILURE_TYPE = 'spot/CHECK_LIKE_SPOTS_FAILURE';
+const CLEAN_LIKE_SPOTS_TYPE = 'spot/CLEAN_LIKE_SPOTS';
 
 export const loadAreasAction = () => ({ type: LOAD_AREAS_TYPE });
 export const loadSpotsAction = (areaCode, page) => ({ type: LOAD_SPOTS_TYPE, areaCode, page });
@@ -50,15 +50,15 @@ export const addLikeSpotAction = (accountId, spotId) => ({ type: ADD_LIKE_SPOT_T
 export const removeLikeSpotAction = (accountId, spotId) => ({ type: REMOVE_LIKE_SPOT_TYPE, accountId, spotId });
 export const updateSpotsLikeAction = (likes) => ({ type: UPDATE_SPOTS_LIKE_TYPE, likes });
 export const updateDetailLikeAction = (like) => ({ type: UPDATE_DETAIL_LIKE_TYPE, like });
-export const checkLikeSpotIdAction = (accountId, spotId) => ({ type: CHECK_LIKE_SPOT_ID_TYPE, accountId, spotId });
-export const cleanLikeSpotIdAction = () => ({ type: CLEAN_LIKE_SPOT_ID_TYPE });
+export const checkLikeSpotsAction = (accountId, spotId) => ({ type: CHECK_LIKE_SPOTS_TYPE, accountId, spotId });
+export const cleanLikeSpotsAction = () => ({ type: CLEAN_LIKE_SPOTS_TYPE });
 
 const loadAreasSaga = createSaga(LOAD_AREAS_TYPE, spotAPI.loadAreas);
 const loadSpotsSaga = createSaga(LOAD_SPOTS_TYPE, spotAPI.loadSpots);
 const loadDetailSpotSaga = createSaga(LOAD_DETAIL_SPOT_TYPE, spotAPI.loadDetailSpot);
 const addLikeSpotSaga = createSaga(ADD_LIKE_SPOT_TYPE, spotAPI.addlikeSpot);
 const removeLikeSpotSaga = createSaga(REMOVE_LIKE_SPOT_TYPE, spotAPI.removeLikeSpot);
-const checkLikeSpotIdSaga = createSaga(CHECK_LIKE_SPOT_ID_TYPE, spotAPI.checkLikeSpotId);
+const checkLikeSpotsSaga = createSaga(CHECK_LIKE_SPOTS_TYPE, spotAPI.checkLikeSpots);
 
 export function* spotSaga() {
     yield takeLatest(LOAD_AREAS_TYPE, loadAreasSaga);
@@ -66,7 +66,7 @@ export function* spotSaga() {
     yield takeLatest(LOAD_DETAIL_SPOT_TYPE, loadDetailSpotSaga);
     yield takeLatest(ADD_LIKE_SPOT_TYPE, addLikeSpotSaga);
     yield takeLatest(REMOVE_LIKE_SPOT_TYPE, removeLikeSpotSaga);
-    yield takeLatest(CHECK_LIKE_SPOT_ID_TYPE, checkLikeSpotIdSaga);
+    yield takeLatest(CHECK_LIKE_SPOTS_TYPE, checkLikeSpotsSaga);
 }
 
 const initialState = {
@@ -81,7 +81,7 @@ const initialState = {
         totalPage: null,
         pagination: null,
     },
-    likeSpotId: null,
+    likeSpots: null,
 };
 
 function spotReducer(state = initialState, action) {
@@ -208,17 +208,17 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 detail: {
                     info: state.detail.info,
-                    like: action.like,
+                    // like: action.like,
                 },
             };
-        case CHECK_LIKE_SPOT_ID_SUCCESS_TYPE: {
-            return { ...state, likeSpotId: action.payload.data };
+        case CHECK_LIKE_SPOTS_SUCCESS_TYPE: {
+            return { ...state, likeSpots: action.payload.data };
         }
-        case CHECK_LIKE_SPOT_ID_FAILURE_TYPE: {
+        case CHECK_LIKE_SPOTS_FAILURE_TYPE: {
             return { ...state, spotError: action.payload.error };
         }
-        case CLEAN_LIKE_SPOT_ID_TYPE: {
-            return { ...state, likeSpotId: null };
+        case CLEAN_LIKE_SPOTS_TYPE: {
+            return { ...state, likeSpots: null, spots: null };
         }
         default:
             return state;

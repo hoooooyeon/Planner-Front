@@ -16,7 +16,7 @@ export const loadDetailSpot = ({ id }) => {
 };
 
 // 여행지 좋아요 체크
-export const checkLikeSpotId = ({ accountId, spotId }) => {
+export const checkLikeSpots = ({ accountId, spotId }) => {
     return client.get(`/api/users/likes/${accountId}/check?contentIds=${spotId}`);
 };
 

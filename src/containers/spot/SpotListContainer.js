@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
 import {
     addLikeSpotAction,
-    checkLikeSpotIdAction,
-    cleanLikeSpotIdAction,
+    checkLikeSpotsAction,
+    cleanLikeSpotsAction,
     loadAreasAction,
     loadDetailSpotAction,
     loadSpotsAction,
@@ -24,20 +24,20 @@ const SpotListContainer = ({
     detail,
     currentInfo,
     account,
-    likeSpotId,
+    likeSpots,
     loadAreas,
     loadSpots,
     loadDetailSpot,
     updateAreaNum,
     updatePageNum,
     updateBlockNum,
-    checkLikeSpotId,
+    checkLikeSpots,
     addLikeSpot,
     removeLikeSpot,
     unloadDetailSpot,
     updateSpotsLike,
     updateDetailLike,
-    cleanLikeSpotId,
+    cleanLikeSpots,
 }) => {
     const { areaNum, pageNum } = currentInfo;
 
@@ -51,8 +51,7 @@ const SpotListContainer = ({
         if (areaNum) {
             loadSpots(areaNum, pageNum);
         }
-        cleanLikeSpotId();
-    }, [loadSpots, areaNum, pageNum, cleanLikeSpotId]);
+    }, [loadSpots, areaNum, pageNum]);
 
     // 여행지 첫페이지
     const onFirstSpotsPage = (areaCode) => {
@@ -61,6 +60,8 @@ const SpotListContainer = ({
         updateBlockNum(0);
     };
 
+    // const [contentIdArr, setContentIdArr] = useState();
+
     // 사용자의 좋아요 여행지 비교
     useEffect(() => {
         if (spots && account) {
@@ -68,30 +69,35 @@ const SpotListContainer = ({
             const contentIdArr = spots.list.map((spot) => {
                 return spot.info.contentid;
             });
-            if (!likeSpotId && spots) {
-                checkLikeSpotId(accountId, contentIdArr);
+
+            if (!likeSpots) {
+                checkLikeSpots(accountId, contentIdArr);
             }
         }
-    }, [spots, account, checkLikeSpotId, likeSpotId]);
+    }, [spots, account, checkLikeSpots, likeSpots]);
 
     // 여행지 좋아요 최신화
     useEffect(() => {
-        if (likeSpotId) {
-            updateSpotsLike(likeSpotId);
+        if (likeSpots) {
+            updateSpotsLike(likeSpots);
         }
-    }, [likeSpotId, updateSpotsLike]);
+    }, [likeSpots, updateSpotsLike]);
+
+    useEffect(() => {
+        cleanLikeSpots();
+    }, [areaNum, pageNum, cleanLikeSpots]);
 
     // 디테일 좋아요 최신화
     // useEffect(() => {
-    //     if (detail && spots) {
-    //         spots.list.map((spot) => {
-    //             if (spot.info.contentid === detail.info.contentid) {
+    //     if (detail) {
+    //             spots.list.map((spot) => {
+    //                         if (spot.info.contentid === detail.info.contentid) {
     //                 updateDetailLike(spot.like);
-    //             }
-    //             return null;
-    //         });
+    //                         }
+    //                 return null;
+    //             });
     //     }
-    // }, [detail, spots, updateDetailLike]);
+    // }, [detail, updateDetailLike]);
 
     const onLikeToggle = () => {
         // if (detail && detail.like === true && account) {
@@ -124,7 +130,7 @@ const mapStateToProps = (state) => ({
     detail: state.spotReducer.detail,
     spotError: state.spotReducer.spotError,
     currentInfo: state.spotReducer.currentInfo,
-    likeSpotId: state.spotReducer.likeSpotId,
+    likeSpots: state.spotReducer.likeSpots,
     account: state.authReducer.account,
 });
 const mapDispatchToProps = (dispatch) => ({
@@ -149,8 +155,8 @@ const mapDispatchToProps = (dispatch) => ({
     unloadDetailSpot: () => {
         dispatch(unloadDetailSpotAction());
     },
-    checkLikeSpotId: (accountId, spotId) => {
-        dispatch(checkLikeSpotIdAction(accountId, spotId));
+    checkLikeSpots: (accountId, spotId) => {
+        dispatch(checkLikeSpotsAction(accountId, spotId));
     },
     addLikeSpot: (accountId, spotId) => {
         dispatch(addLikeSpotAction(accountId, spotId));
@@ -164,8 +170,8 @@ const mapDispatchToProps = (dispatch) => ({
     updateDetailLike: (like) => {
         dispatch(updateDetailLikeAction(like));
     },
-    cleanLikeSpotId: () => {
-        dispatch(cleanLikeSpotIdAction());
+    cleanLikeSpots: () => {
+        dispatch(cleanLikeSpotsAction());
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);
