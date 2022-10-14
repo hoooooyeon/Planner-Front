@@ -38,7 +38,7 @@ const List = styled.div`
     flex-wrap: wrap;
 `;
 
-const SpotList = ({ areas, spots, spotError, detail, currentInfo, onLoadDetailSpot, onFirstSpotsPage, onUnloadDetailSpot, onAddLikeSpot, onLikeToggle, onUpdateDetailLike }) => {
+const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPage, onUnloadDetailSpot, onToggleLikeSpot, onOpenDetail }) => {
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
         e.target.src = defaultImg;
@@ -63,11 +63,11 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onLoadDetailSp
             {spots && (
                 <List>
                     {spots.list.map((spot) => (
-                        <SpotItem spot={spot} key={spot.info.contentid} onChangeErrorImg={onChangeErrorImg} onLoadDetailSpot={onLoadDetailSpot} onUpdateDetailLike={onUpdateDetailLike} />
+                        <SpotItem spot={spot} key={spot.info.contentid} onChangeErrorImg={onChangeErrorImg} onOpenDetail={onOpenDetail} />
                     ))}
                 </List>
             )}
-            {detail && <SpotDetailModal detail={detail} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} onAddLikeSpot={onAddLikeSpot} onLikeToggle={onLikeToggle} />}
+            {detail && <SpotDetailModal detail={detail} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} onToggleLikeSpot={onToggleLikeSpot} />}
         </SpotListBlock>
     );
 };

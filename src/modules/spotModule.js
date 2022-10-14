@@ -31,11 +31,14 @@ const REMOVE_LIKE_SPOT_FAILURE_TYPE = 'spot/REMOVE_LIKE_SPOT_FAILURE';
 
 const UPDATE_SPOTS_LIKE_TYPE = 'spot/UPDATE_SPOTS_LIKE';
 const UPDATE_DETAIL_LIKE_TYPE = 'spot/UPDATE_DETAIL_LIKE';
+const TOGGLE_DETAIL_LIKE_TYPE = 'spot/TOGGLE_DETAIL_LIKE';
 
 const CHECK_LIKE_SPOTS_TYPE = 'spot/CHECK_LIKE_SPOTS';
 const CHECK_LIKE_SPOTS_SUCCESS_TYPE = 'spot/CHECK_LIKE_SPOTS_SUCCESS';
 const CHECK_LIKE_SPOTS_FAILURE_TYPE = 'spot/CHECK_LIKE_SPOTS_FAILURE';
+
 const CLEAN_LIKE_SPOTS_TYPE = 'spot/CLEAN_LIKE_SPOTS';
+const CLEAN_LIKE_SPOTS_TOGGLING_TYPE = 'spot/CLEAN_LIKE_SPOTS_TOGGLING';
 
 export const loadAreasAction = () => ({ type: LOAD_AREAS_TYPE });
 export const loadSpotsAction = (areaCode, page) => ({ type: LOAD_SPOTS_TYPE, areaCode, page });
@@ -46,12 +49,14 @@ export const updateTotalPageAction = (num) => ({ type: UPDATE_TOTAL_PAGE_TYPE, n
 export const updatePaginationAction = (num) => ({ type: UPDATE_PAGINATION_TYPE, num });
 export const loadDetailSpotAction = (id) => ({ type: LOAD_DETAIL_SPOT_TYPE, id });
 export const unloadDetailSpotAction = () => ({ type: UNLOAD_DETAIL_SPOT_TYPE });
-export const addLikeSpotAction = (accountId, spotId) => ({ type: ADD_LIKE_SPOT_TYPE, accountId, spotId });
-export const removeLikeSpotAction = (accountId, spotId) => ({ type: REMOVE_LIKE_SPOT_TYPE, accountId, spotId });
+export const addLikeSpotAction = (spotId) => ({ type: ADD_LIKE_SPOT_TYPE, spotId });
+export const removeLikeSpotAction = (spotId) => ({ type: REMOVE_LIKE_SPOT_TYPE, spotId });
 export const updateSpotsLikeAction = (likes) => ({ type: UPDATE_SPOTS_LIKE_TYPE, likes });
 export const updateDetailLikeAction = (like) => ({ type: UPDATE_DETAIL_LIKE_TYPE, like });
+export const toggleDetailLikeAction = () => ({ type: TOGGLE_DETAIL_LIKE_TYPE });
 export const checkLikeSpotsAction = (accountId, spotId) => ({ type: CHECK_LIKE_SPOTS_TYPE, accountId, spotId });
 export const cleanLikeSpotsAction = () => ({ type: CLEAN_LIKE_SPOTS_TYPE });
+export const cleanLikeSpotsTogglingAction = () => ({ type: CLEAN_LIKE_SPOTS_TOGGLING_TYPE });
 
 const loadAreasSaga = createSaga(LOAD_AREAS_TYPE, spotAPI.loadAreas);
 const loadSpotsSaga = createSaga(LOAD_SPOTS_TYPE, spotAPI.loadSpots);
@@ -82,6 +87,7 @@ const initialState = {
         pagination: null,
     },
     likeSpots: null,
+    likeSpot: null,
 };
 
 function spotReducer(state = initialState, action) {
@@ -159,7 +165,7 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 detail: {
                     info: action.payload.data.item[0],
-                    like: false,
+                    like: state.likeSpot,
                 },
             };
         case LOAD_DETAIL_SPOT_FAILURE_TYPE:
@@ -206,9 +212,14 @@ function spotReducer(state = initialState, action) {
         case UPDATE_DETAIL_LIKE_TYPE:
             return {
                 ...state,
+                likeSpot: action.like,
+            };
+        case TOGGLE_DETAIL_LIKE_TYPE:
+            return {
+                ...state,
                 detail: {
                     info: state.detail.info,
-                    // like: action.like,
+                    like: !state.detail.like,
                 },
             };
         case CHECK_LIKE_SPOTS_SUCCESS_TYPE: {
@@ -219,6 +230,9 @@ function spotReducer(state = initialState, action) {
         }
         case CLEAN_LIKE_SPOTS_TYPE: {
             return { ...state, likeSpots: null, spots: null };
+        }
+        case CLEAN_LIKE_SPOTS_TOGGLING_TYPE: {
+            return { ...state, likeSpots: null };
         }
         default:
             return state;

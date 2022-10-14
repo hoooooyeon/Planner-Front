@@ -21,11 +21,11 @@ export const checkLikeSpots = ({ accountId, spotId }) => {
 };
 
 // 여행지 즐겨찾기 추가
-export const addlikeSpot = ({ accountId, spotId }) => {
-    return client.post(`/api/spots/likes/${accountId}`, spotId);
+export const addlikeSpot = ({ spotId }) => {
+    return client.post(`/api/spots/likes/${spotId}`);
 };
 
 // 여행지 즐겨찾기 삭제
-export const removeLikeSpot = ({ accountId, spotId }) => {
-    return client.delete(`/api/spots/likes/${accountId}`, spotId);
+export const removeLikeSpot = ({ spotId }) => {
+    return client.delete(`/api/spots/likes/${spotId}`);
 };

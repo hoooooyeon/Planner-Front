@@ -83,7 +83,7 @@ const LikeBox = styled.div`
     }
 `;
 
-const SpotDetailModal = ({ detail, onUnloadDetailSpot, onAddLikeSpot, onLikeToggle }) => {
+const SpotDetailModal = ({ detail, onUnloadDetailSpot, onToggleLikeSpot }) => {
     const { title, firstimage, overview, contentid } = detail.info;
     const { like } = detail;
 
@@ -117,8 +117,7 @@ const SpotDetailModal = ({ detail, onUnloadDetailSpot, onAddLikeSpot, onLikeTogg
                             <LikeBox
                                 like={like}
                                 onClick={() => {
-                                    onAddLikeSpot(contentid);
-                                    // onLikeToggle();
+                                    onToggleLikeSpot(contentid);
                                 }}
                             >
                                 <FontAwesomeIcon icon={faStar} />

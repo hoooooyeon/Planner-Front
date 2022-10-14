@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import palette from '../../lib/styles/palette';
-import { useEffect, useState } from 'react';
 
 const SpotItemBlock = styled.div`
     width: 280px;
@@ -39,15 +38,14 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: ${(props) => (props.like ? 'yellow' : 'lightgray')};
 `;
 
-const SpotItem = ({ spot, onChangeErrorImg, onLoadDetailSpot, onUpdateDetailLike }) => {
+const SpotItem = ({ spot, onChangeErrorImg, onOpenDetail }) => {
     const { title, firstimage, contentid } = spot.info;
     const { like } = spot;
 
     return (
         <SpotItemBlock
             onClick={() => {
-                onLoadDetailSpot(contentid);
-                // onUpdateDetailLike(like);
+                onOpenDetail(contentid, like);
             }}
         >
             <SimpleImg src={firstimage} alt={title} onError={onChangeErrorImg} />
