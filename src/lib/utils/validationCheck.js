@@ -2,33 +2,16 @@
 const validUtil = {
     regexType: {
         email: /^[\w\.\-]+@[\w\.\-]+\.\w+$/,
-        password: 'password',
+        password: /^(?=.*[\w])(?=.*[~!@#$%^&*()+|=])[\w~!@#$%^&*()+|=]{8,16}$/,
         passwordConfirm: 'passwordConfirm',
-        userName: 'userName',
-        nickName: 'nickName',
-        phone: 'phone',
+        userName: /^.*[가-힣]$/,
+        nickName: /^.*[a-zA-z\d]$/,
+        phone: /^010-[\d]{4}-[\d]{4}$/,
     },
     valid: function (type, value) {
         const regex = this.regexType[type];
         return regex.test(value);
-    },
-    isEmail: (email) => {
-        //return emailRegex.test(email);
-    },
-    isPassword: (password) => {
-
-    },
-    isUserName: (userName) => {
-
-    },
-    isNickName: (nickName) => {
-
-    },
-    isPhone: (phone) => {
-        // 전화번호 정규식 체크
-        //const regex = //;
-        //return regex.test(phone);
-    },
+    }
 };
 
 export default validUtil;
