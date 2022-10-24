@@ -118,25 +118,25 @@ const Auth = ({ type, form, onChange, onSubmit, valid, authError }) => {
           </StyledInputFiledContainer>
           <StyledInputFiledContainer>
             <StyledInput name="password" placeholder="비밀번호" type="password" onChange={onChange} value={form.password} />
-            {type === 'register' && form.email && valid && !valid.password && <VaildMsg>비밀번호 형식이 아닙니다.</VaildMsg>}
+            {type === 'register' && form.password && valid && !valid.password && <VaildMsg>비밀번호 형식이 아닙니다.</VaildMsg>}
           </StyledInputFiledContainer>
           {type === 'register' && (
             <>
               <StyledInputFiledContainer>
                 <StyledInput name="passwordConfirm" placeholder="비밀번호 확인" type="password" onChange={onChange} value={form.passwordConfirm} />
-                {form.email && valid && !valid.passwordConfirm && <VaildMsg>비밀번호가 동일하지 않습니다.</VaildMsg>}
+                {form.passwordConfirm && valid && !valid.passwordConfirm && <VaildMsg>비밀번호가 동일하지 않습니다.</VaildMsg>}
               </StyledInputFiledContainer>
               <StyledInputFiledContainer>
                 <StyledInput name="userName" placeholder="이름" type="text" onChange={onChange} value={form.username} />
-                {form.email && valid && !valid.userName && <VaildMsg>이름 형식이 아닙니다.</VaildMsg>}
+                {form.userName && valid && !valid.userName && <VaildMsg>이름 형식이 아닙니다.</VaildMsg>}
               </StyledInputFiledContainer>
               <StyledInputFiledContainer>
                 <StyledInput name="nickName" placeholder="닉네임" type="text" onChange={onChange} value={form.nickname} />
-                {form.email && valid && !valid.nickName && <VaildMsg>닉네임 형식이 아닙니다.</VaildMsg>}
+                {form.nickName && valid && !valid.nickName && <VaildMsg>닉네임 형식이 아닙니다.</VaildMsg>}
               </StyledInputFiledContainer>
               <StyledInputFiledContainer>
                 <StyledInput name="phone" placeholder="전화번호" type="text" onChange={onChange} value={form.phone} />
-                {form.email && valid && !valid.phone && <VaildMsg>전화번호 형식이 아닙니다.</VaildMsg>}
+                {form.phone && valid && !valid.phone && <VaildMsg>전화번호 형식이 아닙니다.</VaildMsg>}
               </StyledInputFiledContainer>
             </>
           )}

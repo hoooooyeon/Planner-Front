@@ -31,17 +31,33 @@ const RegisterContainer = ({ history, type }) => {
             value: value
         }));
 
-        if (validUtil.valid(name, value)) {
-            setValidMsg({
-                ...valid,
-                [name]: true
-            });
+        if (name === 'passwordConfirm') {
+            if (form.password === value) {
+                setValidMsg({
+                    ...valid,
+                    [name]: true
+                });
+            }
+            else {
+                setValidMsg({
+                    ...valid,
+                    [name]: false
+                });
+            }
         }
         else {
-            setValidMsg({
-                ...valid,
-                [name]: false
-            });
+            if (validUtil.valid(name, value)) {
+                setValidMsg({
+                    ...valid,
+                    [name]: true
+                });
+            }
+            else {
+                setValidMsg({
+                    ...valid,
+                    [name]: false
+                });
+            }
         }
 
     };
