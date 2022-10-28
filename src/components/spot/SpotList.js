@@ -4,8 +4,15 @@ import defaultImg from '../../lib/images/defaultImg.jpg';
 import SpotDetailModal from './SpotDetailModal';
 
 const SpotListBlock = styled.div`
-    margin: 50px auto;
-    height: auto;
+    width: 100%;
+    /* height: auto; */
+    height: 100%;
+`;
+
+const Container = styled.div`
+    margin: 0 auto;
+    width: 100%;
+    border: 1px solid red;
 `;
 
 const MenuTitle = styled.p`
@@ -50,24 +57,26 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     const { areaNum } = currentInfo;
     return (
         <SpotListBlock>
-            <MenuTitle>추천 여행지</MenuTitle>
-            {areas && (
-                <Menu>
-                    {areas.map((area) => (
-                        <li key={area.code} onClick={() => onFirstSpotsPage(area.code)} aria-current={areaNum === area.code ? 'page' : null}>
-                            {area.name}
-                        </li>
-                    ))}
-                </Menu>
-            )}
-            {spots && (
-                <List>
-                    {spots.list.map((spot) => (
-                        <SpotItem spot={spot} key={spot.info.contentid} onChangeErrorImg={onChangeErrorImg} onOpenDetail={onOpenDetail} />
-                    ))}
-                </List>
-            )}
-            {detail && <SpotDetailModal detail={detail} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} onToggleLikeSpot={onToggleLikeSpot} />}
+            <Container>
+                <MenuTitle>추천 여행지</MenuTitle>
+                {areas && (
+                    <Menu>
+                        {areas.map((area) => (
+                            <li key={area.code} onClick={() => onFirstSpotsPage(area.code)} aria-current={areaNum === area.code ? 'page' : null}>
+                                {area.name}
+                            </li>
+                        ))}
+                    </Menu>
+                )}
+                {spots && (
+                    <List>
+                        {spots.list.map((spot) => (
+                            <SpotItem spot={spot} key={spot.info.contentid} onChangeErrorImg={onChangeErrorImg} onOpenDetail={onOpenDetail} />
+                        ))}
+                    </List>
+                )}
+                {detail && <SpotDetailModal detail={detail} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} onToggleLikeSpot={onToggleLikeSpot} />}
+            </Container>
         </SpotListBlock>
     );
 };

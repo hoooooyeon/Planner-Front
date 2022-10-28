@@ -9,11 +9,10 @@ const SpotPage = () => {
     return (
         <>
             <Header />
-            <Spot>
-                <SpotSliderContainer />
-                <SpotListContainer />
-                <SpotPaginationContainer />
-            </Spot>
+
+            <SpotSliderContainer />
+            <SpotListContainer />
+            <SpotPaginationContainer />
             <Footer />
         </>
     );
