@@ -5,14 +5,17 @@ import SpotDetailModal from './SpotDetailModal';
 
 const SpotListBlock = styled.div`
     width: 100%;
-    /* height: auto; */
-    height: 100%;
 `;
 
 const Container = styled.div`
+    width: 80%;
     margin: 0 auto;
-    /* width: 100%; */
     border: 1px solid red;
+    `;
+
+const MenuBox = styled.div`
+    width: 80%;
+    margin: 0 auto;
 `;
 
 const MenuTitle = styled.p`
@@ -41,8 +44,10 @@ const Menu = styled.ul`
     }
 `;
 const List = styled.div`
-    display: felx;
+    width: 100%;
+    display: flex;
     flex-wrap: wrap;
+    margin: 0 auto;
 `;
 
 const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPage, onUnloadDetailSpot, onToggleLikeSpot, onOpenDetail }) => {
@@ -58,16 +63,18 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     return (
         <SpotListBlock>
             <Container>
-                <MenuTitle>추천 여행지</MenuTitle>
-                {areas && (
-                    <Menu>
-                        {areas.map((area) => (
-                            <li key={area.code} onClick={() => onFirstSpotsPage(area.code)} aria-current={areaNum === area.code ? 'page' : null}>
-                                {area.name}
-                            </li>
-                        ))}
-                    </Menu>
-                )}
+                <MenuBox>
+                    <MenuTitle>추천 여행지</MenuTitle>
+                    {areas && (
+                        <Menu>
+                            {areas.map((area) => (
+                                <li key={area.code} onClick={() => onFirstSpotsPage(area.code)} aria-current={areaNum === area.code ? 'page' : null}>
+                                    {area.name}
+                                </li>
+                            ))}
+                        </Menu>
+                    )}
+                </MenuBox>
                 {spots && (
                     <List>
                         {spots.list.map((spot) => (

@@ -81,16 +81,16 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
         `}
 `;
 
-const PrevButton = styled(StyledFontAwesomeIcon)`
-    left: 10%;
-    position: absolute;
-    bottom: 50%;
-`;
-const NextButton = styled(StyledFontAwesomeIcon)`
-right: 10%
-position: absolute;
-bottom: 50%;
-`;
+// const PrevButton = styled(StyledFontAwesomeIcon)`
+//     left: 10%;
+//     position: absolute;
+//     bottom: 50%;
+// `;
+// const NextButton = styled(StyledFontAwesomeIcon)`
+// right: 10%
+// position: absolute;
+// bottom: 50%;
+// `;
 
 const SpotSlider = () => {
     const TOTAL_SLIDES = 5;
@@ -99,9 +99,9 @@ const SpotSlider = () => {
     const itemRef = useRef();
 
     // 슬라이더 버튼
-    const handleSwipe = (direction) => {
-        setCurrentIndex(currentIndex + direction);
-    };
+    // const handleSwipe = (direction) => {
+    //     setCurrentIndex(currentIndex + direction);
+    // };
 
     // 무한 슬라이더
     useEffect(() => {
@@ -152,14 +152,14 @@ const SpotSlider = () => {
                         <h1>안산드레스</h1>
                     </SliderItem>
                     <SliderItem>
-                        <h1>clone마계인천</h1>
+                        <h1>마계인천</h1>
                     </SliderItem>
                     <SliderItem>
                         <h1>clone천안시장</h1>
                     </SliderItem>
                 </SliderList>
-                <PrevButton  icon={faAngleLeft} onClick={() => handleSwipe(-1)} />
-                <NextButton  icon={faAngleRight} onClick={() => handleSwipe(1)} />
+                {/* <PrevButton  icon={faAngleLeft} onClick={() => handleSwipe(-1)} />
+                <NextButton  icon={faAngleRight} onClick={() => handleSwipe(1)} /> */}
             </Container>
         </SpotSliderBlock>
     );
