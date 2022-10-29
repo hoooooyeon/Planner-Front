@@ -15,8 +15,7 @@ const Container = styled.div`
     overflow: hidden;
     width: 1200px;
     height: 650px;
-    
-    /* @media all and (min-width: 960px) and (max-width: 1024px) { */
+
     @media all and (min-width: 960px) and (max-width: 1280px) {
         width: 959px;
         height: 550px;
@@ -32,8 +31,17 @@ const Container = styled.div`
 `;
 
 const SliderList = styled.div`
-    width: 6000px;
+    width: calc(5 * 1200px);
     height: 100%;
+    @media all and (min-width: 960px) and (max-width: 1280px) {
+        width: calc(5 * 959px);
+    }
+    @media all and (min-width: 768px) and (max-width: 960px) {
+        width: calc(5 * 767px);
+    }
+    @media all and (max-width: 768px) {
+        width: calc(5 * 480px);
+    }
 `;
 
 const SliderItem = styled.div`
@@ -42,8 +50,17 @@ const SliderItem = styled.div`
     background-color: lightgray;
     float: left;
     display: flex;
-    justify-content: center;
     align-items: flex-end;
+    justify-content: center;
+    @media all and (min-width: 960px) and (max-width: 1280px) {
+        width: 959px;
+    }
+    @media all and (min-width: 768px) and (max-width: 960px) {
+        width: 767px;
+    }
+    @media all and (max-width: 768px) {
+        width: 480px;
+    }
     h1 {
         color: white;
     }
@@ -65,16 +82,20 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 `;
 
 const PrevButton = styled(StyledFontAwesomeIcon)`
-    left: 11%;
+    left: 10%;
+    position: absolute;
+    bottom: 50%;
 `;
 const NextButton = styled(StyledFontAwesomeIcon)`
-    right: 11%;
+right: 10%
+position: absolute;
+bottom: 50%;
 `;
 
-const SpotSlider = (props) => {
+const SpotSlider = () => {
     const TOTAL_SLIDES = 5;
-    const ITEM_SIZE = 1200;
     const [currentIndex, setCurrentIndex] = useState(2);
+    const listRef = useRef();
     const itemRef = useRef();
 
     // 슬라이더 버튼
@@ -86,15 +107,15 @@ const SpotSlider = (props) => {
     useEffect(() => {
         if (currentIndex === 1) {
             setTimeout(() => {
-                itemRef.current.style = 'transform: translateX(-' + ITEM_SIZE * (TOTAL_SLIDES - 2) + 'px)';
-                itemRef.current.style.transition = '0s';
+                listRef.current.style = 'transform: translateX(-' + itemRef.current.clientWidth * (TOTAL_SLIDES - 2) + 'px)';
+                listRef.current.style.transition = '0s';
                 setCurrentIndex(TOTAL_SLIDES - 1);
             }, 800);
         }
         if (currentIndex === TOTAL_SLIDES) {
             setTimeout(() => {
-                itemRef.current.style = 'transform: translateX(-' + ITEM_SIZE + 'px)';
-                itemRef.current.style.transition = '0s';
+                listRef.current.style = 'transform: translateX(-' + itemRef.current.clientWidth + 'px)';
+                listRef.current.style.transition = '0s';
                 setCurrentIndex(2);
             }, 800);
         }
@@ -113,38 +134,33 @@ const SpotSlider = (props) => {
 
     // 슬라이더 스타일 변경
     useEffect(() => {
-        itemRef.current.style = 'transform: translateX(-' + ITEM_SIZE * (currentIndex - 1) + 'px)';
-        itemRef.current.style.transition = 'all 0.5s ease-in-out';
+        listRef.current.style = 'transform: translateX(-' + itemRef.current.clientWidth * (currentIndex - 1) + 'px)';
+        listRef.current.style.transition = 'all 0.5s ease-in-out';
     }, [currentIndex]);
 
     return (
         <SpotSliderBlock>
             <Container>
-                <SliderList ref={itemRef}>
-                    <SliderItem>
-                        <div>clone3</div>
-                        <h1>마계인천</h1>
+                <SliderList ref={listRef}>
+                    <SliderItem ref={itemRef}>
+                        <h1>clone마계인천</h1>
                     </SliderItem>
                     <SliderItem>
-                        <div>1</div>
                         <h1>천안시장</h1>
                     </SliderItem>
                     <SliderItem>
-                        <div>2</div>
                         <h1>안산드레스</h1>
                     </SliderItem>
                     <SliderItem>
-                        <div>3</div>
-                        <h1>마계인천</h1>
+                        <h1>clone마계인천</h1>
                     </SliderItem>
                     <SliderItem>
-                        <div>clone1</div>
-                        <h1>천안시장</h1>
+                        <h1>clone천안시장</h1>
                     </SliderItem>
                 </SliderList>
+                <PrevButton  icon={faAngleLeft} onClick={() => handleSwipe(-1)} />
+                <NextButton  icon={faAngleRight} onClick={() => handleSwipe(1)} />
             </Container>
-            {/* <PrevButton {...props} icon={faAngleLeft} onClick={() => handleSwipe(-1)} />
-            <NextButton {...props} icon={faAngleRight} onClick={() => handleSwipe(1)} /> */}
         </SpotSliderBlock>
     );
 };
