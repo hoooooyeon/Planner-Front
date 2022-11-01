@@ -6,6 +6,7 @@ const SpotPaginationBlock = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     margin-top: 5rem;
+    /* margin-bottom: 170px; */
 `;
 const PageButton = styled.div`
     border-radius: 8px;

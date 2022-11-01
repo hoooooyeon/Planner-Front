@@ -3,32 +3,55 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import palette from '../../lib/styles/palette';
 
-const SpotItemBlock = styled.div`
-    width: 280px;
-    height: 320px;
-    margin: 10px;
-    border: 1px solid ${palette.ivory[0]};
-    border-radius: 5%;
+const SpotItemBlock = styled.li`
+    flex-shrink: 0;
+    width: 200px;
+    float: left;
+    border-radius: 2px;
     box-shadow: 3px 3px 7px 1px ${palette.gray[1]};
-    p {
-        position: relative;
-        bottom: 30px;
-        font-size: 1.2rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        padding: 0 10px;
-        font-weight: bold;
+    /* padding: 0 6px 12px; */
+    margin: 0.5%;
+    @media all and (min-width: 620px) {
+        width: 23%;
     }
     &:hover {
         cursor: pointer;
     }
 `;
 
-const SimpleImg = styled.img`
-    width: 280px;
-    height: 270px;
-    border-radius: 5% 5% 0 0;
+const ImgBox = styled.div`
+    background-color: lightgray;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+`;
+
+const Img = styled.img`
+    width: 100%;
+    height: 150px;
+    border: none;
+    /* position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; */
+    margin: auto;
+    @media all and (min-width: 620px) {
+        height: 15vw;
+    }
+`;
+
+const Name = styled.div`
+    position: relative;
+    bottom: 0;
+    height: 35px;
+    line-height: 35px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 10px;
+    font-weight: bold;
+    background-color: white;
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
@@ -48,9 +71,11 @@ const SpotItem = ({ spot, onChangeErrorImg, onOpenDetail }) => {
                 onOpenDetail(contentid, like);
             }}
         >
-            <SimpleImg src={firstimage} alt={title} onError={onChangeErrorImg} />
-            <StyledFontAwesomeIcon icon={faStar} like={like} />
-            <p>{title}</p>
+            <ImgBox>
+                <Img src={firstimage} alt={title} onError={onChangeErrorImg} />
+            </ImgBox>
+            {/* <StyledFontAwesomeIcon icon={faStar} like={like} /> */}
+            <Name>{title}</Name>
         </SpotItemBlock>
     );
 };
