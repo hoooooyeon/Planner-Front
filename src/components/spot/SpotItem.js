@@ -11,8 +11,8 @@ const SpotItemBlock = styled.li`
     box-shadow: 3px 3px 7px 1px ${palette.gray[1]};
     /* padding: 0 6px 12px; */
     margin: 0.5%;
-    @media all and (min-width: 620px) {
-        width: 23%;
+    @media all and (min-width: 768px) {
+        width: 24%;
     }
     &:hover {
         cursor: pointer;
@@ -36,7 +36,7 @@ const Img = styled.img`
     left: 0;
     right: 0; */
     margin: auto;
-    @media all and (min-width: 620px) {
+    @media all and (min-width: 768px) {
         height: 15vw;
     }
 `;

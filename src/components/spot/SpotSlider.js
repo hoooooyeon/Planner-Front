@@ -13,10 +13,9 @@ const SpotSliderBlock = styled.div`
 const Container = styled.div`
     margin: 0 auto;
     overflow: hidden;
-    width: 1200px;
-    height: 650px;
-
-    @media all and (min-width: 960px) and (max-width: 1280px) {
+    /* width: 1200px;
+    height: 650px; */
+    /* @media all and (min-width: 960px) and (m-width: 1280px) {
         width: 959px;
         height: 550px;
     }
@@ -27,6 +26,18 @@ const Container = styled.div`
     @media all and (max-width: 768px) {
         width: 480px;
         height: 350px;
+    } */
+    @media all and (min-width: 620px) {
+        max-width: 480px;
+        height: 350px;
+    }
+    @media all and (min-width: 1025px) {
+        max-width: 1112px;
+        height: 550px;
+    }
+    @media all and (min-width: 1280px) {
+        max-width: 1280px;
+        height: 650px;
     }
 `;
 

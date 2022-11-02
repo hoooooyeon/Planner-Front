@@ -12,15 +12,17 @@ const SpotListBlock = styled.div`
 const Container = styled.div`
     width: 100%;
     height: 100%;
-    margin: 0 auto;
-    @media all and (min-width: 620px) {
-        max-width: 980px;
-        min-width: 580px;
-        /* padding: 0 20px; */
+    margin: 10px auto;
+    @media all and (min-width: 768px) {
+        max-width: calc(100% - 40px);
+        padding: 0 20px;
     }
-    @media all and (min-width: 1025px) {
-        max-width: 1112px;
-        min-width: 960px;
+    @media all and (min-width: 960px) {
+        max-width: 930px;
+        padding: 0;
+    }
+    @media all and (min-width: 1280px) {
+        max-width: 1250px;
         padding: 0;
     }
 `;
@@ -28,24 +30,40 @@ const Container = styled.div`
 const MenuTitle = styled.div`
     font-size: 1.2rem;
     font-weight: bold;
-    margin-left: 20px;
+    margin-left: 15px;
+    @media all and (max-width: 768px) {
+        margin-left: 15px;
+    }
+    @media all and (min-width: 768px) {
+        margin-left: 20px;
+    }
+    @media all and (min-width: 1025px) {
+        margin-left: 0;
+    }
 `;
 
 const MenuBox = styled.div`
-    width: 100%;
     height: 100%;
     margin: 0 auto;
     overflow: hidden;
-    /* border: 1px solid blue; */
+    @media all and (max-width: 768px) {
+        margin-left: 15px;
+    }
+    @media all and (min-width: 768px) {
+        width: calc(100% - 40px);
+    }
+    @media all and (min-width: 1025px) {
+        width: 100%;
+    }
 `;
 
 const Menu = styled.ul`
-    border: 1px solid red;
     width: 100%;
     height: 100%;
     display: flex;
     padding: 0;
     z-index: 1;
+
     li {
         white-space: nowrap;
         width: auto;
@@ -66,19 +84,26 @@ const Menu = styled.ul`
     }
 `;
 const HiddenBox = styled.div`
-    width: 100%;
-    height: 100%;
     margin: 0 auto;
     overflow: hidden;
+    @media all and (max-width: 768px) {
+        margin-left: 15px;
+    }
+    @media all and (min-width: 768px) {
+        width: calc(100% - 40px);
+    }
+    @media all and (min-width: 1025px) {
+        width: 100%;
+    }
 `;
 
 const List = styled.ul`
-    margin: 0 auto;
     width: 840px;
     height: 100%;
-    z-index: 2;
-    border: 1px solid green;
-    @media all and (min-width: 620px) {
+    margin: 0 auto;
+    padding: 0;
+    display: inline-block;
+    @media all and (min-width: 768px) {
         width: 100%;
     }
 `;
@@ -101,55 +126,55 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
 
     /**
      * 메뉴 캡쳐링 막기
-     * 슬라이드 구현
      * 여행지만 리로드되게
-     * 슬라이드박스 레이아웃
-     * 여행지박스 가운데 정렬
+     * 여행지슬라이드 반응형
      */
 
     // 슬라이드 마우스 다운
     const slideStart = (e) => {
-        e.stopPropagation();
         slideStartX = e.clientX;
         slideStatus = true;
+        // e.stopPropagation();
     };
 
     // 슬라이드 마우스 이동
     const slideMove = (e) => {
-        e.stopPropagation();
         if (slideStatus) {
-            slideGap = e.clientX - slideStartX;
+            // slideGap = e.clientX - slideStartX;
             slideMoving = currentPosition + e.clientX - slideStartX;
 
             menuRef.current.style = 'transform: translateX(' + slideMoving + 'px)';
             menuRef.current.style.transitionDuration = ' 0s';
         }
+        // e.stopPropagation();
     };
 
     // 슬라이드 마우스 업
     const slideEnd = (e) => {
-        e.stopPropagation();
         // let itemMargin = plannersRef.current.offsetWidth * 0.005;
-        let itemSize = menuRef.current.offsetWidth;
+        let itemBoxSize = menuBoxRef.current.getBoundingClientRect();
+        let itemSize = menuRef.current.getBoundingClientRect();
+        // let itemSize = <menuRef className="current offsetWidt"></menuRef>h;
         let menuBoxSize = menuBoxRef.current.offsetWidth;
         // let slideEndX = slideGap + currentPosition; // 최종 이동할 좌표
         let slideEndX = slideMoving;
 
         if (slideEndX > 0) {
             slideEndX = 0;
-        } else if (slideEndX < -menuBoxSize) {
-            slideEndX = -menuBoxSize;
+        } else if (slideEndX < itemBoxSize.width - menuRef.current.scrollWidth) {
+            slideEndX = itemBoxSize.width - menuRef.current.scrollWidth;
         }
 
         menuRef.current.style = 'transform: translateX(' + slideEndX + 'px)';
         menuRef.current.style.transitionDuration = ' 1s';
         currentPosition = slideEndX;
         slideStatus = false;
+        // e.stopPropagation();
     };
 
     useEffect(() => {
         if (areas) {
-            let refValue = menuRef.current;
+            let refValue = menuBoxRef.current;
             refValue.addEventListener('mousedown', slideStart);
             window.addEventListener('mousemove', slideMove);
             window.addEventListener('mouseup', slideEnd);
@@ -174,7 +199,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
                     {areas && (
                         <Menu ref={menuRef}>
                             {areas.map((area) => (
-                                <li key={area.code} onClick={() => onFirstSpotsPage(area.code)} aria-current={areaNum === area.code ? 'page' : null}>
+                                <li key={area.code} onClick={(e) => onFirstSpotsPage(e, area.code)} aria-current={areaNum === area.code ? 'page' : null}>
                                     {area.name}
                                 </li>
                             ))}
@@ -183,13 +208,11 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
                 </MenuBox>
                 {spots && (
                     <HiddenBox>
-                        {/* <Container> */}
                         <List>
                             {spots.list.map((spot) => (
                                 <SpotItem spot={spot} key={spot.info.contentid} onChangeErrorImg={onChangeErrorImg} onOpenDetail={onOpenDetail} />
                             ))}
                         </List>
-                        {/* </Container> */}
                     </HiddenBox>
                 )}
                 {detail && <SpotDetailModal detail={detail} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} onToggleLikeSpot={onToggleLikeSpot} />}
