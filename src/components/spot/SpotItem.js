@@ -30,14 +30,12 @@ const Img = styled.img`
     width: 100%;
     height: 150px;
     border: none;
-    /* position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0; */
     margin: auto;
-    @media all and (min-width: 768px) {
-        height: 15vw;
+    @media all and (min-width: 960px) {
+        height: 200px;
+    }
+    @media all and (min-width: 1280px) {
+        height: 250px;
     }
 `;
 

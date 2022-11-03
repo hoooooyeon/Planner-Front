@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
@@ -66,10 +67,13 @@ const SpotListContainer = ({
 
     // 여행지 첫페이지
     const onFirstSpotsPage = (e, areaCode) => {
-        e.stopPropagation();
-        updateAreaNum(areaCode);
+
+            // e.stopPropagation();
+
+            updateAreaNum(areaCode);
         updatePageNum(1);
         updateBlockNum(0);
+        
     };
 
     // 사용자의 좋아요 여행지 비교

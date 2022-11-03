@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
 const SpotPaginationBlock = styled.div`
+    width: 100%;
+    margin: 50px auto;
+`;
+const PaginationBox = styled.div`
+    margin: 0 auto;
+    width: 400px;
     display: flex;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin-top: 5rem;
-    /* margin-bottom: 170px; */
 `;
 const PageButton = styled.div`
     border-radius: 8px;
@@ -36,9 +37,9 @@ const PageButton = styled.div`
 const SpotPagination = ({ currentInfo, spots, onUpdatePageNum, onFirstPage, onLastPage, onNextPage, onPrevPage }) => {
     const { pageNum, totalPage, pagination } = currentInfo;
     return (
-        <>
+        <SpotPaginationBlock>
             {spots && pagination && (
-                <SpotPaginationBlock>
+                <PaginationBox>
                     <PageButton onClick={onFirstPage}>&lt;&lt;</PageButton>
                     <PageButton onClick={onPrevPage} disabled={pageNum === 1}>
                         &lt;
@@ -58,9 +59,9 @@ const SpotPagination = ({ currentInfo, spots, onUpdatePageNum, onFirstPage, onLa
                         &gt;
                     </PageButton>
                     <PageButton onClick={onLastPage}>&gt;&gt;</PageButton>
-                </SpotPaginationBlock>
+                </PaginationBox>
             )}
-        </>
+        </SpotPaginationBlock>
     );
 };
 

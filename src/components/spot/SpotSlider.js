@@ -13,65 +13,30 @@ const SpotSliderBlock = styled.div`
 const Container = styled.div`
     margin: 0 auto;
     overflow: hidden;
-    /* width: 1200px;
-    height: 650px; */
-    /* @media all and (min-width: 960px) and (m-width: 1280px) {
-        width: 959px;
-        height: 550px;
+    width: 100%;
+    padding: 0;
+    @media all and (min-width: 768px) {
+        width: calc(100% - 80px);
     }
-    @media all and (min-width: 768px) and (max-width: 960px) {
-        width: 767px;
-        height: 450px;
-    }
-    @media all and (max-width: 768px) {
-        width: 480px;
-        height: 350px;
-    } */
-    @media all and (min-width: 620px) {
-        max-width: 480px;
-        height: 350px;
-    }
-    @media all and (min-width: 1025px) {
-        max-width: 1112px;
-        height: 550px;
-    }
-    @media all and (min-width: 1280px) {
-        max-width: 1280px;
-        height: 650px;
+    @media all and (min-width: 960px) {
+        width: 100%;
     }
 `;
 
-const SliderList = styled.div`
-    width: calc(5 * 1200px);
-    height: 100%;
-    @media all and (min-width: 960px) and (max-width: 1280px) {
-        width: calc(5 * 959px);
-    }
-    @media all and (min-width: 768px) and (max-width: 960px) {
-        width: calc(5 * 767px);
-    }
-    @media all and (max-width: 768px) {
-        width: calc(5 * 480px);
-    }
+const SliderList = styled.ul`
+    display: flex;
+    width: calc(5 * 100%);
+    transform: translateX(-20%);
 `;
 
-const SliderItem = styled.div`
-    width: 1200px;
-    height: 100%;
+const SliderItem = styled.li`
+    width: 100%;
+    height: 50vw;
     background-color: lightgray;
     float: left;
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    @media all and (min-width: 960px) and (max-width: 1280px) {
-        width: 959px;
-    }
-    @media all and (min-width: 768px) and (max-width: 960px) {
-        width: 767px;
-    }
-    @media all and (max-width: 768px) {
-        width: 480px;
-    }
     h1 {
         color: white;
     }
@@ -118,19 +83,18 @@ const SpotSlider = () => {
     useEffect(() => {
         if (currentIndex === 1) {
             setTimeout(() => {
-                listRef.current.style = 'transform: translateX(-' + itemRef.current.clientWidth * (TOTAL_SLIDES - 2) + 'px)';
+                listRef.current.style = 'transform: translateX(-' + 20 * (TOTAL_SLIDES - 2) + '%)';
                 listRef.current.style.transition = '0s';
                 setCurrentIndex(TOTAL_SLIDES - 1);
             }, 800);
         }
         if (currentIndex === TOTAL_SLIDES) {
             setTimeout(() => {
-                listRef.current.style = 'transform: translateX(-' + itemRef.current.clientWidth + 'px)';
+                listRef.current.style = 'transform: translateX(-' + 20 + '%)';
                 listRef.current.style.transition = '0s';
                 setCurrentIndex(2);
             }, 800);
         }
-
         // 자동 슬라이더
         const timeoutId = setInterval(() => {
             if (currentIndex < TOTAL_SLIDES) {
@@ -139,13 +103,12 @@ const SpotSlider = () => {
                 setCurrentIndex(1);
             }
         }, 2500);
-
         return () => clearInterval(timeoutId);
     }, [currentIndex]);
 
     // 슬라이더 스타일 변경
     useEffect(() => {
-        listRef.current.style = 'transform: translateX(-' + itemRef.current.clientWidth * (currentIndex - 1) + 'px)';
+        listRef.current.style = 'transform: translateX(-' + 20 * (currentIndex - 1) + '%)';
         listRef.current.style.transition = 'all 0.5s ease-in-out';
     }, [currentIndex]);
 
