@@ -3,6 +3,7 @@ import SpotItem from './SpotItem';
 import defaultImg from '../../lib/images/defaultImg.jpg';
 import SpotDetailModal from './SpotDetailModal';
 import { useEffect, useRef } from 'react';
+import * as sliderFunction from '../../lib/utils/sliderFunction';
 
 const SpotListBlock = styled.div`
     width: 100%;
@@ -46,7 +47,7 @@ const Menu = styled.ul`
     width: 100%;
     height: 100%;
     display: flex;
-    padding: 0;
+    padding: 20px;
     z-index: 1;
 
     li {
@@ -68,7 +69,7 @@ const Menu = styled.ul`
         }
     }
 `;
-const HiddenBox = styled.div`
+const HiddenBox = styled.div`   
     margin: 0 auto;
     overflow: hidden;
     z-index: 1;
@@ -94,7 +95,25 @@ const List = styled.ul`
     }
 `;
 
-// const ListSlider = styled
+const ListScrollBox = styled.div`
+    width: calc(100% - 40px);
+    height: 4px;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: lightgray;
+    z-index: 1;
+    overflow: hidden;
+    @media all and (min-width: 768px) {
+        display: none;
+    }
+`;
+
+const ListScroll = styled.div`
+    background-color: gray;
+    width: 50%;
+    height: 100%;
+    z-index: 0;
+`;
 
 const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPage, onUnloadDetailSpot, onToggleLikeSpot, onOpenDetail }) => {
     // 대체 이미지 넣기
@@ -106,78 +125,175 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     const menuBoxRef = useRef();
     const listRef = useRef();
     const listBoxRef = useRef();
+    const scrollBoxRef = useRef();
+    const scrollRef = useRef();
 
-    let currentPosition = 0; // 이전에 이동한 좌표
-    // let slideStatus = false; // mouseMove 실행 조건
-    let menuSlideStatus = false; // mouseMove 실행 조건
-    let listSlideStatus = false; // mouseMove 실행 조건
-    let slideStartX = 0; // mousedown: 마우스 다운된 좌표
-    let slideMoving = 0; // mousemove: 이전 좌표 + 현재 마우스가 이동한 좌표
-    let slideGap = 0; // mousemove - mousedown 좌표
-    const TOTAL_SLIDES = 6;
+    // let sliderStartX = 0; // mousedown: 마우스 다운된 좌표
+    // let currentPosition = 0; // 이전에 이동한 좌표
+    // let listSliderStatus = false; // mouseMove 실행 조건
+    // let sliderMoving = 0; // mousemove: 이전 좌표 + 현재 마우스가 이동한 좌표
+    
+    // ---------- 메뉴 슬라이더 ----------
+    let menuSliderStartX = 0;
+    let menuCurPos = 0;
+    let menuSliderStatus = false; 
+    let menuSliderMoving = 0;
 
     // 슬라이드 마우스 다운
-    const slideStart = (e, slideStatus) => {
-        slideStartX = e.clientX;
-        slideStatus = true;
-        console.log(menuSlideStatus);
-        console.log(listSlideStatus);
+    const menuSliderStart = (e) => {
+        menuSliderStartX = e.clientX;
+        menuSliderStatus = true;
     };
 
     // 슬라이드 마우스 이동
-    const slideMove = (e, valueRef) => {
-        if (menuSlideStatus || listSlideStatus) {
-            slideMoving = currentPosition + e.clientX - slideStartX;
+    const menuSliderMove = (e) => {
+        if (menuSliderStatus) {
+            menuSliderMoving = menuCurPos + e.clientX - menuSliderStartX;
 
-            valueRef.current.style = 'transform: translateX(' + slideMoving + 'px)';
-            valueRef.current.style.transitionDuration = '0s';
+            menuRef.current.style = 'transform: translateX(' + menuSliderMoving + 'px)';
+            menuRef.current.style.transitionDuration = '0s';
         }
     };
 
     // 슬라이드 마우스 업
-    const slideEnd = (valueRef, valueBoxRef) => {
-        let itemBoxSize = valueBoxRef.current.getBoundingClientRect();
-        let slideEndX = slideMoving;
+    const menuSliderEnd = () => {
+        let itemBoxSize = menuBoxRef.current.getBoundingClientRect().width;
+        let sliderEndX = menuSliderMoving;
 
-        if (slideEndX > 0) {
-            slideEndX = 0;
-        } else if (slideEndX < itemBoxSize.width - valueRef.current.scrollWidth) {
-            slideEndX = itemBoxSize.width - valueRef.current.scrollWidth;
+        if (sliderEndX > 0) {
+            sliderEndX = 0;
+        } else if (sliderEndX < itemBoxSize - menuRef.current.scrollWidth) {
+            sliderEndX = itemBoxSize - menuRef.current.scrollWidth;
         }
 
-        valueRef.current.style = 'transform: translateX(' + slideEndX + 'px)';
-        valueRef.current.style.transitionDuration = ' 1s';
-        currentPosition = slideEndX;
-        menuSlideStatus = false;
-        listSlideStatus = false;
+        menuRef.current.style = 'transform: translateX(' + sliderEndX + 'px)';
+        menuRef.current.style.transitionDuration = ' 1s';
+        menuCurPos = sliderEndX;
+        menuSliderStatus = false;
     };
 
     useEffect(() => {
         if (areas) {
-            let curMenuBoxRef = menuBoxRef.current;
+            let curMenuRef = menuRef.current;
 
-            curMenuBoxRef.addEventListener('mousedown', (e) => slideStart(e, menuSlideStatus));
-            window.addEventListener('mousemove', (e) => slideMove(e, menuRef));
-            window.addEventListener('mouseup', () => slideEnd(menuRef, menuBoxRef));
+            curMenuRef.addEventListener('mousedown', menuSliderStart);
+            window.addEventListener('mousemove', menuSliderMove);
+            window.addEventListener('mouseup', menuSliderEnd);
 
             return () => {
-                curMenuBoxRef.removeEventListener('mousedown', slideStart);
-                window.removeEventListener('mousemove', slideMove);
-                window.removeEventListener('mouseup', slideEnd);
+                curMenuRef.removeEventListener('mousedown', menuSliderStart);
+                window.removeEventListener('mousemove', menuSliderMove);
+                window.removeEventListener('mouseup', menuSliderEnd);
             };
         }
     });
+
+    // ---------- 여행지 슬라이더 ----------
+    let listSliderStartX = 0;
+    let listCurPos = 0;
+    let listSliderStatus = false; 
+    let listSliderMoving = 0;
+
+    // 슬라이드 마우스 다운
+    const listSliderStart = (e) => {
+        listSliderStartX = e.clientX;
+        listSliderStatus = true;
+    };
+
+    // 슬라이드 마우스 이동
+    const listSliderMove = (e) => {
+        if (listSliderStatus) {
+            listSliderMoving = listCurPos + e.clientX - listSliderStartX;
+            
+            listRef.current.style = 'transform: translateX(' + listSliderMoving + 'px)';
+            listRef.current.style.transitionDuration = '0s';
+        }
+    };
+
+    // 슬라이드 마우스 업
+    const listSliderEnd = () => {
+        let itemBoxSize = listBoxRef.current.getBoundingClientRect().width;
+        let sliderEndX = listSliderMoving;
+
+        if (sliderEndX > 0) {
+            sliderEndX = 0;
+        } else if (sliderEndX < itemBoxSize - listRef.current.scrollWidth) {
+            sliderEndX = itemBoxSize - listRef.current.scrollWidth;
+        }
+
+        listRef.current.style = 'transform: translateX(' + sliderEndX + 'px)';
+        listRef.current.style.transitionDuration = ' 1s';
+        listCurPos = sliderEndX;
+        listSliderStatus = false;
+    };
+
     useEffect(() => {
         if (spots) {
-            let curListBoxRef = listBoxRef.current;
-            curListBoxRef.addEventListener('mousedown', (e) => slideStart(e, listSlideStatus));
-            window.addEventListener('mousemove', (e) => slideMove(e, listRef));
-            window.addEventListener('mouseup', () => slideEnd(listRef, listBoxRef));
+            let curListRef = listRef.current;
+
+            curListRef.addEventListener('mousedown', listSliderStart);
+            window.addEventListener('mousemove', listSliderMove);
+            window.addEventListener('mouseup', listSliderEnd);
 
             return () => {
-                curListBoxRef.removeEventListener('mousedown', slideStart);
-                window.removeEventListener('mousemove', slideMove);
-                window.removeEventListener('mouseup', slideEnd);
+                curListRef.removeEventListener('mousedown', listSliderStart);
+                window.removeEventListener('mousemove', listSliderMove);
+                window.removeEventListener('mouseup', listSliderEnd);
+            };
+        }
+    });
+    
+    // ---------- 스크롤 슬라이더 ----------
+    let scrollSliderStartX = 0;
+    let scrollCurPos = 0;
+    let scrollSliderStatus = false; 
+    let scrollSliderMoving = 0;
+
+    // 슬라이드 마우스 다운
+    const scrollSliderStart = (e) => {
+        scrollSliderStartX = e.clientX;
+        scrollSliderStatus = true;
+    };
+
+    // 슬라이드 마우스 이동
+    const scrollSliderMove = (e) => {
+        if (scrollSliderStatus) {
+            scrollSliderMoving = scrollCurPos + e.clientX - scrollSliderStartX;
+            
+            scrollRef.current.style = 'transform: translateX(-' + scrollSliderMoving + 'px)';
+            scrollRef.current.style.transitionDuration = '0s';
+        }
+    };
+
+    // 슬라이드 마우스 업
+    const scrollSliderEnd = () => {
+        let itemBoxSize = scrollBoxRef.current.getBoundingClientRect().width;
+        let sliderEndX = scrollSliderMoving;
+
+        if (sliderEndX > 0) {
+            sliderEndX = 0;
+        } else if (sliderEndX < itemBoxSize - scrollRef.current.scrollWidth) {
+            sliderEndX = itemBoxSize - scrollRef.current.scrollWidth;
+        }
+
+        scrollRef.current.style = 'transform: translateX(' + sliderEndX + 'px)';
+        scrollRef.current.style.transitionDuration = ' 1s';
+        scrollCurPos = sliderEndX;
+        scrollSliderStatus = false;
+    };
+
+    useEffect(() => {
+        if (spots) {
+            let curListRef = listRef.current;
+
+            curListRef.addEventListener('mousedown', scrollSliderStart);
+            window.addEventListener('mousemove', scrollSliderMove);
+            window.addEventListener('mouseup', scrollSliderEnd);
+
+            return () => {
+                curListRef.removeEventListener('mousedown', scrollSliderStart);
+                window.removeEventListener('mousemove', scrollSliderMove);
+                window.removeEventListener('mouseup', scrollSliderEnd);
             };
         }
     });
@@ -202,13 +318,18 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
                     )}
                 </HiddenBox>
                 {spots && (
-                    <HiddenBox ref={listBoxRef}>
-                        <List ref={listRef}>
-                            {spots.list.map((spot) => (
-                                <SpotItem spot={spot} key={spot.info.contentid} onChangeErrorImg={onChangeErrorImg} onOpenDetail={onOpenDetail} />
-                            ))}
-                        </List>
-                    </HiddenBox>
+                    <>
+                        <HiddenBox ref={listBoxRef}>
+                            <List ref={listRef}>
+                                {spots.list.map((spot) => (
+                                    <SpotItem spot={spot} key={spot.info.contentid} onChangeErrorImg={onChangeErrorImg} onOpenDetail={onOpenDetail} />
+                                ))}
+                            </List>
+                        </HiddenBox>
+                        <ListScrollBox ref={scrollBoxRef}>
+                            <ListScroll ref={scrollRef} />
+                        </ListScrollBox>
+                    </>
                 )}
                 {detail && <SpotDetailModal detail={detail} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} onToggleLikeSpot={onToggleLikeSpot} />}
             </Container>

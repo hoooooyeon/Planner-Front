@@ -14,6 +14,7 @@ const Container = styled.div`
     margin: 0 auto;
     overflow: hidden;
     width: 100%;
+    min-width: 400px;
     padding: 0;
     @media all and (min-width: 768px) {
         width: calc(100% - 80px);
