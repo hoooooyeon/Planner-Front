@@ -69,7 +69,7 @@ const Menu = styled.ul`
         }
     }
 `;
-const HiddenBox = styled.div`   
+const HiddenBox = styled.div`
     margin: 0 auto;
     overflow: hidden;
     z-index: 1;
@@ -99,7 +99,10 @@ const ListScrollBox = styled.div`
     width: calc(100% - 40px);
     height: 4px;
     border-radius: 10px;
-    margin: 0 auto;
+    /* margin: 0 auto; */
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: lightgray;
     z-index: 1;
     overflow: hidden;
@@ -132,11 +135,11 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     // let currentPosition = 0; // 이전에 이동한 좌표
     // let listSliderStatus = false; // mouseMove 실행 조건
     // let sliderMoving = 0; // mousemove: 이전 좌표 + 현재 마우스가 이동한 좌표
-    
+
     // ---------- 메뉴 슬라이더 ----------
     let menuSliderStartX = 0;
     let menuCurPos = 0;
-    let menuSliderStatus = false; 
+    let menuSliderStatus = false;
     let menuSliderMoving = 0;
 
     // 슬라이드 마우스 다운
@@ -150,7 +153,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
         if (menuSliderStatus) {
             menuSliderMoving = menuCurPos + e.clientX - menuSliderStartX;
 
-            menuRef.current.style = 'transform: translateX(' + menuSliderMoving + 'px)';
+            menuRef.current.style.transform = 'translateX(' + menuSliderMoving + 'px)';
             menuRef.current.style.transitionDuration = '0s';
         }
     };
@@ -166,7 +169,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
             sliderEndX = itemBoxSize - menuRef.current.scrollWidth;
         }
 
-        menuRef.current.style = 'transform: translateX(' + sliderEndX + 'px)';
+        menuRef.current.style.transform = ' translateX(' + sliderEndX + 'px)';
         menuRef.current.style.transitionDuration = ' 1s';
         menuCurPos = sliderEndX;
         menuSliderStatus = false;
@@ -191,8 +194,9 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     // ---------- 여행지 슬라이더 ----------
     let listSliderStartX = 0;
     let listCurPos = 0;
-    let listSliderStatus = false; 
+    let listSliderStatus = false;
     let listSliderMoving = 0;
+    let listSliderEndX = 0;
 
     // 슬라이드 마우스 다운
     const listSliderStart = (e) => {
@@ -204,8 +208,8 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     const listSliderMove = (e) => {
         if (listSliderStatus) {
             listSliderMoving = listCurPos + e.clientX - listSliderStartX;
-            
-            listRef.current.style = 'transform: translateX(' + listSliderMoving + 'px)';
+
+            listRef.current.style.transform = 'translateX(' + listSliderMoving + 'px)';
             listRef.current.style.transitionDuration = '0s';
         }
     };
@@ -213,17 +217,17 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     // 슬라이드 마우스 업
     const listSliderEnd = () => {
         let itemBoxSize = listBoxRef.current.getBoundingClientRect().width;
-        let sliderEndX = listSliderMoving;
+        listSliderEndX = listSliderMoving;
 
-        if (sliderEndX > 0) {
-            sliderEndX = 0;
-        } else if (sliderEndX < itemBoxSize - listRef.current.scrollWidth) {
-            sliderEndX = itemBoxSize - listRef.current.scrollWidth;
+        if (listSliderEndX > 0) {
+            listSliderEndX = 0;
+        } else if (listSliderEndX < itemBoxSize - listRef.current.scrollWidth) {
+            listSliderEndX = itemBoxSize - listRef.current.scrollWidth;
         }
 
-        listRef.current.style = 'transform: translateX(' + sliderEndX + 'px)';
+        listRef.current.style.transform = 'translateX(' + listSliderEndX + 'px)';
         listRef.current.style.transitionDuration = ' 1s';
-        listCurPos = sliderEndX;
+        listCurPos = listSliderEndX;
         listSliderStatus = false;
     };
 
@@ -242,11 +246,11 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
             };
         }
     });
-    
+
     // ---------- 스크롤 슬라이더 ----------
     let scrollSliderStartX = 0;
     let scrollCurPos = 0;
-    let scrollSliderStatus = false; 
+    let scrollSliderStatus = false;
     let scrollSliderMoving = 0;
 
     // 슬라이드 마우스 다운
@@ -259,9 +263,12 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     const scrollSliderMove = (e) => {
         if (scrollSliderStatus) {
             scrollSliderMoving = scrollCurPos + e.clientX - scrollSliderStartX;
-            
-            scrollRef.current.style = 'transform: translateX(-' + scrollSliderMoving + 'px)';
+            // let scrollGap = e.clientX - scrollSliderStartX;
+            // let scrollWidth = scrollRef.current.getBoundingClientRect().width;
+
+            scrollRef.current.style.transform = 'translateX(' + scrollSliderMoving + 'px)';
             scrollRef.current.style.transitionDuration = '0s';
+            // scrollRef.current.style.width = scrollWidth / scrollGap;
         }
     };
 
@@ -276,7 +283,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
             sliderEndX = itemBoxSize - scrollRef.current.scrollWidth;
         }
 
-        scrollRef.current.style = 'transform: translateX(' + sliderEndX + 'px)';
+        scrollRef.current.style.transform = ' translateX(' + sliderEndX + 'px)';
         scrollRef.current.style.transitionDuration = ' 1s';
         scrollCurPos = sliderEndX;
         scrollSliderStatus = false;

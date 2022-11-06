@@ -5,8 +5,9 @@ const SpotPaginationBlock = styled.div`
     margin: 50px auto;
 `;
 const PaginationBox = styled.div`
-    margin: 0 auto;
-    width: 400px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
 `;
 const PageButton = styled.div`
