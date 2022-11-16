@@ -2,11 +2,9 @@ import styled from 'styled-components';
 import SpotItem from '../spot/SpotItem';
 
 const HomeSpotBlock = styled.div`
-  width: calc(100% - 40px);
-  /* width: 100%; */
+  width: 100%;
   height: 100%;
   margin: 50px auto;
-  padding: 0 20px;
 `;
 
 const Container = styled.div`
@@ -25,16 +23,24 @@ const Container = styled.div`
     width: 1250px;
     padding: 0;
   }
+  h3{
+    @media all and (max-width: 768px){
+      margin-left: 20px;
+    }
+  }
 `;
 const HiddenBox = styled.div`
   margin: 0 auto;
   overflow: hidden;
   z-index: 1;
   @media all and (max-width: 768px) {
-    margin-left: 15px;
+    /* margin-left: 15px; */
+    padding: 0 20px;
+
   }
   @media all and (min-width: 768px) {
-    width: calc(100% - 40px);
+    /* width: calc(100% - 40px); */
+    width: 100%;
   }
   @media all and (min-width: 1025px) {
     width: 100%;
