@@ -1,21 +1,23 @@
 import styled from 'styled-components';
-import PlannerList from '../planner/PlannerList';
+import HomeReview from './HomeReview';
+import HomeShare from './HomeShare';
+import HomeSpot from './HomeSpot';
 import Intro from './Intro';
-import SpotSlider from '../spot/SpotSlider';
-import ReviewList from '../review/ReviewList';
 
 const HomeBlock = styled.div`
-  margin: 100px auto;
-  width: 80%;
+  margin-top: 100px;
+  width: 100%;
+  height: 100%;
+  
 `;
 
 const Home = () => {
   return (
     <HomeBlock>
       <Intro />
-      <PlannerList type="home" />
-      <ReviewList type="home" />
-      <SpotSlider home="true" />
+      <HomeShare />
+      <HomeReview />
+      <HomeSpot />
     </HomeBlock>
   );
 };
