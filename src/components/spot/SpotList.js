@@ -31,13 +31,7 @@ const Container = styled.div`
 const MenuTitle = styled.div`
     font-size: 1.2rem;
     font-weight: bold;
-    margin-left: 15px;
-    @media all and (max-width: 768px) {
-        margin-left: 15px;
-    }
-    @media all and (min-width: 768px) {
-        margin-left: 20px;
-    }
+    margin-left: 20px;
     @media all and (min-width: 1025px) {
         margin-left: 0;
     }
@@ -47,7 +41,7 @@ const Menu = styled.ul`
     width: 100%;
     height: 100%;
     display: flex;
-    padding: 20px;
+    padding: 20px 20px 20px 0;
     z-index: 1;
 
     li {
