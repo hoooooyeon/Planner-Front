@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Button from '../common/Button';
 
 const IntroBlock = styled.div`
+  width: 100%;
   height: 650px;
   display: flex;
   flex-direction: column;
