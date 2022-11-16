@@ -22,15 +22,22 @@ const Container = styled.div`
     width: 1250px;
     padding: 0;
   }
+  h3 {
+    margin-left: 20px;
+  }
 `;
 
 const ShareList = styled.ul`
   list-style-type: none;
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   display: flex;
-  padding: 0;
+  padding: 0 20px;
   margin: 0 auto;
+  width: calc(100% - 40px);
+  @media all and (min-width: 1025px) {
+    width: 100%;
+  }
 `;
 
 const ShareItem = styled.li`
