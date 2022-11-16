@@ -8,6 +8,7 @@ const IntroBlock = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+  margin-top: 75px;
   div {
     display: flex;
     flex-direction: column;
