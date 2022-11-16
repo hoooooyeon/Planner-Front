@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import SpotItem from '../../spot/SpotItem';
+// import SpotItem from '../../spot/SpotItem';
 
 const Spots = styled.div`
   display: flex;
@@ -13,8 +13,8 @@ const LikeSpots = () => {
       <h3>여행지</h3>
       <hr />
       <Spots>
-        <SpotItem />
-        <SpotItem />
+        {/* <SpotItem />
+        <SpotItem /> */}
       </Spots>
     </>
   );
