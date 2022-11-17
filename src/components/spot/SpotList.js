@@ -140,6 +140,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     const menuSliderStart = (e) => {
         menuSliderStartX = e.clientX;
         menuSliderStatus = true;
+        
     };
 
     // 슬라이드 마우스 이동
@@ -149,6 +150,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
 
             menuRef.current.style.transform = 'translateX(' + menuSliderMoving + 'px)';
             menuRef.current.style.transitionDuration = '0s';
+
         }
     };
 

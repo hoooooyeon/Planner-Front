@@ -5,7 +5,7 @@ import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 
 const SpotSliderBlock = styled.div`
-    margin-top: 100px;
+    margin-top: 75px;
     width: 100%;
     height: 100%;
 `;
