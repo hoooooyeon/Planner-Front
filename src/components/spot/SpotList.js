@@ -156,7 +156,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     const menuSliderEnd = () => {
         let itemBoxSize = menuBoxRef.current.getBoundingClientRect().width;
         let sliderEndX = menuSliderMoving;
-
+        console.log(sliderEndX)
         if (sliderEndX > 0) {
             sliderEndX = 0;
         } else if (sliderEndX < itemBoxSize - menuRef.current.scrollWidth) {
