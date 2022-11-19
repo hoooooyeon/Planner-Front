@@ -46,6 +46,7 @@ const SpotListContainer = ({
     toggleDetailLike,
 }) => {
     const { areaNum, pageNum } = currentInfo;
+    const [click, setClick] = useState(true);
 
     // 지역 가져오기
     useEffect(() => {
@@ -67,13 +68,12 @@ const SpotListContainer = ({
 
     // 여행지 첫페이지
     const onFirstSpotsPage = (e, areaCode) => {
-
-            // e.stopPropagation();
-
+        // e.stopPropagation();
+        if (click) {
             updateAreaNum(areaCode);
-        updatePageNum(1);
-        updateBlockNum(0);
-        
+            updatePageNum(1);
+            updateBlockNum(0);
+        }
     };
 
     // 사용자의 좋아요 여행지 비교
@@ -127,6 +127,7 @@ const SpotListContainer = ({
             onUnloadDetailSpot={unloadDetailSpot}
             onToggleLikeSpot={onToggleLikeSpot}
             onOpenDetail={onOpenDetail}
+            onSetClick={setClick}
         />
     );
 };

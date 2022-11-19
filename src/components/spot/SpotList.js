@@ -4,6 +4,7 @@ import defaultImg from '../../lib/images/defaultImg.jpg';
 import SpotDetailModal from './SpotDetailModal';
 import { useEffect, useRef } from 'react';
 import * as sliderFunction from '../../lib/utils/sliderFunction';
+import { useState } from 'react';
 
 const SpotListBlock = styled.div`
     width: 100%;
@@ -112,7 +113,7 @@ const ListScroll = styled.div`
     z-index: 0;
 `;
 
-const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPage, onUnloadDetailSpot, onToggleLikeSpot, onOpenDetail }) => {
+const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPage, onUnloadDetailSpot, onToggleLikeSpot, onOpenDetail, onSetClick }) => {
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
         e.target.src = defaultImg;
@@ -151,6 +152,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
             menuRef.current.style.transform = 'translateX(' + menuSliderMoving + 'px)';
             menuRef.current.style.transitionDuration = '0s';
 
+            onSetClick(false);
         }
     };
 
@@ -158,7 +160,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     const menuSliderEnd = () => {
         let itemBoxSize = menuBoxRef.current.getBoundingClientRect().width;
         let sliderEndX = menuSliderMoving;
-        console.log(sliderEndX)
+
         if (sliderEndX > 0) {
             sliderEndX = 0;
         } else if (sliderEndX < itemBoxSize - menuRef.current.scrollWidth) {
@@ -169,6 +171,8 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
         menuRef.current.style.transitionDuration = ' 1s';
         menuCurPos = sliderEndX;
         menuSliderStatus = false;
+        
+        onSetClick(true);
     };
 
     useEffect(() => {
@@ -207,6 +211,8 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
 
             listRef.current.style.transform = 'translateX(' + listSliderMoving + 'px)';
             listRef.current.style.transitionDuration = '0s';
+
+
         }
     };
 
