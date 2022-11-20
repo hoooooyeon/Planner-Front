@@ -95,7 +95,7 @@ function spotReducer(state = initialState, action) {
         case LOAD_AREAS_SUCCESS_TYPE:
             return {
                 ...state,
-                areas: action.payload.data.item,
+                areas: action.payload.data,
             };
         case LOAD_AREAS_FAILURE_TYPE:
             return {
@@ -106,7 +106,7 @@ function spotReducer(state = initialState, action) {
             return {
                 ...state,
                 spots: {
-                    list: action.payload.data.item.map((item) => {
+                    list: action.payload.data.map((item) => {
                         return {
                             info: item,
                             like: false,
@@ -164,7 +164,7 @@ function spotReducer(state = initialState, action) {
             return {
                 ...state,
                 detail: {
-                    info: action.payload.data.item[0],
+                    info: action.payload.data,
                     like: state.likeSpot,
                 },
             };
