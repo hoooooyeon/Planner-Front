@@ -25,7 +25,7 @@ const ReviewItem = () => {
   return (
     <ReviewItemBlock>
       <SimpleImg />
-      <p>천안문 갔다온 일</p>
+      <p>천안 갔다온 일</p>
     </ReviewItemBlock>
   );
 };

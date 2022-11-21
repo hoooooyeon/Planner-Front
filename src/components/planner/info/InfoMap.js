@@ -19,7 +19,7 @@ const InfoMap = () => {
   return (
     <MapBlock>
       <div>
-        <Title>천안문 일대기</Title>
+        <Title>천안 일대기</Title>
         <p>참여 인원: 4명</p>
         <p>여행 자금: 100만원</p>
       </div>

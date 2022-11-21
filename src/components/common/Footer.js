@@ -20,8 +20,8 @@ const Footer = () => {
     <FooterBlock>
       <Logo>낭만닷컴</Logo>
       <Info>
-        <p>Phone: 010-9412-4113, 010-7368-3401</p>
-        <p>Email: BlueBear@gmail.com, lhy3476@gmail.com</p>
+        <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+        <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
       </Info>
     </FooterBlock>
   );

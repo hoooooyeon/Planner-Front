@@ -58,7 +58,7 @@ const InfoItinerary = () => {
         </RouteSpotBox>
         <StyledFontAwesomeIcon icon={faBus} />
         <RouteSpotBox>
-          <RouteSpotName>천안문언저리</RouteSpotName>
+          <RouteSpotName>천안언저리</RouteSpotName>
           <RouteSpot />
         </RouteSpotBox>
       </Route>

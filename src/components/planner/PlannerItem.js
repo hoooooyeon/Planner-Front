@@ -29,7 +29,7 @@ const PlannerItem = () => {
   return (
     <PlannerItemBlock>
       <SimpleMap />
-      <Title>천안문 일대기</Title>
+      <Title>천안 일대기</Title>
       <Date>2020년 11월 11일 ~ 2022년 7월 29일</Date>
     </PlannerItemBlock>
   );
