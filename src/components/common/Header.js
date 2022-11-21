@@ -37,20 +37,40 @@ const AccountList = styled.ul`
     font-size: 0.8rem;
     margin: 0 8px;
   }
-`;
+  `;
 
-const Header = () => {
+const Account = styled.div`
+    display: flex;
+    align-items: center;
+  
+    .user-img {
+      //background-color: skyblue;
+      border-radius: 10px;
+      margin-right: 10px;
+      width: 40px;
+      height: 40px;
+    }
+  `;
+
+const Header = ({ account }) => {
   const headerRef = useRef();
 
+  const headerShadow = () => {
+    if (window.pageYOffset === 0) {
+      headerRef.current.style.boxShadow = 'none';
+
+    } else {
+      headerRef.current.style.boxShadow = `1px 5px 7px 1px ${palette.gray[0]}`;
+    }
+  };
+
   useEffect(() => {
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset === 0) {
-        headerRef.current.style.boxShadow = 'none';
-      } else {
-        headerRef.current.style.boxShadow = `1px 5px 7px 1px ${palette.gray[0]}`;
-      }
-    });
-  }, []);
+    window.addEventListener('scroll', headerShadow);
+
+    return () => {
+      window.removeEventListener('scroll', headerShadow);
+    };
+  });
 
   return (
     <HeaderBlock ref={headerRef}>
@@ -71,14 +91,21 @@ const Header = () => {
           <Link to="/Spot">여행지</Link>
         </li>
       </MenuList>
-      <AccountList>
-        <li>
-          <Link to="/Login">로그인</Link>
-        </li>
-        <li>
-          <Link to="/Register">회원가입</Link>
-        </li>
-      </AccountList>
+      {account ? (
+        <Account>
+          <img className='user-img' src='logo192.png'></img>
+          <Link to="/Profile">{account.nickname}</Link>
+        </Account>
+      ) : (
+        <AccountList>
+          <li>
+            <Link to="/Login">로그인</Link>
+          </li>
+          <li>
+            <Link to="/Register">회원가입</Link>
+          </li>
+        </AccountList>
+      )}
     </HeaderBlock>
   );
 };

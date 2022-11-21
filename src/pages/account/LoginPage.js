@@ -1,4 +1,5 @@
 import Auth from '../../components/account/Auth';
+import LoginContainer from '../../containers/account/LoginContainer';
 import AuthTemplate from '../../components/account/AuthTemplate';
 import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
@@ -8,7 +9,8 @@ const LoginPage = () => {
     <>
       <Header />
       <AuthTemplate>
-        <Auth type="login" />
+        {/* <Auth type="login" /> */}
+        <LoginContainer type="login" />
       </AuthTemplate>
       <Footer />
     </>

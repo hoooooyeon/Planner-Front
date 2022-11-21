@@ -5,7 +5,7 @@ import palette from '../../lib/styles/palette';
 
 const AuthBlock = styled.div`
   width: 600px;
-  height: 500px;
+  height: 600px;
   text-align: center;
   border: 1px solid ${palette.gray[0]};
   border-radius: 5px;
@@ -15,10 +15,21 @@ const AuthBlock = styled.div`
   justify-content: space-evenly;
 `;
 
+const StyledForm = styled.form`
+  width: 300px;
+`;
+
+const StyledInputFiledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 15px 0px;
+`;
+
 const StyledInput = styled.input`
   border: none;
   outline: none;
-  width: 20rem;
+  width: 100%;
   height: 2rem;
   text-indent: 10px;
   border-radius: 5px;
@@ -35,8 +46,17 @@ const StyledInput = styled.input`
   }
 `;
 
+const VaildMsg = styled.span`
+  display: block;
+  width: 100%;
+  text-align: start;
+  color: red;
+  font-size: 8px;
+`;
+
 const ButtonWithMarginTop = styled(Button)`
-  margin-top: 2rem;
+  display: block;
+  margin: 2rem auto;
 `;
 
 const ChangeRegister = styled.div`
@@ -48,7 +68,7 @@ const ChangeRegister = styled.div`
   justify-content: center;
   align-items: center;
   width: 300px;
-  height: 500px;
+  height: 600px;
   p {
     color: ${palette.gray[0]};
   }
@@ -65,13 +85,21 @@ const ChangeRegister = styled.div`
   }
 `;
 
+const ErrorDiv = styled.div`
+  color: red;
+  margin-top: 2rem;
+`;
+
+
 const AuthType = {
   login: '로그인',
   register: '회원가입',
 };
 
-const Auth = ({ type }) => {
+
+const Auth = ({ type, form, onChange, onSubmit, valid, authError }) => {
   const AuthText = AuthType[type];
+
   return (
     <>
       {type === 'login' && (
@@ -83,18 +111,38 @@ const Auth = ({ type }) => {
       )}
       <AuthBlock>
         <h2>{AuthText}</h2>
-        <form>
-          <StyledInput name="email" placeholder="이메일" type="email" />
-          <StyledInput name="password" placeholder="비밀번호" type="password" />
+        <StyledForm onSubmit={onSubmit}>
+          <StyledInputFiledContainer>
+            <StyledInput name="email" placeholder="이메일" type="email" onChange={onChange} value={form.email} />
+            {type === 'register' && form.email && valid && !valid.email && <VaildMsg>이메일 형식이 아닙니다.</VaildMsg>}
+          </StyledInputFiledContainer>
+          <StyledInputFiledContainer>
+            <StyledInput name="password" placeholder="비밀번호" type="password" onChange={onChange} value={form.password} />
+            {type === 'register' && form.password && valid && !valid.password && <VaildMsg>비밀번호 형식이 아닙니다.</VaildMsg>}
+          </StyledInputFiledContainer>
           {type === 'register' && (
             <>
-              <StyledInput name="passwordConfirm" placeholder="비밀번호 확인" type="password" />
-              <StyledInput name="username" placeholder="이름" type="text" />
-              <StyledInput name="nickname" placeholder="닉네임" type="text" />
+              <StyledInputFiledContainer>
+                <StyledInput name="passwordConfirm" placeholder="비밀번호 확인" type="password" onChange={onChange} value={form.passwordConfirm} />
+                {form.passwordConfirm && valid && !valid.passwordConfirm && <VaildMsg>비밀번호가 동일하지 않습니다.</VaildMsg>}
+              </StyledInputFiledContainer>
+              <StyledInputFiledContainer>
+                <StyledInput name="userName" placeholder="이름" type="text" onChange={onChange} value={form.username} />
+                {form.userName && valid && !valid.userName && <VaildMsg>이름 형식이 아닙니다.</VaildMsg>}
+              </StyledInputFiledContainer>
+              <StyledInputFiledContainer>
+                <StyledInput name="nickName" placeholder="닉네임" type="text" onChange={onChange} value={form.nickname} />
+                {form.nickName && valid && !valid.nickName && <VaildMsg>닉네임 형식이 아닙니다.</VaildMsg>}
+              </StyledInputFiledContainer>
+              <StyledInputFiledContainer>
+                <StyledInput name="phone" placeholder="전화번호" type="text" onChange={onChange} value={form.phone} />
+                {form.phone && valid && !valid.phone && <VaildMsg>전화번호 형식이 아닙니다.</VaildMsg>}
+              </StyledInputFiledContainer>
             </>
           )}
-        </form>
-        <ButtonWithMarginTop big>{AuthText}</ButtonWithMarginTop>
+          {authError && <ErrorDiv>{authError}</ErrorDiv>}
+          <ButtonWithMarginTop big>{AuthText}</ButtonWithMarginTop>
+        </StyledForm>
       </AuthBlock>
       {type === 'register' && (
         <ChangeRegister>
