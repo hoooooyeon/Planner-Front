@@ -21,6 +21,8 @@ const LOAD_DETAIL_SPOT_SUCCESS_TYPE = 'spot/LOAD_DETAIL_SPOT_SUCCESS';
 const LOAD_DETAIL_SPOT_FAILURE_TYPE = 'spot/LOAD_DETAIL_SPOT_FAILURE';
 const UNLOAD_DETAIL_SPOT_TYPE = 'spot/UNLOAD_DETAIL_SPOT';
 
+const UPDATE_DETAIL_SPOT_TYPE = 'spot/UPDATE_DETAIL_SPOT';
+
 const ADD_LIKE_SPOT_TYPE = 'spot/ADD_LIKE_SPOT';
 const ADD_LIKE_SPOT_SUCCESS_TYPE = 'spot/ADD_LIKE_SPOT_SUCCESS';
 const ADD_LIKE_SPOT_FAILURE_TYPE = 'spot/ADD_LIKE_SPOT_FAILURE';
@@ -49,6 +51,7 @@ export const updateTotalPageAction = (num) => ({ type: UPDATE_TOTAL_PAGE_TYPE, n
 export const updatePaginationAction = (num) => ({ type: UPDATE_PAGINATION_TYPE, num });
 export const loadDetailSpotAction = (id) => ({ type: LOAD_DETAIL_SPOT_TYPE, id });
 export const unloadDetailSpotAction = () => ({ type: UNLOAD_DETAIL_SPOT_TYPE });
+export const updateDetailSpotAction = (spotInfo) => ({ type: UPDATE_DETAIL_SPOT_TYPE, spotInfo})
 export const addLikeSpotAction = (spotId) => ({ type: ADD_LIKE_SPOT_TYPE, spotId });
 export const removeLikeSpotAction = (spotId) => ({ type: REMOVE_LIKE_SPOT_TYPE, spotId });
 export const updateSpotsLikeAction = (likes) => ({ type: UPDATE_SPOTS_LIKE_TYPE, likes });
@@ -95,7 +98,7 @@ function spotReducer(state = initialState, action) {
         case LOAD_AREAS_SUCCESS_TYPE:
             return {
                 ...state,
-                areas: action.payload.data,
+                areas: action.payload.data.items,
             };
         case LOAD_AREAS_FAILURE_TYPE:
             return {
@@ -106,7 +109,7 @@ function spotReducer(state = initialState, action) {
             return {
                 ...state,
                 spots: {
-                    list: action.payload.data.map((item) => {
+                    list: action.payload.data.items.map((item) => {
                         return {
                             info: item,
                             like: false,
@@ -173,6 +176,18 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 spotError: action.payload.error,
             };
+            case UPDATE_DETAIL_SPOT_TYPE:
+                const [contentid, title, firstimage] = action.spotInfo;
+                return {
+                    ...state,
+                    detail: {
+                        info: {
+                            title: title,
+                            contentid: contentid,
+                            firstimage: firstimage
+                        }
+                    }
+                }
         case UNLOAD_DETAIL_SPOT_TYPE:
             return {
                 ...state,
