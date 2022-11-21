@@ -84,7 +84,7 @@ const LikeBox = styled.div`
 `;
 
 const SpotDetailModal = ({ detail, onUnloadDetailSpot, onToggleLikeSpot }) => {
-    const { title, firstimage, overview, contentid } = detail.info;
+    const { title, firstimage, overview, contentid, likeCount } = detail.info;
     const { like } = detail;
 
     // 대체 이미지 넣기
@@ -121,7 +121,7 @@ const SpotDetailModal = ({ detail, onUnloadDetailSpot, onToggleLikeSpot }) => {
                                 }}
                             >
                                 <FontAwesomeIcon icon={faStar} />
-                                <div>111</div>
+                                <div>{likeCount}</div>
                             </LikeBox>
                             <Detail>{overview}</Detail>
                         </Info>

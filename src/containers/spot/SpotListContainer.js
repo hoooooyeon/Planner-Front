@@ -16,6 +16,7 @@ import {
     updateAreaNumAction,
     updateBlockNumAction,
     updateDetailLikeAction,
+    updateDetailSpotAction,
     updatePageNumAction,
     updateSpotsLikeAction,
 } from '../../modules/spotModule';
@@ -44,6 +45,7 @@ const SpotListContainer = ({
     cleanLikeSpots,
     cleanLikeSpotsToggling,
     toggleDetailLike,
+    updateDetailSpot
 }) => {
     const { areaNum, pageNum } = currentInfo;
     const [click, setClick] = useState(true);
@@ -61,9 +63,11 @@ const SpotListContainer = ({
     }, [loadSpots, areaNum, pageNum]);
 
     // 여행지 상세정보 모달 열기
-    const onOpenDetail = (contentId, like) => {
-        loadDetailSpot(contentId);
-        updateDetailLike(like);
+    const onOpenDetail = (spot) => {
+        
+        loadDetailSpot(spot.info.contentid);
+        updateDetailLike(spot.like);
+        updateDetailSpot(spot.info);
     };
 
     // 여행지 첫페이지
@@ -98,8 +102,8 @@ const SpotListContainer = ({
     useEffect(() => {
         if (likeSpots) {
             updateSpotsLike(likeSpots);
-        }
-    }, [likeSpots, updateSpotsLike, likeSpot]);
+        } 
+    }, [likeSpots, updateSpotsLike, likeSpot,]);
 
     // 여행지 좋아요 토글
     const onToggleLikeSpot = (contentId) => {
@@ -160,6 +164,9 @@ const mapDispatchToProps = (dispatch) => ({
     },
     loadDetailSpot: (id) => {
         dispatch(loadDetailSpotAction(id));
+    },
+    updateDetailSpot: (spotInfo) => {
+        dispatch(updateDetailSpotAction(spotInfo))
     },
     unloadDetailSpot: () => {
         dispatch(unloadDetailSpotAction());

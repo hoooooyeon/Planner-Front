@@ -51,7 +51,7 @@ export const updateTotalPageAction = (num) => ({ type: UPDATE_TOTAL_PAGE_TYPE, n
 export const updatePaginationAction = (num) => ({ type: UPDATE_PAGINATION_TYPE, num });
 export const loadDetailSpotAction = (id) => ({ type: LOAD_DETAIL_SPOT_TYPE, id });
 export const unloadDetailSpotAction = () => ({ type: UNLOAD_DETAIL_SPOT_TYPE });
-export const updateDetailSpotAction = (spotInfo) => ({ type: UPDATE_DETAIL_SPOT_TYPE, spotInfo})
+export const updateDetailSpotAction = (spotInfo) => ({ type: UPDATE_DETAIL_SPOT_TYPE, spotInfo });
 export const addLikeSpotAction = (spotId) => ({ type: ADD_LIKE_SPOT_TYPE, spotId });
 export const removeLikeSpotAction = (spotId) => ({ type: REMOVE_LIKE_SPOT_TYPE, spotId });
 export const updateSpotsLikeAction = (likes) => ({ type: UPDATE_SPOTS_LIKE_TYPE, likes });
@@ -167,7 +167,10 @@ function spotReducer(state = initialState, action) {
             return {
                 ...state,
                 detail: {
-                    info: action.payload.data,
+                    info: {
+                        ...state.detail.info,
+                        overview: action.payload.data.overview,
+                    },
                     like: state.likeSpot,
                 },
             };
@@ -176,18 +179,18 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 spotError: action.payload.error,
             };
-            case UPDATE_DETAIL_SPOT_TYPE:
-                const [contentid, title, firstimage] = action.spotInfo;
-                return {
-                    ...state,
-                    detail: {
-                        info: {
-                            title: title,
-                            contentid: contentid,
-                            firstimage: firstimage
-                        }
-                    }
-                }
+        case UPDATE_DETAIL_SPOT_TYPE:
+            return {
+                ...state,
+                detail: {
+                    info: {
+                        title: action.spotInfo.title,
+                        contentid: action.spotInfo.contentid,
+                        firstimage: action.spotInfo.firstimage,
+                        likeCount: action.spotInfo.likeCount,
+                    },
+                },
+            };
         case UNLOAD_DETAIL_SPOT_TYPE:
             return {
                 ...state,
