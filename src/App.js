@@ -4,9 +4,7 @@ import HomePage from './pages/HomePage';
 import PlannerListPage from './pages/planner/PlannerListPage';
 import PlannerInfoPage from './pages/planner/PlannerInfoPage';
 import PlannerEditPage from './pages/planner/PlannerEditPage';
-import ReviewInfoPage from './pages/review/ReviewInfoPage';
-import ReviewListPage from './pages/review/ReviewListPage';
-import ReviewWritePage from './pages/review/ReviewWritePage';
+import ReviewPage from './pages/review/ReviewPage';
 import ShareInfoPage from './pages/share/ShareInfoPage';
 import ShareListPage from './pages/share/ShareListPage';
 import SpotPage from './pages/SpotPage';
@@ -22,9 +20,7 @@ const App = () => {
       <Route path="/PlannerList" component={PlannerListPage} />
       <Route path="/PlannerInfo" component={PlannerInfoPage} />
       <Route path="/PlannerEdit" component={PlannerEditPage} />
-      <Route path="/ReviewInfo" component={ReviewInfoPage} />
-      <Route path="/ReviewList" component={ReviewListPage} />
-      <Route path="/ReviewWrite" component={ReviewWritePage} />
+      <Route path="/Review" component={ReviewPage} />
       <Route path="/ShareInfo" component={ShareInfoPage} />
       <Route path="/ShareList" component={ShareListPage} />
       <Route path="/Spot" component={SpotPage} />
