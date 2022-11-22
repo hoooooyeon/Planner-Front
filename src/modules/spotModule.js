@@ -32,7 +32,6 @@ const REMOVE_LIKE_SPOT_SUCCESS_TYPE = 'spot/REMOVE_LIKE_SPOT_SUCCESS';
 const REMOVE_LIKE_SPOT_FAILURE_TYPE = 'spot/REMOVE_LIKE_SPOT_FAILURE';
 
 const UPDATE_SPOTS_LIKE_TYPE = 'spot/UPDATE_SPOTS_LIKE';
-const UPDATE_DETAIL_LIKE_TYPE = 'spot/UPDATE_DETAIL_LIKE';
 const TOGGLE_DETAIL_LIKE_TYPE = 'spot/TOGGLE_DETAIL_LIKE';
 
 const CHECK_LIKE_SPOTS_TYPE = 'spot/CHECK_LIKE_SPOTS';
@@ -55,7 +54,6 @@ export const updateDetailSpotAction = (spotInfo) => ({ type: UPDATE_DETAIL_SPOT_
 export const addLikeSpotAction = (spotId) => ({ type: ADD_LIKE_SPOT_TYPE, spotId });
 export const removeLikeSpotAction = (spotId) => ({ type: REMOVE_LIKE_SPOT_TYPE, spotId });
 export const updateSpotsLikeAction = (likes) => ({ type: UPDATE_SPOTS_LIKE_TYPE, likes });
-export const updateDetailLikeAction = (like) => ({ type: UPDATE_DETAIL_LIKE_TYPE, like });
 export const toggleDetailLikeAction = () => ({ type: TOGGLE_DETAIL_LIKE_TYPE });
 export const checkLikeSpotsAction = (accountId, spotId) => ({ type: CHECK_LIKE_SPOTS_TYPE, accountId, spotId });
 export const cleanLikeSpotsAction = () => ({ type: CLEAN_LIKE_SPOTS_TYPE });
@@ -90,7 +88,6 @@ const initialState = {
         pagination: null,
     },
     likeSpots: null,
-    likeSpot: null,
 };
 
 function spotReducer(state = initialState, action) {
@@ -171,7 +168,7 @@ function spotReducer(state = initialState, action) {
                         ...state.detail.info,
                         overview: action.payload.data.overview,
                     },
-                    like: state.likeSpot,
+                    like: state.detail.like,
                 },
             };
         case LOAD_DETAIL_SPOT_FAILURE_TYPE:
@@ -184,11 +181,12 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 detail: {
                     info: {
-                        title: action.spotInfo.title,
-                        contentid: action.spotInfo.contentid,
-                        firstimage: action.spotInfo.firstimage,
-                        likeCount: action.spotInfo.likeCount,
+                        title: action.spotInfo.info.title,
+                        contentid: action.spotInfo.info.contentid,
+                        firstimage: action.spotInfo.info.firstimage,
+                        likeCount: action.spotInfo.info.likeCount,
                     },
+                    like: action.spotInfo.like,
                 },
             };
         case UNLOAD_DETAIL_SPOT_TYPE:
@@ -199,6 +197,13 @@ function spotReducer(state = initialState, action) {
         case ADD_LIKE_SPOT_SUCCESS_TYPE:
             return {
                 ...state,
+                detail: {
+                    info: {
+                        ...state.detail.info,
+                        likeCount: state.detail.info.likeCount + 1,
+                    },
+                    like: state.detail.like,
+                },
             };
         case ADD_LIKE_SPOT_FAILURE_TYPE:
             return {
@@ -208,6 +213,13 @@ function spotReducer(state = initialState, action) {
         case REMOVE_LIKE_SPOT_SUCCESS_TYPE:
             return {
                 ...state,
+                detail: {
+                    info: {
+                        ...state.detail.info,
+                        likeCount: state.detail.info.likeCount - 1,
+                    },
+                    like: state.detail.like,
+                },
             };
         case REMOVE_LIKE_SPOT_FAILURE_TYPE:
             return {
@@ -227,11 +239,7 @@ function spotReducer(state = initialState, action) {
                     totalCount: state.spots.totalCount,
                 },
             };
-        case UPDATE_DETAIL_LIKE_TYPE:
-            return {
-                ...state,
-                likeSpot: action.like,
-            };
+
         case TOGGLE_DETAIL_LIKE_TYPE:
             return {
                 ...state,

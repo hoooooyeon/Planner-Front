@@ -15,7 +15,6 @@ import {
     unloadDetailSpotAction,
     updateAreaNumAction,
     updateBlockNumAction,
-    updateDetailLikeAction,
     updateDetailSpotAction,
     updatePageNumAction,
     updateSpotsLikeAction,
@@ -41,14 +40,12 @@ const SpotListContainer = ({
     removeLikeSpot,
     unloadDetailSpot,
     updateSpotsLike,
-    updateDetailLike,
     cleanLikeSpots,
     cleanLikeSpotsToggling,
     toggleDetailLike,
-    updateDetailSpot
+    updateDetailSpot,
 }) => {
     const { areaNum, pageNum } = currentInfo;
-    const [click, setClick] = useState(true);
 
     // 지역 가져오기
     useEffect(() => {
@@ -64,20 +61,15 @@ const SpotListContainer = ({
 
     // 여행지 상세정보 모달 열기
     const onOpenDetail = (spot) => {
-        
         loadDetailSpot(spot.info.contentid);
-        updateDetailLike(spot.like);
-        updateDetailSpot(spot.info);
+        updateDetailSpot(spot);
     };
 
     // 여행지 첫페이지
     const onFirstSpotsPage = (e, areaCode) => {
-        // e.stopPropagation();
-        if (click) {
-            updateAreaNum(areaCode);
-            updatePageNum(1);
-            updateBlockNum(0);
-        }
+        updateAreaNum(areaCode);
+        updatePageNum(1);
+        updateBlockNum(0);
     };
 
     // 사용자의 좋아요 여행지 비교
@@ -87,13 +79,14 @@ const SpotListContainer = ({
             const contentIdArr = spots.list.map((spot) => {
                 return spot.info.contentid;
             });
-
+            
             if (!likeSpots) {
                 checkLikeSpots(accountId, contentIdArr);
             }
         }
     }, [spots, account, checkLikeSpots, likeSpots]);
 
+    // 여행지 초기화
     useEffect(() => {
         cleanLikeSpots();
     }, [areaNum, pageNum, cleanLikeSpots]);
@@ -102,8 +95,8 @@ const SpotListContainer = ({
     useEffect(() => {
         if (likeSpots) {
             updateSpotsLike(likeSpots);
-        } 
-    }, [likeSpots, updateSpotsLike, likeSpot,]);
+        }
+    }, [likeSpots, updateSpotsLike]);
 
     // 여행지 좋아요 토글
     const onToggleLikeSpot = (contentId) => {
@@ -115,6 +108,7 @@ const SpotListContainer = ({
             removeLikeSpot(contentId);
         }
     };
+
     // 여행지 좋아요 토글 시, cleaning 후 updatespotslike
     useEffect(() => {
         cleanLikeSpotsToggling();
@@ -131,7 +125,6 @@ const SpotListContainer = ({
             onUnloadDetailSpot={unloadDetailSpot}
             onToggleLikeSpot={onToggleLikeSpot}
             onOpenDetail={onOpenDetail}
-            onSetClick={setClick}
         />
     );
 };
@@ -166,7 +159,7 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(loadDetailSpotAction(id));
     },
     updateDetailSpot: (spotInfo) => {
-        dispatch(updateDetailSpotAction(spotInfo))
+        dispatch(updateDetailSpotAction(spotInfo));
     },
     unloadDetailSpot: () => {
         dispatch(unloadDetailSpotAction());
@@ -182,9 +175,6 @@ const mapDispatchToProps = (dispatch) => ({
     },
     updateSpotsLike: (likes) => {
         dispatch(updateSpotsLikeAction(likes));
-    },
-    updateDetailLike: (like) => {
-        dispatch(updateDetailLikeAction(like));
     },
     toggleDetailLike: () => {
         dispatch(toggleDetailLikeAction());

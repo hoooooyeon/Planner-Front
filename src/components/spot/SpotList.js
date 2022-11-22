@@ -113,7 +113,7 @@ const ListScroll = styled.div`
     z-index: 0;
 `;
 
-const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPage, onUnloadDetailSpot, onToggleLikeSpot, onOpenDetail, onSetClick }) => {
+const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPage, onUnloadDetailSpot, onToggleLikeSpot, onOpenDetail }) => {
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
         e.target.src = defaultImg;
@@ -152,7 +152,6 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
             menuRef.current.style.transform = 'translateX(' + menuSliderMoving + 'px)';
             menuRef.current.style.transitionDuration = '0s';
 
-            onSetClick(false);
         }
     };
 
@@ -172,7 +171,6 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
         menuCurPos = sliderEndX;
         menuSliderStatus = false;
         
-        onSetClick(true);
     };
 
     useEffect(() => {
