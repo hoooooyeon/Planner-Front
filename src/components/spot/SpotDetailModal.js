@@ -16,25 +16,32 @@ const Background = styled.div`
 `;
 
 const ModalContainer = styled.div`
+z-index: 99;
     border-radius: 10px;
     background-color: white;
     position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 70rem;
-    height: 30rem;
+    width: 80%;
+    min-width: 600px;
+    height: 60%;
     display: flex;
+    padding: 20px;
 `;
 
 const Img = styled.img`
-    width: 30rem;
-    height: 30rem;
-    border-radius: 10px 0 0 10px;
+    width: 40%;
+    height: 100%;
+    border-radius: 10px;
+    @media all and (max-width: 1200px){
+        display: none;
+    }
 `;
 
 const Info = styled.div`
     padding: 3rem;
+    position: relative;
 `;
 
 const Title = styled.div`
@@ -50,8 +57,8 @@ const CloseButton = styled(FontAwesomeIcon)`
     width: 2rem;
     height: 2rem;
     position: absolute;
-    left: 1080px;
-    top: 10px;
+    left: 95%;
+    top: 1%;
     &:hover {
         cursor: pointer;
     }
@@ -65,8 +72,8 @@ const LikeBox = styled.div`
     display: inline-block;
     height: 1rem;
     position: absolute;
-    left: 1000px;
-    top: 50px;
+    left: 85%;
+    top: 10%;
     ${(props) =>
         props.like &&
         css`
