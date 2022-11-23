@@ -1,4 +1,18 @@
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft, faAngleRight, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+
+const ReviewButton = styled.button`
+    background-color: transparent;
+    border: none;
+    &:hover {
+        background-color: silver;
+        border-radius: 6px;
+    }
+    svg {
+        margin: 0px 5px;
+    }
+`;
 
 const ReviewBlock = styled.div`
     margin-top: 100px;
@@ -20,7 +34,7 @@ const ReviewSearchBox = styled.div`
     margin: 0px auto;
     margin-top: 20px;
     height: 50px;
-    border-radius: 4px;
+    border-radius: 6px;
     background-color: #e6e6e6;
 `;
 
@@ -32,8 +46,27 @@ const ItemBox = styled.div`
     margin: 0px 10px;
 `;
 
-const SearchButton = styled.button`
-    margin: 0px 10px;
+const Select = styled.div`
+    border-radius: 6px;
+`;
+
+const SearchInputText = styled.input`
+    width: 260px;
+    padding: 10px;
+    background-color: white;
+    outline: none;
+    border: none;
+    border-radius: 0px 6px 6px 0px;
+`;
+
+const SearchIcon = styled.div`
+    background-color: skyblue;
+    color: white;
+    padding: 6px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 6px 0px 0px 6px;
 `;
 
 const ReviewListBox = styled.ul`
@@ -63,6 +96,33 @@ const ReviewItem = styled.li`
     }
 `;
 
+const ReivewPageBox = styled.div`
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    height: 50px;
+    margin: 10px 0px;
+`;
+
+const PageButton = styled(ReviewButton)`
+    height: 30px;
+    /* line-height: 20px; */
+    padding: 5px 10px;
+`;
+
+const PageIndex = styled.a`
+    padding: 10px;
+    margin: 0px 5px;
+    text-align: center;
+    vertical-align: middle;
+
+    &:hover {
+        background-color: silver;
+        border-radius: 6px;
+    }
+`;
+
 const Review = () => {
     return (
         <ReviewBlock>
@@ -81,8 +141,10 @@ const Review = () => {
                         </select>
                     </ItemBox>
                     <ItemBox>
-                        <input type="text" />
-                        <SearchButton>검색</SearchButton>
+                        <SearchIcon>
+                            <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
+                        </SearchIcon>
+                        <SearchInputText type="text"></SearchInputText>
                     </ItemBox>
                 </ReviewSearchBox>
                 <ReviewListBox>
@@ -105,6 +167,19 @@ const Review = () => {
                         <ReviewItemTitle>제목</ReviewItemTitle>
                     </ReviewItem>
                 </ReviewListBox>
+                <ReivewPageBox>
+                    <PageButton>
+                        <FontAwesomeIcon icon={faAngleLeft} />
+                        뒤로
+                    </PageButton>
+                    <PageIndex>1</PageIndex>
+                    <PageIndex>2</PageIndex>
+                    <PageIndex>3</PageIndex>
+                    <PageButton>
+                        앞으로
+                        <FontAwesomeIcon icon={faAngleRight} />
+                    </PageButton>
+                </ReivewPageBox>
             </ReviewBox>
         </ReviewBlock>
     );
