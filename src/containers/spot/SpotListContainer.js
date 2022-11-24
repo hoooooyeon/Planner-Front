@@ -67,6 +67,7 @@ const SpotListContainer = ({
 
     // 여행지 첫페이지
     const onFirstSpotsPage = (e, areaCode) => {
+        if (e.target !== e.currentTarget) return;
         updateAreaNum(areaCode);
         updatePageNum(1);
         updateBlockNum(0);

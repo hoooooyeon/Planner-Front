@@ -141,22 +141,19 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     const menuSliderStart = (e) => {
         menuSliderStartX = e.clientX;
         menuSliderStatus = true;
-        
     };
 
     // 슬라이드 마우스 이동
     const menuSliderMove = (e) => {
         if (menuSliderStatus) {
             menuSliderMoving = menuCurPos + e.clientX - menuSliderStartX;
-
             menuRef.current.style.transform = 'translateX(' + menuSliderMoving + 'px)';
             menuRef.current.style.transitionDuration = '0s';
-
         }
     };
 
     // 슬라이드 마우스 업
-    const menuSliderEnd = () => {
+    const menuSliderEnd = (e) => {
         let itemBoxSize = menuBoxRef.current.getBoundingClientRect().width;
         let sliderEndX = menuSliderMoving;
 
@@ -170,7 +167,6 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
         menuRef.current.style.transitionDuration = ' 1s';
         menuCurPos = sliderEndX;
         menuSliderStatus = false;
-        
     };
 
     useEffect(() => {
@@ -209,8 +205,6 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
 
             listRef.current.style.transform = 'translateX(' + listSliderMoving + 'px)';
             listRef.current.style.transitionDuration = '0s';
-
-
         }
     };
 
@@ -317,7 +311,11 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
                     {areas && (
                         <Menu ref={menuRef}>
                             {areas.map((area) => (
-                                <li key={area.code} onClick={(e) => onFirstSpotsPage(e, area.code)} aria-current={areaNum === area.code ? 'page' : null}>
+                                <li
+                                    key={area.code}
+                                    onClick={(e) => onFirstSpotsPage(e, area.code)}
+                                    aria-current={areaNum === area.code ? 'page' : null}
+                                >
                                     {area.name}
                                 </li>
                             ))}
