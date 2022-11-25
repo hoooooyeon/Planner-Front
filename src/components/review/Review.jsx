@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import Select from '../common/Select';
+import { useState } from 'react';
 
 const ReviewButton = styled.button`
     background-color: transparent;
@@ -23,7 +25,7 @@ const ReviewBlock = styled.div`
 const ReviewBox = styled.div`
     display: flex;
     flex-direction: column;
-    border-radius: 4px;
+    border-radius: 6px;
     background-color: #f3f3f3;
 `;
 
@@ -46,27 +48,27 @@ const ItemBox = styled.div`
     margin: 0px 10px;
 `;
 
-const Select = styled.div`
-    border-radius: 6px;
-`;
-
 const SearchInputText = styled.input`
     width: 260px;
     padding: 10px;
     background-color: white;
     outline: none;
     border: none;
-    border-radius: 0px 6px 6px 0px;
+    border-radius: 6px 0px 0px 6px;
 `;
 
 const SearchIcon = styled.div`
     background-color: skyblue;
     color: white;
-    padding: 6px;
+    padding: 6px 8px;
     height: 24px;
     line-height: 24px;
     text-align: center;
-    border-radius: 6px 0px 0px 6px;
+    border-radius: 0px 6px 6px 0px;
+
+    &:hover {
+        background-color: #7ec1dc;
+    }
 `;
 
 const ReviewListBox = styled.ul`
@@ -124,27 +126,25 @@ const PageIndex = styled.a`
 `;
 
 const Review = () => {
+    const [selectAreaCode, setSelectAreaCode] = useState('');
+
+    const onChange = (value) => {
+        setSelectAreaCode(value);
+    };
+
     return (
         <ReviewBlock>
             <ReviewBox>
                 <ReviewSearchBox>
                     <ItemBox>
                         <div>여행지</div>
-                        <select name="spot">
-                            <option value="">선택</option>
-                        </select>
+                        <Select value={selectAreaCode} onChange={onChange} />
                     </ItemBox>
                     <ItemBox>
-                        <div>정렬</div>
-                        <select name="sort">
-                            <option value="">선택</option>
-                        </select>
-                    </ItemBox>
-                    <ItemBox>
+                        <SearchInputText type="text"></SearchInputText>
                         <SearchIcon>
                             <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
                         </SearchIcon>
-                        <SearchInputText type="text"></SearchInputText>
                     </ItemBox>
                 </ReviewSearchBox>
                 <ReviewListBox>
