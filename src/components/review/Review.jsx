@@ -7,12 +7,14 @@ import { useState } from 'react';
 const ReviewButton = styled.button`
     background-color: transparent;
     border: none;
+
+    svg {
+        margin: 0px 5px;
+    }
+
     &:hover {
         background-color: silver;
         border-radius: 6px;
-    }
-    svg {
-        margin: 0px 5px;
     }
 `;
 
@@ -27,17 +29,19 @@ const ReviewBox = styled.div`
     flex-direction: column;
     border-radius: 6px;
     background-color: #f3f3f3;
+    margin: 20px 0px;
 `;
 
 const ReviewSearchBox = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin: 0px auto;
+    justify-content: center;
+    align-items: center;
+    //margin: 0px auto;
     margin-top: 20px;
     height: 50px;
     border-radius: 6px;
-    background-color: #e6e6e6;
+    //background-color: #e6e6e6;
 `;
 
 const ItemBox = styled.div`
@@ -49,7 +53,8 @@ const ItemBox = styled.div`
 `;
 
 const SearchInputText = styled.input`
-    width: 260px;
+    flex-basis: 40%;
+    //width: 260px;
     padding: 10px;
     background-color: white;
     outline: none;
@@ -79,17 +84,33 @@ const ReviewListBox = styled.ul`
     padding: 0px;
     margin: 20px 20px;
 `;
+
+const ReviewListItem = styled.li`
+    //background-color: skyblue;
+    height: 200px;
+    //width: 240px;
+    padding: 10px 10px;
+    flex-basis: 20%;
+    box-sizing: border-box;
+
+    @media screen and (min-width: 1024px) and (max-width: 1440px) {
+        flex-basis: 20%;
+    }
+
+    @media screen and (max-width: 1024px) {
+        flex-basis: 33.33%;
+    }
+`;
+
 const ReviewItemTitle = styled.div`
     display: none;
     background-color: #00000062;
     height: 100%;
 `;
 
-const ReviewItem = styled.li`
+const ReviewItem = styled.div`
     background-color: skyblue;
-    height: 200px;
-    width: 180px;
-    margin: 10px 10px;
+    height: 100%;
 
     &:hover {
         ${ReviewItemTitle} {
@@ -125,47 +146,27 @@ const PageIndex = styled.a`
     }
 `;
 
-const Review = () => {
-    const [selectAreaCode, setSelectAreaCode] = useState('');
-
-    const onChange = (value) => {
-        setSelectAreaCode(value);
-    };
-
+const Review = ({ reviewList, areaCodes, selectAreaCode, onSelectChange }) => {
     return (
         <ReviewBlock>
             <ReviewBox>
                 <ReviewSearchBox>
-                    <ItemBox>
-                        <div>여행지</div>
-                        <Select value={selectAreaCode} onChange={onChange} />
-                    </ItemBox>
-                    <ItemBox>
-                        <SearchInputText type="text"></SearchInputText>
-                        <SearchIcon>
-                            <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
-                        </SearchIcon>
-                    </ItemBox>
+                    <div>여행지</div>
+                    <Select value={selectAreaCode} options={areaCodes} onChange={onSelectChange} />
+                    <SearchInputText type="text"></SearchInputText>
+                    <SearchIcon>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
+                    </SearchIcon>
                 </ReviewSearchBox>
                 <ReviewListBox>
-                    <ReviewItem>
-                        <ReviewItemTitle>제목</ReviewItemTitle>
-                    </ReviewItem>
-                    <ReviewItem>
-                        <ReviewItemTitle>제목</ReviewItemTitle>
-                    </ReviewItem>
-                    <ReviewItem>
-                        <ReviewItemTitle>제목</ReviewItemTitle>
-                    </ReviewItem>
-                    <ReviewItem>
-                        <ReviewItemTitle>제목</ReviewItemTitle>
-                    </ReviewItem>
-                    <ReviewItem>
-                        <ReviewItemTitle>제목</ReviewItemTitle>
-                    </ReviewItem>
-                    <ReviewItem>
-                        <ReviewItemTitle>제목</ReviewItemTitle>
-                    </ReviewItem>
+                    {reviewList &&
+                        reviewList.map((v) => (
+                            <ReviewListItem>
+                                <ReviewItem>
+                                    <ReviewItemTitle>{v.title}</ReviewItemTitle>
+                                </ReviewItem>
+                            </ReviewListItem>
+                        ))}
                 </ReviewListBox>
                 <ReivewPageBox>
                     <PageButton>

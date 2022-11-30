@@ -16,7 +16,7 @@ const SelectBox = styled.div`
 `;
 
 const SelectMain = styled.div`
-    width: 80px;
+    width: 140px;
     height: 30px;
     text-align: center;
     line-height: 30px;
@@ -27,11 +27,13 @@ const SelectMain = styled.div`
 
 const SelectOption = styled.div`
     position: absolute;
+    width: 100%;
     background-color: white;
-    padding: 5px;
+    //padding: 5px;
     margin-top: 5px;
     border-radius: 6px;
     animation: fadein 0.3s;
+    z-index: 3;
 
     @keyframes fadein {
         from {
@@ -45,7 +47,7 @@ const SelectOption = styled.div`
 
 const SelectOptionItem = styled.div`
     background-color: white;
-    width: 70px;
+    //width: 70px;
     height: 20px;
     margin: 5px 0px;
     border-radius: 6px;
@@ -57,7 +59,7 @@ const SelectOptionItem = styled.div`
     }
 `;
 
-const Select = ({ value, onChange }) => {
+const Select = ({ value, options, onChange }) => {
     const [selecting, setSelecting] = useState(false);
 
     const onClick = () => {
@@ -81,13 +83,7 @@ const Select = ({ value, onChange }) => {
                 {value ? value : '선택'}
                 <FontAwesomeIcon icon={faAngleDown} />
             </SelectMain>
-            {selecting && (
-                <SelectOption onClick={onSelect}>
-                    <SelectOptionItem>항목1</SelectOptionItem>
-                    <SelectOptionItem>항목2</SelectOptionItem>
-                    <SelectOptionItem>항목3</SelectOptionItem>
-                </SelectOption>
-            )}
+            {selecting && <SelectOption onClick={onSelect}>{options && Object.values(options).map((v, i) => <SelectOptionItem key={i}>{v}</SelectOptionItem>)}</SelectOption>}
         </SelectBox>
     );
 };
