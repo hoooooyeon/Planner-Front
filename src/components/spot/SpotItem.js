@@ -55,8 +55,8 @@ const Name = styled.div`
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     position: absolute;
-    bottom: 25%;
-    left: 88%;
+    bottom: 21%;
+    left: 90%;
     color: ${(props) => (props.like ? 'yellow' : 'lightgray')};
 `;
 
