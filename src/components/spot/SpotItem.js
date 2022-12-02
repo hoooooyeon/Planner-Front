@@ -11,6 +11,7 @@ const SpotItemBlock = styled.li`
     box-shadow: 3px 3px 7px 1px ${palette.gray[1]};
     /* padding: 0 6px 12px; */
     margin: 0.5%;
+    position: relative;
     @media all and (min-width: 768px) {
         width: 24%;
     }
@@ -53,9 +54,9 @@ const Name = styled.div`
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    position: relative;
-    bottom: 30px;
-    left: 255px;
+    position: absolute;
+    bottom: 25%;
+    left: 88%;
     color: ${(props) => (props.like ? 'yellow' : 'lightgray')};
 `;
 

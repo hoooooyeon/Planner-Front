@@ -137,7 +137,7 @@ const SpotList = ({
 
     if (mSliderX > 0) {
         mSliderX = 0;
-      } else if (mSliderX < menuRef.current.clientWidth - menuRef.current.scrollWidth) {
+      } else if (mSliderX < menuBoxRef.current.clientWidth - menuRef.current.scrollWidth) {
         mSliderX = menuBoxRef.current.clientWidth - menuRef.current.scrollWidth;
       }
       menuRef.current.style.transform = 'translateX(' + mSliderX + 'px)';
