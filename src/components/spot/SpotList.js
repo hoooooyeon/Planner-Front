@@ -123,8 +123,6 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     const menuBoxRef = useRef();
     const listRef = useRef();
     const listBoxRef = useRef();
-    const scrollBoxRef = useRef();
-    const scrollRef = useRef();
 
     // let sliderStartX = 0; // mousedown: 마우스 다운된 좌표
     // let currentPosition = 0; // 이전에 이동한 좌표
@@ -237,64 +235,6 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
                 curListRef.removeEventListener('mousedown', listSliderStart);
                 window.removeEventListener('mousemove', listSliderMove);
                 window.removeEventListener('mouseup', listSliderEnd);
-            };
-        }
-    });
-
-    // ---------- 스크롤 슬라이더 ----------
-    let scrollSliderStartX = 0;
-    let scrollCurPos = 0;
-    let scrollSliderStatus = false;
-    let scrollSliderMoving = 0;
-
-    // 슬라이드 마우스 다운
-    const scrollSliderStart = (e) => {
-        scrollSliderStartX = e.clientX;
-        scrollSliderStatus = true;
-    };
-
-    // 슬라이드 마우스 이동
-    const scrollSliderMove = (e) => {
-        if (scrollSliderStatus) {
-            scrollSliderMoving = scrollCurPos + e.clientX - scrollSliderStartX;
-            // let scrollGap = e.clientX - scrollSliderStartX;
-            // let scrollWidth = scrollRef.current.getBoundingClientRect().width;
-
-            scrollRef.current.style.transform = 'translateX(' + scrollSliderMoving + 'px)';
-            scrollRef.current.style.transitionDuration = '0s';
-            // scrollRef.current.style.width = scrollWidth / scrollGap;
-        }
-    };
-
-    // 슬라이드 마우스 업
-    const scrollSliderEnd = () => {
-        let itemBoxSize = scrollBoxRef.current.getBoundingClientRect().width;
-        let sliderEndX = scrollSliderMoving;
-
-        if (sliderEndX > 0) {
-            sliderEndX = 0;
-        } else if (sliderEndX < itemBoxSize - scrollRef.current.scrollWidth) {
-            sliderEndX = itemBoxSize - scrollRef.current.scrollWidth;
-        }
-
-        scrollRef.current.style.transform = ' translateX(' + sliderEndX + 'px)';
-        scrollRef.current.style.transitionDuration = ' 1s';
-        scrollCurPos = sliderEndX;
-        scrollSliderStatus = false;
-    };
-
-    useEffect(() => {
-        if (spots) {
-            let curListRef = listRef.current;
-
-            curListRef.addEventListener('mousedown', scrollSliderStart);
-            window.addEventListener('mousemove', scrollSliderMove);
-            window.addEventListener('mouseup', scrollSliderEnd);
-
-            return () => {
-                curListRef.removeEventListener('mousedown', scrollSliderStart);
-                window.removeEventListener('mousemove', scrollSliderMove);
-                window.removeEventListener('mouseup', scrollSliderEnd);
             };
         }
     });
