@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import PlannerList from './planner/PlannerList';
+// import PlannerList from './planner/PlannerList';
 
 const ShareBlock = styled.div`
   margin: 100px auto;
@@ -12,7 +12,7 @@ const ShareBlock = styled.div`
 const Share = () => {
   return (
     <ShareBlock>
-      <PlannerList type="share" />
+      {/* <PlannerList type="share" /> */}
     </ShareBlock>
   );
 };
