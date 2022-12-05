@@ -17,9 +17,9 @@ const SelectBox = styled.div`
 
 const SelectMain = styled.div`
     width: 140px;
-    height: 30px;
+    height: 32px;
     text-align: center;
-    line-height: 30px;
+    line-height: 32px;
     svg {
         margin: 0px 10px;
     }
@@ -61,7 +61,7 @@ const SelectOptionItem = styled.div`
 
 const Select = ({ value, options, onChange }) => {
     const [selecting, setSelecting] = useState(false);
-
+    console.log(value);
     const onClick = () => {
         if (!selecting) {
             setSelecting(true);
@@ -70,20 +70,29 @@ const Select = ({ value, options, onChange }) => {
         }
     };
 
-    const onSelect = (e) => {
+    const onSelect = (option) => {
         setSelecting(false);
         if (onChange) {
-            onChange(e.target.innerText);
+            onChange(option);
         }
     };
 
     return (
         <SelectBox>
             <SelectMain onClick={onClick}>
-                {value ? value : '선택'}
+                {value.id ? value.value : '선택'}
                 <FontAwesomeIcon icon={faAngleDown} />
             </SelectMain>
-            {selecting && <SelectOption onClick={onSelect}>{options && Object.values(options).map((v, i) => <SelectOptionItem key={i}>{v}</SelectOptionItem>)}</SelectOption>}
+            {selecting && (
+                <SelectOption>
+                    {options &&
+                        options.map((v, i) => (
+                            <SelectOptionItem key={i} onClick={() => onSelect(v)}>
+                                {v.value}
+                            </SelectOptionItem>
+                        ))}
+                </SelectOption>
+            )}
         </SelectBox>
     );
 };

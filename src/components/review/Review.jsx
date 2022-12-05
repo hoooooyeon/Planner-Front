@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faAngleRight, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faAngleRight, faMagnifyingGlass, faTemperature0 } from '@fortawesome/free-solid-svg-icons';
 import Select from '../common/Select';
 import { useState } from 'react';
+import tempImage from '../../images/temp.jpg';
 
 const ReviewButton = styled.button`
     background-color: transparent;
@@ -55,7 +56,7 @@ const ItemBox = styled.div`
 const SearchInputText = styled.input`
     flex-basis: 40%;
     //width: 260px;
-    padding: 10px;
+    padding: 8px;
     background-color: white;
     outline: none;
     border: none;
@@ -65,7 +66,7 @@ const SearchInputText = styled.input`
 const SearchIcon = styled.div`
     background-color: skyblue;
     color: white;
-    padding: 6px 8px;
+    padding: 4px 8px;
     height: 24px;
     line-height: 24px;
     text-align: center;
@@ -83,6 +84,10 @@ const ReviewListBox = styled.ul`
     list-style: none;
     padding: 0px;
     margin: 20px 20px;
+`;
+
+const ReviewListEmtpy = styled.b`
+    margin: 0px auto;
 `;
 
 const ReviewListItem = styled.li`
@@ -103,12 +108,18 @@ const ReviewListItem = styled.li`
 `;
 
 const ReviewItemTitle = styled.div`
+    position: absolute;
     display: none;
     background-color: #00000062;
-    height: 100%;
+    width: 100%;
+    height: 40px;
+    bottom: 0;
+    color: white;
+    line-height: 40px;
 `;
 
 const ReviewItem = styled.div`
+    position: relative;
     background-color: skyblue;
     height: 100%;
 
@@ -116,6 +127,11 @@ const ReviewItem = styled.div`
         ${ReviewItemTitle} {
             display: block;
         }
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
     }
 `;
 
@@ -159,14 +175,18 @@ const Review = ({ reviewList, areaCodes, selectAreaCode, onSelectChange }) => {
                     </SearchIcon>
                 </ReviewSearchBox>
                 <ReviewListBox>
-                    {reviewList &&
+                    {reviewList.length > 0 ? (
                         reviewList.map((v) => (
                             <ReviewListItem>
                                 <ReviewItem>
+                                    <img src={v.thumbnail ? v.thumbnail : tempImage} />
                                     <ReviewItemTitle>{v.title}</ReviewItemTitle>
                                 </ReviewItem>
                             </ReviewListItem>
-                        ))}
+                        ))
+                    ) : (
+                        <ReviewListEmtpy>데이터가 없습니다.</ReviewListEmtpy>
+                    )}
                 </ReviewListBox>
                 <ReivewPageBox>
                     <PageButton>
