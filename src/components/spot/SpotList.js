@@ -242,6 +242,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
                             {areas.map((area) => (
                                 <li key={area.code} onClick={(e) => onFirstSpotsPage(e, area.code)} aria-current={areaNum === area.code ? 'page' : null}>
                                     {area.name}
+                                    
                                 </li>
                             ))}
                         </Menu>

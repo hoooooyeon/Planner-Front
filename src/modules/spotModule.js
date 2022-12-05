@@ -38,8 +38,8 @@ const CHECK_LIKE_SPOTS_TYPE = 'spot/CHECK_LIKE_SPOTS';
 const CHECK_LIKE_SPOTS_SUCCESS_TYPE = 'spot/CHECK_LIKE_SPOTS_SUCCESS';
 const CHECK_LIKE_SPOTS_FAILURE_TYPE = 'spot/CHECK_LIKE_SPOTS_FAILURE';
 
+const CLEAN_SPOTS_TYPE = 'spot/CLEAN_SPOTS';
 const CLEAN_LIKE_SPOTS_TYPE = 'spot/CLEAN_LIKE_SPOTS';
-const CLEAN_LIKE_SPOTS_TOGGLING_TYPE = 'spot/CLEAN_LIKE_SPOTS_TOGGLING';
 
 export const loadAreasAction = () => ({ type: LOAD_AREAS_TYPE });
 export const loadSpotsAction = (areaCode, page) => ({ type: LOAD_SPOTS_TYPE, areaCode, page });
@@ -56,8 +56,8 @@ export const removeLikeSpotAction = (spotId) => ({ type: REMOVE_LIKE_SPOT_TYPE, 
 export const updateSpotsLikeAction = (likes) => ({ type: UPDATE_SPOTS_LIKE_TYPE, likes });
 export const toggleDetailLikeAction = () => ({ type: TOGGLE_DETAIL_LIKE_TYPE });
 export const checkLikeSpotsAction = (accountId, spotId) => ({ type: CHECK_LIKE_SPOTS_TYPE, accountId, spotId });
+export const cleanSpotsAction = () => ({ type: CLEAN_SPOTS_TYPE });
 export const cleanLikeSpotsAction = () => ({ type: CLEAN_LIKE_SPOTS_TYPE });
-export const cleanLikeSpotsTogglingAction = () => ({ type: CLEAN_LIKE_SPOTS_TOGGLING_TYPE });
 
 const loadAreasSaga = createSaga(LOAD_AREAS_TYPE, spotAPI.loadAreas);
 const loadSpotsSaga = createSaga(LOAD_SPOTS_TYPE, spotAPI.loadSpots);
@@ -109,7 +109,7 @@ function spotReducer(state = initialState, action) {
                     list: action.payload.data.items.map((item) => {
                         return {
                             info: item,
-                            like: false,
+                            like: false
                         };
                     }),
                     totalCount: action.payload.data.totalCount,
@@ -254,10 +254,10 @@ function spotReducer(state = initialState, action) {
         case CHECK_LIKE_SPOTS_FAILURE_TYPE: {
             return { ...state, spotError: action.payload.error };
         }
-        case CLEAN_LIKE_SPOTS_TYPE: {
+        case CLEAN_SPOTS_TYPE: {
             return { ...state, likeSpots: null, spots: null };
         }
-        case CLEAN_LIKE_SPOTS_TOGGLING_TYPE: {
+        case CLEAN_LIKE_SPOTS_TYPE: {
             return { ...state, likeSpots: null };
         }
         default:

@@ -6,7 +6,7 @@ import {
     addLikeSpotAction,
     checkLikeSpotsAction,
     cleanLikeSpotsAction,
-    cleanLikeSpotsTogglingAction,
+    cleanSpotsAction,
     loadAreasAction,
     loadDetailSpotAction,
     loadSpotsAction,
@@ -28,7 +28,6 @@ const SpotListContainer = ({
     currentInfo,
     account,
     likeSpots,
-    likeSpot,
     loadAreas,
     loadSpots,
     loadDetailSpot,
@@ -40,8 +39,8 @@ const SpotListContainer = ({
     removeLikeSpot,
     unloadDetailSpot,
     updateSpotsLike,
+    cleanSpots,
     cleanLikeSpots,
-    cleanLikeSpotsToggling,
     toggleDetailLike,
     updateDetailSpot,
 }) => {
@@ -57,7 +56,7 @@ const SpotListContainer = ({
         if (areaNum) {
             loadSpots(areaNum, pageNum);
         }
-    }, [loadSpots, areaNum, pageNum]);
+    }, [loadSpots, areaNum, pageNum, detail]);
 
     // 여행지 상세정보 모달 열기
     const onOpenDetail = (spot) => {
@@ -89,8 +88,8 @@ const SpotListContainer = ({
 
     // 여행지 초기화
     useEffect(() => {
-        cleanLikeSpots();
-    }, [areaNum, pageNum, cleanLikeSpots]);
+        cleanSpots();
+    }, [areaNum, pageNum, cleanSpots]);
 
     // 여행지 좋아요 최신화
     useEffect(() => {
@@ -108,12 +107,13 @@ const SpotListContainer = ({
         } else {
             removeLikeSpot(contentId);
         }
+
     };
 
     // 여행지 좋아요 토글 시, cleaning 후 updatespotslike
     useEffect(() => {
-        cleanLikeSpotsToggling();
-    }, [cleanLikeSpotsToggling, detail]);
+        cleanLikeSpots();
+    }, [cleanLikeSpots, detail]);
 
     return (
         <SpotList
@@ -180,11 +180,11 @@ const mapDispatchToProps = (dispatch) => ({
     toggleDetailLike: () => {
         dispatch(toggleDetailLikeAction());
     },
+    cleanSpots: () => {
+        dispatch(cleanSpotsAction());
+    },
     cleanLikeSpots: () => {
         dispatch(cleanLikeSpotsAction());
-    },
-    cleanLikeSpotsToggling: () => {
-        dispatch(cleanLikeSpotsTogglingAction());
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);
