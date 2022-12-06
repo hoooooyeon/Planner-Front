@@ -89,7 +89,7 @@ const SpotListContainer = ({
     // 여행지 초기화
     useEffect(() => {
         cleanSpots();
-    }, [areaNum, pageNum, cleanSpots]);
+    }, [areaNum, pageNum, cleanSpots, detail]);
 
     // 여행지 좋아요 최신화
     useEffect(() => {

@@ -197,6 +197,14 @@ function spotReducer(state = initialState, action) {
         case ADD_LIKE_SPOT_SUCCESS_TYPE:
             return {
                 ...state,
+                // spots: {
+                //     list: state.spots.list.map(item => {
+                //         if(item.info.contentid === state.detail.info.contentid){
+                //             item.
+                //         }
+                //     })
+                    
+                // }
                 detail: {
                     info: {
                         ...state.detail.info,

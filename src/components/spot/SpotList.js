@@ -40,7 +40,7 @@ const Menu = styled.ul`
     width: 100%;
     height: 100%;
     display: flex;
-    padding-right: 20px;
+    padding: 0 20px 0 0;
     z-index: 1;
     li {
         white-space: nowrap;
