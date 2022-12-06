@@ -56,7 +56,7 @@ const SpotListContainer = ({
         if (areaNum) {
             loadSpots(areaNum, pageNum);
         }
-    }, [loadSpots, areaNum, pageNum, detail]);
+    }, [loadSpots, areaNum, pageNum, detail,]);
 
     // 여행지 상세정보 모달 열기
     const onOpenDetail = (spot) => {
@@ -89,14 +89,14 @@ const SpotListContainer = ({
     // 여행지 초기화
     useEffect(() => {
         cleanSpots();
-    }, [areaNum, pageNum, cleanSpots, detail]);
+    }, [areaNum, pageNum, cleanSpots]);
 
     // 여행지 좋아요 최신화
     useEffect(() => {
         if (likeSpots) {
             updateSpotsLike(likeSpots);
         }
-    }, [likeSpots, updateSpotsLike]);
+    }, [likeSpots, updateSpotsLike, detail]);
 
     // 여행지 좋아요 토글
     const onToggleLikeSpot = (contentId) => {

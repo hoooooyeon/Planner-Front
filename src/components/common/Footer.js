@@ -8,6 +8,8 @@ const FooterBlock = styled.div`
   position: relative;
   /* transform: translateY(100%); */
   background-color: lightblue;
+  position: relative;
+  top: 50px;
 `;
 const Logo = styled.div`
   font-size: 2rem;
