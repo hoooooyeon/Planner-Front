@@ -56,7 +56,7 @@ const SpotListContainer = ({
         if (areaNum) {
             loadSpots(areaNum, pageNum);
         }
-    }, [loadSpots, areaNum, pageNum, detail,]);
+    }, [loadSpots, areaNum, pageNum]);
 
     // 여행지 상세정보 모달 열기
     const onOpenDetail = (spot) => {
@@ -96,7 +96,7 @@ const SpotListContainer = ({
         if (likeSpots) {
             updateSpotsLike(likeSpots);
         }
-    }, [likeSpots, updateSpotsLike, detail]);
+    }, [likeSpots, updateSpotsLike]);
 
     // 여행지 좋아요 토글
     const onToggleLikeSpot = (contentId) => {

@@ -81,7 +81,7 @@ const initialState = {
     detail: null,
     spotError: null,
     currentInfo: {
-        areaNum: null,
+        areaNum: 1,
         pageNum: 1,
         blockNum: 0,
         totalPage: null,
