@@ -4,9 +4,10 @@ import { useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 
 const Container = styled.div`
+    width: 800px;
     background-color: silver;
     border-radius: 6px;
-    margin: 0px 30px;
+    margin: 100px auto 30px auto;
 `;
 
 const PostMain = styled.div`

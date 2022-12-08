@@ -13,6 +13,7 @@ import RegisterPage from './pages/account/RegisterPage';
 import ProfilePage from './pages/account/ProfilePage';
 import MyLikePage from './pages/account/MyLikePage';
 import ReviewPostPage from './pages/review/ReviewPostPage';
+import ReviewPostViewerPage from './pages/review/ReviewPostViewerPage';
 
 const App = () => {
   return (
@@ -21,8 +22,9 @@ const App = () => {
       <Route path="/PlannerList" component={PlannerListPage} />
       <Route path="/PlannerInfo" component={PlannerInfoPage} />
       <Route path="/PlannerEdit" component={PlannerEditPage} />
-      <Route path="/ReviewList" component={ReviewPage} />
-      <Route path="/Review/:reviewId" component={ReviewPostPage} />
+      <Route path="/review/list" component={ReviewPage} />
+      <Route path="/reveiw/write" component={ReviewPostPage} />
+      <Route path="/review/:reviewId" component={ReviewPostViewerPage} />
       <Route path="/ShareInfo" component={ShareInfoPage} />
       <Route path="/ShareList" component={ShareListPage} />
       <Route path="/Spot" component={SpotPage} />
