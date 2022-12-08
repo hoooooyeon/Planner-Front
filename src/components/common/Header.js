@@ -2,40 +2,66 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import palette from '../../lib/styles/palette';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import SideNav from './SideNav';
 
 const HeaderBlock = styled.div`
     height: 75px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 0;
-    right: 0;
     background-color: white;
     z-index: 999;
-    padding: 0 80px;
+    padding: 0 40px;
     a {
         color: black;
         text-decoration: none;
     }
+    h1 {
+        font-size: 23px;
+        @media all and (min-width: 768px) {
+            font-size: 24px;
+        }
+        @media all and (min-width: 1025px) {
+            font-size: 25px;
+        }
+    }
 `;
 
 const MenuList = styled.ul`
-    display: flex;
     list-style: none;
+    display: none;
+    @media all and (min-width: 768px) {
+        display: flex;
+    }
     li {
-        font-size: 1.2rem;
+        font-size: 15px;
         margin: 0 30px;
+        @media all and (min-width: 1025px) {
+            font-size: 17px;
+        }
     }
 `;
 
 const AccountList = styled.ul`
     display: flex;
+    align-items: center;
     list-style: none;
     li {
-        font-size: 0.8rem;
+        font-size: 11px;
         margin: 0 8px;
+        @media all and (min-width: 768px) {
+            font-size: 12px;
+        }
+        @media all and (min-width: 1025px) {
+            font-size: 13px;
+        }
+        a {
+            color: gray;
+        }
     }
 `;
 
@@ -51,6 +77,19 @@ const Account = styled.div`
         height: 40px;
     }
 `;
+
+
+const MenuNav = styled.li`
+    display: list-item;
+    @media all and (min-width: 768px) {
+        display: none;
+    }
+`;
+
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+font-size: 20px;
+`
 
 const Header = ({ account }) => {
     const headerRef = useRef();
@@ -81,9 +120,6 @@ const Header = ({ account }) => {
                     <Link to="/PlannerList">플래너</Link>
                 </li>
                 <li>
-                    <Link to="/ShareList">공유</Link>
-                </li>
-                <li>
                     <Link to="/ReviewList">여행후기</Link>
                 </li>
                 <li>
@@ -103,8 +139,12 @@ const Header = ({ account }) => {
                     <li>
                         <Link to="/Register">회원가입</Link>
                     </li>
+                    <MenuNav>
+                        <StyledFontAwesomeIcon icon={faBars} />
+                    </MenuNav>
                 </AccountList>
             )}
+            <SideNav />
         </HeaderBlock>
     );
 };

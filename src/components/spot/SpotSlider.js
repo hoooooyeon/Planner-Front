@@ -5,7 +5,6 @@ import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 
 const SpotSliderBlock = styled.div`
-    margin-top: 75px;
     width: 100%;
     height: 100%;
 `;
@@ -27,11 +26,12 @@ const SliderList = styled.ul`
     display: flex;
     width: calc(5 * 100%);
     transform: translateX(-20%);
+    margin: 0;
 `;
 
 const SliderItem = styled.li`
     width: 100%;
-    height: 50vw;
+    height: 44vw;
     background-color: lightgray;
     float: left;
     display: flex;
@@ -42,20 +42,20 @@ const SliderItem = styled.li`
     }
 `;
 
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    z-index: 100;
-    font-size: 30px;
-    position: absoulte;
-    top: 380px;
-    &:hover {
-        cursor: pointer;
-    }
-    ${(props) =>
-        props.home &&
-        css`
-            top: 0;
-        `}
-`;
+// const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+//     z-index: 100;
+//     font-size: 30px;
+//     position: absolute;
+//     top: 380px;
+//     &:hover {
+//         cursor: pointer;
+//     }
+//     ${(props) =>
+//         props.home &&
+//         css`
+//             top: 0;
+//         `}
+// `;
 
 // const PrevButton = styled(StyledFontAwesomeIcon)`
 //     left: 10%;

@@ -1,8 +1,14 @@
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
+import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
+import { faBackward } from '@fortawesome/free-solid-svg-icons';
+import { faForward } from '@fortawesome/free-solid-svg-icons';
 
 const SpotPaginationBlock = styled.div`
     width: 100%;
     margin: 50px auto;
+    padding-bottom: 150px;
 `;
 const PaginationBox = styled.div`
     position: absolute;
@@ -41,9 +47,9 @@ const SpotPagination = ({ currentInfo, spots, onUpdatePageNum, onFirstPage, onLa
         <SpotPaginationBlock>
             {spots && pagination && (
                 <PaginationBox>
-                    <PageButton onClick={onFirstPage}>&lt;&lt;</PageButton>
+                    <PageButton onClick={onFirstPage}><FontAwesomeIcon icon={faCaretLeft} /></PageButton>
                     <PageButton onClick={onPrevPage} disabled={pageNum === 1}>
-                        &lt;
+                    <FontAwesomeIcon icon={faBackward} />
                     </PageButton>
                     {pagination.map((n) => (
                         <PageButton
@@ -57,9 +63,9 @@ const SpotPagination = ({ currentInfo, spots, onUpdatePageNum, onFirstPage, onLa
                         </PageButton>
                     ))}
                     <PageButton onClick={onNextPage} disabled={pageNum === totalPage}>
-                        &gt;
+                    <FontAwesomeIcon icon={faCaretRight} />
                     </PageButton>
-                    <PageButton onClick={onLastPage}>&gt;&gt;</PageButton>
+                    <PageButton onClick={onLastPage}><FontAwesomeIcon icon={faForward} /></PageButton>
                 </PaginationBox>
             )}
         </SpotPaginationBlock>
