@@ -4,6 +4,7 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef } from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const SideNavContainer = styled.div`
     width: 200px;
@@ -112,9 +113,18 @@ const SideNav = () => {
                 )}
             </div>
             <NavList>
-                <li>플래너</li>
-                <li>여행 후기</li>
-                <li>여행지</li>
+            <li>
+                    <Link to="/">홈</Link>
+                </li>
+            <li>
+                    <Link to="/PlannerList">플래너</Link>
+                </li>
+                <li>
+                    <Link to="/ReviewList">여행후기</Link>
+                </li>
+                <li>
+                    <Link to="/Spot">여행지</Link>
+                </li>
             </NavList>
         </SideNavContainer>
     );
