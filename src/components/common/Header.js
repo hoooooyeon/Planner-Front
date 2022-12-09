@@ -79,19 +79,6 @@ const Account = styled.div`
     }
 `;
 
-
-const MenuNav = styled.li`
-    display: list-item;
-    @media all and (min-width: 768px) {
-        display: none;
-    }
-`;
-
-
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-font-size: 20px;
-`
-
 const Header = ({ account }) => {
     const headerRef = useRef();
 
@@ -110,11 +97,6 @@ const Header = ({ account }) => {
             window.removeEventListener('scroll', headerShadow);
         };
     });
-
-    const [navOpen, setNavOpen] = useState(false)
-    const onOpenNav = () => {
-        setNavOpen(true);
-    }
 
     return (
         <HeaderBlock ref={headerRef}>
@@ -145,13 +127,9 @@ const Header = ({ account }) => {
                     <li>
                         <Link to="/Register">회원가입</Link>
                     </li>
-                    <MenuNav onClick={onOpenNav}>
-                        <StyledFontAwesomeIcon icon={faBars} />
-                    </MenuNav>
                 </AccountList>
             )}
-                <SideNav navOpen={navOpen} setNavOpen={setNavOpen} /> ): ('')
-           
+            <SideNav />
         </HeaderBlock>
     );
 };

@@ -1,30 +1,75 @@
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 const FooterBlock = styled.div`
-  height: 150px;
-  display: flex;
-  align-items: center;
-  flex: 1;
-  position: relative;
-  /* transform: translateY(100%); */
-  background-color: lightblue;
+    transform: translateY(55%);
+    background-color: gray;
+    position: relative;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    @media all and (min-width: 768px) {
+        height: 150px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
 `;
 const Logo = styled.div`
-  font-size: 2rem;
-  margin: 0 50px 0 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    div:first-child {
+        font-size: 17px;
+    }
+    div:last-child {
+        font-size: 30px;
+    }
+    margin: 0 50px 0 10%;
 `;
 
-const Info = styled.div``;
+const UpButton = styled(FontAwesomeIcon)`
+    font-size: 30px;
+    position: absolute;
+    right: 50px;
+    display: none;
+
+    &:hover {
+        cursor: pointer;
+    }
+    @media all and (min-width: 768px) {
+        display: block;
+    }
+`;
+
+const Info = styled.div`
+    font-size: 15px;
+`;
+
 const Footer = () => {
-  return (
-    <FooterBlock>
-      <Logo>낭만닷컴</Logo>
-      <Info>
-        <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-        <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-      </Info>
-    </FooterBlock>
-  );
+    const onScrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
+
+    return (
+        <FooterBlock>
+            <Logo>
+                <div>대한민국 여행의 전부</div>
+                <div>한국다봄</div>
+            </Logo>
+            <Info>
+                <p>Phone: 010-****-****, 010-****-****</p>
+                <p>Email: B*******@gmail.com, l******@gmail.com</p>
+            </Info>
+            <UpButton icon={faArrowUp} onClick={onScrollToTop} />
+        </FooterBlock>
+    );
 };
 
 export default Footer;
