@@ -240,13 +240,11 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
                     {areas && (
                         <Menu ref={menuRef}>
                             {areas.map((area) => (
-                                <a href="/">
 
                                 <li key={area.code} onClick={(e) => onFirstSpotsPage(e, area.code)} aria-current={areaNum === area.code ? 'page' : null}>
                                     {area.name}
                                     
                                 </li>
-                                </a>
                             ))}
                         </Menu>
                     )}

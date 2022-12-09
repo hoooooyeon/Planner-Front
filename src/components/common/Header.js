@@ -5,6 +5,7 @@ import palette from '../../lib/styles/palette';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import SideNav from './SideNav';
+import { useState } from 'react';
 
 const HeaderBlock = styled.div`
     height: 75px;
@@ -79,18 +80,6 @@ const Account = styled.div`
 `;
 
 
-const MenuNav = styled.li`
-    display: list-item;
-    @media all and (min-width: 768px) {
-        display: none;
-    }
-`;
-
-
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-font-size: 20px;
-`
-
 const Header = ({ account }) => {
     const headerRef = useRef();
 
@@ -139,9 +128,6 @@ const Header = ({ account }) => {
                     <li>
                         <Link to="/Register">회원가입</Link>
                     </li>
-                    <MenuNav>
-                        <StyledFontAwesomeIcon icon={faBars} />
-                    </MenuNav>
                 </AccountList>
             )}
             <SideNav />

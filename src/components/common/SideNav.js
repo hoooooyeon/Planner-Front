@@ -1,30 +1,26 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
-
-const Background = styled.div`
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-`;
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useRef } from 'react';
+import { useState } from 'react';
 
 const SideNavContainer = styled.div`
-    min-width: 200px;
+    width: 200px;
     height: 100%;
     margin: 0;
     padding: 20px;
     z-index: 999;
     background-color: white;
+    border-left: 2px solid gray;
     position: fixed;
     right: 0;
     top: 0;
     bottom: 0;
+    transform: ${(props) => (props.navOpen ? 'translateX(0px)' : 'translateX(242px)')};
+    transition: 0.4s ease;
     @media all and (min-width: 768px) {
-        display: none;
+        transform: translateX(280px);
     }
 `;
 
@@ -34,6 +30,7 @@ const NavList = styled.ul`
     padding: 0;
     li {
         padding: 10px;
+        border-radius: 5px;
         &:hover {
             background-color: lightgray;
             cursor: pointer;
@@ -42,34 +39,84 @@ const NavList = styled.ul`
 `;
 const IconBox = styled.div`
     display: inline-block;
-    border-radius: 5px;
-    padding: 5px 10px;
+    border-radius: 50px;
+    border: 2px solid gray;
+    padding: 5px 7px;
+    position: relative;
+    left: -60px;
+    background-color: white;
+    z-index: 99;
     &:hover {
         cursor: pointer;
         background-color: lightgray;
     }
 `;
 
-const RightArrow = styled(FontAwesomeIcon)`
-    font-size: 30px;
+const CloseIconBox = styled(IconBox)`
+    padding: 5px 11px;
+`;
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+    font-size: 20px;
 `;
 
 const SideNav = () => {
+    const navRef = useRef();
+    const [navOpen, setNavOpen] = useState(false);
+
+    // nav 토글 함수
+    const onToggleNav = () => {
+        if (navOpen === false) {
+            setNavOpen(true);
+        } else {
+            setNavOpen(false);
+        }
+    };
+
+    // 창 크기에 따른 nav 자동 종료
+    const resizeNavClose = () => {
+        if (window.innerWidth > 768) {
+            setNavOpen(false);
+        }
+    };
+
+    // 배경 클릭시 nav 종료
+    const navClose = (e) => {
+        let navArea = navRef.current;
+        let navChildren = navRef.current.contains(e.target);
+        if (navOpen && (!navArea || !navChildren)) {
+            setNavOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('click', navClose);
+        window.addEventListener('resize', resizeNavClose);
+        return () => {
+            window.removeEventListener('click', navClose);
+            window.removeEventListener('resize', resizeNavClose);
+        };
+    });
+
     return (
-        <Background>
-            <SideNavContainer>
-                <div>
-                    <IconBox>
-                        <RightArrow icon={faCaretRight} />
+        <SideNavContainer ref={navRef} navOpen={navOpen}>
+            <div>
+                {navOpen ? (
+                    <CloseIconBox onClick={onToggleNav}>
+                        <StyledFontAwesomeIcon icon={faCaretRight} />
+                    </CloseIconBox>
+                ) : (
+                    <IconBox onClick={onToggleNav}>
+                        <StyledFontAwesomeIcon icon={faBars} />
                     </IconBox>
-                </div>
-                <NavList>
-                    <li>플래너</li>
-                    <li>여행 후기</li>
-                    <li>여행지</li>
-                </NavList>
-            </SideNavContainer>
-        </Background>
+                )}
+            </div>
+            <NavList>
+                <li>플래너</li>
+                <li>여행 후기</li>
+                <li>여행지</li>
+            </NavList>
+        </SideNavContainer>
     );
 };
 
