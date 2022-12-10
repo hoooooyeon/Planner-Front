@@ -100,7 +100,7 @@ const SpotListContainer = ({
 
     // 여행지 좋아요 토글
     const onToggleLikeSpot = (contentId) => {
-        const { like } = detail;
+        const { like } = detail.info;
         toggleDetailLike();
         if (like === false) {
             addLikeSpot(contentId);

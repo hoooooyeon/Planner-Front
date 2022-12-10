@@ -108,8 +108,11 @@ function spotReducer(state = initialState, action) {
                 spots: {
                     list: action.payload.data.items.map((item) => {
                         return {
-                            info: item,
-                            like: false
+                            info:  {
+                                ...item,
+                                like: false
+
+                            }
                         };
                     }),
                     totalCount: action.payload.data.totalCount,
@@ -167,8 +170,8 @@ function spotReducer(state = initialState, action) {
                     info: {
                         ...state.detail.info,
                         overview: action.payload.data.overview,
+                        likeCount: action.payload.data.likeCount,
                     },
-                    like: state.detail.like,
                 },
             };
         case LOAD_DETAIL_SPOT_FAILURE_TYPE:
@@ -184,9 +187,8 @@ function spotReducer(state = initialState, action) {
                         title: action.spotInfo.info.title,
                         contentid: action.spotInfo.info.contentid,
                         firstimage: action.spotInfo.info.firstimage,
-                        likeCount: action.spotInfo.info.likeCount,
+                        like: action.spotInfo.info.like,
                     },
-                    like: action.spotInfo.like,
                 },
             };
         case UNLOAD_DETAIL_SPOT_TYPE:
@@ -197,20 +199,11 @@ function spotReducer(state = initialState, action) {
         case ADD_LIKE_SPOT_SUCCESS_TYPE:
             return {
                 ...state,
-                // spots: {
-                //     list: state.spots.list.map(item => {
-                //         if(item.info.contentid === state.detail.info.contentid){
-                //             item.
-                //         }
-                //     })
-                    
-                // }
                 detail: {
                     info: {
                         ...state.detail.info,
                         likeCount: state.detail.info.likeCount + 1,
                     },
-                    like: state.detail.like,
                 },
             };
         case ADD_LIKE_SPOT_FAILURE_TYPE:
@@ -226,7 +219,6 @@ function spotReducer(state = initialState, action) {
                         ...state.detail.info,
                         likeCount: state.detail.info.likeCount - 1,
                     },
-                    like: state.detail.like,
                 },
             };
         case REMOVE_LIKE_SPOT_FAILURE_TYPE:
@@ -240,8 +232,11 @@ function spotReducer(state = initialState, action) {
                 spots: {
                     list: action.likes.map((like, i) => {
                         return {
-                            info: state.spots.list[i].info,
-                            like: String(like.contentId) === state.spots.list[i].info.contentid ? like.state : false,
+                            info: {
+                                ...state.spots.list[i].info,
+                                like: String(like.contentId) === state.spots.list[i].info.contentid ? like.state : false,
+
+                            }
                         };
                     }),
                     totalCount: state.spots.totalCount,
@@ -252,8 +247,11 @@ function spotReducer(state = initialState, action) {
             return {
                 ...state,
                 detail: {
-                    info: state.detail.info,
-                    like: !state.detail.like,
+                    info: {
+                        ...state.detail.info,
+                        like: !state.detail.info.like,
+
+                    }
                 },
             };
         case CHECK_LIKE_SPOTS_SUCCESS_TYPE: {

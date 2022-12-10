@@ -82,11 +82,11 @@ const SideNav = () => {
     };
 
     // 배경 클릭시 nav 종료
-    const navClose = (e) => {
+    const navClose =  async (e) => {
         let navArea = navRef.current;
         let navChildren = navRef.current.contains(e.target);
         if (navOpen && (!navArea || !navChildren)) {
-            setNavOpen(false);
+            await setNavOpen(false);
         }
     };
 
