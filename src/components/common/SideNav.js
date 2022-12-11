@@ -12,7 +12,7 @@ const SideNavContainer = styled.div`
     margin: 0;
     padding: 20px;
     z-index: 999;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.7);
     border-left: 2px solid gray;
     position: fixed;
     right: 0;
@@ -33,7 +33,7 @@ const NavList = styled.ul`
         padding: 10px;
         border-radius: 5px;
         &:hover {
-            background-color: lightgray;
+            background-color: #ebe9e9;
             cursor: pointer;
         }
     }
@@ -82,11 +82,13 @@ const SideNav = () => {
     };
 
     // 배경 클릭시 nav 종료
-    const navClose =  async (e) => {
+    const navClose =  (e) => {
         let navArea = navRef.current;
-        let navChildren = navRef.current.contains(e.target);
-        if (navOpen && (!navArea || !navChildren)) {
-            await setNavOpen(false);
+        if (navArea) {
+            let navChildren = navRef.current.contains(e.target);
+            if (navOpen && (!navArea || !navChildren)) {
+                setNavOpen(false);
+            }
         }
     };
 
@@ -113,10 +115,10 @@ const SideNav = () => {
                 )}
             </div>
             <NavList>
-            <li>
+                <li>
                     <Link to="/">홈</Link>
                 </li>
-            <li>
+                <li>
                     <Link to="/PlannerList">플래너</Link>
                 </li>
                 <li>
