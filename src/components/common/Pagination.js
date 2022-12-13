@@ -1,4 +1,10 @@
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
+import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
+import { faBackward } from '@fortawesome/free-solid-svg-icons';
+import { faForward } from '@fortawesome/free-solid-svg-icons';
+
 
 const PaginationBlock = styled.div`
   width: 100%;
@@ -43,13 +49,13 @@ const Pagination = () => {
   return (
     <PaginationBlock>
       <PaginationBox>
-        <PageButton>&lt;&lt;</PageButton>
-        <PageButton>&lt;</PageButton>
+        <PageButton><FontAwesomeIcon icon={faCaretLeft} /></PageButton>
+        <PageButton><FontAwesomeIcon icon={faBackward} /></PageButton>
         {arr.map((n) => {
           return <PageButton key={n}>{n}</PageButton>;
         })}
-        <PageButton>&gt;</PageButton>
-        <PageButton>&gt;&gt;</PageButton>
+        <PageButton><FontAwesomeIcon icon={faCaretRight} /></PageButton>
+        <PageButton><FontAwesomeIcon icon={faForward} /></PageButton>
       </PaginationBox>
     </PaginationBlock>
   );
