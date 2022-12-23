@@ -20,7 +20,6 @@ const Container = styled.div`
   }
   @media all and (min-width: 1280px) {
     width: 1024px;
-    padding: 0;
   }
   h3 {
     margin-left: 20px;
@@ -41,7 +40,6 @@ const PlannerList = styled.ul`
 
 const PlannerItem = styled.li`
   width: 24%;
-  flex-shrink: 0;
   margin: 0.5%;
   box-shadow: 3px 3px 7px 1px rgb(0, 0, 0, 30%);
   border-radius: 0.5rem;
