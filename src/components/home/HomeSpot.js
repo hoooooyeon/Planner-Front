@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import SpotItem from '../spot/SpotItem';
 
 const HomeSpotBlock = styled.div`
   width: 100%;
@@ -58,14 +57,6 @@ const HomeSpot = () => {
         <h3>여행지</h3>
         <HiddenBox>
           <SpotList>
-            <SpotItem />
-            <SpotItem />
-            <SpotItem />
-            <SpotItem />
-            <SpotItem />
-            <SpotItem />
-            <SpotItem />
-            <SpotItem />
           </SpotList>
         </HiddenBox>
       </Container>
