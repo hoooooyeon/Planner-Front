@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const HomeShareBlock = styled.div`
+const HomePlannerBlock = styled.div`
   width: 100%;
   height: 100%;
   margin: 50px auto;
@@ -19,7 +19,7 @@ const Container = styled.div`
     padding: 0;
   }
   @media all and (min-width: 1280px) {
-    width: 1250px;
+    width: 1024px;
     padding: 0;
   }
   h3 {
@@ -27,9 +27,8 @@ const Container = styled.div`
   }
 `;
 
-const ShareList = styled.ul`
+const PlannerList = styled.ul`
   list-style-type: none;
-  /* width: 100%; */
   height: 100%;
   display: flex;
   padding: 0 20px;
@@ -40,12 +39,17 @@ const ShareList = styled.ul`
   }
 `;
 
-const ShareItem = styled.li`
+const PlannerItem = styled.li`
   width: 24%;
   flex-shrink: 0;
   margin: 0.5%;
-  box-shadow: 3px 3px 7px 1px rgb(0 0 0 / 30%);
+  box-shadow: 3px 3px 7px 1px rgb(0, 0, 0, 30%);
   border-radius: 0.5rem;
+  &:hover {
+    cursor: pointer;
+    box-shadow: 3px 4px 14px 2px rgb(0, 0, 0, 30%);
+    transform: translateY(-3px);
+  }
 `;
 
 const InfoBox = styled.div`
@@ -56,68 +60,78 @@ const InfoBox = styled.div`
   border-top: 1px solid lightgray;
 `;
 
-const Map = styled.div`
+const SimpleMap = styled.div`
   width: 100%;
-  height: 150px;
+  height: 120px;
   border: none;
   margin: auto;
   @media all and (min-width: 960px) {
-    height: 200px;
+    height: 160px;
   }
   @media all and (min-width: 1280px) {
-    height: 250px;
+    height: 190px;
+  }
+`;
+const Name = styled.p`
+  margin: 0 0 8px 0;
+  font-size: 0.7rem;
+  @media all and (min-width: 768px) {
+    font-size: 0.8rem;
+  }
+  @media all and (min-width: 960px) {
+    font-size: 0.9rem;
+  }
+`;
+const Date = styled.p`
+  margin: 0;
+  font-size: 0.4rem;
+  color: gray;
+  @media all and (min-width: 768px) {
+    font-size: 0.6rem;
+  }
+  @media all and (min-width: 960px) {
+    font-size: 0.7rem;
   }
 `;
 
-const Name = styled.p`
-  margin: 0 0 10px 0;
-  font-weight: bold;
-`;
-
-const Date = styled.p`
-  margin: 0;
-  font-size: 0.8rem;
-  color: gray;
-`;
-
-const HomeShare = () => {
+const HomePlanner = () => {
   return (
-    <HomeShareBlock>
+    <HomePlannerBlock>
       <Container>
         <h3>사용자들의 플래너</h3>
-        <ShareList>
-          <ShareItem>
-            <Map />
+        <PlannerList>
+          <PlannerItem>
+            <SimpleMap />
             <InfoBox>
               <Name>1</Name>
               <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
             </InfoBox>
-          </ShareItem>
-          <ShareItem>
-            <Map />
+          </PlannerItem>
+          <PlannerItem>
+            <SimpleMap />
             <InfoBox>
               <Name>1</Name>
               <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
             </InfoBox>
-          </ShareItem>
-          <ShareItem>
-            <Map />
+          </PlannerItem>
+          <PlannerItem>
+            <SimpleMap />
             <InfoBox>
               <Name>1</Name>
               <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
             </InfoBox>
-          </ShareItem>
-          <ShareItem>
-            <Map />
+          </PlannerItem>
+          <PlannerItem>
+            <SimpleMap />
             <InfoBox>
               <Name>1</Name>
               <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
             </InfoBox>
-          </ShareItem>
-        </ShareList>
+          </PlannerItem>
+        </PlannerList>
       </Container>
-    </HomeShareBlock>
+    </HomePlannerBlock>
   );
 };
 
-export default HomeShare;
+export default HomePlanner;

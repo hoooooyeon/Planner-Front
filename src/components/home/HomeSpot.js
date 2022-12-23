@@ -26,17 +26,6 @@ const Container = styled.div`
     margin-left: 20px;
   }
 `;
-const HiddenBox = styled.div`
-  margin: 0 auto;
-  overflow: hidden;
-  z-index: 1;
-  padding: 0 20px;
-  width: calc(100% - 40px);
- 
-  @media all and (min-width: 1025px) {
-    width: 100%;
-  }
-`;
 
 const SpotList = styled.ul`
   list-style-type: none;
@@ -50,15 +39,31 @@ const SpotList = styled.ul`
   }
 `;
 
+const  SpotItem = styled.li`
+  
+
+`
+
 const HomeSpot = () => {
   return (
     <HomeSpotBlock>
       <Container>
         <h3>여행지</h3>
-        <HiddenBox>
           <SpotList>
+            <SpotItem />
+            <SpotItem />
+            <SpotItem />
+            <SpotItem />
+            <SpotItem />
+            <SpotItem />
+            <SpotItem />
+            <SpotItem />
+            <SpotItem />
+            <SpotItem />
+            <SpotItem />
+            <SpotItem />
+            <SpotItem />
           </SpotList>
-        </HiddenBox>
       </Container>
     </HomeSpotBlock>
   );
