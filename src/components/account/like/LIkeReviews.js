@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ReviewItem from '../../review/ReviewItem';
+// import ReviewItem from '../../review/ReviewItem';
 
 const Reviews = styled.div`
   display: flex;
@@ -13,8 +13,8 @@ const LikeReviews = () => {
       <h3>여행후기</h3>
       <hr />
       <Reviews>
-        <ReviewItem />
-        <ReviewItem />
+        {/* <ReviewItem />
+        <ReviewItem /> */}
       </Reviews>
     </>
   );
