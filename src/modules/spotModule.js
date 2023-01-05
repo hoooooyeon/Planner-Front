@@ -108,11 +108,10 @@ function spotReducer(state = initialState, action) {
                 spots: {
                     list: action.payload.data.items.map((item) => {
                         return {
-                            info:  {
+                            info: {
                                 ...item,
-                                like: false
-
-                            }
+                                like: false,
+                            },
                         };
                     }),
                     totalCount: action.payload.data.totalCount,
@@ -235,8 +234,7 @@ function spotReducer(state = initialState, action) {
                             info: {
                                 ...state.spots.list[i].info,
                                 like: String(like.contentId) === state.spots.list[i].info.contentid ? like.state : false,
-
-                            }
+                            },
                         };
                     }),
                     totalCount: state.spots.totalCount,
@@ -250,8 +248,7 @@ function spotReducer(state = initialState, action) {
                     info: {
                         ...state.detail.info,
                         like: !state.detail.info.like,
-
-                    }
+                    },
                 },
             };
         case CHECK_LIKE_SPOTS_SUCCESS_TYPE: {

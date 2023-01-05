@@ -64,12 +64,15 @@ const SpotListContainer = ({
         updateDetailSpot(spot);
     };
 
+    const [isClick, setIsClick] = useState(false);
     // 여행지 첫페이지
     const onFirstSpotsPage = (e, areaCode) => {
-        if (e.target !== e.currentTarget) return;
-        updateAreaNum(areaCode);
-        updatePageNum(1);
-        updateBlockNum(0);
+        // if (e.target !== e.currentTarget) return;
+        if (isClick) {
+            updateAreaNum(areaCode);
+            updatePageNum(1);
+            updateBlockNum(0);
+        }
     };
 
     // 사용자의 좋아요 여행지 비교
@@ -79,7 +82,7 @@ const SpotListContainer = ({
             const contentIdArr = spots.list.map((spot) => {
                 return spot.info.contentid;
             });
-            
+
             if (!likeSpots) {
                 checkLikeSpots(accountId, contentIdArr);
             }
@@ -93,10 +96,10 @@ const SpotListContainer = ({
 
     // 여행지 좋아요 최신화
     useEffect(() => {
-        if (likeSpots) {
+        if (likeSpots && spots) {
             updateSpotsLike(likeSpots);
         }
-    }, [likeSpots, updateSpotsLike]);
+    }, [likeSpots, updateSpotsLike, spots]);
 
     // 여행지 좋아요 토글
     const onToggleLikeSpot = (contentId) => {
@@ -107,7 +110,6 @@ const SpotListContainer = ({
         } else {
             removeLikeSpot(contentId);
         }
-
     };
 
     // 여행지 좋아요 토글 시, cleaning 후 updatespotslike
@@ -126,6 +128,8 @@ const SpotListContainer = ({
             onUnloadDetailSpot={unloadDetailSpot}
             onToggleLikeSpot={onToggleLikeSpot}
             onOpenDetail={onOpenDetail}
+            isClick={isClick}
+            setIsClick={setIsClick}
         />
     );
 };

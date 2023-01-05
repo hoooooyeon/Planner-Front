@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import SpotItem from './SpotItem';
 import defaultImg from '../../lib/images/defaultImg.jpg';
 import SpotDetailModal from './SpotDetailModal';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const SpotListBlock = styled.div`
     width: 100%;
@@ -110,16 +110,16 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPage, onUnloadDetailSpot, onToggleLikeSpot, onOpenDetail }) => {
+const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIsClick, onFirstSpotsPage, onUnloadDetailSpot, onToggleLikeSpot, onOpenDetail }) => {
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
         e.target.src = defaultImg;
     };
 
+    // ---------- 메뉴 슬라이더 ----------
     const menuRef = useRef();
     const menuBoxRef = useRef();
 
-    // ---------- 메뉴 슬라이더 ----------
     let mIsSlide = false;
     let mStartX = 0;
     let mCurrentX = 0;
@@ -127,17 +127,21 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     let mSliderX = 0;
 
     const menuSliderStart = (e) => {
+        setIsClick(true);
         mStartX = e.clientX;
         mIsSlide = true;
+        console.log(isClick);
     };
 
     const menuSliderMove = (e) => {
         if (mIsSlide) {
+            console.log(isClick);
             mCurrentX = e.clientX;
             mMoveX = mSliderX + mCurrentX - mStartX;
 
             menuRef.current.style.transform = ' translateX(' + mMoveX + 'px)';
             menuRef.current.style.transitionDuration = '0ms';
+            setIsClick(false);
         }
     };
 
@@ -186,8 +190,6 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
 
     const listRef = useRef();
     const listBoxRef = useRef();
-    const scrollBoxRef = useRef();
-    const scrollRef = useRef();
 
     let lIsSlide = false;
     let lStartX = 0;
@@ -196,6 +198,8 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, onFirstSpotsPa
     let lSliderX = 0;
     const TOTAL_SLIDE = 4;
 
+    const scrollBoxRef = useRef();
+    const scrollRef = useRef();
     let scrollMoveX = 0;
 
     const listSliderStart = (e) => {
