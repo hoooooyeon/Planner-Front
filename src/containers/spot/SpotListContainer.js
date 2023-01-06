@@ -68,7 +68,7 @@ const SpotListContainer = ({
     // 여행지 첫페이지
     const onFirstSpotsPage = (e, areaCode) => {
         // if (e.target !== e.currentTarget) return;
-        if (isClick) {
+        if (isClick && spots) {
             updateAreaNum(areaCode);
             updatePageNum(1);
             updateBlockNum(0);
@@ -94,12 +94,13 @@ const SpotListContainer = ({
         cleanSpots();
     }, [areaNum, pageNum, cleanSpots]);
 
+    // loadspots시작 cleanspots loadSpots성공 checklikespots시작 성공 updatespotslike
     // 여행지 좋아요 최신화
     useEffect(() => {
-        if (likeSpots && spots) {
+        if (likeSpots) {
             updateSpotsLike(likeSpots);
         }
-    }, [likeSpots, updateSpotsLike, spots]);
+    }, [likeSpots, updateSpotsLike]);
 
     // 여행지 좋아요 토글
     const onToggleLikeSpot = (contentId) => {
