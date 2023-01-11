@@ -68,7 +68,9 @@ const SpotListContainer = ({
     // 여행지 첫페이지
     const onFirstSpotsPage = (e, areaCode) => {
         // if (e.target !== e.currentTarget) return;
-        if (isClick && spots) {
+
+        // if (isClick && spots) {
+        if (spots) {
             updateAreaNum(areaCode);
             updatePageNum(1);
             updateBlockNum(0);
@@ -91,8 +93,14 @@ const SpotListContainer = ({
 
     // 여행지 초기화
     useEffect(() => {
-        cleanSpots();
+        // cleanSpots();
     }, [areaNum, pageNum, cleanSpots]);
+
+    // checklikespots가 끝나면 updateSpotslike가 바로 실행됨
+    // 그래서 그 뒤에 생성되는 spots는 like가 최신화가 되지 않음.
+    // 근데 likespots가 최신화가 안되잇음 애초에 뭐지??
+    // 아마 예전 spots의 like를 check해놔서인듯?
+    // checklikespots가 loadspots보다 나중에 되야댐
 
     // loadspots시작 cleanspots loadSpots성공 checklikespots시작 성공 updatespotslike
     // 여행지 좋아요 최신화
@@ -116,7 +124,7 @@ const SpotListContainer = ({
     // 여행지 좋아요 토글 시, cleaning 후 updatespotslike
     useEffect(() => {
         cleanLikeSpots();
-    }, [cleanLikeSpots, detail]);
+    }, [cleanLikeSpots, detail, areaNum, pageNum]);
 
     return (
         <SpotList

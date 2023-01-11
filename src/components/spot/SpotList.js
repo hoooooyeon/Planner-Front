@@ -127,7 +127,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
     let mSliderX = 0;
 
     const menuSliderStart = (e) => {
-        setIsClick(true);
+        // setIsClick(true);
         mStartX = e.clientX;
         mIsSlide = true;
         console.log(isClick);
@@ -141,7 +141,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
 
             menuRef.current.style.transform = ' translateX(' + mMoveX + 'px)';
             menuRef.current.style.transitionDuration = '0ms';
-            setIsClick(false);
+            // setIsClick(false);
         }
     };
 
