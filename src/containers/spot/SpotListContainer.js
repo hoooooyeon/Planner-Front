@@ -3,14 +3,15 @@ import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
 import {
-    addLikeSpotAction,
-    checkLikeSpotsAction,
-    cleanLikeSpotsAction,
+    addSpotLikeAction,
+    checkLikeListAction,
+    cleanCurrentInfoAction,
+    cleanLikeListAction,
     cleanSpotsAction,
     loadAreasAction,
     loadDetailSpotAction,
     loadSpotsAction,
-    removeLikeSpotAction,
+    removeSpotLikeAction,
     toggleDetailLikeAction,
     unloadDetailSpotAction,
     updateAreaNumAction,
@@ -27,20 +28,21 @@ const SpotListContainer = ({
     detail,
     currentInfo,
     account,
-    likeSpots,
+    likeList,
     loadAreas,
     loadSpots,
     loadDetailSpot,
     updateAreaNum,
     updatePageNum,
     updateBlockNum,
-    checkLikeSpots,
-    addLikeSpot,
-    removeLikeSpot,
+    checkLikeList,
+    addSpotLike,
+    removeSpotLike,
     unloadDetailSpot,
     updateSpotsLike,
     cleanSpots,
-    cleanLikeSpots,
+    cleanLikeList,
+    cleanCurrentInfo,
     toggleDetailLike,
     updateDetailSpot,
 }) => {
@@ -53,10 +55,10 @@ const SpotListContainer = ({
 
     // 여행지 가져오기
     useEffect(() => {
-        if (areaNum) {
+        if (areas) {
             loadSpots(areaNum, pageNum);
         }
-    }, [loadSpots, areaNum, pageNum]);
+    }, [loadSpots, areaNum, pageNum, areas]);
 
     // 여행지 상세정보 모달 열기
     const onOpenDetail = (spot) => {
@@ -85,46 +87,48 @@ const SpotListContainer = ({
                 return spot.info.contentid;
             });
 
-            if (!likeSpots) {
-                checkLikeSpots(accountId, contentIdArr);
+            if (!likeList) {
+                checkLikeList(accountId, contentIdArr);
             }
         }
-    }, [spots, account, checkLikeSpots, likeSpots]);
+    }, [spots, account, checkLikeList, likeList]);
 
     // 여행지 초기화
     useEffect(() => {
-        // cleanSpots();
+        cleanSpots();
     }, [areaNum, pageNum, cleanSpots]);
 
-    // checklikespots가 끝나면 updateSpotslike가 바로 실행됨
-    // 그래서 그 뒤에 생성되는 spots는 like가 최신화가 되지 않음.
-    // 근데 likespots가 최신화가 안되잇음 애초에 뭐지??
-    // 아마 예전 spots의 like를 check해놔서인듯?
-    // checklikespots가 loadspots보다 나중에 되야댐
+    useEffect(() => {
+        return () => {
+            cleanSpots();
+            cleanCurrentInfo();
+        };
+    }, [cleanCurrentInfo, cleanSpots]);
 
-    // loadspots시작 cleanspots loadSpots성공 checklikespots시작 성공 updatespotslike
+    // loadspots시작 cleanspots loadSpots성공 checklikeList시작 성공 updatespotslike
     // 여행지 좋아요 최신화
     useEffect(() => {
-        if (likeSpots) {
-            updateSpotsLike(likeSpots);
+        if (likeList) {
+            updateSpotsLike(likeList);
         }
-    }, [likeSpots, updateSpotsLike]);
+    }, [likeList, updateSpotsLike]);
 
     // 여행지 좋아요 토글
-    const onToggleLikeSpot = (contentId) => {
+    const onToggleSpotLike = (contentId) => {
         const { like } = detail.info;
         toggleDetailLike();
         if (like === false) {
-            addLikeSpot(contentId);
+            addSpotLike(contentId);
         } else {
-            removeLikeSpot(contentId);
+            removeSpotLike(contentId);
         }
     };
 
+    // 좋아요리스트 초기화
     // 여행지 좋아요 토글 시, cleaning 후 updatespotslike
     useEffect(() => {
-        cleanLikeSpots();
-    }, [cleanLikeSpots, detail, areaNum, pageNum]);
+        cleanLikeList();
+    }, [cleanLikeList, detail]);
 
     return (
         <SpotList
@@ -135,7 +139,7 @@ const SpotListContainer = ({
             currentInfo={currentInfo}
             onFirstSpotsPage={onFirstSpotsPage}
             onUnloadDetailSpot={unloadDetailSpot}
-            onToggleLikeSpot={onToggleLikeSpot}
+            onToggleSpotLike={onToggleSpotLike}
             onOpenDetail={onOpenDetail}
             isClick={isClick}
             setIsClick={setIsClick}
@@ -149,8 +153,7 @@ const mapStateToProps = (state) => ({
     detail: state.spotReducer.detail,
     spotError: state.spotReducer.spotError,
     currentInfo: state.spotReducer.currentInfo,
-    likeSpots: state.spotReducer.likeSpots,
-    likeSpot: state.spotReducer.likeSpot,
+    likeList: state.spotReducer.likeList,
     account: state.authReducer.account,
 });
 const mapDispatchToProps = (dispatch) => ({
@@ -178,14 +181,14 @@ const mapDispatchToProps = (dispatch) => ({
     unloadDetailSpot: () => {
         dispatch(unloadDetailSpotAction());
     },
-    checkLikeSpots: (accountId, spotId) => {
-        dispatch(checkLikeSpotsAction(accountId, spotId));
+    checkLikeList: (accountId, spotId) => {
+        dispatch(checkLikeListAction(accountId, spotId));
     },
-    addLikeSpot: (spotId) => {
-        dispatch(addLikeSpotAction(spotId));
+    addSpotLike: (spotId) => {
+        dispatch(addSpotLikeAction(spotId));
     },
-    removeLikeSpot: (spotId) => {
-        dispatch(removeLikeSpotAction(spotId));
+    removeSpotLike: (spotId) => {
+        dispatch(removeSpotLikeAction(spotId));
     },
     updateSpotsLike: (likes) => {
         dispatch(updateSpotsLikeAction(likes));
@@ -196,8 +199,11 @@ const mapDispatchToProps = (dispatch) => ({
     cleanSpots: () => {
         dispatch(cleanSpotsAction());
     },
-    cleanLikeSpots: () => {
-        dispatch(cleanLikeSpotsAction());
+    cleanLikeList: () => {
+        dispatch(cleanLikeListAction());
+    },
+    cleanCurrentInfo: () => {
+        dispatch(cleanCurrentInfoAction());
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);
