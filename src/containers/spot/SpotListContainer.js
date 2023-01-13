@@ -71,8 +71,7 @@ const SpotListContainer = ({
     const onFirstSpotsPage = (e, areaCode) => {
         // if (e.target !== e.currentTarget) return;
 
-        // if (isClick && spots) {
-        if (spots) {
+        if (isClick) {
             updateAreaNum(areaCode);
             updatePageNum(1);
             updateBlockNum(0);

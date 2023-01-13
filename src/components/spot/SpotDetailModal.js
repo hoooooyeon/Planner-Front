@@ -11,30 +11,28 @@ const Background = styled.div`
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 0;
+    z-index: 999;
     background-color: rgba(0, 0, 0, 0.5);
+    padding: 40px;
 `;
 
 const ModalContainer = styled.div`
-z-index: 99;
+    z-index: 99;
     border-radius: 10px;
     background-color: white;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    min-width: 600px;
-    height: 60%;
+    width: calc(100% - 40px);
+    margin: 0 auto;
+    max-width: 1100px;
+    /* height: 60%; */
     display: flex;
     padding: 20px;
 `;
 
 const Img = styled.img`
-    width: 40%;
+    width: 420px;
     height: 100%;
     border-radius: 10px;
-    @media all and (max-width: 1200px){
+    @media all and (max-width: 960px) {
         display: none;
     }
 `;
@@ -49,6 +47,7 @@ const Title = styled.div`
     font-weight: bold;
 `;
 const Detail = styled.div`
+    width: 100%;
     height: 20rem;
     overflow: auto;
     margin-top: 30px;
@@ -92,7 +91,6 @@ const LikeBox = styled.div`
 
 const SpotDetailModal = ({ detail, onUnloadDetailSpot, onToggleLikeSpot }) => {
     const { title, firstimage, overview, contentid, likeCount, like } = detail.info;
-
 
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
