@@ -14,6 +14,8 @@ const Background = styled.div`
     z-index: 999;
     background-color: rgba(0, 0, 0, 0.5);
     padding: 40px;
+    display: flex;
+    align-items: center;
 `;
 
 const ModalContainer = styled.div`
@@ -23,12 +25,16 @@ const ModalContainer = styled.div`
     width: calc(100% - 40px);
     margin: 0 auto;
     max-width: 1100px;
-    /* height: 60%; */
+    height: 60%;
     display: flex;
     padding: 20px;
+    position: relative;
 `;
 
 const Img = styled.img`
+    /* width: 27rem;
+    height: 25rem;
+     */
     width: 420px;
     height: 100%;
     border-radius: 10px;
@@ -52,12 +58,13 @@ const Detail = styled.div`
     overflow: auto;
     margin-top: 30px;
 `;
-const CloseButton = styled(FontAwesomeIcon)`
-    width: 2rem;
-    height: 2rem;
+const CloseButton = styled.div`
+    /* width: 2rem;
+    height: 2rem; */
+    font-size: 1.5rem;
     position: absolute;
-    left: 95%;
-    top: 1%;
+    right: 0;
+    top: 0;
     &:hover {
         cursor: pointer;
     }
@@ -117,7 +124,9 @@ const SpotDetailModal = ({ detail, onUnloadDetailSpot, onToggleLikeSpot }) => {
                     <ModalContainer onClick={(e) => e.stopPropagation()}>
                         <Img src={firstimage} alt={title} onError={onChangeErrorImg} />
                         <Info>
-                            <CloseButton icon={faXmark} onClick={onUnloadDetailSpot} />
+                            <CloseButton>
+                                <FontAwesomeIcon icon={faXmark} onClick={onUnloadDetailSpot} />
+                            </CloseButton>
                             <Title>{title}</Title>
                             <LikeBox
                                 like={like}
