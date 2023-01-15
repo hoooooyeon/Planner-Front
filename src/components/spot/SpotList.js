@@ -110,7 +110,7 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIsClick, onFirstSpotsPage, onUnloadDetailSpot, onToggleLikeSpot, onOpenDetail }) => {
+const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIsClick, onFirstSpotsPage, onUnloadDetailSpot, onToggleSpotLike, onOpenDetail }) => {
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
         e.target.src = defaultImg;
@@ -309,7 +309,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
                         </ScrollBox>
                     </>
                 )}
-                {detail && <SpotDetailModal detail={detail} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} onToggleLikeSpot={onToggleLikeSpot} />}
+                {detail && <SpotDetailModal detail={detail} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} onToggleSpotLike={onToggleSpotLike} />}
             </Container>
         </SpotListBlock>
     );

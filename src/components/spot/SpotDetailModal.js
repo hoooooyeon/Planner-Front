@@ -25,17 +25,14 @@ const ModalContainer = styled.div`
     width: calc(100% - 40px);
     margin: 0 auto;
     max-width: 1100px;
-    height: 60%;
+    height: 26rem;
     display: flex;
     padding: 20px;
     position: relative;
 `;
 
 const Img = styled.img`
-    /* width: 27rem;
-    height: 25rem;
-     */
-    width: 420px;
+    width: 27rem;
     height: 100%;
     border-radius: 10px;
     @media all and (max-width: 960px) {
@@ -48,19 +45,22 @@ const Info = styled.div`
     position: relative;
 `;
 
+const InfoHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
 const Title = styled.div`
     font-size: 1.5rem;
     font-weight: bold;
 `;
 const Detail = styled.div`
     width: 100%;
-    height: 20rem;
+    height: 17rem;
     overflow: auto;
     margin-top: 30px;
 `;
 const CloseButton = styled.div`
-    /* width: 2rem;
-    height: 2rem; */
     font-size: 1.5rem;
     position: absolute;
     right: 0;
@@ -75,28 +75,27 @@ const LikeBox = styled.div`
     color: white;
     border-radius: 5px;
     padding: 10px;
-    display: inline-block;
+    display: flex;
+    align-items: center;
     height: 1rem;
-    position: absolute;
-    left: 85%;
-    top: 10%;
+    cursor: pointer;
     ${(props) =>
         props.like &&
         css`
-            background-color: lightblue;
-            color: yellow;
+            background-color: #f1eee0;
+            color: #ef9a9a;
         `}
 
     &:hover {
-        cursor: pointer;
+        background-color: #f1eee0;
+        color: #9aad67;
     }
     div {
-        float: right;
         margin-left: 5px;
     }
 `;
 
-const SpotDetailModal = ({ detail, onUnloadDetailSpot, onToggleLikeSpot }) => {
+const SpotDetailModal = ({ detail, onUnloadDetailSpot, onToggleSpotLike }) => {
     const { title, firstimage, overview, contentid, likeCount, like } = detail.info;
 
     // 대체 이미지 넣기
@@ -127,16 +126,18 @@ const SpotDetailModal = ({ detail, onUnloadDetailSpot, onToggleLikeSpot }) => {
                             <CloseButton>
                                 <FontAwesomeIcon icon={faXmark} onClick={onUnloadDetailSpot} />
                             </CloseButton>
-                            <Title>{title}</Title>
-                            <LikeBox
-                                like={like}
-                                onClick={() => {
-                                    onToggleLikeSpot(contentid);
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faStar} />
-                                <div>{likeCount}</div>
-                            </LikeBox>
+                            <InfoHeader>
+                                <Title>{title}</Title>
+                                <LikeBox
+                                    like={like}
+                                    onClick={() => {
+                                        onToggleSpotLike(contentid);
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faStar} />
+                                    <div>{likeCount}</div>
+                                </LikeBox>
+                            </InfoHeader>
                             <Detail>{overview}</Detail>
                         </Info>
                     </ModalContainer>
