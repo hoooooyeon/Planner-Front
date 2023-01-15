@@ -71,11 +71,11 @@ const SpotListContainer = ({
     const onFirstSpotsPage = (e, areaCode) => {
         // if (e.target !== e.currentTarget) return;
 
-        if (isClick) {
-            updateAreaNum(areaCode);
-            updatePageNum(1);
-            updateBlockNum(0);
-        }
+        // if (isClick) {
+        updateAreaNum(areaCode);
+        updatePageNum(1);
+        updateBlockNum(0);
+        // }
     };
 
     // 사용자의 좋아요 여행지 비교

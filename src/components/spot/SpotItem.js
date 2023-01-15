@@ -25,13 +25,23 @@ const ImgBox = styled.div`
     padding: 0;
     margin: 0;
     overflow: hidden;
+    position: relative;
+    height: 150px;
+
+    @media all and (min-width: 960px) {
+        height: 200px;
+    }
+    @media all and (min-width: 1280px) {
+        height: 250px;
+    }
 `;
 
 const Img = styled.img`
     width: 100%;
     height: 150px;
     border: none;
-    margin: auto;
+    margin: 0;
+    padding: 0;
     @media all and (min-width: 960px) {
         height: 200px;
     }
@@ -53,10 +63,13 @@ const Name = styled.div`
     background-color: white;
 `;
 
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+const IconBox = styled.div`
     position: absolute;
-    bottom: 21%;
-    left: 90%;
+    right: 0;
+    bottom: 0;
+    padding: 5px;
+`;
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: ${(props) => (props.like ? 'yellow' : 'lightgray')};
 `;
 
@@ -71,8 +84,10 @@ const SpotItem = ({ spot, onChangeErrorImg, onOpenDetail }) => {
         >
             <ImgBox>
                 <Img src={firstimage} alt={title} onError={onChangeErrorImg} />
+                <IconBox>
+                    <StyledFontAwesomeIcon icon={faStar} like={like} />
+                </IconBox>
             </ImgBox>
-            <StyledFontAwesomeIcon icon={faStar} like={like} />
             <Name>{title}</Name>
         </SpotItemBlock>
     );

@@ -85,11 +85,6 @@ const LikeBox = styled.div`
             background-color: #f1eee0;
             color: #ef9a9a;
         `}
-
-    &:hover {
-        background-color: #f1eee0;
-        color: #9aad67;
-    }
     div {
         margin-left: 5px;
     }

@@ -30,10 +30,7 @@ const Container = styled.div`
 const MenuTitle = styled.div`
     font-size: 1.2rem;
     font-weight: bold;
-    margin-left: 20px;
-    @media all and (min-width: 1025px) {
-        margin-left: 0;
-    }
+    margin-top: 20px;
 `;
 
 const Menu = styled.ul`
@@ -48,21 +45,21 @@ const Menu = styled.ul`
         margin: 0 15px 5px 0;
         padding: 10px 15px;
         border-radius: 2rem;
-        background: #e6e6e6;
+        background: #f5f5f7;
         user-select: none;
+        cursor: pointer;
         &:hover {
-            background: lightblue;
-            cursor: pointer;
+            background: #e6e6e6;
         }
         &[aria-current] {
-            background: lightblue;
+            background: #cdd9ac;
             font-weight: bold;
             cursor: rever;
         }
     }
 `;
 const HiddenBox = styled.div`
-    margin: 0 auto;
+    margin: 20px auto;
     overflow: hidden;
     z-index: 1;
     @media all and (max-width: 768px) {
@@ -283,8 +280,8 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
     return (
         <SpotListBlock>
             <Container>
-                <MenuTitle>추천 여행지</MenuTitle>
                 <HiddenBox ref={menuBoxRef}>
+                    <MenuTitle>추천 여행지</MenuTitle>
                     {areas && (
                         <Menu ref={menuRef}>
                             {areas.map((area) => (
