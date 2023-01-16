@@ -120,8 +120,8 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
     let mIsSlide = false;
     let mStartX = 0;
     let mCurrentX = 0;
-    let mMoveX = 0;
-    let mSliderX = 0;
+    const mMoveX = useRef(0);
+    const mSliderX = useRef(0);
 
     const menuSliderStart = (e) => {
         // setIsClick(true);
@@ -132,39 +132,34 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
     const menuSliderMove = (e) => {
         if (mIsSlide) {
             mCurrentX = e.clientX;
-            console.log(e.clientX);
-            mMoveX = mSliderX + mCurrentX - mStartX;
+            mMoveX.current = mSliderX.current + mCurrentX - mStartX;
 
-            menuRef.current.style.transform = ' translateX(' + mMoveX + 'px)';
+            menuRef.current.style.transform = ' translateX(' + mMoveX.current + 'px)';
             menuRef.current.style.transitionDuration = '0ms';
             // setIsClick(false);
         }
     };
 
     const menuSliderEnd = () => {
-        mSliderX = mMoveX;
-        console.log('mCurrentX' + mCurrentX);
-        console.log('mMoveX' + mMoveX);
-        console.log('mSliderX' + mSliderX);
-        if (mSliderX > 0) {
-            mSliderX = 0;
-        } else if (mSliderX < menuBoxRef.current.clientWidth - menuRef.current.scrollWidth) {
-            mSliderX = menuBoxRef.current.clientWidth - menuRef.current.scrollWidth;
+        mSliderX.current = mMoveX.current;
+        if (mSliderX.current > 0) {
+            mSliderX.current = 0;
+        } else if (mSliderX.current < menuBoxRef.current.clientWidth - menuRef.current.scrollWidth) {
+            mSliderX.current = menuBoxRef.current.clientWidth - menuRef.current.scrollWidth;
         }
-
-        menuRef.current.style.transform = 'translateX(' + mSliderX + 'px)';
+        menuRef.current.style.transform = 'translateX(' + mSliderX.current + 'px)';
         menuRef.current.style.transitionDuration = ' 1000ms';
 
         mIsSlide = false;
     };
 
     const menuSliderResize = () => {
-        if (mSliderX > 0) {
-            mSliderX = 0;
-        } else if (mSliderX < menuBoxRef.current.clientWidth - menuRef.current.scrollWidth) {
-            mSliderX = menuBoxRef.current.clientWidth - menuRef.current.scrollWidth;
+        if (mSliderX.current > 0) {
+            mSliderX.current = 0;
+        } else if (mSliderX.current < menuBoxRef.current.clientWidth - menuRef.current.scrollWidth) {
+            mSliderX.current = menuBoxRef.current.clientWidth - menuRef.current.scrollWidth;
         }
-        menuRef.current.style.transform = 'translateX(' + mSliderX + 'px)';
+        menuRef.current.style.transform = 'translateX(' + mSliderX.current + 'px)';
         menuRef.current.style.transitionDuration = ' 1000ms';
     };
 
@@ -193,8 +188,9 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
     let lIsSlide = false;
     let lStartX = 0;
     let lCurrentX = 0;
-    let lMoveX = 0;
-    let lSliderX = 0;
+    const lMoveX = useRef(0);
+    const lSliderX = useRef(0);
+
     const TOTAL_SLIDE = 4;
 
     const scrollBoxRef = useRef();
@@ -209,12 +205,12 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
     const listSliderMove = (e) => {
         if (lIsSlide) {
             lCurrentX = e.clientX;
-            lMoveX = lSliderX + lCurrentX - lStartX;
+            lMoveX.current = lSliderX.current + lCurrentX - lStartX;
 
-            listRef.current.style.transform = 'translateX(' + lMoveX + 'px)';
+            listRef.current.style.transform = 'translateX(' + lMoveX.current + 'px)';
             listRef.current.style.transitionDuration = '0ms';
 
-            scrollMoveX = -((lMoveX / -(listBoxRef.current.clientWidth - listRef.current.clientWidth)) * 100);
+            scrollMoveX = -((lMoveX.current / -(listBoxRef.current.clientWidth - listRef.current.clientWidth)) * 100);
 
             if (scrollMoveX < 0) {
                 scrollMoveX = 0;
@@ -231,15 +227,15 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
 
     const listSliderEnd = () => {
         let itemSize = listRef.current.scrollWidth / TOTAL_SLIDE;
-        lSliderX = Math.round(lMoveX / itemSize) * itemSize;
+        lSliderX.current = Math.round(lMoveX.current / itemSize) * itemSize;
 
-        if (lSliderX > 0) {
-            lSliderX = 0;
-        } else if (lSliderX < listBoxRef.current.clientWidth - listRef.current.scrollWidth) {
-            lSliderX = listBoxRef.current.clientWidth - listRef.current.scrollWidth;
+        if (lSliderX.current > 0) {
+            lSliderX.current = 0;
+        } else if (lSliderX.current < listBoxRef.current.clientWidth - listRef.current.clientWidth) {
+            lSliderX.current = listBoxRef.current.clientWidth - listRef.current.clientWidth;
         }
 
-        listRef.current.style.transform = 'translateX(' + lSliderX + 'px)';
+        listRef.current.style.transform = 'translateX(' + lSliderX.current + 'px)';
         listRef.current.style.transitionDuration = ' 1000ms';
 
         scrollBoxRef.current.style.opacity = 0;
@@ -248,13 +244,13 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
     };
 
     const listSliderResize = () => {
-        if (lSliderX > 0) {
-            lSliderX = 0;
-        } else if (lSliderX < listBoxRef.current.clientWidth - listRef.current.scrollWidth) {
-            lSliderX = listBoxRef.current.clientWidth - listRef.current.scrollWidth;
+        if (lSliderX.current > 0) {
+            lSliderX.current = 0;
+        } else if (lSliderX.current < listBoxRef.current.clientWidth - listRef.current.scrollWidth) {
+            lSliderX.current = listBoxRef.current.clientWidth - listRef.current.scrollWidth;
         }
 
-        listRef.current.style.transform = 'translateX(' + lSliderX + 'px)';
+        listRef.current.style.transform = 'translateX(' + lSliderX.current + 'px)';
         listRef.current.style.transitionDuration = '1000ms';
     };
 
