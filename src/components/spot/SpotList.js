@@ -127,13 +127,12 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
         // setIsClick(true);
         mStartX = e.clientX;
         mIsSlide = true;
-        console.log(isClick);
     };
 
     const menuSliderMove = (e) => {
         if (mIsSlide) {
-            console.log(isClick);
             mCurrentX = e.clientX;
+            console.log(e.clientX);
             mMoveX = mSliderX + mCurrentX - mStartX;
 
             menuRef.current.style.transform = ' translateX(' + mMoveX + 'px)';
@@ -144,6 +143,9 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
 
     const menuSliderEnd = () => {
         mSliderX = mMoveX;
+        console.log('mCurrentX' + mCurrentX);
+        console.log('mMoveX' + mMoveX);
+        console.log('mSliderX' + mSliderX);
         if (mSliderX > 0) {
             mSliderX = 0;
         } else if (mSliderX < menuBoxRef.current.clientWidth - menuRef.current.scrollWidth) {
