@@ -124,7 +124,6 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
     const mSliderX = useRef(0);
 
     const menuSliderStart = (e) => {
-        // setIsClick(true);
         mStartX = e.clientX;
         mIsSlide = true;
     };
@@ -136,7 +135,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
 
             menuRef.current.style.transform = ' translateX(' + mMoveX.current + 'px)';
             menuRef.current.style.transitionDuration = '0ms';
-            // setIsClick(false);
+            setIsClick(false);
         }
     };
 
@@ -176,6 +175,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
                 window.removeEventListener('mousemove', menuSliderMove);
                 window.removeEventListener('mouseup', menuSliderEnd);
                 window.removeEventListener('resize', menuSliderResize);
+                setIsClick(true);
             };
         }
     });

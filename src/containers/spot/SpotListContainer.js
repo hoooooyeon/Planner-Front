@@ -50,8 +50,10 @@ const SpotListContainer = ({
 
     // 지역 가져오기
     useEffect(() => {
-        loadAreas();
-    }, [loadAreas]);
+        if (areaNum) {
+            loadAreas();
+        }
+    }, [loadAreas, areaNum]);
 
     // 여행지 가져오기
     useEffect(() => {
@@ -66,16 +68,16 @@ const SpotListContainer = ({
         updateDetailSpot(spot);
     };
 
-    const [isClick, setIsClick] = useState(false);
+    const [isClick, setIsClick] = useState(true);
     // 여행지 첫페이지
     const onFirstSpotsPage = (e, areaCode) => {
         // if (e.target !== e.currentTarget) return;
 
-        // if (isClick) {
-        updateAreaNum(areaCode);
-        updatePageNum(1);
-        updateBlockNum(0);
-        // }
+        if (spots && isClick) {
+            updateAreaNum(areaCode);
+            updatePageNum(1);
+            updateBlockNum(0);
+        }
     };
 
     // 사용자의 좋아요 여행지 비교
