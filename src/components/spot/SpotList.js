@@ -107,7 +107,7 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIsClick, onFirstSpotsPage, onUnloadDetailSpot, onToggleSpotLike, onOpenDetail }) => {
+const SpotList = ({ areas, spots, spotError, detail, currentInfo, click, isClick, setIsClick, onFirstSpotsPage, onUnloadDetailSpot, onToggleSpotLike, onOpenDetail }) => {
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
         e.target.src = defaultImg;
@@ -126,8 +126,8 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
     const menuSliderStart = (e) => {
         mStartX = e.clientX;
         mIsSlide = true;
+        // setIsClick(false);
     };
-
     const menuSliderMove = (e) => {
         if (mIsSlide) {
             mCurrentX = e.clientX;
@@ -135,7 +135,10 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
 
             menuRef.current.style.transform = ' translateX(' + mMoveX.current + 'px)';
             menuRef.current.style.transitionDuration = '0ms';
-            setIsClick(false);
+            if (!click.current) {
+                // setIsClick(true);
+                click.current = true;
+            }
         }
     };
 
@@ -150,6 +153,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
         menuRef.current.style.transitionDuration = ' 1000ms';
 
         mIsSlide = false;
+        //setIsClick(false);
     };
 
     const menuSliderResize = () => {
@@ -175,7 +179,6 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, isClick, setIs
                 window.removeEventListener('mousemove', menuSliderMove);
                 window.removeEventListener('mouseup', menuSliderEnd);
                 window.removeEventListener('resize', menuSliderResize);
-                setIsClick(true);
             };
         }
     });

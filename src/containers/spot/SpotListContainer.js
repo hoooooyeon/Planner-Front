@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
@@ -68,12 +68,20 @@ const SpotListContainer = ({
         updateDetailSpot(spot);
     };
 
-    const [isClick, setIsClick] = useState(true);
+    const [isClick, setIsClick] = useState(false);
+    const click = useRef(false);
+
     // 여행지 첫페이지
     const onFirstSpotsPage = (e, areaCode) => {
         // if (e.target !== e.currentTarget) return;
-
-        if (spots && isClick) {
+        console.log(click.current);
+        if (click.current) {
+            e.stopPropagation();
+            click.current = false;
+            // setIsClick(false);
+            return;
+        }
+        if (spots) {
             updateAreaNum(areaCode);
             updatePageNum(1);
             updateBlockNum(0);
@@ -144,6 +152,7 @@ const SpotListContainer = ({
             onOpenDetail={onOpenDetail}
             isClick={isClick}
             setIsClick={setIsClick}
+            click={click}
         />
     );
 };
