@@ -42,6 +42,8 @@ const Img = styled.img`
     border: none;
     margin: 0;
     padding: 0;
+
+    -webkit-user-drag: none;
     @media all and (min-width: 960px) {
         height: 200px;
     }

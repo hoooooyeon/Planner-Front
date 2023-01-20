@@ -107,7 +107,7 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const SpotList = ({ areas, spots, spotError, detail, currentInfo, click, isClick, setIsClick, onFirstSpotsPage, onUnloadDetailSpot, onToggleSpotLike, onOpenDetail }) => {
+const SpotList = ({ areas, spots, spotError, detail, currentInfo, mDrag, sDrag, onFirstSpotsPage, onUnloadDetailSpot, onToggleSpotLike, onOpenDetail }) => {
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
         e.target.src = defaultImg;
@@ -126,7 +126,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, click, isClick
     const menuSliderStart = (e) => {
         mStartX = e.clientX;
         mIsSlide = true;
-        // setIsClick(false);
+        mDrag.current = false;
     };
     const menuSliderMove = (e) => {
         if (mIsSlide) {
@@ -135,9 +135,8 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, click, isClick
 
             menuRef.current.style.transform = ' translateX(' + mMoveX.current + 'px)';
             menuRef.current.style.transitionDuration = '0ms';
-            if (!click.current) {
-                // setIsClick(true);
-                click.current = true;
+            if (!mDrag.current) {
+                mDrag.current = true;
             }
         }
     };
@@ -153,7 +152,6 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, click, isClick
         menuRef.current.style.transitionDuration = ' 1000ms';
 
         mIsSlide = false;
-        //setIsClick(false);
     };
 
     const menuSliderResize = () => {
@@ -203,6 +201,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, click, isClick
     const listSliderStart = (e) => {
         lStartX = e.clientX;
         lIsSlide = true;
+        sDrag.current = false;
     };
 
     const listSliderMove = (e) => {
@@ -212,6 +211,10 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, click, isClick
 
             listRef.current.style.transform = 'translateX(' + lMoveX.current + 'px)';
             listRef.current.style.transitionDuration = '0ms';
+
+            if (!sDrag.current) {
+                sDrag.current = true;
+            }
 
             scrollMoveX = -((lMoveX.current / -(listBoxRef.current.clientWidth - listRef.current.clientWidth)) * 100);
 
@@ -286,7 +289,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, click, isClick
                     {areas && (
                         <Menu ref={menuRef}>
                             {areas.map((area) => (
-                                <li key={area.code} onClick={(e) => onFirstSpotsPage(e, area.code)} aria-current={areaNum === area.code ? 'page' : null}>
+                                <li key={area.code} onClick={() => onFirstSpotsPage(area.code)} aria-current={areaNum === area.code ? 'page' : null}>
                                     {area.name}
                                 </li>
                             ))}

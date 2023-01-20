@@ -63,29 +63,29 @@ const SpotListContainer = ({
     }, [loadSpots, areaNum, pageNum, areas]);
 
     // 여행지 상세정보 모달 열기
+    const sDrag = useRef(false);
     const onOpenDetail = (spot) => {
+        if (sDrag.current) {
+            sDrag.current = false;
+            return;
+        }
         loadDetailSpot(spot.info.contentid);
         updateDetailSpot(spot);
     };
 
-    const [isClick, setIsClick] = useState(false);
-    const click = useRef(false);
-
     // 여행지 첫페이지
-    const onFirstSpotsPage = (e, areaCode) => {
-        // if (e.target !== e.currentTarget) return;
-        console.log(click.current);
-        if (click.current) {
-            e.stopPropagation();
-            click.current = false;
-            // setIsClick(false);
+    const mDrag = useRef(false);
+    const onFirstSpotsPage = (areaCode) => {
+        if (mDrag.current) {
+            // e.stopPropagation();
+            mDrag.current = false;
             return;
         }
-        if (spots) {
-            updateAreaNum(areaCode);
-            updatePageNum(1);
-            updateBlockNum(0);
-        }
+        // if (spots) {
+        updateAreaNum(areaCode);
+        updatePageNum(1);
+        updateBlockNum(0);
+        // }
     };
 
     // 사용자의 좋아요 여행지 비교
@@ -150,9 +150,8 @@ const SpotListContainer = ({
             onUnloadDetailSpot={unloadDetailSpot}
             onToggleSpotLike={onToggleSpotLike}
             onOpenDetail={onOpenDetail}
-            isClick={isClick}
-            setIsClick={setIsClick}
-            click={click}
+            mDrag={mDrag}
+            sDrag={sDrag}
         />
     );
 };
