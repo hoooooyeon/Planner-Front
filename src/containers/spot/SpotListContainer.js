@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
@@ -55,12 +55,24 @@ const SpotListContainer = ({
         }
     }, [loadAreas, areaNum]);
 
+    const onUpdateSpotsLike = useMemo(() => {
+        new Promise(() => {
+            if (likeList) {
+                updateSpotsLike(likeList);
+            }
+        });
+    }, [likeList, updateSpotsLike]);
     // 여행지 가져오기
     useEffect(() => {
         if (areas) {
-            loadSpots(areaNum, pageNum);
+            const onLoadSpots = async () => {
+                loadSpots(areaNum, pageNum);
+
+                await onUpdateSpotsLike();
+            };
+            onLoadSpots();
         }
-    }, [loadSpots, areaNum, pageNum, areas]);
+    }, [loadSpots, areaNum, pageNum, areas, onUpdateSpotsLike]);
 
     // 여행지 상세정보 모달 열기
     const sDrag = useRef(false);
@@ -116,11 +128,11 @@ const SpotListContainer = ({
 
     // loadspots시작 cleanspots loadSpots성공 checklikeList시작 성공 updatespotslike
     // 여행지 좋아요 최신화
-    useEffect(() => {
-        if (likeList) {
-            updateSpotsLike(likeList);
-        }
-    }, [likeList, updateSpotsLike]);
+    // useEffect(() => {
+    //     if (likeList) {
+    //         updateSpotsLike(likeList);
+    //     }
+    // }, [likeList, updateSpotsLike]);
 
     // 여행지 좋아요 토글
     const onToggleSpotLike = (contentId) => {
