@@ -55,15 +55,28 @@ const SpotListContainer = ({
         }
     }, [loadAreas, areaNum]);
 
-    const onUpdateSpotsLike = useMemo(() => {
-        new Promise(() => {
-            if (likeList) {
-                updateSpotsLike(likeList);
-            }
-        });
-    }, [likeList, updateSpotsLike]);
+    // const onUpdateSpotsLike = useMemo(() => {
+        //     return new Promise(() => {
+    //         setTimeout(() => {
+    //             if (likeList) {
+    //                 updateSpotsLike(likeList);
+    //             }
+    //         }, 1000);
+    //     });
+    // }, [likeList, updateSpotsLike]);
+
     // 여행지 가져오기
     useEffect(() => {
+        const onUpdateSpotsLike = await () => {
+            return new Promise(() => {
+                setTimeout(() => {
+                    if (likeList) {
+                        updateSpotsLike(likeList);
+                    }
+                }, 1000);
+            });
+        };
+
         if (areas) {
             const onLoadSpots = async () => {
                 loadSpots(areaNum, pageNum);
