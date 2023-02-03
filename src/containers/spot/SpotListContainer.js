@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
@@ -49,43 +49,68 @@ const SpotListContainer = ({
     const { areaNum, pageNum } = currentInfo;
 
     // 지역 가져오기
+    // const onSpots = useCallback(() => {
+    //     if(areaNum){
+    //         loadAreas();
+    //     }
+    // }, [areaNum, loadAreas]);
+
+    // useEffect(() => {
+    //     onSpots();
+    // }, [onSpots]);
+
     useEffect(() => {
         if (areaNum) {
             loadAreas();
         }
     }, [loadAreas, areaNum]);
 
-    // const onUpdateSpotsLike = useMemo(() => {
-        //     return new Promise(() => {
-    //         setTimeout(() => {
-    //             if (likeList) {
-    //                 updateSpotsLike(likeList);
-    //             }
-    //         }, 1000);
-    //     });
-    // }, [likeList, updateSpotsLike]);
-
     // 여행지 가져오기
-    useEffect(() => {
-        const onUpdateSpotsLike = await () => {
-            return new Promise(() => {
-                setTimeout(() => {
-                    if (likeList) {
-                        updateSpotsLike(likeList);
-                    }
-                }, 1000);
-            });
-        };
+    // const onUpdateSpotsLike = useCallback( new Promise(() => {
+    //     // const onUpSpots = new Promise(() => {
+    //         if (likeList) {
+    //             updateSpotsLike(likeList);
+    //         }
+    //     // });
+    //     // onUpSpots();
+    // }), []);
 
-        if (areas) {
-            const onLoadSpots = async () => {
-                loadSpots(areaNum, pageNum);
+    const onLoadSpots = useCallback(async () => {
+        await loadSpots(areaNum, pageNum);
+        // await updateSpotsLike();
+        const { accountId } = account;
+        const contentIdArr = spots.list.map((spot) => {
+            return spot.info.contentid;
+        });
 
-                await onUpdateSpotsLike();
-            };
-            onLoadSpots();
+        if (!likeList) {
+            await checkLikeList(accountId, contentIdArr);
         }
-    }, [loadSpots, areaNum, pageNum, areas, onUpdateSpotsLike]);
+        if (likeList) {
+            await updateSpotsLike(likeList);
+        }
+    }, [areaNum, pageNum, loadSpots, updateSpotsLike, likeList, account, checkLikeList, spots]);
+    useEffect(() => {
+        onLoadSpots();
+    }, [onLoadSpots]);
+    // const onUpdateSpotsLike = () => {
+    //     if (likeList) {
+    //         updateSpotsLike(likeList);
+    //     }
+    // };
+
+    // const onLoadSpots = async () => {
+    //     await loadSpots(areaNum, pageNum);
+    //     // await onUpdateSpotsLike();
+    //     // if (likeList) {
+    //     //     await updateSpotsLike(likeList);
+    //     // }
+    // };
+    // useEffect(() => {
+    //     if (areas) {
+    //         onLoadSpots();
+    //     }
+    // }, [loadSpots, areaNum, pageNum, areas, likeList, updateSpotsLike]);
 
     // 여행지 상세정보 모달 열기
     const sDrag = useRef(false);
@@ -116,14 +141,13 @@ const SpotListContainer = ({
     // 사용자의 좋아요 여행지 비교
     useEffect(() => {
         if (spots && account) {
-            const { accountId } = account;
-            const contentIdArr = spots.list.map((spot) => {
-                return spot.info.contentid;
-            });
-
-            if (!likeList) {
-                checkLikeList(accountId, contentIdArr);
-            }
+            // const { accountId } = account;
+            // const contentIdArr = spots.list.map((spot) => {
+            //     return spot.info.contentid;
+            // });
+            // if (!likeList) {
+            //     checkLikeList(accountId, contentIdArr);
+            // }
         }
     }, [spots, account, checkLikeList, likeList]);
 
@@ -132,6 +156,7 @@ const SpotListContainer = ({
         cleanSpots();
     }, [areaNum, pageNum, cleanSpots]);
 
+    // 여행지 페이지에서 벗어날 때 정보 초기화
     useEffect(() => {
         return () => {
             cleanSpots();
