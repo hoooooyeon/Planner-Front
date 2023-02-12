@@ -286,6 +286,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, mDrag, sDrag, 
             <Container>
                 <HiddenBox ref={menuBoxRef}>
                     <MenuTitle>추천 여행지</MenuTitle>
+
                     {areas && (
                         <Menu ref={menuRef}>
                             {areas.map((area) => (

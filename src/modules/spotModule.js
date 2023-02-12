@@ -254,7 +254,11 @@ function spotReducer(state = initialState, action) {
                 },
             };
         case CHECK_LIKE_LIST_SUCCESS_TYPE: {
-            return { ...state, likeList: action.payload.data };
+            return {
+                ...state,
+
+                likeList: action.payload.data,
+            };
         }
         case CHECK_LIKE_LIST_FAILURE_TYPE: {
             return { ...state, spotError: action.payload.error };
