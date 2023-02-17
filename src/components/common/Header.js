@@ -97,7 +97,6 @@ const Header = ({ account }) => {
             window.removeEventListener('scroll', headerShadow);
         };
     });
-    d;
 
     return (
         <HeaderBlock ref={headerRef}>
