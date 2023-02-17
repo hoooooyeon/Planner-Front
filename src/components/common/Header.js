@@ -79,7 +79,6 @@ const Account = styled.div`
     }
 `;
 
-
 const Header = ({ account }) => {
     const headerRef = useRef();
 
@@ -98,6 +97,7 @@ const Header = ({ account }) => {
             window.removeEventListener('scroll', headerShadow);
         };
     });
+    d;
 
     return (
         <HeaderBlock ref={headerRef}>
