@@ -4,6 +4,9 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/account/LoginPage';
 import RegisterPage from './pages/account/RegisterPage';
 import ProfilePage from './pages/account/ProfilePage';
+import PlannerInfoPage from './pages/planner/PlannerInfoPage';
+import PlannerEditPage from './pages/planner/PlannerEditPage';
+import PlannerListPage from './pages/planner/PlannerListPage';
 
 const App = () => {
     return (
@@ -12,6 +15,9 @@ const App = () => {
             <Route path="/Login" component={LoginPage} />
             <Route path="/Register" component={RegisterPage} />
             <Route path="/Profile" component={ProfilePage} />
+            <Route path="/PlannerInfo" component={PlannerInfoPage} />
+            <Route path="/PlannerList" component={PlannerListPage} />
+            <Route path="/PlannerEdit" component={PlannerEditPage} />
         </>
     );
 };
