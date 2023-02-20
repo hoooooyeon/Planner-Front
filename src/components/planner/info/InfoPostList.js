@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import InfoPostItem from './InfoPostItem';
-import airplaneDay from '../../../lib/img/airplane-day.jpg';
-import airplaneNight from '../../../lib/img/airplane-night.jpg';
+// import airplaneDay from '../../../lib/img/airplane-day.jpg';
+// import airplaneNight from '../../../lib/img/airplane-night.jpg';
 
 const InfoPostListBlock = styled.div`
     width: 100%;
@@ -177,7 +177,7 @@ const InfoPostList = () => {
                 </PostListBlock>
                 {!isChange ? (
                     <Ad ref={adRef}>
-                        <Img src={airplaneDay} alt="airplane-day" />
+                        {/* <Img src={airplaneDay} alt="airplane-day" /> */}
                         <div>
                             바쁜 일정 중에 잊는 것들이 있을 수가 있어요. <br />
                             여행에 필요한 정보들을 기록해 보세요.
@@ -185,7 +185,7 @@ const InfoPostList = () => {
                     </Ad>
                 ) : (
                     <Ad ref={adRef}>
-                        <Img src={airplaneNight} alt="airplane-night" />
+                        {/* <Img src={airplaneNight} alt="airplane-night" /> */}
                         <div>한국다봄을 앱에서도 사용해 보세요.</div>
                     </Ad>
                 )}

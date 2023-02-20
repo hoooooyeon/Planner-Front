@@ -1,4 +1,3 @@
-import InfoMap from '../../components/planner/info/InfoMap';
 import Header from '../../components/common/Header';
 import InfoRoute from '../../components/planner/info/InfoRoute';
 import InfoMenu from '../../components/planner/info/InfoMenu';
@@ -9,7 +8,6 @@ const PlannerInfoPage = () => {
     return (
         <>
             <Header />
-            <InfoMap />
             <InfoRoute />
             <InfoMenu />
             <InfoPostList />

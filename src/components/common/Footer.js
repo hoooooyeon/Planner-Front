@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
+// const ClearDiv = styled.div`
+//     clear: both;
+// `;
 const FooterBlock = styled.div`
     transform: translateY(55%);
     background-color: gray;
@@ -58,17 +61,20 @@ const Footer = () => {
     };
 
     return (
-        <FooterBlock>
-            <Logo>
-                <div>대한민국 여행의 전부</div>
-                <div>한국다봄</div>
-            </Logo>
-            <Info>
-                <p>Phone: 010-****-****, 010-****-****</p>
-                <p>Email: B*******@gmail.com, l******@gmail.com</p>
-            </Info>
-            <UpButton icon={faArrowUp} onClick={onScrollToTop} />
-        </FooterBlock>
+        <>
+            {/* <ClearDiv /> */}
+            <FooterBlock>
+                <Logo>
+                    <div>대한민국 여행의 전부</div>
+                    <div>한국다봄</div>
+                </Logo>
+                <Info>
+                    <p>Phone: 010-****-****, 010-****-****</p>
+                    <p>Email: B*******@gmail.com, l******@gmail.com</p>
+                </Info>
+                <UpButton icon={faArrowUp} onClick={onScrollToTop} />
+            </FooterBlock>
+        </>
     );
 };
 
