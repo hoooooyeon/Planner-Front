@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ShareListBlock = styled.div`
@@ -58,6 +59,8 @@ const TitleBox = styled.div`
     }
 `;
 
+const LinkedShareItem = styled(Link)``;
+
 const ShareItem = styled.li`
     flex-shrink: 0;
     width: 180px;
@@ -72,6 +75,10 @@ const ShareItem = styled.li`
         cursor: pointer;
         box-shadow: 3px 4px 14px 2px rgb(0, 0, 0, 30%);
         transform: translateY(-3px);
+    }
+    a {
+        color: black;
+        user-select: none;
     }
 `;
 const InfoBox = styled.div`
@@ -140,7 +147,7 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const ShareList = () => {
+const ShareList = ({ planners }) => {
     const hiddenBoxRef = useRef();
     const sharesRef = useRef();
     const itemRef = useRef();
@@ -212,6 +219,12 @@ const ShareList = () => {
         scrollBoxRef.current.style.transitionDuration = '2000ms';
 
         isSlide = false;
+
+        if (scrollMoveX !== 0) {
+            itemRef.current.style.pointerEvents = 'none';
+        } else {
+            itemRef.current.style.pointerEvents = 'auto';
+        }
     };
 
     // 너비 변경시 슬라이더 조절
@@ -248,62 +261,29 @@ const ShareList = () => {
                 </TitleBox>
                 <HiddenBox ref={hiddenBoxRef}>
                     <Shares ref={sharesRef}>
-                        <ShareItem ref={itemRef}>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>1</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </ShareItem>
-                        <ShareItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>2</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </ShareItem>
-                        <ShareItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>3</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </ShareItem>
-                        <ShareItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>4</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </ShareItem>
-                        <ShareItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>5</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </ShareItem>
-                        <ShareItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>6</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </ShareItem>
-                        <ShareItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>7</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </ShareItem>
-                        <ShareItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>8</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </ShareItem>
+                        {planners &&
+                            planners.map((planner) => (
+                                <ShareItem key={planner.plannerId}>
+                                    <Link to="/PlannerEdit" ref={itemRef}>
+                                        <SimpleMap />
+                                        <InfoBox>
+                                            <Name>{planner.title}</Name>
+                                            <Date>
+                                                {planner.planDateStart} ~ {planner.planDateEnd}
+                                            </Date>
+                                        </InfoBox>
+                                    </Link>
+                                </ShareItem>
+                                // <ShareItem key={planner.plannerId}>
+                                //     <SimpleMap />
+                                //     <InfoBox>
+                                //         <Name>{planner.title}</Name>
+                                //         <Date>
+                                //             {planner.planDateStart} ~ {planner.planDateEnd}
+                                //         </Date>
+                                //     </InfoBox>
+                                // </ShareItem>
+                            ))}
                     </Shares>
                 </HiddenBox>
                 <ScrollBox ref={scrollBoxRef}>
