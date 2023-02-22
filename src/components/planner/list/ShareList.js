@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const ShareListBlock = styled.div`
     width: 100%;
@@ -59,8 +60,6 @@ const TitleBox = styled.div`
     }
 `;
 
-const LinkedShareItem = styled(Link)``;
-
 const ShareItem = styled.li`
     flex-shrink: 0;
     width: 180px;
@@ -79,6 +78,15 @@ const ShareItem = styled.li`
     a {
         color: black;
         user-select: none;
+        -webkit-user-drag: none;
+        pointer-events: auto;
+
+        ${(props) =>
+            props.drag &&
+            css`
+                pointer-events: none;
+                color: red;
+            `}
     }
 `;
 const InfoBox = styled.div`
@@ -163,13 +171,15 @@ const ShareList = ({ planners }) => {
 
     let scrollMoveX = 0;
 
-    const sDrag = useRef(false);
+    const drag = useRef(false);
 
+    // let drag = false;
     // 슬라이드 마우스 다운
     const sliderStart = (e) => {
         startX = e.clientX;
+        currentX = 0;
         isSlide = true;
-        sDrag.current = false;
+        drag.current = false;
     };
 
     // 슬라이드 마우스 이동
@@ -180,13 +190,6 @@ const ShareList = ({ planners }) => {
 
             sharesRef.current.style.transform = 'translateX(' + moveX.current + 'px)';
             sharesRef.current.style.transitionDuration = '0ms';
-            if (!sDrag.current) {
-                sDrag.current = true;
-            }
-            //   if (sDrag.current) {
-            //     sDrag.current = false;
-            //     return;
-            // }
 
             scrollMoveX = -((moveX.current / -(hiddenBoxRef.current.clientWidth - sharesRef.current.clientWidth)) * 100);
 
@@ -200,6 +203,16 @@ const ShareList = ({ planners }) => {
 
             scrollRef.current.style.transform = 'translateX(' + scrollMoveX + '%)';
             scrollRef.current.style.transitionDuration = '0ms';
+
+            if (currentX === 0) {
+                // itemRef.current.style.pointerEvents = 'auto';
+                // itemRef.current.style.color = 'black';
+                drag.current = false;
+            } else {
+                // itemRef.current.style.pointerEvents = 'none';
+                // itemRef.current.style.color = 'red';
+                drag.current = true;
+            }
         }
     };
 
@@ -219,12 +232,19 @@ const ShareList = ({ planners }) => {
         scrollBoxRef.current.style.transitionDuration = '2000ms';
 
         isSlide = false;
+        console.log(drag.current);
 
-        if (scrollMoveX !== 0) {
-            itemRef.current.style.pointerEvents = 'none';
-        } else {
-            itemRef.current.style.pointerEvents = 'auto';
-        }
+        // if (currentX === 0) {
+        //     console.log(1);
+        //     console.log(drag);
+        //     // itemRef.current.style.pointerEvents = 'none';
+        //     setDrag(true);
+        // } else {
+        //     console.log(drag);
+        //     console.log(2);
+        //     // itemRef.current.style.pointerEvents = 'auto';
+        //     setDrag(false);
+        // }
     };
 
     // 너비 변경시 슬라이더 조절
@@ -263,8 +283,9 @@ const ShareList = ({ planners }) => {
                     <Shares ref={sharesRef}>
                         {planners &&
                             planners.map((planner) => (
-                                <ShareItem key={planner.plannerId}>
-                                    <Link to="/PlannerEdit" ref={itemRef}>
+                                <ShareItem key={planner.plannerId} drag={drag.current}>
+                                    <Link to="/PlannerEdit">
+                                        {/* <Link to="/PlannerEdit" ref={itemRef}> */}
                                         <SimpleMap />
                                         <InfoBox>
                                             <Name>{planner.title}</Name>
