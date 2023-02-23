@@ -76,10 +76,11 @@ const ShareItem = styled.li`
         transform: translateY(-3px);
     }
     a {
+        /* user-select: none; */
         color: black;
-        user-select: none;
         -webkit-user-drag: none;
         pointer-events: auto;
+        /* pointer-events: none; */
 
         ${(props) =>
             props.drag &&
@@ -172,14 +173,13 @@ const ShareList = ({ planners }) => {
     let scrollMoveX = 0;
 
     const drag = useRef(false);
-
-    // let drag = false;
     // 슬라이드 마우스 다운
     const sliderStart = (e) => {
         startX = e.clientX;
         currentX = 0;
         isSlide = true;
         drag.current = false;
+        console.log('1' + drag.current);
     };
 
     // 슬라이드 마우스 이동
@@ -204,14 +204,20 @@ const ShareList = ({ planners }) => {
             scrollRef.current.style.transform = 'translateX(' + scrollMoveX + '%)';
             scrollRef.current.style.transitionDuration = '0ms';
 
-            if (currentX === 0) {
-                // itemRef.current.style.pointerEvents = 'auto';
-                // itemRef.current.style.color = 'black';
-                drag.current = false;
-            } else {
-                // itemRef.current.style.pointerEvents = 'none';
-                // itemRef.current.style.color = 'red';
+            // if (currentX === 0) {
+            //     // itemRef.current.style.pointerEvents = 'auto';
+            //     // itemRef.current.style.color = 'black';
+            //     drag.current = false;
+            // } else {
+            //     // itemRef.current.style.pointerEvents = 'none';
+            //     // itemRef.current.style.color = 'red';
+            //     drag.current = true;
+            // }
+
+            if (!drag.current) {
                 drag.current = true;
+
+                console.log('2' + drag.current);
             }
         }
     };
@@ -232,19 +238,7 @@ const ShareList = ({ planners }) => {
         scrollBoxRef.current.style.transitionDuration = '2000ms';
 
         isSlide = false;
-        console.log(drag.current);
-
-        // if (currentX === 0) {
-        //     console.log(1);
-        //     console.log(drag);
-        //     // itemRef.current.style.pointerEvents = 'none';
-        //     setDrag(true);
-        // } else {
-        //     console.log(drag);
-        //     console.log(2);
-        //     // itemRef.current.style.pointerEvents = 'auto';
-        //     setDrag(false);
-        // }
+        console.log('3' + drag.current);
     };
 
     // 너비 변경시 슬라이더 조절
