@@ -211,60 +211,13 @@ const MyPlannerList = () => {
                 <HiddenBox ref={hiddenBoxRef}>
                     <Planners ref={plannersRef}>
                         <PlannerItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>1이세계를 향하여가나다라</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </PlannerItem>
-                        <PlannerItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>2메밀꽃 필무렵</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </PlannerItem>
-                        <PlannerItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>3아르헨티나 항구</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </PlannerItem>
-                        <PlannerItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>4브라질은 이긴다</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </PlannerItem>
-                        <PlannerItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>5버섯마을 침공기</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </PlannerItem>
-                        <PlannerItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>6그날을 기억하십시오</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </PlannerItem>
-                        <PlannerItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>777행운의 날</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
-                        </PlannerItem>
-                        <PlannerItem>
-                            <SimpleMap />
-                            <InfoBox>
-                                <Name>8무한 로딩</Name>
-                                <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                            </InfoBox>
+                            <Link to="/PlannerInfo">
+                                <SimpleMap />
+                                <InfoBox>
+                                    <Name>1이세계를 향하여가나다라</Name>
+                                    <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
+                                </InfoBox>
+                            </Link>
                         </PlannerItem>
                     </Planners>
                 </HiddenBox>

@@ -156,7 +156,7 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const ShareList = ({ planners }) => {
+const ShareList = ({ sharePlanners, onLoadPlanner }) => {
     const hiddenBoxRef = useRef();
     const sharesRef = useRef();
     const itemRef = useRef();
@@ -275,10 +275,16 @@ const ShareList = ({ planners }) => {
                 </TitleBox>
                 <HiddenBox ref={hiddenBoxRef}>
                     <Shares ref={sharesRef}>
-                        {planners &&
-                            planners.map((planner) => (
-                                <ShareItem key={planner.plannerId} drag={drag.current}>
-                                    <Link to="/PlannerEdit">
+                        {sharePlanners &&
+                            sharePlanners.map((planner) => (
+                                <ShareItem
+                                    key={planner.plannerId}
+                                    drag={drag.current}
+                                    onClick={() => {
+                                        onLoadPlanner(planner.plannerId);
+                                    }}
+                                >
+                                    <Link to="/PlannerInfo">
                                         {/* <Link to="/PlannerEdit" ref={itemRef}> */}
                                         <SimpleMap />
                                         <InfoBox>

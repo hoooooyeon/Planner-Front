@@ -5,8 +5,8 @@ import { loadPlannerAction, loadSharePlannerListAction } from '../../modules/pla
 
 const PlannerListContainer = () => {
     const dispatch = useDispatch();
-    const { planners, plannerError, planner } = useSelector(({ plannerReducer }) => ({
-        planners: plannerReducer.planners,
+    const { sharePlanners, plannerError, planner } = useSelector(({ plannerReducer }) => ({
+        sharePlanners: plannerReducer.sharePlanners,
         plannerError: plannerReducer.plannerError,
         planner: plannerReducer.planner,
     }));
@@ -17,11 +17,11 @@ const PlannerListContainer = () => {
     }, [dispatch]);
 
     // 플래너 정보 가져오기
-    const onLoadPlanner = () => {
-        dispatch(loadPlannerAction());
+    const onLoadPlanner = (plannerId) => {
+        dispatch(loadPlannerAction(plannerId));
     };
 
-    return <PlannerList planners={planners} planner={planner} onLoadPlanner={onLoadPlanner} />;
+    return <PlannerList sharePlanners={sharePlanners} planner={planner} onLoadPlanner={onLoadPlanner} />;
 };
 
 export default PlannerListContainer;

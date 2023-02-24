@@ -2,11 +2,11 @@ import MyPlannerList from './MyPlannerList';
 import ShareList from './ShareList';
 import ListPagination from './ListPagination';
 
-const PlannerList = ({ planners }) => {
+const PlannerList = ({ sharePlanners, onLoadPlanner }) => {
     return (
         <>
             <MyPlannerList />
-            <ShareList planners={planners} />
+            <ShareList sharePlanners={sharePlanners} onLoadPlanner={onLoadPlanner} />
             <ListPagination />
         </>
     );

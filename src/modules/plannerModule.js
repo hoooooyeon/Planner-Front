@@ -16,7 +16,7 @@ const CREATE_PLANNER_FAILURE_TYPE = 'planner/CREATE_PLANNER_FAILURE';
 
 export const createPlannerAction = () => ({ type: CREATE_PLANNER_TYPE });
 export const loadSharePlannerListAction = () => ({ type: LOAD_SHARE_PLANNER_LIST_TYPE });
-export const loadPlannerAction = ({ plannerId }) => ({ type: LOAD_PLANNER_TYPE, plannerId });
+export const loadPlannerAction = (plannerId) => ({ type: LOAD_PLANNER_TYPE, plannerId });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const loadSharePlannerListSaga = createSaga(LOAD_SHARE_PLANNER_LIST_TYPE, plannerAPI.loadSharePlannerList);
@@ -28,7 +28,8 @@ export function* plannerSaga() {
 }
 
 const initialState = {
-    planners: null,
+    myPlanners: null,
+    sharePlanners: null,
     planner: null,
     plannerError: null,
 };
@@ -38,7 +39,7 @@ function plannerReducer(state = initialState, action) {
         case LOAD_SHARE_PLANNER_LIST_SUCCESS_TYPE:
             return {
                 ...state,
-                planners: action.payload.data,
+                sharePlanners: action.payload.data,
             };
         case LOAD_SHARE_PLANNER_LIST_FAILURE_TYPE:
             return {
