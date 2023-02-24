@@ -278,7 +278,7 @@ const SpotList = ({ areas, spots, spotError, detail, currentInfo, mDrag, sDrag, 
     });
 
     if (spotError) {
-        return <SpotListBlock>에러가 발생했습니다.</SpotListBlock>;
+        alert(spotError);
     }
     const { areaNum } = currentInfo;
     return (
