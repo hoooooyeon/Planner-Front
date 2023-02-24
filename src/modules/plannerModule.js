@@ -14,9 +14,12 @@ const CREATE_PLANNER_TYPE = 'planner/CREATE_PLANNER';
 const CREATE_PLANNER_SUCCESS_TYPE = 'planner/CREATE_PLANNER_SUCCESS';
 const CREATE_PLANNER_FAILURE_TYPE = 'planner/CREATE_PLANNER_FAILURE';
 
-export const createPlannerAction = () => ({ type: CREATE_PLANNER_TYPE });
+const CHANGE_PLANNER_TITLE_TYPE = 'planner/CHANGE_PLANNER_TITLE';
+
+export const createPlannerAction = ({ planner }) => ({ type: CREATE_PLANNER_TYPE, planner });
 export const loadSharePlannerListAction = () => ({ type: LOAD_SHARE_PLANNER_LIST_TYPE });
 export const loadPlannerAction = (plannerId) => ({ type: LOAD_PLANNER_TYPE, plannerId });
+export const changePlannerTitleAction = (title) => ({ type: CHANGE_PLANNER_TITLE_TYPE, title });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const loadSharePlannerListSaga = createSaga(LOAD_SHARE_PLANNER_LIST_TYPE, plannerAPI.loadSharePlannerList);
@@ -65,6 +68,15 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 plannerError: action.payload.error,
             };
+        case CHANGE_PLANNER_TITLE_TYPE:
+            return {
+                ...state,
+                planner: {
+                    ...state.planner,
+                    title: action.payload,
+                },
+            };
+
         default:
             return state;
     }

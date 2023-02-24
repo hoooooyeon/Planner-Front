@@ -21,7 +21,7 @@ const PlannerListContainer = () => {
         dispatch(loadPlannerAction(plannerId));
     };
 
-    return <PlannerList sharePlanners={sharePlanners} planner={planner} onLoadPlanner={onLoadPlanner} />;
+    return <PlannerList sharePlanners={sharePlanners} planner={planner} onLoadPlanner={onLoadPlanner} plannerError={plannerError} />;
 };
 
 export default PlannerListContainer;

@@ -11,6 +11,6 @@ export const loadPlanner = ({ plannerId }) => {
 };
 
 // 플래너 생성
-export const createPlanner = () => {
-    return client.post('/api/planners');
+export const createPlanner = ({ planner }) => {
+    return client.post('/api/planners', { planner });
 };

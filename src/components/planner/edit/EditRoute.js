@@ -111,14 +111,19 @@ const RouteBox = styled.div`
     display: flex;
 `;
 
-const EditRoute = () => {
+const EditRoute = ({ onChangePlannerTitle }) => {
     const [dateRange, setDateRange] = useState([null, null]);
     const [startDate, endDate] = dateRange;
 
     return (
         <EditRouteBlock>
             <InfoForm>
-                <Title placeholder="플래너 이름" />
+                <Title
+                    placeholder="플래너 이름"
+                    onChange={(e) => {
+                        onChangePlannerTitle(e.target.value);
+                    }}
+                />
                 <DateBox>
                     <StyledDatePicker
                         selectsRange={true}

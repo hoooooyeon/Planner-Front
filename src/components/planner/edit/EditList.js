@@ -121,37 +121,39 @@ const EditList = () => {
     const TOTAL = [0, 1, 2];
 
     return (
-        <EditListBlock>
-            <MenuList>
-                <MenuItem>
-                    <StyledFontAwesomeIcon icon={faLocationDot} />
-                    <p>관광지</p>
-                </MenuItem>
-                <MenuItem>
-                    <StyledFontAwesomeIcon icon={faBed} />
-                    <p>숙소</p>
-                </MenuItem>
-                <MenuItem>
-                    <StyledFontAwesomeIcon icon={faUtensils} />
-                    <p>식당</p>
-                </MenuItem>
-                <MenuItem>
-                    <StyledFontAwesomeIcon icon={faHeart} />
-                    <p>좋아요</p>
-                </MenuItem>
-            </MenuList>
-            <List>
-                {TOTAL.map((i) => {
-                    return (
-                        <ListItem key={i}>
-                            <Img />
-                            <Name>천안 사거리</Name>
-                            <Button>추가</Button>
-                        </ListItem>
-                    );
-                })}
-            </List>
-        </EditListBlock>
+        <>
+            <EditListBlock>
+                <MenuList>
+                    <MenuItem>
+                        <StyledFontAwesomeIcon icon={faLocationDot} />
+                        <p>관광지</p>
+                    </MenuItem>
+                    <MenuItem>
+                        <StyledFontAwesomeIcon icon={faBed} />
+                        <p>숙소</p>
+                    </MenuItem>
+                    <MenuItem>
+                        <StyledFontAwesomeIcon icon={faUtensils} />
+                        <p>식당</p>
+                    </MenuItem>
+                    <MenuItem>
+                        <StyledFontAwesomeIcon icon={faHeart} />
+                        <p>좋아요</p>
+                    </MenuItem>
+                </MenuList>
+                <List>
+                    {TOTAL.map((i) => {
+                        return (
+                            <ListItem key={i}>
+                                <Img />
+                                <Name>천안 사거리</Name>
+                                <Button>추가</Button>
+                            </ListItem>
+                        );
+                    })}
+                </List>
+            </EditListBlock>
+        </>
     );
 };
 

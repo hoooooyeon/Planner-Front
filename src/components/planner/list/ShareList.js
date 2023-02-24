@@ -156,7 +156,7 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const ShareList = ({ sharePlanners, onLoadPlanner }) => {
+const ShareList = ({ sharePlanners, plannerError, onLoadPlanner }) => {
     const hiddenBoxRef = useRef();
     const sharesRef = useRef();
     const itemRef = useRef();
@@ -266,7 +266,9 @@ const ShareList = ({ sharePlanners, onLoadPlanner }) => {
             window.removeEventListener('resize', sliderResize);
         };
     });
-
+    if (plannerError) {
+        alert(plannerError);
+    }
     return (
         <ShareListBlock>
             <Container>

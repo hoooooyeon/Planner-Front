@@ -1,13 +1,13 @@
-import EditMap from '../../components/planner/edit/EditMap';
-import EditRoute from '../../components/planner/edit/EditRoute';
-import EditList from '../../components/planner/edit/EditList';
+import EditRouteContainer from '../../containers/planner/edit/EditRouteContainer';
+import EditMapContainer from '../../containers/planner/edit/EditMapContainer';
+import EditListContainer from '../../containers/planner/edit/EditListContainer';
 
 const PlannerEditPage = () => {
     return (
         <>
-            <EditRoute />
-            <EditMap />
-            <EditList />
+            <EditRouteContainer />
+            <EditMapContainer />
+            <EditListContainer />
         </>
     );
 };
