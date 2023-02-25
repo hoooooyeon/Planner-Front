@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState } from 'react';
 import EditRouteList from './EditRouteList';
+import { useEffect } from 'react';
 
 const EditRouteBlock = styled.div`
     width: 370px;
@@ -111,9 +112,16 @@ const RouteBox = styled.div`
     display: flex;
 `;
 
-const EditRoute = ({ onChangePlannerTitle }) => {
-    const [dateRange, setDateRange] = useState([null, null]);
-    const [startDate, endDate] = dateRange;
+const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, onChangePlannerDateEnd }) => {
+    // api 추가 전 date
+    // const [dateRange, setDateRange] = useState([null, null]);
+    // const [startDate, endDate] = dateRange;
+
+    const onChangeDates = (dates) => {
+        const [start, end] = dates;
+        onChangePlannerDateStart(start);
+        onChangePlannerDateEnd(end);
+    };
 
     return (
         <EditRouteBlock>
@@ -127,15 +135,31 @@ const EditRoute = ({ onChangePlannerTitle }) => {
                 <DateBox>
                     <StyledDatePicker
                         selectsRange={true}
+                        startDate={planner.planDateStart}
+                        endDate={planner.planDateEnd}
+                        minDate={new Date()}
+                        onChange={onChangeDates}
+                        // 왜 dates를 안 줘도 될까?
+                        // onChange={(dates) => {
+                        //     onChangeDates(dates);
+                        // }}
+                        dateFormat=" yyyy. MM. dd "
+                        placeholderText="여행 종료일"
+                    />
+
+                    {/*
+                    api 추가 전  date
+                    <StyledDatePicker
+                        selectsRange={true}
                         startDate={startDate}
                         endDate={endDate}
                         minDate={new Date()}
-                        onChange={(update) => {
-                            setDateRange(update);
+                        onChange={(date) => {
+                            setDateRange(date);
                         }}
                         dateFormat=" yyyy. MM. dd "
-                        placeholderText="날짜 입력"
-                    />
+                        placeholderText="여행 종료일"
+                    /> */}
                 </DateBox>
                 <FlexDiv>
                     <Funds placeholder="여행 자금" />

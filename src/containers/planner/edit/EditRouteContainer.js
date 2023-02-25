@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import EditRoute from '../../../components/planner/edit/EditRoute';
+import { changePlannerDateEndAction, changePlannerDateStartAction, changePlannerTitleAction } from '../../../modules/plannerModule';
 
 const EditRouteContainer = () => {
     const dispatch = useDispatch();
@@ -9,10 +10,16 @@ const EditRouteContainer = () => {
     }));
 
     const onChangePlannerTitle = (title) => {
-        dispatch(onChangePlannerTitle(title));
+        dispatch(changePlannerTitleAction(title));
+    };
+    const onChangePlannerDateStart = (date) => {
+        dispatch(changePlannerDateStartAction(date));
+    };
+    const onChangePlannerDateEnd = (date) => {
+        dispatch(changePlannerDateEndAction(date));
     };
 
-    return <EditRoute onChangePlannerTitle={onChangePlannerTitle} />;
+    return <EditRoute planner={planner} onChangePlannerTitle={onChangePlannerTitle} onChangePlannerDateStart={onChangePlannerDateStart} onChangePlannerDateEnd={onChangePlannerDateEnd} />;
 };
 
 export default EditRouteContainer;

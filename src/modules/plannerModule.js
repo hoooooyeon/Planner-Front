@@ -15,11 +15,15 @@ const CREATE_PLANNER_SUCCESS_TYPE = 'planner/CREATE_PLANNER_SUCCESS';
 const CREATE_PLANNER_FAILURE_TYPE = 'planner/CREATE_PLANNER_FAILURE';
 
 const CHANGE_PLANNER_TITLE_TYPE = 'planner/CHANGE_PLANNER_TITLE';
+const CHANGE_PLANNER_DATE_START_TYPE = 'planner/CHANGE_PLANNER_DATE_START';
+const CHANGE_PLANNER_DATE_END_TYPE = 'planner/CHANGE_PLANNER_DATE_END';
 
 export const createPlannerAction = ({ planner }) => ({ type: CREATE_PLANNER_TYPE, planner });
 export const loadSharePlannerListAction = () => ({ type: LOAD_SHARE_PLANNER_LIST_TYPE });
 export const loadPlannerAction = (plannerId) => ({ type: LOAD_PLANNER_TYPE, plannerId });
 export const changePlannerTitleAction = (title) => ({ type: CHANGE_PLANNER_TITLE_TYPE, title });
+export const changePlannerDateStartAction = (date) => ({ type: CHANGE_PLANNER_DATE_START_TYPE, date });
+export const changePlannerDateEndAction = (date) => ({ type: CHANGE_PLANNER_DATE_END_TYPE, date });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const loadSharePlannerListSaga = createSaga(LOAD_SHARE_PLANNER_LIST_TYPE, plannerAPI.loadSharePlannerList);
@@ -33,7 +37,19 @@ export function* plannerSaga() {
 const initialState = {
     myPlanners: null,
     sharePlanners: null,
-    planner: null,
+    planner: {
+        plannerId: null,
+        accountId: null,
+        title: null,
+        planDateStart: null,
+        planDateEnd: null,
+        createorEmail: null,
+        planMemberEmails: null,
+        likeCount: null,
+        createDate: null,
+        updateDate: null,
+        plans: null,
+    },
     plannerError: null,
 };
 
@@ -73,7 +89,23 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 planner: {
                     ...state.planner,
-                    title: action.payload,
+                    title: action.title,
+                },
+            };
+        case CHANGE_PLANNER_DATE_START_TYPE:
+            return {
+                ...state,
+                planner: {
+                    ...state.planner,
+                    planDateStart: action.date,
+                },
+            };
+        case CHANGE_PLANNER_DATE_END_TYPE:
+            return {
+                ...state,
+                planner: {
+                    ...state.planner,
+                    planDateEnd: action.date,
                 },
             };
 
