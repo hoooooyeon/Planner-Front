@@ -123,8 +123,8 @@ const Img = styled.img`
  * 3. postItem의 edit버튼 => postItem 자리에 editItem이 생성되고 나머진 2와 동일.
  * 4. postItem의 max버튼 => postItem의 text만큼 높이가 변경됨.
  */
-const InfoPostList = () => {
-    const Total = [1, 2, 3, 4];
+const InfoPostList = ({ memos, memo, onCreateMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent }) => {
+    // const Total = [1, 2, 3, 4];
     const [isChange, setIsChange] = useState(false);
     const adRef = useRef();
 
@@ -170,9 +170,10 @@ const InfoPostList = () => {
                         <Button>ADD</Button>
                     </PostListHeader>
                     <PostList ref={listRef}>
-                        {Total.map((i) => {
+                        <InfoPostItem />
+                        {/* {Total.map((i) => {
                             return <InfoPostItem index={i} key={i} />;
-                        })}
+                        })} */}
                     </PostList>
                 </PostListBlock>
                 {!isChange ? (

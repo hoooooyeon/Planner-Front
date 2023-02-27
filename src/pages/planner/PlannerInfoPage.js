@@ -1,16 +1,14 @@
 import Header from '../../components/common/Header';
-import InfoRoute from '../../components/planner/info/InfoRoute';
-import InfoMenu from '../../components/planner/info/InfoMenu';
-import InfoPostList from '../../components/planner/info/InfoPostList';
 import Footer from '../../components/common/Footer';
+import PlannerInfoContainer from '../../containers/planner/info/PlannerInfoContainer';
+import InfoPostContainer from '../../containers/planner/info/InfoPostContainer';
 
 const PlannerInfoPage = () => {
     return (
         <>
             <Header />
-            <InfoRoute />
-            <InfoMenu />
-            <InfoPostList />
+            <PlannerInfoContainer />
+            <InfoPostContainer />
             <Footer />
         </>
     );

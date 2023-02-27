@@ -60,16 +60,19 @@ const Date = styled.div`
     color: lightgray;
 `;
 
-const InfoMenu = () => {
+const InfoMenu = ({ planner }) => {
+    const { title, planDateStart, planDateEnd } = planner;
     return (
         <InfoMenuBlock>
             <Container>
                 <InfoBox>
                     <FlexBox>
                         <Ask>플래너 이름: </Ask>
-                        <Text>해적선 이야기</Text>
+                        <Text>{title}</Text>
                     </FlexBox>
-                    <Date>2022. 11. 11 ~ 2022. 12. 24</Date>
+                    <Date>
+                        {planDateStart} ~ {planDateEnd}
+                    </Date>
                 </InfoBox>
                 <InfoBox>
                     <FlexBox>

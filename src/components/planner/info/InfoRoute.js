@@ -1,4 +1,5 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+import InfoDatination from './InfoDatination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faBus } from '@fortawesome/free-solid-svg-icons'; // 버스
 import { faTaxi } from '@fortawesome/free-solid-svg-icons'; // 택시
@@ -8,100 +9,12 @@ import { faTaxi } from '@fortawesome/free-solid-svg-icons'; // 택시
 // import { faTrainSubway } from '@fortawesome/free-solid-svg-icons'; // 지하철 or 기차
 // import { faLocationDot } from '@fortawesome/free-solid-svg-icons'; // 여행지
 import { faBed } from '@fortawesome/free-solid-svg-icons'; // 숙소
-// import { faUtensils } from '@fortawesome/free-solid-svg-icons'; // 식당
-import { faGear } from '@fortawesome/free-solid-svg-icons'; // 숙소
-
-import InfoDatination from './InfoDatination';
-import InfoMap from './InfoMap';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
+import { useRef } from 'react';
+// import { faUtensils } from '@fortawesome/free-solid-svg-icons'; // 식당
 
 const InfoRouteBlock = styled.div`
-    width: 100%;
-    height: 100%;
-    background-color: #f5f5f5;
-    padding: 10px 0 30px;
-`;
-
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 0px auto;
-    h3 {
-        /* color: #9AAD67; */
-    }
-    @media all and (min-width: 768px) {
-        width: 738px;
-    }
-    @media all and (min-width: 960px) {
-        width: 930px;
-    }
-    @media all and (min-width: 1280px) {
-        width: 1024px;
-    }
-`;
-
-const RouteHeader = styled.div`
-    display: flex;
-    align-items: center;
-`;
-
-const Set = styled.div`
-    display: flex;
-    flex-direction: column;
-    position: relative;
-`;
-
-const SetButton = styled.button`
-    width: 4rem;
-    height: 2rem;
-    align-items: center;
-    border-radius: 10px;
-    border: 2px solid #cdd9ac;
-    display: flex;
-    margin-left: 10px;
-    font-size: 15px;
-    justify-content: space-evenly;
-    cursor: pointer;
-`;
-
-const DropDownMenu = styled.ul`
-    border: 1px solid lightgray;
-    display: none;
-    position: absolute;
-    z-index: 10;
-    width: 8rem;
-    flex-direction: column;
-    padding: 0;
-    background-color: white;
-    border-radius: 5px;
-    top: 20px;
-    left: 10px;
-    font-size: 0.8rem;
-    box-shadow: 3px 3px 7px 1px rgb(0, 0, 0, 30%);
-    ${(props) =>
-        props.isDropDown &&
-        css`
-            display: flex;
-        `}
-
-    li {
-        padding: 5px 10px;
-        cursor: pointer;
-        &:hover {
-            background-color: #cdd9ac;
-        }
-    }
-`;
-
-const FlexBox = styled.div`
-    display: flex;
-    justify-content: space-around;
-    flex-direction: row;
-    align-items: flex-start;
-`;
-
-const RouteBox = styled.div`
     width: 350px;
     height: 574px;
     background-color: white;
@@ -205,72 +118,26 @@ const InfoRoute = () => {
             refValue.removeEventListener('scroll', handleShadow);
         };
     });
-
-    const [isDropDown, setIsDropDown] = useState(false);
-
-    const onDropDown = () => {
-        if (isDropDown) {
-            setIsDropDown(false);
-        } else {
-            setIsDropDown(true);
-        }
-    };
-
-    const menuRef = useRef();
-    const onDropUp = () => {
-        if (isDropDown) {
-            setIsDropDown(false);
-        }
-    };
-
-    useEffect(() => {
-        window.addEventListener('click', onDropUp);
-        return () => {
-            window.removeEventListener('click', onDropUp);
-        };
-    });
-
     return (
         <InfoRouteBlock>
-            <Container>
-                <RouteHeader>
-                    <h3>따수베어님의 플래너</h3>
-                    <Set>
-                        <SetButton onClick={onDropDown}>
-                            <FontAwesomeIcon icon={faGear} />
-                            <p>관리</p>
-                        </SetButton>
-                        <DropDownMenu isDropDown={isDropDown} ref={menuRef}>
-                            <li>멤버 초대</li>
-                            <li>플래너 수정</li>
-                            <li>플래너 삭제</li>
-                        </DropDownMenu>
-                    </Set>
-                </RouteHeader>
-                <FlexBox>
-                    <InfoMap />
-                    <RouteBox>
-                        <InfoDatination isShadow={isShadow} />
-                        <RouteList ref={listRef}>
-                            {TOTAL.map((i) => {
-                                return (
-                                    <RouteItem key={i}>
-                                        <RouteLine />
-                                        <TransItem>
-                                            <StyledFontAwesomeIcon icon={faTaxi} />
-                                            Taxi{i}
-                                        </TransItem>
-                                        <SpotItem>
-                                            <StyledFontAwesomeIcon icon={faBed} />
-                                            <RouteSpotName>해적선 숙소소소소소</RouteSpotName>
-                                        </SpotItem>
-                                    </RouteItem>
-                                );
-                            })}
-                        </RouteList>
-                    </RouteBox>
-                </FlexBox>
-            </Container>
+            <InfoDatination isShadow={isShadow} />
+            <RouteList ref={listRef}>
+                {TOTAL.map((i) => {
+                    return (
+                        <RouteItem key={i}>
+                            <RouteLine />
+                            <TransItem>
+                                <StyledFontAwesomeIcon icon={faTaxi} />
+                                Taxi{i}
+                            </TransItem>
+                            <SpotItem>
+                                <StyledFontAwesomeIcon icon={faBed} />
+                                <RouteSpotName>해적선 숙소소소소소</RouteSpotName>
+                            </SpotItem>
+                        </RouteItem>
+                    );
+                })}
+            </RouteList>
         </InfoRouteBlock>
     );
 };

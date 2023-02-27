@@ -112,18 +112,18 @@ const RouteBox = styled.div`
     display: flex;
 `;
 
-const EditRoute = ({ planner, onUpdatePlannerTitle, onUpdatePlannerDateStart, onUpdatePlannerDateEnd }) => {
+const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, onChangePlannerDateEnd }) => {
     // api 추가 전 date
     const [dateRange, setDateRange] = useState([null, null]);
     const { startDate, endDate } = dateRange;
 
-    const onUpdateDates = (dates) => {
+    const onChangeDates = (dates) => {
         const [start, end] = dates;
         // const startDate = start.getFullYear() + '-' + ('0' + (start.getMonth() + 1)).slice(-2) + '-' + start.getDate() + ' ' + start.getHours() + ':' + start.getMinutes() + ':' + start.getSeconds();
         // const endDate = end.getFullYear() + '-' + ('0' + (end.getMonth() + 1)).slice(-2) + '-' + end.getDate() + ' ' + end.getHours() + ':' + end.getMinutes() + ':' + end.getSeconds();
 
         setDateRange(dates);
-        onUpdatePlannerDateStart(
+        onChangePlannerDateStart(
             start.getFullYear() +
                 '-' +
                 ('0' + (start.getMonth() + 1)).slice(-2) +
@@ -136,7 +136,7 @@ const EditRoute = ({ planner, onUpdatePlannerTitle, onUpdatePlannerDateStart, on
                 ':' +
                 ('0' + start.getSeconds()).slice(-2),
         );
-        onUpdatePlannerDateEnd(
+        onChangePlannerDateEnd(
             end.getFullYear() +
                 '-' +
                 ('0' + (end.getMonth() + 1)).slice(-2) +
@@ -157,7 +157,7 @@ const EditRoute = ({ planner, onUpdatePlannerTitle, onUpdatePlannerDateStart, on
                 <Title
                     placeholder="플래너 이름"
                     onChange={(e) => {
-                        onUpdatePlannerTitle(e.target.value);
+                        onChangePlannerTitle(e.target.value);
                     }}
                 />
                 <DateBox>
@@ -168,7 +168,7 @@ const EditRoute = ({ planner, onUpdatePlannerTitle, onUpdatePlannerDateStart, on
                         // startDate={planner.planDateStart}
                         // endDate={planner.planDateEnd}
                         minDate={new Date()}
-                        onChange={onUpdateDates}
+                        onChange={onChangeDates}
                         // 왜 dates를 안 줘도 될까?
                         // onChange={(dates) => {
                         //     onUpdateDates(dates);
