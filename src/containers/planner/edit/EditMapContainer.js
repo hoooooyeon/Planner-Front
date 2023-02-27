@@ -10,7 +10,8 @@ const EditMapContainer = () => {
     }));
 
     const onCreatePlanner = () => {
-        dispatch(createPlannerAction(planner));
+        const { accountId, creator, title, planDateStart, planDateEnd, planMembers } = planner;
+        dispatch(createPlannerAction({ accountId, creator, title, planDateStart, planDateEnd, planMembers }));
     };
 
     return <EditMap planner={planner} onCreatePlanner={onCreatePlanner} />;

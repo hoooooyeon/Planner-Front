@@ -2,28 +2,38 @@ import * as plannerAPI from '../lib/api/plannerAPI';
 import { takeLatest } from 'redux-saga/effects';
 import createSaga from '../lib/createSaga';
 
+// 공유 플래너 리스트 가져오기
 const LOAD_SHARE_PLANNER_LIST_TYPE = 'planner/LOAD_SHARE_PLANNER_LIST';
 const LOAD_SHARE_PLANNER_LIST_SUCCESS_TYPE = 'planner/LOAD_SHARE_PLANNER_LIST_SUCCESS';
 const LOAD_SHARE_PLANNER_LIST_FAILURE_TYPE = 'planner/LOAD_SHARE_PLANNER_LIST_FAILURE';
 
+// 플래너 정보 가져오기
 const LOAD_PLANNER_TYPE = 'planner/LOAD_PLANNER';
 const LOAD_PLANNER_SUCCESS_TYPE = 'planner/LOAD_PLANNER_SUCCESS';
 const LOAD_PLANNER_FAILURE_TYPE = 'planner/LOAD_PLANNER_FAILURE';
 
+// 플래너 생성하기
 const CREATE_PLANNER_TYPE = 'planner/CREATE_PLANNER';
 const CREATE_PLANNER_SUCCESS_TYPE = 'planner/CREATE_PLANNER_SUCCESS';
 const CREATE_PLANNER_FAILURE_TYPE = 'planner/CREATE_PLANNER_FAILURE';
 
-const CHANGE_PLANNER_TITLE_TYPE = 'planner/CHANGE_PLANNER_TITLE';
-const CHANGE_PLANNER_DATE_START_TYPE = 'planner/CHANGE_PLANNER_DATE_START';
-const CHANGE_PLANNER_DATE_END_TYPE = 'planner/CHANGE_PLANNER_DATE_END';
+// 플래너 정보폼 변경하기
+const UPDATE_PLANNER_TITLE_TYPE = 'planner/UPDATE_PLANNER_TITLE';
+const UPDATE_PLANNER_DATE_START_TYPE = 'planner/UPDATE_PLANNER_DATE_START';
+const UPDATE_PLANNER_DATE_END_TYPE = 'planner/UPDATE_PLANNER_DATE_END';
+const UPDATE_PLANNER_ACCOUNT_TYPE = 'planner/UPDATE_PLANNER_ACCOUNTE';
 
-export const createPlannerAction = ({ planner }) => ({ type: CREATE_PLANNER_TYPE, planner });
+// 플래너 정보폼 초기화(planner 초기화)
+const RESET_PLANNER_INFO_FORM_TYPE = 'planner/RESET_PLANNER_INFO_FORM';
+
+export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers }) => ({ type: CREATE_PLANNER_TYPE, accountId, creator, title, planDateStart, planDateEnd, planMembers });
 export const loadSharePlannerListAction = () => ({ type: LOAD_SHARE_PLANNER_LIST_TYPE });
 export const loadPlannerAction = (plannerId) => ({ type: LOAD_PLANNER_TYPE, plannerId });
-export const changePlannerTitleAction = (title) => ({ type: CHANGE_PLANNER_TITLE_TYPE, title });
-export const changePlannerDateStartAction = (date) => ({ type: CHANGE_PLANNER_DATE_START_TYPE, date });
-export const changePlannerDateEndAction = (date) => ({ type: CHANGE_PLANNER_DATE_END_TYPE, date });
+export const updatePlannerTitleAction = (title) => ({ type: UPDATE_PLANNER_TITLE_TYPE, title });
+export const updatePlannerDateStartAction = (date) => ({ type: UPDATE_PLANNER_DATE_START_TYPE, date });
+export const updatePlannerDateEndAction = (date) => ({ type: UPDATE_PLANNER_DATE_END_TYPE, date });
+export const updatePlannerAccountAction = (accountId, nickname) => ({ type: UPDATE_PLANNER_ACCOUNT_TYPE, accountId, nickname });
+export const resetPlannerInfoFormAction = () => ({ type: RESET_PLANNER_INFO_FORM_TYPE });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const loadSharePlannerListSaga = createSaga(LOAD_SHARE_PLANNER_LIST_TYPE, plannerAPI.loadSharePlannerList);
@@ -37,19 +47,7 @@ export function* plannerSaga() {
 const initialState = {
     myPlanners: null,
     sharePlanners: null,
-    planner: {
-        plannerId: null,
-        accountId: null,
-        title: null,
-        planDateStart: null,
-        planDateEnd: null,
-        createorEmail: null,
-        planMemberEmails: null,
-        likeCount: null,
-        createDate: null,
-        updateDate: null,
-        plans: null,
-    },
+    planner: null,
     plannerError: null,
 };
 
@@ -84,7 +82,7 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 plannerError: action.payload.error,
             };
-        case CHANGE_PLANNER_TITLE_TYPE:
+        case UPDATE_PLANNER_TITLE_TYPE:
             return {
                 ...state,
                 planner: {
@@ -92,7 +90,7 @@ function plannerReducer(state = initialState, action) {
                     title: action.title,
                 },
             };
-        case CHANGE_PLANNER_DATE_START_TYPE:
+        case UPDATE_PLANNER_DATE_START_TYPE:
             return {
                 ...state,
                 planner: {
@@ -100,12 +98,32 @@ function plannerReducer(state = initialState, action) {
                     planDateStart: action.date,
                 },
             };
-        case CHANGE_PLANNER_DATE_END_TYPE:
+        case UPDATE_PLANNER_DATE_END_TYPE:
             return {
                 ...state,
                 planner: {
                     ...state.planner,
                     planDateEnd: action.date,
+                },
+            };
+        case UPDATE_PLANNER_ACCOUNT_TYPE:
+            return {
+                ...state,
+                planner: {
+                    accountId: action.accountId,
+                    creator: action.nickname,
+                },
+            };
+        case RESET_PLANNER_INFO_FORM_TYPE:
+            return {
+                ...state,
+                planner: {
+                    accountId: state.planner.accountId,
+                    creator: state.planner.creator,
+                    title: null,
+                    planDateStart: null,
+                    planDateEnd: null,
+                    planMembers: [],
                 },
             };
 

@@ -1,15 +1,23 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerList from '../../components/planner/list/PlannerList';
-import { loadPlannerAction, loadSharePlannerListAction } from '../../modules/plannerModule';
+import { loadPlannerAction, loadSharePlannerListAction, resetPlannerInfoFormAction, updatePlannerAccountAction } from '../../modules/plannerModule';
 
 const PlannerListContainer = () => {
     const dispatch = useDispatch();
-    const { sharePlanners, plannerError, planner } = useSelector(({ plannerReducer }) => ({
+    const { sharePlanners, plannerError, planner, account } = useSelector(({ plannerReducer, authReducer }) => ({
+        account: authReducer.account,
         sharePlanners: plannerReducer.sharePlanners,
         plannerError: plannerReducer.plannerError,
         planner: plannerReducer.planner,
     }));
+
+    useEffect(() => {
+        if (account) {
+            const { accountId, nickname } = account;
+            dispatch(updatePlannerAccountAction(accountId, nickname));
+        }
+    }, [dispatch, account]);
 
     // 공유 플래너리스트 가져오기
     useEffect(() => {
@@ -21,7 +29,12 @@ const PlannerListContainer = () => {
         dispatch(loadPlannerAction(plannerId));
     };
 
-    return <PlannerList sharePlanners={sharePlanners} planner={planner} onLoadPlanner={onLoadPlanner} plannerError={plannerError} />;
+    // 플래너 정보폼 초기화(planner 초기화)
+    const onResetPlannerInfoForm = () => {
+        dispatch(resetPlannerInfoFormAction());
+    };
+
+    return <PlannerList sharePlanners={sharePlanners} planner={planner} onLoadPlanner={onLoadPlanner} plannerError={plannerError} onResetPlannerInfoForm={onResetPlannerInfoForm} />;
 };
 
 export default PlannerListContainer;
