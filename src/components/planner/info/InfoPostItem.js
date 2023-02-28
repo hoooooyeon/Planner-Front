@@ -78,7 +78,7 @@ const Button = styled.button`
     }
 `;
 
-const EditButton = styled(Button)`
+const CompleteButton = styled(Button)`
     width: 5rem;
     margin-top: 10px;
 `;
@@ -114,7 +114,7 @@ const StyledInput = styled.input`
     }
 `;
 
-const InfoPostItem = ({ index }) => {
+const InfoPostItem = ({ memo, onCreateMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent }) => {
     const modules = {
         toolbar: [[{ header: [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], [{ color: [] }, { background: [] }], ['clean']],
     };
@@ -164,43 +164,80 @@ const InfoPostItem = ({ index }) => {
     const onPost = () => {
         setIsEdit(false);
     };
+
+    const [isUpdate, setIsUpdate] = useState(false);
+    const onUpdate = () => {
+        setIsUpdate(true);
+    };
+    const onCreate = () => {
+        setIsUpdate(false);
+    };
+
+    // const { momoId, title, content, updateDate } = memo;
     return (
         <>
             {isEdit ? (
                 <EditItem>
                     <EditItemTitleBox>
-                        <Number>{index}</Number>
-                        <StyledInput name="title" placeholder="Title" type="text" />
+                        {/* <Number>{memoId}</Number> */}
+                        {/* <StyledInput name="title" placeholder="Title" type="text" value={title} /> */}
                     </EditItemTitleBox>
-                    <ReactQuill
+                    {/* <ReactQuill
                         placeholder="내용을 입력해주세요."
                         theme="snow"
                         modules={modules}
-                        // value={text}
+                        value={content}
                         // onChange={}
-                    />
+                    /> */}
                     <ButtonBox>
-                        <EditButton onClick={onPost}>Complete</EditButton>
+                        {isUpdate ? (
+                            <CompleteButton
+                                onClick={() => {
+                                    onPost();
+                                    onUpdateMemo();
+                                    onCreate();
+                                }}
+                            >
+                                Update
+                            </CompleteButton>
+                        ) : (
+                            <CompleteButton
+                                onClick={() => {
+                                    onPost();
+                                    onCreateMemo();
+                                    onCreate();
+                                }}
+                            >
+                                Complete
+                            </CompleteButton>
+                        )}
                     </ButtonBox>
                 </EditItem>
             ) : (
                 <PostItem>
                     <PostHeader>
                         <HeaderInfo>
-                            <Number>{index}</Number>
+                            {/* <Number>{memoId}</Number> */}
                             <div>
-                                <Title>공지사항</Title>
-                                <Date>2022. 08. 19. PM 13:24:31</Date>
+                                {/* <Title>{title}</Title> */}
+                                {/* <Date>{updateDate}</Date> */}
                             </div>
                         </HeaderInfo>
                         <ButtonBox>
                             {isMax ? <Button onClick={onMax}>Min</Button> : <Button onClick={onMax}>Max</Button>}
-                            <Button onClick={onEdit}>Edit</Button>
-                            <Button>Delete</Button>
+                            <Button
+                                onClick={() => {
+                                    onEdit();
+                                    onUpdate();
+                                }}
+                            >
+                                Edit
+                            </Button>
+                            {/* <Button onClick={(e) => onDeleteMemo(e.memoId)}>Delete</Button> */}
                         </ButtonBox>
                     </PostHeader>
                     <Text ref={textRef} isMax={isMax}>
-                        PostText입니다.PostText입니다.PostText입니다.PostText입니다.PostText입니다.PostText입니다.PostText입니다.PostText입니다.PostText입니다.PostText입니다.PostText입니다.PostText입니다.PostText입니다.PostText입니다.
+                        {/* {content} */}
                     </Text>
                 </PostItem>
             )}

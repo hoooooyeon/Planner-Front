@@ -170,7 +170,7 @@ const InfoPostList = ({ memos, memo, onCreateMemo, onUpdateMemo, onDeleteMemo, o
                         <Button>ADD</Button>
                     </PostListHeader>
                     <PostList ref={listRef}>
-                        <InfoPostItem />
+                        <InfoPostItem memo={memo} onCreateMemo={onCreateMemo} onUpdateMemo={onUpdateMemo} onDeleteMemo={onDeleteMemo} onChangeMemoTitle={onChangeMemoTitle} onChangeMemoContent={onChangeMemoContent} />
                         {/* {Total.map((i) => {
                             return <InfoPostItem index={i} key={i} />;
                         })} */}

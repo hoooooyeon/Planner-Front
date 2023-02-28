@@ -19,8 +19,8 @@ const InfoPostContainer = () => {
         dispatch(updateMemoAction());
     };
 
-    const onDeleteMemo = () => {
-        dispatch(deleteMemoAction());
+    const onDeleteMemo = (memoId) => {
+        dispatch(deleteMemoAction(planner.plannerId, memoId));
     };
 
     const onChangeMemoTitle = (title) => {
