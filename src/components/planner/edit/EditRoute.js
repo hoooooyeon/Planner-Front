@@ -115,7 +115,7 @@ const RouteBox = styled.div`
 const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, onChangePlannerDateEnd }) => {
     // api 추가 전 date
     const [dateRange, setDateRange] = useState([null, null]);
-    const { startDate, endDate } = dateRange;
+    const [startDate, endDate] = dateRange;
 
     const onChangeDates = (dates) => {
         const [start, end] = dates;
@@ -123,32 +123,35 @@ const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, on
         // const endDate = end.getFullYear() + '-' + ('0' + (end.getMonth() + 1)).slice(-2) + '-' + end.getDate() + ' ' + end.getHours() + ':' + end.getMinutes() + ':' + end.getSeconds();
 
         setDateRange(dates);
-        onChangePlannerDateStart(
-            start.getFullYear() +
-                '-' +
-                ('0' + (start.getMonth() + 1)).slice(-2) +
-                '-' +
-                ('0' + start.getDate()).slice(-2) +
-                ' ' +
-                ('0' + start.getHours()).slice(-2) +
-                ':' +
-                ('0' + start.getMinutes()).slice(-2) +
-                ':' +
-                ('0' + start.getSeconds()).slice(-2),
-        );
-        onChangePlannerDateEnd(
-            end.getFullYear() +
-                '-' +
-                ('0' + (end.getMonth() + 1)).slice(-2) +
-                '-' +
-                ('0' + end.getDate()).slice(-2) +
-                ' ' +
-                ('0' + end.getHours()).slice(-2) +
-                ':' +
-                ('0' + end.getMinutes()).slice(-2) +
-                ':' +
-                ('0' + end.getSeconds()).slice(-2),
-        );
+
+        if (start && end) {
+            onChangePlannerDateStart(
+                start.getFullYear() +
+                    '-' +
+                    ('0' + (start.getMonth() + 1)).slice(-2) +
+                    '-' +
+                    ('0' + start.getDate()).slice(-2) +
+                    ' ' +
+                    ('0' + start.getHours()).slice(-2) +
+                    ':' +
+                    ('0' + start.getMinutes()).slice(-2) +
+                    ':' +
+                    ('0' + start.getSeconds()).slice(-2),
+            );
+            onChangePlannerDateEnd(
+                end.getFullYear() +
+                    '-' +
+                    ('0' + (end.getMonth() + 1)).slice(-2) +
+                    '-' +
+                    ('0' + end.getDate()).slice(-2) +
+                    ' ' +
+                    ('0' + end.getHours()).slice(-2) +
+                    ':' +
+                    ('0' + end.getMinutes()).slice(-2) +
+                    ':' +
+                    ('0' + end.getSeconds()).slice(-2),
+            );
+        }
     };
 
     return (
@@ -171,21 +174,20 @@ const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, on
                         onChange={onChangeDates}
                         // 왜 dates를 안 줘도 될까?
                         // onChange={(dates) => {
-                        //     onUpdateDates(dates);
+                        //     onChangeDates(dates);
                         // }}
                         dateFormat=" yyyy. MM. dd "
                         placeholderText="여행 기간"
                     />
 
-                    {/*
-                    api 추가 전  date
-                    <StyledDatePicker
+                    {/* api 추가 전  date */}
+                    {/* <StyledDatePicker
                         selectsRange={true}
                         startDate={startDate}
                         endDate={endDate}
                         minDate={new Date()}
-                        onChange={(date) => {
-                            setDateRange(date);
+                        onChange={(dates) => {
+                            setDateRange(dates);
                         }}
                         dateFormat=" yyyy. MM. dd "
                         placeholderText="여행 종료일"
