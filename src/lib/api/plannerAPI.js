@@ -20,6 +20,11 @@ export const deletePlanner = ({ plannerId }) => {
     return client.delete(`/api/planners/${plannerId}`);
 };
 
+// 플래너 수정
+export const updatePlanner = ({ plannerId, title, planDateStart, planDateEnd }) => {
+    return client.patch(`/api/planners/${plannerId}`, { plannerId, title, planDateStart, planDateEnd });
+};
+
 // 메모 생성
 export const createMemo = ({ plannerId, title, content }) => {
     return client.post(`/api/planners/${plannerId}/memos`, { title, content });

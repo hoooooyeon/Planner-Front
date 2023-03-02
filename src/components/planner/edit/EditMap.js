@@ -43,7 +43,7 @@ const Button = styled.button`
     }
 `;
 
-const EditMap = ({ onCreatePlanner }) => {
+const EditMap = ({ planner, onCreatePlanner, onUpdatePlanner }) => {
     const { kakao } = window;
     const container = useRef(null);
     const options = {
@@ -62,7 +62,15 @@ const EditMap = ({ onCreatePlanner }) => {
                     <Button>사용 방법</Button>
                     <Button>멤버 초대</Button>
                     <Button>장소 등록</Button>
-                    <Button onClick={onCreatePlanner}>{/* <Link to="/PlannerInfo">일정 저장</Link> */}</Button>
+                    {!planner.plannerId ? (
+                        <Button onClick={onCreatePlanner}>
+                            <Link to="/PlannerInfo">일정 저장</Link>
+                        </Button>
+                    ) : (
+                        <Button onClick={onUpdatePlanner}>
+                            <Link to="/PlannerInfo">일정 저장</Link>
+                        </Button>
+                    )}
                 </ButtonBox>
             </Map>
         </EditMapBlock>

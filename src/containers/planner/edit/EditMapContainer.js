@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import EditMap from '../../../components/planner/edit/EditMap';
-import { createPlannerAction } from '../../../modules/plannerModule';
+import { createPlannerAction, updatePlannerAction } from '../../../modules/plannerModule';
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
@@ -14,7 +14,12 @@ const EditMapContainer = () => {
         dispatch(createPlannerAction({ accountId, creator, title, planDateStart, planDateEnd, planMembers }));
     };
 
-    return <EditMap planner={planner} onCreatePlanner={onCreatePlanner} />;
+    const onUpdatePlanner = () => {
+        const { plannerId, title, planDateStart, planDateEnd } = planner;
+        dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd }));
+    };
+
+    return <EditMap planner={planner} onCreatePlanner={onCreatePlanner} onUpdatePlanner={onUpdatePlanner} />;
 };
 
 export default EditMapContainer;

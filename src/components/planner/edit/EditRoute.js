@@ -113,44 +113,39 @@ const RouteBox = styled.div`
 `;
 
 const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, onChangePlannerDateEnd }) => {
+    const { title, planDateStart, planDateEnd } = planner;
+
     // api 추가 전 date
-    const [dateRange, setDateRange] = useState([null, null]);
+    const [dateRange, setDateRange] = useState([new Date(planDateStart), new Date(planDateEnd)]);
     const [startDate, endDate] = dateRange;
 
+    // 날짜 포맷 함수
+    const letsFormat = (d) => {
+        let date = new Date(d);
+        return (
+            date.getFullYear() +
+            '-' +
+            ('0' + (date.getMonth() + 1)).slice(-2) +
+            '-' +
+            ('0' + date.getDate()).slice(-2) +
+            ' ' +
+            ('0' + date.getHours()).slice(-2) +
+            ':' +
+            ('0' + date.getMinutes()).slice(-2) +
+            ':' +
+            ('0' + date.getSeconds()).slice(-2)
+        );
+    };
+
+    // datePicker의 날짜와 planner의 날짜를 각각 나눔.
     const onChangeDates = (dates) => {
         const [start, end] = dates;
-        // const startDate = start.getFullYear() + '-' + ('0' + (start.getMonth() + 1)).slice(-2) + '-' + start.getDate() + ' ' + start.getHours() + ':' + start.getMinutes() + ':' + start.getSeconds();
-        // const endDate = end.getFullYear() + '-' + ('0' + (end.getMonth() + 1)).slice(-2) + '-' + end.getDate() + ' ' + end.getHours() + ':' + end.getMinutes() + ':' + end.getSeconds();
-
         setDateRange(dates);
-
         if (start && end) {
-            onChangePlannerDateStart(
-                start.getFullYear() +
-                    '-' +
-                    ('0' + (start.getMonth() + 1)).slice(-2) +
-                    '-' +
-                    ('0' + start.getDate()).slice(-2) +
-                    ' ' +
-                    ('0' + start.getHours()).slice(-2) +
-                    ':' +
-                    ('0' + start.getMinutes()).slice(-2) +
-                    ':' +
-                    ('0' + start.getSeconds()).slice(-2),
-            );
-            onChangePlannerDateEnd(
-                end.getFullYear() +
-                    '-' +
-                    ('0' + (end.getMonth() + 1)).slice(-2) +
-                    '-' +
-                    ('0' + end.getDate()).slice(-2) +
-                    ' ' +
-                    ('0' + end.getHours()).slice(-2) +
-                    ':' +
-                    ('0' + end.getMinutes()).slice(-2) +
-                    ':' +
-                    ('0' + end.getSeconds()).slice(-2),
-            );
+            const startData = letsFormat(start);
+            const endData = letsFormat(end);
+            onChangePlannerDateStart(startData);
+            onChangePlannerDateEnd(endData);
         }
     };
 
@@ -162,6 +157,7 @@ const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, on
                     onChange={(e) => {
                         onChangePlannerTitle(e.target.value);
                     }}
+                    value={title}
                 />
                 <DateBox>
                     <StyledDatePicker
@@ -209,7 +205,7 @@ const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, on
             </InfoForm>
             <RouteBox>
                 <EditCalendar />
-                <EditRouteList />
+                <EditRouteList planner={planner} />
             </RouteBox>
         </EditRouteBlock>
     );

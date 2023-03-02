@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerList from '../../components/planner/list/PlannerList';
-import { loadPlannerAction, loadSharePlannerListAction, resetPlannerInfoFormAction, updatePlannerAccountAction } from '../../modules/plannerModule';
+import { changePlannerAccountAction, loadPlannerAction, loadSharePlannerListAction, resetPlannerInfoFormAction } from '../../modules/plannerModule';
 
 const PlannerListContainer = () => {
     const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const PlannerListContainer = () => {
     useEffect(() => {
         if (account) {
             const { accountId, nickname } = account;
-            dispatch(updatePlannerAccountAction(accountId, nickname));
+            dispatch(changePlannerAccountAction(accountId, nickname));
         }
     }, [dispatch, account]);
 
