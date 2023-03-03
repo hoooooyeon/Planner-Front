@@ -79,12 +79,13 @@ const DropDownMenu = styled.ul`
         `}
 
     li {
-        padding: 5px 10px;
         cursor: pointer;
+        padding: 5px 10px;
         &:hover {
             background-color: #cdd9ac;
         }
         a {
+            display: block;
             color: black;
         }
     }

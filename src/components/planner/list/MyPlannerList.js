@@ -46,20 +46,23 @@ const Title = styled.p`
     font-size: 1.3rem;
     font-weight: bold;
 `;
-const StyledLink = styled(Link)`
-    text-decoration: none;
+
+const Button = styled.button`
     width: 7rem;
     height: 3rem;
     background-color: #9aad67;
     border: none;
     border-radius: 0.5rem;
-    color: white;
     font-weight: bolder;
     font-size: 0.9rem;
     text-align: center;
     line-height: 3rem;
+    a {
+        color: white;
+        text-decoration: none;
+        display: block;
+    }
 `;
-
 const PlannerItem = styled.li`
     width: 100%;
     height: 100%;
@@ -205,10 +208,11 @@ const MyPlannerList = ({ onResetPlannerInfoForm }) => {
             <Container>
                 <TitleBox>
                     <Title>나의 플래너</Title>
-
-                    <StyledLink to="/PlannerEdit" onClick={onResetPlannerInfoForm}>
-                        플래너 생성
-                    </StyledLink>
+                    <Button>
+                        <Link to="/PlannerEdit" onClick={onResetPlannerInfoForm}>
+                            플래너 생성
+                        </Link>
+                    </Button>
                 </TitleBox>
                 <HiddenBox ref={hiddenBoxRef}>
                     <Planners ref={plannersRef}>

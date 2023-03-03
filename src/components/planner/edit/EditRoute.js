@@ -121,7 +121,7 @@ const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, on
 
     // 날짜 포맷 함수
     const letsFormat = (d) => {
-        let date = new Date(d);
+        const date = new Date(d);
         return (
             date.getFullYear() +
             '-' +
@@ -147,6 +147,8 @@ const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, on
             onChangePlannerDateStart(startData);
             onChangePlannerDateEnd(endData);
         }
+        console.log(new Date(planDateStart));
+        console.log(planDateStart);
     };
 
     return (
@@ -192,8 +194,8 @@ const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, on
                 <FlexDiv>
                     <Funds placeholder="여행 자금" />
                     <People placeholder="인원" />
-                    <Category required>
-                        <option value="" disabled selected>
+                    <Category required defaultValue="">
+                        <option value="" disabled>
                             선택
                         </option>
                         <option value="alone">혼자</option>

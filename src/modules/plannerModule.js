@@ -163,7 +163,7 @@ function plannerReducer(state = initialState, action) {
             };
         case RESET_PLANNER_INFO_FORM_TYPE:
             const letsFormat = (d) => {
-                let date = new Date(d);
+                const date = new Date(d);
                 return (
                     date.getFullYear() +
                     '-' +
@@ -183,7 +183,7 @@ function plannerReducer(state = initialState, action) {
                 planner: {
                     accountId: state.planner.accountId,
                     creator: state.planner.creator,
-                    title: '',
+                    title: null,
                     planDateStart: letsFormat(new Date()),
                     planDateEnd: letsFormat(new Date()),
                     planMembers: [],

@@ -100,8 +100,8 @@ const EditRouteList = () => {
                 return (
                     <RouteItem key={i}>
                         <RouteLine />
-                        <TransItem required>
-                            <option value="" disabled selected>
+                        <TransItem required defaultValue="">
+                            <option value="" disabled>
                                 선택
                             </option>
                             <option value="plane">비행기</option>

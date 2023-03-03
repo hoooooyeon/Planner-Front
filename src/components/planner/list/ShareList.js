@@ -266,6 +266,12 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner }) => {
             window.removeEventListener('resize', sliderResize);
         };
     });
+
+    const letsFormat = (d) => {
+        const date = new Date(d);
+        return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+    };
+
     if (plannerError) {
         alert(plannerError);
     }
@@ -293,6 +299,7 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner }) => {
                                             <Name>{planner.title}</Name>
                                             <Date>
                                                 {planner.planDateStart} ~ {planner.planDateEnd}
+                                                {/* {new Date(planner.planDateStart).format('YYYY-MM-DD')} ~ {planner.planDateEnd} */}
                                             </Date>
                                         </InfoBox>
                                     </Link>

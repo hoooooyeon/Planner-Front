@@ -39,7 +39,10 @@ const Button = styled.button`
         transform: translate(1px, -1px);
     }
     a {
+        display: block;
         color: white;
+        height: 100%;
+        line-height: 3rem;
     }
 `;
 
@@ -64,7 +67,7 @@ const EditMap = ({ planner, onCreatePlanner, onUpdatePlanner }) => {
                     <Button>장소 등록</Button>
                     {!planner.plannerId ? (
                         <Button onClick={onCreatePlanner}>
-                            <Link to="/PlannerInfo">일정 저장</Link>
+                            <Link to="/PlannerList">일정 저장</Link>
                         </Button>
                     ) : (
                         <Button onClick={onUpdatePlanner}>
