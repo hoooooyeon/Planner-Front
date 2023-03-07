@@ -22,6 +22,9 @@ const CHANGE_PLANNER_TITLE_TYPE = 'planner/CHANGE_PLANNER_TITLE';
 const CHANGE_PLANNER_DATE_START_TYPE = 'planner/CHANGE_PLANNER_DATE_START';
 const CHANGE_PLANNER_DATE_END_TYPE = 'planner/CHANGE_PLANNER_DATE_END';
 const CHANGE_PLANNER_ACCOUNT_TYPE = 'planner/CHANGE_PLANNER_ACCOUNT';
+const CHANGE_PLANNER_EXPENSE_TYPE = 'planner/CHANGE_PLANNER_EXPENSE';
+const CHANGE_PLANNER_MEMBER_COUNT_TYPE = 'planner/CHANGE_PLANNER_MEMBER_COUNT';
+const CHANGE_PLANNER_MEMBER_CATEGORY_TYPE = 'planner/CHANGE_PLANNER_MEMBER_CATEGORY';
 
 const RESET_PLANNER_INFO_FORM_TYPE = 'planner/RESET_PLANNER_INFO_FORM';
 
@@ -44,14 +47,28 @@ const DELETE_MEMO_FAILURE_TYPE = 'planner/DELETE_MEMO_FAILURE';
 const CHANGE_MEMO_TITLE_TYPE = 'planner/CHANGE_MEMO_TITLE';
 const CHANGE_MEMO_CONTENT_TYPE = 'planner/CHANGE_CONTENT_TITLE';
 
-export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers }) => ({ type: CREATE_PLANNER_TYPE, accountId, creator, title, planDateStart, planDateEnd, planMembers });
-export const updatePlannerAction = ({ plannerId, title, planDateStart, planDateEnd }) => ({ type: UPDATE_PLANNER_TYPE, plannerId, title, planDateStart, planDateEnd });
+export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
+    type: CREATE_PLANNER_TYPE,
+    accountId,
+    creator,
+    title,
+    planDateStart,
+    planDateEnd,
+    planMembers,
+    expense,
+    memberCount,
+    memberTypeId,
+});
+export const updatePlannerAction = ({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }) => ({ type: UPDATE_PLANNER_TYPE, plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
 export const loadSharePlannerListAction = () => ({ type: LOAD_SHARE_PLANNER_LIST_TYPE });
 export const loadPlannerAction = (plannerId) => ({ type: LOAD_PLANNER_TYPE, plannerId });
 export const changePlannerTitleAction = (title) => ({ type: CHANGE_PLANNER_TITLE_TYPE, title });
 export const changePlannerDateStartAction = (date) => ({ type: CHANGE_PLANNER_DATE_START_TYPE, date });
 export const changePlannerDateEndAction = (date) => ({ type: CHANGE_PLANNER_DATE_END_TYPE, date });
 export const changePlannerAccountAction = (accountId, nickname) => ({ type: CHANGE_PLANNER_ACCOUNT_TYPE, accountId, nickname });
+export const changePlannerExpenseAction = (expense) => ({ type: CHANGE_PLANNER_EXPENSE_TYPE, expense });
+export const changePlannerMemberCountAction = (count) => ({ type: CHANGE_PLANNER_MEMBER_COUNT_TYPE, count });
+export const changePlannerMemberCategoryAction = (memberTypeId) => ({ type: CHANGE_PLANNER_MEMBER_CATEGORY_TYPE, memberTypeId });
 export const resetPlannerInfoFormAction = () => ({ type: RESET_PLANNER_INFO_FORM_TYPE });
 export const deletePlannerAction = (plannerId) => ({ type: DELETE_PLANNER_TYPE, plannerId });
 export const createMemoAction = ({ plannerId, title, content }) => ({ type: CREATE_MEMO_TYPE, plannerId, title, content });
@@ -158,7 +175,6 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 planner: {
                     ...state.planner,
-                    // planDateStart: action.date,
                     planDateStart: letsFormat(action.date),
                 },
             };
@@ -167,8 +183,31 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 planner: {
                     ...state.planner,
-                    // planDateEnd: action.date,
                     planDateEnd: letsFormat(action.date),
+                },
+            };
+        case CHANGE_PLANNER_EXPENSE_TYPE:
+            return {
+                ...state,
+                planner: {
+                    ...state.planner,
+                    expense: action.expense,
+                },
+            };
+        case CHANGE_PLANNER_MEMBER_COUNT_TYPE:
+            return {
+                ...state,
+                planner: {
+                    ...state.planner,
+                    memberCount: action.count,
+                },
+            };
+        case CHANGE_PLANNER_MEMBER_CATEGORY_TYPE:
+            return {
+                ...state,
+                planner: {
+                    ...state.planner,
+                    memberTypeId: action.memberTypeId,
                 },
             };
         case CHANGE_PLANNER_ACCOUNT_TYPE:
@@ -189,6 +228,9 @@ function plannerReducer(state = initialState, action) {
                     planDateStart: letsFormat(new Date()),
                     planDateEnd: letsFormat(new Date()),
                     planMembers: [],
+                    expense: 0,
+                    memberCount: 0,
+                    memberTypeId: 1,
                 },
             };
         case DELETE_PLANNER_SUCCESS_TYPE:

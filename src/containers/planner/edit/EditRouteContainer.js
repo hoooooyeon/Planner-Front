@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import EditRoute from '../../../components/planner/edit/EditRoute';
-import { changePlannerDateEndAction, changePlannerDateStartAction, changePlannerTitleAction } from '../../../modules/plannerModule';
+import { changePlannerDateEndAction, changePlannerDateStartAction, changePlannerExpenseAction, changePlannerMemberCategoryAction, changePlannerMemberCountAction, changePlannerTitleAction } from '../../../modules/plannerModule';
 
 const EditRouteContainer = () => {
     const dispatch = useDispatch();
@@ -18,7 +18,26 @@ const EditRouteContainer = () => {
     const onChangePlannerDateEnd = (date) => {
         dispatch(changePlannerDateEndAction(date));
     };
-    return <EditRoute planner={planner} onChangePlannerTitle={onChangePlannerTitle} onChangePlannerDateStart={onChangePlannerDateStart} onChangePlannerDateEnd={onChangePlannerDateEnd} />;
+    const onChangePlannerExpense = (expense) => {
+        dispatch(changePlannerExpenseAction(expense));
+    };
+    const onChangePlannerMemberCount = (count) => {
+        dispatch(changePlannerMemberCountAction(count));
+    };
+    const onChangePlannerMemberCategory = (memberTypeId) => {
+        dispatch(changePlannerMemberCategoryAction(memberTypeId));
+    };
+    return (
+        <EditRoute
+            planner={planner}
+            onChangePlannerTitle={onChangePlannerTitle}
+            onChangePlannerDateStart={onChangePlannerDateStart}
+            onChangePlannerDateEnd={onChangePlannerDateEnd}
+            onChangePlannerExpense={onChangePlannerExpense}
+            onChangePlannerMemberCount={onChangePlannerMemberCount}
+            onChangePlannerMemberCategory={onChangePlannerMemberCategory}
+        />
+    );
 };
 
 export default EditRouteContainer;

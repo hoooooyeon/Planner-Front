@@ -22,6 +22,11 @@ const InfoForm = styled.form`
     input::placeholder {
         color: lightgray;
     }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 `;
 
 const Title = styled.input`
@@ -112,7 +117,7 @@ const RouteBox = styled.div`
     display: flex;
 `;
 
-const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, onChangePlannerDateEnd }) => {
+const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, onChangePlannerDateEnd, onChangePlannerExpense, onChangePlannerMemberCount, onChangePlannerMemberCategory }) => {
     const { title, planDateStart, planDateEnd } = planner;
 
     // api 추가 전 date
@@ -129,11 +134,22 @@ const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, on
         }
     };
 
+    const categoryList = [
+        {
+            value: '혼자',
+            key: 'alone',
+        },
+        { value: '연인', key: 'couple' },
+        { value: '친구', key: 'friend' },
+        { value: '가족', key: 'family' },
+    ];
+
     return (
         <EditRouteBlock>
             <InfoForm>
                 <Title
                     placeholder="플래너 이름"
+                    type="text"
                     onChange={(e) => {
                         onChangePlannerTitle(e.target.value);
                     }}
@@ -170,16 +186,35 @@ const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, on
                     /> */}
                 </DateBox>
                 <FlexDiv>
-                    <Funds placeholder="여행 자금" />
-                    <People placeholder="인원" />
-                    <Category required defaultValue="">
+                    <Funds
+                        placeholder="여행 자금"
+                        type="number"
+                        onChange={(e) => {
+                            onChangePlannerExpense(e.target.value);
+                        }}
+                    />
+                    <People
+                        placeholder="인원"
+                        type="number"
+                        onChange={(e) => {
+                            onChangePlannerMemberCount(e.target.value);
+                        }}
+                    />
+                    <Category
+                        required
+                        defaultValue=""
+                        onChange={(e) => {
+                            onChangePlannerMemberCategory(e.target.value);
+                        }}
+                    >
                         <option value="" disabled>
                             선택
                         </option>
-                        <option value="alone">혼자</option>
-                        <option value="couple">연인</option>
-                        <option value="friend">친구</option>
-                        <option value="family">가족</option>
+                        {categoryList.map((item) => (
+                            <option value={item.value} key={item.key}>
+                                {item.value}
+                            </option>
+                        ))}
                     </Category>
                 </FlexDiv>
             </InfoForm>

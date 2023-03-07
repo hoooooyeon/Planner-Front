@@ -11,8 +11,8 @@ export const loadPlanner = ({ plannerId }) => {
 };
 
 // 플래너 생성
-export const createPlanner = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers }) => {
-    return client.post('/api/planners', { accountId, creator, title, planDateStart, planDateEnd, planMembers });
+export const createPlanner = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => {
+    return client.post('/api/planners', { accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId });
 };
 
 // 플래너 삭제
@@ -21,8 +21,8 @@ export const deletePlanner = ({ plannerId }) => {
 };
 
 // 플래너 수정
-export const updatePlanner = ({ plannerId, title, planDateStart, planDateEnd }) => {
-    return client.patch(`/api/planners/${plannerId}`, { plannerId, title, planDateStart, planDateEnd });
+export const updatePlanner = ({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }) => {
+    return client.patch(`/api/planners/${plannerId}`, { plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
 };
 
 // 메모 생성
@@ -32,7 +32,7 @@ export const createMemo = ({ plannerId, title, content }) => {
 
 // 메모 수정
 export const updateMemo = ({ plannerId, memoId, title, content }) => {
-    return client.patch(`/api/planners/${plannerId}/memos/${memoId}/memos`, { title, content });
+    return client.patch(`/api/planners/${plannerId}/memos/${memoId}`, { title, content });
 };
 
 // 메모 삭제
