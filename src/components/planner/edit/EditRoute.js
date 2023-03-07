@@ -119,36 +119,14 @@ const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, on
     const [dateRange, setDateRange] = useState([new Date(planDateStart), new Date(planDateEnd)]);
     const [startDate, endDate] = dateRange;
 
-    // 날짜 포맷 함수
-    const letsFormat = (d) => {
-        const date = new Date(d);
-        return (
-            date.getFullYear() +
-            '-' +
-            ('0' + (date.getMonth() + 1)).slice(-2) +
-            '-' +
-            ('0' + date.getDate()).slice(-2) +
-            ' ' +
-            ('0' + date.getHours()).slice(-2) +
-            ':' +
-            ('0' + date.getMinutes()).slice(-2) +
-            ':' +
-            ('0' + date.getSeconds()).slice(-2)
-        );
-    };
-
     // datePicker의 날짜와 planner의 날짜를 각각 나눔.
     const onChangeDates = (dates) => {
         const [start, end] = dates;
         setDateRange(dates);
         if (start && end) {
-            const startData = letsFormat(start);
-            const endData = letsFormat(end);
-            onChangePlannerDateStart(startData);
-            onChangePlannerDateEnd(endData);
+            onChangePlannerDateStart(start);
+            onChangePlannerDateEnd(end);
         }
-        console.log(new Date(planDateStart));
-        console.log(planDateStart);
     };
 
     return (
@@ -166,8 +144,8 @@ const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, on
                         selectsRange={true}
                         startDate={startDate}
                         endDate={endDate}
-                        // startDate={planner.planDateStart}
-                        // endDate={planner.planDateEnd}
+                        // startDate={new Date(planDateStart)}
+                        // endDate={new Date(planDateEnd)}
                         minDate={new Date()}
                         onChange={onChangeDates}
                         // 왜 dates를 안 줘도 될까?

@@ -88,6 +88,22 @@ const initialState = {
     memos: null,
     memo: null,
 };
+const letsFormat = (d) => {
+    const date = new Date(d);
+    return (
+        date.getFullYear() +
+        '-' +
+        ('0' + (date.getMonth() + 1)).slice(-2) +
+        '-' +
+        ('0' + date.getDate()).slice(-2) +
+        ' ' +
+        ('0' + date.getHours()).slice(-2) +
+        ':' +
+        ('0' + date.getMinutes()).slice(-2) +
+        ':' +
+        ('0' + date.getSeconds()).slice(-2)
+    );
+};
 
 function plannerReducer(state = initialState, action) {
     switch (action.type) {
@@ -142,7 +158,8 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 planner: {
                     ...state.planner,
-                    planDateStart: action.date,
+                    // planDateStart: action.date,
+                    planDateStart: letsFormat(action.date),
                 },
             };
         case CHANGE_PLANNER_DATE_END_TYPE:
@@ -150,7 +167,8 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 planner: {
                     ...state.planner,
-                    planDateEnd: action.date,
+                    // planDateEnd: action.date,
+                    planDateEnd: letsFormat(action.date),
                 },
             };
         case CHANGE_PLANNER_ACCOUNT_TYPE:
@@ -162,28 +180,12 @@ function plannerReducer(state = initialState, action) {
                 },
             };
         case RESET_PLANNER_INFO_FORM_TYPE:
-            const letsFormat = (d) => {
-                const date = new Date(d);
-                return (
-                    date.getFullYear() +
-                    '-' +
-                    ('0' + (date.getMonth() + 1)).slice(-2) +
-                    '-' +
-                    ('0' + date.getDate()).slice(-2) +
-                    ' ' +
-                    ('0' + date.getHours()).slice(-2) +
-                    ':' +
-                    ('0' + date.getMinutes()).slice(-2) +
-                    ':' +
-                    ('0' + date.getSeconds()).slice(-2)
-                );
-            };
             return {
                 ...state,
                 planner: {
                     accountId: state.planner.accountId,
                     creator: state.planner.creator,
-                    title: null,
+                    title: '',
                     planDateStart: letsFormat(new Date()),
                     planDateEnd: letsFormat(new Date()),
                     planMembers: [],
