@@ -26,14 +26,14 @@ const ImgBox = styled.div`
     margin: 0;
     overflow: hidden;
     position: relative;
-    height: 150px;
+    /* height: 150px;
 
     @media all and (min-width: 960px) {
         height: 200px;
     }
     @media all and (min-width: 1280px) {
         height: 250px;
-    }
+    } */
 `;
 
 const Img = styled.img`
@@ -42,7 +42,7 @@ const Img = styled.img`
     border: none;
     margin: 0;
     padding: 0;
-
+    display: block;
     -webkit-user-drag: none;
     @media all and (min-width: 960px) {
         height: 200px;
