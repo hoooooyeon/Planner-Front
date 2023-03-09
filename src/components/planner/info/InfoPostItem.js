@@ -61,6 +61,8 @@ const Text = styled.div`
 const ButtonBox = styled.div`
     display: flex;
     justify-content: flex-end;
+
+    padding-top: 10px;
 `;
 
 const Button = styled.button`
@@ -80,7 +82,6 @@ const Button = styled.button`
 
 const CompleteButton = styled(Button)`
     width: 5rem;
-    margin-top: 10px;
 `;
 
 const EditItem = styled.div`
@@ -114,7 +115,7 @@ const StyledInput = styled.input`
     }
 `;
 
-const InfoPostItem = ({ memo, onCreateMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent }) => {
+const InfoPostItem = ({ memo, curMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent, onLoadMemo }) => {
     const modules = {
         toolbar: [[{ header: [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], [{ color: [] }, { background: [] }], ['clean']],
     };
@@ -165,62 +166,62 @@ const InfoPostItem = ({ memo, onCreateMemo, onUpdateMemo, onDeleteMemo, onChange
         setIsEdit(false);
     };
 
-    const [isUpdate, setIsUpdate] = useState(false);
-    const onUpdate = () => {
-        setIsUpdate(true);
-    };
-    const onCreate = () => {
-        setIsUpdate(false);
-    };
-
-    // const { momoId, title, content, updateDate } = memo;
+    const { memoId, title, content, updateDate } = memo;
+    // const { curTitle, curContent } = curMemo;
     return (
         <>
             {isEdit ? (
                 <EditItem>
                     <EditItemTitleBox>
-                        {/* <Number>{memoId}</Number> */}
-                        {/* <StyledInput name="title" placeholder="Title" type="text" value={title} /> */}
+                        <Number>{memoId}</Number>
+                        <StyledInput
+                            name="title"
+                            placeholder="Title"
+                            type="text"
+                            value={curMemo.title}
+                            onChange={(e) => {
+                                onChangeMemoTitle(e.target.value);
+                            }}
+                        />
                     </EditItemTitleBox>
-                    {/* <ReactQuill
+                    <ReactQuill
                         placeholder="내용을 입력해주세요."
                         theme="snow"
                         modules={modules}
-                        value={content}
-                        // onChange={}
-                    /> */}
+                        value={curMemo.content}
+                        onChange={(e) => {
+                            onChangeMemoContent(e);
+                        }}
+                    />
                     <ButtonBox>
-                        {isUpdate ? (
-                            <CompleteButton
-                                onClick={() => {
-                                    onPost();
-                                    onUpdateMemo();
-                                    onCreate();
-                                }}
-                            >
-                                Update
-                            </CompleteButton>
-                        ) : (
-                            <CompleteButton
+                        <CompleteButton
+                            onClick={() => {
+                                onPost();
+                                onUpdateMemo(memoId);
+                            }}
+                        >
+                            Update
+                        </CompleteButton>
+                        {/* <CompleteButton
                                 onClick={() => {
                                     onPost();
                                     onCreateMemo();
                                     onCreate();
+                                    setIsCreate(false);
                                 }}
                             >
                                 Complete
-                            </CompleteButton>
-                        )}
+                            </CompleteButton> */}
                     </ButtonBox>
                 </EditItem>
             ) : (
                 <PostItem>
                     <PostHeader>
                         <HeaderInfo>
-                            {/* <Number>{memoId}</Number> */}
+                            <Number>{memoId}</Number>
                             <div>
-                                {/* <Title>{title}</Title> */}
-                                {/* <Date>{updateDate}</Date> */}
+                                <Title>{title}</Title>
+                                <Date>{updateDate}</Date>
                             </div>
                         </HeaderInfo>
                         <ButtonBox>
@@ -228,17 +229,21 @@ const InfoPostItem = ({ memo, onCreateMemo, onUpdateMemo, onDeleteMemo, onChange
                             <Button
                                 onClick={() => {
                                     onEdit();
-                                    onUpdate();
+                                    onLoadMemo(memo);
                                 }}
                             >
                                 Edit
                             </Button>
-                            {/* <Button onClick={(e) => onDeleteMemo(e.memoId)}>Delete</Button> */}
+                            <Button
+                                onClick={() => {
+                                    onDeleteMemo(memoId);
+                                }}
+                            >
+                                Delete
+                            </Button>
                         </ButtonBox>
                     </PostHeader>
-                    <Text ref={textRef} isMax={isMax}>
-                        {/* {content} */}
-                    </Text>
+                    <Text ref={textRef} dangerouslySetInnerHTML={{ __html: content }} isMax={isMax}></Text>
                 </PostItem>
             )}
         </>

@@ -44,6 +44,8 @@ const DELETE_MEMO_TYPE = 'planner/DELETE_MEMO';
 const DELETE_MEMO_SUCCESS_TYPE = 'planner/DELETE_MEMO_SUCCESS';
 const DELETE_MEMO_FAILURE_TYPE = 'planner/DELETE_MEMO_FAILURE';
 
+const LOAD_MEMO_TYPE = 'planner/LOAD_MEMO';
+const RESET_MEMO_TYPE = 'planner/RESET_MEMO';
 const CHANGE_MEMO_TITLE_TYPE = 'planner/CHANGE_MEMO_TITLE';
 const CHANGE_MEMO_CONTENT_TYPE = 'planner/CHANGE_CONTENT_TITLE';
 
@@ -74,6 +76,8 @@ export const deletePlannerAction = (plannerId) => ({ type: DELETE_PLANNER_TYPE, 
 export const createMemoAction = ({ plannerId, title, content }) => ({ type: CREATE_MEMO_TYPE, plannerId, title, content });
 export const updateMemoAction = ({ plannerId, memoId, title, content }) => ({ type: UPDATE_MEMO_TYPE, plannerId, memoId, title, content });
 export const deleteMemoAction = ({ plannerId, memoId }) => ({ type: DELETE_MEMO_TYPE, plannerId, memoId });
+export const loadMemoAction = (memo) => ({ type: LOAD_MEMO_TYPE, memo });
+export const resetMemoAction = () => ({ type: RESET_MEMO_TYPE });
 export const changeMemoTitleAction = (title) => ({ type: CHANGE_MEMO_TITLE_TYPE, title });
 export const changeMemoContentAction = (content) => ({ type: CHANGE_MEMO_CONTENT_TYPE, content });
 
@@ -102,24 +106,14 @@ const initialState = {
     sharePlanners: null,
     planner: null,
     plannerError: null,
-    memos: null,
-    memo: null,
+    curMemo: {
+        title: '',
+        content: '',
+    },
 };
 const letsFormat = (d) => {
     const date = new Date(d);
-    return (
-        date.getFullYear() +
-        '-' +
-        ('0' + (date.getMonth() + 1)).slice(-2) +
-        '-' +
-        ('0' + date.getDate()).slice(-2) +
-        ' ' +
-        ('0' + date.getHours()).slice(-2) +
-        ':' +
-        ('0' + date.getMinutes()).slice(-2) +
-        ':' +
-        ('0' + date.getSeconds()).slice(-2)
-    );
+    return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
 };
 
 function plannerReducer(state = initialState, action) {
@@ -269,22 +263,39 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 plannerError: action.payload.error,
             };
+        case LOAD_MEMO_TYPE:
+            return {
+                ...state,
+                curMemo: {
+                    title: action.memo.title,
+                    content: action.memo.content,
+                },
+            };
+        case RESET_MEMO_TYPE:
+            return {
+                ...state,
+                curMemo: {
+                    title: '',
+                    content: '',
+                },
+            };
         case CHANGE_MEMO_TITLE_TYPE:
             return {
                 ...state,
-                memo: {
-                    ...state.memo,
+                curMemo: {
+                    ...state.curMemo,
                     title: action.title,
                 },
             };
         case CHANGE_MEMO_CONTENT_TYPE:
             return {
                 ...state,
-                memo: {
-                    ...state.memo,
+                curMemo: {
+                    ...state.curMemo,
                     content: action.content,
                 },
             };
+
         default:
             return state;
     }

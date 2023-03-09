@@ -9,13 +9,12 @@ const EditMapContainer = () => {
         plannerError: plannerReducer.plannerError,
     }));
 
+    const { accountId, plannerId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId } = planner;
     const onCreatePlanner = () => {
-        const { accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId } = planner;
         dispatch(createPlannerAction({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }));
     };
 
     const onUpdatePlanner = () => {
-        const { plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = planner;
         dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
     };
 

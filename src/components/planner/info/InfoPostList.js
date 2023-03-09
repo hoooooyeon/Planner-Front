@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import ReactQuill from 'react-quill';
 import styled, { css } from 'styled-components';
 import InfoPostItem from './InfoPostItem';
 // import airplaneDay from '../../../lib/img/airplane-day.jpg';
@@ -116,6 +117,42 @@ const Img = styled.img`
     border-radius: 10px;
 `;
 
+const InfoCreateItem = styled.div`
+    border: 1px solid #cdd9ac;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+`;
+
+const CreateItemTitleBox = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const StyledInput = styled.input`
+    border: none;
+    outline: none;
+    width: 18rem;
+    height: 2rem;
+    text-indent: 10px;
+    border-radius: 5px;
+    background-color: #f1eee0;
+    &::placeholder {
+        color: #beb9b9;
+    }
+    &:focus {
+        color: #ef9a9a;
+    }
+`;
+const ButtonBox = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
+`;
+
 /**
  * (메모는 나의 플래너 정보 페이지에서만 보임)
  * 1. 메모 생성 버튼 => editItem이 생성됨.
@@ -123,8 +160,7 @@ const Img = styled.img`
  * 3. postItem의 edit버튼 => postItem 자리에 editItem이 생성되고 나머진 2와 동일.
  * 4. postItem의 max버튼 => postItem의 text만큼 높이가 변경됨.
  */
-const InfoPostList = ({ memos, memo, onCreateMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent }) => {
-    // const Total = [1, 2, 3, 4];
+const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent, onLoadMemo, onResetMemo, onLoadPlanner }) => {
     const [isChange, setIsChange] = useState(false);
     const adRef = useRef();
 
@@ -161,19 +197,78 @@ const InfoPostList = ({ memos, memo, onCreateMemo, onUpdateMemo, onDeleteMemo, o
         };
     });
 
+    const [isCreate, setIsCreate] = useState(false);
+    const { title, content } = curMemo;
+    const modules = {
+        toolbar: [[{ header: [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], [{ color: [] }, { background: [] }], ['clean']],
+    };
+
     return (
         <InfoPostListBlock>
             <Container>
                 <PostListBlock>
                     <PostListHeader isShadow={isShadow}>
                         <h3>Memo</h3>
-                        <Button>ADD</Button>
+                        <Button
+                            onClick={() => {
+                                onResetMemo();
+                                setIsCreate(true);
+                            }}
+                        >
+                            ADD
+                        </Button>
                     </PostListHeader>
                     <PostList ref={listRef}>
-                        <InfoPostItem memo={memo} onCreateMemo={onCreateMemo} onUpdateMemo={onUpdateMemo} onDeleteMemo={onDeleteMemo} onChangeMemoTitle={onChangeMemoTitle} onChangeMemoContent={onChangeMemoContent} />
-                        {/* {Total.map((i) => {
-                            return <InfoPostItem index={i} key={i} />;
-                        })} */}
+                        {planner.planMemos &&
+                            planner.planMemos.map((memo) => {
+                                return (
+                                    <InfoPostItem
+                                        key={memo.memoId}
+                                        memo={memo}
+                                        curMemo={curMemo}
+                                        onUpdateMemo={onUpdateMemo}
+                                        onDeleteMemo={onDeleteMemo}
+                                        onChangeMemoTitle={onChangeMemoTitle}
+                                        onChangeMemoContent={onChangeMemoContent}
+                                        onLoadMemo={onLoadMemo}
+                                    />
+                                );
+                            })}
+                        {isCreate && (
+                            <InfoCreateItem>
+                                <CreateItemTitleBox>
+                                    <StyledInput
+                                        name="title"
+                                        placeholder="Title"
+                                        type="text"
+                                        value={title}
+                                        onChange={(e) => {
+                                            onChangeMemoTitle(e.target.value);
+                                        }}
+                                    />
+                                </CreateItemTitleBox>
+                                <ReactQuill
+                                    placeholder="내용을 입력해주세요."
+                                    theme="snow"
+                                    modules={modules}
+                                    value={content}
+                                    onChange={(e) => {
+                                        onChangeMemoContent(e);
+                                    }}
+                                />
+                                <ButtonBox>
+                                    <Button
+                                        onClick={() => {
+                                            onCreateMemo();
+                                            setIsCreate(false);
+                                            onLoadPlanner();
+                                        }}
+                                    >
+                                        Complete
+                                    </Button>
+                                </ButtonBox>
+                            </InfoCreateItem>
+                        )}
                     </PostList>
                 </PostListBlock>
                 {!isChange ? (
