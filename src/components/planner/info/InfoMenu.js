@@ -61,7 +61,7 @@ const Date = styled.div`
 `;
 
 const InfoMenu = ({ planner }) => {
-    const { title, planDateStart, planDateEnd } = planner;
+    const { title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = planner;
     return (
         <InfoMenuBlock>
             <Container>
@@ -77,13 +77,16 @@ const InfoMenu = ({ planner }) => {
                 <InfoBox>
                     <FlexBox>
                         <Ask>인원: </Ask>
-                        <Text>4명 (가족)</Text>
+                        {/* 멤버 타입 아이디별로 text 출력해야댐 */}
+                        <Text>
+                            {memberCount} ({memberTypeId})
+                        </Text>
                     </FlexBox>
                 </InfoBox>
                 <InfoBox>
                     <FlexBox>
                         <Ask>자금: </Ask>
-                        <Text>900000원</Text>
+                        <Text>{expense}원</Text>
                     </FlexBox>
                 </InfoBox>
             </Container>

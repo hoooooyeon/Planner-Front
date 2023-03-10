@@ -84,7 +84,7 @@ const Modal = ({ modalVisible, title, children, modalCloseText = '닫기', modal
             <ModalBox>
                 <ModalHeader>
                     <ModalTitle>{title}</ModalTitle>
-                    <ModalClose icon={faXmark} />
+                    <ModalClose icon={faXmark} onClick={onModalClose} />
                 </ModalHeader>
                 <ModalBody>{children}</ModalBody>
                 <ModalFooter>

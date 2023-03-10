@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import ReactQuill from 'react-quill';
+
 import styled, { css } from 'styled-components';
+import Modal from '../../common/Modal';
+import InfoEditItem from './InfoEditItem';
 import InfoPostItem from './InfoPostItem';
 // import airplaneDay from '../../../lib/img/airplane-day.jpg';
 // import airplaneNight from '../../../lib/img/airplane-night.jpg';
@@ -117,42 +119,6 @@ const Img = styled.img`
     border-radius: 10px;
 `;
 
-const InfoCreateItem = styled.div`
-    border: 1px solid #cdd9ac;
-    border-radius: 5px;
-    margin-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
-`;
-
-const CreateItemTitleBox = styled.div`
-    display: flex;
-    align-items: center;
-`;
-
-const StyledInput = styled.input`
-    border: none;
-    outline: none;
-    width: 18rem;
-    height: 2rem;
-    text-indent: 10px;
-    border-radius: 5px;
-    background-color: #f1eee0;
-    &::placeholder {
-        color: #beb9b9;
-    }
-    &:focus {
-        color: #ef9a9a;
-    }
-`;
-const ButtonBox = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 10px;
-`;
-
 /**
  * (메모는 나의 플래너 정보 페이지에서만 보임)
  * 1. 메모 생성 버튼 => editItem이 생성됨.
@@ -198,9 +164,35 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
     });
 
     const [isCreate, setIsCreate] = useState(false);
-    const { title, content } = curMemo;
-    const modules = {
-        toolbar: [[{ header: [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], [{ color: [] }, { background: [] }], ['clean']],
+    const [isEdit, setIsEdit] = useState(false);
+
+    const onCreatePost = async () => {
+        setIsCreate(false);
+        const create = () => {
+            onCreateMemo();
+        };
+        const load = () => {
+            onLoadPlanner();
+        };
+        await create();
+        await load();
+    };
+
+    const onEditPost = async () => {
+        setIsEdit(false);
+        const update = () => {
+            onUpdateMemo(curMemo.memoId);
+        };
+        const load = () => {
+            onLoadPlanner();
+        };
+        await update();
+        await load();
+    };
+
+    const onCancelPost = () => {
+        setIsEdit(false);
+        setIsCreate(false);
     };
 
     return (
@@ -221,55 +213,17 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
                     <PostList ref={listRef}>
                         {planner.planMemos &&
                             planner.planMemos.map((memo) => {
-                                return (
-                                    <InfoPostItem
-                                        key={memo.memoId}
-                                        memo={memo}
-                                        curMemo={curMemo}
-                                        onUpdateMemo={onUpdateMemo}
-                                        onDeleteMemo={onDeleteMemo}
-                                        onChangeMemoTitle={onChangeMemoTitle}
-                                        onChangeMemoContent={onChangeMemoContent}
-                                        onLoadMemo={onLoadMemo}
-                                    />
-                                );
+                                return <InfoPostItem key={memo.memoId} memo={memo} onDeleteMemo={onDeleteMemo} onLoadMemo={onLoadMemo} setIsEdit={setIsEdit} onLoadPlanner={onLoadPlanner} />;
                             })}
-                        {isCreate && (
-                            <InfoCreateItem>
-                                <CreateItemTitleBox>
-                                    <StyledInput
-                                        name="title"
-                                        placeholder="Title"
-                                        type="text"
-                                        value={title}
-                                        onChange={(e) => {
-                                            onChangeMemoTitle(e.target.value);
-                                        }}
-                                    />
-                                </CreateItemTitleBox>
-                                <ReactQuill
-                                    placeholder="내용을 입력해주세요."
-                                    theme="snow"
-                                    modules={modules}
-                                    value={content}
-                                    onChange={(e) => {
-                                        onChangeMemoContent(e);
-                                    }}
-                                />
-                                <ButtonBox>
-                                    <Button
-                                        onClick={() => {
-                                            onCreateMemo();
-                                            setIsCreate(false);
-                                            onLoadPlanner();
-                                        }}
-                                    >
-                                        Complete
-                                    </Button>
-                                </ButtonBox>
-                            </InfoCreateItem>
-                        )}
                     </PostList>
+                    {/* 메모 생성 모달 */}
+                    <Modal modalVisible={isCreate} title="메모 생성" onModalClose={onCancelPost} onModalConfirm={onCreatePost}>
+                        <InfoEditItem curMemo={curMemo} onChangeMemoTitle={onChangeMemoTitle} onChangeMemoContent={onChangeMemoContent} />
+                    </Modal>
+                    {/* 메모 수정 모달 */}
+                    <Modal modalVisible={isEdit} title="메모 수정" onModalClose={onCancelPost} onModalConfirm={onEditPost}>
+                        <InfoEditItem curMemo={curMemo} onChangeMemoTitle={onChangeMemoTitle} onChangeMemoContent={onChangeMemoContent} />
+                    </Modal>
                 </PostListBlock>
                 {!isChange ? (
                     <Ad ref={adRef}>

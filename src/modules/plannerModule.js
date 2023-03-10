@@ -267,6 +267,7 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
                 curMemo: {
+                    memoId: action.memo.memoId,
                     title: action.memo.title,
                     content: action.memo.content,
                 },

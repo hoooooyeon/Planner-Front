@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InfoPostList from '../../../components/planner/info/InfoPostList';
 import { changeMemoContentAction, changeMemoTitleAction, createMemoAction, deleteMemoAction, loadMemoAction, loadPlannerAction, resetMemoAction, updateMemoAction } from '../../../modules/plannerModule';
@@ -36,7 +37,9 @@ const InfoPostContainer = () => {
     };
     const onResetMemo = () => {
         dispatch(resetMemoAction());
-    }; // 플래너 정보 가져오기
+    };
+
+    // 플래너 정보 가져오기
     const onLoadPlanner = () => {
         dispatch(loadPlannerAction(planner.plannerId));
     };
