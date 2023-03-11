@@ -49,6 +49,18 @@ const RESET_MEMO_TYPE = 'planner/RESET_MEMO';
 const CHANGE_MEMO_TITLE_TYPE = 'planner/CHANGE_MEMO_TITLE';
 const CHANGE_MEMO_CONTENT_TYPE = 'planner/CHANGE_CONTENT_TITLE';
 
+const CREATE_PLAN_TYPE = 'planner/CREATE_PLAN';
+const CREATE_PLAN_SUCCESS_TYPE = 'planner/CREATE_PLAN_SUCCESS';
+const CREATE_PLAN_FAILURE_TYPE = 'planner/CREATE_PLAN_FAILURE';
+
+const UPDATE_PLAN_TYPE = 'planner/UPDATE_PLAN';
+const UPDATE_PLAN_SUCCESS_TYPE = 'planner/UPDATE_PLAN_SUCCESS';
+const UPDATE_PLAN_FAILURE_TYPE = 'planner/UPDATE_PLAN_FAILURE';
+
+const DELETE_PLAN_TYPE = 'planner/DELETE_PLAN';
+const DELETE_PLAN_SUCCESS_TYPE = 'planner/DELETE_PLAN_SUCCESS';
+const DELETE_PLAN_FAILURE_TYPE = 'planner/DELETE_PLAN_FAILURE';
+
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
     accountId,
@@ -80,6 +92,9 @@ export const loadMemoAction = (memo) => ({ type: LOAD_MEMO_TYPE, memo });
 export const resetMemoAction = () => ({ type: RESET_MEMO_TYPE });
 export const changeMemoTitleAction = (title) => ({ type: CHANGE_MEMO_TITLE_TYPE, title });
 export const changeMemoContentAction = (content) => ({ type: CHANGE_MEMO_CONTENT_TYPE, content });
+export const createPlanAction = ({ plannerId, planDate, planLocations }) => ({ type: CREATE_PLAN_TYPE, plannerId, planDate, planLocations });
+export const updatePlanAction = ({ planId, plannerId, planDate, planLocations }) => ({ type: UPDATE_PLAN_TYPE, plannerId, planDate, planLocations, planId });
+export const deletePlanAction = ({ plannerId, planId }) => ({ type: DELETE_PLAN_TYPE, plannerId, planId });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -89,6 +104,9 @@ const deletePlannerSaga = createSaga(DELETE_PLANNER_TYPE, plannerAPI.deletePlann
 const createMemoSaga = createSaga(CREATE_MEMO_TYPE, plannerAPI.createMemo);
 const updateMemoSaga = createSaga(UPDATE_MEMO_TYPE, plannerAPI.updateMemo);
 const deleteMemoSaga = createSaga(DELETE_MEMO_TYPE, plannerAPI.deleteMemo);
+const createPlanSaga = createSaga(CREATE_PLAN_TYPE, plannerAPI.createPlan);
+const updatePlanSaga = createSaga(UPDATE_PLAN_TYPE, plannerAPI.updatePlan);
+const deletePlanSaga = createSaga(DELETE_PLAN_TYPE, plannerAPI.deletePlan);
 
 export function* plannerSaga() {
     yield takeLatest(CREATE_PLANNER_TYPE, createPlannerSaga);
@@ -99,6 +117,9 @@ export function* plannerSaga() {
     yield takeLatest(CREATE_MEMO_TYPE, createMemoSaga);
     yield takeLatest(UPDATE_MEMO_TYPE, updateMemoSaga);
     yield takeLatest(DELETE_MEMO_TYPE, deleteMemoSaga);
+    yield takeLatest(CREATE_PLAN_TYPE, createPlanSaga);
+    yield takeLatest(UPDATE_PLAN_TYPE, updatePlanSaga);
+    yield takeLatest(DELETE_PLAN_TYPE, deletePlanSaga);
 }
 
 const initialState = {
@@ -110,6 +131,36 @@ const initialState = {
         title: '',
         content: '',
     },
+    plan: null,
+    spots: [
+        {
+            title: '가회동성당',
+            contentid: '2733967',
+            contenttypeid: '12',
+            firstimage: 'http://tong.visitkorea.or.kr/cms/resource/61/2780561_image2_1.png',
+            firstimage2: 'http://tong.visitkorea.or.kr/cms/resource/61/2780561_image2_1.png',
+            mapx: '126.9846616856',
+            mapy: '37.5820858828',
+        },
+        {
+            title: '간데메공원',
+            contentid: '2763807',
+            contenttypeid: '12',
+            firstimage: '',
+            firstimage2: '',
+            mapx: '127.0490977427',
+            mapy: '37.5728520032',
+        },
+        {
+            title: '갈산근린공원',
+            contentid: '1116925',
+            contenttypeid: '12',
+            firstimage: 'http://tong.visitkorea.or.kr/cms/resource/62/2612062_image2_1.bmp',
+            firstimage2: 'http://tong.visitkorea.or.kr/cms/resource/62/2612062_image2_1.bmp',
+            mapx: '126.8684105358',
+            mapy: '37.5061176314',
+        },
+    ],
 };
 const letsFormat = (d) => {
     const date = new Date(d);
@@ -296,7 +347,33 @@ function plannerReducer(state = initialState, action) {
                     content: action.content,
                 },
             };
-
+        case CREATE_PLAN_SUCCESS_TYPE:
+            return {
+                ...state,
+            };
+        case CREATE_PLAN_FAILURE_TYPE:
+            return {
+                ...state,
+                plannerError: action.payload.error,
+            };
+        case UPDATE_PLAN_SUCCESS_TYPE:
+            return {
+                ...state,
+            };
+        case UPDATE_PLAN_FAILURE_TYPE:
+            return {
+                ...state,
+                plannerError: action.payload.error,
+            };
+        case DELETE_PLAN_SUCCESS_TYPE:
+            return {
+                ...state,
+            };
+        case DELETE_PLAN_FAILURE_TYPE:
+            return {
+                ...state,
+                plannerError: action.payload.error,
+            };
         default:
             return state;
     }
