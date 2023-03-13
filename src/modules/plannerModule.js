@@ -61,6 +61,17 @@ const DELETE_PLAN_TYPE = 'planner/DELETE_PLAN';
 const DELETE_PLAN_SUCCESS_TYPE = 'planner/DELETE_PLAN_SUCCESS';
 const DELETE_PLAN_FAILURE_TYPE = 'planner/DELETE_PLAN_FAILURE';
 
+const INVITE_MEMBER_TYPE = 'planner/INVITE_MEMBER';
+const INVITE_MEMBER_SUCCESS_TYPE = 'planner/INVITE_MEMBER_SUCCESS';
+const INVITE_MEMBER_FAILURE_TYPE = 'planner/INVITE_MEMBER_FAILURE';
+
+const DELETE_MEMBER_TYPE = 'planner/DELETE_MEMBER';
+const DELETE_MEMBER_SUCCESS_TYPE = 'planner/DELETE_MEMBER_SUCCESS';
+const DELETE_MEMBER_FAILURE_TYPE = 'planner/DELETE_MEMBER_FAILURE';
+
+const CHANGE_MEMBER_TYPE = 'planner/CHANGE_MEMBER';
+const RESET_MEMBER_TYPE = 'planner/RESET_MEMBER';
+
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
     accountId,
@@ -95,6 +106,10 @@ export const changeMemoContentAction = (content) => ({ type: CHANGE_MEMO_CONTENT
 export const createPlanAction = ({ plannerId, planDate, planLocations }) => ({ type: CREATE_PLAN_TYPE, plannerId, planDate, planLocations });
 export const updatePlanAction = ({ planId, plannerId, planDate, planLocations }) => ({ type: UPDATE_PLAN_TYPE, plannerId, planDate, planLocations, planId });
 export const deletePlanAction = ({ plannerId, planId }) => ({ type: DELETE_PLAN_TYPE, plannerId, planId });
+export const inviteMemberAction = ({ plannerId, members }) => ({ type: INVITE_MEMBER_TYPE, plannerId, members });
+export const deleteMemberAction = ({ plannerId, nickName }) => ({ type: DELETE_MEMBER_TYPE, plannerId, nickName });
+export const changeMemberAction = (members) => ({ type: CHANGE_MEMBER_TYPE, members });
+export const resetMemberAction = () => ({ type: RESET_MEMBER_TYPE });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -107,6 +122,8 @@ const deleteMemoSaga = createSaga(DELETE_MEMO_TYPE, plannerAPI.deleteMemo);
 const createPlanSaga = createSaga(CREATE_PLAN_TYPE, plannerAPI.createPlan);
 const updatePlanSaga = createSaga(UPDATE_PLAN_TYPE, plannerAPI.updatePlan);
 const deletePlanSaga = createSaga(DELETE_PLAN_TYPE, plannerAPI.deletePlan);
+const inviteMemberSaga = createSaga(INVITE_MEMBER_TYPE, plannerAPI.inviteMember);
+const deleteMemberSaga = createSaga(DELETE_MEMBER_TYPE, plannerAPI.deleteMember);
 
 export function* plannerSaga() {
     yield takeLatest(CREATE_PLANNER_TYPE, createPlannerSaga);
@@ -120,6 +137,8 @@ export function* plannerSaga() {
     yield takeLatest(CREATE_PLAN_TYPE, createPlanSaga);
     yield takeLatest(UPDATE_PLAN_TYPE, updatePlanSaga);
     yield takeLatest(DELETE_PLAN_TYPE, deletePlanSaga);
+    yield takeLatest(INVITE_MEMBER_TYPE, inviteMemberSaga);
+    yield takeLatest(DELETE_MEMBER_TYPE, deleteMemberSaga);
 }
 
 const initialState = {
@@ -127,11 +146,12 @@ const initialState = {
     sharePlanners: null,
     planner: null,
     plannerError: null,
+    plan: null,
     curMemo: {
         title: '',
         content: '',
     },
-    plan: null,
+    members: [],
     spots: [
         {
             title: '가회동성당',
@@ -373,6 +393,35 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
                 plannerError: action.payload.error,
+            };
+        case INVITE_MEMBER_SUCCESS_TYPE:
+            return {
+                ...state,
+            };
+        case INVITE_MEMBER_FAILURE_TYPE:
+            return {
+                ...state,
+                plannerError: action.payload.error,
+            };
+        case DELETE_MEMBER_SUCCESS_TYPE:
+            return {
+                ...state,
+            };
+        case DELETE_MEMBER_FAILURE_TYPE:
+            console.log(action.nickName);
+            return {
+                ...state,
+                plannerError: action.payload.error,
+            };
+        case CHANGE_MEMBER_TYPE:
+            return {
+                ...state,
+                members: [action.members],
+            };
+        case RESET_MEMBER_TYPE:
+            return {
+                ...state,
+                members: [],
             };
         default:
             return state;

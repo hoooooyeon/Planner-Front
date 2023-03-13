@@ -166,7 +166,7 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
     const [isCreate, setIsCreate] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
 
-    const onCreatePost = async () => {
+    const onCreatePostMd = async () => {
         setIsCreate(false);
         const create = () => {
             onCreateMemo();
@@ -178,7 +178,7 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
         await load();
     };
 
-    const onEditPost = async () => {
+    const onEditPostMd = async () => {
         setIsEdit(false);
         const update = () => {
             onUpdateMemo(curMemo.memoId);
@@ -190,7 +190,7 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
         await load();
     };
 
-    const onCancelPost = () => {
+    const onCancelPostMd = () => {
         setIsEdit(false);
         setIsCreate(false);
     };
@@ -217,11 +217,11 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
                             })}
                     </PostList>
                     {/* 메모 생성 모달 */}
-                    <Modal modalVisible={isCreate} title="메모 생성" onModalClose={onCancelPost} onModalConfirm={onCreatePost}>
+                    <Modal modalVisible={isCreate} title="메모 생성" onModalClose={onCancelPostMd} onModalConfirm={onCreatePostMd}>
                         <InfoEditItem curMemo={curMemo} onChangeMemoTitle={onChangeMemoTitle} onChangeMemoContent={onChangeMemoContent} />
                     </Modal>
                     {/* 메모 수정 모달 */}
-                    <Modal modalVisible={isEdit} title="메모 수정" onModalClose={onCancelPost} onModalConfirm={onEditPost}>
+                    <Modal modalVisible={isEdit} title="메모 수정" onModalClose={onCancelPostMd} onModalConfirm={onEditPostMd}>
                         <InfoEditItem curMemo={curMemo} onChangeMemoTitle={onChangeMemoTitle} onChangeMemoContent={onChangeMemoContent} />
                     </Modal>
                 </PostListBlock>

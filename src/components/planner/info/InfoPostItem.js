@@ -90,7 +90,7 @@ const InfoPostItem = ({ memo, onDeleteMemo, onLoadMemo, setIsEdit, onLoadPlanner
     };
     const { memoId, title, content, updateDate } = memo;
 
-    const onDeletePost = async () => {
+    const onDeletePostMd = async () => {
         const deleteMemo = () => {
             onDeleteMemo(memoId);
         };
@@ -123,7 +123,7 @@ const InfoPostItem = ({ memo, onDeleteMemo, onLoadMemo, setIsEdit, onLoadPlanner
                         >
                             Edit
                         </Button>
-                        <Button onClick={onDeletePost}>Delete</Button>
+                        <Button onClick={onDeletePostMd}>Delete</Button>
                     </ButtonBox>
                 </PostHeader>
                 <Text ref={textRef} dangerouslySetInnerHTML={{ __html: content }} isMax={isMax}></Text>

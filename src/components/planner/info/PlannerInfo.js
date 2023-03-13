@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import InfoRoute from './InfoRoute';
 import InfoMenu from './InfoMenu';
+import Modal from '../../common/Modal';
 
 const PlannerInfoBlock = styled.div`
     width: 100%;
@@ -98,7 +99,7 @@ const FlexBox = styled.div`
     align-items: flex-start;
 `;
 
-const PlannerInfo = ({ planner, onDeletePlanner }) => {
+const PlannerInfo = ({ planner, members, onDeletePlanner, onInviteMember, onDeleteMember, onChangeMember, onResetMember }) => {
     const [isDropDown, setIsDropDown] = useState(false);
 
     const onDropDown = () => {
@@ -123,6 +124,11 @@ const PlannerInfo = ({ planner, onDeletePlanner }) => {
         };
     });
 
+    const [isInvite, setIsInvite] = useState(false);
+    const onInviteMemberMd = () => {
+        setIsInvite(false);
+        onInviteMember(members);
+    };
     return (
         <PlannerInfoBlock>
             <Container>
@@ -134,7 +140,24 @@ const PlannerInfo = ({ planner, onDeletePlanner }) => {
                             <p>관리</p>
                         </SetButton>
                         <DropDownMenu isDropDown={isDropDown} ref={menuRef}>
-                            <li>멤버 초대</li>
+                            <li
+                                onClick={() => {
+                                    setIsInvite(true);
+                                    onResetMember();
+                                }}
+                            >
+                                멤버 초대
+                            </li>
+                            {isInvite && (
+                                <Modal
+                                    modalVisible={isInvite}
+                                    title="멤버 초대"
+                                    onModalClose={() => {
+                                        setIsInvite(false);
+                                    }}
+                                    onModalConfirm={onInviteMemberMd}
+                                ></Modal>
+                            )}
                             <li>
                                 <Link to="/PlannerEdit">플래너 수정</Link>
                             </li>

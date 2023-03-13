@@ -46,8 +46,9 @@ const ModalClose = styled(FontAwesomeIcon)`
 
 const ModalBody = styled.div`
     min-height: 100px;
-    margin-top: 10px;
-    margin-left: 20px;
+    /* margin-top: 10px;
+    margin-left: 20px; */
+    padding: 0 20px;
     font-weight: bold;
 `;
 

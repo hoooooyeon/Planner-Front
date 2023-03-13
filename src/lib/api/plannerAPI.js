@@ -22,7 +22,7 @@ export const deletePlanner = ({ plannerId }) => {
 
 // 플래너 수정
 export const updatePlanner = ({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }) => {
-    return client.patch(`/api/planners/${plannerId}`, { plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
+    return client.patch(`/api/planners/${plannerId}`, { title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
 };
 
 // 메모 생성
@@ -42,15 +42,25 @@ export const deleteMemo = ({ plannerId, memoId }) => {
 
 // 일정 생성
 export const createPlan = ({ planDate, plannerId, planLocations }) => {
-    return client.post(`/api/planners/${plannerId}/plans`, planDate, planLocations);
+    return client.post(`/api/planners/${plannerId}/plans`, { planDate, planLocations });
 };
 
 // 일정 수정
 export const updatePlan = ({ plannerId, planId, planLocations, planDate }) => {
-    return client.patch(`/api/planners/${plannerId}/plans/${planId}`, planDate, planLocations);
+    return client.patch(`/api/planners/${plannerId}/plans/${planId}`, { planDate, planLocations });
 };
 
 // 일정 삭제
 export const deletePlan = ({ plannerId, planId }) => {
     return client.delete(`/api/planners/${plannerId}/plans/${planId}`);
+};
+
+// 멤버 초대
+export const inviteMember = ({ plannerId, members }) => {
+    return client.post(`/api/planners/${plannerId}/invite-member`, { members });
+};
+
+// 멤버 삭제
+export const deleteMember = ({ plannerId, nickName }) => {
+    return client.delete(`/api/planners/${plannerId}/delete-member?nick_name=${nickName}`);
 };
