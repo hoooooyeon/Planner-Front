@@ -85,7 +85,7 @@ const Header = ({ account }) => {
           <Link to="/ShareList">공유</Link>
         </li>
         <li>
-          <Link to="/ReviewList">여행후기</Link>
+          <Link to="/reviews">여행후기</Link>
         </li>
         <li>
           <Link to="/Spot">여행지</Link>

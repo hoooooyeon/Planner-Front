@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Review from '../../components/review/Review';
+import { withRouter } from 'react-router';
+import Review from '../../components/review/ReviewList';
 import { loadReviewListAction } from '../../modules/reviewModule';
 
-const ReviewContainer = () => {
+const ReviewContainer = ({ history }) => {
     const dispatch = useDispatch();
     const { reviewList, status } = useSelector(({ reviewReducer }) => ({
         reviewList: reviewReducer.reviewList,
@@ -12,6 +13,7 @@ const ReviewContainer = () => {
     }));
 
     const areaCodes = [
+        { id: '0', value: '전체' },
         { id: '1', value: '서울' },
         { id: '2', value: '인천' },
         { id: '3', value: '대전' },
@@ -35,12 +37,20 @@ const ReviewContainer = () => {
         setSelectAreaCode({ ...value });
     };
 
+    const onReviewWriteClick = () => {
+        history.push(`/reviews/write`);
+    };
+
+    const onItemClick = (reviewId) => {
+        history.push(`/reviews/${reviewId}`);
+    };
+
     // 리스트 가져오기
     useEffect(() => {
         dispatch(loadReviewListAction());
     }, [dispatch]);
 
-    return <Review reviewList={reviewList} areaCodes={areaCodes} selectAreaCode={selectAreaCode} onSelectChange={onSelectChange} />;
+    return <Review reviewList={reviewList} areaCodes={areaCodes} selectAreaCode={selectAreaCode} onSelectChange={onSelectChange} onReviewWriteClick={onReviewWriteClick} onItemClick={onItemClick} />;
 };
 
-export default ReviewContainer;
+export default withRouter(ReviewContainer);

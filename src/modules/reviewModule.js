@@ -6,9 +6,10 @@ import * as reviewAPI from '../lib/api/reviewAPI';
 const loadReviewListType = 'review/LOAD_REVIEWLIST';
 const loadReviewListSuccessType = 'review/LOAD_REVIEWLIST_SUCCESS';
 const loadReviewListFailureType = 'review/LOAD_REVIEWLIST_FAILURE';
-const loadReviewType = 'review/LOAD_REVEIW';
+const loadReviewType = 'review/LOAD_REVIEW';
 const loadReviewSuccessType = 'review/LOAD_REVIEW_SUCCESS';
 const loadReviewFailureType = 'review/LOAD_REVIEW_FAILURE';
+const changeContentType = 'review/CHANGE_CONTENT';
 const writeReviewType = 'review/WRITE_REVIEW';
 const writeReviewSuccessType = 'review/WRITE_REVIEW_SUCCESS';
 const writeReviewFailureType = 'review/WRITE_REVIEW_FAILURE';
@@ -24,9 +25,15 @@ export const loadReviewListAction = () => ({
     type: loadReviewListType
 });
 
-export const loadReviewAction = ({ reviewId }) => ({
+export const loadReviewAction = (reviewId) => ({
     type: loadReviewType,
     reviewId
+});
+
+export const changeContentAction = ({ key, value }) => ({
+    type: changeContentType,
+    key,
+    value
 });
 
 export const writeReviewAction = ({ plannerId, title, content, writer }) => ({
@@ -44,7 +51,7 @@ export const updateReviewAction = ({ reviewId, title, content }) => ({
     content
 });
 
-export const deleteReviewAction = ({ reviewId }) => ({
+export const deleteReviewAction = (reviewId) => ({
     type: deleteReviewType,
     reviewId
 });
@@ -80,6 +87,9 @@ function reviewReducer(state = initialState, action) {
         }
         case loadReviewSuccessType: {
             return { ...state, review: action.payload.data };
+        }
+        case changeContentType: {
+            return { ...state, review: { ...state.review, [action.key]: action.value } };
         }
         case writeReviewSuccessType:
         case updateReviewSuccessType:

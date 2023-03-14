@@ -1,5 +1,5 @@
 import './App.css';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import PlannerListPage from './pages/planner/PlannerListPage';
 import PlannerInfoPage from './pages/planner/PlannerInfoPage';
@@ -18,20 +18,22 @@ import ReviewPostViewerPage from './pages/review/ReviewPostViewerPage';
 const App = () => {
   return (
     <>
-      <Route path="/" component={HomePage} exact />
-      <Route path="/PlannerList" component={PlannerListPage} />
-      <Route path="/PlannerInfo" component={PlannerInfoPage} />
-      <Route path="/PlannerEdit" component={PlannerEditPage} />
-      <Route path="/review/list" component={ReviewPage} />
-      <Route path="/reveiw/write" component={ReviewPostPage} />
-      <Route path="/review/:reviewId" component={ReviewPostViewerPage} />
-      <Route path="/ShareInfo" component={ShareInfoPage} />
-      <Route path="/ShareList" component={ShareListPage} />
-      <Route path="/Spot" component={SpotPage} />
-      <Route path="/Login" component={LoginPage} />
-      <Route path="/Register" component={RegisterPage} />
-      <Route path="/Profile" component={ProfilePage} />
-      <Route path="/MyLike" component={MyLikePage} />
+      <Switch>
+        <Route path="/" component={HomePage} exact />
+        <Route path="/PlannerList" component={PlannerListPage} />
+        <Route path="/PlannerInfo" component={PlannerInfoPage} />
+        <Route path="/PlannerEdit" component={PlannerEditPage} />
+        <Route exact path="/reviews" component={ReviewPage} />
+        <Route exact path={["/reviews/write", "/reviews/edit"]} component={ReviewPostPage} />
+        <Route exact path="/reviews/:reviewId" component={ReviewPostViewerPage} />
+        <Route path="/ShareInfo" component={ShareInfoPage} />
+        <Route path="/ShareList" component={ShareListPage} />
+        <Route path="/Spot" component={SpotPage} />
+        <Route path="/Login" component={LoginPage} />
+        <Route path="/Register" component={RegisterPage} />
+        <Route path="/Profile" component={ProfilePage} />
+        <Route path="/MyLike" component={MyLikePage} />
+      </Switch>
     </>
   );
 };

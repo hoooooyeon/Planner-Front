@@ -67,7 +67,7 @@ const Button = styled.button`
     }
 `;
 
-const ReviewPost = () => {
+const ReviewPost = ({ reviewData, onChangeText, onCancel, onWritePost, isEdit }) => {
     const quillElement = useRef(null);
     const quillInstance = useRef(null);
 
@@ -86,7 +86,10 @@ const ReviewPost = () => {
         });
 
         const quill = quillInstance.current;
-        quill.on('text-change', (delta, oldDelta, source) => {});
+        quill.root.innerHTML = reviewData.content;
+        quill.on('text-change', (delta, oldDelta, source) => {
+            onChangeText({ key: 'content', value: quill.root.innerHTML });
+        });
     }, []);
 
     return (
@@ -94,7 +97,7 @@ const ReviewPost = () => {
             <PostMain>
                 <BoxAlign>
                     <B>제목</B>
-                    <Input type="text" />
+                    <Input type="text" name="title" value={reviewData.title} onChange={(e) => onChangeText({ key: 'title', value: e.target.value })} />
                 </BoxAlign>
                 <BoxAlign>
                     <PostContentBox>
@@ -103,8 +106,8 @@ const ReviewPost = () => {
                 </BoxAlign>
             </PostMain>
             <PostFooterBox>
-                <Button>취소</Button>
-                <Button>올리기</Button>
+                <Button onClick={onCancel}>취소</Button>
+                <Button onClick={onWritePost}>{isEdit ? '수정' : '쓰기'}</Button>
             </PostFooterBox>
         </Container>
     );

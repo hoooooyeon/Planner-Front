@@ -128,38 +128,47 @@ const Comment = styled.div`
     border-bottom: 1px solid silver;
 `;
 
-const menuList = [
-    { id: 1, value: '수정' },
-    { id: 2, value: '삭제' },
-];
+const ReviewViewer = ({ auth, reviewData, onPostEdit, onPostDelete }) => {
+    const menuList = [
+        { id: 1, value: '수정' },
+        { id: 2, value: '삭제' },
+    ];
 
-const ReviewViewer = () => {
+    const onItemClick = (value, index) => {
+        switch (index) {
+            case 0: {
+                onPostEdit();
+                break;
+            }
+            case 1: {
+                onPostDelete();
+                break;
+            }
+        }
+    };
+
     return (
         <Container>
             <ReviewPostBox>
                 <PostTitleBox>
                     <FlexBox direction="column">
-                        <Title>aaaaa</Title>
+                        <Title>{reviewData.title}</Title>
                         <Info>
-                            <span>작성자:ㅁㅁ</span>
-                            <span>조회수:00</span>
+                            <span>{`작성자:${reviewData.writer}`}</span>
+                            <span>{`수정:${reviewData.updateDate}`}</span>
                         </Info>
                     </FlexBox>
                     <TitleMenus>
                         <ThumbsUp>
                             <FontAwesomeIcon icon={faThumbsUp} />
                         </ThumbsUp>
-                        <Menu list={menuList} />
+                        <Menu list={menuList} onItemClick={onItemClick} />
                     </TitleMenus>
                 </PostTitleBox>
-                <PostContentBox>내용</PostContentBox>
-                <PostFooterBox>
-                    <PostTag>태그1</PostTag>
-                    <PostTag>태그2</PostTag>
-                    <PostTag>태그3</PostTag>
-                </PostFooterBox>
+                <PostContentBox dangerouslySetInnerHTML={{ __html: reviewData.content }}></PostContentBox>
+                <PostFooterBox>{reviewData.tag && reviewData.tag.map((tag) => <PostTag>{tag}</PostTag>)}</PostFooterBox>
                 <PostCommentWriteBox>
-                    <CommentUserName>bluebear</CommentUserName>
+                    <CommentUserName>{auth.nickname}</CommentUserName>
                     <form>
                         <CommentWriteTextArea />
                         <PostCommentWriteButtomBox>

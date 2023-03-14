@@ -41,15 +41,14 @@ const MenuList = styled.div`
     margin-top: 6px;
 `;
 
-const Menu = ({ list }) => {
+const Menu = ({ list, onItemClick }) => {
     const menuRef = useRef(null);
     const [menu, setMenu] = useState(false);
     const onMenuClick = () => {
         //setMenu(!menu);
     };
-
     const outSideClick = (e) => {
-        if ((menuRef && !menuRef.current.contains(e.target)) || menu) {
+        if ((menuRef.current && !menuRef.current.contains(e.target)) || menu) {
             setMenu(false);
         } else {
             setMenu(true);
@@ -57,9 +56,9 @@ const Menu = ({ list }) => {
     };
 
     useEffect(() => {
-        document.addEventListener('mousedown', outSideClick);
+        document.addEventListener('click', outSideClick);
         return () => {
-            document.removeEventListener('mousedown', outSideClick);
+            document.removeEventListener('click', outSideClick);
         };
     });
 
@@ -68,7 +67,17 @@ const Menu = ({ list }) => {
             <MenuIcon>
                 <FontAwesomeIcon icon={faBars} />
             </MenuIcon>
-            {menu && <MenuList>{list && list.length > 0 ? list.map((v) => <MenuItem key={v.id}>{v.value}</MenuItem>) : null}</MenuList>}
+            {menu && (
+                <MenuList>
+                    {list && list.length > 0
+                        ? list.map((v, i) => (
+                              <MenuItem key={v.id} onClick={() => onItemClick(v, i)}>
+                                  {v.value}
+                              </MenuItem>
+                          ))
+                        : null}
+                </MenuList>
+            )}
         </MenuBox>
     );
 };
