@@ -220,6 +220,10 @@ function plannerReducer(state = initialState, action) {
         case CREATE_PLANNER_SUCCESS_TYPE:
             return {
                 ...state,
+                planner: {
+                    ...state.planner,
+                    plannerId: action.payload.data,
+                },
             };
         case CREATE_PLANNER_FAILURE_TYPE:
             return {
@@ -289,6 +293,13 @@ function plannerReducer(state = initialState, action) {
                 planner: {
                     accountId: action.accountId,
                     creator: action.nickname,
+                    title: `${action.nickname}의 여행 플래너`,
+                    planDateStart: letsFormat(new Date()),
+                    planDateEnd: letsFormat(new Date()),
+                    planMembers: [],
+                    expense: 0,
+                    memberCount: 1,
+                    memberTypeId: 1,
                 },
             };
         case RESET_PLANNER_INFO_FORM_TYPE:
@@ -297,13 +308,13 @@ function plannerReducer(state = initialState, action) {
                 planner: {
                     accountId: state.planner.accountId,
                     creator: state.planner.creator,
-                    title: '',
-                    planDateStart: letsFormat(new Date()),
-                    planDateEnd: letsFormat(new Date()),
-                    planMembers: [],
-                    expense: 0,
-                    memberCount: 1,
-                    memberTypeId: 1,
+                    // title: `${state.planner.creator}의 여행 플래너`,
+                    // planDateStart: letsFormat(new Date()),
+                    // planDateEnd: letsFormat(new Date()),
+                    // planMembers: [],
+                    // expense: 0,
+                    // memberCount: 1,
+                    // memberTypeId: 1,
                 },
             };
         case DELETE_PLANNER_SUCCESS_TYPE:

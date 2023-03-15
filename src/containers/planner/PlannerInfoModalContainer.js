@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfoModal from '../../components/planner/PlannerInfoModal';
-import { changePlannerExpenseAction, changePlannerMemberCategoryAction, changePlannerMemberCountAction, changePlannerTitleAction, togglePlannerInfoModalAction, updatePlannerAction } from '../../modules/plannerModule';
+import { changePlannerExpenseAction, changePlannerMemberCategoryAction, changePlannerMemberCountAction, changePlannerTitleAction, loadPlannerAction, togglePlannerInfoModalAction, updatePlannerAction } from '../../modules/plannerModule';
 
 const PlannerInfoModalContainer = () => {
     const dispatch = useDispatch();
@@ -32,6 +32,12 @@ const PlannerInfoModalContainer = () => {
     const onTogglePlannerInfoModal = () => {
         dispatch(togglePlannerInfoModalAction());
     };
+
+    // 플래너 정보 가져오기
+    const onLoadPlanner = (plannerId) => {
+        dispatch(loadPlannerAction(plannerId));
+    };
+
     return (
         <PlannerInfoModal
             planner={planner}
@@ -42,6 +48,7 @@ const PlannerInfoModalContainer = () => {
             onChangePlannerTitle={onChangePlannerTitle}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onUpdatePlanner={onUpdatePlanner}
+            onLoadPlanner={onLoadPlanner}
         />
     );
 };

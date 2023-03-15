@@ -284,21 +284,21 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner }) => {
                 <HiddenBox ref={hiddenBoxRef}>
                     <Shares ref={sharesRef}>
                         {sharePlanners &&
-                            sharePlanners.map((planner) => (
+                            sharePlanners.map((p) => (
                                 <ShareItem
-                                    key={planner.plannerId}
+                                    key={p.plannerId}
                                     drag={drag.current}
                                     onClick={() => {
-                                        onLoadPlanner(planner.plannerId);
+                                        onLoadPlanner(p.plannerId);
                                     }}
                                 >
                                     <Link to="/PlannerInfo">
                                         {/* <Link to="/PlannerEdit" ref={itemRef}> */}
                                         <SimpleMap />
                                         <InfoBox>
-                                            <Name>{planner.title}</Name>
+                                            <Name>{p.title}</Name>
                                             <Date>
-                                                {planner.planDateStart} ~ {planner.planDateEnd}
+                                                {p.planDateStart} ~ {p.planDateEnd}
                                                 {/* {new Date(planner.planDateStart).format('YYYY-MM-DD')} ~ {planner.planDateEnd} */}
                                             </Date>
                                         </InfoBox>

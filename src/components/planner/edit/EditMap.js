@@ -71,15 +71,10 @@ const EditMap = ({ planner, onCreatePlanner, onUpdatePlanner, onToggleMemberModa
                     <Button onClick={onToggleMemberModal}>멤버 초대</Button>
                     <Button onClick={onTogglePlannerInfoModal}>플래너 정보 수정</Button>
                     <Button>장소 등록</Button>
-                    {!planner.plannerId ? (
-                        <Button onClick={onCreatePlanner}>
-                            <Link to="/PlannerList">일정 저장</Link>
-                        </Button>
-                    ) : (
-                        <Button onClick={onUpdatePlanner}>
-                            <Link to="/PlannerInfo">일정 저장</Link>
-                        </Button>
-                    )}
+                    <Button>
+                        {/* <Button onClick={onUpdatePlanner}> */}
+                        <Link to="/PlannerInfo">일정 저장</Link>
+                    </Button>
                 </ButtonBox>
             </Map>
         </EditMapBlock>

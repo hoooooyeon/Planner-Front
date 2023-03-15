@@ -2,10 +2,10 @@ import MyPlannerList from './MyPlannerList';
 import ShareList from './ShareList';
 import ListPagination from './ListPagination';
 
-const PlannerList = ({ sharePlanners, onLoadPlanner, plannerError, onResetPlannerInfoForm }) => {
+const PlannerList = ({ onCreatePlanner, sharePlanners, onLoadPlanner, plannerError, onResetPlannerInfoForm }) => {
     return (
         <>
-            <MyPlannerList onResetPlannerInfoForm={onResetPlannerInfoForm} />
+            <MyPlannerList onCreatePlanner={onCreatePlanner} onResetPlannerInfoForm={onResetPlannerInfoForm} />
             <ShareList sharePlanners={sharePlanners} onLoadPlanner={onLoadPlanner} plannerError={plannerError} />
             <ListPagination />
         </>

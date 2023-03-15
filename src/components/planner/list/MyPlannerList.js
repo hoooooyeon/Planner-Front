@@ -121,7 +121,7 @@ const SimpleMap = styled.div`
     }
 `;
 
-const MyPlannerList = ({ onResetPlannerInfoForm }) => {
+const MyPlannerList = ({ onResetPlannerInfoForm, onCreatePlanner }) => {
     const hiddenBoxRef = useRef();
     const plannersRef = useRef();
 
@@ -209,7 +209,7 @@ const MyPlannerList = ({ onResetPlannerInfoForm }) => {
                 <TitleBox>
                     <Title>나의 플래너</Title>
                     <Button>
-                        <Link to="/PlannerEdit" onClick={onResetPlannerInfoForm}>
+                        <Link to="/PlannerEdit" onClick={onCreatePlanner}>
                             플래너 생성
                         </Link>
                     </Button>

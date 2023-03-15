@@ -10,10 +10,7 @@ const EditMapContainer = () => {
         plannerError: plannerReducer.plannerError,
     }));
 
-    const { accountId, plannerId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId } = planner;
-    const onCreatePlanner = () => {
-        dispatch(createPlannerAction({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }));
-    };
+    const { plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = planner;
 
     const onUpdatePlanner = () => {
         dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
@@ -30,7 +27,7 @@ const EditMapContainer = () => {
     //     dispatch(loadPlannerAction(plannerId));
     // }, [dispatch, planMembers, plannerId]);
 
-    return <EditMap planner={planner} onCreatePlanner={onCreatePlanner} onUpdatePlanner={onUpdatePlanner} onToggleMemberModal={onToggleMemberModal} onTogglePlannerInfoModal={onTogglePlannerInfoModal} />;
+    return <EditMap planner={planner} onUpdatePlanner={onUpdatePlanner} onToggleMemberModal={onToggleMemberModal} onTogglePlannerInfoModal={onTogglePlannerInfoModal} />;
 };
 
 export default EditMapContainer;

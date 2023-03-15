@@ -73,7 +73,7 @@ const Category = styled.select`
     }
 `;
 
-const PlannerInfoModal = ({ planner, modal, onUpdatePlanner, onChangePlannerExpense, onChangePlannerMemberCategory, onChangePlannerMemberCount, onChangePlannerTitle, onTogglePlannerInfoModal }) => {
+const PlannerInfoModal = ({ planner, modal, onLoadPlanner, onUpdatePlanner, onChangePlannerExpense, onChangePlannerMemberCategory, onChangePlannerMemberCount, onChangePlannerTitle, onTogglePlannerInfoModal }) => {
     // const onEditPost = async () => {
     //     setIsEdit(false);
     //     const update = () => {
@@ -105,6 +105,7 @@ const PlannerInfoModal = ({ planner, modal, onUpdatePlanner, onChangePlannerExpe
             onModalConfirm={() => {
                 onUpdatePlanner();
                 onTogglePlannerInfoModal();
+                // onLoadPlanner();
             }}
         >
             <InfoForm>
@@ -139,7 +140,8 @@ const PlannerInfoModal = ({ planner, modal, onUpdatePlanner, onChangePlannerExpe
                         required
                         defaultValue=""
                         onChange={(e) => {
-                            onChangePlannerMemberCategory(e.target.value);
+                            onChangePlannerMemberCategory(1);
+                            // onChangePlannerMemberCategory(e.target.value);
                         }}
                     >
                         <option value="" disabled>

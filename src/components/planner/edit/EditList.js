@@ -149,7 +149,13 @@ const EditList = ({ spots, onUpdatePlan }) => {
                                     // onError={onChangeErrorImg}
                                 />
                                 <Name>{s.title}</Name>
-                                <Button>추가</Button>
+                                <Button
+                                    onClick={() => {
+                                        onUpdatePlan();
+                                    }}
+                                >
+                                    추가
+                                </Button>
                             </ListItem>
                         );
                     })}

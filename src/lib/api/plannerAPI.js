@@ -22,7 +22,7 @@ export const deletePlanner = ({ plannerId }) => {
 
 // 플래너 수정
 export const updatePlanner = ({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }) => {
-    return client.patch(`/api/planners/${plannerId}`, { title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
+    return client.patch(`/api/planners/${plannerId}`, { plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
 };
 
 // 메모 생성
