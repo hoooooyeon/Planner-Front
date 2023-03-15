@@ -19,16 +19,6 @@ const EditMapContainer = () => {
         dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
     };
 
-    const onCreatePlan = () => {
-        dispatch(createPlanAction());
-    };
-    const onUpdatePlan = () => {
-        dispatch(updatePlanAction());
-    };
-    const onDeletePlan = () => {
-        dispatch(deletePlanAction());
-    };
-
     const onToggleMemberModal = () => {
         dispatch(toggleMemberModalAction());
     };

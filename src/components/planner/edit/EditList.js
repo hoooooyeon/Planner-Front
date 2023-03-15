@@ -117,9 +117,7 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-const EditList = () => {
-    const TOTAL = [0, 1, 2];
-
+const EditList = ({ spots, onUpdatePlan }) => {
     return (
         <>
             <EditListBlock>
@@ -142,11 +140,15 @@ const EditList = () => {
                     </MenuItem>
                 </MenuList>
                 <List>
-                    {TOTAL.map((i) => {
+                    {spots.map((s, i) => {
                         return (
                             <ListItem key={i}>
-                                <Img />
-                                <Name>천안 사거리</Name>
+                                <Img
+                                    src={s.firstimage || s.firstimage2}
+                                    alt={s.title}
+                                    // onError={onChangeErrorImg}
+                                />
+                                <Name>{s.title}</Name>
                                 <Button>추가</Button>
                             </ListItem>
                         );
