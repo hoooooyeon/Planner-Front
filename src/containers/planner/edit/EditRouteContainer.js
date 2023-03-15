@@ -18,23 +18,11 @@ const EditRouteContainer = () => {
         plannerError: plannerReducer.plannerError,
     }));
 
-    const onChangePlannerTitle = (title) => {
-        dispatch(changePlannerTitleAction(title));
-    };
     const onChangePlannerDateStart = (date) => {
         dispatch(changePlannerDateStartAction(date));
     };
     const onChangePlannerDateEnd = (date) => {
         dispatch(changePlannerDateEndAction(date));
-    };
-    const onChangePlannerExpense = (expense) => {
-        dispatch(changePlannerExpenseAction(expense));
-    };
-    const onChangePlannerMemberCount = (count) => {
-        dispatch(changePlannerMemberCountAction(count));
-    };
-    const onChangePlannerMemberCategory = (memberTypeId) => {
-        dispatch(changePlannerMemberCategoryAction(memberTypeId));
     };
 
     // // 플래너 정보 가져오기
@@ -42,17 +30,7 @@ const EditRouteContainer = () => {
     //     dispatch(loadPlannerAction(planner.plannerId));
     // });
 
-    return (
-        <EditRoute
-            planner={planner}
-            onChangePlannerTitle={onChangePlannerTitle}
-            onChangePlannerDateStart={onChangePlannerDateStart}
-            onChangePlannerDateEnd={onChangePlannerDateEnd}
-            onChangePlannerExpense={onChangePlannerExpense}
-            onChangePlannerMemberCount={onChangePlannerMemberCount}
-            onChangePlannerMemberCategory={onChangePlannerMemberCategory}
-        />
-    );
+    return <EditRoute planner={planner} onChangePlannerDateStart={onChangePlannerDateStart} onChangePlannerDateEnd={onChangePlannerDateEnd} />;
 };
 
 export default EditRouteContainer;

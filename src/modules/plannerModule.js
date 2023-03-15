@@ -27,6 +27,7 @@ const CHANGE_PLANNER_MEMBER_COUNT_TYPE = 'planner/CHANGE_PLANNER_MEMBER_COUNT';
 const CHANGE_PLANNER_MEMBER_CATEGORY_TYPE = 'planner/CHANGE_PLANNER_MEMBER_CATEGORY';
 
 const RESET_PLANNER_INFO_FORM_TYPE = 'planner/RESET_PLANNER_INFO_FORM';
+const TOGGLE_PLANNER_INFO_MODAL_TYPE = 'planner/TOGGLE_PLANNER_INFO_MODAL_TYPE';
 
 const DELETE_PLANNER_TYPE = 'planner/DELETE_PLANNER';
 const DELETE_PLANNER_SUCCESS_TYPE = 'planner/DELETE_PLANNER_SUCCESS';
@@ -71,6 +72,7 @@ const DELETE_MEMBER_FAILURE_TYPE = 'planner/DELETE_MEMBER_FAILURE';
 
 const CHANGE_MEMBER_TYPE = 'planner/CHANGE_MEMBER';
 const RESET_MEMBER_TYPE = 'planner/RESET_MEMBER';
+const TOGGLE_MEMBER_MODAL_TYPE = 'planner/TOGGLE_MEMBER_MODAL_TYPE';
 
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
@@ -110,6 +112,8 @@ export const inviteMemberAction = ({ plannerId, members }) => ({ type: INVITE_ME
 export const deleteMemberAction = ({ plannerId, nickName }) => ({ type: DELETE_MEMBER_TYPE, plannerId, nickName });
 export const changeMemberAction = (members) => ({ type: CHANGE_MEMBER_TYPE, members });
 export const resetMemberAction = () => ({ type: RESET_MEMBER_TYPE });
+export const toggleMemberModalAction = () => ({ type: TOGGLE_MEMBER_MODAL_TYPE });
+export const togglePlannerInfoModalAction = () => ({ type: TOGGLE_PLANNER_INFO_MODAL_TYPE });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -152,6 +156,10 @@ const initialState = {
         content: '',
     },
     members: [],
+    modal: {
+        member: false,
+        plannerInfo: false,
+    },
     spots: [
         {
             title: '가회동성당',
@@ -294,7 +302,7 @@ function plannerReducer(state = initialState, action) {
                     planDateEnd: letsFormat(new Date()),
                     planMembers: [],
                     expense: 0,
-                    memberCount: 0,
+                    memberCount: 1,
                     memberTypeId: 1,
                 },
             };
@@ -422,6 +430,22 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
                 members: [],
+            };
+        case TOGGLE_MEMBER_MODAL_TYPE:
+            return {
+                ...state,
+                modal: {
+                    ...state.modal,
+                    member: !state.modal.member,
+                },
+            };
+        case TOGGLE_PLANNER_INFO_MODAL_TYPE:
+            return {
+                ...state,
+                modal: {
+                    ...state.modal,
+                    plannerInfo: !state.modal.plannerInfo,
+                },
             };
         default:
             return state;

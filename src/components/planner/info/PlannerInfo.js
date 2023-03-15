@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import InfoRoute from './InfoRoute';
 import InfoMenu from './InfoMenu';
 import Modal from '../../common/Modal';
+import MemberModal from '../MemberModal';
 
 const PlannerInfoBlock = styled.div`
     width: 100%;
@@ -99,7 +100,7 @@ const FlexBox = styled.div`
     align-items: flex-start;
 `;
 
-const PlannerInfo = ({ planner, members, onDeletePlanner, onInviteMember, onDeleteMember, onChangeMember, onResetMember }) => {
+const PlannerInfo = ({ planner, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal }) => {
     const [isDropDown, setIsDropDown] = useState(false);
 
     const onDropDown = () => {
@@ -124,11 +125,6 @@ const PlannerInfo = ({ planner, members, onDeletePlanner, onInviteMember, onDele
         };
     });
 
-    const [isInvite, setIsInvite] = useState(false);
-    const onInviteMemberMd = () => {
-        setIsInvite(false);
-        onInviteMember(members);
-    };
     return (
         <PlannerInfoBlock>
             <Container>
@@ -140,26 +136,11 @@ const PlannerInfo = ({ planner, members, onDeletePlanner, onInviteMember, onDele
                             <p>관리</p>
                         </SetButton>
                         <DropDownMenu isDropDown={isDropDown} ref={menuRef}>
-                            <li
-                                onClick={() => {
-                                    setIsInvite(true);
-                                    onResetMember();
-                                }}
-                            >
-                                멤버 초대
-                            </li>
-                            {isInvite && (
-                                <Modal
-                                    modalVisible={isInvite}
-                                    title="멤버 초대"
-                                    onModalClose={() => {
-                                        setIsInvite(false);
-                                    }}
-                                    onModalConfirm={onInviteMemberMd}
-                                ></Modal>
-                            )}
+                            <li onClick={onToggleMemberModal}>멤버 초대</li>
+                            <li onClick={onTogglePlannerInfoModal}>플래너 정보 수정</li>
+
                             <li>
-                                <Link to="/PlannerEdit">플래너 수정</Link>
+                                <Link to="/PlannerEdit">플래너 루트 수정</Link>
                             </li>
                             <li onClick={onDeletePlanner}>
                                 <Link to="/PlannerList">플래너 삭제</Link>

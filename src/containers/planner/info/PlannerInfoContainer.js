@@ -1,35 +1,27 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfo from '../../../components/planner/info/PlannerInfo';
-import { changeMemberAction, deleteMemberAction, deletePlannerAction, inviteMemberAction, loadPlannerAction, resetMemberAction } from '../../../modules/plannerModule';
+import { deletePlannerAction, toggleMemberModalAction, togglePlannerInfoModalAction } from '../../../modules/plannerModule';
 
 const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, members } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError } = useSelector(({ plannerReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
-        members: plannerReducer.members,
     }));
 
     const onDeletePlanner = () => {
         dispatch(deletePlannerAction(planner.plannerId));
     };
-    const onInviteMember = () => {
-        dispatch(inviteMemberAction(members));
-    };
-    const onDeleteMember = () => {
-        dispatch(deleteMemberAction(members));
+
+    const onToggleMemberModal = () => {
+        dispatch(toggleMemberModalAction());
     };
 
-    const onChangeMember = (members) => {
-        dispatch(changeMemberAction(members));
+    const onTogglePlannerInfoModal = () => {
+        dispatch(togglePlannerInfoModalAction());
     };
 
-    const onResetMember = () => {
-        dispatch(resetMemberAction());
-    };
-
-    return <PlannerInfo planner={planner} onDeletePlanner={onDeletePlanner} onInviteMember={onInviteMember} onDeleteMember={onDeleteMember} onChangeMember={onChangeMember} onResetMember={onResetMember} />;
+    return <PlannerInfo planner={planner} onDeletePlanner={onDeletePlanner} onToggleMemberModal={onToggleMemberModal} onTogglePlannerInfoModal={onTogglePlannerInfoModal} />;
 };
 
 export default PlannerInfoContainer;

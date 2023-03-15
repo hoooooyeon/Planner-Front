@@ -1,25 +1,13 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditMap from '../../../components/planner/edit/EditMap';
-import {
-    changeMemberAction,
-    createPlanAction,
-    createPlannerAction,
-    deleteMemberAction,
-    deletePlanAction,
-    inviteMemberAction,
-    loadPlannerAction,
-    resetMemberAction,
-    updatePlanAction,
-    updatePlannerAction,
-} from '../../../modules/plannerModule';
+import { createPlanAction, createPlannerAction, deletePlanAction, toggleMemberModalAction, togglePlannerInfoModalAction, updatePlanAction, updatePlannerAction } from '../../../modules/plannerModule';
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, members } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError } = useSelector(({ plannerReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
-        members: plannerReducer.members,
     }));
 
     const { accountId, plannerId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId } = planner;
@@ -41,37 +29,18 @@ const EditMapContainer = () => {
         dispatch(deletePlanAction());
     };
 
-    const onInviteMember = () => {
-        dispatch(inviteMemberAction({ plannerId, members }));
+    const onToggleMemberModal = () => {
+        dispatch(toggleMemberModalAction());
     };
-    const onDeleteMember = (nickName) => {
-        dispatch(deleteMemberAction({ plannerId, nickName }));
-    };
-
-    const onChangeMember = (members) => {
-        dispatch(changeMemberAction(members));
+    const onTogglePlannerInfoModal = () => {
+        dispatch(togglePlannerInfoModalAction());
     };
 
-    const onResetMember = () => {
-        dispatch(resetMemberAction());
-    };
+    // useEffect(() => {
+    //     dispatch(loadPlannerAction(plannerId));
+    // }, [dispatch, planMembers, plannerId]);
 
-    useEffect(() => {
-        dispatch(loadPlannerAction(plannerId));
-    }, [dispatch, planMembers, plannerId]);
-
-    return (
-        <EditMap
-            planner={planner}
-            members={members}
-            onCreatePlanner={onCreatePlanner}
-            onUpdatePlanner={onUpdatePlanner}
-            onInviteMember={onInviteMember}
-            onDeleteMember={onDeleteMember}
-            onChangeMember={onChangeMember}
-            onResetMember={onResetMember}
-        />
-    );
+    return <EditMap planner={planner} onCreatePlanner={onCreatePlanner} onUpdatePlanner={onUpdatePlanner} onToggleMemberModal={onToggleMemberModal} onTogglePlannerInfoModal={onTogglePlannerInfoModal} />;
 };
 
 export default EditMapContainer;

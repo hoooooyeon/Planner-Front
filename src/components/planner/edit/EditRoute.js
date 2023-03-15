@@ -4,7 +4,6 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState } from 'react';
 import EditRouteList from './EditRouteList';
-import { useEffect } from 'react';
 
 const EditRouteBlock = styled.div`
     width: 370px;
@@ -117,8 +116,8 @@ const RouteBox = styled.div`
     display: flex;
 `;
 
-const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, onChangePlannerDateEnd, onChangePlannerExpense, onChangePlannerMemberCount, onChangePlannerMemberCategory }) => {
-    const { title, planDateStart, planDateEnd } = planner;
+const EditRoute = ({ planner, onChangePlannerDateStart, onChangePlannerDateEnd }) => {
+    const { planDateStart, planDateEnd } = planner;
 
     // api 추가 전 date
     const [dateRange, setDateRange] = useState([new Date(planDateStart), new Date(planDateEnd)]);
@@ -134,27 +133,9 @@ const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, on
         }
     };
 
-    const categoryList = [
-        {
-            value: '혼자',
-            key: 'alone',
-        },
-        { value: '연인', key: 'couple' },
-        { value: '친구', key: 'friend' },
-        { value: '가족', key: 'family' },
-    ];
-
     return (
         <EditRouteBlock>
             <InfoForm>
-                <Title
-                    placeholder="플래너 이름"
-                    type="text"
-                    onChange={(e) => {
-                        onChangePlannerTitle(e.target.value);
-                    }}
-                    value={title}
-                />
                 <DateBox>
                     <StyledDatePicker
                         selectsRange={true}
@@ -164,59 +145,10 @@ const EditRoute = ({ planner, onChangePlannerTitle, onChangePlannerDateStart, on
                         // endDate={new Date(planDateEnd)}
                         minDate={new Date()}
                         onChange={onChangeDates}
-                        // 왜 dates를 안 줘도 될까?
-                        // onChange={(dates) => {
-                        //     onChangeDates(dates);
-                        // }}
                         dateFormat=" yyyy. MM. dd "
                         placeholderText="여행 기간"
                     />
-
-                    {/* api 추가 전  date */}
-                    {/* <StyledDatePicker
-                        selectsRange={true}
-                        startDate={startDate}
-                        endDate={endDate}
-                        minDate={new Date()}
-                        onChange={(dates) => {
-                            setDateRange(dates);
-                        }}
-                        dateFormat=" yyyy. MM. dd "
-                        placeholderText="여행 종료일"
-                    /> */}
                 </DateBox>
-                <FlexDiv>
-                    <Funds
-                        placeholder="여행 자금"
-                        type="number"
-                        onChange={(e) => {
-                            onChangePlannerExpense(e.target.value);
-                        }}
-                    />
-                    <People
-                        placeholder="인원"
-                        type="number"
-                        onChange={(e) => {
-                            onChangePlannerMemberCount(e.target.value);
-                        }}
-                    />
-                    <Category
-                        required
-                        defaultValue=""
-                        onChange={(e) => {
-                            onChangePlannerMemberCategory(e.target.value);
-                        }}
-                    >
-                        <option value="" disabled>
-                            선택
-                        </option>
-                        {categoryList.map((item) => (
-                            <option value={item.value} key={item.key}>
-                                {item.value}
-                            </option>
-                        ))}
-                    </Category>
-                </FlexDiv>
             </InfoForm>
             <RouteBox>
                 <EditCalendar />
