@@ -41,8 +41,8 @@ export const deleteMemo = ({ plannerId, memoId }) => {
 };
 
 // 일정 생성
-export const createPlan = ({ planDate, plannerId, planLocations }) => {
-    return client.post(`/api/planners/${plannerId}/plans`, { planDate, planLocations });
+export const createPlan = ({ planDate, plannerId }) => {
+    return client.post(`/api/planners/${plannerId}/plans`, { plannerId, planDate });
 };
 
 // 일정 수정
@@ -52,7 +52,7 @@ export const updatePlan = ({ plannerId, planId, planLocations, planDate }) => {
 
 // 일정 삭제
 export const deletePlan = ({ plannerId, planId }) => {
-    return client.delete(`/api/planners/${plannerId}/plans/${planId}`);
+    return client.delete(`/api/planners/${plannerId}/plans/${planId}`, { plannerId, planId });
 };
 
 // 멤버 초대

@@ -116,43 +116,54 @@ const RouteBox = styled.div`
     display: flex;
 `;
 
-const EditRoute = ({ planner, onChangePlannerDateStart, onChangePlannerDateEnd }) => {
+const EditRoute = ({ planner, plan, onChangePlannerDateStart, onChangePlannerDateEnd, onCreatePlan, onDeletePlan, onLoadPlan, onUpdatePlan }) => {
     const { planDateStart, planDateEnd } = planner;
 
     // api 추가 전 date
     const [dateRange, setDateRange] = useState([new Date(planDateStart), new Date(planDateEnd)]);
-    const [startDate, endDate] = dateRange;
+    const [startDate, setStartDate] = useState(new Date(planDateStart));
 
     // datePicker의 날짜와 planner의 날짜를 각각 나눔.
-    const onChangeDates = (dates) => {
-        const [start, end] = dates;
-        setDateRange(dates);
-        if (start && end) {
-            onChangePlannerDateStart(start);
-            onChangePlannerDateEnd(end);
-        }
+    const onChangeDate = (date) => {
+        setStartDate(date);
+        onChangePlannerDateStart(date);
     };
 
+    // 총 여행일 구하는 함수
+    // const onDiffDate = () => {
+    //     const date = endDate.getTime() - startDate.getTime();
+    //     const diffDate = date / (1000 * 60 * 60 * 24) + 1;
+    //     console.log(diffDate);
+    // };
+
+    // 날짜 선택 확인 버튼 포함
+    //     <DatePicker
+    //     selected={startDate}
+    //     onChange={(date) => setStartDate(date)}
+    //     required
+    //     form="external-form"
+    //   />
+    //   <form id="external-form">
+    //     <input type="submit" />
+    //   </form>
     return (
         <EditRouteBlock>
             <InfoForm>
                 <DateBox>
                     <StyledDatePicker
-                        selectsRange={true}
-                        startDate={startDate}
-                        endDate={endDate}
+                        selected={startDate}
                         // startDate={new Date(planDateStart)}
                         // endDate={new Date(planDateEnd)}
                         minDate={new Date()}
-                        onChange={onChangeDates}
+                        onChange={onChangeDate}
                         dateFormat=" yyyy. MM. dd "
                         placeholderText="여행 기간"
                     />
                 </DateBox>
             </InfoForm>
             <RouteBox>
-                <EditCalendar />
-                <EditRouteList planner={planner} />
+                <EditCalendar planner={planner} plan={plan} onLoadPlan={onLoadPlan} onCreatePlan={onCreatePlan} onDeletePlan={onDeletePlan} />
+                <EditRouteList planner={planner} onUpdatePlan={onUpdatePlan} />
             </RouteBox>
         </EditRouteBlock>
     );

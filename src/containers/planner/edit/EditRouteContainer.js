@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditRoute from '../../../components/planner/edit/EditRoute';
+import { createPlan } from '../../../lib/api/plannerAPI';
 import {
     changePlannerDateEndAction,
     changePlannerDateStartAction,
@@ -8,15 +9,22 @@ import {
     changePlannerMemberCategoryAction,
     changePlannerMemberCountAction,
     changePlannerTitleAction,
+    createPlanAction,
+    deletePlanAction,
+    loadPlanAction,
     loadPlannerAction,
+    updatePlanAction,
 } from '../../../modules/plannerModule';
 
 const EditRouteContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, plan } = useSelector(({ plannerReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
+        plan: plannerReducer.plan,
     }));
+
+    const { plannerId, planDateEnd } = planner;
 
     const onChangePlannerDateStart = (date) => {
         dispatch(changePlannerDateStartAction(date));
@@ -25,12 +33,54 @@ const EditRouteContainer = () => {
         dispatch(changePlannerDateEndAction(date));
     };
 
+    const letsFormat = (d) => {
+        const date = new Date(d);
+        return (
+            date.getFullYear() +
+            '-' +
+            ('0' + (date.getMonth() + 1)).slice(-2) +
+            '-' +
+            ('0' + date.getDate()).slice(-2) +
+            ' ' +
+            ('0' + date.getHours()).slice(-2) +
+            ':' +
+            ('0' + date.getMinutes()).slice(-2) +
+            ':' +
+            ('0' + date.getSeconds()).slice(-2)
+        );
+    };
+    const onCreatePlan = () => {
+        const planDate = letsFormat(new Date(planDateEnd));
+        dispatch(createPlanAction({ plannerId, planDate }));
+    };
+    const onDeletePlan = (planId) => {
+        dispatch(deletePlanAction({ plannerId, planId }));
+    };
+    const onUpdatePlan = () => {
+        dispatch(updatePlanAction());
+    };
+
+    const onLoadPlan = (plan) => {
+        dispatch(loadPlanAction(plan));
+    };
+
     // // 플래너 정보 가져오기
     // useEffect(() => {
     //     dispatch(loadPlannerAction(planner.plannerId));
-    // });
+    // }, [dispatch, planner]);
 
-    return <EditRoute planner={planner} onChangePlannerDateStart={onChangePlannerDateStart} onChangePlannerDateEnd={onChangePlannerDateEnd} />;
+    return (
+        <EditRoute
+            planner={planner}
+            plan={plan}
+            onChangePlannerDateStart={onChangePlannerDateStart}
+            onChangePlannerDateEnd={onChangePlannerDateEnd}
+            onCreatePlan={onCreatePlan}
+            onDeletePlan={onDeletePlan}
+            onLoadPlan={onLoadPlan}
+            onUpdatePlan={onUpdatePlan}
+        />
+    );
 };
 
 export default EditRouteContainer;

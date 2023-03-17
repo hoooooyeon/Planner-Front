@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfo from '../../../components/planner/info/PlannerInfo';
-import { deletePlannerAction, loadPlannerAction, toggleMemberModalAction, togglePlannerInfoModalAction } from '../../../modules/plannerModule';
+import { deletePlannerAction, loadPlanAction, loadPlannerAction, toggleMemberModalAction, togglePlannerInfoModalAction } from '../../../modules/plannerModule';
 
 const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
@@ -21,7 +21,11 @@ const PlannerInfoContainer = () => {
     const onTogglePlannerInfoModal = () => {
         dispatch(togglePlannerInfoModalAction());
     };
-
+    useEffect(() => {
+        if (planner.plans) {
+            dispatch(loadPlanAction(planner.plans[0]));
+        }
+    }, [dispatch, planner.plans]);
     // useEffect(() => {
     //     dispatch(loadPlannerAction());
     // });

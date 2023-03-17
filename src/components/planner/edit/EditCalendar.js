@@ -39,21 +39,50 @@ const RouteLine = styled.div`
     z-index: -1;
 `;
 
-const EditCalendar = () => {
+const AddCal = styled.div``;
+
+const DeleteButton = styled.div`
+    position: absolute;
+    top: -20px;
+    left: 50px;
+`;
+
+const EditCalendar = ({ planner, plan, onCreatePlan, onDeletePlan, onLoadPlan }) => {
+    const { plans } = planner;
+
+    const letsFormat = (d) => {
+        const date = new Date(d);
+        return ('0' + (date.getMonth() + 1)).slice(-2) + '/' + ('0' + date.getDate()).slice(-2);
+    };
+
     return (
         <EditCalendarBlock>
-            <Calendar aria-current={true ? 'date' : null}>
+            <Calendar onClick={onCreatePlan}>
                 <RouteLine />
-                11/11
+                더하기
             </Calendar>
-            <Calendar>
-                <RouteLine />
-                11/12
-            </Calendar>
-            <Calendar>
-                <RouteLine />
-                11/13
-            </Calendar>
+            <>
+                {plans &&
+                    plans.map((p, i) => (
+                        <Calendar
+                            aria-current={p.planId === plan.planId ? 'date' : null}
+                            onClick={() => {
+                                onLoadPlan(p);
+                            }}
+                            key={p.planId}
+                        >
+                            <DeleteButton
+                                onClick={() => {
+                                    onDeletePlan(p.planId);
+                                }}
+                            >
+                                x
+                            </DeleteButton>
+                            <RouteLine />
+                            {letsFormat(p.planDate)}
+                        </Calendar>
+                    ))}
+            </>
         </EditCalendarBlock>
     );
 };

@@ -144,9 +144,9 @@ const EditList = ({ spots, onUpdatePlan }) => {
                         return (
                             <ListItem key={i}>
                                 <Img
-                                    src={s.firstimage || s.firstimage2}
-                                    alt={s.title}
-                                    // onError={onChangeErrorImg}
+                                // src={s.firstimage || s.firstimage2}
+                                // alt={s.title}
+                                // onError={onChangeErrorImg}
                                 />
                                 <Name>{s.title}</Name>
                                 <Button

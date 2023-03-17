@@ -62,6 +62,8 @@ const DELETE_PLAN_TYPE = 'planner/DELETE_PLAN';
 const DELETE_PLAN_SUCCESS_TYPE = 'planner/DELETE_PLAN_SUCCESS';
 const DELETE_PLAN_FAILURE_TYPE = 'planner/DELETE_PLAN_FAILURE';
 
+const LOAD_PLAN_TYPE = 'planner/LOAD_PLAN';
+
 const INVITE_MEMBER_TYPE = 'planner/INVITE_MEMBER';
 const INVITE_MEMBER_SUCCESS_TYPE = 'planner/INVITE_MEMBER_SUCCESS';
 const INVITE_MEMBER_FAILURE_TYPE = 'planner/INVITE_MEMBER_FAILURE';
@@ -105,9 +107,10 @@ export const loadMemoAction = (memo) => ({ type: LOAD_MEMO_TYPE, memo });
 export const resetMemoAction = () => ({ type: RESET_MEMO_TYPE });
 export const changeMemoTitleAction = (title) => ({ type: CHANGE_MEMO_TITLE_TYPE, title });
 export const changeMemoContentAction = (content) => ({ type: CHANGE_MEMO_CONTENT_TYPE, content });
-export const createPlanAction = ({ plannerId, planDate, planLocations }) => ({ type: CREATE_PLAN_TYPE, plannerId, planDate, planLocations });
+export const createPlanAction = ({ plannerId, planDate }) => ({ type: CREATE_PLAN_TYPE, plannerId, planDate });
 export const updatePlanAction = ({ planId, plannerId, planDate, planLocations }) => ({ type: UPDATE_PLAN_TYPE, plannerId, planDate, planLocations, planId });
 export const deletePlanAction = ({ plannerId, planId }) => ({ type: DELETE_PLAN_TYPE, plannerId, planId });
+export const loadPlanAction = (plan) => ({ type: LOAD_PLAN_TYPE, plan });
 export const inviteMemberAction = ({ plannerId, members }) => ({ type: INVITE_MEMBER_TYPE, plannerId, members });
 export const deleteMemberAction = ({ plannerId, nickName }) => ({ type: DELETE_MEMBER_TYPE, plannerId, nickName });
 export const changeMemberAction = (members) => ({ type: CHANGE_MEMBER_TYPE, members });
@@ -387,8 +390,15 @@ function plannerReducer(state = initialState, action) {
                 },
             };
         case CREATE_PLAN_SUCCESS_TYPE:
+            let date = new Date(state.planner.planDateEnd);
+            date.setDate(date.getDate() + 1);
+
             return {
                 ...state,
+                planner: {
+                    ...state.planner,
+                    planDateEnd: letsFormat(date),
+                },
             };
         case CREATE_PLAN_FAILURE_TYPE:
             return {
@@ -412,6 +422,11 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
                 plannerError: action.payload.error,
+            };
+        case LOAD_PLAN_TYPE:
+            return {
+                ...state,
+                plan: action.plan,
             };
         case INVITE_MEMBER_SUCCESS_TYPE:
             return {
