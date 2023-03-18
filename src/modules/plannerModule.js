@@ -63,6 +63,7 @@ const DELETE_PLAN_SUCCESS_TYPE = 'planner/DELETE_PLAN_SUCCESS';
 const DELETE_PLAN_FAILURE_TYPE = 'planner/DELETE_PLAN_FAILURE';
 
 const LOAD_PLAN_TYPE = 'planner/LOAD_PLAN';
+const CHANGE_PLAN_LOCATION_TYPE = 'planner/CHANGE_PLAN_LOCATION';
 
 const INVITE_MEMBER_TYPE = 'planner/INVITE_MEMBER';
 const INVITE_MEMBER_SUCCESS_TYPE = 'planner/INVITE_MEMBER_SUCCESS';
@@ -75,6 +76,18 @@ const DELETE_MEMBER_FAILURE_TYPE = 'planner/DELETE_MEMBER_FAILURE';
 const CHANGE_MEMBER_TYPE = 'planner/CHANGE_MEMBER';
 const RESET_MEMBER_TYPE = 'planner/RESET_MEMBER';
 const TOGGLE_MEMBER_MODAL_TYPE = 'planner/TOGGLE_MEMBER_MODAL_TYPE';
+
+const CREATE_LOCATION_TYPE = 'planner/CREATE_LOCATION';
+const CREATE_LOCATION_SUCCESS_TYPE = 'planner/CREATE_LOCATION_SUCCESS';
+const CREATE_LOCATION_FAILURE_TYPE = 'planner/CREATE_LOCATION_FAILURE';
+
+const UPDATE_LOCATION_TYPE = 'planner/UPDATE_LOCATION';
+const UPDATE_LOCATION_SUCCESS_TYPE = 'planner/UPDATE_LOCATION_SUCCESS';
+const UPDATE_LOCATION_FAILURE_TYPE = 'planner/UPDATE_LOCATION_FAILURE';
+
+const DELETE_LOCATION_TYPE = 'planner/DELETE_LOCATION';
+const DELETE_LOCATION_SUCCESS_TYPE = 'planner/DELETE_LOCATION_SUCCESS';
+const DELETE_LOCATION_FAILURE_TYPE = 'planner/DELETE_LOCATION_FAILURE';
 
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
@@ -108,15 +121,27 @@ export const resetMemoAction = () => ({ type: RESET_MEMO_TYPE });
 export const changeMemoTitleAction = (title) => ({ type: CHANGE_MEMO_TITLE_TYPE, title });
 export const changeMemoContentAction = (content) => ({ type: CHANGE_MEMO_CONTENT_TYPE, content });
 export const createPlanAction = ({ plannerId, planDate }) => ({ type: CREATE_PLAN_TYPE, plannerId, planDate });
-export const updatePlanAction = ({ planId, plannerId, planDate, planLocations }) => ({ type: UPDATE_PLAN_TYPE, plannerId, planDate, planLocations, planId });
+export const updatePlanAction = ({ planId, plannerId, planDate }) => ({ type: UPDATE_PLAN_TYPE, plannerId, planDate, planId });
 export const deletePlanAction = ({ plannerId, planId }) => ({ type: DELETE_PLAN_TYPE, plannerId, planId });
 export const loadPlanAction = (plan) => ({ type: LOAD_PLAN_TYPE, plan });
+export const changePlanLocationAction = (location) => ({ type: CHANGE_PLAN_LOCATION_TYPE, location });
 export const inviteMemberAction = ({ plannerId, members }) => ({ type: INVITE_MEMBER_TYPE, plannerId, members });
 export const deleteMemberAction = ({ plannerId, nickName }) => ({ type: DELETE_MEMBER_TYPE, plannerId, nickName });
 export const changeMemberAction = (members) => ({ type: CHANGE_MEMBER_TYPE, members });
 export const resetMemberAction = () => ({ type: RESET_MEMBER_TYPE });
 export const toggleMemberModalAction = () => ({ type: TOGGLE_MEMBER_MODAL_TYPE });
 export const togglePlannerInfoModalAction = () => ({ type: TOGGLE_PLANNER_INFO_MODAL_TYPE });
+export const createLocationAction = ({ plannerId, locationContentId, locationImage, locationTransportation, planId }) => ({ type: CREATE_LOCATION_TYPE, plannerId, locationContentId, locationImage, locationTransportation, planId });
+export const updateLocationAction = ({ plannerId, locationId, locationContentId, locationImage, locationTransportation, planId }) => ({
+    type: UPDATE_LOCATION_TYPE,
+    plannerId,
+    locationId,
+    locationContentId,
+    locationImage,
+    locationTransportation,
+    planId,
+});
+export const deleteLocationAction = ({ plannerId, locationId, planId }) => ({ type: DELETE_LOCATION_TYPE, plannerId, locationId, planId });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -131,6 +156,9 @@ const updatePlanSaga = createSaga(UPDATE_PLAN_TYPE, plannerAPI.updatePlan);
 const deletePlanSaga = createSaga(DELETE_PLAN_TYPE, plannerAPI.deletePlan);
 const inviteMemberSaga = createSaga(INVITE_MEMBER_TYPE, plannerAPI.inviteMember);
 const deleteMemberSaga = createSaga(DELETE_MEMBER_TYPE, plannerAPI.deleteMember);
+const createLocationSaga = createSaga(CREATE_LOCATION_TYPE, plannerAPI.createLocation);
+const updateLocationSaga = createSaga(UPDATE_LOCATION_TYPE, plannerAPI.updateLocation);
+const deleteLocationSaga = createSaga(DELETE_LOCATION_TYPE, plannerAPI.deleteLocation);
 
 export function* plannerSaga() {
     yield takeLatest(CREATE_PLANNER_TYPE, createPlannerSaga);
@@ -146,6 +174,9 @@ export function* plannerSaga() {
     yield takeLatest(DELETE_PLAN_TYPE, deletePlanSaga);
     yield takeLatest(INVITE_MEMBER_TYPE, inviteMemberSaga);
     yield takeLatest(DELETE_MEMBER_TYPE, deleteMemberSaga);
+    yield takeLatest(CREATE_LOCATION_TYPE, createLocationSaga);
+    yield takeLatest(UPDATE_LOCATION_TYPE, updateLocationSaga);
+    yield takeLatest(DELETE_LOCATION_TYPE, deleteLocationSaga);
 }
 
 const initialState = {
@@ -426,7 +457,24 @@ function plannerReducer(state = initialState, action) {
         case LOAD_PLAN_TYPE:
             return {
                 ...state,
-                plan: action.plan,
+                plan: action.plan || null,
+            };
+        case CHANGE_PLAN_LOCATION_TYPE:
+            return {
+                ...state,
+                plan: {
+                    ...state.plan,
+                    planLocations: [
+                        ...state.plan.planLocations,
+                        {
+                            title: action.location.title,
+                            locationContentId: action.location.contentid,
+                            locationImage: action.location.firstimage || action.location.firstimage2,
+                            locationTransportation: 0,
+                            planId: state.plan.planId,
+                        },
+                    ],
+                },
             };
         case INVITE_MEMBER_SUCCESS_TYPE:
             return {
@@ -472,6 +520,33 @@ function plannerReducer(state = initialState, action) {
                     ...state.modal,
                     plannerInfo: !state.modal.plannerInfo,
                 },
+            };
+        case CREATE_LOCATION_SUCCESS_TYPE:
+            return {
+                ...state,
+            };
+        case CREATE_LOCATION_FAILURE_TYPE:
+            return {
+                ...state,
+                plannerError: action.payload.error,
+            };
+        case UPDATE_LOCATION_SUCCESS_TYPE:
+            return {
+                ...state,
+            };
+        case UPDATE_LOCATION_FAILURE_TYPE:
+            return {
+                ...state,
+                plannerError: action.payload.error,
+            };
+        case DELETE_LOCATION_SUCCESS_TYPE:
+            return {
+                ...state,
+            };
+        case DELETE_LOCATION_FAILURE_TYPE:
+            return {
+                ...state,
+                plannerError: action.payload.error,
             };
         default:
             return state;

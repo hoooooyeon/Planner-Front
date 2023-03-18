@@ -46,8 +46,8 @@ export const createPlan = ({ planDate, plannerId }) => {
 };
 
 // 일정 수정
-export const updatePlan = ({ plannerId, planId, planLocations, planDate }) => {
-    return client.patch(`/api/planners/${plannerId}/plans/${planId}`, { planDate, planLocations });
+export const updatePlan = ({ plannerId, planId, planDate }) => {
+    return client.patch(`/api/planners/${plannerId}/plans/${planId}`, { plannerId, planId, planDate });
 };
 
 // 일정 삭제
@@ -63,4 +63,19 @@ export const inviteMember = ({ plannerId, members }) => {
 // 멤버 삭제
 export const deleteMember = ({ plannerId, nickName }) => {
     return client.delete(`/api/planners/${plannerId}/delete-member?nick_name=${nickName}`);
+};
+
+// 여행지 생성
+export const createLocation = ({ plannerId, locationContentId, locationImage, locationTransportation, planId }) => {
+    return client.post(`/api/planners/${plannerId}/plans/${planId}/plan-locations`, { plannerId, locationContentId, locationImage, locationTransportation, planId });
+};
+
+// 여행지 수정
+export const updateLocation = ({ plannerId, locationId, locationContentId, locationImage, locationTransportation, planId }) => {
+    return client.patch(`/api/planners/${plannerId}/plans/${planId}/plan-locations/${locationId}`, { plannerId, locationId, locationContentId, locationImage, locationTransportation, planId });
+};
+
+// 여행지 삭제
+export const deleteLocation = ({ plannerId, locationId, planId }) => {
+    return client.delete(`/api/planners/${plannerId}/plans/${planId}/plan-locations/${locationId}`, { plannerId, locationId, planId });
 };

@@ -117,7 +117,7 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-const EditList = ({ spots, onUpdatePlan }) => {
+const EditList = ({ spots, onChangePlanLocation, onCreateLocation }) => {
     return (
         <>
             <EditListBlock>
@@ -151,7 +151,7 @@ const EditList = ({ spots, onUpdatePlan }) => {
                                 <Name>{s.title}</Name>
                                 <Button
                                     onClick={() => {
-                                        onUpdatePlan();
+                                        onCreateLocation(s);
                                     }}
                                 >
                                     추가

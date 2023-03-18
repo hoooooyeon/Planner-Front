@@ -116,7 +116,7 @@ const RouteBox = styled.div`
     display: flex;
 `;
 
-const EditRoute = ({ planner, plan, onChangePlannerDateStart, onChangePlannerDateEnd, onCreatePlan, onDeletePlan, onLoadPlan, onUpdatePlan }) => {
+const EditRoute = ({ planner, plan, onChangePlannerDateStart, onChangePlannerDateEnd, onCreatePlan, onDeletePlan, onLoadPlan, onUpdatePlan, onDeleteLocation }) => {
     const { planDateStart, planDateEnd } = planner;
 
     // api 추가 전 date
@@ -163,7 +163,7 @@ const EditRoute = ({ planner, plan, onChangePlannerDateStart, onChangePlannerDat
             </InfoForm>
             <RouteBox>
                 <EditCalendar planner={planner} plan={plan} onLoadPlan={onLoadPlan} onCreatePlan={onCreatePlan} onDeletePlan={onDeletePlan} />
-                <EditRouteList planner={planner} onUpdatePlan={onUpdatePlan} />
+                <EditRouteList planner={planner} plan={plan} onUpdatePlan={onUpdatePlan} onDeleteLocation={onDeleteLocation} />
             </RouteBox>
         </EditRouteBlock>
     );

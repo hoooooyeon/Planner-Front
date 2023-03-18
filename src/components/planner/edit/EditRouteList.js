@@ -90,35 +90,55 @@ const Button = styled.button`
     height: 2rem;
     cursor: pointer;
 `;
-
-const EditRouteList = () => {
-    const TOTAL = [0, 1, 2];
+const EditRouteList = ({ planner, plan, onUpdatePlan, onDeleteLocation }) => {
+    const categoryList = [
+        {
+            value: '비행기',
+            key: 'plane',
+        },
+        { value: '기차', key: 'train' },
+        { value: '버스', key: 'bus' },
+        { value: '택시', key: 'taxi' },
+        { value: '오토바이', key: 'bicycle' },
+        { value: '도보', key: 'walking' },
+    ];
 
     return (
         <EditRouteListBlock>
-            {TOTAL.map((i) => {
-                return (
-                    <RouteItem key={i}>
-                        <RouteLine />
-                        <TransItem required defaultValue="">
-                            <option value="" disabled>
-                                선택
-                            </option>
-                            <option value="plane">비행기</option>
-                            <option value="train">기차</option>
-                            <option value="bus">버스</option>
-                            <option value="taxi">택시</option>
-                            <option value="bicycle">오토바이</option>
-                            <option value="walking">도보</option>
-                        </TransItem>
-                        <SpotItem>
-                            <Img />
-                            <Name>천안 사거리</Name>
-                            <Button>삭제</Button>
-                        </SpotItem>
-                    </RouteItem>
-                );
-            })}
+            {plan &&
+                plan.planLocations.map((p, i) => {
+                    const { locationId, locationImage, locationTransportation } = p;
+                    return (
+                        <RouteItem key={i}>
+                            <RouteLine />
+                            <TransItem required defaultValue="">
+                                <option value="" disabled>
+                                    선택
+                                </option>
+                                {categoryList.map((item) => (
+                                    <option value={item.value} key={item.key}>
+                                        {item.value}
+                                    </option>
+                                ))}
+                            </TransItem>
+                            <SpotItem>
+                                <Img
+                                    src={locationImage}
+                                    alt={locationId}
+                                    // onError={onChangeErrorImg}
+                                />
+                                <Name>{locationId}</Name>
+                                <Button
+                                    onClick={() => {
+                                        onDeleteLocation(locationId);
+                                    }}
+                                >
+                                    삭제
+                                </Button>
+                            </SpotItem>
+                        </RouteItem>
+                    );
+                })}
         </EditRouteListBlock>
     );
 };

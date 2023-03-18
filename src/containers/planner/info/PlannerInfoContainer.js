@@ -21,11 +21,20 @@ const PlannerInfoContainer = () => {
     const onTogglePlannerInfoModal = () => {
         dispatch(togglePlannerInfoModalAction());
     };
+
+    // 정보페이지 도달시 맨처음 plan 정보 로드.
     useEffect(() => {
         if (planner.plans) {
             dispatch(loadPlanAction(planner.plans[0]));
         }
-    }, [dispatch, planner.plans]);
+    }, [dispatch, planner]);
+
+    // useEffect(() => {
+    //     if (planner.plans) {
+    //         dispatch(loadPlanAction(planner.plans[0]));
+    //     }
+    // }, [dispatch]);
+
     // useEffect(() => {
     //     dispatch(loadPlannerAction());
     // });

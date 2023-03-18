@@ -10,6 +10,7 @@ import {
     changePlannerMemberCountAction,
     changePlannerTitleAction,
     createPlanAction,
+    deleteLocationAction,
     deletePlanAction,
     loadPlanAction,
     loadPlannerAction,
@@ -64,6 +65,20 @@ const EditRouteContainer = () => {
         dispatch(loadPlanAction(plan));
     };
 
+    const onDeleteLocation = (locationId) => {
+        if (plan) {
+            const { planId } = plan;
+            dispatch(deleteLocationAction({ plannerId, locationId, planId }));
+        }
+    };
+
+    // 수정페이지 도달시 맨처음 plan 정보 로드.
+    useEffect(() => {
+        if (planner.plans) {
+            dispatch(loadPlanAction(planner.plans[0]));
+        }
+    }, [dispatch, planner]);
+
     // // 플래너 정보 가져오기
     // useEffect(() => {
     //     dispatch(loadPlannerAction(planner.plannerId));
@@ -79,6 +94,7 @@ const EditRouteContainer = () => {
             onDeletePlan={onDeletePlan}
             onLoadPlan={onLoadPlan}
             onUpdatePlan={onUpdatePlan}
+            onDeleteLocation={onDeleteLocation}
         />
     );
 };

@@ -63,6 +63,7 @@ const EditCalendar = ({ planner, plan, onCreatePlan, onDeletePlan, onLoadPlan })
             </Calendar>
             <>
                 {plans &&
+                    plan &&
                     plans.map((p, i) => (
                         <Calendar
                             aria-current={p.planId === plan.planId ? 'date' : null}
