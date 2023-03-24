@@ -1,6 +1,6 @@
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import styled, { css } from 'styled-components';
 
 const Container = styled.div`
@@ -67,7 +67,7 @@ const Button = styled.button`
     }
 `;
 
-const ReviewPost = ({ reviewData, onChangeText, onCancel, onWritePost, isEdit }) => {
+const ReviewPost = ({ reviewData, onChangeText, fileList, onCancel, onWritePost, onFileUpload, isEdit }) => {
     const quillElement = useRef(null);
     const quillInstance = useRef(null);
 
@@ -86,18 +86,65 @@ const ReviewPost = ({ reviewData, onChangeText, onCancel, onWritePost, isEdit })
         });
 
         const quill = quillInstance.current;
-        quill.root.innerHTML = reviewData.content;
+        const toolbar = quill.getModule('toolbar');
+        toolbar.addHandler('image', () => {
+            const container = quillElement.current;
+            let input = container.querySelector('input[type=file]');
+            if (!input) {
+                input = document.createElement('input');
+                input.style = 'display:none';
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+                input.setAttribute('multiple', 'true');
+                input.onchange = () => {
+                    const files = input.files;
+                    if (input.value.length != 0) {
+                        const formData = new FormData();
+                        Array.apply(null, input.files).forEach((item) => {
+                            formData.append('files', item);
+                        });
+                        onFileUpload(formData);
+                    }
+
+                    input.remove();
+                };
+                quillElement.current.appendChild(input);
+            }
+            input.click();
+        });
+
+        quill.root.innerHTML = reviewData.content || '';
         quill.on('text-change', (delta, oldDelta, source) => {
-            onChangeText({ key: 'content', value: quill.root.innerHTML });
+            if (source == 'user') {
+                onChangeText({ key: 'content', value: quill.root.innerHTML });
+            }
         });
     }, []);
+
+    useEffect(() => {
+        if (isEdit) {
+            const quill = quillInstance.current;
+            if (quill) {
+                if (fileList) {
+                    fileList.map((item) => {
+                        quill.insertEmbed(quill.getSelection(), 'image', `/api/upload/files/${item}`, 'user');
+                    });
+                }
+            }
+        }
+    }, [fileList]);
+
+    const onPost = () => {
+        const fileList = quillElement.current.querySelector('input[type=file]');
+        onWritePost(fileList);
+    };
 
     return (
         <Container>
             <PostMain>
                 <BoxAlign>
                     <B>제목</B>
-                    <Input type="text" name="title" value={reviewData.title} onChange={(e) => onChangeText({ key: 'title', value: e.target.value })} />
+                    <Input type="text" name="title" value={reviewData.title} onChange={(e) => onChangeText({ key: 'title', value: e.target.value })} placeholder="제목을 입력하세요." />
                 </BoxAlign>
                 <BoxAlign>
                     <PostContentBox>
@@ -107,7 +154,7 @@ const ReviewPost = ({ reviewData, onChangeText, onCancel, onWritePost, isEdit })
             </PostMain>
             <PostFooterBox>
                 <Button onClick={onCancel}>취소</Button>
-                <Button onClick={onWritePost}>{isEdit ? '수정' : '쓰기'}</Button>
+                <Button onClick={onPost}>{isEdit ? '수정' : '쓰기'}</Button>
             </PostFooterBox>
         </Container>
     );

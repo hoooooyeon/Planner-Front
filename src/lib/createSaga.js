@@ -21,7 +21,6 @@ export default function createSaga(type, request) {
                 payload: e.response.data,
                 response: e.response
             });
-            console.log(e);
         }
         yield put(loadingFinishAction());
     }

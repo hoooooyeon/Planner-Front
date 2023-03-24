@@ -1,7 +1,7 @@
 import client from "./client";
 
 export const writeReview = ({ plannerId, title, content, writer }) => {
-    return client.post(`/api/reviews`, { plannerId, title, content, writer });
+    return client.post(`/api/reviews`, { plannerId: 2, title, content, writer });
 };
 
 export const loadReviewList = () => {
@@ -18,4 +18,12 @@ export const updateReview = ({ reviewId, title, content }) => {
 
 export const deleteReview = ({ reviewId }) => {
     return client.delete(`/api/reviews/${reviewId}`);
+};
+
+export const fileUpload = ({ formData }) => {
+    return client.post('/api/upload/file-upload', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
 };

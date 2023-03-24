@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 import Review from '../../components/review/ReviewList';
-import { loadReviewListAction } from '../../modules/reviewModule';
+import { initializeReviewAction, loadReviewListAction } from '../../modules/reviewModule';
 
 const ReviewContainer = ({ history }) => {
     const dispatch = useDispatch();
@@ -47,6 +47,7 @@ const ReviewContainer = ({ history }) => {
 
     // 리스트 가져오기
     useEffect(() => {
+        dispatch(initializeReviewAction({ property: 'review' }));
         dispatch(loadReviewListAction());
     }, [dispatch]);
 

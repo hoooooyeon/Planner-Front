@@ -3,6 +3,7 @@ import { takeLatest } from 'redux-saga/effects';
 import * as reviewAPI from '../lib/api/reviewAPI';
 
 // 액션 타입
+const initializeReviewType = 'review/INITAILIZE'
 const loadReviewListType = 'review/LOAD_REVIEWLIST';
 const loadReviewListSuccessType = 'review/LOAD_REVIEWLIST_SUCCESS';
 const loadReviewListFailureType = 'review/LOAD_REVIEWLIST_FAILURE';
@@ -19,8 +20,17 @@ const updateReivewFailureType = 'review/UPDATE_REVIEW_FAILURE';
 const deleteReviewType = 'review/DELETE_REVIEW';
 const deleteReviewSuccessType = 'review/DELETE_REVIEW_SUCCESS';
 const deleteReviewFailureType = 'review/DELETE_REVIEW_FAILURE';
+const fileUploadType = 'review/FILE_UPLOAD';
+const fileUploadSuccessType = 'review/FILE_UPLOAD_SUCCESS';
+const fileUploadFailureType = 'review/FILE_UPLOAD_FAILURE';
 
 // 액션
+export const initializeReviewAction = ({ property, value }) => ({
+    type: initializeReviewType,
+    property,
+    value
+});
+
 export const loadReviewListAction = () => ({
     type: loadReviewListType
 });
@@ -36,12 +46,10 @@ export const changeContentAction = ({ key, value }) => ({
     value
 });
 
-export const writeReviewAction = ({ plannerId, title, content, writer }) => ({
+export const writeReviewAction = (review, plannerId, nickName) => ({
     type: writeReviewType,
-    plannerId,
-    title,
-    content,
-    writer
+    ...review,
+    writer: nickName
 });
 
 export const updateReviewAction = ({ reviewId, title, content }) => ({
@@ -56,12 +64,19 @@ export const deleteReviewAction = (reviewId) => ({
     reviewId
 });
 
+export const fileUploadAction = ({ property, formData }) => ({
+    type: fileUploadType,
+    property,
+    formData
+});
+
 // saga
 const loadReviewListSaga = createSaga(loadReviewListType, reviewAPI.loadReviewList);
 const loadReviewSaga = createSaga(loadReviewType, reviewAPI.loadReview);
 const writeReviewSaga = createSaga(writeReviewType, reviewAPI.writeReview);
 const updateReviewSaga = createSaga(updateReviewType, reviewAPI.updateReview);
 const deleteReviewSaga = createSaga(deleteReviewType, reviewAPI.deleteReview);
+const fileUploadSaga = createSaga(fileUploadType, reviewAPI.fileUpload);
 
 export function* reviewSaga() {
     yield takeLatest(loadReviewListType, loadReviewListSaga);
@@ -69,11 +84,14 @@ export function* reviewSaga() {
     yield takeLatest(writeReviewType, writeReviewSaga);
     yield takeLatest(updateReviewType, updateReviewSaga);
     yield takeLatest(deleteReviewType, deleteReviewSaga);
+    yield takeLatest(fileUploadType, fileUploadSaga);
 };
 
 const initialState = {
     reviewList: [],
     review: {},
+    fileList: [],
+    newReviewId: null,
     status: {
         state: null,
         message: ''
@@ -82,6 +100,10 @@ const initialState = {
 
 function reviewReducer(state = initialState, action) {
     switch (action.type) {
+        case initializeReviewType: {
+            return { ...initialState };
+            //return { ...state, [action.property]: action.value || initialState[action.property] };
+        }
         case loadReviewListSuccessType: {
             return { ...state, reviewList: action.payload.data };
         }
@@ -91,14 +113,22 @@ function reviewReducer(state = initialState, action) {
         case changeContentType: {
             return { ...state, review: { ...state.review, [action.key]: action.value } };
         }
-        case writeReviewSuccessType:
-        case updateReviewSuccessType:
-        case deleteReviewSuccessType:
+        case writeReviewSuccessType: {
+            return { ...state, newReviewId: action.payload.data };
+        }
+        case updateReviewSuccessType: {
+            return { ...state, status: { state: action.payload.state, message: action.payload.message } };
+        }
+        case deleteReviewSuccessType: return;
+        case fileUploadSuccessType: {
+            return { ...state, fileList: action.payload.data };
+        }
         case loadReviewListFailureType:
         case loadReviewFailureType:
         case writeReviewFailureType:
         case updateReivewFailureType:
-        case deleteReviewFailureType: {
+        case deleteReviewFailureType:
+        case fileUploadFailureType: {
             return { ...state, status: { state: action.payload.state, message: action.payload.message } };
         }
         default: {
