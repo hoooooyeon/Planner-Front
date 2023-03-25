@@ -89,6 +89,8 @@ const DELETE_LOCATION_TYPE = 'planner/DELETE_LOCATION';
 const DELETE_LOCATION_SUCCESS_TYPE = 'planner/DELETE_LOCATION_SUCCESS';
 const DELETE_LOCATION_FAILURE_TYPE = 'planner/DELETE_LOCATION_FAILURE';
 
+const CHANGE_CUR_PLAN_ID_TYPE = 'planner/CHANGE_CUR_PLAN_ID';
+
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
     accountId,
@@ -142,6 +144,7 @@ export const updateLocationAction = ({ plannerId, locationId, locationContentId,
     planId,
 });
 export const deleteLocationAction = ({ plannerId, locationId, planId }) => ({ type: DELETE_LOCATION_TYPE, plannerId, locationId, planId });
+export const changeCurPlanIdAction = (planId) => ({ type: CHANGE_CUR_PLAN_ID_TYPE, planId });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -193,6 +196,11 @@ const initialState = {
     modal: {
         member: false,
         plannerInfo: false,
+    },
+    currentInfo: {
+        curPlannerId: null,
+        curPlanId: null,
+        curLocaId: null,
     },
     spots: [
         {
@@ -258,6 +266,10 @@ function plannerReducer(state = initialState, action) {
                     ...state.planner,
                     plannerId: action.payload.data,
                 },
+                // currentInfo: {
+                //     ...state.currentInfo,
+                //     curPlannerId: action.payload.data,
+                // },
             };
         case CREATE_PLANNER_FAILURE_TYPE:
             return {
@@ -290,11 +302,15 @@ function plannerReducer(state = initialState, action) {
                 },
             };
         case CHANGE_PLANNER_DATE_END_TYPE:
+            let endDate = new Date(action.date);
+            endDate.setDate(endDate.getDate() + state.planner.plans.length - 1);
+
             return {
                 ...state,
                 planner: {
                     ...state.planner,
-                    planDateEnd: letsFormat(action.date),
+                    // planDateEnd: letsFormat(action.date),
+                    planDateEnd: letsFormat(endDate),
                 },
             };
         case CHANGE_PLANNER_EXPENSE_TYPE:
@@ -430,6 +446,10 @@ function plannerReducer(state = initialState, action) {
                     ...state.planner,
                     planDateEnd: letsFormat(date),
                 },
+                currentInfo: {
+                    ...state.currentInfo,
+                    curPlanId: action.payload.data,
+                },
             };
         case CREATE_PLAN_FAILURE_TYPE:
             return {
@@ -448,17 +468,24 @@ function plannerReducer(state = initialState, action) {
         case DELETE_PLAN_SUCCESS_TYPE:
             return {
                 ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                    curPlanId: state.planner.plans[0] || null,
+                },
             };
         case DELETE_PLAN_FAILURE_TYPE:
             return {
                 ...state,
                 plannerError: action.payload.error,
             };
-        case LOAD_PLAN_TYPE:
-            return {
-                ...state,
-                plan: action.plan || null,
-            };
+        // case LOAD_PLAN_TYPE:
+        //     return {
+        //         ...state,
+        //         currentInfo: {
+        //             ...state.currentInfo,
+        //             curPlanId: action.plan,
+        //         },
+        //     };
         case CHANGE_PLAN_LOCATION_TYPE:
             return {
                 ...state,
@@ -524,6 +551,10 @@ function plannerReducer(state = initialState, action) {
         case CREATE_LOCATION_SUCCESS_TYPE:
             return {
                 ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                    curLocaId: action.payload.data,
+                },
             };
         case CREATE_LOCATION_FAILURE_TYPE:
             return {
@@ -542,11 +573,22 @@ function plannerReducer(state = initialState, action) {
         case DELETE_LOCATION_SUCCESS_TYPE:
             return {
                 ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                },
             };
         case DELETE_LOCATION_FAILURE_TYPE:
             return {
                 ...state,
                 plannerError: action.payload.error,
+            };
+        case CHANGE_CUR_PLAN_ID_TYPE:
+            return {
+                ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                    curPlanId: action.planId,
+                },
             };
         default:
             return state;

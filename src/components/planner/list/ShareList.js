@@ -290,6 +290,7 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner }) => {
                                     drag={drag.current}
                                     onClick={() => {
                                         onLoadPlanner(p.plannerId);
+                                        // onChangePlannerId(p.plannerId);
                                     }}
                                 >
                                     <Link to="/PlannerInfo">

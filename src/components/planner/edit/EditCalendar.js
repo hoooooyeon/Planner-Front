@@ -47,8 +47,8 @@ const DeleteButton = styled.div`
     left: 50px;
 `;
 
-const EditCalendar = ({ planner, plan, onCreatePlan, onDeletePlan, onLoadPlan }) => {
-    const { plans } = planner;
+const EditCalendar = ({ planner, plan, plans, onCreatePlan, onDeletePlan, onLoadPlan, onChangeCurPlanId }) => {
+    //const { plans } = planner;
 
     const letsFormat = (d) => {
         const date = new Date(d);
@@ -63,6 +63,29 @@ const EditCalendar = ({ planner, plan, onCreatePlan, onDeletePlan, onLoadPlan })
             </Calendar>
             <>
                 {plans &&
+                    plans.map((p, i) => (
+                        <Calendar
+                            //aria-current={p.planId === plan.planId ? 'date' : null}
+                            onClick={() => {
+                                // onLoadPlan(p);
+                                onChangeCurPlanId(p.planId);
+                            }}
+                            key={p.planId}
+                        >
+                            <DeleteButton
+                                onClick={() => {
+                                    onDeletePlan(p.planId);
+                                }}
+                            >
+                                x
+                            </DeleteButton>
+                            <RouteLine />
+                            {letsFormat(p.planDate)}
+                        </Calendar>
+                    ))}
+            </>
+        </EditCalendarBlock>
+        /* {plans &&
                     plan &&
                     plans.map((p, i) => (
                         <Calendar
@@ -84,7 +107,7 @@ const EditCalendar = ({ planner, plan, onCreatePlan, onDeletePlan, onLoadPlan })
                         </Calendar>
                     ))}
             </>
-        </EditCalendarBlock>
+        </EditCalendarBlock> */
     );
 };
 

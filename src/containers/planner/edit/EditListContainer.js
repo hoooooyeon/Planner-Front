@@ -4,11 +4,12 @@ import { changePlanLocationAction, createLocationAction } from '../../../modules
 
 const EditListContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, spots, plan } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, spots, plan, currentInfo } = useSelector(({ plannerReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         spots: plannerReducer.spots,
         plan: plannerReducer.plan,
+        currentInfo: plannerReducer.currentInfo,
     }));
 
     const onChangePlanLocation = (location) => {
@@ -17,12 +18,12 @@ const EditListContainer = () => {
 
     const { plannerId } = planner;
     const onCreateLocation = (spot) => {
-        if (plan) {
-            const { planId } = plan;
+        if (currentInfo) {
+            const { curPlanId } = currentInfo;
             const { contentid, firstimage, firstimage2 } = spot;
             const locationImage = firstimage !== '' ? firstimage : firstimage2;
             const locationTransportation = 1;
-            dispatch(createLocationAction({ plannerId, contentid, locationImage, locationTransportation, planId }));
+            dispatch(createLocationAction({ plannerId, contentid, locationImage, locationTransportation, curPlanId }));
         }
     };
 

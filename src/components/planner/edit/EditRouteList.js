@@ -15,6 +15,18 @@ const RouteLine = styled.div`
     top: -10px;
 `;
 
+const RouteList = styled.div`
+    border: 1px solid blue;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+
+    &[aria-current] {
+        display: flex;
+    }
+`;
+
 const RouteItem = styled.div`
     display: flex;
     flex-direction: column;
@@ -90,7 +102,8 @@ const Button = styled.button`
     height: 2rem;
     cursor: pointer;
 `;
-const EditRouteList = ({ planner, plan, onUpdatePlan, onDeleteLocation }) => {
+
+const EditRouteList = ({ planner, plan, plans, currentInfo, onUpdatePlan, onDeleteLocation }) => {
     const categoryList = [
         {
             value: '비행기',
@@ -105,41 +118,82 @@ const EditRouteList = ({ planner, plan, onUpdatePlan, onDeleteLocation }) => {
 
     return (
         <EditRouteListBlock>
-            {plan &&
-                plan.planLocations.map((p, i) => {
-                    const { locationId, locationImage, locationTransportation } = p;
-                    return (
-                        <RouteItem key={i}>
-                            <RouteLine />
-                            <TransItem required defaultValue="">
-                                <option value="" disabled>
-                                    선택
-                                </option>
-                                {categoryList.map((item) => (
-                                    <option value={item.value} key={item.key}>
-                                        {item.value}
-                                    </option>
-                                ))}
-                            </TransItem>
-                            <SpotItem>
-                                <Img
-                                    src={locationImage}
-                                    alt={locationId}
-                                    // onError={onChangeErrorImg}
-                                />
-                                <Name>{locationId}</Name>
-                                <Button
-                                    onClick={() => {
-                                        onDeleteLocation(locationId);
-                                    }}
-                                >
-                                    삭제
-                                </Button>
-                            </SpotItem>
-                        </RouteItem>
-                    );
-                })}
+            {plans &&
+                plans.map((p, i) => (
+                    <RouteList aria-current={p.planId === currentInfo.curPlanId ? 'plan' : null}>
+                        {p.planLocations.map((pl, i) => {
+                            const { locationId, locationImage, locationTransportation } = pl;
+                            return (
+                                <RouteItem key={i}>
+                                    <RouteLine />
+                                    <TransItem required defaultValue="">
+                                        <option value="" disabled>
+                                            선택
+                                        </option>
+                                        {categoryList.map((item) => (
+                                            <option value={item.value} key={item.key}>
+                                                {item.value}
+                                            </option>
+                                        ))}
+                                    </TransItem>
+                                    <SpotItem>
+                                        <Img
+                                            src={locationImage}
+                                            alt={locationId}
+                                            // onError={onChangeErrorImg}
+                                        />
+                                        <Name>{locationId}</Name>
+                                        <Button
+                                            onClick={() => {
+                                                onDeleteLocation(locationId);
+                                            }}
+                                        >
+                                            삭제
+                                        </Button>
+                                    </SpotItem>
+                                </RouteItem>
+                            );
+                        })}
+                    </RouteList>
+                ))}
         </EditRouteListBlock>
+
+        // <EditRouteListBlock>
+        // {plan &&
+        //         plan.planLocations.map((p, i) => {
+        //             const { locationId, locationImage, locationTransportation } = p;
+        //             return (
+        //                 <RouteItem key={i}>
+        //                     <RouteLine />
+        //                     <TransItem required defaultValue="">
+        //                         <option value="" disabled>
+        //                             선택
+        //                         </option>
+        //                         {categoryList.map((item) => (
+        //                             <option value={item.value} key={item.key}>
+        //                                 {item.value}
+        //                             </option>
+        //                         ))}
+        //                     </TransItem>
+        //                     <SpotItem>
+        //                         <Img
+        //                             src={locationImage}
+        //                             alt={locationId}
+        //                             // onError={onChangeErrorImg}
+        //                         />
+        //                         <Name>{locationId}</Name>
+        //                         <Button
+        //                             onClick={() => {
+        //                                 onDeleteLocation(locationId);
+        //                             }}
+        //                         >
+        //                             삭제
+        //                         </Button>
+        //                     </SpotItem>
+        //                 </RouteItem>
+        //             );
+        //         })}
+        // </EditRouteListBlock>
     );
 };
 

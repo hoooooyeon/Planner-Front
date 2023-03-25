@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerList from '../../components/planner/list/PlannerList';
-import { changePlannerAccountAction, createPlannerAction, loadPlannerAction, loadSharePlannerListAction, resetPlannerInfoFormAction } from '../../modules/plannerModule';
+import { changePlannerAccountAction, changePlannerIdAction, createPlannerAction, loadPlannerAction, loadSharePlannerListAction } from '../../modules/plannerModule';
 
 const PlannerListContainer = () => {
     const dispatch = useDispatch();
