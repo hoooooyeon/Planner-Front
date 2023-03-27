@@ -47,7 +47,7 @@ const DeleteButton = styled.div`
     left: 50px;
 `;
 
-const EditCalendar = ({ planner, plan, plans, onCreatePlan, onDeletePlan, onLoadPlan, onChangeCurPlanId }) => {
+const EditCalendar = ({ planner, plan, plans, currentInfo, onCreatePlan, onDeletePlan, onLoadPlan, onChangeCurPlanId }) => {
     //const { plans } = planner;
 
     const letsFormat = (d) => {
@@ -55,6 +55,27 @@ const EditCalendar = ({ planner, plan, plans, onCreatePlan, onDeletePlan, onLoad
         return ('0' + (date.getMonth() + 1)).slice(-2) + '/' + ('0' + date.getDate()).slice(-2);
     };
 
+    const onClickDeletePlan = async (planId) => {
+        const onDelete = () => {
+            onDeletePlan(planId);
+        };
+        const onChange = () => {
+            onChangeCurPlanId(plans[0].planId || null);
+        };
+        await onDelete();
+        await onChange();
+    };
+    // const onEditPost = async () => {
+    //     setIsEdit(false);
+    //     const update = () => {
+    //         onUpdateMemo(curMemo.memoId);
+    //     };
+    //     const load = () => {
+    //         onLoadPlanner();
+    //     };
+    //     await update();
+    //     await load();
+    // };
     return (
         <EditCalendarBlock>
             <Calendar onClick={onCreatePlan}>
@@ -65,7 +86,7 @@ const EditCalendar = ({ planner, plan, plans, onCreatePlan, onDeletePlan, onLoad
                 {plans &&
                     plans.map((p, i) => (
                         <Calendar
-                            //aria-current={p.planId === plan.planId ? 'date' : null}
+                            aria-current={p.planId === currentInfo.planId ? 'date' : null}
                             onClick={() => {
                                 // onLoadPlan(p);
                                 onChangeCurPlanId(p.planId);
@@ -74,7 +95,9 @@ const EditCalendar = ({ planner, plan, plans, onCreatePlan, onDeletePlan, onLoad
                         >
                             <DeleteButton
                                 onClick={() => {
-                                    onDeletePlan(p.planId);
+                                    onClickDeletePlan(p.planId);
+                                    // onDeletePlan(p.planId);
+                                    // onChangeCurPlanId(plans[0].planId || null);
                                 }}
                             >
                                 x

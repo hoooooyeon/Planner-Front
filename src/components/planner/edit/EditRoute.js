@@ -168,7 +168,7 @@ const EditRoute = ({ planner, plan, currentInfo, onChangePlannerDateStart, onCha
                 </DateBox>
             </InfoForm>
             <RouteBox>
-                <EditCalendar planner={planner} plan={plan} plans={plans} onLoadPlan={onLoadPlan} onCreatePlan={onCreatePlan} onDeletePlan={onDeletePlan} onChangeCurPlanId={onChangeCurPlanId} />
+                <EditCalendar planner={planner} plan={plan} plans={plans} currentInfo={currentInfo} onLoadPlan={onLoadPlan} onCreatePlan={onCreatePlan} onDeletePlan={onDeletePlan} onChangeCurPlanId={onChangeCurPlanId} />
                 <EditRouteList planner={planner} plan={plan} plans={plans} currentInfo={currentInfo} onUpdatePlan={onUpdatePlan} onDeleteLocation={onDeleteLocation} />
             </RouteBox>
         </EditRouteBlock>

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfo from '../../../components/planner/info/PlannerInfo';
-import { deletePlannerAction, loadPlanAction, loadPlannerAction, toggleMemberModalAction, togglePlannerInfoModalAction } from '../../../modules/plannerModule';
+import { changeCurPlanIdAction, deletePlannerAction, loadPlanAction, loadPlannerAction, toggleMemberModalAction, togglePlannerInfoModalAction } from '../../../modules/plannerModule';
 
 const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
@@ -9,6 +9,8 @@ const PlannerInfoContainer = () => {
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
     }));
+
+    const { plans } = planner;
 
     const onDeletePlanner = () => {
         dispatch(deletePlannerAction(planner.plannerId));
@@ -22,13 +24,6 @@ const PlannerInfoContainer = () => {
         dispatch(togglePlannerInfoModalAction());
     };
 
-    // 정보페이지 도달시 맨처음 plan 정보 로드.
-    useEffect(() => {
-        if (planner.plans) {
-            dispatch(loadPlanAction(planner.plans[0]));
-        }
-    }, [dispatch, planner]);
-
     // useEffect(() => {
     //     if (planner.plans) {
     //         dispatch(loadPlanAction(planner.plans[0]));
@@ -38,6 +33,16 @@ const PlannerInfoContainer = () => {
     // useEffect(() => {
     //     dispatch(loadPlannerAction());
     // });
+
+    // 수정페이지 도달시 맨처음 currentInfo plan 설정.
+    useEffect(() => {
+        if (plans && plans.length !== 0) {
+            dispatch(changeCurPlanIdAction(plans[0].planId));
+        } else if (plans && plans.length === 0) {
+            dispatch(changeCurPlanIdAction(null));
+        }
+    }, [dispatch, plans]);
+
     return <PlannerInfo planner={planner} onDeletePlanner={onDeletePlanner} onToggleMemberModal={onToggleMemberModal} onTogglePlannerInfoModal={onTogglePlannerInfoModal} />;
 };
 

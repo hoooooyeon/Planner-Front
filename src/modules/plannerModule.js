@@ -198,9 +198,9 @@ const initialState = {
         plannerInfo: false,
     },
     currentInfo: {
-        curPlannerId: null,
-        curPlanId: null,
-        curLocaId: null,
+        plannerId: null,
+        planId: null,
+        locaId: null,
     },
     spots: [
         {
@@ -266,10 +266,11 @@ function plannerReducer(state = initialState, action) {
                     ...state.planner,
                     plannerId: action.payload.data,
                 },
-                // currentInfo: {
-                //     ...state.currentInfo,
-                //     curPlannerId: action.payload.data,
-                // },
+                currentInfo: {
+                    plannerId: null,
+                    planId: null,
+                    locaId: null,
+                },
             };
         case CREATE_PLANNER_FAILURE_TYPE:
             return {
@@ -448,7 +449,7 @@ function plannerReducer(state = initialState, action) {
                 },
                 currentInfo: {
                     ...state.currentInfo,
-                    curPlanId: action.payload.data,
+                    planId: action.payload.data,
                 },
             };
         case CREATE_PLAN_FAILURE_TYPE:
@@ -470,7 +471,7 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 currentInfo: {
                     ...state.currentInfo,
-                    curPlanId: state.planner.plans[0] || null,
+                    // planId: state.planner.plans[0].planId || null,
                 },
             };
         case DELETE_PLAN_FAILURE_TYPE:
@@ -553,7 +554,7 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 currentInfo: {
                     ...state.currentInfo,
-                    curLocaId: action.payload.data,
+                    locaId: action.payload.data,
                 },
             };
         case CREATE_LOCATION_FAILURE_TYPE:
@@ -587,7 +588,7 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 currentInfo: {
                     ...state.currentInfo,
-                    curPlanId: action.planId,
+                    planId: action.planId,
                 },
             };
         default:

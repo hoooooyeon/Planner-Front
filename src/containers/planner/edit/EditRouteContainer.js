@@ -92,22 +92,15 @@ const EditRouteContainer = () => {
 
     const onDeleteLocation = (locationId) => {
         if (currentInfo) {
-            const { curPlanId } = currentInfo;
-            dispatch(deleteLocationAction({ plannerId, locationId, curPlanId }));
+            const { planId } = currentInfo;
+            dispatch(deleteLocationAction({ plannerId, locationId, planId }));
         }
     };
 
-    // 수정페이지 도달시 맨처음 plan 정보 로드.
-    useEffect(() => {
-        if (planner.plans[0]) {
-            dispatch(changeCurPlanIdAction(planner.plans[0].planId));
-        }
-    }, [dispatch]);
-
     // planner 정보 가져오기
     useEffect(() => {
-        if (currentInfo) {
-            const { curPlannerId } = currentInfo;
+        if (currentInfo && plannerId) {
+            // const { curPlannerId } = currentInfo;
             dispatch(loadPlannerAction(plannerId));
             // dispatch(loadPlannerAction(curPlannerId));
         }

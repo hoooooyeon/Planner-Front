@@ -16,12 +16,10 @@ const RouteLine = styled.div`
 `;
 
 const RouteList = styled.div`
-    border: 1px solid blue;
     display: none;
     flex-direction: column;
     align-items: center;
     padding: 0.5rem;
-
     &[aria-current] {
         display: flex;
     }
@@ -120,7 +118,7 @@ const EditRouteList = ({ planner, plan, plans, currentInfo, onUpdatePlan, onDele
         <EditRouteListBlock>
             {plans &&
                 plans.map((p, i) => (
-                    <RouteList aria-current={p.planId === currentInfo.curPlanId ? 'plan' : null}>
+                    <RouteList aria-current={p.planId === currentInfo.planId ? 'plan' : null}>
                         {p.planLocations.map((pl, i) => {
                             const { locationId, locationImage, locationTransportation } = pl;
                             return (
