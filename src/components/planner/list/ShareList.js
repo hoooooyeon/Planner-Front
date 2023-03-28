@@ -156,7 +156,7 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const ShareList = ({ sharePlanners, plannerError, onLoadPlanner }) => {
+const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlannerId }) => {
     const hiddenBoxRef = useRef();
     const sharesRef = useRef();
     const itemRef = useRef();
@@ -290,7 +290,7 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner }) => {
                                     drag={drag.current}
                                     onClick={() => {
                                         onLoadPlanner(p.plannerId);
-                                        // onChangePlannerId(p.plannerId);
+                                        // onChangeCurPlannerId(p.plannerId);
                                     }}
                                 >
                                     <Link to="/PlannerInfo">

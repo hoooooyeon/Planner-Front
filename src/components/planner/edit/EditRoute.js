@@ -116,7 +116,7 @@ const RouteBox = styled.div`
     display: flex;
 `;
 
-const EditRoute = ({ planner, plan, currentInfo, onChangePlannerDateStart, onChangePlannerDateEnd, onCreatePlan, onDeletePlan, onLoadPlan, onUpdatePlan, onDeleteLocation, onUpdatePlanner, onChangeCurPlanId }) => {
+const EditRoute = ({ planner, plan, currentInfo, onChangePlannerDateStart, onChangePlannerDateEnd, onCreatePlan, onDeletePlan, onLoadPlan, onUpdatePlan, onDeleteLocation, onUpdatePlanner, onChangeCurPlanId, onAddDate }) => {
     const { planDateStart, planDateEnd, plans } = planner;
 
     // const [dateRange, setDateRange] = useState([new Date(planDateStart), new Date(planDateEnd)]);
@@ -125,10 +125,12 @@ const EditRoute = ({ planner, plan, currentInfo, onChangePlannerDateStart, onCha
     // datePicker의 날짜와 planner의 날짜를 각각 나눔.
     const onChangeDate = (date) => {
         setStartDate(date);
-        onChangePlannerDateStart(date);
-        onChangePlannerDateEnd(date);
+        // onChangePlannerDateStart(date);
+        // onChangePlannerDateEnd(date);
         onUpdatePlanner(date);
-        onUpdatePlan();
+        if (plans) {
+            // onUpdatePlan();
+        }
     };
 
     // 총 여행일 구하는 함수
@@ -168,7 +170,17 @@ const EditRoute = ({ planner, plan, currentInfo, onChangePlannerDateStart, onCha
                 </DateBox>
             </InfoForm>
             <RouteBox>
-                <EditCalendar planner={planner} plan={plan} plans={plans} currentInfo={currentInfo} onLoadPlan={onLoadPlan} onCreatePlan={onCreatePlan} onDeletePlan={onDeletePlan} onChangeCurPlanId={onChangeCurPlanId} />
+                <EditCalendar
+                    planner={planner}
+                    plan={plan}
+                    plans={plans}
+                    currentInfo={currentInfo}
+                    onLoadPlan={onLoadPlan}
+                    onCreatePlan={onCreatePlan}
+                    onDeletePlan={onDeletePlan}
+                    onChangeCurPlanId={onChangeCurPlanId}
+                    onAddDate={onAddDate}
+                />
                 <EditRouteList planner={planner} plan={plan} plans={plans} currentInfo={currentInfo} onUpdatePlan={onUpdatePlan} onDeleteLocation={onDeleteLocation} />
             </RouteBox>
         </EditRouteBlock>

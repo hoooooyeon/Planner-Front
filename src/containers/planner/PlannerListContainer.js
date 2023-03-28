@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerList from '../../components/planner/list/PlannerList';
-import { changePlannerAccountAction, changePlannerIdAction, createPlannerAction, loadPlannerAction, loadSharePlannerListAction } from '../../modules/plannerModule';
+import { changeCurPlannerIdAction, changePlannerAccountAction, changePlannerIdAction, createPlannerAction, loadPlannerAction, loadSharePlannerListAction } from '../../modules/plannerModule';
 
 const PlannerListContainer = () => {
     const dispatch = useDispatch();
@@ -38,7 +38,10 @@ const PlannerListContainer = () => {
         dispatch(loadPlannerAction(plannerId));
     };
 
-    return <PlannerList onCreatePlanner={onCreatePlanner} sharePlanners={sharePlanners} planner={planner} onLoadPlanner={onLoadPlanner} plannerError={plannerError} />;
+    const onChangeCurPlannerId = (plannerId) => {
+        dispatch(changeCurPlannerIdAction(plannerId));
+    };
+    return <PlannerList onCreatePlanner={onCreatePlanner} sharePlanners={sharePlanners} planner={planner} onLoadPlanner={onLoadPlanner} plannerError={plannerError} onChangeCurPlannerId={onChangeCurPlannerId} />;
 };
 
 export default PlannerListContainer;

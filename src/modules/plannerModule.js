@@ -90,6 +90,7 @@ const DELETE_LOCATION_SUCCESS_TYPE = 'planner/DELETE_LOCATION_SUCCESS';
 const DELETE_LOCATION_FAILURE_TYPE = 'planner/DELETE_LOCATION_FAILURE';
 
 const CHANGE_CUR_PLAN_ID_TYPE = 'planner/CHANGE_CUR_PLAN_ID';
+const CHANGE_CUR_PLANNER_ID_TYPE = 'planner/CHANGE_CUR_PLANNER_ID';
 
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
@@ -145,6 +146,7 @@ export const updateLocationAction = ({ plannerId, locationId, locationContentId,
 });
 export const deleteLocationAction = ({ plannerId, locationId, planId }) => ({ type: DELETE_LOCATION_TYPE, plannerId, locationId, planId });
 export const changeCurPlanIdAction = (planId) => ({ type: CHANGE_CUR_PLAN_ID_TYPE, planId });
+export const changeCurPlannerIdAction = (plannerId) => ({ type: CHANGE_CUR_PLANNER_ID_TYPE, plannerId });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -280,6 +282,9 @@ function plannerReducer(state = initialState, action) {
         case UPDATE_PLANNER_SUCCESS_TYPE:
             return {
                 ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                },
             };
         case UPDATE_PLANNER_FAILURE_TYPE:
             return {
@@ -438,15 +443,9 @@ function plannerReducer(state = initialState, action) {
                 },
             };
         case CREATE_PLAN_SUCCESS_TYPE:
-            let date = new Date(state.planner.planDateEnd);
-            date.setDate(date.getDate() + 1);
-
             return {
                 ...state,
-                planner: {
-                    ...state.planner,
-                    planDateEnd: letsFormat(date),
-                },
+
                 currentInfo: {
                     ...state.currentInfo,
                     planId: action.payload.data,
@@ -589,6 +588,14 @@ function plannerReducer(state = initialState, action) {
                 currentInfo: {
                     ...state.currentInfo,
                     planId: action.planId,
+                },
+            };
+        case CHANGE_CUR_PLANNER_ID_TYPE:
+            return {
+                ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                    plannerId: action.plannerId,
                 },
             };
         default:

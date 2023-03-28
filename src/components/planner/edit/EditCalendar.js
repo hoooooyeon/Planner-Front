@@ -47,9 +47,7 @@ const DeleteButton = styled.div`
     left: 50px;
 `;
 
-const EditCalendar = ({ planner, plan, plans, currentInfo, onCreatePlan, onDeletePlan, onLoadPlan, onChangeCurPlanId }) => {
-    //const { plans } = planner;
-
+const EditCalendar = ({ planner, plan, plans, currentInfo, onCreatePlan, onDeletePlan, onLoadPlan, onChangeCurPlanId, onAddDate }) => {
     const letsFormat = (d) => {
         const date = new Date(d);
         return ('0' + (date.getMonth() + 1)).slice(-2) + '/' + ('0' + date.getDate()).slice(-2);
@@ -65,20 +63,15 @@ const EditCalendar = ({ planner, plan, plans, currentInfo, onCreatePlan, onDelet
         await onDelete();
         await onChange();
     };
-    // const onEditPost = async () => {
-    //     setIsEdit(false);
-    //     const update = () => {
-    //         onUpdateMemo(curMemo.memoId);
-    //     };
-    //     const load = () => {
-    //         onLoadPlanner();
-    //     };
-    //     await update();
-    //     await load();
-    // };
+
     return (
         <EditCalendarBlock>
-            <Calendar onClick={onCreatePlan}>
+            <Calendar
+                onClick={() => {
+                    onCreatePlan();
+                    onAddDate();
+                }}
+            >
                 <RouteLine />
                 더하기
             </Calendar>

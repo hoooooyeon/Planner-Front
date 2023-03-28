@@ -5,9 +5,10 @@ import { changeCurPlanIdAction, deletePlannerAction, loadPlanAction, loadPlanner
 
 const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, currentInfo } = useSelector(({ plannerReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
+        currentInfo: plannerReducer.currentInfo,
     }));
 
     const { plans } = planner;
