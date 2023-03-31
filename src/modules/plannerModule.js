@@ -1,5 +1,5 @@
 import * as plannerAPI from '../lib/api/plannerAPI';
-import { takeLatest } from 'redux-saga/effects';
+import { takeLatest, takeEvery } from 'redux-saga/effects';
 import createSaga from '../lib/createSaga';
 
 const LOAD_SHARE_PLANNER_LIST_TYPE = 'planner/LOAD_SHARE_PLANNER_LIST';
@@ -175,7 +175,7 @@ export function* plannerSaga() {
     yield takeLatest(UPDATE_MEMO_TYPE, updateMemoSaga);
     yield takeLatest(DELETE_MEMO_TYPE, deleteMemoSaga);
     yield takeLatest(CREATE_PLAN_TYPE, createPlanSaga);
-    yield takeLatest(UPDATE_PLAN_TYPE, updatePlanSaga);
+    yield takeEvery(UPDATE_PLAN_TYPE, updatePlanSaga);
     yield takeLatest(DELETE_PLAN_TYPE, deletePlanSaga);
     yield takeLatest(INVITE_MEMBER_TYPE, inviteMemberSaga);
     yield takeLatest(DELETE_MEMBER_TYPE, deleteMemberSaga);
@@ -203,6 +203,7 @@ const initialState = {
         plannerId: null,
         planId: null,
         locaId: null,
+        memoId: null,
     },
     spots: [
         {
@@ -385,6 +386,10 @@ function plannerReducer(state = initialState, action) {
         case CREATE_MEMO_SUCCESS_TYPE:
             return {
                 ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                    memoId: action.payload.data,
+                },
             };
         case CREATE_MEMO_FAILURE_TYPE:
             return {
@@ -394,6 +399,9 @@ function plannerReducer(state = initialState, action) {
         case UPDATE_MEMO_SUCCESS_TYPE:
             return {
                 ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                },
             };
         case UPDATE_MEMO_FAILURE_TYPE:
             return {
@@ -403,6 +411,9 @@ function plannerReducer(state = initialState, action) {
         case DELETE_MEMO_SUCCESS_TYPE:
             return {
                 ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                },
             };
         case DELETE_MEMO_FAILURE_TYPE:
             return {
@@ -459,6 +470,9 @@ function plannerReducer(state = initialState, action) {
         case UPDATE_PLAN_SUCCESS_TYPE:
             return {
                 ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                },
             };
         case UPDATE_PLAN_FAILURE_TYPE:
             return {
@@ -506,6 +520,9 @@ function plannerReducer(state = initialState, action) {
         case INVITE_MEMBER_SUCCESS_TYPE:
             return {
                 ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                },
             };
         case INVITE_MEMBER_FAILURE_TYPE:
             return {
@@ -515,6 +532,9 @@ function plannerReducer(state = initialState, action) {
         case DELETE_MEMBER_SUCCESS_TYPE:
             return {
                 ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                },
             };
         case DELETE_MEMBER_FAILURE_TYPE:
             console.log(action.nickName);

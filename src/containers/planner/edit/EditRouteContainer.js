@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditRoute from '../../../components/planner/edit/EditRoute';
@@ -39,13 +40,29 @@ const EditRouteContainer = () => {
     const onUpdatePlanner = (date) => {
         let planDateStart = letsFormat(date);
         let planDateEnd = letsFormat(date);
-        // let planDateEnd = letsFormat2(date.setDate(date.getDate() + plans.length - 1));
+
+        if (plans.length !== 0) {
+            planDateEnd = letsFormat(new Date(planDateEnd).setDate(new Date(planDateEnd).getDate() + plans.length - 1));
+        }
         dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
     };
 
-    const onAddDate = () => {
-        let date = letsFormat(new Date(planDateEnd).setDate(new Date(planDateEnd).getDate() + 1));
-        console.log(date);
+    // plan 추가시 날짜 하루 생성
+    const onAddDate = (date) => {
+        if (plans.length === 0) {
+            return;
+        }
+
+        let curDate = new Date(date);
+        let planDateEnd = letsFormat(curDate.setDate(curDate.getDate() + 1));
+
+        dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
+    };
+
+    // plan 삭제시 해당 날짜  제거
+    const onSubDate = (date) => {
+        let curDate = new Date(date);
+        let planDateEnd = letsFormat(curDate.setDate(curDate.getDate() - 1));
 
         dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
     };
@@ -81,18 +98,45 @@ const EditRouteContainer = () => {
     const onDeletePlan = (planId) => {
         dispatch(deletePlanAction({ plannerId, planId }));
     };
-    const onUpdatePlan = () => {
-        if (plan) {
-            // const planDate = letsFormat(new Date(planDateStart));
-            const date = new Date(planDateStart);
 
+    const onUpdatePlan = () => {};
+
+    useEffect(() => {
+        let date = new Date(planDateStart);
+        let planDate = letsFormat2(date);
+        let planId = 0;
+
+        if (plans) {
             for (let i = 0; i < plans.length; i++) {
-                let planId = plans[i].planId;
-                // let planDate = letsFormat(date.setDate(date.getDate() + 1));
+                planId = plans[i].planId;
 
-                // dispatch(updatePlanAction({ plannerId, planId, planDate }));
+                if (i >= 1) {
+                    planDate = letsFormat2(date.setDate(date.getDate() + 1));
+                }
+                dispatch(updatePlanAction({ plannerId, planId, planDate }));
             }
         }
+    }, [dispatch, planDateStart, planDateEnd, plannerId]);
+
+    // plan 삭제로 날짜가 제거될 때, plan 날짜들을 여행일자에 맞게 수정
+    const onUpdateSubPlan = () => {
+        // for 사용
+        // let date = new Date(planDateStart);
+        // let planDate = letsFormat2(date);
+        // for (let i = 0; i < plans.length; i++) {
+        //     let planId = plans[i].planId;
+        //     if (i >= 1) {
+        //         planDate = letsFormat2(date.setDate(date.getDate() + 1));
+        //     }
+        //     dispatch(updatePlanAction({ plannerId, planId, planDate }));
+        // }
+        // map 사용
+        // plans.map((p) => {
+        //     let planId = p.planId;
+        //     let i = 0;
+        //     const planDate = letsFormat(date.setDate(date.getDate() + i));
+        //     return dispatch(updatePlanAction({ plannerId, planId, planDate }));
+        // });
     };
 
     const onLoadPlan = (plan) => {
@@ -134,6 +178,8 @@ const EditRouteContainer = () => {
             onUpdatePlanner={onUpdatePlanner}
             onChangeCurPlanId={onChangeCurPlanId}
             onAddDate={onAddDate}
+            onSubDate={onSubDate}
+            onUpdateSubPlan={onUpdateSubPlan}
         />
     );
 };

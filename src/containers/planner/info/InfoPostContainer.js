@@ -5,10 +5,11 @@ import { changeMemoContentAction, changeMemoTitleAction, createMemoAction, delet
 
 const InfoPostContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, curMemo } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, curMemo, currentInfo } = useSelector(({ plannerReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         curMemo: plannerReducer.curMemo,
+        currentInfo: plannerReducer.currentInfo,
     }));
     const { title, content } = curMemo;
     const { plannerId } = planner;

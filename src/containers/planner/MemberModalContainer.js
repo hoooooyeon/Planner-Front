@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MemberModal from '../../components/planner/MemberModal';
 import { changeMemberAction, deleteMemberAction, inviteMemberAction, resetMemberAction, toggleMemberModalAction } from '../../modules/plannerModule';
@@ -30,6 +31,15 @@ const MemberModalContainer = () => {
     const onToggleMemberModal = () => {
         dispatch(toggleMemberModalAction());
     };
+
+    // planner 정보 가져오기
+    //  useEffect(() => {
+    //     if (currentInfo && plannerId) {
+    //         // const { curPlannerId } = currentInfo;
+    //         // dispatch(loadPlannerAction(curPlannerId));
+    //         dispatch(loadPlannerAction(plannerId));
+    //     }
+    // }, [dispatch, currentInfo, plannerId]);
 
     return (
         <MemberModal

@@ -11,7 +11,7 @@ const PlannerInfoContainer = () => {
         currentInfo: plannerReducer.currentInfo,
     }));
 
-    const { plans } = planner;
+    const { plannerId, plans } = planner;
 
     const onDeletePlanner = () => {
         dispatch(deletePlannerAction(planner.plannerId));
@@ -36,13 +36,20 @@ const PlannerInfoContainer = () => {
     // });
 
     // 수정페이지 도달시 맨처음 currentInfo plan 설정.
+    // useEffect(() => {
+    //     if (plans && plans.length !== 0) {
+    //         dispatch(changeCurPlanIdAction(plans[0].planId));
+    //     } else if (plans && plans.length === 0) {
+    //         dispatch(changeCurPlanIdAction(null));
+    //     }
+    // }, [dispatch, plans]);
+
+    // planner 정보 가져오기
     useEffect(() => {
-        if (plans && plans.length !== 0) {
-            dispatch(changeCurPlanIdAction(plans[0].planId));
-        } else if (plans && plans.length === 0) {
-            dispatch(changeCurPlanIdAction(null));
+        if (currentInfo && plannerId) {
+            dispatch(loadPlannerAction(plannerId));
         }
-    }, [dispatch, plans]);
+    }, [dispatch, currentInfo, plannerId]);
 
     return <PlannerInfo planner={planner} onDeletePlanner={onDeletePlanner} onToggleMemberModal={onToggleMemberModal} onTogglePlannerInfoModal={onTogglePlannerInfoModal} />;
 };

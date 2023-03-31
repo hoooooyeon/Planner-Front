@@ -47,7 +47,9 @@ const DeleteButton = styled.div`
     left: 50px;
 `;
 
-const EditCalendar = ({ planner, plan, plans, currentInfo, onCreatePlan, onDeletePlan, onLoadPlan, onChangeCurPlanId, onAddDate }) => {
+const EditCalendar = ({ planner, plan, plans, currentInfo, onCreatePlan, onDeletePlan, onLoadPlan, onChangeCurPlanId, onAddDate, onSubDate, onUpdateSubPlan }) => {
+    const { planDateEnd } = planner;
+
     const letsFormat = (d) => {
         const date = new Date(d);
         return ('0' + (date.getMonth() + 1)).slice(-2) + '/' + ('0' + date.getDate()).slice(-2);
@@ -60,16 +62,28 @@ const EditCalendar = ({ planner, plan, plans, currentInfo, onCreatePlan, onDelet
         const onChange = () => {
             onChangeCurPlanId(plans[0].planId || null);
         };
-        await onDelete();
-        await onChange();
+        const onSub = () => {
+            onSubDate(planDateEnd);
+        };
+        const onUpdate = () => {
+            onUpdateSubPlan();
+        };
+        onDeletePlan(planId);
+        onChangeCurPlanId(plans[0].planId || null);
+        onSubDate(planDateEnd);
+
+        // await onDelete();
+        // await onChange();
+        // await onSub();
+        // await onUpdate();
     };
 
     return (
         <EditCalendarBlock>
             <Calendar
                 onClick={() => {
+                    onAddDate(planDateEnd);
                     onCreatePlan();
-                    onAddDate();
                 }}
             >
                 <RouteLine />
@@ -89,6 +103,7 @@ const EditCalendar = ({ planner, plan, plans, currentInfo, onCreatePlan, onDelet
                             <DeleteButton
                                 onClick={() => {
                                     onClickDeletePlan(p.planId);
+                                    // onSubDate(planDateEnd);
                                     // onDeletePlan(p.planId);
                                     // onChangeCurPlanId(plans[0].planId || null);
                                 }}

@@ -174,8 +174,10 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
         const load = () => {
             onLoadPlanner();
         };
+        // create();
+        // load();
         await create();
-        await load();
+        // await load();
     };
 
     const onEditPostMd = async () => {
@@ -187,7 +189,7 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
             onLoadPlanner();
         };
         await update();
-        await load();
+        // await load();
     };
 
     const onCancelPostMd = () => {

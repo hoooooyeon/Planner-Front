@@ -99,7 +99,7 @@ const InfoPostItem = ({ memo, onDeleteMemo, onLoadMemo, setIsEdit, onLoadPlanner
             onLoadPlanner();
         };
         await deleteMemo();
-        await load();
+        // await load();
     };
 
     return (

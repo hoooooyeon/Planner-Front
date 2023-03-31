@@ -116,7 +116,23 @@ const RouteBox = styled.div`
     display: flex;
 `;
 
-const EditRoute = ({ planner, plan, currentInfo, onChangePlannerDateStart, onChangePlannerDateEnd, onCreatePlan, onDeletePlan, onLoadPlan, onUpdatePlan, onDeleteLocation, onUpdatePlanner, onChangeCurPlanId, onAddDate }) => {
+const EditRoute = ({
+    planner,
+    plan,
+    currentInfo,
+    onChangePlannerDateStart,
+    onChangePlannerDateEnd,
+    onCreatePlan,
+    onDeletePlan,
+    onLoadPlan,
+    onUpdatePlan,
+    onDeleteLocation,
+    onUpdatePlanner,
+    onChangeCurPlanId,
+    onAddDate,
+    onSubDate,
+    onUpdateSubPlan,
+}) => {
     const { planDateStart, planDateEnd, plans } = planner;
 
     // const [dateRange, setDateRange] = useState([new Date(planDateStart), new Date(planDateEnd)]);
@@ -180,6 +196,8 @@ const EditRoute = ({ planner, plan, currentInfo, onChangePlannerDateStart, onCha
                     onDeletePlan={onDeletePlan}
                     onChangeCurPlanId={onChangeCurPlanId}
                     onAddDate={onAddDate}
+                    onSubDate={onSubDate}
+                    onUpdateSubPlan={onUpdateSubPlan}
                 />
                 <EditRouteList planner={planner} plan={plan} plans={plans} currentInfo={currentInfo} onUpdatePlan={onUpdatePlan} onDeleteLocation={onDeleteLocation} />
             </RouteBox>
