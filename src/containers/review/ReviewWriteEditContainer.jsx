@@ -7,11 +7,42 @@ import { changeContentAction, fileUploadAction, initializeReviewAction, updateRe
 const ReviewWriteEditContainer = ({ location, history }) => {
     const isEdit = location.pathname == '/reviews/edit' ? true : false;
     const dispatch = useDispatch();
-    const { review, fileList, newReviewId } = useSelector(({ reviewReducer }) => ({
+    const { review, newFileList, newReviewId } = useSelector(({ reviewReducer }) => ({
         review: reviewReducer.review,
-        fileList: reviewReducer.fileList,
+        newFileList: reviewReducer.newFileList,
         newReviewId: reviewReducer.newReviewId,
     }));
+
+    const plannerList = [
+        {
+            plannerId: 1,
+            accountId: 1,
+            creator: 'test',
+            title: '이렇게 재미있는 천안 여행!',
+            planDateStart: '2023-01-29',
+            planDateEnd: '2023-01-31',
+            expense: 100000,
+            memberCount: 3,
+            memberTypeId: 3,
+            likeCount: 0,
+            createDate: '2023-03-05 17:36:59',
+            updateDate: '2023-03-15 23:37:46',
+        },
+        {
+            plannerId: 2,
+            accountId: 1,
+            creator: 'test',
+            title: '초보여행',
+            planDateStart: '2022-08-10',
+            planDateEnd: '2022-08-12',
+            expense: 0,
+            memberCount: 1,
+            memberTypeId: 1,
+            likeCount: 0,
+            createDate: '2023-03-07 20:54:19',
+            updateDate: '2023-03-07 20:54:19',
+        },
+    ];
 
     const onChangeText = (data) => {
         dispatch(changeContentAction(data));
@@ -25,10 +56,9 @@ const ReviewWriteEditContainer = ({ location, history }) => {
         }
     };
 
-    const onWritePost = (fileList) => {
+    const onWritePost = () => {
         const data = {
             ...review,
-            fileList: fileList,
         };
         const reviewId = review.reviewId;
         if (isEdit) {
@@ -43,6 +73,18 @@ const ReviewWriteEditContainer = ({ location, history }) => {
         dispatch(fileUploadAction({ property: 'review', formData }));
     };
 
+    const fileListUpdate = (fileList) => {
+        dispatch(changeContentAction({ key: 'fileList', value: fileList }));
+    };
+
+    const onPlannerListLoad = () => {
+        dispatch();
+    };
+
+    const onPlannerSelect = (plannerId) => {
+        dispatch(changeContentAction({ key: 'plannerId', value: plannerId }));
+    };
+
     useEffect(() => {
         return () => {
             dispatch(initializeReviewAction({ property: 'newReviewId' }));
@@ -55,7 +97,20 @@ const ReviewWriteEditContainer = ({ location, history }) => {
         }
     }, [history, newReviewId]);
 
-    return <ReviewPost reviewData={review} onChangeText={onChangeText} fileList={fileList} onCancel={onCancel} onWritePost={onWritePost} onFileUpload={onFileUpload} isEdit={isEdit} />;
+    return (
+        <ReviewPost
+            reviewData={review}
+            onChangeText={onChangeText}
+            newFileList={newFileList}
+            onCancel={onCancel}
+            onWritePost={onWritePost}
+            onFileUpload={onFileUpload}
+            fileListUpdate={fileListUpdate}
+            isEdit={isEdit}
+            plannerList={plannerList}
+            onPlannerSelect={onPlannerSelect}
+        />
+    );
 };
 
 export default withRouter(ReviewWriteEditContainer);

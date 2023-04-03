@@ -90,7 +90,7 @@ export function* reviewSaga() {
 const initialState = {
     reviewList: [],
     review: {},
-    fileList: [],
+    newFileList: [],
     newReviewId: null,
     status: {
         state: null,
@@ -121,7 +121,7 @@ function reviewReducer(state = initialState, action) {
         }
         case deleteReviewSuccessType: return;
         case fileUploadSuccessType: {
-            return { ...state, fileList: action.payload.data };
+            return { ...state, newFileList: action.payload.data };
         }
         case loadReviewListFailureType:
         case loadReviewFailureType:

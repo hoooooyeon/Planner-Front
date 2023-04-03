@@ -2,10 +2,14 @@ import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 import { useEffect, useMemo, useRef } from 'react';
 import styled, { css } from 'styled-components';
+import Editor from '../common/Editor';
+import ReviewInfo from './ReviewInfo';
+import { useState } from 'react';
+import Modal from '../common/Modal';
 
 const Container = styled.div`
     width: 800px;
-    background-color: silver;
+    //background-color: silver;
     border-radius: 6px;
     margin: 100px auto 30px auto;
 `;
@@ -22,7 +26,7 @@ const BoxAlign = styled.div`
     padding: 0px 20px;
 `;
 const B = styled.b`
-    color: white;
+    //color: white;
     margin: 10px 0px;
 `;
 
@@ -30,16 +34,18 @@ const Input = styled.input`
     //height: 28px;
     outline: none;
     border: none;
-    border-radius: 6px;
-    padding: 8px;
+    border-bottom: 1px solid silver;
+    //border-radius: 6px;
+    //padding: 8px;
+    font-weight: 600;
+    font-size: xx-large;
 `;
 
 const PostTitleBox = styled(BoxAlign)``;
 
 const PostContentBox = styled.div`
     background-color: white;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin: 10px 0px;
     .ql-editor {
         min-height: 320px;
     }
@@ -67,95 +73,47 @@ const Button = styled.button`
     }
 `;
 
-const ReviewPost = ({ reviewData, onChangeText, fileList, onCancel, onWritePost, onFileUpload, isEdit }) => {
-    const quillElement = useRef(null);
-    const quillInstance = useRef(null);
+const ReviewPost = ({ reviewData, onChangeText, newFileList, onCancel, onWritePost, onFileUpload, fileListUpdate, isEdit, plannerList, onPlannerSelect }) => {
+    const [plannerConfirmModal, setPlannerConfirmModal] = useState(false);
+    const { plannerId } = reviewData;
 
-    useEffect(() => {
-        quillInstance.current = new Quill(quillElement.current, {
-            theme: 'snow',
-            placeholder: '내용을 작성하세요...',
-            modules: {
-                toolbar: [
-                    [{ header: '1' }, { header: '2' }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ list: 'ordered' }, { list: 'bullet' }],
-                    ['blockquote', 'code-block', 'link', 'image'],
-                ],
-            },
-        });
-
-        const quill = quillInstance.current;
-        const toolbar = quill.getModule('toolbar');
-        toolbar.addHandler('image', () => {
-            const container = quillElement.current;
-            let input = container.querySelector('input[type=file]');
-            if (!input) {
-                input = document.createElement('input');
-                input.style = 'display:none';
-                input.setAttribute('type', 'file');
-                input.setAttribute('accept', 'image/*');
-                input.setAttribute('multiple', 'true');
-                input.onchange = () => {
-                    const files = input.files;
-                    if (input.value.length != 0) {
-                        const formData = new FormData();
-                        Array.apply(null, input.files).forEach((item) => {
-                            formData.append('files', item);
-                        });
-                        onFileUpload(formData);
-                    }
-
-                    input.remove();
-                };
-                quillElement.current.appendChild(input);
-            }
-            input.click();
-        });
-
-        quill.root.innerHTML = reviewData.content || '';
-        quill.on('text-change', (delta, oldDelta, source) => {
-            if (source == 'user') {
-                onChangeText({ key: 'content', value: quill.root.innerHTML });
-            }
-        });
-    }, []);
-
-    useEffect(() => {
-        if (isEdit) {
-            const quill = quillInstance.current;
-            if (quill) {
-                if (fileList) {
-                    fileList.map((item) => {
-                        quill.insertEmbed(quill.getSelection(), 'image', `/api/upload/files/${item}`, 'user');
-                    });
-                }
-            }
+    const onWriteClick = () => {
+        if (!plannerId) {
+            setPlannerConfirmModal(true);
+        } else {
+            onWritePost();
+            setPlannerConfirmModal(false);
         }
-    }, [fileList]);
+    };
 
-    const onPost = () => {
-        const fileList = quillElement.current.querySelector('input[type=file]');
-        onWritePost(fileList);
+    const onModalClose = () => {
+        setPlannerConfirmModal(false);
+    };
+
+    const onModalConfirm = () => {
+        onWritePost();
+        setPlannerConfirmModal(false);
     };
 
     return (
         <Container>
             <PostMain>
                 <BoxAlign>
-                    <B>제목</B>
                     <Input type="text" name="title" value={reviewData.title} onChange={(e) => onChangeText({ key: 'title', value: e.target.value })} placeholder="제목을 입력하세요." />
-                </BoxAlign>
-                <BoxAlign>
+                    <B>플래너</B>
+                    <ReviewInfo plannerList={plannerList} onPlannerSelect={onPlannerSelect} />
                     <PostContentBox>
-                        <div ref={quillElement}></div>
+                        <Editor reviewData={reviewData} onChangeText={onChangeText} isEdit={isEdit} newFileList={newFileList} onFileUpload={onFileUpload} fileListUpdate={fileListUpdate} />
                     </PostContentBox>
                 </BoxAlign>
             </PostMain>
             <PostFooterBox>
                 <Button onClick={onCancel}>취소</Button>
-                <Button onClick={onPost}>{isEdit ? '수정' : '쓰기'}</Button>
+                <Button onClick={onWriteClick}>{isEdit ? '수정' : '쓰기'}</Button>
             </PostFooterBox>
+            <Modal modalVisible={plannerConfirmModal} title="플래너 확인" onModalClose={onModalClose} onModalConfirm={onModalConfirm} modalConfirmText="확인">
+                <b>플래너를 선택하지 않으셨습니다.. 그래도 진행합니까?</b>
+            </Modal>
         </Container>
     );
 };
