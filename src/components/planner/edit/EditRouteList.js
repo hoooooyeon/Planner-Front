@@ -101,7 +101,9 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-const EditRouteList = ({ planner, plan, plans, currentInfo, onUpdatePlan, onDeleteLocation }) => {
+const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocation }) => {
+    const { plans } = planner;
+
     const categoryList = [
         {
             value: '비행기',

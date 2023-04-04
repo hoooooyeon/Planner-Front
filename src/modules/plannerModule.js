@@ -92,6 +92,8 @@ const DELETE_LOCATION_FAILURE_TYPE = 'planner/DELETE_LOCATION_FAILURE';
 const CHANGE_CUR_PLAN_ID_TYPE = 'planner/CHANGE_CUR_PLAN_ID';
 const CHANGE_CUR_PLANNER_ID_TYPE = 'planner/CHANGE_CUR_PLANNER_ID';
 
+const CHANGE_PLANS_TYPE = 'planner/CHANGE_PLANS';
+
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
     accountId,
@@ -147,6 +149,7 @@ export const updateLocationAction = ({ plannerId, locationId, locationContentId,
 export const deleteLocationAction = ({ plannerId, locationId, planId }) => ({ type: DELETE_LOCATION_TYPE, plannerId, locationId, planId });
 export const changeCurPlanIdAction = (planId) => ({ type: CHANGE_CUR_PLAN_ID_TYPE, planId });
 export const changeCurPlannerIdAction = (plannerId) => ({ type: CHANGE_CUR_PLANNER_ID_TYPE, plannerId });
+export const changePlansAction = (plans) => ({ type: CHANGE_PLANS_TYPE, plans });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -617,6 +620,10 @@ function plannerReducer(state = initialState, action) {
                     ...state.currentInfo,
                     plannerId: action.plannerId,
                 },
+            };
+        case CHANGE_PLANS_TYPE:
+            return {
+                ...state,
             };
         default:
             return state;

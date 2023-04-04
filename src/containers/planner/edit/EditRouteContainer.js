@@ -11,6 +11,7 @@ import {
     changePlannerMemberCategoryAction,
     changePlannerMemberCountAction,
     changePlannerTitleAction,
+    changePlansAction,
     createPlanAction,
     deleteLocationAction,
     deletePlanAction,
@@ -163,6 +164,10 @@ const EditRouteContainer = () => {
         dispatch(changeCurPlanIdAction(planId));
     };
 
+    const onChangePlans = (plans) => {
+        dispatch(changePlansAction(plans));
+    };
+
     return (
         <EditRoute
             planner={planner}
@@ -180,6 +185,7 @@ const EditRouteContainer = () => {
             onAddDate={onAddDate}
             onSubDate={onSubDate}
             onUpdateSubPlan={onUpdateSubPlan}
+            onChangePlans={onChangePlans}
         />
     );
 };

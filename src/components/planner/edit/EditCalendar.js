@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 
 const EditCalendarBlock = styled.div`
@@ -16,6 +18,7 @@ const Calendar = styled.div`
     line-height: 50px;
     margin-top: 16px;
     position: relative;
+    cursor: pointer;
     & + & {
         margin: 8px 0;
     }
@@ -47,8 +50,8 @@ const DeleteButton = styled.div`
     left: 50px;
 `;
 
-const EditCalendar = ({ planner, plan, plans, currentInfo, onCreatePlan, onDeletePlan, onLoadPlan, onChangeCurPlanId, onAddDate, onSubDate, onUpdateSubPlan }) => {
-    const { planDateEnd } = planner;
+const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, onLoadPlan, onChangeCurPlanId, onAddDate, onSubDate, onUpdateSubPlan, onChangePlans }) => {
+    const { planDateEnd, plans } = planner;
 
     const letsFormat = (d) => {
         const date = new Date(d);
@@ -56,18 +59,18 @@ const EditCalendar = ({ planner, plan, plans, currentInfo, onCreatePlan, onDelet
     };
 
     const onClickDeletePlan = async (planId) => {
-        const onDelete = () => {
-            onDeletePlan(planId);
-        };
-        const onChange = () => {
-            onChangeCurPlanId(plans[0].planId || null);
-        };
-        const onSub = () => {
-            onSubDate(planDateEnd);
-        };
-        const onUpdate = () => {
-            onUpdateSubPlan();
-        };
+        // const onDelete = () => {
+        //     onDeletePlan(planId);
+        // };
+        // const onChange = () => {
+        //     onChangeCurPlanId(plans[0].planId || null);
+        // };
+        // const onSub = () => {
+        //     onSubDate(planDateEnd);
+        // };
+        // const onUpdate = () => {
+        //     onUpdateSubPlan();
+        // };
         onDeletePlan(planId);
         onChangeCurPlanId(plans[0].planId || null);
         onSubDate(planDateEnd);
@@ -78,8 +81,87 @@ const EditCalendar = ({ planner, plan, plans, currentInfo, onCreatePlan, onDelet
         // await onUpdate();
     };
 
+    const containerRef = useRef();
+    const itemRef = useRef();
+
+    const plansArr = useRef();
+    const item = useRef();
+    const overItem = useRef();
+    const itemIndex = useRef();
+    const overItemIndex = useRef();
+
+    let index = 0;
+
+    const [originPos, setOriginPos] = useState();
+    const [curPos, setCurPos] = useState();
+
+    const getElementIndex = (p) => {
+        plansArr.current = plans;
+        return plansArr.current.findIndex((plan) => plan === p);
+    };
+
+    const switchItem = () => {
+        plansArr.current.splice(itemIndex.current, 1);
+        plansArr.current.splice(overItemIndex.current, 0, item.current);
+        return plansArr.current;
+    };
+
+    const getIndex = () => {
+        let prevIndex;
+        let nextIndex;
+        let curItemIndex = getElementIndex(item.current);
+
+        if (overItemIndex.current === 0) {
+            index = 500;
+        } else if (overItemIndex.current === plansArr.current.length - 1) {
+            index = 2000;
+        } else if (itemIndex) {
+            prevIndex = plansArr.current[curItemIndex - 1];
+            nextIndex = plansArr.current[curItemIndex + 1];
+            index = 1000;
+        }
+        console.log(index);
+    };
+
+    const onDragStart = (plan) => {
+        itemRef.current.style.opacity = '0.4';
+        item.current = plan;
+        itemIndex.current = getElementIndex(plan);
+    };
+    const onDragEnter = (plan) => {
+        overItem.current = plan;
+        overItemIndex.current = getElementIndex(plan);
+    };
+
+    const onDragEnd = () => {
+        itemRef.current.style.opacity = '1';
+
+        onChangePlans(switchItem());
+        getIndex();
+
+        plansArr.current = null;
+        item.current = null;
+        itemIndex.current = null;
+        overItem.current = null;
+        overItemIndex.current = null;
+    };
+
+    const itemMoveStart = () => {
+        itemRef.current.style.backgroundColor = 'red';
+        console.log(1);
+    };
+
+    useEffect(() => {
+        let item = itemRef.current;
+        item.addEventListener('mousedown', itemMoveStart);
+
+        return () => {
+            item.removeEventListener('mousedown', itemMoveStart);
+        };
+    });
+
     return (
-        <EditCalendarBlock>
+        <EditCalendarBlock ref={containerRef}>
             <Calendar
                 onClick={() => {
                     onAddDate(planDateEnd);
@@ -93,7 +175,16 @@ const EditCalendar = ({ planner, plan, plans, currentInfo, onCreatePlan, onDelet
                 {plans &&
                     plans.map((p, i) => (
                         <Calendar
+                            ref={itemRef}
                             aria-current={p.planId === currentInfo.planId ? 'date' : null}
+                            draggable
+                            onDragStart={() => {
+                                onDragStart(p);
+                            }}
+                            onDragEnd={onDragEnd}
+                            onDragEnter={(e) => {
+                                onDragEnter(p);
+                            }}
                             onClick={() => {
                                 // onLoadPlan(p);
                                 onChangeCurPlanId(p.planId);

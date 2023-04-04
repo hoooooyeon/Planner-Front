@@ -132,6 +132,7 @@ const EditRoute = ({
     onAddDate,
     onSubDate,
     onUpdateSubPlan,
+    onChangePlans,
 }) => {
     const { planDateStart, planDateEnd, plans } = planner;
 
@@ -189,7 +190,6 @@ const EditRoute = ({
                 <EditCalendar
                     planner={planner}
                     plan={plan}
-                    plans={plans}
                     currentInfo={currentInfo}
                     onLoadPlan={onLoadPlan}
                     onCreatePlan={onCreatePlan}
@@ -198,8 +198,9 @@ const EditRoute = ({
                     onAddDate={onAddDate}
                     onSubDate={onSubDate}
                     onUpdateSubPlan={onUpdateSubPlan}
+                    onChangePlans={onChangePlans}
                 />
-                <EditRouteList planner={planner} plan={plan} plans={plans} currentInfo={currentInfo} onUpdatePlan={onUpdatePlan} onDeleteLocation={onDeleteLocation} />
+                <EditRouteList planner={planner} plan={plan} currentInfo={currentInfo} onUpdatePlan={onUpdatePlan} onDeleteLocation={onDeleteLocation} />
             </RouteBox>
         </EditRouteBlock>
     );
