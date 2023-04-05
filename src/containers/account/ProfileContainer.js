@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Profile from "../../components/account/Profile";
-import { changeFieldAction, initializeAction, initializeErrorAction, profileImageUpdateAction, profileLoadAction, profileUpdateAction } from "../../modules/profileModule";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Profile from '../../components/account/Profile';
+import { changeFieldAction, initializeAction, initializeErrorAction, profileImageUpdateAction, profileLoadAction, profileUpdateAction } from '../../modules/ProfileModule';
 
 const ProfileContainer = () => {
     const dispatch = useDispatch();
@@ -29,21 +29,19 @@ const ProfileContainer = () => {
     const onImageSubmit = (formData) => {
         dispatch(initializeErrorAction());
         dispatch(profileImageUpdateAction({ accountId, formData }));
-    }
+    };
 
     useEffect(() => {
         return () => {
             dispatch(initializeErrorAction());
-        }
+        };
     }, [dispatch]);
 
     useEffect(() => {
         dispatch(profileLoadAction(accountId));
     }, [dispatch, accountId, profileUpdate]);
 
-    return (
-        <Profile loading={loading} profile={profile} profileError={profileError} onChange={onChange} onSubmit={onSubmit} onImageSubmit={onImageSubmit} />
-    );
+    return <Profile loading={loading} profile={profile} profileError={profileError} onChange={onChange} onSubmit={onSubmit} onImageSubmit={onImageSubmit} />;
 };
 
 export default ProfileContainer;

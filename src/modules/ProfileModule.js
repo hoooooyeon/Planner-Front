@@ -1,6 +1,6 @@
-import createSaga from "../lib/createSaga";
+import createSaga from '../lib/createSaga';
 import { takeLatest } from 'redux-saga/effects';
-import * as profileAPI from "../lib/api/profileAPI";
+import * as profileAPI from '../lib/api/profileAPI';
 
 // 액션 타입
 const initializeType = 'profile/INITIALIZE';
@@ -19,35 +19,35 @@ const profileImageUpdateFailureType = 'profile/PROFILE_IMAGE_UPDATE_FAILURE';
 
 // 액션 함수
 export const initializeAction = () => ({
-    type: initializeType
+    type: initializeType,
 });
 
 export const initializeErrorAction = () => ({
-    type: initializeErrorType
-})
+    type: initializeErrorType,
+});
 
 export const changeFieldAction = ({ name, value }) => ({
     type: changeFieldType,
     name,
-    value
+    value,
 });
 
 export const profileLoadAction = (accountId) => ({
     type: profileLoadType,
-    accountId
+    accountId,
 });
 
 export const profileUpdateAction = ({ accountId, nickname, phone }) => ({
     type: profileUpdateType,
     accountId,
     nickname,
-    phone
+    phone,
 });
 
 export const profileImageUpdateAction = ({ accountId, formData }) => ({
     type: profileImageUpdateType,
     accountId,
-    formData
+    formData,
 });
 
 const profileLoad = createSaga(profileLoadType, profileAPI.profileLoad);
@@ -57,17 +57,17 @@ const profileImageUpdate = createSaga(profileImageUpdateType, profileAPI.profile
 export function* profileSaga() {
     yield takeLatest(profileLoadType, profileLoad);
     yield takeLatest(profileUpdateType, profileUpdate);
-    yield takeLatest(profileImageUpdateType, profileImageUpdate)
-};
+    yield takeLatest(profileImageUpdateType, profileImageUpdate);
+}
 
 const initialState = {
     profileField: {
         nickname: '',
-        phone: ''
+        phone: '',
     },
     profile: null,
     profileUpdate: false,
-    profileError: null
+    profileError: null,
 };
 
 function profileReducer(state = initialState, action) {
@@ -85,7 +85,7 @@ function profileReducer(state = initialState, action) {
             return {
                 ...state,
                 profile: action.payload.data,
-                profileField: { ...state.profileField, nickname: action.payload.data.nickname, phone: action.payload.data.phone || '' }
+                profileField: { ...state.profileField, nickname: action.payload.data.nickname, phone: action.payload.data.phone || '' },
             };
         }
         case profileLoadFailureType: {
@@ -103,6 +103,7 @@ function profileReducer(state = initialState, action) {
         case profileImageUpdateFailureType: {
             return { ...state, profileUpdate: false, profileError: action.payload.message };
         }
+
         default: {
             return state;
         }
