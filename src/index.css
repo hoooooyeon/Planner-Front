@@ -5,17 +5,22 @@ body {
     font-family: 'apple';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* min-height: 100%; */
+    height: 100%;
 }
 
 html {
-    /* min-height: 100%; */
-    }
+    height: 100%;
+}
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-ul, li {
+ul,
+li {
     list-style: none;
+}
+
+a {
+    text-decoration: none;
 }

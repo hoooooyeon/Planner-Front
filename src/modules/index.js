@@ -4,18 +4,17 @@ import profileReducer, { profileSaga } from './ProfileModule';
 import { all } from 'redux-saga/effects';
 import { authSaga } from './authModule';
 import loadingReducer from './loadingModule';
-import { spotSaga } from './spotModule';
-import spotReducer from './spotModule';
+import plannerReducer, { plannerSaga } from './plannerModule';
 
 const rootReducer = combineReducers({
     loadingReducer,
     authReducer,
     profileReducer,
-    spotReducer,
+    plannerReducer,
 });
 
 export function* rootSaga() {
-    yield all([authSaga(), profileSaga(), spotSaga()]);
+    yield all([authSaga(), profileSaga(), plannerSaga()]);
 }
 
 export default rootReducer;

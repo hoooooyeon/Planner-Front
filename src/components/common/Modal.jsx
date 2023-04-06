@@ -46,8 +46,9 @@ const ModalClose = styled(FontAwesomeIcon)`
 
 const ModalBody = styled.div`
     min-height: 100px;
-    margin-top: 10px;
-    margin-left: 20px;
+    /* margin-top: 10px;
+    margin-left: 20px; */
+    padding: 0 20px;
     font-weight: bold;
 `;
 
@@ -84,7 +85,7 @@ const Modal = ({ modalVisible, title, children, modalCloseText = '닫기', modal
             <ModalBox>
                 <ModalHeader>
                     <ModalTitle>{title}</ModalTitle>
-                    <ModalClose icon={faXmark} />
+                    <ModalClose icon={faXmark} onClick={onModalClose} />
                 </ModalHeader>
                 <ModalBody>{children}</ModalBody>
                 <ModalFooter>
