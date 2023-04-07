@@ -1,63 +1,84 @@
 import createSaga from "../lib/createSaga";
 import { takeLatest } from 'redux-saga/effects';
 import * as profileAPI from "../lib/api/profileAPI";
+import { type } from "os";
 
 // 액션 타입
-const initializeType = 'profile/INITIALIZE';
-const initializeErrorType = 'profile/INITIALIZERROR';
-const changeFieldType = 'profile/CHANGE_FIELD';
+const INITIALIZE_TYPE = 'profile/INITIALIZE';
+const INITIALIZE_ERROR_TYPE = 'profile/INITIALIZERROR';
+const CHANGE_FIELD_TYPE = 'profile/CHANGE_FIELD';
+const PROFILE_LOAD_TYPE = 'profile/PROFILE_LOAD';
+const PROFILE_LOAD_SUCCESS_TYPE = 'profile/PROFILE_LOAD_SUCCESS';
+const PROFILE_LOAD_FAILURE_TYPE = 'profile/PROFILE_LOAD_FAILURE';
+const PROFILE_UPDATE_TYPE = 'profile/PROFILE_UPDATE';
+const PROFILE_UPDATE_SUCCESS_TYPE = 'profile/PROFILE_UPDATE_SUCCESS';
+const PROFILE_UPDATE_FAILURE_TYPE = 'profile/PROFILE_UPDATE_FAILURE';
+const PROFILE_IMAGE_UPDATE_TYPE = 'profile/PROFILE_IMAGE_UPDATE';
+const PROFILE_IMAGE_UPDATE_SUECCESS_TYPE = 'profile/PROFILE_IMAGE_UPDATE_SUCCESS';
+const PROFILE_IMAGE_UPDATE_FAILURE_TYPE = 'profile/PROFILE_IMAGE_UPDATE_FAILURE';
+const PROFILE_MY_PLANNER_LOAD_TYPE = 'profile/PROFILE_MY_PLANNER_LOAD';
+const PROFILE_MY_PLANNER_LOAD_SUECCESS_TYPE = 'profile/PROFILE_MY_PLANNER_LOAD_SUECCESS';
+const PROFILE_MY_PLANNER_LOAD_FAILURE_TYPE = 'profile/PROFILE_MY_PLANNER_LOAD_FAILURE';
+const PROFILE_LIKE_PLANNER_LOAD_TYPE = 'profile/PROFILE_LIKE_PLANNER_LOAD';
+const PROFILE_LIKE_PLANNER_LOAD_SUECCESS_TYPE = 'profile/PROFILE_LIKE_PLANNER_LOAD_SUECCESS';
+const PROFILE_LIKE_PLANNER_LOAD_FAILURE_TYPE = 'profile/PROFILE_LIKE_PLANNER_LOAD_FAILURE';
 
-const profileLoadType = 'profile/PROFILE_LOAD';
-const profileLoadSuccessType = 'profile/PROFILE_LOAD_SUCCESS';
-const profileLoadFailureType = 'profile/PROFILE_LOAD_FAILURE';
-const profileUpdateType = 'profile/PROFILE_UPDATE';
-const profileUpdateSuccessType = 'profile/PROFILE_UPDATE_SUCCESS';
-const profileUpdateFailureType = 'profile/PROFILE_UPDATE_FAILURE';
-const profileImageUpdateType = 'profile/PROFILE_IMAGE_UPDATE';
-const profileImageUpdateSuccessType = 'profile/PROFILE_IMAGE_UPDATE_SUCCESS';
-const profileImageUpdateFailureType = 'profile/PROFILE_IMAGE_UPDATE_FAILURE';
 
 // 액션 함수
 export const initializeAction = () => ({
-    type: initializeType
+    type: INITIALIZE_TYPE
 });
 
 export const initializeErrorAction = () => ({
-    type: initializeErrorType
+    type: INITIALIZE_ERROR_TYPE
 })
 
 export const changeFieldAction = ({ name, value }) => ({
-    type: changeFieldType,
+    type: CHANGE_FIELD_TYPE,
     name,
     value
 });
 
 export const profileLoadAction = (accountId) => ({
-    type: profileLoadType,
+    type: PROFILE_LOAD_TYPE,
     accountId
 });
 
 export const profileUpdateAction = ({ accountId, nickname, phone }) => ({
-    type: profileUpdateType,
+    type: PROFILE_UPDATE_TYPE,
     accountId,
     nickname,
     phone
 });
 
 export const profileImageUpdateAction = ({ accountId, formData }) => ({
-    type: profileImageUpdateType,
+    type: PROFILE_IMAGE_UPDATE_TYPE,
     accountId,
     formData
 });
 
-const profileLoad = createSaga(profileLoadType, profileAPI.profileLoad);
-const profileUpdate = createSaga(profileUpdateType, profileAPI.profileUpdate);
-const profileImageUpdate = createSaga(profileImageUpdateType, profileAPI.profileImageUpdate);
+export const profileMyPlannerLoadAction = (accountId) => ({
+    type: profileMyPlannerLoadAction,
+    accountId
+});
+
+export const profileLikePlannerLoadAction = (accountId) => ({
+    type: profileLikePlannerLoadAction,
+    accountId
+});
+
+const profileLoad = createSaga(PROFILE_LOAD_TYPE, profileAPI.profileLoad);
+const profileUpdate = createSaga(PROFILE_UPDATE_TYPE, profileAPI.profileUpdate);
+const profileImageUpdate = createSaga(PROFILE_IMAGE_UPDATE_TYPE, profileAPI.profileImageUpdate);
+const profileMyPlannerLoad = createSaga(PROFILE_MY_PLANNER_LOAD_TYPE);
+const profileLikePlannerLoad = createSaga(PROFILE_LIKE_PLANNER_LOAD_TYPE);
 
 export function* profileSaga() {
-    yield takeLatest(profileLoadType, profileLoad);
-    yield takeLatest(profileUpdateType, profileUpdate);
-    yield takeLatest(profileImageUpdateType, profileImageUpdate)
+    yield takeLatest(PROFILE_LOAD_TYPE, profileLoad);
+    yield takeLatest(PROFILE_UPDATE_TYPE, profileUpdate);
+    yield takeLatest(PROFILE_IMAGE_UPDATE_TYPE, profileImageUpdate)
+    yield takeLatest(PROFILE_MY_PLANNER_LOAD_TYPE, profileMyPlannerLoad);
+    yield takeLatest(PROFILE_LIKE_PLANNER_LOAD_TYPE, profileLikePlannerLoad);
 };
 
 const initialState = {
@@ -66,41 +87,49 @@ const initialState = {
         phone: ''
     },
     profile: null,
+    myPlanner: null,
+    likePlanner: null,
     profileUpdate: false,
     profileError: null
 };
 
 function profileReducer(state = initialState, action) {
     switch (action.type) {
-        case initializeType: {
+        case INITIALIZE_TYPE: {
             return { ...initialState };
         }
-        case initializeErrorType: {
+        case INITIALIZE_ERROR_TYPE: {
             return { ...state, profileError: '' };
         }
-        case changeFieldType: {
+        case CHANGE_FIELD_TYPE: {
             return { ...state, profileField: { ...state.profileField, [action.name]: action.value } };
         }
-        case profileLoadSuccessType: {
+        case PROFILE_LOAD_SUCCESS_TYPE: {
             return {
                 ...state,
                 profile: action.payload.data,
                 profileField: { ...state.profileField, nickname: action.payload.data.nickname, phone: action.payload.data.phone || '' }
             };
         }
-        case profileLoadFailureType: {
+        case PROFILE_UPDATE_SUCCESS_TYPE: {
+            return { ...state, profileUpdate: true };
+        }
+        case PROFILE_IMAGE_UPDATE_SUECCESS_TYPE: {
+            return { ...state, profileUpdate: true };
+        }
+        case PROFILE_MY_PLANNER_LOAD_SUECCESS_TYPE: {
+            return { ...state, myPlanner: action.payload.data };
+        }
+        case PROFILE_LIKE_PLANNER_LOAD_SUECCESS_TYPE: {
+            return { ...state, likePlanner: action.payload.data };
+        }
+        case PROFILE_LOAD_FAILURE_TYPE: {
             return { ...state, profileError: action.payload.data };
         }
-        case profileUpdateSuccessType: {
-            return { ...state, profileUpdate: true };
-        }
-        case profileUpdateFailureType: {
-            return { ...state, profileUpdate: false, profileError: action.payload.message };
-        }
-        case profileImageUpdateSuccessType: {
-            return { ...state, profileUpdate: true };
-        }
-        case profileImageUpdateFailureType: {
+        case PROFILE_UPDATE_FAILURE_TYPE:
+        case PROFILE_IMAGE_UPDATE_FAILURE_TYPE:
+        case PROFILE_MY_PLANNER_LOAD_FAILURE_TYPE:
+        case PROFILE_LIKE_PLANNER_LOAD_FAILURE_TYPE: {
             return { ...state, profileUpdate: false, profileError: action.payload.message };
         }
         default: {
