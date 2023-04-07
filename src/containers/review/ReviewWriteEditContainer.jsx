@@ -3,46 +3,49 @@ import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 import ReviewPost from '../../components/review/ReviewPost';
 import { changeContentAction, fileUploadAction, initializeReviewAction, updateReviewAction, writeReviewAction } from '../../modules/reviewModule';
+import { profileLikePlannerLoadAction, profileMyPlannerLoadAction } from '../../modules/profileModule';
 
 const ReviewWriteEditContainer = ({ location, history }) => {
     const isEdit = location.pathname == '/reviews/edit' ? true : false;
     const dispatch = useDispatch();
-    const { review, newFileList, newReviewId } = useSelector(({ reviewReducer }) => ({
+    const { account, review, newFileList, newReviewId, plannerList } = useSelector(({ authReducer, reviewReducer, profileReducer }) => ({
+        account: authReducer.account,
         review: reviewReducer.review,
         newFileList: reviewReducer.newFileList,
         newReviewId: reviewReducer.newReviewId,
+        plannerList: profileReducer.plannerList,
     }));
 
-    const plannerList = [
-        {
-            plannerId: 1,
-            accountId: 1,
-            creator: 'test',
-            title: '이렇게 재미있는 천안 여행!',
-            planDateStart: '2023-01-29',
-            planDateEnd: '2023-01-31',
-            expense: 100000,
-            memberCount: 3,
-            memberTypeId: 3,
-            likeCount: 0,
-            createDate: '2023-03-05 17:36:59',
-            updateDate: '2023-03-15 23:37:46',
-        },
-        {
-            plannerId: 2,
-            accountId: 1,
-            creator: 'test',
-            title: '초보여행',
-            planDateStart: '2022-08-10',
-            planDateEnd: '2022-08-12',
-            expense: 0,
-            memberCount: 1,
-            memberTypeId: 1,
-            likeCount: 0,
-            createDate: '2023-03-07 20:54:19',
-            updateDate: '2023-03-07 20:54:19',
-        },
-    ];
+    // const plannerList = [
+    //     {
+    //         plannerId: 1,
+    //         accountId: 1,
+    //         creator: 'test',
+    //         title: '이렇게 재미있는 천안 여행!',
+    //         planDateStart: '2023-01-29',
+    //         planDateEnd: '2023-01-31',
+    //         expense: 100000,
+    //         memberCount: 3,
+    //         memberTypeId: 3,
+    //         likeCount: 0,
+    //         createDate: '2023-03-05 17:36:59',
+    //         updateDate: '2023-03-15 23:37:46',
+    //     },
+    //     {
+    //         plannerId: 2,
+    //         accountId: 1,
+    //         creator: 'test',
+    //         title: '초보여행',
+    //         planDateStart: '2022-08-10',
+    //         planDateEnd: '2022-08-12',
+    //         expense: 0,
+    //         memberCount: 1,
+    //         memberTypeId: 1,
+    //         likeCount: 0,
+    //         createDate: '2023-03-07 20:54:19',
+    //         updateDate: '2023-03-07 20:54:19',
+    //     },
+    // ];
 
     const onChangeText = (data) => {
         dispatch(changeContentAction(data));
@@ -77,8 +80,13 @@ const ReviewWriteEditContainer = ({ location, history }) => {
         dispatch(changeContentAction({ key: 'fileList', value: fileList }));
     };
 
-    const onPlannerListLoad = () => {
-        dispatch();
+    const onPlannerListLoad = (type) => {
+        const { accountId } = account;
+        if (type === 'myPlanner') {
+            dispatch(profileMyPlannerLoadAction(accountId));
+        } else {
+            dispatch(profileLikePlannerLoadAction(accountId));
+        }
     };
 
     const onPlannerSelect = (plannerId) => {
@@ -108,6 +116,7 @@ const ReviewWriteEditContainer = ({ location, history }) => {
             fileListUpdate={fileListUpdate}
             isEdit={isEdit}
             plannerList={plannerList}
+            onPlannerListLoad={onPlannerListLoad}
             onPlannerSelect={onPlannerSelect}
         />
     );

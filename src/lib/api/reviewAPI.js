@@ -1,7 +1,7 @@
 import client from "./client";
 
 export const writeReview = ({ plannerId, title, content, writer }) => {
-    return client.post(`/api/reviews`, { plannerId: 2, title, content, writer });
+    return client.post(`/api/reviews`, { plannerId, title, content, writer });
 };
 
 export const loadReviewList = () => {

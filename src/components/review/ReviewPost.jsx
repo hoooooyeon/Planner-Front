@@ -73,7 +73,19 @@ const Button = styled.button`
     }
 `;
 
-const ReviewPost = ({ reviewData, onChangeText, newFileList, onCancel, onWritePost, onFileUpload, fileListUpdate, isEdit, plannerList, onPlannerSelect }) => {
+const ReviewPost = ({
+    reviewData,
+    onChangeText,
+    newFileList,
+    onCancel,
+    onWritePost,
+    onFileUpload,
+    fileListUpdate,
+    isEdit,
+    plannerList,
+    onPlannerListLoad,
+    onPlannerSelect,
+}) => {
     const [plannerConfirmModal, setPlannerConfirmModal] = useState(false);
     const { plannerId } = reviewData;
 
@@ -99,11 +111,24 @@ const ReviewPost = ({ reviewData, onChangeText, newFileList, onCancel, onWritePo
         <Container>
             <PostMain>
                 <BoxAlign>
-                    <Input type="text" name="title" value={reviewData.title} onChange={(e) => onChangeText({ key: 'title', value: e.target.value })} placeholder="제목을 입력하세요." />
+                    <Input
+                        type="text"
+                        name="title"
+                        value={reviewData.title}
+                        onChange={(e) => onChangeText({ key: 'title', value: e.target.value })}
+                        placeholder="제목을 입력하세요."
+                    />
                     <B>플래너</B>
-                    <ReviewInfo plannerList={plannerList} onPlannerSelect={onPlannerSelect} />
+                    <ReviewInfo plannerList={plannerList} onPlannerListLoad={onPlannerListLoad} onPlannerSelect={onPlannerSelect} />
                     <PostContentBox>
-                        <Editor reviewData={reviewData} onChangeText={onChangeText} isEdit={isEdit} newFileList={newFileList} onFileUpload={onFileUpload} fileListUpdate={fileListUpdate} />
+                        <Editor
+                            reviewData={reviewData}
+                            onChangeText={onChangeText}
+                            isEdit={isEdit}
+                            newFileList={newFileList}
+                            onFileUpload={onFileUpload}
+                            fileListUpdate={fileListUpdate}
+                        />
                     </PostContentBox>
                 </BoxAlign>
             </PostMain>

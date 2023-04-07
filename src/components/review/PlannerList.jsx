@@ -51,43 +51,43 @@ const ItemName = styled.b`
     margin-bottom: 10px;
 `;
 
-// {
-//     plannerId: 1,
-//     accountId: 1,
-//     creator: 'test',
-//     title: '수정테스트',
-//     planDateStart: '2023-01-29',
-//     planDateEnd: '2023-01-31',
-//     expense: 100000,
-//     memberCount: 3,
-//     memberTypeId: 3,
-//     likeCount: 0,
-//     createDate: '2023-03-05 17:36:59',
-//     updateDate: '2023-03-15 23:37:46',
-// }
-const PlannerList = ({ plannerList, onItemClick }) => {
+const EmptyItem = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const PlannerList = ({ type, list, onItemClick }) => {
     const [selectItem, setSelectItem] = useState(null);
 
     const onPlannerItemClick = (index, plannerId) => {
         setSelectItem(index);
-        onItemClick(plannerId);
+        onItemClick(type, plannerId);
     };
 
     return (
-        <ItemList>
-            {plannerList.map((item, index) => (
-                <Item
-                    select={index == selectItem}
-                    key={index}
-                    onClick={() => {
-                        onPlannerItemClick(index, item.plannerId);
-                    }}
-                >
-                    <ItemImg src={tempImage} />
-                    <ItemName>{item.title}</ItemName>
-                </Item>
-            ))}
-        </ItemList>
+        <>
+            {list ? (
+                <ItemList>
+                    {list.map((item, index) => (
+                        <Item
+                            select={index == selectItem}
+                            key={index}
+                            onClick={() => {
+                                onPlannerItemClick(index, item.plannerId);
+                            }}
+                        >
+                            <ItemImg src={tempImage} />
+                            <ItemName>{item.title}</ItemName>
+                        </Item>
+                    ))}
+                </ItemList>
+            ) : (
+                <EmptyItem>
+                    <b>플래너가 없습니다.</b>
+                </EmptyItem>
+            )}
+        </>
     );
 };
 

@@ -1,7 +1,6 @@
 import createSaga from "../lib/createSaga";
 import { takeLatest } from 'redux-saga/effects';
 import * as profileAPI from "../lib/api/profileAPI";
-import { type } from "os";
 
 // 액션 타입
 const INITIALIZE_TYPE = 'profile/INITIALIZE';
@@ -14,13 +13,13 @@ const PROFILE_UPDATE_TYPE = 'profile/PROFILE_UPDATE';
 const PROFILE_UPDATE_SUCCESS_TYPE = 'profile/PROFILE_UPDATE_SUCCESS';
 const PROFILE_UPDATE_FAILURE_TYPE = 'profile/PROFILE_UPDATE_FAILURE';
 const PROFILE_IMAGE_UPDATE_TYPE = 'profile/PROFILE_IMAGE_UPDATE';
-const PROFILE_IMAGE_UPDATE_SUECCESS_TYPE = 'profile/PROFILE_IMAGE_UPDATE_SUCCESS';
+const PROFILE_IMAGE_UPDATE_SUCCESS_TYPE = 'profile/PROFILE_IMAGE_UPDATE_SUCCESS';
 const PROFILE_IMAGE_UPDATE_FAILURE_TYPE = 'profile/PROFILE_IMAGE_UPDATE_FAILURE';
 const PROFILE_MY_PLANNER_LOAD_TYPE = 'profile/PROFILE_MY_PLANNER_LOAD';
-const PROFILE_MY_PLANNER_LOAD_SUECCESS_TYPE = 'profile/PROFILE_MY_PLANNER_LOAD_SUECCESS';
+const PROFILE_MY_PLANNER_LOAD_SUCCESS_TYPE = 'profile/PROFILE_MY_PLANNER_LOAD_SUCCESS';
 const PROFILE_MY_PLANNER_LOAD_FAILURE_TYPE = 'profile/PROFILE_MY_PLANNER_LOAD_FAILURE';
 const PROFILE_LIKE_PLANNER_LOAD_TYPE = 'profile/PROFILE_LIKE_PLANNER_LOAD';
-const PROFILE_LIKE_PLANNER_LOAD_SUECCESS_TYPE = 'profile/PROFILE_LIKE_PLANNER_LOAD_SUECCESS';
+const PROFILE_LIKE_PLANNER_LOAD_SUECCESS_TYPE = 'profile/PROFILE_LIKE_PLANNER_LOAD_SUCCESS';
 const PROFILE_LIKE_PLANNER_LOAD_FAILURE_TYPE = 'profile/PROFILE_LIKE_PLANNER_LOAD_FAILURE';
 
 
@@ -58,20 +57,20 @@ export const profileImageUpdateAction = ({ accountId, formData }) => ({
 });
 
 export const profileMyPlannerLoadAction = (accountId) => ({
-    type: profileMyPlannerLoadAction,
+    type: PROFILE_MY_PLANNER_LOAD_TYPE,
     accountId
 });
 
 export const profileLikePlannerLoadAction = (accountId) => ({
-    type: profileLikePlannerLoadAction,
+    type: PROFILE_LIKE_PLANNER_LOAD_TYPE,
     accountId
 });
 
 const profileLoad = createSaga(PROFILE_LOAD_TYPE, profileAPI.profileLoad);
 const profileUpdate = createSaga(PROFILE_UPDATE_TYPE, profileAPI.profileUpdate);
 const profileImageUpdate = createSaga(PROFILE_IMAGE_UPDATE_TYPE, profileAPI.profileImageUpdate);
-const profileMyPlannerLoad = createSaga(PROFILE_MY_PLANNER_LOAD_TYPE);
-const profileLikePlannerLoad = createSaga(PROFILE_LIKE_PLANNER_LOAD_TYPE);
+const profileMyPlannerLoad = createSaga(PROFILE_MY_PLANNER_LOAD_TYPE, profileAPI.profileMyPlannerLoad);
+const profileLikePlannerLoad = createSaga(PROFILE_LIKE_PLANNER_LOAD_TYPE, profileAPI.profileLikePlannerLoad);
 
 export function* profileSaga() {
     yield takeLatest(PROFILE_LOAD_TYPE, profileLoad);
@@ -87,8 +86,10 @@ const initialState = {
         phone: ''
     },
     profile: null,
-    myPlanner: null,
-    likePlanner: null,
+    plannerList: {
+        myPlanner: null,
+        likePlanner: null,
+    },
     profileUpdate: false,
     profileError: null
 };
@@ -114,14 +115,14 @@ function profileReducer(state = initialState, action) {
         case PROFILE_UPDATE_SUCCESS_TYPE: {
             return { ...state, profileUpdate: true };
         }
-        case PROFILE_IMAGE_UPDATE_SUECCESS_TYPE: {
+        case PROFILE_IMAGE_UPDATE_SUCCESS_TYPE: {
             return { ...state, profileUpdate: true };
         }
-        case PROFILE_MY_PLANNER_LOAD_SUECCESS_TYPE: {
-            return { ...state, myPlanner: action.payload.data };
+        case PROFILE_MY_PLANNER_LOAD_SUCCESS_TYPE: {
+            return { ...state, plannerList: { ...state.plannerList, myPlanner: action.payload.data } };
         }
         case PROFILE_LIKE_PLANNER_LOAD_SUECCESS_TYPE: {
-            return { ...state, likePlanner: action.payload.data };
+            return { ...state, plannerList: { ...state.plannerList, likePlanner: action.payload.data } };
         }
         case PROFILE_LOAD_FAILURE_TYPE: {
             return { ...state, profileError: action.payload.data };

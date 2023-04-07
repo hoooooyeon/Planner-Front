@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import PlannerList from './PlannerList';
 
 const TabBox = styled.div``;
 
@@ -29,23 +30,32 @@ const TabContentBox = styled.div`
     min-height: 80px;
 `;
 
-const PlannerTabs = ({ tabMenu }) => {
+const PlannerTabs = ({ tabMenu, plannerList, onPlannerListLoad, onSelectPlanner }) => {
     const [tabIndex, setTabIndex] = useState(0);
+    const { type } = tabMenu[tabIndex];
+    const list = plannerList[type];
 
-    const onTabMenuClick = (index) => {
+    const onTabMenuClick = (index, type) => {
         setTabIndex(index);
+        onPlannerListLoad(type);
     };
+
+    useEffect(() => {
+        onPlannerListLoad(type);
+    }, [tabIndex]);
 
     return (
         <TabBox>
             <TabMenuBox>
                 {tabMenu.map((item, index) => (
-                    <TabItem className={index === tabIndex ? 'active' : ''} key={index} onClick={() => onTabMenuClick(index)}>
+                    <TabItem className={index === tabIndex ? 'active' : ''} key={index} onClick={() => onTabMenuClick(index, item.type)}>
                         {item.title}
                     </TabItem>
                 ))}
             </TabMenuBox>
-            <TabContentBox>{tabMenu[tabIndex].content}</TabContentBox>
+            <TabContentBox>
+                <PlannerList type={type} list={list} onItemClick={onSelectPlanner} />
+            </TabContentBox>
         </TabBox>
     );
 };
