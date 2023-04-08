@@ -61,7 +61,11 @@ const Date = styled.div`
 `;
 
 const InfoMenu = ({ planner }) => {
-    const { title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = planner;
+    const { title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
+
+    if (!planner) {
+        return <div>Loading...</div>;
+    }
     return (
         <InfoMenuBlock>
             <Container>

@@ -84,8 +84,8 @@ const SwipeButton = styled.div`
     }
 `;
 
-const InfoDatination = ({ isShadow, planner, currentInfo }) => {
-    const { plans } = planner;
+const InfoDatination = ({ isShadow, planner, currentInfo, onChangeCurPlanId }) => {
+    const { plans } = { ...planner };
 
     const [date, setDate] = useState([10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -111,6 +111,9 @@ const InfoDatination = ({ isShadow, planner, currentInfo }) => {
         dateRef.current.style.transition = 'all 0.5s ease-in-out';
     }, [currentIndex]);
 
+    if (!planner) {
+        return <div>Loading...</div>;
+    }
     return (
         <InfoDatinationBlock isShadow={isShadow}>
             <SwipeButton onClick={handlePrev}>
@@ -119,12 +122,19 @@ const InfoDatination = ({ isShadow, planner, currentInfo }) => {
             <HiddenBox>
                 <ButtonLine />
                 <DateButtons ref={dateRef}>
-                    {/* {plans &&
+                    {plans &&
                         plans.map((p, i) => (
-                            <DateButton ref={buttonRef} key={p.planId} aria-current={p.planId === currentInfo.planId ? 'date' : null}>
+                            <DateButton
+                                ref={buttonRef}
+                                key={p.planId}
+                                //  aria-current={p.planId === currentInfo.planId ? 'date' : null}
+                                onClick={() => {
+                                    onChangeCurPlanId(p.planId);
+                                }}
+                            >
                                 {p.planDate}
                             </DateButton>
-                        ))} */}
+                        ))}
                 </DateButtons>
             </HiddenBox>
             <SwipeButton onClick={handleNext}>

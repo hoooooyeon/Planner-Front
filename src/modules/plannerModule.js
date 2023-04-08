@@ -189,8 +189,8 @@ export function* plannerSaga() {
 
 const initialState = {
     myPlanners: null,
-    sharePlanners: '',
-    planner: '',
+    sharePlanners: null,
+    planner: null,
     plannerError: null,
     plan: null,
     curMemo: {
@@ -366,7 +366,7 @@ function plannerReducer(state = initialState, action) {
                     accountId: action.accountId,
                     creator: action.nickname,
                 },
-                planner: '',
+                planner: null,
                 // planner: {
                 //     accountId: action.accountId,
                 //     creator: action.nickname,
@@ -382,7 +382,7 @@ function plannerReducer(state = initialState, action) {
         case RESET_PLANNER_INFO_FORM_TYPE:
             return {
                 ...state,
-                planner: '',
+                // planner: '',
                 // planner: {
                 //     accountId: state.planner.accountId,
                 //     creator: state.planner.creator,

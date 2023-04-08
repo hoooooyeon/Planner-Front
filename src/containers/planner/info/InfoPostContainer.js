@@ -11,30 +11,19 @@ const InfoPostContainer = () => {
         curMemo: plannerReducer.curMemo,
         currentInfo: plannerReducer.currentInfo,
     }));
-    // const { title, content } = curMemo;
-    // const { plannerId } = planner;
+    const { title, content } = { ...curMemo };
+    const { plannerId } = { ...planner };
 
     const onCreateMemo = () => {
-        if (planner && curMemo) {
-            const { plannerId } = planner;
-            const { title, content } = curMemo;
-            dispatch(createMemoAction({ plannerId, title, content }));
-        }
+        dispatch(createMemoAction({ plannerId, title, content }));
     };
 
     const onUpdateMemo = (memoId) => {
-        if (planner && curMemo) {
-            const { plannerId } = planner;
-            const { title, content } = curMemo;
-            dispatch(updateMemoAction({ plannerId, memoId, title, content }));
-        }
+        dispatch(updateMemoAction({ plannerId, memoId, title, content }));
     };
 
     const onDeleteMemo = (memoId) => {
-        if (planner) {
-            const { plannerId } = planner;
-            dispatch(deleteMemoAction({ plannerId, memoId }));
-        }
+        dispatch(deleteMemoAction({ plannerId, memoId }));
     };
 
     const onChangeMemoTitle = (title) => {
@@ -53,7 +42,7 @@ const InfoPostContainer = () => {
 
     // 플래너 정보 가져오기
     const onLoadPlanner = () => {
-        dispatch(loadPlannerAction(planner.plannerId));
+        dispatch(loadPlannerAction(plannerId));
     };
 
     return (

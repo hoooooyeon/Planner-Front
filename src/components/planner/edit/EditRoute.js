@@ -121,6 +121,7 @@ const EditRoute = ({
     planner,
     plan,
     currentInfo,
+    loading,
     onChangePlannerDateStart,
     onChangePlannerDateEnd,
     onCreatePlan,
@@ -135,10 +136,16 @@ const EditRoute = ({
     onUpdateSubPlan,
     onChangePlans,
 }) => {
-    const { planDateStart, planDateEnd, plans } = planner;
-
     // const [dateRange, setDateRange] = useState([new Date(planDateStart), new Date(planDateEnd)]);
-    const [startDate, setStartDate] = useState(new Date(planDateStart));
+    const { planDateStart, plans } = { ...planner };
+    const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : null);
+    // const [startDate, setStartDate] = useState(new Date(planDateStart));
+
+    // useEffect(() => {
+    //     if (planner !== '') {
+    //         setStartDate(new Date(planDateStart));
+    //     }
+    // }, [planner, planDateStart]);
 
     // datePicker의 날짜와 planner의 날짜를 각각 나눔.
     const onChangeDate = (date) => {
@@ -151,32 +158,16 @@ const EditRoute = ({
         }
     };
 
-    // 총 여행일 구하는 함수
-    // const onDiffDate = () => {
-    //     const date = endDate.getTime() - startDate.getTime();
-    //     const diffDate = date / (1000 * 60 * 60 * 24) + 1;
-    //     console.log(diffDate);
-    // };
-
-    // 날짜 선택 확인 버튼 포함
-    //     <DatePicker
-    //     selected={startDate}
-    //     onChange={(date) => setStartDate(date)}
-    //     required
-    //     form="external-form"
-    //   />
-    //   <form id="external-form">
-    //     <input type="submit" />
-    //   </form>
-
-if()
-
+    // if (!planner && loading) {
+    if (!planner) {
+        return <div>Loading...</div>;
+    }
     return (
         <EditRouteBlock>
             <InfoForm>
                 <DateBox>
                     <StyledDatePicker
-                        // selected={startDate}
+                        selected={startDate}
                         // startDate={new Date(planDateStart)}
                         // endDate={new Date(planDateEnd)}
                         minDate={new Date()}

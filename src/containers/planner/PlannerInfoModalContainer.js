@@ -10,11 +10,10 @@ const PlannerInfoModalContainer = () => {
         modal: plannerReducer.modal,
     }));
 
+    const { plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
+
     const onUpdatePlanner = () => {
-        if (planner) {
-            const { plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = planner;
-            dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
-        }
+        dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
     };
 
     const onChangePlannerTitle = (title) => {

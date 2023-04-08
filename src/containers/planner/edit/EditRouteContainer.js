@@ -23,14 +23,16 @@ import {
 
 const EditRouteContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, plan, newPlanId, currentInfo } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, plan, newPlanId, currentInfo, loading } = useSelector(({ plannerReducer, loadingReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         plan: plannerReducer.plan,
         currentInfo: plannerReducer.currentInfo,
+        loading: loadingReducer.loading,
     }));
 
-    const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = planner;
+    const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
+    const { planId } = { ...currentInfo };
 
     const letsFormat = (d) => {
         const date = new Date(d);
@@ -145,17 +147,13 @@ const EditRouteContainer = () => {
     };
 
     const onDeleteLocation = (locationId) => {
-        if (currentInfo) {
-            const { planId } = currentInfo;
-            dispatch(deleteLocationAction({ plannerId, locationId, planId }));
-        }
+        dispatch(deleteLocationAction({ plannerId, locationId, planId }));
     };
 
     // planner 정보 가져오기
     useEffect(() => {
-        if (currentInfo) {
-            const { plannerId } = currentInfo;
-            // dispatch(loadPlannerAction(curPlannerId));
+        const { plannerId } = currentInfo;
+        if (plannerId) {
             dispatch(loadPlannerAction(plannerId));
         }
     }, [dispatch, currentInfo]);
@@ -173,6 +171,7 @@ const EditRouteContainer = () => {
             planner={planner}
             plan={plan}
             currentInfo={currentInfo}
+            loading={loading}
             onChangePlannerDateStart={onChangePlannerDateStart}
             onChangePlannerDateEnd={onChangePlannerDateEnd}
             onCreatePlan={onCreatePlan}

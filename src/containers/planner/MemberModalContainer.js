@@ -12,17 +12,13 @@ const MemberModalContainer = () => {
         modal: plannerReducer.modal,
     }));
 
+    const { plannerId } = { ...planner };
+
     const onInviteMember = () => {
-        if (planner) {
-            const { plannerId } = planner;
-            dispatch(inviteMemberAction({ plannerId, members }));
-        }
+        dispatch(inviteMemberAction({ plannerId, members }));
     };
     const onDeleteMember = (nickName) => {
-        if (planner) {
-            const { plannerId } = planner;
-            dispatch(deleteMemberAction({ plannerId, nickName }));
-        }
+        dispatch(deleteMemberAction({ plannerId, nickName }));
     };
 
     const onChangeMember = (members) => {

@@ -26,19 +26,18 @@ const PlannerListContainer = () => {
         }
     }, [dispatch, account]);
 
-    const onCreatePlanner = () => {
-        if (currentInfo) {
-            const { accountId, creator } = currentInfo;
-            let title = `${creator}의 여행 플래너`;
-            let planDateStart = letsFormat(new Date());
-            let planDateEnd = letsFormat(new Date());
-            let planMembers = [];
-            let expense = 0;
-            let memberCount = 1;
-            let memberTypeId = 1;
+    const { accountId, creator } = { ...currentInfo };
 
-            dispatch(createPlannerAction({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }));
-        }
+    const onCreatePlanner = () => {
+        let title = `${creator}의 여행 플래너`;
+        let planDateStart = letsFormat(new Date());
+        let planDateEnd = letsFormat(new Date());
+        let planMembers = [];
+        let expense = 0;
+        let memberCount = 1;
+        let memberTypeId = 1;
+
+        dispatch(createPlannerAction({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }));
     };
 
     // 공유 플래너리스트 가져오기

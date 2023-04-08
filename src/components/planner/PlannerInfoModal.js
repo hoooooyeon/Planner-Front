@@ -96,7 +96,11 @@ const PlannerInfoModal = ({ planner, modal, onLoadPlanner, onUpdatePlanner, onCh
         { value: '가족', key: 'family' },
     ];
 
-    const { title, expense, memberCount, memberTypeId } = planner;
+    const { title, expense, memberCount, memberTypeId } = { ...planner };
+
+    if (!planner) {
+        return <div>Loading...</div>;
+    }
     return (
         <Modal
             modalVisible={modal.plannerInfo}

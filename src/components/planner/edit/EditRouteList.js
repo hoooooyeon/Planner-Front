@@ -102,7 +102,7 @@ const Button = styled.button`
 `;
 
 const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocation }) => {
-    const { plans } = planner;
+    const { plans } = { ...planner };
 
     const categoryList = [
         {
@@ -115,6 +115,10 @@ const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocat
         { value: '오토바이', key: 'bicycle' },
         { value: '도보', key: 'walking' },
     ];
+
+    if (!planner) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <EditRouteListBlock>

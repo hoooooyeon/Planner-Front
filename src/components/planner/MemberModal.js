@@ -42,6 +42,8 @@ const Member = styled.li`
 `;
 
 const MemberModal = ({ planner, members, modal, onChangeMember, onDeleteMember, onInviteMember, onResetMember, onToggleMemberModal }) => {
+    const { planMembers, creator } = { ...planner };
+
     const onInviteMemberMd = () => {
         if (planner.creator === members[0]) {
             alert('생성자는 초대할 수 없습니다.');
@@ -49,6 +51,10 @@ const MemberModal = ({ planner, members, modal, onChangeMember, onDeleteMember, 
         }
         onInviteMember();
     };
+
+    if (!planner) {
+        return <div>Loading...</div>;
+    }
     return (
         <Modal
             modalVisible={modal.member}
@@ -75,9 +81,9 @@ const MemberModal = ({ planner, members, modal, onChangeMember, onDeleteMember, 
                 </InviteBox>
                 <h4>현재 멤버</h4>
                 <MemberList>
-                    {planner.planMembers &&
-                        planner.planMembers.map((m, i) =>
-                            planner.creator !== m ? (
+                    {planMembers &&
+                        planMembers.map((m, i) =>
+                            creator !== m ? (
                                 <Member key={i}>
                                     <p>{m}</p>
                                     <Button

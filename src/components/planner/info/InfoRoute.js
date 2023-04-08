@@ -100,8 +100,8 @@ const RouteLine = styled.div`
     top: -42px;
 `;
 
-const InfoRoute = ({ planner, currentInfo }) => {
-    const { plans } = planner;
+const InfoRoute = ({ planner, currentInfo, onChangeCurPlanId }) => {
+    const { plans } = { ...planner };
 
     const TOTAL = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     const [isShadow, setIsShadow] = useState(false);
@@ -124,9 +124,12 @@ const InfoRoute = ({ planner, currentInfo }) => {
     //     };
     // });
 
+    if (!planner) {
+        return <div>Loading...</div>;
+    }
     return (
         <InfoRouteBlock>
-            <InfoDatination isShadow={isShadow} planner={planner} />
+            <InfoDatination isShadow={isShadow} planner={planner} onChangeCurPlanId={onChangeCurPlanId} />
             {plans &&
                 plans.map((p) => (
                     <RouteList ref={listRef} aria-current={p.planId === currentInfo.planId ? 'plan' : null}>

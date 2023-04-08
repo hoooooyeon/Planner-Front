@@ -51,7 +51,7 @@ const DeleteButton = styled.div`
 `;
 
 const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, onLoadPlan, onChangeCurPlanId, onAddDate, onSubDate, onUpdateSubPlan, onChangePlans }) => {
-    const { planDateEnd, plans } = planner;
+    const { planDateEnd, plans } = { ...planner };
 
     const letsFormat = (d) => {
         const date = new Date(d);
@@ -151,16 +151,19 @@ const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, 
         console.log(1);
     };
 
-    useEffect(() => {
-        if (itemRef.current) {
-            let item = itemRef.current;
-            item.addEventListener('mousedown', itemMoveStart);
-            return () => {
-                item.removeEventListener('mousedown', itemMoveStart);
-            };
-        }
-    });
+    // useEffect(() => {
+    //     if (itemRef.current) {
+    //         let item = itemRef.current;
+    //         item.addEventListener('mousedown', itemMoveStart);
+    //         return () => {
+    //             item.removeEventListener('mousedown', itemMoveStart);
+    //         };
+    //     }
+    // });
 
+    if (!planner) {
+        return <div>Loading...</div>;
+    }
     return (
         <EditCalendarBlock ref={containerRef}>
             <Calendar

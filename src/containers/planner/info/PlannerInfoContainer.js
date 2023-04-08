@@ -11,11 +11,10 @@ const PlannerInfoContainer = () => {
         currentInfo: plannerReducer.currentInfo,
     }));
 
+    const { plannerId, plans } = { ...planner };
+
     const onDeletePlanner = () => {
-        if (planner) {
-            const { plannerId } = planner;
-            dispatch(deletePlannerAction(plannerId));
-        }
+        dispatch(deletePlannerAction(plannerId));
     };
 
     const onToggleMemberModal = () => {
@@ -28,33 +27,31 @@ const PlannerInfoContainer = () => {
 
     // 수정페이지 도달시 맨처음 currentInfo plan 설정.
     // useEffect(() => {
-    //     if (plans && plans.length !== 0) {
+    //     // if (planner) {
+    //     // const { plans } = planner;
+    //     if (planner && plans.length !== 0) {
+    //         console.log(1);
     //         dispatch(changeCurPlanIdAction(plans[0].planId));
-    //     } else if (plans && plans.length === 0) {
-    //         dispatch(changeCurPlanIdAction(null));
+    //     } else if (planner && plans.length === 0) {
+    //         console.log(2);
+    //         dispatch(changeCurPlanIdAction(1));
     //     }
-    // }, [dispatch, plans]);
+    //     // }
+    // }, [dispatch]);
 
     // planner 정보 가져오기
     useEffect(() => {
-        if (currentInfo) {
-            const { plannerId } = currentInfo;
-            // if (currentInfo && plannerId) {
+        const { plannerId } = currentInfo;
+        if (plannerId) {
             dispatch(loadPlannerAction(plannerId));
-            // }
         }
     }, [dispatch, currentInfo]);
-    // // planner 정보 가져오기
-    // useEffect(() => {
-    //     if (planner) {
-    //         const { plannerId } = planner;
-    //         // if (currentInfo && plannerId) {
-    //         dispatch(loadPlannerAction(plannerId));
-    //         // }
-    //     }
-    // }, [dispatch, currentInfo]);
 
-    return <PlannerInfo planner={planner} currentInfo={currentInfo} onDeletePlanner={onDeletePlanner} onToggleMemberModal={onToggleMemberModal} onTogglePlannerInfoModal={onTogglePlannerInfoModal} />;
+    const onChangeCurPlanId = (planId) => {
+        dispatch(changeCurPlanIdAction(planId));
+    };
+
+    return <PlannerInfo planner={planner} currentInfo={currentInfo} onDeletePlanner={onDeletePlanner} onToggleMemberModal={onToggleMemberModal} onTogglePlannerInfoModal={onTogglePlannerInfoModal} onChangeCurPlanId={onChangeCurPlanId} />;
 };
 
 export default PlannerInfoContainer;

@@ -100,8 +100,8 @@ const FlexBox = styled.div`
     align-items: flex-start;
 `;
 
-const PlannerInfo = ({ planner, currentInfo, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal }) => {
-    const { plans } = planner;
+const PlannerInfo = ({ planner, currentInfo, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal, onChangeCurPlanId }) => {
+    const { plans } = { ...planner };
     const [isDropDown, setIsDropDown] = useState(false);
 
     const onDropDown = () => {
@@ -126,6 +126,9 @@ const PlannerInfo = ({ planner, currentInfo, onDeletePlanner, onToggleMemberModa
         };
     });
 
+    if (!planner) {
+        return <div>Loading...</div>;
+    }
     return (
         <PlannerInfoBlock>
             <Container>
@@ -151,7 +154,7 @@ const PlannerInfo = ({ planner, currentInfo, onDeletePlanner, onToggleMemberModa
                 </InfoHeader>
                 <FlexBox>
                     <InfoMap />
-                    <InfoRoute planner={planner} currentInfo={currentInfo} />
+                    <InfoRoute planner={planner} currentInfo={currentInfo} onChangeCurPlanId={onChangeCurPlanId} />
                 </FlexBox>
             </Container>
             <InfoMenu planner={planner} />

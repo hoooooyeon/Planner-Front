@@ -63,6 +63,9 @@ const EditMap = ({ planner, onCreatePlanner, onUpdatePlanner, onToggleMemberModa
         return () => {};
     }, []);
 
+    // if (!planner) {
+    //     return <div>Loading...</div>;
+    // }
     return (
         <EditMapBlock>
             <Map id="map" ref={container}>

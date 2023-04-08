@@ -127,6 +127,8 @@ const Img = styled.img`
  * 4. postItem의 max버튼 => postItem의 text만큼 높이가 변경됨.
  */
 const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent, onLoadMemo, onResetMemo, onLoadPlanner }) => {
+    const { planMemos } = { ...planner };
+
     const [isChange, setIsChange] = useState(false);
     const adRef = useRef();
 
@@ -151,16 +153,17 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
     useEffect(() => {
         let refAd = adRef.current;
         let refList = listRef.current;
+        if (refAd && refList) {
+            refAd.addEventListener('mouseover', onChangeTrue);
+            refAd.addEventListener('mouseout', onChangeFalse);
+            refList.addEventListener('scroll', handleShadow);
 
-        refAd.addEventListener('mouseover', onChangeTrue);
-        refAd.addEventListener('mouseout', onChangeFalse);
-        refList.addEventListener('scroll', handleShadow);
-
-        return () => {
-            refAd.removeEventListener('mouseover', onChangeTrue);
-            refAd.removeEventListener('mouseout', onChangeFalse);
-            refList.removeEventListener('scroll', handleShadow);
-        };
+            return () => {
+                refAd.removeEventListener('mouseover', onChangeTrue);
+                refAd.removeEventListener('mouseout', onChangeFalse);
+                refList.removeEventListener('scroll', handleShadow);
+            };
+        }
     });
 
     const [isCreate, setIsCreate] = useState(false);
@@ -197,6 +200,9 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
         setIsCreate(false);
     };
 
+    if (!planner) {
+        return <div>Loading...</div>;
+    }
     return (
         <InfoPostListBlock>
             <Container>
@@ -213,8 +219,8 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
                         </Button>
                     </PostListHeader>
                     <PostList ref={listRef}>
-                        {planner.planMemos &&
-                            planner.planMemos.map((memo) => {
+                        {planMemos &&
+                            planMemos.map((memo) => {
                                 return <InfoPostItem key={memo.memoId} memo={memo} onDeleteMemo={onDeleteMemo} onLoadMemo={onLoadMemo} setIsEdit={setIsEdit} onLoadPlanner={onLoadPlanner} />;
                             })}
                     </PostList>
