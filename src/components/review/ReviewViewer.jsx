@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import Menu from '../common/Menu';
 import Button from '../common/Button';
+import PlannerInfo from './PlannerInfo';
 
 const Container = styled.div`
     margin-top: 100px;
@@ -58,6 +59,15 @@ const ThumbsUp = styled.div`
     &:hover {
         color: skyblue;
     }
+`;
+
+const PlannerInfoBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin: 5px 0px;
+    border: 1px solid silver;
+    border-radius: 6px;
 `;
 
 const PostContentBox = styled.div`
@@ -128,22 +138,17 @@ const Comment = styled.div`
     border-bottom: 1px solid silver;
 `;
 
-const ReviewViewer = ({ auth, reviewData, onPostEdit, onPostDelete }) => {
+const ReviewViewer = ({ auth, reviewData, onPostEdit, onPostDelete, planner }) => {
     const menuList = [
         { id: 1, value: '수정' },
         { id: 2, value: '삭제' },
     ];
 
     const onItemClick = (value, index) => {
-        switch (index) {
-            case 0: {
-                onPostEdit();
-                break;
-            }
-            case 1: {
-                onPostDelete();
-                break;
-            }
+        if (index == 0) {
+            onPostEdit();
+        } else {
+            onPostDelete();
         }
     };
 
@@ -165,6 +170,11 @@ const ReviewViewer = ({ auth, reviewData, onPostEdit, onPostDelete }) => {
                         <Menu list={menuList} onItemClick={onItemClick} />
                     </TitleMenus>
                 </PostTitleBox>
+                <PlannerInfoBox>
+                    <b>플래너 정보</b>
+                    <PlannerInfo planner={planner} viewMode={true}></PlannerInfo>
+                    {/* {planner ? <PlannerInfo></PlannerInfo> : <div>추가한 플래너가 없습니다.</div>} */}
+                </PlannerInfoBox>
                 <PostContentBox dangerouslySetInnerHTML={{ __html: reviewData.content }}></PostContentBox>
                 <PostFooterBox>{reviewData.tag && reviewData.tag.map((tag) => <PostTag>{tag}</PostTag>)}</PostFooterBox>
                 <PostCommentWriteBox>

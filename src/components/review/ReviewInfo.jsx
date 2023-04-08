@@ -20,20 +20,6 @@ const ReviewInfoBox = styled.div`
     }
 `;
 
-const InfoBox = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    align-items: center;
-    //border: 1px solid silver;
-    border-radius: 6px;
-    margin: 10px;
-
-    &:hover {
-        background-color: #f2f2f2;
-    }
-`;
-
 const ReviewInfo = ({ plannerList, onPlannerListLoad, onPlannerSelect }) => {
     const [modal, setModal] = useState(false);
     const [selectPlannerInfo, setSelectPlannerInfo] = useState({ type: 'myPlanner', selectId: 0 });
@@ -66,9 +52,7 @@ const ReviewInfo = ({ plannerList, onPlannerListLoad, onPlannerSelect }) => {
 
     return (
         <ReviewInfoBox>
-            <InfoBox>
-                <PlannerInfo info={info} />
-            </InfoBox>
+            <PlannerInfo planner={info} />
             <button onClick={onAdd}>추가하기</button>
             <Modal modalVisible={modal} title="플래너 선택" onModalClose={onModalClose} onModalConfirm={onModalConfirm} modalConfirmText="선택">
                 <PlannerTabs tabMenu={tabMenu} plannerList={plannerList} onPlannerListLoad={onPlannerListLoad} onSelectPlanner={onSelectPlanner} />

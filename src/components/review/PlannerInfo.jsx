@@ -1,8 +1,22 @@
 import styled from 'styled-components';
 import tempImage from '../../images/temp.jpg';
 
+const InfoBox = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    align-items: center;
+    //border: 1px solid silver;
+    border-radius: 6px;
+    margin: 10px;
+
+    &:hover {
+        background-color: #f2f2f2;
+    }
+`;
+
 const SelectMessage = styled.b`
-    padding: 50px 40px;
+    padding: ${(props) => (props.viewMode ? '0px 0px' : '50px 40px')};
 `;
 
 const Image = styled.img`
@@ -23,23 +37,22 @@ const FlexBox = styled.div`
     }
 `;
 
-const PlannerInfo = (props) => {
-    const { info } = props;
+const PlannerInfo = ({ planner, viewMode }) => {
     return (
-        <>
-            {info ? (
+        <InfoBox>
+            {planner ? (
                 <>
                     <Image src={tempImage} />
                     <FlexBox>
-                        <b>제목: {info.title}</b>
-                        <b>생성자: {info.creator}</b>
-                        <b>여행비용: {info.expense}</b>
+                        <b>제목: {planner.title}</b>
+                        <b>생성자: {planner.creator}</b>
+                        <b>여행비용: {planner.expense}</b>
                     </FlexBox>
                 </>
             ) : (
-                <SelectMessage>플래너를 선택해주세요..</SelectMessage>
+                <SelectMessage viewMode={viewMode}>{viewMode ? '선택한 플래너가 없습니다.' : '플래너를 선택해주세요.'}</SelectMessage>
             )}
-        </>
+        </InfoBox>
     );
 };
 
