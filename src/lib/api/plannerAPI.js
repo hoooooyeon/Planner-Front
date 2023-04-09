@@ -1,5 +1,10 @@
 import client from './client';
 
+// 내 플래너리스트 조회
+export const loadMyPlannerList = ({ accountId }) => {
+    return client.get(`/api/users/${accountId}/planners`, { accountId });
+};
+
 // 다른 사용자들의 플래너리스트 조회
 export const loadSharePlannerList = () => {
     return client.get('/api/planners');

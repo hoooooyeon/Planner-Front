@@ -2,6 +2,10 @@ import * as plannerAPI from '../lib/api/plannerAPI';
 import { takeLatest, takeEvery } from 'redux-saga/effects';
 import createSaga from '../lib/createSaga';
 
+const LOAD_MY_PLANNER_LIST_TYPE = 'planner/LOAD_MY_PLANNER_LIST';
+const LOAD_MY_PLANNER_LIST_SUCCESS_TYPE = 'planner/LOAD_MY_PLANNER_LIST_SUCCESS';
+const LOAD_MY_PLANNER_LIST_FAILURE_TYPE = 'planner/LOAD_MY_PLANNER_LIST_FAILURE';
+
 const LOAD_SHARE_PLANNER_LIST_TYPE = 'planner/LOAD_SHARE_PLANNER_LIST';
 const LOAD_SHARE_PLANNER_LIST_SUCCESS_TYPE = 'planner/LOAD_SHARE_PLANNER_LIST_SUCCESS';
 const LOAD_SHARE_PLANNER_LIST_FAILURE_TYPE = 'planner/LOAD_SHARE_PLANNER_LIST_FAILURE';
@@ -107,6 +111,7 @@ export const createPlannerAction = ({ accountId, creator, title, planDateStart, 
     memberTypeId,
 });
 export const updatePlannerAction = ({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }) => ({ type: UPDATE_PLANNER_TYPE, plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
+export const loadMyPlannerListAction = (accountId) => ({ type: LOAD_MY_PLANNER_LIST_TYPE, accountId });
 export const loadSharePlannerListAction = () => ({ type: LOAD_SHARE_PLANNER_LIST_TYPE });
 export const loadPlannerAction = (plannerId) => ({ type: LOAD_PLANNER_TYPE, plannerId });
 export const changePlannerTitleAction = (title) => ({ type: CHANGE_PLANNER_TITLE_TYPE, title });
@@ -153,6 +158,7 @@ export const changePlansAction = (plans) => ({ type: CHANGE_PLANS_TYPE, plans })
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
+const loadMyPlannerListSaga = createSaga(LOAD_MY_PLANNER_LIST_TYPE, plannerAPI.loadMyPlannerList);
 const loadSharePlannerListSaga = createSaga(LOAD_SHARE_PLANNER_LIST_TYPE, plannerAPI.loadSharePlannerList);
 const loadPlannerSaga = createSaga(LOAD_PLANNER_TYPE, plannerAPI.loadPlanner);
 const deletePlannerSaga = createSaga(DELETE_PLANNER_TYPE, plannerAPI.deletePlanner);
@@ -171,6 +177,7 @@ const deleteLocationSaga = createSaga(DELETE_LOCATION_TYPE, plannerAPI.deleteLoc
 export function* plannerSaga() {
     yield takeLatest(CREATE_PLANNER_TYPE, createPlannerSaga);
     yield takeLatest(UPDATE_PLANNER_TYPE, updatePlannerSaga);
+    yield takeLatest(LOAD_MY_PLANNER_LIST_TYPE, loadMyPlannerListSaga);
     yield takeLatest(LOAD_SHARE_PLANNER_LIST_TYPE, loadSharePlannerListSaga);
     yield takeLatest(LOAD_PLANNER_TYPE, loadPlannerSaga);
     yield takeLatest(DELETE_PLANNER_TYPE, deletePlannerSaga);
@@ -248,12 +255,33 @@ const letsFormat = (d) => {
 
 function plannerReducer(state = initialState, action) {
     switch (action.type) {
+        case LOAD_MY_PLANNER_LIST_SUCCESS_TYPE:
+            return {
+                ...state,
+                myPlanners: action.payload.data,
+            };
         case LOAD_SHARE_PLANNER_LIST_SUCCESS_TYPE:
             return {
                 ...state,
                 sharePlanners: action.payload.data,
             };
+        case LOAD_MY_PLANNER_LIST_FAILURE_TYPE:
         case LOAD_SHARE_PLANNER_LIST_FAILURE_TYPE:
+        case LOAD_PLANNER_FAILURE_TYPE:
+        case CREATE_PLANNER_FAILURE_TYPE:
+        case UPDATE_PLANNER_FAILURE_TYPE:
+        case DELETE_PLANNER_FAILURE_TYPE:
+        case CREATE_MEMO_FAILURE_TYPE:
+        case UPDATE_MEMO_FAILURE_TYPE:
+        case DELETE_MEMO_FAILURE_TYPE:
+        case CREATE_PLAN_FAILURE_TYPE:
+        case UPDATE_PLAN_FAILURE_TYPE:
+        case DELETE_PLAN_FAILURE_TYPE:
+        case INVITE_MEMBER_FAILURE_TYPE:
+        case DELETE_MEMBER_FAILURE_TYPE:
+        case CREATE_LOCATION_FAILURE_TYPE:
+        case UPDATE_LOCATION_FAILURE_TYPE:
+        case DELETE_LOCATION_FAILURE_TYPE:
             return {
                 ...state,
                 plannerError: action.payload.error,
@@ -262,11 +290,6 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
                 planner: action.payload.data,
-            };
-        case LOAD_PLANNER_FAILURE_TYPE:
-            return {
-                ...state,
-                planner: action.payload.error,
             };
         case CREATE_PLANNER_SUCCESS_TYPE:
             return {
@@ -289,22 +312,12 @@ function plannerReducer(state = initialState, action) {
                     plannerId: action.payload.data,
                 },
             };
-        case CREATE_PLANNER_FAILURE_TYPE:
-            return {
-                ...state,
-                plannerError: action.payload.error,
-            };
         case UPDATE_PLANNER_SUCCESS_TYPE:
             return {
                 ...state,
                 currentInfo: {
                     ...state.currentInfo,
                 },
-            };
-        case UPDATE_PLANNER_FAILURE_TYPE:
-            return {
-                ...state,
-                plannerError: action.payload.error,
             };
         case CHANGE_PLANNER_TITLE_TYPE:
             return {
@@ -393,11 +406,6 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
             };
-        case DELETE_PLANNER_FAILURE_TYPE:
-            return {
-                ...state,
-                plannerError: action.payload.error,
-            };
         case CREATE_MEMO_SUCCESS_TYPE:
             return {
                 ...state,
@@ -406,11 +414,6 @@ function plannerReducer(state = initialState, action) {
                     memoId: action.payload.data,
                 },
             };
-        case CREATE_MEMO_FAILURE_TYPE:
-            return {
-                ...state,
-                plannerError: action.payload.error,
-            };
         case UPDATE_MEMO_SUCCESS_TYPE:
             return {
                 ...state,
@@ -418,22 +421,12 @@ function plannerReducer(state = initialState, action) {
                     ...state.currentInfo,
                 },
             };
-        case UPDATE_MEMO_FAILURE_TYPE:
-            return {
-                ...state,
-                plannerError: action.payload.error,
-            };
         case DELETE_MEMO_SUCCESS_TYPE:
             return {
                 ...state,
                 currentInfo: {
                     ...state.currentInfo,
                 },
-            };
-        case DELETE_MEMO_FAILURE_TYPE:
-            return {
-                ...state,
-                plannerError: action.payload.error,
             };
         case LOAD_MEMO_TYPE:
             return {
@@ -477,22 +470,12 @@ function plannerReducer(state = initialState, action) {
                     planId: action.payload.data,
                 },
             };
-        case CREATE_PLAN_FAILURE_TYPE:
-            return {
-                ...state,
-                plannerError: action.payload.error,
-            };
         case UPDATE_PLAN_SUCCESS_TYPE:
             return {
                 ...state,
                 currentInfo: {
                     ...state.currentInfo,
                 },
-            };
-        case UPDATE_PLAN_FAILURE_TYPE:
-            return {
-                ...state,
-                plannerError: action.payload.error,
             };
         case DELETE_PLAN_SUCCESS_TYPE:
             return {
@@ -501,11 +484,6 @@ function plannerReducer(state = initialState, action) {
                     ...state.currentInfo,
                     // planId: state.planner.plans[0].planId || null,
                 },
-            };
-        case DELETE_PLAN_FAILURE_TYPE:
-            return {
-                ...state,
-                plannerError: action.payload.error,
             };
         // case LOAD_PLAN_TYPE:
         //     return {
@@ -539,23 +517,12 @@ function plannerReducer(state = initialState, action) {
                     ...state.currentInfo,
                 },
             };
-        case INVITE_MEMBER_FAILURE_TYPE:
-            return {
-                ...state,
-                plannerError: action.payload.error,
-            };
         case DELETE_MEMBER_SUCCESS_TYPE:
             return {
                 ...state,
                 currentInfo: {
                     ...state.currentInfo,
                 },
-            };
-        case DELETE_MEMBER_FAILURE_TYPE:
-            console.log(action.nickName);
-            return {
-                ...state,
-                plannerError: action.payload.error,
             };
         case CHANGE_MEMBER_TYPE:
             return {
@@ -591,19 +558,9 @@ function plannerReducer(state = initialState, action) {
                     locaId: action.payload.data,
                 },
             };
-        case CREATE_LOCATION_FAILURE_TYPE:
-            return {
-                ...state,
-                plannerError: action.payload.error,
-            };
         case UPDATE_LOCATION_SUCCESS_TYPE:
             return {
                 ...state,
-            };
-        case UPDATE_LOCATION_FAILURE_TYPE:
-            return {
-                ...state,
-                plannerError: action.payload.error,
             };
         case DELETE_LOCATION_SUCCESS_TYPE:
             return {
@@ -611,11 +568,6 @@ function plannerReducer(state = initialState, action) {
                 currentInfo: {
                     ...state.currentInfo,
                 },
-            };
-        case DELETE_LOCATION_FAILURE_TYPE:
-            return {
-                ...state,
-                plannerError: action.payload.error,
             };
         case CHANGE_CUR_PLAN_ID_TYPE:
             return {

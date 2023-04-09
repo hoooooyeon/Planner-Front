@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerList from '../../components/planner/list/PlannerList';
-import { changeCurPlannerIdAction, changePlannerAccountAction, changePlannerIdAction, createPlannerAction, loadPlannerAction, loadSharePlannerListAction } from '../../modules/plannerModule';
+import { changeCurPlannerIdAction, changePlannerAccountAction, changePlannerIdAction, createPlannerAction, loadMyPlannerListAction, loadPlannerAction, loadSharePlannerListAction } from '../../modules/plannerModule';
 
 const PlannerListContainer = () => {
     const dispatch = useDispatch();
-    const { sharePlanners, plannerError, planner, account, currentInfo } = useSelector(({ plannerReducer, authReducer }) => ({
+    const { myPlanners, sharePlanners, plannerError, planner, account, currentInfo } = useSelector(({ plannerReducer, authReducer }) => ({
         account: authReducer.account,
+        myPlanners: plannerReducer.myPlanners,
         sharePlanners: plannerReducer.sharePlanners,
         plannerError: plannerReducer.plannerError,
         planner: plannerReducer.planner,
@@ -40,6 +41,14 @@ const PlannerListContainer = () => {
         dispatch(createPlannerAction({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }));
     };
 
+    // 나의 플래너리스트 가져오기
+    useEffect(() => {
+        const { accountId } = currentInfo;
+        if (accountId) {
+            dispatch(loadMyPlannerListAction(accountId));
+        }
+    }, [dispatch, currentInfo]);
+
     // 공유 플래너리스트 가져오기
     useEffect(() => {
         dispatch(loadSharePlannerListAction());
@@ -53,7 +62,7 @@ const PlannerListContainer = () => {
     const onChangeCurPlannerId = (plannerId) => {
         dispatch(changeCurPlannerIdAction(plannerId));
     };
-    return <PlannerList onCreatePlanner={onCreatePlanner} sharePlanners={sharePlanners} planner={planner} onLoadPlanner={onLoadPlanner} plannerError={plannerError} onChangeCurPlannerId={onChangeCurPlannerId} />;
+    return <PlannerList myPlanners={myPlanners} sharePlanners={sharePlanners} planner={planner} plannerError={plannerError} onCreatePlanner={onCreatePlanner} onLoadPlanner={onLoadPlanner} onChangeCurPlannerId={onChangeCurPlannerId} />;
 };
 
 export default PlannerListContainer;

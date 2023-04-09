@@ -121,7 +121,7 @@ const SimpleMap = styled.div`
     }
 `;
 
-const MyPlannerList = ({ onResetPlannerInfoForm, onCreatePlanner }) => {
+const MyPlannerList = ({ myPlanners, onResetPlannerInfoForm, onCreatePlanner, onChangeCurPlannerId }) => {
     const hiddenBoxRef = useRef();
     const plannersRef = useRef();
 
@@ -216,15 +216,26 @@ const MyPlannerList = ({ onResetPlannerInfoForm, onCreatePlanner }) => {
                 </TitleBox>
                 <HiddenBox ref={hiddenBoxRef}>
                     <Planners ref={plannersRef}>
-                        <PlannerItem>
-                            <Link to="/PlannerInfo">
-                                <SimpleMap />
-                                <InfoBox>
-                                    <Name>1이세계를 향하여가나다라</Name>
-                                    <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                                </InfoBox>
-                            </Link>
-                        </PlannerItem>
+                        {myPlanners &&
+                            myPlanners.map((p) => (
+                                <PlannerItem
+                                    key={p.plannerId}
+                                    onClick={() => {
+                                        // onLoadPlanner(p.plannerId);
+                                        onChangeCurPlannerId(p.plannerId);
+                                    }}
+                                >
+                                    <Link to="/PlannerInfo">
+                                        <SimpleMap />
+                                        <InfoBox>
+                                            <Name>{p.title}</Name>
+                                            <Date>
+                                                {p.planDateStart} ~ {p.planDateEnd}
+                                            </Date>
+                                        </InfoBox>
+                                    </Link>
+                                </PlannerItem>
+                            ))}
                     </Planners>
                 </HiddenBox>
             </Container>
