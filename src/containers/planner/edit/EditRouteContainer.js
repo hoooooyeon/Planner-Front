@@ -100,47 +100,44 @@ const EditRouteContainer = () => {
     };
     const onDeletePlan = (planId) => {
         dispatch(deletePlanAction({ plannerId, planId }));
+        if (planner && plans.length > 1 && planId === currentInfo.planId) {
+            dispatch(changeCurPlanIdAction(plans[0].planId));
+        }
     };
 
     const onUpdatePlan = () => {};
 
+    // 일정 날짜 최신화
     useEffect(() => {
-        let date = new Date(planDateStart);
-        let planDate = letsFormat2(date);
-        let planId = 0;
-
-        if (plans) {
-            for (let i = 0; i < plans.length; i++) {
-                planId = plans[i].planId;
-
-                if (i >= 1) {
-                    planDate = letsFormat2(date.setDate(date.getDate() + 1));
-                }
-                dispatch(updatePlanAction({ plannerId, planId, planDate }));
-            }
-        }
-    }, [dispatch, planDateStart, planDateEnd, plannerId]);
-
-    // plan 삭제로 날짜가 제거될 때, plan 날짜들을 여행일자에 맞게 수정
-    const onUpdateSubPlan = () => {
-        // for 사용
         // let date = new Date(planDateStart);
         // let planDate = letsFormat2(date);
-        // for (let i = 0; i < plans.length; i++) {
-        //     let planId = plans[i].planId;
-        //     if (i >= 1) {
-        //         planDate = letsFormat2(date.setDate(date.getDate() + 1));
+        // let planId = 0;
+        // if (plans) {
+        //     for (let i = 0; i < plans.length; i++) {
+        //         planId = plans[i].planId;
+        //         if (i >= 1) {
+        //             planDate = letsFormat2(date.setDate(date.getDate() + 1));
+        //         }
+        //         dispatch(updatePlanAction({ plannerId, planId, planDate }));
         //     }
-        //     dispatch(updatePlanAction({ plannerId, planId, planDate }));
         // }
-        // map 사용
-        // plans.map((p) => {
-        //     let planId = p.planId;
-        //     let i = 0;
-        //     const planDate = letsFormat(date.setDate(date.getDate() + i));
-        //     return dispatch(updatePlanAction({ plannerId, planId, planDate }));
-        // });
-    };
+    }, [dispatch, planDateStart, planDateEnd, plannerId]);
+
+    // 현재  curPlanId인 plan 삭제시, curPlanId 최신화
+    useEffect(() => {
+        // if (planner && plans.length > 1) {
+        //     let count = 0;
+        //     for (let i = 0; i < plans.length; i++) {
+        //         if (plans[i].planId === planId) {
+        //             count++;
+        //         }
+        //     }
+        //     if (count === 0) {
+        //         dispatch(changeCurPlanIdAction(plans[0].planId));
+        //     }
+        // }
+        // 생성할때 plaid가 바껴도 다시 [0]으로 돌아간다
+    }, [dispatch, planner, plans, planId]);
 
     const onLoadPlan = (plan) => {
         dispatch(loadPlanAction(plan));
@@ -183,7 +180,7 @@ const EditRouteContainer = () => {
             onChangeCurPlanId={onChangeCurPlanId}
             onAddDate={onAddDate}
             onSubDate={onSubDate}
-            onUpdateSubPlan={onUpdateSubPlan}
+            // onUpdateSubPlan={onUpdateSubPlan}
             onChangePlans={onChangePlans}
         />
     );

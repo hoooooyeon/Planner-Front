@@ -8,6 +8,10 @@ const EditCalendarBlock = styled.div`
     left: 4px;
 `;
 
+const ItemBox = styled.div`
+    position: relative;
+`;
+
 const Calendar = styled.div`
     background-color: #f1eee0;
     border: 0.2rem solid #cdd9ac;
@@ -46,7 +50,7 @@ const AddCal = styled.div``;
 
 const DeleteButton = styled.div`
     position: absolute;
-    top: -20px;
+    top: -10px;
     left: 50px;
 `;
 
@@ -72,7 +76,7 @@ const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, 
         //     onUpdateSubPlan();
         // };
         onDeletePlan(planId);
-        onChangeCurPlanId(plans[0].planId || null);
+        // onChangeCurPlanId(plans[0].planId || null);
         onSubDate(planDateEnd);
 
         // await onDelete();
@@ -178,23 +182,27 @@ const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, 
             <>
                 {plans &&
                     plans.map((p, i) => (
-                        <Calendar
-                            ref={itemRef}
-                            aria-current={p.planId === currentInfo.planId ? 'date' : null}
-                            draggable
-                            onDragStart={() => {
-                                onDragStart(p);
-                            }}
-                            onDragEnd={onDragEnd}
-                            onDragEnter={(e) => {
-                                onDragEnter(p);
-                            }}
-                            onClick={() => {
-                                // onLoadPlan(p);
-                                onChangeCurPlanId(p.planId);
-                            }}
-                            key={p.planId}
-                        >
+                        <ItemBox>
+                            <Calendar
+                                ref={itemRef}
+                                aria-current={p.planId === currentInfo.planId ? 'date' : null}
+                                draggable
+                                onDragStart={() => {
+                                    onDragStart(p);
+                                }}
+                                onDragEnd={onDragEnd}
+                                onDragEnter={(e) => {
+                                    onDragEnter(p);
+                                }}
+                                onClick={() => {
+                                    // onLoadPlan(p);
+                                    onChangeCurPlanId(p.planId);
+                                }}
+                                key={p.planId}
+                            >
+                                <RouteLine />
+                                {letsFormat(p.planDate)}
+                            </Calendar>
                             <DeleteButton
                                 onClick={() => {
                                     onClickDeletePlan(p.planId);
@@ -205,9 +213,7 @@ const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, 
                             >
                                 x
                             </DeleteButton>
-                            <RouteLine />
-                            {letsFormat(p.planDate)}
-                        </Calendar>
+                        </ItemBox>
                     ))}
             </>
         </EditCalendarBlock>

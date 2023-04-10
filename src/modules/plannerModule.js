@@ -1,4 +1,5 @@
 import * as plannerAPI from '../lib/api/plannerAPI';
+import * as profileAPI from '../lib/api/profileAPI';
 import { takeLatest, takeEvery } from 'redux-saga/effects';
 import createSaga from '../lib/createSaga';
 
@@ -141,11 +142,20 @@ export const changeMemberAction = (members) => ({ type: CHANGE_MEMBER_TYPE, memb
 export const resetMemberAction = () => ({ type: RESET_MEMBER_TYPE });
 export const toggleMemberModalAction = () => ({ type: TOGGLE_MEMBER_MODAL_TYPE });
 export const togglePlannerInfoModalAction = () => ({ type: TOGGLE_PLANNER_INFO_MODAL_TYPE });
-export const createLocationAction = ({ plannerId, locationContentId, locationImage, locationTransportation, planId }) => ({ type: CREATE_LOCATION_TYPE, plannerId, locationContentId, locationImage, locationTransportation, planId });
-export const updateLocationAction = ({ plannerId, locationId, locationContentId, locationImage, locationTransportation, planId }) => ({
+export const createLocationAction = ({ plannerId, locationName, locationContentId, locationImage, locationTransportation, planId }) => ({
+    type: CREATE_LOCATION_TYPE,
+    plannerId,
+    locationName,
+    locationContentId,
+    locationImage,
+    locationTransportation,
+    planId,
+});
+export const updateLocationAction = ({ plannerId, locationName, locationId, locationContentId, locationImage, locationTransportation, planId }) => ({
     type: UPDATE_LOCATION_TYPE,
     plannerId,
     locationId,
+    locationName,
     locationContentId,
     locationImage,
     locationTransportation,
@@ -158,7 +168,7 @@ export const changePlansAction = (plans) => ({ type: CHANGE_PLANS_TYPE, plans })
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
-const loadMyPlannerListSaga = createSaga(LOAD_MY_PLANNER_LIST_TYPE, plannerAPI.loadMyPlannerList);
+const loadMyPlannerListSaga = createSaga(LOAD_MY_PLANNER_LIST_TYPE, profileAPI.loadMyPlannerList);
 const loadSharePlannerListSaga = createSaga(LOAD_SHARE_PLANNER_LIST_TYPE, plannerAPI.loadSharePlannerList);
 const loadPlannerSaga = createSaga(LOAD_PLANNER_TYPE, plannerAPI.loadPlanner);
 const deletePlannerSaga = createSaga(DELETE_PLANNER_TYPE, plannerAPI.deletePlanner);
@@ -482,7 +492,6 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 currentInfo: {
                     ...state.currentInfo,
-                    // planId: state.planner.plans[0].planId || null,
                 },
             };
         // case LOAD_PLAN_TYPE:

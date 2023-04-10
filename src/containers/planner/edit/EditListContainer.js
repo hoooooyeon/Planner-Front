@@ -19,10 +19,12 @@ const EditListContainer = () => {
     const { plannerId, planId } = { ...currentInfo };
 
     const onCreateLocation = (spot) => {
-        const { contentid, firstimage, firstimage2 } = spot;
+        const { title, contentid, firstimage, firstimage2 } = spot;
         const locationImage = firstimage !== '' ? firstimage : firstimage2;
         const locationTransportation = 1;
-        dispatch(createLocationAction({ plannerId, contentid, locationImage, locationTransportation, planId }));
+        const locationName = title;
+
+        dispatch(createLocationAction({ plannerId, locationName, contentid, locationImage, locationTransportation, planId }));
     };
 
     return <EditList spots={spots} onChangePlanLocation={onChangePlanLocation} onCreateLocation={onCreateLocation} />;

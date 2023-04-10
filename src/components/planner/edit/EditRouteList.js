@@ -126,7 +126,7 @@ const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocat
                 plans.map((p, i) => (
                     <RouteList aria-current={p.planId === currentInfo.planId ? 'plan' : null}>
                         {p.planLocations.map((pl, i) => {
-                            const { locationId, locationImage, locationTransportation } = pl;
+                            const { locationName, locationId, locationImage, locationTransportation } = pl;
                             return (
                                 <RouteItem key={i}>
                                     <RouteLine />
@@ -146,7 +146,7 @@ const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocat
                                             alt={locationId}
                                             // onError={onChangeErrorImg}
                                         />
-                                        <Name>{locationId}</Name>
+                                        <Name>{locationName}</Name>
                                         <Button
                                             onClick={() => {
                                                 onDeleteLocation(locationId);
@@ -161,43 +161,6 @@ const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocat
                     </RouteList>
                 ))}
         </EditRouteListBlock>
-
-        // <EditRouteListBlock>
-        // {plan &&
-        //         plan.planLocations.map((p, i) => {
-        //             const { locationId, locationImage, locationTransportation } = p;
-        //             return (
-        //                 <RouteItem key={i}>
-        //                     <RouteLine />
-        //                     <TransItem required defaultValue="">
-        //                         <option value="" disabled>
-        //                             선택
-        //                         </option>
-        //                         {categoryList.map((item) => (
-        //                             <option value={item.value} key={item.key}>
-        //                                 {item.value}
-        //                             </option>
-        //                         ))}
-        //                     </TransItem>
-        //                     <SpotItem>
-        //                         <Img
-        //                             src={locationImage}
-        //                             alt={locationId}
-        //                             // onError={onChangeErrorImg}
-        //                         />
-        //                         <Name>{locationId}</Name>
-        //                         <Button
-        //                             onClick={() => {
-        //                                 onDeleteLocation(locationId);
-        //                             }}
-        //                         >
-        //                             삭제
-        //                         </Button>
-        //                     </SpotItem>
-        //                 </RouteItem>
-        //             );
-        //         })}
-        // </EditRouteListBlock>
     );
 };
 

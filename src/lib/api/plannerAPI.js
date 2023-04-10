@@ -1,10 +1,5 @@
 import client from './client';
 
-// 내 플래너리스트 조회
-export const loadMyPlannerList = ({ accountId }) => {
-    return client.get(`/api/users/${accountId}/planners`, { accountId });
-};
-
 // 다른 사용자들의 플래너리스트 조회
 export const loadSharePlannerList = () => {
     return client.get('/api/planners');
@@ -71,13 +66,13 @@ export const deleteMember = ({ plannerId, nickName }) => {
 };
 
 // 여행지 생성
-export const createLocation = ({ plannerId, locationContentId, locationImage, locationTransportation, planId }) => {
-    return client.post(`/api/planners/${plannerId}/plans/${planId}/plan-locations`, { plannerId, locationContentId, locationImage, locationTransportation, planId });
+export const createLocation = ({ plannerId, locationName, locationContentId, locationImage, locationTransportation, planId }) => {
+    return client.post(`/api/planners/${plannerId}/plans/${planId}/plan-locations`, { plannerId, locationName, locationContentId, locationImage, locationTransportation, planId });
 };
 
 // 여행지 수정
-export const updateLocation = ({ plannerId, locationId, locationContentId, locationImage, locationTransportation, planId }) => {
-    return client.patch(`/api/planners/${plannerId}/plans/${planId}/plan-locations/${locationId}`, { plannerId, locationId, locationContentId, locationImage, locationTransportation, planId });
+export const updateLocation = ({ plannerId, locationId, locationName, locationContentId, locationImage, locationTransportation, planId }) => {
+    return client.patch(`/api/planners/${plannerId}/plans/${planId}/plan-locations/${locationId}`, { plannerId, locationId, locationName, locationContentId, locationImage, locationTransportation, planId });
 };
 
 // 여행지 삭제
