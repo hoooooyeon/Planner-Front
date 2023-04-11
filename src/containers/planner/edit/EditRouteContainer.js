@@ -5,6 +5,7 @@ import EditRoute from '../../../components/planner/edit/EditRoute';
 import { createPlan } from '../../../lib/api/plannerAPI';
 import {
     changeCurPlanIdAction,
+    changeLocationAction,
     changePlannerDateEndAction,
     changePlannerDateStartAction,
     changePlannerExpenseAction,
@@ -17,18 +18,20 @@ import {
     deletePlanAction,
     loadPlanAction,
     loadPlannerAction,
+    updateLocationAction,
     updatePlanAction,
     updatePlannerAction,
 } from '../../../modules/plannerModule';
 
 const EditRouteContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, plan, newPlanId, currentInfo, loading } = useSelector(({ plannerReducer, loadingReducer }) => ({
+    const { planner, plannerError, plan, newPlanId, currentInfo, loading, location } = useSelector(({ plannerReducer, loadingReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         plan: plannerReducer.plan,
         currentInfo: plannerReducer.currentInfo,
         loading: loadingReducer.loading,
+        location: plannerReducer.location,
     }));
 
     const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
@@ -40,7 +43,7 @@ const EditRouteContainer = () => {
     };
 
     // 기존 날짜에 수가 더해짐 리렌더링시 정상임
-    const onUpdatePlanner = (date) => {
+    const onUpdatePlannerDate = (date) => {
         let planDateStart = letsFormat(date);
         let planDateEnd = letsFormat(date);
 
@@ -78,25 +81,11 @@ const EditRouteContainer = () => {
         dispatch(changePlannerDateEndAction(date));
     };
 
-    const letsFormat2 = (d) => {
-        const date = new Date(d);
-        return (
-            date.getFullYear() +
-            '-' +
-            ('0' + (date.getMonth() + 1)).slice(-2) +
-            '-' +
-            ('0' + date.getDate()).slice(-2) +
-            ' ' +
-            ('0' + date.getHours()).slice(-2) +
-            ':' +
-            ('0' + date.getMinutes()).slice(-2) +
-            ':' +
-            ('0' + date.getSeconds()).slice(-2)
-        );
-    };
     const onCreatePlan = () => {
-        const planDate = letsFormat2(new Date(planDateEnd));
-        dispatch(createPlanAction({ plannerId, planDate }));
+        const planDate = letsFormat(new Date(planDateEnd));
+        const planLocations = [];
+
+        dispatch(createPlanAction({ plannerId, planDate, planLocations }));
     };
     const onDeletePlan = (planId) => {
         dispatch(deletePlanAction({ plannerId, planId }));
@@ -109,18 +98,18 @@ const EditRouteContainer = () => {
 
     // 일정 날짜 최신화
     useEffect(() => {
-        // let date = new Date(planDateStart);
-        // let planDate = letsFormat2(date);
-        // let planId = 0;
-        // if (plans) {
-        //     for (let i = 0; i < plans.length; i++) {
-        //         planId = plans[i].planId;
-        //         if (i >= 1) {
-        //             planDate = letsFormat2(date.setDate(date.getDate() + 1));
-        //         }
-        //         dispatch(updatePlanAction({ plannerId, planId, planDate }));
-        //     }
-        // }
+        let date = new Date(planDateStart);
+        let planDate = letsFormat(date);
+        let planId = 0;
+        if (plans) {
+            for (let i = 0; i < plans.length; i++) {
+                planId = plans[i].planId;
+                if (i >= 1) {
+                    planDate = letsFormat(date.setDate(date.getDate() + 1));
+                }
+                dispatch(updatePlanAction({ plannerId, planId, planDate }));
+            }
+        }
     }, [dispatch, planDateStart, planDateEnd, plannerId]);
 
     // 현재  curPlanId인 plan 삭제시, curPlanId 최신화
@@ -163,6 +152,19 @@ const EditRouteContainer = () => {
         dispatch(changePlansAction(plans));
     };
 
+    const onChangeLocation = (location) => {
+        dispatch(changeLocationAction(location));
+    };
+
+    const onUpdateTrans = (trans) => {
+        if (planner && location) {
+            const { locationId, locationName, locationImage, locationContentId } = location;
+
+            let locationTransportation = trans;
+            dispatch(updateLocationAction({ plannerId, locationId, locationName, locationContentId, locationImage, locationTransportation, planId }));
+        }
+    };
+
     return (
         <EditRoute
             planner={planner}
@@ -176,12 +178,14 @@ const EditRouteContainer = () => {
             onLoadPlan={onLoadPlan}
             onUpdatePlan={onUpdatePlan}
             onDeleteLocation={onDeleteLocation}
-            onUpdatePlanner={onUpdatePlanner}
+            onUpdatePlannerDate={onUpdatePlannerDate}
             onChangeCurPlanId={onChangeCurPlanId}
             onAddDate={onAddDate}
             onSubDate={onSubDate}
             // onUpdateSubPlan={onUpdateSubPlan}
             onChangePlans={onChangePlans}
+            onChangeLocation={onChangeLocation}
+            onUpdateTrans={onUpdateTrans}
         />
     );
 };

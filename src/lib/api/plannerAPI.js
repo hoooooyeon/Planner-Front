@@ -41,8 +41,8 @@ export const deleteMemo = ({ plannerId, memoId }) => {
 };
 
 // 일정 생성
-export const createPlan = ({ plannerId, planDate }) => {
-    return client.post(`/api/planners/${plannerId}/plans`, { plannerId, planDate });
+export const createPlan = ({ plannerId, planDate, planLocations }) => {
+    return client.post(`/api/planners/${plannerId}/plans`, { plannerId, planDate, planLocations });
 };
 
 // 일정 수정

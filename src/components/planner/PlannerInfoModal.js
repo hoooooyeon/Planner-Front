@@ -144,7 +144,7 @@ const PlannerInfoModal = ({ planner, modal, onLoadPlanner, onUpdatePlanner, onCh
                         required
                         defaultValue=""
                         onChange={(e) => {
-                            onChangePlannerMemberCategory(1);
+                            // onChangePlannerMemberCategory(1);
                             // onChangePlannerMemberCategory(e.target.value);
                         }}
                     >

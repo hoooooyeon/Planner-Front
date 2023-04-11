@@ -111,6 +111,11 @@ const InfoDatination = ({ isShadow, planner, currentInfo, onChangeCurPlanId }) =
         dateRef.current.style.transition = 'all 0.5s ease-in-out';
     }, [currentIndex]);
 
+    const letsFormat = (d) => {
+        const date = new Date(d);
+        return ('0' + (date.getMonth() + 1)).slice(-2) + '/' + ('0' + date.getDate()).slice(-2);
+    };
+
     if (!planner) {
         return <div>Loading...</div>;
     }
@@ -132,7 +137,7 @@ const InfoDatination = ({ isShadow, planner, currentInfo, onChangeCurPlanId }) =
                                     onChangeCurPlanId(p.planId);
                                 }}
                             >
-                                {p.planDate}
+                                {letsFormat(p.planDate)}
                             </DateButton>
                         ))}
                 </DateButtons>

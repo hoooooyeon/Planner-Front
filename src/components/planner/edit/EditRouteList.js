@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const EditRouteListBlock = styled.div`
@@ -101,19 +102,28 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocation }) => {
+const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocation, onChangeLocation, onUpdateTrans }) => {
     const { plans } = { ...planner };
 
     const categoryList = [
         {
-            value: '비행기',
-            key: 'plane',
+            label: '비행기',
+            value: 0,
         },
-        { value: '기차', key: 'train' },
-        { value: '버스', key: 'bus' },
-        { value: '택시', key: 'taxi' },
-        { value: '오토바이', key: 'bicycle' },
-        { value: '도보', key: 'walking' },
+        { label: '기차', value: 1 },
+        { label: '버스', value: 2 },
+        { label: '택시', value: 3 },
+        { label: '오토바이', value: 4 },
+        { label: '도보', value: 5 },
+        // {
+        //     value: '비행기',
+        //     key: 'plane',
+        // },
+        // { value: '기차', key: 'train' },
+        // { value: '버스', key: 'bus' },
+        // { value: '택시', key: 'taxi' },
+        // { value: '오토바이', key: 'bicycle' },
+        // { value: '도보', key: 'walking' },
     ];
 
     if (!planner) {
@@ -126,17 +136,28 @@ const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocat
                 plans.map((p, i) => (
                     <RouteList aria-current={p.planId === currentInfo.planId ? 'plan' : null}>
                         {p.planLocations.map((pl, i) => {
-                            const { locationName, locationId, locationImage, locationTransportation } = pl;
+                            const { locationId, locationName, locationImage, locationTransportation } = pl;
                             return (
-                                <RouteItem key={i}>
+                                <RouteItem
+                                    key={i}
+                                    onClick={() => {
+                                        onChangeLocation(pl);
+                                    }}
+                                >
                                     <RouteLine />
-                                    <TransItem required defaultValue="">
-                                        <option value="" disabled>
+                                    <TransItem
+                                        required
+                                        value={locationTransportation}
+                                        onChange={(e) => {
+                                            onUpdateTrans(e.target.value);
+                                        }}
+                                    >
+                                        {/* <option value="" disabled>
                                             선택
-                                        </option>
-                                        {categoryList.map((item) => (
-                                            <option value={item.value} key={item.key}>
-                                                {item.value}
+                                        </option> */}
+                                        {categoryList.map((c, i) => (
+                                            <option value={c.value} key={c.value}>
+                                                {c.label}
                                             </option>
                                         ))}
                                     </TransItem>

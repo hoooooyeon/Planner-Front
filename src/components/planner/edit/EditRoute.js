@@ -129,12 +129,14 @@ const EditRoute = ({
     onLoadPlan,
     onUpdatePlan,
     onDeleteLocation,
-    onUpdatePlanner,
+    onUpdatePlannerDate,
     onChangeCurPlanId,
     onAddDate,
     onSubDate,
     onUpdateSubPlan,
     onChangePlans,
+    onChangeLocation,
+    onUpdateTrans,
 }) => {
     // const [dateRange, setDateRange] = useState([new Date(planDateStart), new Date(planDateEnd)]);
     const { planDateStart, plans } = { ...planner };
@@ -152,7 +154,7 @@ const EditRoute = ({
         setStartDate(date);
         // onChangePlannerDateStart(date);
         // onChangePlannerDateEnd(date);
-        onUpdatePlanner(date);
+        onUpdatePlannerDate(date);
         if (plans) {
             // onUpdatePlan();
         }
@@ -195,7 +197,7 @@ const EditRoute = ({
                     onUpdateSubPlan={onUpdateSubPlan}
                     onChangePlans={onChangePlans}
                 />
-                <EditRouteList planner={planner} plan={plan} currentInfo={currentInfo} onUpdatePlan={onUpdatePlan} onDeleteLocation={onDeleteLocation} />
+                <EditRouteList planner={planner} plan={plan} currentInfo={currentInfo} onUpdatePlan={onUpdatePlan} onDeleteLocation={onDeleteLocation} onChangeLocation={onChangeLocation} onUpdateTrans={onUpdateTrans} />
             </RouteBox>
         </EditRouteBlock>
     );

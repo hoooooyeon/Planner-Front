@@ -99,6 +99,8 @@ const CHANGE_CUR_PLANNER_ID_TYPE = 'planner/CHANGE_CUR_PLANNER_ID';
 
 const CHANGE_PLANS_TYPE = 'planner/CHANGE_PLANS';
 
+const CHANGE_LOCATION_TYPE = 'planner/CHANGE_LOCATION';
+
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
     accountId,
@@ -131,7 +133,7 @@ export const loadMemoAction = (memo) => ({ type: LOAD_MEMO_TYPE, memo });
 export const resetMemoAction = () => ({ type: RESET_MEMO_TYPE });
 export const changeMemoTitleAction = (title) => ({ type: CHANGE_MEMO_TITLE_TYPE, title });
 export const changeMemoContentAction = (content) => ({ type: CHANGE_MEMO_CONTENT_TYPE, content });
-export const createPlanAction = ({ plannerId, planDate }) => ({ type: CREATE_PLAN_TYPE, plannerId, planDate });
+export const createPlanAction = ({ plannerId, planDate, planLocations }) => ({ type: CREATE_PLAN_TYPE, plannerId, planDate, planLocations });
 export const updatePlanAction = ({ planId, plannerId, planDate }) => ({ type: UPDATE_PLAN_TYPE, plannerId, planDate, planId });
 export const deletePlanAction = ({ plannerId, planId }) => ({ type: DELETE_PLAN_TYPE, plannerId, planId });
 export const loadPlanAction = (plan) => ({ type: LOAD_PLAN_TYPE, plan });
@@ -151,7 +153,7 @@ export const createLocationAction = ({ plannerId, locationName, locationContentI
     locationTransportation,
     planId,
 });
-export const updateLocationAction = ({ plannerId, locationName, locationId, locationContentId, locationImage, locationTransportation, planId }) => ({
+export const updateLocationAction = ({ plannerId, locationId, locationName, locationContentId, locationImage, locationTransportation, planId }) => ({
     type: UPDATE_LOCATION_TYPE,
     plannerId,
     locationId,
@@ -165,6 +167,7 @@ export const deleteLocationAction = ({ plannerId, locationId, planId }) => ({ ty
 export const changeCurPlanIdAction = (planId) => ({ type: CHANGE_CUR_PLAN_ID_TYPE, planId });
 export const changeCurPlannerIdAction = (plannerId) => ({ type: CHANGE_CUR_PLANNER_ID_TYPE, plannerId });
 export const changePlansAction = (plans) => ({ type: CHANGE_PLANS_TYPE, plans });
+export const changeLocationAction = (location) => ({ type: CHANGE_LOCATION_TYPE, location });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -570,6 +573,9 @@ function plannerReducer(state = initialState, action) {
         case UPDATE_LOCATION_SUCCESS_TYPE:
             return {
                 ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                },
             };
         case DELETE_LOCATION_SUCCESS_TYPE:
             return {
@@ -597,6 +603,11 @@ function plannerReducer(state = initialState, action) {
         case CHANGE_PLANS_TYPE:
             return {
                 ...state,
+            };
+        case CHANGE_LOCATION_TYPE:
+            return {
+                ...state,
+                location: action.location,
             };
         default:
             return state;
