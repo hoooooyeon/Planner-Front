@@ -148,6 +148,10 @@ const EditRouteContainer = () => {
         dispatch(changeCurPlanIdAction(planId));
     };
 
+    // 일정 변경 함수
+    // 현재 아무 기능은 없다.
+    // plans 배열을 복사하고 거기서 순서를 바꾼 뒤 바뀐 순서에서 양 옆의 index의 1/2의 값을 가져온 뒤
+    // 해당 요소의 index를  업뎃해준다. 그 뒤 db에서 index로 순서대로 정렬
     const onChangePlans = (plans) => {
         dispatch(changePlansAction(plans));
     };

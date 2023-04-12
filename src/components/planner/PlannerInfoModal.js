@@ -87,13 +87,10 @@ const PlannerInfoModal = ({ planner, modal, onLoadPlanner, onUpdatePlanner, onCh
     // };
 
     const categoryList = [
-        {
-            value: '혼자',
-            key: 'alone',
-        },
-        { value: '연인', key: 'couple' },
-        { value: '친구', key: 'friend' },
-        { value: '가족', key: 'family' },
+        { label: '혼자', value: 0 },
+        { label: '연인', value: 1 },
+        { label: '친구', value: 2 },
+        { label: '가족', value: 3 },
     ];
 
     const { title, expense, memberCount, memberTypeId } = { ...planner };
@@ -125,35 +122,29 @@ const PlannerInfoModal = ({ planner, modal, onLoadPlanner, onUpdatePlanner, onCh
                     <Funds
                         placeholder="여행 자금"
                         type="number"
+                        value={expense}
                         onChange={(e) => {
                             onChangePlannerExpense(e.target.value);
                         }}
-                    >
-                        {/* {expense || null} */}
-                    </Funds>
+                    ></Funds>
                     <People
                         placeholder="인원"
                         type="number"
+                        value={memberCount}
                         onChange={(e) => {
                             onChangePlannerMemberCount(e.target.value);
                         }}
-                    >
-                        {/* {memberCount || null} */}
-                    </People>
+                    ></People>
                     <Category
                         required
-                        defaultValue=""
+                        value={memberTypeId}
                         onChange={(e) => {
-                            // onChangePlannerMemberCategory(1);
-                            // onChangePlannerMemberCategory(e.target.value);
+                            onChangePlannerMemberCategory(e.target.value);
                         }}
                     >
-                        <option value="" disabled>
-                            선택
-                        </option>
-                        {categoryList.map((item) => (
-                            <option value={item.value} key={item.key}>
-                                {item.value}
+                        {categoryList.map((c) => (
+                            <option value={c.value} key={c.value}>
+                                {c.label}
                             </option>
                         ))}
                     </Category>

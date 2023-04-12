@@ -63,6 +63,8 @@ const Date = styled.div`
 const InfoMenu = ({ planner }) => {
     const { title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
 
+    const memberTypeList = ['혼자', '연인', '친구', '가족'];
+
     if (!planner) {
         return <div>Loading...</div>;
     }
@@ -83,7 +85,7 @@ const InfoMenu = ({ planner }) => {
                         <Ask>인원: </Ask>
                         {/* 멤버 타입 아이디별로 text 출력해야댐 */}
                         <Text>
-                            {memberCount} ({memberTypeId})
+                            {memberCount} ({memberTypeList[memberTypeId]})
                         </Text>
                     </FlexBox>
                 </InfoBox>

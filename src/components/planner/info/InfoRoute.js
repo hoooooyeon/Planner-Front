@@ -1,18 +1,18 @@
 import styled from 'styled-components';
 import InfoDatination from './InfoDatination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faBus } from '@fortawesome/free-solid-svg-icons'; // 버스
+import { faBus } from '@fortawesome/free-solid-svg-icons'; // 버스
 import { faTaxi } from '@fortawesome/free-solid-svg-icons'; // 택시
-// import { faPlane } from '@fortawesome/free-solid-svg-icons'; // 비행기
-// import { faPersonWalking } from '@fortawesome/free-solid-svg-icons'; // 도보
-// import { faBicycle } from '@fortawesome/free-solid-svg-icons'; // 자전거 or 오토바이
-// import { faTrainSubway } from '@fortawesome/free-solid-svg-icons'; // 지하철 or 기차
-// import { faLocationDot } from '@fortawesome/free-solid-svg-icons'; // 여행지
+import { faPlane } from '@fortawesome/free-solid-svg-icons'; // 비행기
+import { faPersonWalking } from '@fortawesome/free-solid-svg-icons'; // 도보
+import { faBicycle } from '@fortawesome/free-solid-svg-icons'; // 자전거 or 오토바이
+import { faTrainSubway } from '@fortawesome/free-solid-svg-icons'; // 지하철 or 기차
+import { faLocationDot } from '@fortawesome/free-solid-svg-icons'; // 여행지
 import { faBed } from '@fortawesome/free-solid-svg-icons'; // 숙소
+import { faUtensils } from '@fortawesome/free-solid-svg-icons'; // 식당
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useRef } from 'react';
-// import { faUtensils } from '@fortawesome/free-solid-svg-icons'; // 식당
 
 const InfoRouteBlock = styled.div`
     width: 350px;
@@ -103,7 +103,6 @@ const RouteLine = styled.div`
 const InfoRoute = ({ planner, currentInfo, onChangeCurPlanId }) => {
     const { plans } = { ...planner };
 
-    const TOTAL = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     const [isShadow, setIsShadow] = useState(false);
     const listRef = useRef();
 
@@ -124,6 +123,17 @@ const InfoRoute = ({ planner, currentInfo, onChangeCurPlanId }) => {
     //     };
     // });
 
+    const categoryList = [
+        { label: '비행기', value: faPlane },
+        { label: '기차', value: faTrainSubway },
+        { label: '버스', value: faBus },
+        { label: '택시', value: faTaxi },
+        { label: '오토바이', value: faBicycle },
+        { label: '도보', value: faPersonWalking },
+    ];
+
+    const locationIconList = [faLocationDot, faBed, faUtensils];
+
     if (!planner) {
         return <div>Loading...</div>;
     }
@@ -134,17 +144,17 @@ const InfoRoute = ({ planner, currentInfo, onChangeCurPlanId }) => {
                 plans.map((p) => (
                     <RouteList ref={listRef} aria-current={p.planId === currentInfo.planId ? 'plan' : null}>
                         {p.planLocations.map((pl, i) => {
-                            const { locationId, locationTransportation } = pl;
+                            const { locationId, locationName, locationTransportation } = pl;
                             return (
                                 <RouteItem key={locationId}>
                                     <RouteLine />
                                     <TransItem>
-                                        <StyledFontAwesomeIcon icon={faTaxi} />
-                                        Taxi{i}
+                                        <StyledFontAwesomeIcon icon={categoryList[locationTransportation].value} />
+                                        {categoryList[locationTransportation].label}
                                     </TransItem>
                                     <SpotItem>
                                         <StyledFontAwesomeIcon icon={faBed} />
-                                        <RouteSpotName>{locationId}</RouteSpotName>
+                                        <RouteSpotName>{locationName}</RouteSpotName>
                                     </SpotItem>
                                 </RouteItem>
                             );
