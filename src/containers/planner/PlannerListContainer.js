@@ -36,7 +36,7 @@ const PlannerListContainer = () => {
         let planMembers = [];
         let expense = 0;
         let memberCount = 1;
-        let memberTypeId = 0;
+        let memberTypeId = 1;
 
         dispatch(createPlannerAction({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }));
     };

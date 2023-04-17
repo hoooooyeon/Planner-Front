@@ -87,10 +87,10 @@ const PlannerInfoModal = ({ planner, modal, onLoadPlanner, onUpdatePlanner, onCh
     // };
 
     const categoryList = [
-        { label: '혼자', value: 0 },
-        { label: '연인', value: 1 },
-        { label: '친구', value: 2 },
-        { label: '가족', value: 3 },
+        { label: '혼자', value: 1 },
+        { label: '연인', value: 2 },
+        { label: '친구', value: 3 },
+        { label: '가족', value: 4 },
     ];
 
     const { title, expense, memberCount, memberTypeId } = { ...planner };

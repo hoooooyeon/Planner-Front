@@ -85,7 +85,7 @@ const InfoMenu = ({ planner }) => {
                         <Ask>인원: </Ask>
                         {/* 멤버 타입 아이디별로 text 출력해야댐 */}
                         <Text>
-                            {memberCount} ({memberTypeList[memberTypeId]})
+                            {memberCount} ({memberTypeList[memberTypeId - 1]})
                         </Text>
                     </FlexBox>
                 </InfoBox>

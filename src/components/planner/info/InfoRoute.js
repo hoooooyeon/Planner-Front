@@ -131,7 +131,8 @@ const InfoRoute = ({ planner, currentInfo, onChangeCurPlanId }) => {
         { label: '오토바이', value: faBicycle },
         { label: '도보', value: faPersonWalking },
     ];
-
+    let a = [1];
+    let b = 1;
     const locationIconList = [faLocationDot, faBed, faUtensils];
 
     if (!planner) {
@@ -149,8 +150,8 @@ const InfoRoute = ({ planner, currentInfo, onChangeCurPlanId }) => {
                                 <RouteItem key={locationId}>
                                     <RouteLine />
                                     <TransItem>
-                                        <StyledFontAwesomeIcon icon={categoryList[locationTransportation].value} />
-                                        {categoryList[locationTransportation].label}
+                                        <StyledFontAwesomeIcon icon={categoryList[locationTransportation - 1].value} />
+                                        {categoryList[locationTransportation - 1].label}
                                     </TransItem>
                                     <SpotItem>
                                         <StyledFontAwesomeIcon icon={faBed} />

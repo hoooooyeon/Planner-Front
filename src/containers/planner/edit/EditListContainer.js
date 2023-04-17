@@ -21,7 +21,7 @@ const EditListContainer = () => {
     const onCreateLocation = (spot) => {
         const { title, contentid, firstimage, firstimage2 } = spot;
         const locationImage = firstimage !== '' ? firstimage : firstimage2;
-        const locationTransportation = 0;
+        const locationTransportation = 1;
         const locationName = title;
 
         dispatch(createLocationAction({ plannerId, locationName, contentid, locationImage, locationTransportation, planId }));

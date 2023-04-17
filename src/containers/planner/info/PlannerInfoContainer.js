@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfo from '../../../components/planner/info/PlannerInfo';
-import { changeCurPlanIdAction, deletePlannerAction, loadPlanAction, loadPlannerAction, toggleMemberModalAction, togglePlannerInfoModalAction } from '../../../modules/plannerModule';
+import { changeCurPlanIdAction, deletePlannerAction, loadPlanAction, loadPlannerAction, toggleLikePlannerAction, toggleMemberModalAction, togglePlannerInfoModalAction } from '../../../modules/plannerModule';
 
 const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
@@ -47,7 +47,21 @@ const PlannerInfoContainer = () => {
         dispatch(changeCurPlanIdAction(planId));
     };
 
-    return <PlannerInfo planner={planner} currentInfo={currentInfo} onDeletePlanner={onDeletePlanner} onToggleMemberModal={onToggleMemberModal} onTogglePlannerInfoModal={onTogglePlannerInfoModal} onChangeCurPlanId={onChangeCurPlanId} />;
+    const onToggleLikePlanner = () => {
+        dispatch(toggleLikePlannerAction(plannerId));
+    };
+
+    return (
+        <PlannerInfo
+            planner={planner}
+            currentInfo={currentInfo}
+            onDeletePlanner={onDeletePlanner}
+            onToggleMemberModal={onToggleMemberModal}
+            onTogglePlannerInfoModal={onTogglePlannerInfoModal}
+            onChangeCurPlanId={onChangeCurPlanId}
+            onToggleLikePlanner={onToggleLikePlanner}
+        />
+    );
 };
 
 export default PlannerInfoContainer;

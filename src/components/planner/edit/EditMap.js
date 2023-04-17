@@ -6,10 +6,11 @@ import styled from 'styled-components';
 import Modal from '../../common/Modal';
 import MemberModal from '../MemberModal';
 const EditMapBlock = styled.div`
+    /* width: 100%; */
     width: calc(100% - 720px);
-    /* min-width: 200px; */
     height: 750px;
     float: left;
+    position: relative;
 `;
 
 const Map = styled.div`
@@ -51,35 +52,23 @@ const Button = styled.button`
     }
 `;
 
-const EditMap = ({ planner, onCreatePlanner, onUpdatePlanner, onToggleMemberModal, onTogglePlannerInfoModal }) => {
-    const { kakao } = window;
-    const container = useRef(null);
-    const options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 3,
-    };
-    useEffect(() => {
-        new kakao.maps.Map(container.current, options);
-        return () => {};
-    }, []);
-
+const EditMap = ({ mapRef, planner, onCreatePlanner, onUpdatePlanner, onToggleMemberModal, onTogglePlannerInfoModal, getLocationByAddress }) => {
     // if (!planner) {
     //     return <div>Loading...</div>;
     // }
     return (
         <EditMapBlock>
-            <Map id="map" ref={container}>
-                <ButtonBox>
-                    <Button>사용 방법</Button>
-                    <Button onClick={onToggleMemberModal}>멤버 초대</Button>
-                    <Button onClick={onTogglePlannerInfoModal}>플래너 정보 수정</Button>
-                    <Button>장소 등록</Button>
-                    <Button>
-                        {/* <Button onClick={onUpdatePlanner}> */}
-                        <Link to="/PlannerInfo">일정 저장</Link>
-                    </Button>
-                </ButtonBox>
-            </Map>
+            <Map ref={mapRef} />
+            <ButtonBox>
+                <Button>사용 방법</Button>
+                <Button onClick={onToggleMemberModal}>멤버 초대</Button>
+                <Button onClick={onTogglePlannerInfoModal}>플래너 정보 수정</Button>
+                <Button onClick={getLocationByAddress}>장소 등록</Button>
+                <Button>
+                    {/* <Button onClick={onUpdatePlanner}> */}
+                    <Link to="/PlannerInfo">일정 저장</Link>
+                </Button>
+            </ButtonBox>
         </EditMapBlock>
     );
 };

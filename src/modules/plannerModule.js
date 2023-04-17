@@ -38,6 +38,10 @@ const DELETE_PLANNER_TYPE = 'planner/DELETE_PLANNER';
 const DELETE_PLANNER_SUCCESS_TYPE = 'planner/DELETE_PLANNER_SUCCESS';
 const DELETE_PLANNER_FAILURE_TYPE = 'planner/DELETE_PLANNER_FAILURE';
 
+const TOGGLE_LIKE_PLANNER_TYPE = 'planner/TOGGLE_LIKE_PLANNER';
+const TOGGLE_LIKE_PLANNER_SUCCESS_TYPE = 'planner/TOGGLE_LIKE_PLANNER_SUCCESS';
+const TOGGLE_LIKE_PLANNER_FAILURE_TYPE = 'planner/TOGGLE_LIKE_PLANNER_FAILURE';
+
 const CREATE_MEMO_TYPE = 'planner/CREATE_MEMO';
 const CREATE_MEMO_SUCCESS_TYPE = 'planner/CREATE_MEMO_SUCCESS';
 const CREATE_MEMO_FAILURE_TYPE = 'planner/CREATE_MEMO_FAILURE';
@@ -126,6 +130,7 @@ export const changePlannerMemberCountAction = (count) => ({ type: CHANGE_PLANNER
 export const changePlannerMemberCategoryAction = (memberTypeId) => ({ type: CHANGE_PLANNER_MEMBER_CATEGORY_TYPE, memberTypeId });
 export const resetPlannerInfoFormAction = () => ({ type: RESET_PLANNER_INFO_FORM_TYPE });
 export const deletePlannerAction = (plannerId) => ({ type: DELETE_PLANNER_TYPE, plannerId });
+export const toggleLikePlannerAction = (plannerId) => ({ type: TOGGLE_LIKE_PLANNER_TYPE, plannerId });
 export const createMemoAction = ({ plannerId, title, content }) => ({ type: CREATE_MEMO_TYPE, plannerId, title, content });
 export const updateMemoAction = ({ plannerId, memoId, title, content }) => ({ type: UPDATE_MEMO_TYPE, plannerId, memoId, title, content });
 export const deleteMemoAction = ({ plannerId, memoId }) => ({ type: DELETE_MEMO_TYPE, plannerId, memoId });
@@ -175,6 +180,7 @@ const loadMyPlannerListSaga = createSaga(LOAD_MY_PLANNER_LIST_TYPE, profileAPI.l
 const loadSharePlannerListSaga = createSaga(LOAD_SHARE_PLANNER_LIST_TYPE, plannerAPI.loadSharePlannerList);
 const loadPlannerSaga = createSaga(LOAD_PLANNER_TYPE, plannerAPI.loadPlanner);
 const deletePlannerSaga = createSaga(DELETE_PLANNER_TYPE, plannerAPI.deletePlanner);
+const toggleLikePlannerSaga = createSaga(TOGGLE_LIKE_PLANNER_TYPE, plannerAPI.toggleLikePlanner);
 const createMemoSaga = createSaga(CREATE_MEMO_TYPE, plannerAPI.createMemo);
 const updateMemoSaga = createSaga(UPDATE_MEMO_TYPE, plannerAPI.updateMemo);
 const deleteMemoSaga = createSaga(DELETE_MEMO_TYPE, plannerAPI.deleteMemo);
@@ -194,6 +200,7 @@ export function* plannerSaga() {
     yield takeLatest(LOAD_SHARE_PLANNER_LIST_TYPE, loadSharePlannerListSaga);
     yield takeLatest(LOAD_PLANNER_TYPE, loadPlannerSaga);
     yield takeLatest(DELETE_PLANNER_TYPE, deletePlannerSaga);
+    yield takeLatest(TOGGLE_LIKE_PLANNER_TYPE, toggleLikePlannerSaga);
     yield takeLatest(CREATE_MEMO_TYPE, createMemoSaga);
     yield takeLatest(UPDATE_MEMO_TYPE, updateMemoSaga);
     yield takeLatest(DELETE_MEMO_TYPE, deleteMemoSaga);
@@ -295,6 +302,7 @@ function plannerReducer(state = initialState, action) {
         case CREATE_LOCATION_FAILURE_TYPE:
         case UPDATE_LOCATION_FAILURE_TYPE:
         case DELETE_LOCATION_FAILURE_TYPE:
+        case TOGGLE_LIKE_PLANNER_FAILURE_TYPE:
             return {
                 ...state,
                 plannerError: action.payload.error,
@@ -416,6 +424,10 @@ function plannerReducer(state = initialState, action) {
                 // },
             };
         case DELETE_PLANNER_SUCCESS_TYPE:
+            return {
+                ...state,
+            };
+        case TOGGLE_LIKE_PLANNER_SUCCESS_TYPE:
             return {
                 ...state,
             };

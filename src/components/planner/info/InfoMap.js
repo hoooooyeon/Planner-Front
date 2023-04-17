@@ -1,11 +1,14 @@
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 const MapBlock = styled.div`
     width: 500px;
     height: 500px;
     margin-right: 10px;
+    position: relative;
     // 페이지 크기에 맞게 너비와 높이의 줄어듬.
     /* @media all and (min-width: 768px){
     height: 45vw;
@@ -27,7 +30,22 @@ const Map = styled.div`
     /* box-sizing: border-box; */
 `;
 
-const InfoMap = () => {
+const IconBox = styled.div`
+    border: 2px solid gray;
+    border-radius: 5px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+    padding: 5px;
+`;
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+    color: #ef9a9a;
+    font-size: 20px;
+`;
+
+const InfoMap = ({ onToggleLikePlanner }) => {
     const { kakao } = window;
     const container = useRef(null);
     const options = {
@@ -42,6 +60,9 @@ const InfoMap = () => {
     return (
         <MapBlock>
             <Map id="map" ref={container} />
+            <IconBox onClick={onToggleLikePlanner}>
+                <StyledFontAwesomeIcon icon={faHeart} />
+            </IconBox>
         </MapBlock>
     );
 };

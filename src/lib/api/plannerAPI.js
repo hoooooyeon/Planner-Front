@@ -25,6 +25,11 @@ export const updatePlanner = ({ plannerId, title, planDateStart, planDateEnd, ex
     return client.patch(`/api/planners/${plannerId}`, { plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
 };
 
+// 플래너 좋아요
+export const toggleLikePlanner = ({ plannerId }) => {
+    return client.post(`/api/planners/${plannerId}/like`, { plannerId });
+};
+
 // 메모 생성
 export const createMemo = ({ plannerId, title, content }) => {
     return client.post(`/api/planners/${plannerId}/memos`, { title, content });
