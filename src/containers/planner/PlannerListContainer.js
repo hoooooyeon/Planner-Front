@@ -41,18 +41,19 @@ const PlannerListContainer = () => {
         dispatch(createPlannerAction({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }));
     };
 
+    let page = 1;
     // 나의 플래너리스트 가져오기
     useEffect(() => {
         const { accountId } = currentInfo;
         if (accountId) {
-            dispatch(loadMyPlannerListAction(accountId));
+            dispatch(loadMyPlannerListAction(accountId, page));
         }
-    }, [dispatch, currentInfo]);
+    }, [dispatch, currentInfo, page]);
 
     // 공유 플래너리스트 가져오기
     useEffect(() => {
-        dispatch(loadSharePlannerListAction());
-    }, [dispatch]);
+        dispatch(loadSharePlannerListAction(page));
+    }, [dispatch, page]);
 
     // 플래너 정보 가져오기
     const onLoadPlanner = (plannerId) => {

@@ -117,7 +117,7 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-const EditList = ({ spots, onChangePlanLocation, onCreateLocation }) => {
+const EditList = ({ spots, onChangePlanLocation, onCreateLocation, onMoveMarker }) => {
     return (
         <>
             <EditListBlock>
@@ -142,7 +142,12 @@ const EditList = ({ spots, onChangePlanLocation, onCreateLocation }) => {
                 <List>
                     {spots.map((s, i) => {
                         return (
-                            <ListItem key={i}>
+                            <ListItem
+                                key={i}
+                                onClick={() => {
+                                    onMoveMarker(s);
+                                }}
+                            >
                                 <Img
                                 // src={s.firstimage || s.firstimage2}
                                 // alt={s.title}

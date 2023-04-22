@@ -2,15 +2,16 @@ import { useCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditMap from '../../../components/planner/edit/EditMap';
-import { toggleMemberModalAction, togglePlannerInfoModalAction, updatePlanAction, updatePlannerAction } from '../../../modules/plannerModule';
+import { createMapAction, toggleMemberModalAction, togglePlannerInfoModalAction, updatePlanAction, updatePlannerAction } from '../../../modules/plannerModule';
 import spotImg from '../../../lib/images/spot.png';
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, spots } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, spots, map } = useSelector(({ plannerReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         spots: plannerReducer.spots,
+        map: plannerReducer.map,
     }));
 
     const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
@@ -25,168 +26,128 @@ const EditMapContainer = () => {
         dispatch(togglePlannerInfoModalAction());
     };
 
-    const mapRef = useRef();
-    const [map, setMap] = useState();
+    const mapRef = useRef(null);
+    // const [map, setMap] = useState();
     const { kakao } = window;
     // 지도 생성
     useEffect(() => {
         const options = {
-            center: new kakao.maps.LatLng(37.5820858828, 126.9846616856),
+            center: new kakao.maps.LatLng(33.450701, 126.570667),
             level: 10,
         };
         const map = new kakao.maps.Map(mapRef.current, options);
-        setMap(map);
+        // setMap(map);
+        dispatch(createMapAction(map));
     }, []);
 
-    // const [selectedMarker, setSelectedMarker] = useState(null);
     // 지도에 여행지 마커로 표시 + 인포윈도우 표시
     const showSpotMarker = useCallback(() => {
-        let infowindows = [];
-        for (let i = 0; i < spots.length; i++) {
-            const { title, mapx, mapy } = spots[i];
+        if (map) {
+            let bounds = new kakao.maps.LatLngBounds();
+            let infowindow = new kakao.maps.InfoWindow({ removable: true });
+            let marker;
+            let markerPosition;
+            let imageSize;
+            let markerImage;
+            for (let i = 0; i < spots.length; i++) {
+                const { title, mapx, mapy } = spots[i];
 
-            // 마커가 표시될 위치입니다
-            let markerPosition = new kakao.maps.LatLng(mapy, mapx);
-            let imageSize = new kakao.maps.Size(10, 10);
+                // 마커가 표시될 위치입니다
+                markerPosition = new kakao.maps.LatLng(mapy, mapx);
 
-            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-            let markerImage = new kakao.maps.MarkerImage(spotImg, imageSize);
+                // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+                imageSize = new kakao.maps.Size(10, 10);
+                markerImage = new kakao.maps.MarkerImage(spotImg, imageSize);
 
-            // 마커를 생성합니다
-            let marker = new kakao.maps.Marker({
-                position: markerPosition,
-                title: title,
-                clickable: true,
-                image: markerImage,
-            });
+                // 마커를 생성합니다
+                marker = new kakao.maps.Marker({
+                    position: markerPosition,
+                    clickable: true,
+                    image: markerImage,
+                });
 
-            // 마커가 지도 위에 표시되도록 설정합니다
-            marker.setMap(map);
+                // 마커가 지도 위에 표시되도록 설정합니다
+                marker.setMap(map);
 
-            // 인포윈도우를 생성합니다
-            let infowindow = new kakao.maps.InfoWindow({
-                // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-                content: `<div style="padding:5px;">${title}</div>`,
-                // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-                removable: true,
-            });
-            infowindows.push(infowindow);
+                // LatLngBounds 객체에 좌표를 추가합니다
+                bounds.extend(new kakao.maps.LatLng(mapy, mapx));
 
-            // 마커에 클릭이벤트를 등록합니다
-            kakao.maps.event.addListener(marker, 'click', showInfowindow(map, marker, infowindow));
+                // 마커에 인포윈도우 생성 및 켜기 이벤트 등록
+                kakao.maps.event.addListener(marker, 'click', addInfowindow(marker, title));
 
-            // 이전 인포윈도우 끄기
-            // kakao.maps.event.addListener(marker, 'click', () => {
-            //     infowindow.close(map, marker);
-            // });
+                // 맵에 인포윈도우 끄기 이벤트 등록
+                kakao.maps.event.addListener(map, 'click', removeInfowindow());
+            }
+            // 지도에 루트에 포함된 마커들이 보이도록 범위 재설정
+            map.setBounds(bounds);
+
+            // 인포윈도우 생성 함수
+            function addInfowindow(marker, title) {
+                return () => {
+                    infowindow.setContent(`<div style="padding:5px;">${title}</div>`);
+                    infowindow.open(map, marker);
+                };
+            }
+            function removeInfowindow() {
+                return () => {
+                    infowindow.close();
+                };
+            }
         }
-
-        // 맵 클릭하여 전체 인포윈도우 끄기
-        if (map && infowindows.length > 0) {
-            kakao.maps.event.addListener(map, 'click', () => {
-                infowindows.forEach((infowindow) => infowindow.close());
-            });
-        }
-
-        // 인포윈도우 생성 함수
-        function showInfowindow(map, marker, infowindow) {
-            return () => {
-                infowindow.open(map, marker);
-            };
-        }
-    }, [kakao.maps.InfoWindow, kakao.maps.LatLng, kakao.maps.Marker, kakao.maps.event, kakao.maps.Size, kakao.maps.MarkerImage, map, spots]);
+    }, [kakao.maps.InfoWindow, kakao.maps.LatLng, kakao.maps.Marker, kakao.maps.event, kakao.maps.Size, kakao.maps.MarkerImage, kakao.maps.LatLngBounds, map, spots]);
 
     const showRouteMarker = useCallback(() => {
-        let infowindows = [];
-        for (let i = 0; i < plans.length; i++) {
-            const { title, mapx, mapy } = plans[i];
+        if (plans) {
+            let linePath = [];
 
-            // 마커가 표시될 위치입니다
-            let markerPosition = new kakao.maps.LatLng(mapy, mapx);
-            let imageSize = new kakao.maps.Size(10, 10);
+            for (let i = 0; i < plans.length; i++) {
+                const { planLocations } = plans[i];
+                for (let j = 0; j < planLocations.length; j++) {
+                    const { locationName, locationMapx, locationMapy } = planLocations[j];
 
-            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-            let markerImage = new kakao.maps.MarkerImage(spotImg, imageSize);
+                    // 마커가 표시될 위치입니다
+                    let markerPosition = new kakao.maps.LatLng(locationMapy, locationMapx);
+                    let imageSize = new kakao.maps.Size(10, 10);
 
-            // 마커를 생성합니다
-            let marker = new kakao.maps.Marker({
-                position: markerPosition,
-                title: title,
-                clickable: true,
-                image: markerImage,
-            });
+                    // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+                    let markerImage = new kakao.maps.MarkerImage(spotImg, imageSize);
+                    // let markerImage = new kakao.maps.MarkerImage('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', imageSize);
 
-            // 마커가 지도 위에 표시되도록 설정합니다
-            marker.setMap(map);
+                    // 마커를 생성합니다
+                    let marker = new kakao.maps.Marker({
+                        position: markerPosition,
+                        title: locationName,
+                        clickable: true,
+                        image: markerImage,
+                    });
+                    // 마커가 지도 위에 표시되도록 설정합니다
+                    marker.setMap(map);
 
-            // 인포윈도우를 생성합니다
-            let infowindow = new kakao.maps.InfoWindow({
-                // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-                content: `<div style="padding:5px;">${title}</div>`,
-                // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-                removable: true,
-            });
-            infowindows.push(infowindow);
+                    // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+                    linePath = [...linePath, new kakao.maps.LatLng(locationMapy, locationMapx)];
+                }
 
-            // 마커에 클릭이벤트를 등록합니다
-            kakao.maps.event.addListener(marker, 'click', showInfowindow(map, marker, infowindow));
+                // 지도에 표시할 선을 생성합니다
+                let polyline = new kakao.maps.Polyline({
+                    path: linePath, // 선을 구성하는 좌표배열 입니다
+                    strokeWeight: 5, // 선의 두께 입니다
+                    strokeColor: 'red', // 선의 색깔입니다
+                    strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                    strokeStyle: 'solid', // 선의 스타일입니다
+                });
 
-            // 이전 인포윈도우 끄기
-            // kakao.maps.event.addListener(marker, 'click', () => {
-            //     infowindow.close(map, marker);
-            // });
+                // 지도에 선을 표시합니다
+                polyline.setMap(map);
+            }
         }
-
-        // 맵 클릭하여 전체 인포윈도우 끄기
-        if (map && infowindows.length > 0) {
-            kakao.maps.event.addListener(map, 'click', () => {
-                infowindows.forEach((infowindow) => infowindow.close());
-            });
-        }
-
-        // 인포윈도우 생성 함수
-        function showInfowindow(map, marker, infowindow) {
-            return () => {
-                infowindow.open(map, marker);
-            };
-        }
-    }, []);
-
-    // 여행지 리스트에 여행지 아이템을 선택했을 때 지도에 표시하려 작성한 코드.
-    const getLocationByAddress = useCallback(() => {
-        //     // console.log(window.kakao.maps);
-        //     if (!window.kakao.maps.services || !map) {
-        //         return;
-        //     }
-        //     console.log('2:' + window.kakao.maps.services);
-        //     // 주소-좌표 변환 객체를 생성합니다
-        //     const geocoder = new window.kakao.maps.services.Geocoder();
-        //     // 주소로 좌표를 검색합니다
-        //     geocoder.addressSearch('제주특별자치도 제주시 첨단로 242', function (result, status) {
-        //         // 정상적으로 검색이 완료됐으면
-        //         if (status === window.kakao.maps.services.Status.OK) {
-        //             const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-        //             // 결과값으로 받은 위치를 마커로 표시합니다
-        //             const marker = new window.kakao.maps.Marker({
-        //                 map: map,
-        //                 position: coords,
-        //             });
-        //             // 인포윈도우로 장소에 대한 설명을 표시합니다
-        //             const infowindow = new window.kakao.maps.InfoWindow({
-        //                 content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>',
-        //             });
-        //             infowindow.open(map, marker);
-        //             // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        //             map.setCenter(coords);
-        //         }
-        //     });
-    }, [map]);
+    }, [kakao.maps.InfoWindow, kakao.maps.LatLng, kakao.maps.Marker, kakao.maps.MarkerImage, kakao.maps.Size, kakao.maps.event, map, plans]);
 
     useEffect(() => {
         showSpotMarker();
-    }, [showSpotMarker]);
+        // showRouteMarker();
+    }, [showRouteMarker, showSpotMarker]);
 
-    return <EditMap mapRef={mapRef} planner={planner} onUpdatePlanner={onUpdatePlanner} onToggleMemberModal={onToggleMemberModal} onTogglePlannerInfoModal={onTogglePlannerInfoModal} getLocationByAddress={getLocationByAddress} />;
+    return <EditMap mapRef={mapRef} planner={planner} onUpdatePlanner={onUpdatePlanner} onToggleMemberModal={onToggleMemberModal} onTogglePlannerInfoModal={onTogglePlannerInfoModal} />;
 };
 
 export default EditMapContainer;

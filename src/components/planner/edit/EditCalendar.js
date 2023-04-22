@@ -182,7 +182,7 @@ const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, 
             <>
                 {plans &&
                     plans.map((p, i) => (
-                        <ItemBox>
+                        <ItemBox key={p.planId}>
                             <Calendar
                                 ref={itemRef}
                                 aria-current={p.planId === currentInfo.planId ? 'date' : null}
@@ -198,7 +198,6 @@ const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, 
                                     // onLoadPlan(p);
                                     onChangeCurPlanId(p.planId);
                                 }}
-                                key={p.planId}
                             >
                                 <RouteLine />
                                 {letsFormat(p.planDate)}

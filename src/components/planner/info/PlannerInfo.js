@@ -100,7 +100,7 @@ const FlexBox = styled.div`
     align-items: flex-start;
 `;
 
-const PlannerInfo = ({ planner, currentInfo, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal, onChangeCurPlanId, onToggleLikePlanner }) => {
+const PlannerInfo = ({ planner, mapRef, currentInfo, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal, onChangeCurPlanId, onToggleLikePlanner }) => {
     const { plans } = { ...planner };
     const [isDropDown, setIsDropDown] = useState(false);
 
@@ -142,7 +142,6 @@ const PlannerInfo = ({ planner, currentInfo, onDeletePlanner, onToggleMemberModa
                         <DropDownMenu isDropDown={isDropDown} ref={menuRef}>
                             <li onClick={onToggleMemberModal}>멤버 초대</li>
                             <li onClick={onTogglePlannerInfoModal}>플래너 정보 수정</li>
-
                             <li>
                                 <Link to="/PlannerEdit">플래너 루트 수정</Link>
                             </li>
@@ -153,7 +152,7 @@ const PlannerInfo = ({ planner, currentInfo, onDeletePlanner, onToggleMemberModa
                     </Set>
                 </InfoHeader>
                 <FlexBox>
-                    <InfoMap onToggleLikePlanner={onToggleLikePlanner} />
+                    <InfoMap planner={planner} mapRef={mapRef} onToggleLikePlanner={onToggleLikePlanner} />
                     <InfoRoute planner={planner} currentInfo={currentInfo} onChangeCurPlanId={onChangeCurPlanId} />
                 </FlexBox>
             </Container>

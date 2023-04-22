@@ -53,9 +53,9 @@ const Button = styled.button`
 `;
 
 const EditMap = ({ mapRef, planner, onCreatePlanner, onUpdatePlanner, onToggleMemberModal, onTogglePlannerInfoModal, getLocationByAddress }) => {
-    // if (!planner) {
-    //     return <div>Loading...</div>;
-    // }
+    if (!mapRef) {
+        return <div>Loading...</div>;
+    }
     return (
         <EditMapBlock>
             <Map ref={mapRef} />
@@ -65,7 +65,6 @@ const EditMap = ({ mapRef, planner, onCreatePlanner, onUpdatePlanner, onToggleMe
                 <Button onClick={onTogglePlannerInfoModal}>플래너 정보 수정</Button>
                 <Button onClick={getLocationByAddress}>장소 등록</Button>
                 <Button>
-                    {/* <Button onClick={onUpdatePlanner}> */}
                     <Link to="/PlannerInfo">일정 저장</Link>
                 </Button>
             </ButtonBox>

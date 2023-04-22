@@ -105,6 +105,8 @@ const CHANGE_PLANS_TYPE = 'planner/CHANGE_PLANS';
 
 const CHANGE_LOCATION_TYPE = 'planner/CHANGE_LOCATION';
 
+const CREATE_MAP_TYPE = 'planner/CREATE_MAP';
+
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
     accountId,
@@ -118,8 +120,8 @@ export const createPlannerAction = ({ accountId, creator, title, planDateStart, 
     memberTypeId,
 });
 export const updatePlannerAction = ({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }) => ({ type: UPDATE_PLANNER_TYPE, plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
-export const loadMyPlannerListAction = (accountId) => ({ type: LOAD_MY_PLANNER_LIST_TYPE, accountId });
-export const loadSharePlannerListAction = () => ({ type: LOAD_SHARE_PLANNER_LIST_TYPE });
+export const loadMyPlannerListAction = (accountId, page) => ({ type: LOAD_MY_PLANNER_LIST_TYPE, accountId, page });
+export const loadSharePlannerListAction = (page) => ({ type: LOAD_SHARE_PLANNER_LIST_TYPE, page });
 export const loadPlannerAction = (plannerId) => ({ type: LOAD_PLANNER_TYPE, plannerId });
 export const changePlannerTitleAction = (title) => ({ type: CHANGE_PLANNER_TITLE_TYPE, title });
 export const changePlannerDateStartAction = (date) => ({ type: CHANGE_PLANNER_DATE_START_TYPE, date });
@@ -149,22 +151,28 @@ export const changeMemberAction = (members) => ({ type: CHANGE_MEMBER_TYPE, memb
 export const resetMemberAction = () => ({ type: RESET_MEMBER_TYPE });
 export const toggleMemberModalAction = () => ({ type: TOGGLE_MEMBER_MODAL_TYPE });
 export const togglePlannerInfoModalAction = () => ({ type: TOGGLE_PLANNER_INFO_MODAL_TYPE });
-export const createLocationAction = ({ plannerId, locationName, locationContentId, locationImage, locationTransportation, planId }) => ({
+export const createLocationAction = ({ plannerId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId }) => ({
     type: CREATE_LOCATION_TYPE,
     plannerId,
     locationName,
     locationContentId,
     locationImage,
+    locationAddr,
+    locationMapx,
+    locationMapy,
     locationTransportation,
     planId,
 });
-export const updateLocationAction = ({ plannerId, locationId, locationName, locationContentId, locationImage, locationTransportation, planId }) => ({
+export const updateLocationAction = ({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId }) => ({
     type: UPDATE_LOCATION_TYPE,
     plannerId,
     locationId,
     locationName,
     locationContentId,
     locationImage,
+    locationAddr,
+    locationMapx,
+    locationMapy,
     locationTransportation,
     planId,
 });
@@ -173,6 +181,7 @@ export const changeCurPlanIdAction = (planId) => ({ type: CHANGE_CUR_PLAN_ID_TYP
 export const changeCurPlannerIdAction = (plannerId) => ({ type: CHANGE_CUR_PLANNER_ID_TYPE, plannerId });
 export const changePlansAction = (plans) => ({ type: CHANGE_PLANS_TYPE, plans });
 export const changeLocationAction = (location) => ({ type: CHANGE_LOCATION_TYPE, location });
+export const createMapAction = (mapData) => ({ type: CREATE_MAP_TYPE, mapData });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -237,7 +246,7 @@ const initialState = {
         accountId: null,
         creator: null,
     },
-
+    map: null,
     spots: [
         {
             title: '가회동성당',
@@ -245,8 +254,9 @@ const initialState = {
             contenttypeid: '12',
             firstimage: 'http://tong.visitkorea.or.kr/cms/resource/61/2780561_image2_1.png',
             firstimage2: 'http://tong.visitkorea.or.kr/cms/resource/61/2780561_image2_1.png',
-            mapx: '126.9846616856',
-            mapy: '37.5820858828',
+            addr: '서울특별시 종로구 북촌로 57',
+            mapx: 126.9846616856,
+            mapy: 37.5820858828,
         },
         {
             title: '간데메공원',
@@ -254,8 +264,9 @@ const initialState = {
             contenttypeid: '12',
             firstimage: '',
             firstimage2: '',
-            mapx: '127.0490977427',
-            mapy: '37.5728520032',
+            addr: '서울특별시 동대문구 서울시립대로2길 59',
+            mapx: 127.0490977427,
+            mapy: 37.5728520032,
         },
         {
             title: '갈산근린공원',
@@ -263,8 +274,9 @@ const initialState = {
             contenttypeid: '12',
             firstimage: 'http://tong.visitkorea.or.kr/cms/resource/62/2612062_image2_1.bmp',
             firstimage2: 'http://tong.visitkorea.or.kr/cms/resource/62/2612062_image2_1.bmp',
-            mapx: '126.8684105358',
-            mapy: '37.5061176314',
+            addr: '서울 양천구 신정동 162-56',
+            mapx: 126.8684105358,
+            mapy: 37.5061176314,
         },
     ],
 };
@@ -278,12 +290,12 @@ function plannerReducer(state = initialState, action) {
         case LOAD_MY_PLANNER_LIST_SUCCESS_TYPE:
             return {
                 ...state,
-                myPlanners: action.payload.data,
+                myPlanners: action.payload.data.list,
             };
         case LOAD_SHARE_PLANNER_LIST_SUCCESS_TYPE:
             return {
                 ...state,
-                sharePlanners: action.payload.data,
+                sharePlanners: action.payload.data.list,
             };
         case LOAD_MY_PLANNER_LIST_FAILURE_TYPE:
         case LOAD_SHARE_PLANNER_LIST_FAILURE_TYPE:
@@ -620,6 +632,11 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
                 location: action.location,
+            };
+        case CREATE_MAP_TYPE:
+            return {
+                ...state,
+                map: action.mapData,
             };
         default:
             return state;

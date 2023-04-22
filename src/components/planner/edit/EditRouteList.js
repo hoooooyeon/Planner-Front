@@ -134,7 +134,7 @@ const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocat
         <EditRouteListBlock>
             {plans &&
                 plans.map((p, i) => (
-                    <RouteList aria-current={p.planId === currentInfo.planId ? 'plan' : null}>
+                    <RouteList aria-current={p.planId === currentInfo.planId ? 'plan' : null} key={i}>
                         {p.planLocations.map((pl, i) => {
                             const { locationId, locationName, locationImage, locationTransportation } = pl;
                             return (
