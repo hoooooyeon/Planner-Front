@@ -141,7 +141,7 @@ const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocat
                                 <RouteItem
                                     key={i}
                                     onClick={() => {
-                                        onChangeLocation(pl);
+                                        // onChangeLocation(pl);
                                     }}
                                 >
                                     <RouteLine />
@@ -149,7 +149,7 @@ const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocat
                                         required
                                         value={locationTransportation}
                                         onChange={(e) => {
-                                            onUpdateTrans(e.target.value);
+                                            onUpdateTrans(e.target.value, pl);
                                         }}
                                     >
                                         {/* <option value="" disabled>

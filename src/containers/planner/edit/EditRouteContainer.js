@@ -160,9 +160,10 @@ const EditRouteContainer = () => {
         dispatch(changeLocationAction(location));
     };
 
-    const onUpdateTrans = (trans) => {
+    const onUpdateTrans = (trans, locationData) => {
         if (planner && location) {
-            const { locationId, locationName, locationImage, locationContentId } = location;
+            // const { locationId, locationName, locationImage, locationContentId } = location;
+            const { locationId, locationName, locationImage, locationContentId } = locationData;
 
             let locationTransportation = trans;
             dispatch(updateLocationAction({ plannerId, locationId, locationName, locationContentId, locationImage, locationTransportation, planId }));
