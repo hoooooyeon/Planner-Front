@@ -52,8 +52,10 @@ const EditMapContainer = () => {
                     bounds.extend(new kakao.maps.LatLng(locationMapy, locationMapx));
                 }
             }
-            // 지도에 루트에 포함된 마커들이 보이도록 범위 재설정
-            map.setBounds(bounds);
+            if (Object.keys(bounds).length !== 0) {
+                // 지도에 루트에 포함된 마커들이 보이도록 범위 재설정
+                map.setBounds(bounds);
+            }
         }
     }, [map]);
 
@@ -111,21 +113,24 @@ const EditMapContainer = () => {
     const showRouteMarker = useCallback(() => {
         if (map && plans) {
             let linePath = [];
-
+            let markerPosition;
+            let imageSize;
+            let marker;
+            let polyline;
             for (let i = 0; i < plans.length; i++) {
                 const { planLocations } = plans[i];
                 for (let j = 0; j < planLocations.length; j++) {
                     const { locationName, locationMapx, locationMapy } = planLocations[j];
 
                     // 마커가 표시될 위치입니다
-                    let markerPosition = new kakao.maps.LatLng(locationMapy, locationMapx);
-                    let imageSize = new kakao.maps.Size(10, 10);
+                    markerPosition = new kakao.maps.LatLng(locationMapy, locationMapx);
+                    imageSize = new kakao.maps.Size(10, 10);
 
                     // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
                     let markerImage = new kakao.maps.MarkerImage(spotImg, imageSize);
 
                     // 마커를 생성합니다
-                    let marker = new kakao.maps.Marker({
+                    marker = new kakao.maps.Marker({
                         position: markerPosition,
                         clickable: true,
                         // image: markerImage,
@@ -138,7 +143,7 @@ const EditMapContainer = () => {
                 }
 
                 // 지도에 표시할 선을 생성합니다
-                let polyline = new kakao.maps.Polyline({
+                polyline = new kakao.maps.Polyline({
                     path: linePath, // 선을 구성하는 좌표배열 입니다
                     strokeWeight: 5, // 선의 두께 입니다
                     strokeColor: 'red', // 선의 색깔입니다

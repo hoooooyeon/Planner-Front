@@ -47,9 +47,9 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 `;
 
 const InfoMap = ({ planner, mapRef, onToggleLikePlanner }) => {
-    // if (!mapRef.current) {
-    //     return <div>Loading...</div>;
-    // }
+    if (!mapRef) {
+        return <div>Loading...</div>;
+    }
     return (
         <MapBlock>
             <Map ref={mapRef} />

@@ -53,74 +53,90 @@ const PlannerInfoContainer = () => {
         dispatch(toggleLikePlannerAction(plannerId));
     };
 
-    const mapRef = useRef();
+    const mapRef = useRef(null);
     const [map, setMap] = useState();
     const { kakao } = window;
     // 지도 생성
     useEffect(() => {
         if (mapRef.current) {
             const options = {
-                center: new kakao.maps.LatLng(37.5820858828, 126.9846616856),
+                center: new kakao.maps.LatLng(33.450701, 126.570667),
                 level: 10,
             };
             const map = new kakao.maps.Map(mapRef.current, options);
             setMap(map);
         }
-    }, [kakao.maps.LatLng, kakao.maps.Map, mapRef.current]);
-
-    const [bounds, setBounds] = useState();
-    const showRouteMarker = useCallback(() => {
-        let linePath = [];
-        let marker, markerPosition, imageSize, markerImage, polyline;
-        // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
-        setBounds(new kakao.maps.LatLngBounds());
-        for (let i = 0; i < spots.length; i++) {
-            const { title, mapx, mapy } = spots[i];
-            // 마커가 표시될 위치입니다
-            markerPosition = new kakao.maps.LatLng(mapy, mapx);
-            imageSize = new kakao.maps.Size(10, 10);
-
-            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-            markerImage = new kakao.maps.MarkerImage(spotImg, imageSize);
-
-            // 마커를 생성합니다
-            marker = new kakao.maps.Marker({
-                position: markerPosition,
-                title: title,
-                image: markerImage,
-            });
-
-            // 마커가 지도 위에 표시되도록 설정합니다
-            marker.setMap(map);
-
-            // if (bounds) {
-            //     // LatLngBounds 객체에 좌표를 추가합니다
-            //     bounds.extend(markerPosition);
-            //     // LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
-            //     map.setBounds(bounds);
-            // }
-
-            linePath = [...linePath, new kakao.maps.LatLng(mapy, mapx)];
-        }
-
-        // 지도에 표시할 선을 생성합니다
-        polyline = new kakao.maps.Polyline({
-            path: linePath, // 선을 구성하는 좌표배열 입니다
-            strokeWeight: 5, // 선의 두께 입니다
-            strokeColor: 'gray', // 선의 색깔입니다
-            strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-            strokeStyle: 'solid', // 선의 스타일입니다
-        });
-
-        // 지도에 선을 표시합니다
-        polyline.setMap(map);
-    }, [kakao.maps.Polyline, kakao.maps.LatLng, kakao.maps.Marker, kakao.maps.Size, kakao.maps.MarkerImage, kakao.maps.LatLngBounds, map, spots, bounds]);
+    }, [mapRef.current]);
 
     useEffect(() => {
-        // showRouteMarker();
-    }, [showRouteMarker]);
+        if (map && plans) {
+            let bounds = new kakao.maps.LatLngBounds();
+            for (let i = 0; i < plans.length; i++) {
+                const { planLocations } = plans[i];
+                for (let j = 0; j < planLocations.length; j++) {
+                    const { locationMapx, locationMapy } = planLocations[j];
 
-    useEffect(() => {});
+                    // LatLngBounds 객체에 좌표를 추가합니다
+                    bounds.extend(new kakao.maps.LatLng(locationMapy, locationMapx));
+                }
+            }
+            if (Object.keys(bounds).length !== 0) {
+                // 지도에 루트에 포함된 마커들이 보이도록 범위 재설정
+                map.setBounds(bounds);
+            }
+        }
+    }, [map]);
+
+    const showRouteMarker = useCallback(() => {
+        if (map && plans) {
+            let linePath = [];
+            let markerPosition;
+            let imageSize;
+            let marker;
+            let polyline;
+            for (let i = 0; i < plans.length; i++) {
+                const { planLocations } = plans[i];
+                for (let j = 0; j < planLocations.length; j++) {
+                    const { locationMapx, locationMapy } = planLocations[j];
+
+                    // 마커가 표시될 위치입니다
+                    markerPosition = new kakao.maps.LatLng(locationMapy, locationMapx);
+                    imageSize = new kakao.maps.Size(10, 10);
+
+                    // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+                    let markerImage = new kakao.maps.MarkerImage(spotImg, imageSize);
+
+                    // 마커를 생성합니다
+                    marker = new kakao.maps.Marker({
+                        position: markerPosition,
+                        clickable: true,
+                        image: markerImage,
+                    });
+                    // 마커가 지도 위에 표시되도록 설정합니다
+                    marker.setMap(map);
+
+                    // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+                    linePath = [...linePath, new kakao.maps.LatLng(locationMapy, locationMapx)];
+                }
+
+                // 지도에 표시할 선을 생성합니다
+                polyline = new kakao.maps.Polyline({
+                    path: linePath, // 선을 구성하는 좌표배열 입니다
+                    strokeWeight: 5, // 선의 두께 입니다
+                    strokeColor: 'red', // 선의 색깔입니다
+                    strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                    strokeStyle: 'solid', // 선의 스타일입니다
+                });
+
+                // 지도에 선을 표시합니다
+                polyline.setMap(map);
+            }
+        }
+    }, [kakao.maps.LatLng, kakao.maps.Polyline, kakao.maps.Marker, kakao.maps.MarkerImage, kakao.maps.Size, map, plans]);
+
+    useEffect(() => {
+        showRouteMarker();
+    }, [showRouteMarker]);
 
     return (
         <PlannerInfo
