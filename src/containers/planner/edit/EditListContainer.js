@@ -34,11 +34,10 @@ const EditListContainer = () => {
 
     // 선택한 여행지로 지도 시점 이동
     const onMoveMarker = (spotData) => {
-        const { mapx, mapy } = spotData;
-        let moveLatLon = new window.kakao.maps.LatLng(mapy, mapx);
-
-        // 해당 마커로 이동
-        map.panTo(moveLatLon);
+        // const { mapx, mapy } = spotData;
+        // let moveLatLon = new window.kakao.maps.LatLng(mapy, mapx);
+        // // 해당 마커로 이동
+        // map.panTo(moveLatLon);
     };
 
     return <EditList spots={spots} onChangePlanLocation={onChangePlanLocation} onCreateLocation={onCreateLocation} onMoveMarker={onMoveMarker} />;
