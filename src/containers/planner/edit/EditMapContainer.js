@@ -38,7 +38,7 @@ const EditMapContainer = () => {
         const map = new kakao.maps.Map(mapRef.current, options);
         setMap(map);
         // dispatch(createMapAction(map));
-    }, []);
+    }, [kakao.maps.LatLng, kakao.maps.Map, plans]);
 
     useEffect(() => {
         if (map && plans) {
@@ -115,19 +115,20 @@ const EditMapContainer = () => {
             let linePath = [];
             let markerPosition;
             let imageSize;
+            let markerImage;
             let marker;
             let polyline;
             for (let i = 0; i < plans.length; i++) {
                 const { planLocations } = plans[i];
                 for (let j = 0; j < planLocations.length; j++) {
-                    const { locationName, locationMapx, locationMapy } = planLocations[j];
+                    const { locationMapx, locationMapy } = planLocations[j];
 
                     // 마커가 표시될 위치입니다
                     markerPosition = new kakao.maps.LatLng(locationMapy, locationMapx);
-                    imageSize = new kakao.maps.Size(10, 10);
+                    // imageSize = new kakao.maps.Size(10, 10);
 
                     // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-                    let markerImage = new kakao.maps.MarkerImage(spotImg, imageSize);
+                    //  markerImage = new kakao.maps.MarkerImage(spotImg, imageSize);
 
                     // 마커를 생성합니다
                     marker = new kakao.maps.Marker({

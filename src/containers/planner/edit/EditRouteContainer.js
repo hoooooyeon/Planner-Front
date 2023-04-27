@@ -161,12 +161,11 @@ const EditRouteContainer = () => {
     };
 
     const onUpdateTrans = (trans, locationData) => {
-        if (planner && location) {
+        if (planner) {
             // const { locationId, locationName, locationImage, locationContentId } = location;
-            const { locationId, locationName, locationImage, locationContentId } = locationData;
-
+            const { locationId, locationName, locationImage, locationContentId, locationAddr, locationMapx, locationMapy } = locationData;
             let locationTransportation = trans;
-            dispatch(updateLocationAction({ plannerId, locationId, locationName, locationContentId, locationImage, locationTransportation, planId }));
+            dispatch(updateLocationAction({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId }));
         }
     };
 

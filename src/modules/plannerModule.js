@@ -581,6 +581,9 @@ function plannerReducer(state = initialState, action) {
         case TOGGLE_PLANNER_INFO_MODAL_TYPE:
             return {
                 ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                },
                 modal: {
                     ...state.modal,
                     plannerInfo: !state.modal.plannerInfo,
