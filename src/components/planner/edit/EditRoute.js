@@ -67,52 +67,6 @@ const StyledDatePicker = styled(DatePicker)`
     }
 `;
 
-const FlexDiv = styled.div`
-    display: flex;
-    height: 100%;
-    justify-content: space-between;
-`;
-
-const Funds = styled.input`
-    width: 90px;
-    height: 30px;
-    border: none;
-    border-radius: 10px;
-    padding: 0 10px;
-    &:focus {
-        outline: none;
-    }
-`;
-
-const People = styled.input`
-    width: 35px;
-    height: 30px;
-    border: none;
-    border-radius: 10px;
-    padding: 0 10px;
-
-    &:focus {
-        outline: none;
-    }
-`;
-
-const Category = styled.select`
-    width: 100px;
-    height: 30px;
-    border: none;
-    border-radius: 10px;
-    text-align: center;
-    &:invalid {
-        color: lightgray;
-    }
-    &:focus {
-        outline: none;
-    }
-    option:disabled {
-        display: none;
-    }
-`;
-
 const RouteBox = styled.div`
     display: flex;
 `;
