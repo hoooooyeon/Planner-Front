@@ -142,7 +142,7 @@ const InfoRoute = ({ planner, currentInfo, onChangeCurPlanId }) => {
         <InfoRouteBlock>
             <InfoDatination isShadow={isShadow} planner={planner} onChangeCurPlanId={onChangeCurPlanId} />
             {plans &&
-                plans.map((p) => (
+                plans.map((p, i) => (
                     <RouteList ref={listRef} aria-current={p.planId === currentInfo.planId ? 'plan' : null}>
                         {p.planLocations.map((pl, i) => {
                             const { locationId, locationName, locationTransportation } = pl;

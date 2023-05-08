@@ -7,13 +7,14 @@ const EditCalendarBlock = styled.div`
     position: relative;
     left: 4px;
     border: 1px solid red;
+    height: 100%;
 `;
 
 const ItemBox = styled.div`
     position: relative;
-    width: 50px;
-    height: 50px;
-    z-index: 1;
+    /* width: 50px;
+    height: 50px; */
+    /* z-index: 1; */
 `;
 
 const Calendar = styled.div`
@@ -24,7 +25,7 @@ const Calendar = styled.div`
     height: 50px;
     text-align: center;
     line-height: 50px;
-    margin-top: 16px;
+    /* margin-top: 16px; */
     cursor: pointer;
     position: relative;
     & + & {
@@ -43,11 +44,11 @@ const Calendar = styled.div`
 const RouteLine = styled.div`
     background-color: #cdd9ac;
     width: 0.2rem;
-    height: 73px;
-    position: absolute;
-    left: 24px;
-    top: -23px;
-    z-index: -1;
+    height: 10px;
+    /* position: absolute;
+    left: 27px;
+    top: -10px; */
+    margin: 0 auto;
 `;
 
 const AddCal = styled.div``;
@@ -153,14 +154,16 @@ const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, 
     };
 
     const onDragStart = (e, plan) => {
+        setIsDrag(true);
         // 순서 이동 모션
 
         // 드래그시 반투명 이미지 제거
-        // let img = new Image();
-        // e.dataTransfer.setDragImage(img, 10, 10);
+        let img = new Image();
+        e.dataTransfer.setDragImage(img, 10, 10);
 
         // 드래그되는 요소
         dragTarget.current = e.currentTarget;
+        dragTarget.current.style.zIndex = '100';
 
         // 마우스 포인터 좌표
         posX.current = e.clientX;
@@ -176,61 +179,63 @@ const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, 
     };
 
     const onDragMove = (e) => {
-        // 마우스 포인터가 이동한 거리
-        const diffX = e.clientX - posX.current;
-        const diffY = e.clientY - posY.current;
+        if (isDrag) {
+            // 마우스 포인터가 이동한 거리
+            const diffX = e.clientX - posX.current;
+            const diffY = e.clientY - posY.current;
 
-        // 드래그가 가능한 컨테이너 크기
-        const containerWidth = containerRef.current.getBoundingClientRect().width;
-        const containerHeight = containerRef.current.getBoundingClientRect().height;
-        const itemWidth = itemRef.current.getBoundingClientRect().width;
-        const itemHeight = itemRef.current.getBoundingClientRect().height;
-        const endPointX = containerWidth - itemWidth;
-        const endPointY = containerHeight - itemHeight;
+            // 드래그가 가능한 컨테이너 크기
+            const containerWidth = containerRef.current.getBoundingClientRect().width;
+            const containerHeight = containerRef.current.getBoundingClientRect().height;
+            const itemWidth = itemRef.current.getBoundingClientRect().width;
+            const itemHeight = itemRef.current.getBoundingClientRect().height;
+            const endPointX = containerWidth - itemWidth;
+            const endPointY = containerHeight - itemHeight;
 
-        // 드래그되는 모션
-        e.target.style.left = `${Math.min(Math.max(0, diffX), endPointX)}px`;
-        e.target.style.top = `${Math.min(Math.max(-itemHeight * itemIndex.current, diffY), containerHeight - itemHeight * itemIndex.current)}px`;
+            // 드래그되는 모션
+            e.currentTarget.style.left = `${Math.min(Math.max(0, diffX), endPointX)}px`;
+            e.currentTarget.style.top = `${Math.min(Math.max(-itemHeight * itemIndex.current, diffY), containerHeight - itemHeight * (itemIndex.current + 2))}px`;
 
-        // e.currentTarget.style.left = `${diffX}px`;
-        // e.currentTarget.style.top = `${diffY}px`;
+            dragTarget.current.style.pointerEvents = 'none';
 
-        if (e.clientX < 0 || e.clientX > containerWidth || e.clientY < 0 || e.clientY > containerHeight) {
-            console.log(1);
-            onDragEnd();
+            // 마우스 포인터가 컨테이너를 벗어날 시 초기화
+            if (e.clientX < 0 || e.clientX > containerRef.current.getBoundingClientRect().left + containerWidth || e.clientY < 0 || e.clientY > containerRef.current.getBoundingClientRect().top + containerHeight) {
+                onDragEnd();
+            }
         }
     };
 
     const onDragEnter = (e, plan) => {
-        // 순서 이동 기능
-        overItem.current = plan;
-        overItemIndex.current = getElementIndex(plan);
+        if (isDrag) {
+            // 순서 이동 기능
+            overItem.current = plan;
+            overItemIndex.current = getElementIndex(plan);
 
-        // 순서 이동 모션
-        // 타겟 요소
-        overTarget.current = e.currentTarget;
+            // 순서 이동 모션
+            // 타겟 요소
+            overTarget.current = e.currentTarget;
 
-        // 타겟 요소의 벌어지는 모션
-        dragTarget.current.style.zIndex = '0';
-        // 드래그 요소와 타겟 요소가 다른지 확인
-        if (dragTarget.current !== overTarget.current) {
-            // 타겟 요소 배열에 중복값 제거
-            if (!overTargetArr.find((item) => item === e.currentTarget)) {
-                setOverTargetArr([...overTargetArr, e.currentTarget]);
-            }
+            // 타겟 요소의 벌어지는 모션
+            // 드래그 요소와 타겟 요소가 다른지 확인
+            if (dragTarget.current !== overTarget.current) {
+                // 타겟 요소 배열에 중복값 제거
+                if (!overTargetArr.find((item) => item === e.currentTarget)) {
+                    setOverTargetArr([...overTargetArr, e.currentTarget]);
+                }
 
-            // 드래그 요소와 타겟 요소의 위치에 따른 위/아래 모션 결정
-            if (itemIndex.current < overItemIndex.current) {
-                e.currentTarget.style.transform = `translateY(-${itemRef.current.getBoundingClientRect().height}px)`;
-            } else {
-                e.currentTarget.style.transform = `translateY(${itemRef.current.getBoundingClientRect().height}px)`;
-            }
+                // 드래그 요소와 타겟 요소의 위치에 따른 위/아래 모션 결정
+                if (itemIndex.current < overItemIndex.current) {
+                    e.currentTarget.style.transform = `translateY(-${itemRef.current.getBoundingClientRect().height}px)`;
+                } else {
+                    e.currentTarget.style.transform = `translateY(${itemRef.current.getBoundingClientRect().height}px)`;
+                }
 
-            // 벌어진 요소가 다시 제자리로 이동
-            if (overTargetArr.find((item) => item === e.currentTarget)) {
-                e.currentTarget.style.transform = `translateY(${0}px)`;
+                // 벌어진 요소가 다시 제자리로 이동
+                if (overTargetArr.find((item) => item === e.currentTarget)) {
+                    e.currentTarget.style.transform = `translateY(${0}px)`;
 
-                setOverTargetArr(overTargetArr.filter((item) => item !== e.currentTarget));
+                    setOverTargetArr(overTargetArr.filter((item) => item !== e.currentTarget));
+                }
             }
         }
     };
@@ -238,9 +243,18 @@ const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, 
     const onDragLeave = (e) => {};
 
     const onDragEnd = (e) => {
+        setIsDrag(false);
+
+        // 이동 모션
+        // 드롭시 벌어진 요소 다시 제자리로 이동
         overTargetArr.forEach((item) => (item.style.transform = `translateY(${0}px)`));
 
-        dragTarget.current.style.zIndex = '-1';
+        dragTarget.current.style.zIndex = '0';
+        dragTarget.current.style.pointerEvents = 'auto';
+
+        // 드래그된 요소 다시 제자리로 이동
+        dragTarget.current.style.left = `${0}px`;
+        dragTarget.current.style.top = `${0}px`;
 
         // 사용 변수 초기화
         plansArr.current = null;
@@ -254,17 +268,11 @@ const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, 
     const onDrop = (e) => {
         e.preventDefault();
 
-        // 이동 모션
-        // 드래그된 요소 다시 제자리로 이동
-        // e.currentTarget.style.left = `${originalX.current}px`;
-        // e.currentTarget.style.top = `${originalY.current}px`;
-
-        // 드롭시 벌어진 요소 다시 제자리로 이동
-        overTargetArr.forEach((item) => (item.style.transform = `translateY(${0}px)`));
-
-        // 이동 기능
-        onChangePlans(switchItem());
-        getIndex();
+        if (isDrag) {
+            // 이동 기능
+            onChangePlans(switchItem());
+            getIndex();
+        }
     };
 
     const onDragOver = (e) => {
@@ -276,21 +284,24 @@ const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, 
     }
     return (
         <EditCalendarBlock ref={containerRef} onDrop={(e) => onDrop(e)} onDragOver={(e) => onDragOver(e)}>
-            <Calendar
-                onClick={() => {
-                    onAddDate(planDateEnd);
-                    onCreatePlan();
-                }}
-            >
+            <ItemBox ref={itemRef}>
                 <RouteLine />
-                더하기
-            </Calendar>
+                <Calendar
+                    onClick={() => {
+                        onAddDate(planDateEnd);
+                        onCreatePlan();
+                    }}
+                >
+                    더하기
+                </Calendar>
+            </ItemBox>
             <>
+                {/* {console.log(plans)} */}
                 {plans &&
                     plans.map((p, i) => (
-                        <Calendar
+                        <ItemBox
                             key={p.planId}
-                            ref={itemRef}
+                            // ref={itemRef}
                             // aria-current={p.planId === currentInfo.planId ? 'date' : null}
                             draggable
                             onDragStart={(e) => {
@@ -320,18 +331,20 @@ const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, 
                             }}
                         >
                             <RouteLine />
-                            {letsFormat(p.planDate)}
-                            <DeleteButton
-                                onClick={() => {
-                                    onClickDeletePlan(p.planId);
-                                    // onSubDate(planDateEnd);
-                                    // onDeletePlan(p.planId);
-                                    // onChangeCurPlanId(plans[0].planId || null);
-                                }}
-                            >
-                                x
-                            </DeleteButton>
-                        </Calendar>
+                            <Calendar>
+                                {letsFormat(p.planDate)}
+                                <DeleteButton
+                                    onClick={() => {
+                                        onClickDeletePlan(p.planId);
+                                        // onSubDate(planDateEnd);
+                                        // onDeletePlan(p.planId);
+                                        // onChangeCurPlanId(plans[0].planId || null);
+                                    }}
+                                >
+                                    x
+                                </DeleteButton>
+                            </Calendar>
+                        </ItemBox>
                     ))}
             </>
         </EditCalendarBlock>
