@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
+import * as common from '../../../lib/utils/CommonFunction';
 
 const EditRouteListBlock = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0.5rem;
+    border: 1px solid red;
 `;
 
 const RouteLine = styled.div`
@@ -21,12 +23,14 @@ const RouteList = styled.div`
     flex-direction: column;
     align-items: center;
     padding: 0.5rem;
+    position: relative;
     &[aria-current] {
         display: flex;
     }
 `;
 
 const RouteItem = styled.div`
+    border: 1px solid blue;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -63,7 +67,7 @@ const SpotItem = styled.div`
     justify-content: space-around;
     width: 290px;
     height: 90px;
-    margin: 0.5rem 0;
+    /* margin: 0.5rem 0; */
     background-color: white;
     z-index: 99;
 `;
@@ -102,6 +106,12 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
+const LineDiv = styled.div`
+    border-right: 0.2rem solid #cdd9ac;
+    /* width: rem; */
+    height: 1rem;
+`;
+
 const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocation, onChangeLocation, onUpdateTrans }) => {
     const { plans } = { ...planner };
 
@@ -126,59 +136,98 @@ const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocat
         // { value: '도보', key: 'walking' },
     ];
 
+    const containerRef = useRef();
+    const itemRef = useRef();
+
+    const itemsArr = useRef();
+    const dragItem = useRef();
+    const overItem = useRef();
+    const dragItemIndex = useRef();
+    const overItemIndex = useRef();
+
+    const dragTarget = useRef();
+    const overTarget = useRef();
+
+    let index = 0;
+
+    let posY = useRef(0);
+
+    const [overTargetArr, setOverTargetArr] = useState([]);
+    const [isDrag, setIsDrag] = useState(false);
+
     if (!planner) {
         return <div>Loading...</div>;
     }
 
     return (
-        <EditRouteListBlock>
+        <EditRouteListBlock ref={containerRef} onDrop={(e) => common.onDrop(e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, plans)} onDragOver={(e) => common.onDragOver(e)}>
             {plans &&
                 plans.map((p, i) => (
-                    <RouteList aria-current={p.planId === currentInfo.planId ? 'plan' : null} key={i}>
-                        {p.planLocations.map((pl, i) => {
-                            const { locationId, locationName, locationImage, locationTransportation } = pl;
-                            return (
-                                <RouteItem
-                                    key={i}
-                                    onClick={() => {
-                                        // onChangeLocation(pl);
-                                    }}
-                                >
-                                    <RouteLine />
-                                    <TransItem
-                                        required
-                                        value={locationTransportation}
-                                        onChange={(e) => {
-                                            onUpdateTrans(e.target.value, pl);
+                    <RouteList
+                        aria-current={p.planId === currentInfo.planId ? 'plan' : null}
+                        key={i}
+                        // ref={containerRef}
+                        // onDrop={(e) => common.onDrop(e, isDrag, plansArr, dragItemIndex, overItemIndex, item, index, plans)}
+                        // onDragOver={(e) => common.onDragOver(e)}
+                    >
+                        {p.planLocations &&
+                            p.planLocations.map((pl, i) => {
+                                const { locationId, locationName, locationImage, locationTransportation } = pl;
+                                return (
+                                    <RouteItem
+                                        ref={itemRef}
+                                        key={i}
+                                        draggable
+                                        onDragStart={(e) => {
+                                            common.onDragStart(e, pl, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, p.planLocations);
+                                        }}
+                                        onDrag={(e) => {
+                                            common.onDragMove(e, isDrag, posY, containerRef, itemRef, dragItemIndex, dragTarget, setIsDrag, overTargetArr, itemsArr, dragItem, overItem, overItemIndex, setOverTargetArr);
+                                        }}
+                                        onDragEnd={(e) => {
+                                            common.onDragEnd(setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr);
+                                        }}
+                                        onDragEnter={(e) => {
+                                            common.onDragEnter(e, pl, isDrag, overItem, overItemIndex, overTarget, dragTarget, overTargetArr, setOverTargetArr, dragItemIndex, itemRef, itemsArr, p.planLocations);
                                         }}
                                     >
-                                        {/* <option value="" disabled>
-                                            선택
-                                        </option> */}
-                                        {categoryList.map((c, i) => (
-                                            <option value={c.value} key={c.value}>
-                                                {c.label}
-                                            </option>
-                                        ))}
-                                    </TransItem>
-                                    <SpotItem>
-                                        <Img
-                                            src={locationImage}
-                                            alt={locationId}
-                                            // onError={onChangeErrorImg}
-                                        />
-                                        <Name>{locationName}</Name>
-                                        <Button
-                                            onClick={() => {
-                                                onDeleteLocation(locationId);
+                                        <LineDiv />
+                                        {/* <RouteLine /> */}
+                                        <TransItem
+                                            required
+                                            value={locationTransportation}
+                                            onChange={(e) => {
+                                                onUpdateTrans(e.target.value, pl);
                                             }}
                                         >
-                                            삭제
-                                        </Button>
-                                    </SpotItem>
-                                </RouteItem>
-                            );
-                        })}
+                                            {/* <option value="" disabled>
+                                            선택
+                                        </option> */}
+                                            {categoryList.map((c, i) => (
+                                                <option value={c.value} key={c.value}>
+                                                    {c.label}
+                                                </option>
+                                            ))}
+                                        </TransItem>
+                                        <LineDiv />
+                                        <SpotItem>
+                                            <Img
+                                                src={locationImage}
+                                                alt={locationId}
+                                                // onError={onChangeErrorImg}
+                                            />
+                                            <Name>{locationName}</Name>
+                                            <Button
+                                                onClick={() => {
+                                                    onDeleteLocation(locationId);
+                                                }}
+                                            >
+                                                삭제
+                                            </Button>
+                                        </SpotItem>
+                                    </RouteItem>
+                                );
+                            })}
                     </RouteList>
                 ))}
         </EditRouteListBlock>
