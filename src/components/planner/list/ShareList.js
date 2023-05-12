@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import Slider from '../../common/Slider';
 
 const ShareListBlock = styled.div`
     width: 100%;
@@ -41,8 +42,8 @@ const Shares = styled.ul`
     height: 100%;
     margin: 0 auto;
     padding: 0 15px;
-    /* padding: 0 20px 0 0; */
     display: inline-block;
+    /* padding: 0 20px 0 0; */
 
     @media all and (min-width: 768px) {
         width: 100%;
@@ -157,169 +158,160 @@ const Scroll = styled.div`
 `;
 
 const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlannerId }) => {
-    const hiddenBoxRef = useRef();
-    const sharesRef = useRef();
-    const itemRef = useRef();
-    const scrollBoxRef = useRef();
-    const scrollRef = useRef();
+    // const hiddenBoxRef = useRef();
+    // const listRef = useRef();
+    // const itemRef = useRef();
 
-    let isSlide = false; // 슬라이더 이벤트 실행 조건
-    let startX = 0; // 마우스 클릭한 x 좌표
-    let currentX = 0; // 마우스 이동한 x 좌표
-    const moveX = useRef(0);
-    const sliderX = useRef(0);
-    const TOTAL_SLIDE = 4;
+    // let isSlide = false; // 슬라이더 이벤트 실행 조건
+    // let startX = 0; // 마우스 클릭한 x 좌표
+    // let currentX = 0; // 마우스 이동한 x 좌표
+    // const moveX = useRef(0);
+    // const sliderX = useRef(0);
 
-    let scrollMoveX = 0;
+    // const TOTAL_SLIDE = 4;
 
-    const drag = useRef(false);
-    // 슬라이드 마우스 다운
-    const sliderStart = (e) => {
-        startX = e.clientX;
-        currentX = 0;
-        isSlide = true;
-        drag.current = false;
-        console.log('1' + drag.current);
-    };
+    // const scrollBoxRef = useRef();
+    // const scrollRef = useRef();
+    // let scrollMoveX = 0;
 
-    // 슬라이드 마우스 이동
-    const sliderMove = (e) => {
-        if (isSlide) {
-            currentX = e.clientX;
-            moveX.current = sliderX.current + currentX - startX;
+    // const drag = useRef(false);
+    // // 슬라이드 마우스 다운
+    // const sliderStart = (e) => {
+    //     startX = e.clientX;
+    //     currentX = 0;
+    //     isSlide = true;
+    //     drag.current = false;
+    //     console.log('1' + drag.current);
+    // };
 
-            sharesRef.current.style.transform = 'translateX(' + moveX.current + 'px)';
-            sharesRef.current.style.transitionDuration = '0ms';
+    // // 슬라이드 마우스 이동
+    // const sliderMove = (e) => {
+    //     if (isSlide) {
+    //         currentX = e.clientX;
+    //         moveX.current = sliderX.current + currentX - startX;
 
-            scrollMoveX = -((moveX.current / -(hiddenBoxRef.current.clientWidth - sharesRef.current.clientWidth)) * 100);
+    //         listRef.current.style.transform = 'translateX(' + moveX.current + 'px)';
+    //         listRef.current.style.transitionDuration = '0ms';
 
-            if (scrollMoveX < 0) {
-                scrollMoveX = 0;
-            } else if (scrollMoveX > 100) {
-                scrollMoveX = 100;
-            }
-            scrollBoxRef.current.style.opacity = 1;
-            scrollBoxRef.current.style.transitionDuration = '400ms';
+    //         scrollMoveX = -((moveX.current / -(hiddenBoxRef.current.clientWidth - listRef.current.clientWidth)) * 100);
 
-            scrollRef.current.style.transform = 'translateX(' + scrollMoveX + '%)';
-            scrollRef.current.style.transitionDuration = '0ms';
+    //         if (scrollMoveX < 0) {
+    //             scrollMoveX = 0;
+    //         } else if (scrollMoveX > 100) {
+    //             scrollMoveX = 100;
+    //         }
+    //         scrollBoxRef.current.style.opacity = 1;
+    //         scrollBoxRef.current.style.transitionDuration = '400ms';
 
-            // if (currentX === 0) {
-            //     // itemRef.current.style.pointerEvents = 'auto';
-            //     // itemRef.current.style.color = 'black';
-            //     drag.current = false;
-            // } else {
-            //     // itemRef.current.style.pointerEvents = 'none';
-            //     // itemRef.current.style.color = 'red';
-            //     drag.current = true;
-            // }
+    //         scrollRef.current.style.transform = 'translateX(' + scrollMoveX + '%)';
+    //         scrollRef.current.style.transitionDuration = '0ms';
 
-            if (!drag.current) {
-                drag.current = true;
+    //         // if (currentX === 0) {
+    //         //     // itemRef.current.style.pointerEvents = 'auto';
+    //         //     // itemRef.current.style.color = 'black';
+    //         //     drag.current = false;
+    //         // } else {
+    //         //     // itemRef.current.style.pointerEvents = 'none';
+    //         //     // itemRef.current.style.color = 'red';
+    //         //     drag.current = true;
+    //         // }
 
-                console.log('2' + drag.current);
-            }
-        }
-    };
+    //         if (!drag.current) {
+    //             drag.current = true;
 
-    // 슬라이드 마우스 업
-    const sliderEnd = (e) => {
-        let itemSize = sharesRef.current.scrollWidth / TOTAL_SLIDE;
-        sliderX.current = Math.round(moveX.current / itemSize) * itemSize;
+    //             console.log('2' + drag.current);
+    //         }
+    //     }
+    // };
 
-        if (sliderX.current > 0) {
-            sliderX.current = 0;
-        } else if (sliderX.current < hiddenBoxRef.current.clientWidth - sharesRef.current.clientWidth) {
-            sliderX.current = hiddenBoxRef.current.clientWidth - sharesRef.current.clientWidth;
-        }
-        sharesRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
-        sharesRef.current.style.transitionDuration = ' 1000ms';
-        scrollBoxRef.current.style.opacity = 0;
-        scrollBoxRef.current.style.transitionDuration = '2000ms';
+    // // 슬라이드 마우스 업
+    // const sliderEnd = (e) => {
+    //     let itemSize = listRef.current.scrollWidth / TOTAL_SLIDE;
+    //     sliderX.current = Math.round(moveX.current / itemSize) * itemSize;
 
-        isSlide = false;
-        console.log('3' + drag.current);
-    };
+    //     if (sliderX.current > 0) {
+    //         sliderX.current = 0;
+    //     } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.clientWidth) {
+    //         sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.clientWidth;
+    //     }
+    //     listRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
+    //     listRef.current.style.transitionDuration = ' 1000ms';
+    //     scrollBoxRef.current.style.opacity = 0;
+    //     scrollBoxRef.current.style.transitionDuration = '2000ms';
 
-    // 너비 변경시 슬라이더 조절
-    const sliderResize = () => {
-        if (sliderX.current > 0) {
-            sliderX.current = 0;
-        } else if (sliderX.current < sharesRef.current.clientWidth - sharesRef.current.scrollWidth) {
-            sliderX.current = hiddenBoxRef.current.clientWidth - sharesRef.current.scrollWidth;
-        }
-        sharesRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
-        sharesRef.current.style.transitionDuration = '0ms';
-    };
+    //     isSlide = false;
+    //     console.log('3' + drag.current);
+    // };
 
-    useEffect(() => {
-        let refValue = sharesRef.current;
-        refValue.addEventListener('mousedown', sliderStart);
-        window.addEventListener('mousemove', sliderMove);
-        window.addEventListener('mouseup', sliderEnd);
-        window.addEventListener('resize', sliderResize);
+    // // 너비 변경시 슬라이더 조절
+    // const sliderResize = () => {
+    //     if (sliderX.current > 0) {
+    //         sliderX.current = 0;
+    //     } else if (sliderX.current < listRef.current.clientWidth - listRef.current.scrollWidth) {
+    //         sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth;
+    //     }
+    //     listRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
+    //     listRef.current.style.transitionDuration = '0ms';
+    // };
 
-        return () => {
-            refValue.removeEventListener('mousedown', sliderStart);
-            window.removeEventListener('mousemove', sliderMove);
-            window.removeEventListener('mouseup', sliderEnd);
-            window.removeEventListener('resize', sliderResize);
-        };
-    });
+    // useEffect(() => {
+    //     if (sharePlanners) {
+    //         let refValue = listRef.current;
+    //         refValue.addEventListener('mousedown', sliderStart);
+    //         window.addEventListener('mousemove', sliderMove);
+    //         window.addEventListener('mouseup', sliderEnd);
+    //         window.addEventListener('resize', sliderResize);
 
-    const letsFormat = (d) => {
-        const date = new Date(d);
-        return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
-    };
+    //         return () => {
+    //             refValue.removeEventListener('mousedown', sliderStart);
+    //             window.removeEventListener('mousemove', sliderMove);
+    //             window.removeEventListener('mouseup', sliderEnd);
+    //             window.removeEventListener('resize', sliderResize);
+    //         };
+    //     }
+    // });
 
-    // if (plannerError) {
-    //     alert(plannerError);
-    // }
+    if (!sharePlanners) {
+        return <div>Loading...</div>;
+    }
     return (
         <ShareListBlock>
             <Container>
                 <TitleBox>
                     <p>다른 이용자들의 플래너</p>
                 </TitleBox>
-                <HiddenBox ref={hiddenBoxRef}>
-                    <Shares ref={sharesRef}>
-                        {sharePlanners &&
-                            sharePlanners.map((p) => (
-                                <ShareItem
-                                    key={p.plannerId}
-                                    drag={drag.current}
-                                    onClick={() => {
-                                        // onLoadPlanner(p.plannerId);
-                                        onChangeCurPlannerId(p.plannerId);
-                                    }}
-                                >
-                                    <Link to="/PlannerInfo">
-                                        {/* <Link to="/PlannerEdit" ref={itemRef}> */}
-                                        <SimpleMap />
-                                        <InfoBox>
-                                            <Name>{p.title}</Name>
-                                            <Date>
-                                                {p.planDateStart} ~ {p.planDateEnd}
-                                                {/* {new Date(planner.planDateStart).format('YYYY-MM-DD')} ~ {planner.planDateEnd} */}
-                                            </Date>
-                                        </InfoBox>
-                                    </Link>
-                                </ShareItem>
-                                // <ShareItem key={planner.plannerId}>
-                                //     <SimpleMap />
-                                //     <InfoBox>
-                                //         <Name>{planner.title}</Name>
-                                //         <Date>
-                                //             {planner.planDateStart} ~ {planner.planDateEnd}
-                                //         </Date>
-                                //     </InfoBox>
-                                // </ShareItem>
-                            ))}
-                    </Shares>
-                </HiddenBox>
-                <ScrollBox ref={scrollBoxRef}>
+                <Slider list={sharePlanners} scroll={true}>
+                    {/* <HiddenBox ref={hiddenBoxRef}>
+                    <Shares ref={listRef}> */}
+                    {sharePlanners &&
+                        sharePlanners.map((p) => (
+                            <ShareItem
+                                key={p.plannerId}
+                                // drag={drag.current}
+                                onClick={() => {
+                                    // onLoadPlanner(p.plannerId);
+                                    onChangeCurPlannerId(p.plannerId);
+                                }}
+                            >
+                                {/* <Link to="/PlannerInfo"> */}
+                                {/* <Link to="/PlannerEdit" ref={itemRef}> */}
+                                <SimpleMap />
+                                <InfoBox>
+                                    <Name>{p.title}</Name>
+                                    <Date>
+                                        {p.planDateStart} ~ {p.planDateEnd}
+                                        {/* {new Date(planner.planDateStart).format('YYYY-MM-DD')} ~ {planner.planDateEnd} */}
+                                    </Date>
+                                </InfoBox>
+                                {/* </Link> */}
+                            </ShareItem>
+                        ))}
+                    {/* </Shares>
+                </HiddenBox> */}
+                    {/* <ScrollBox ref={scrollBoxRef}>
                     <Scroll ref={scrollRef} />
-                </ScrollBox>
+                </ScrollBox> */}
+                </Slider>
             </Container>
         </ShareListBlock>
     );

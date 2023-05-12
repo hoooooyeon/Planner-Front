@@ -7,7 +7,6 @@ const EditRouteListBlock = styled.div`
     flex-direction: column;
     align-items: center;
     padding: 0.5rem;
-    border: 1px solid red;
 `;
 
 const RouteLine = styled.div`
@@ -30,7 +29,6 @@ const RouteList = styled.div`
 `;
 
 const RouteItem = styled.div`
-    border: 1px solid blue;
     display: flex;
     flex-direction: column;
     align-items: center;

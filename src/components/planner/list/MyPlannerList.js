@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import Slider from '../../common/Slider';
 
 const MyPlannerListBlock = styled.div`
     width: 100%;
@@ -122,86 +123,87 @@ const SimpleMap = styled.div`
 `;
 
 const MyPlannerList = ({ myPlanners, onResetPlannerInfoForm, onCreatePlanner, onChangeCurPlannerId }) => {
-    const hiddenBoxRef = useRef();
-    const plannersRef = useRef();
+    // const hiddenBoxRef = useRef();
+    // const plannersRef = useRef();
 
-    let isSlide = false; // 슬라이더 이벤트 실행 조건
-    let startX = 0; // 마우스 클릭한 x 좌표
-    let currentX = 0; // 마우스 이동한 x 좌표
-    const moveX = useRef(0); // 현재 x 좌표 + 마우스 이동할 x 좌표
-    const sliderX = useRef(0); // 슬라이더 x 좌표
-    const TOTAL_SLIDE = 8;
+    // let isSlide = false; // 슬라이더 이벤트 실행 조건
+    // let startX = 0; // 마우스 클릭한 x 좌표
+    // let currentX = 0; // 마우스 이동한 x 좌표
+    // const moveX = useRef(0); // 현재 x 좌표 + 마우스 이동할 x 좌표
+    // const sliderX = useRef(0); // 슬라이더 x 좌표
 
-    const pDrag = useRef(false);
+    // const TOTAL_SLIDE = 8;
 
-    // 슬라이드 마우스 다운
-    const sliderStart = (e) => {
-        startX = e.clientX;
-        isSlide = true;
-        pDrag.current = false;
-    };
+    // const pDrag = useRef(false);
 
-    // 슬라이드 마우스 이동
-    const sliderMove = (e) => {
-        if (isSlide) {
-            currentX = e.clientX;
-            moveX.current = sliderX.current + currentX - startX;
+    // // 슬라이드 마우스 다운
+    // const sliderStart = (e) => {
+    //     startX = e.clientX;
+    //     isSlide = true;
+    //     pDrag.current = false;
+    // };
 
-            plannersRef.current.style.transform = ' translateX(' + moveX.current + 'px)';
-            plannersRef.current.style.transitionDuration = ' 0s';
+    // // 슬라이드 마우스 이동
+    // const sliderMove = (e) => {
+    //     if (isSlide) {
+    //         currentX = e.clientX;
+    //         moveX.current = sliderX.current + currentX - startX;
 
-            if (!pDrag.current) {
-                pDrag.current = true;
-            }
-            //   if (sDrag.current) {
-            //     sDrag.current = false;
-            //     return;
-            // }
-        }
-    };
+    //         plannersRef.current.style.transform = ' translateX(' + moveX.current + 'px)';
+    //         plannersRef.current.style.transitionDuration = ' 0s';
 
-    // 슬라이드 마우스 업
-    const sliderEnd = (e) => {
-        let itemSize = plannersRef.current.scrollWidth / TOTAL_SLIDE;
-        sliderX.current = Math.round(moveX.current / itemSize) * itemSize;
+    //         if (!pDrag.current) {
+    //             pDrag.current = true;
+    //         }
+    //         //   if (sDrag.current) {
+    //         //     sDrag.current = false;
+    //         //     return;
+    //         // }
+    //     }
+    // };
 
-        if (sliderX.current > 0) {
-            sliderX.current = 0;
-        } else if (sliderX.current < hiddenBoxRef.current.clientWidth - plannersRef.current.scrollWidth) {
-            sliderX.current = hiddenBoxRef.current.clientWidth - plannersRef.current.scrollWidth;
-        }
+    // // 슬라이드 마우스 업
+    // const sliderEnd = (e) => {
+    //     let itemSize = plannersRef.current.scrollWidth / TOTAL_SLIDE;
+    //     sliderX.current = Math.round(moveX.current / itemSize) * itemSize;
 
-        plannersRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
-        plannersRef.current.style.transitionDuration = ' 1s';
-        isSlide = false;
-    };
+    //     if (sliderX.current > 0) {
+    //         sliderX.current = 0;
+    //     } else if (sliderX.current < hiddenBoxRef.current.clientWidth - plannersRef.current.scrollWidth) {
+    //         sliderX.current = hiddenBoxRef.current.clientWidth - plannersRef.current.scrollWidth;
+    //     }
 
-    // 너비 변경시 슬라이더 조절
-    const sliderResize = () => {
-        if (sliderX.current > 0) {
-            sliderX.current = 0;
-        } else if (sliderX.current < plannersRef.current.clientWidth - plannersRef.current.scrollWidth) {
-            sliderX.current = hiddenBoxRef.current.clientWidth - plannersRef.current.scrollWidth;
-        }
+    //     plannersRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
+    //     plannersRef.current.style.transitionDuration = ' 1s';
+    //     isSlide = false;
+    // };
 
-        plannersRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
-        plannersRef.current.style.transitionDuration = '0s';
-    };
+    // // 너비 변경시 슬라이더 조절
+    // const sliderResize = () => {
+    //     if (sliderX.current > 0) {
+    //         sliderX.current = 0;
+    //     } else if (sliderX.current < plannersRef.current.clientWidth - plannersRef.current.scrollWidth) {
+    //         sliderX.current = hiddenBoxRef.current.clientWidth - plannersRef.current.scrollWidth;
+    //     }
 
-    useEffect(() => {
-        let refValue = plannersRef.current;
-        refValue.addEventListener('mousedown', sliderStart);
-        window.addEventListener('mousemove', sliderMove);
-        window.addEventListener('mouseup', sliderEnd);
-        window.addEventListener('resize', sliderResize);
+    //     plannersRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
+    //     plannersRef.current.style.transitionDuration = '0s';
+    // };
 
-        return () => {
-            refValue.removeEventListener('mousedown', sliderStart);
-            window.removeEventListener('mousemove', sliderMove);
-            window.removeEventListener('mouseup', sliderEnd);
-            window.removeEventListener('resize', sliderResize);
-        };
-    });
+    // useEffect(() => {
+    //     let refValue = plannersRef.current;
+    //     refValue.addEventListener('mousedown', sliderStart);
+    //     window.addEventListener('mousemove', sliderMove);
+    //     window.addEventListener('mouseup', sliderEnd);
+    //     window.addEventListener('resize', sliderResize);
+
+    //     return () => {
+    //         refValue.removeEventListener('mousedown', sliderStart);
+    //         window.removeEventListener('mousemove', sliderMove);
+    //         window.removeEventListener('mouseup', sliderEnd);
+    //         window.removeEventListener('resize', sliderResize);
+    //     };
+    // });
 
     return (
         <MyPlannerListBlock>
@@ -214,30 +216,32 @@ const MyPlannerList = ({ myPlanners, onResetPlannerInfoForm, onCreatePlanner, on
                         </Link>
                     </Button>
                 </TitleBox>
-                <HiddenBox ref={hiddenBoxRef}>
-                    <Planners ref={plannersRef}>
-                        {myPlanners &&
-                            myPlanners.map((p) => (
-                                <PlannerItem
-                                    key={p.plannerId}
-                                    onClick={() => {
-                                        // onLoadPlanner(p.plannerId);
-                                        onChangeCurPlannerId(p.plannerId);
-                                    }}
-                                >
-                                    <Link to="/PlannerInfo">
-                                        <SimpleMap />
-                                        <InfoBox>
-                                            <Name>{p.title}</Name>
-                                            <Date>
-                                                {p.planDateStart} ~ {p.planDateEnd}
-                                            </Date>
-                                        </InfoBox>
-                                    </Link>
-                                </PlannerItem>
-                            ))}
-                    </Planners>
-                </HiddenBox>
+                <Slider list={myPlanners} scroll={false}>
+                    {/* <HiddenBox ref={hiddenBoxRef}>
+                    <Planners ref={plannersRef}> */}
+                    {myPlanners &&
+                        myPlanners.map((p) => (
+                            <PlannerItem
+                                key={p.plannerId}
+                                onClick={() => {
+                                    // onLoadPlanner(p.plannerId);
+                                    onChangeCurPlannerId(p.plannerId);
+                                }}
+                            >
+                                <Link to="/PlannerInfo">
+                                    <SimpleMap />
+                                    <InfoBox>
+                                        <Name>{p.title}</Name>
+                                        <Date>
+                                            {p.planDateStart} ~ {p.planDateEnd}
+                                        </Date>
+                                    </InfoBox>
+                                </Link>
+                            </PlannerItem>
+                        ))}
+                    {/* </Planners>
+                </HiddenBox> */}
+                </Slider>
             </Container>
         </MyPlannerListBlock>
     );

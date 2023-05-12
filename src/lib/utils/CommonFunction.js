@@ -1,3 +1,4 @@
+// 드래그 함수
 // 바꿀 일정의 index 구하기
 function getElementIndex(p, itemsArr, items) {
     itemsArr.current = items;
