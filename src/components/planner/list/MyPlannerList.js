@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Slider from '../../common/Slider';
 
 const MyPlannerListBlock = styled.div`
@@ -205,6 +205,13 @@ const MyPlannerList = ({ myPlanners, onResetPlannerInfoForm, onCreatePlanner, on
     //     };
     // });
 
+    const history = useHistory();
+    const transition = useRef(false);
+    const allowTransition = () => {
+        if (transition.current) {
+            history.push('/PlannerInfo');
+        }
+    };
     return (
         <MyPlannerListBlock>
             <Container>
@@ -216,7 +223,7 @@ const MyPlannerList = ({ myPlanners, onResetPlannerInfoForm, onCreatePlanner, on
                         </Link>
                     </Button>
                 </TitleBox>
-                <Slider list={myPlanners} scroll={false}>
+                <Slider list={myPlanners} scroll={false} transition={transition}>
                     {/* <HiddenBox ref={hiddenBoxRef}>
                     <Planners ref={plannersRef}> */}
                     {myPlanners &&
@@ -226,17 +233,18 @@ const MyPlannerList = ({ myPlanners, onResetPlannerInfoForm, onCreatePlanner, on
                                 onClick={() => {
                                     // onLoadPlanner(p.plannerId);
                                     onChangeCurPlannerId(p.plannerId);
+                                    allowTransition();
                                 }}
                             >
-                                <Link to="/PlannerInfo">
-                                    <SimpleMap />
-                                    <InfoBox>
-                                        <Name>{p.title}</Name>
-                                        <Date>
-                                            {p.planDateStart} ~ {p.planDateEnd}
-                                        </Date>
-                                    </InfoBox>
-                                </Link>
+                                {/* <Link to="/PlannerInfo"> */}
+                                <SimpleMap />
+                                <InfoBox>
+                                    <Name>{p.title}</Name>
+                                    <Date>
+                                        {p.planDateStart} ~ {p.planDateEnd}
+                                    </Date>
+                                </InfoBox>
+                                {/* </Link> */}
                             </PlannerItem>
                         ))}
                     {/* </Planners>

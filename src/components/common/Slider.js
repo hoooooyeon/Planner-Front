@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useHistory } from 'react-router';
 import styled, { css } from 'styled-components';
 
 const HiddenBox = styled.div`
@@ -47,7 +48,7 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const Slider = ({ children, list, scroll }) => {
+const Slider = ({ children, list, scroll, transition }) => {
     const hiddenBoxRef = useRef();
     const listRef = useRef();
 
@@ -69,6 +70,9 @@ const Slider = ({ children, list, scroll }) => {
         isSlide = true;
         startX = e.clientX;
         drag.current = false;
+        if (transition) {
+            transition.current = true;
+        }
     };
 
     // 슬라이드 마우스 이동
@@ -92,20 +96,13 @@ const Slider = ({ children, list, scroll }) => {
 
                 scrollRef.current.style.transform = 'translateX(' + scrollMoveX + '%)';
                 scrollRef.current.style.transitionDuration = '0ms';
-
-                // if (currentX === 0) {
-                //     // itemRef.current.style.pointerEvents = 'auto';
-                //     // itemRef.current.style.color = 'black';
-                //     drag.current = false;
-                // } else {
-                //     // itemRef.current.style.pointerEvents = 'none';
-                //     // itemRef.current.style.color = 'red';
-                //     drag.current = true;
-                // }
             }
 
             if (!drag.current) {
                 drag.current = true;
+            }
+            if (transition) {
+                transition.current = false;
             }
         }
     };
@@ -158,10 +155,22 @@ const Slider = ({ children, list, scroll }) => {
             };
         }
     });
+    const history = useHistory();
+    const handleDragStart = (e) => {
+        e.preventDefault();
+        // history.push('/PlannerList');
+    };
     return (
         <>
             <HiddenBox ref={hiddenBoxRef} scroll={scroll}>
-                <List ref={listRef} scroll={scroll}>
+                <List
+                    ref={listRef}
+                    scroll={scroll}
+                    // draggable
+                    // onDragStart={() => {
+                    //     setHell(false);
+                    // }}
+                >
                     {children}
                 </List>
             </HiddenBox>

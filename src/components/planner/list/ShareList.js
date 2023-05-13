@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import Slider from '../../common/Slider';
 
@@ -271,6 +271,13 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
     //     }
     // });
 
+    const history = useHistory();
+    const transition = useRef(false);
+    const allowTransition = () => {
+        if (transition.current) {
+            history.push('/PlannerInfo');
+        }
+    };
     if (!sharePlanners) {
         return <div>Loading...</div>;
     }
@@ -280,7 +287,7 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
                 <TitleBox>
                     <p>다른 이용자들의 플래너</p>
                 </TitleBox>
-                <Slider list={sharePlanners} scroll={true}>
+                <Slider list={sharePlanners} scroll={true} transition={transition}>
                     {/* <HiddenBox ref={hiddenBoxRef}>
                     <Shares ref={listRef}> */}
                     {sharePlanners &&
@@ -291,10 +298,10 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
                                 onClick={() => {
                                     // onLoadPlanner(p.plannerId);
                                     onChangeCurPlannerId(p.plannerId);
+                                    allowTransition();
                                 }}
                             >
                                 {/* <Link to="/PlannerInfo"> */}
-                                {/* <Link to="/PlannerEdit" ref={itemRef}> */}
                                 <SimpleMap />
                                 <InfoBox>
                                     <Name>{p.title}</Name>
