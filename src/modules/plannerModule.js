@@ -413,6 +413,8 @@ function plannerReducer(state = initialState, action) {
                     creator: action.nickname,
                 },
                 planner: null,
+                myPlanners: null,
+                sharePlanners: null,
                 // planner: {
                 //     accountId: action.accountId,
                 //     creator: action.nickname,
