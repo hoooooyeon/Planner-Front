@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import PlannerList from '../../components/planner/list/PlannerList';
-import { changeCurPlannerIdAction, changePlannerAccountAction, createPlannerAction, loadMyPlannerListAction, loadPlannerAction, loadSharePlannerListAction } from '../../modules/plannerModule';
+import PlannerList from '../../../components/planner/list/PlannerList';
+import { changeCurPlannerIdAction, changePlannerAccountAction, createPlannerAction, loadMyPlannerListAction, loadPlannerAction, loadSharePlannerListAction } from '../../../modules/plannerModule';
 
 const PlannerListContainer = () => {
     const dispatch = useDispatch();
@@ -41,19 +41,20 @@ const PlannerListContainer = () => {
         dispatch(createPlannerAction({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }));
     };
 
-    let page = 1;
     // 나의 플래너리스트 가져오기
     useEffect(() => {
         const { accountId } = currentInfo;
+        const page = 1;
         if (accountId) {
             dispatch(loadMyPlannerListAction(accountId, page));
         }
-    }, [dispatch, currentInfo, page]);
+    }, [dispatch, currentInfo]);
 
     // 공유 플래너리스트 가져오기
+    const { pageIndex } = currentInfo;
     useEffect(() => {
-        dispatch(loadSharePlannerListAction(page));
-    }, [dispatch, page]);
+        dispatch(loadSharePlannerListAction(pageIndex));
+    }, [dispatch, pageIndex]);
 
     // 플래너 정보 가져오기
     const onLoadPlanner = (plannerId) => {

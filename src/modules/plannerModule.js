@@ -107,6 +107,8 @@ const CHANGE_LOCATION_TYPE = 'planner/CHANGE_LOCATION';
 
 const CREATE_MAP_TYPE = 'planner/CREATE_MAP';
 
+const CHANGE_PAGE_NUM_TYPE = 'planner/CHANGE_PAGE_NUM';
+
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
     accountId,
@@ -182,6 +184,7 @@ export const changeCurPlannerIdAction = (plannerId) => ({ type: CHANGE_CUR_PLANN
 export const changePlansAction = (plans) => ({ type: CHANGE_PLANS_TYPE, plans });
 export const changeLocationAction = (location) => ({ type: CHANGE_LOCATION_TYPE, location });
 export const createMapAction = (mapData) => ({ type: CREATE_MAP_TYPE, mapData });
+export const changePageNumAction = (pageIndex) => ({ type: CHANGE_PAGE_NUM_TYPE, pageIndex });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -245,6 +248,7 @@ const initialState = {
         memoId: null,
         accountId: null,
         creator: null,
+        pageIndex: 1,
     },
     map: null,
     spots: [
@@ -296,6 +300,11 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
                 sharePlanners: action.payload.data.list,
+                currentInfo: {
+                    ...state.currentInfo,
+                    pageIndex: action.payload.data.pageIndex,
+                    pageLastIndex: action.payload.data.pageLastIndex,
+                },
             };
         case LOAD_MY_PLANNER_LIST_FAILURE_TYPE:
         case LOAD_SHARE_PLANNER_LIST_FAILURE_TYPE:
@@ -411,6 +420,7 @@ function plannerReducer(state = initialState, action) {
                     // ...state.currentInfo,
                     accountId: action.accountId,
                     creator: action.nickname,
+                    pageIndex: 1,
                 },
                 planner: null,
                 myPlanners: null,
@@ -642,6 +652,14 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
                 map: action.mapData,
+            };
+        case CHANGE_PAGE_NUM_TYPE:
+            return {
+                ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                    pageIndex: action.pageIndex,
+                },
             };
         default:
             return state;

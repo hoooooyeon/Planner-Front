@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useEffect, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import Pagination from '../../common/Pagination';
 import Slider from '../../common/Slider';
 
 const ShareListBlock = styled.div`
@@ -271,6 +272,7 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
     //     }
     // });
 
+    // 드래그시 페이지 전환 막기
     const history = useHistory();
     const transition = useRef(false);
     const allowTransition = () => {
@@ -278,6 +280,7 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
             history.push('/PlannerInfo');
         }
     };
+
     if (!sharePlanners) {
         return <div>Loading...</div>;
     }
@@ -292,6 +295,7 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
                     <Shares ref={listRef}> */}
                     {sharePlanners &&
                         sharePlanners.map((p) => (
+                            // sharePlanners.slice(block, block + limit).map((p) => (
                             <ShareItem
                                 key={p.plannerId}
                                 // drag={drag.current}

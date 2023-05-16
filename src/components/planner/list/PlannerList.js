@@ -7,7 +7,7 @@ const PlannerList = ({ myPlanners, sharePlanners, plannerError, onCreatePlanner,
         <>
             <MyPlannerList myPlanners={myPlanners} onCreatePlanner={onCreatePlanner} onResetPlannerInfoForm={onResetPlannerInfoForm} onChangeCurPlannerId={onChangeCurPlannerId} />
             <ShareList sharePlanners={sharePlanners} onLoadPlanner={onLoadPlanner} plannerError={plannerError} onChangeCurPlannerId={onChangeCurPlannerId} />
-            <ListPagination />
+            {/* <ListPagination /> */}
         </>
     );
 };
