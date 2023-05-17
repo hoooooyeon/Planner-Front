@@ -25,17 +25,17 @@ import {
 
 const EditRouteContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, plan, newPlanId, currentInfo, loading, location } = useSelector(({ plannerReducer, loadingReducer }) => ({
+    const { planner, plannerError, plan, newPlanId, plannerData, loading, location } = useSelector(({ plannerReducer, loadingReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         plan: plannerReducer.plan,
-        currentInfo: plannerReducer.currentInfo,
+        plannerData: plannerReducer.plannerData,
         loading: loadingReducer.loading,
         location: plannerReducer.location,
     }));
 
     const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
-    const { planId } = { ...currentInfo };
+    const { planId } = { ...plannerData };
 
     const letsFormat = (d) => {
         const date = new Date(d);
@@ -89,7 +89,7 @@ const EditRouteContainer = () => {
     };
     const onDeletePlan = (planId) => {
         dispatch(deletePlanAction({ plannerId, planId }));
-        if (planner && plans.length > 1 && planId === currentInfo.planId) {
+        if (planner && plans.length > 1 && planId === plannerData.planId) {
             dispatch(changeCurPlanIdAction(plans[0].planId));
         }
     };
@@ -138,11 +138,11 @@ const EditRouteContainer = () => {
 
     // planner 정보 가져오기
     useEffect(() => {
-        const { plannerId } = currentInfo;
+        const { plannerId } = plannerData;
         if (plannerId) {
             dispatch(loadPlannerAction(plannerId));
         }
-    }, [dispatch, currentInfo]);
+    }, [dispatch, plannerData]);
 
     const onChangeCurPlanId = (planId) => {
         dispatch(changeCurPlanIdAction(planId));
@@ -173,7 +173,7 @@ const EditRouteContainer = () => {
         <EditRoute
             planner={planner}
             plan={plan}
-            currentInfo={currentInfo}
+            plannerData={plannerData}
             loading={loading}
             onChangePlannerDateStart={onChangePlannerDateStart}
             onChangePlannerDateEnd={onChangePlannerDateEnd}

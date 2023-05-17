@@ -53,7 +53,7 @@ const DeleteButton = styled.div`
     left: 45px;
 `;
 
-const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, onLoadPlan, onChangeCurPlanId, onAddDate, onSubDate, onUpdateSubPlan, onChangePlans }) => {
+const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, onLoadPlan, onChangeCurPlanId, onAddDate, onSubDate, onUpdateSubPlan, onChangePlans }) => {
     const { planDateEnd, plans } = { ...planner };
 
     const letsFormat = (d) => {
@@ -303,7 +303,7 @@ const EditCalendar = ({ planner, plan, currentInfo, onCreatePlan, onDeletePlan, 
                         >
                             <RouteLine />
                             <Calendar
-                                aria-current={p.planId === currentInfo.planId ? 'date' : null}
+                                aria-current={p.planId === plannerData.planId ? 'date' : null}
                                 onClick={() => {
                                     onChangeCurPlanId(p.planId);
                                 }}

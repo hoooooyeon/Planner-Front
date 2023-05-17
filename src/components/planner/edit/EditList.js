@@ -83,7 +83,7 @@ const ListItem = styled.div`
     }
 `;
 
-const Img = styled.div`
+const Img = styled.img`
     border-radius: 5%;
     border: 1px solid gray;
     width: 80px;
@@ -140,30 +140,32 @@ const EditList = ({ spots, onChangePlanLocation, onCreateLocation, onMoveMarker 
                     </MenuItem>
                 </MenuList>
                 <List>
-                    {spots.map((s, i) => {
-                        return (
-                            <ListItem
-                                key={i}
-                                onClick={() => {
-                                    onMoveMarker(s);
-                                }}
-                            >
-                                <Img
-                                // src={s.firstimage || s.firstimage2}
-                                // alt={s.title}
-                                // onError={onChangeErrorImg}
-                                />
-                                <Name>{s.title}</Name>
-                                <Button
+                    {spots &&
+                        spots.list.map((s, i) => {
+                            const { firstimage, firstimage2, title } = s.info;
+                            return (
+                                <ListItem
+                                    key={i}
                                     onClick={() => {
-                                        onCreateLocation(s);
+                                        onMoveMarker(s);
                                     }}
                                 >
-                                    추가
-                                </Button>
-                            </ListItem>
-                        );
-                    })}
+                                    <Img
+                                        src={firstimage || firstimage2}
+                                        alt={title}
+                                        // onError={onChangeErrorImg}
+                                    />
+                                    <Name>{title}</Name>
+                                    <Button
+                                        onClick={() => {
+                                            onCreateLocation(s.info);
+                                        }}
+                                    >
+                                        추가
+                                    </Button>
+                                </ListItem>
+                            );
+                        })}
                 </List>
             </EditListBlock>
         </>

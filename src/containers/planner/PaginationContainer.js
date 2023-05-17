@@ -5,11 +5,11 @@ import { changePageNumAction } from '../../modules/plannerModule';
 
 const PaginationContainer = () => {
     const dispatch = useDispatch();
-    const { currentInfo } = useSelector(({ plannerReducer }) => ({
-        currentInfo: plannerReducer.currentInfo,
+    const { plannerData } = useSelector(({ plannerReducer }) => ({
+        plannerData: plannerReducer.plannerData,
     }));
 
-    const { pageIndex, pageLastIndex } = { ...currentInfo };
+    const { pageIndex, pageLastIndex } = { ...plannerData };
 
     // 뿌려줄 페이지 배열
     const [pageArr, setPageArr] = useState([]);

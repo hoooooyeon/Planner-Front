@@ -35,12 +35,12 @@ const MemberModalContainer = () => {
 
     // planner 정보 가져오기
     //  useEffect(() => {
-    //     if (currentInfo && plannerId) {
-    //         // const { curPlannerId } = currentInfo;
+    //     if (plannerData && plannerId) {
+    //         // const { curPlannerId } = plannerData;
     //         // dispatch(loadPlannerAction(curPlannerId));
     //         dispatch(loadPlannerAction(plannerId));
     //     }
-    // }, [dispatch, currentInfo, plannerId]);
+    // }, [dispatch, plannerData, plannerId]);
 
     return (
         <MemberModal

@@ -84,7 +84,7 @@ const SwipeButton = styled.div`
     }
 `;
 
-const InfoDatination = ({ isShadow, planner, currentInfo, onChangeCurPlanId }) => {
+const InfoDatination = ({ isShadow, planner, plannerData, onChangeCurPlanId }) => {
     const { plans } = { ...planner };
 
     const [date, setDate] = useState([10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
@@ -132,7 +132,7 @@ const InfoDatination = ({ isShadow, planner, currentInfo, onChangeCurPlanId }) =
                             <DateButton
                                 ref={buttonRef}
                                 key={p.planId}
-                                //  aria-current={p.planId === currentInfo.planId ? 'date' : null}
+                                //  aria-current={p.planId === plannerData.planId ? 'date' : null}
                                 onClick={() => {
                                     onChangeCurPlanId(p.planId);
                                 }}

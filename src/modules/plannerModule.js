@@ -109,6 +109,8 @@ const CREATE_MAP_TYPE = 'planner/CREATE_MAP';
 
 const CHANGE_PAGE_NUM_TYPE = 'planner/CHANGE_PAGE_NUM';
 
+const CHANGE_AREA_CODE_TYPE = 'planner/CHANGE_AREA_CODE';
+
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
     accountId,
@@ -185,6 +187,7 @@ export const changePlansAction = (plans) => ({ type: CHANGE_PLANS_TYPE, plans })
 export const changeLocationAction = (location) => ({ type: CHANGE_LOCATION_TYPE, location });
 export const createMapAction = (mapData) => ({ type: CREATE_MAP_TYPE, mapData });
 export const changePageNumAction = (pageIndex) => ({ type: CHANGE_PAGE_NUM_TYPE, pageIndex });
+export const changeAreaCodeAction = (areaCode) => ({ type: CHANGE_AREA_CODE_TYPE, areaCode });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -241,7 +244,7 @@ const initialState = {
         member: false,
         plannerInfo: false,
     },
-    currentInfo: {
+    plannerData: {
         plannerId: null,
         planId: null,
         locaId: null,
@@ -251,38 +254,6 @@ const initialState = {
         pageIndex: 1,
     },
     map: null,
-    spots: [
-        {
-            title: '가회동성당',
-            contentid: '2733967',
-            contenttypeid: '12',
-            firstimage: 'http://tong.visitkorea.or.kr/cms/resource/61/2780561_image2_1.png',
-            firstimage2: 'http://tong.visitkorea.or.kr/cms/resource/61/2780561_image2_1.png',
-            addr: '서울특별시 종로구 북촌로 57',
-            mapx: 126.9846616856,
-            mapy: 37.5820858828,
-        },
-        {
-            title: '간데메공원',
-            contentid: '2763807',
-            contenttypeid: '12',
-            firstimage: '',
-            firstimage2: '',
-            addr: '서울특별시 동대문구 서울시립대로2길 59',
-            mapx: 127.0490977427,
-            mapy: 37.5728520032,
-        },
-        {
-            title: '갈산근린공원',
-            contentid: '1116925',
-            contenttypeid: '12',
-            firstimage: 'http://tong.visitkorea.or.kr/cms/resource/62/2612062_image2_1.bmp',
-            firstimage2: 'http://tong.visitkorea.or.kr/cms/resource/62/2612062_image2_1.bmp',
-            addr: '서울 양천구 신정동 162-56',
-            mapx: 126.8684105358,
-            mapy: 37.5061176314,
-        },
-    ],
 };
 const letsFormat = (d) => {
     const date = new Date(d);
@@ -300,8 +271,8 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
                 sharePlanners: action.payload.data.list,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                     pageIndex: action.payload.data.pageIndex,
                     pageLastIndex: action.payload.data.pageLastIndex,
                 },
@@ -338,10 +309,10 @@ function plannerReducer(state = initialState, action) {
                 ...state,
 
                 // planner: {
-                //     accountId: state.currentInfo.accountId,
-                //     creator: state.currentInfo.nickname,
+                //     accountId: state.plannerData.accountId,
+                //     creator: state.plannerData.nickname,
                 //     plannerId: action.payload.data,
-                //     title: `${state.currentInfo.nickname}의 여행 플래너`,
+                //     title: `${state.plannerData.nickname}의 여행 플래너`,
                 //     planDateStart: letsFormat(new Date()),
                 //     planDateEnd: letsFormat(new Date()),
                 //     planMembers: [],
@@ -349,16 +320,16 @@ function plannerReducer(state = initialState, action) {
                 //     memberCount: 1,
                 //     memberTypeId: 1,
                 // },
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                     plannerId: action.payload.data,
                 },
             };
         case UPDATE_PLANNER_SUCCESS_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                 },
             };
         case CHANGE_PLANNER_TITLE_TYPE:
@@ -416,12 +387,16 @@ function plannerReducer(state = initialState, action) {
         case CHANGE_PLANNER_ACCOUNT_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    // ...state.currentInfo,
+                plannerData: {
+                    // ...state.plannerData,
                     accountId: action.accountId,
                     creator: action.nickname,
                     pageIndex: 1,
                 },
+                // spotInfo: {
+                //     areaCode: 39,
+                //     pageIndex: 1,
+                // },
                 planner: null,
                 myPlanners: null,
                 sharePlanners: null,
@@ -458,23 +433,23 @@ function plannerReducer(state = initialState, action) {
         case CREATE_MEMO_SUCCESS_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                     memoId: action.payload.data,
                 },
             };
         case UPDATE_MEMO_SUCCESS_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                 },
             };
         case DELETE_MEMO_SUCCESS_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                 },
             };
         case LOAD_MEMO_TYPE:
@@ -514,30 +489,30 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
 
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                     planId: action.payload.data,
                 },
             };
         case UPDATE_PLAN_SUCCESS_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                 },
             };
         case DELETE_PLAN_SUCCESS_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                 },
             };
         // case LOAD_PLAN_TYPE:
         //     return {
         //         ...state,
-        //         currentInfo: {
-        //             ...state.currentInfo,
+        //         plannerData: {
+        //             ...state.plannerData,
         //             curPlanId: action.plan,
         //         },
         //     };
@@ -561,15 +536,15 @@ function plannerReducer(state = initialState, action) {
         case INVITE_MEMBER_SUCCESS_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                 },
             };
         case DELETE_MEMBER_SUCCESS_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                 },
             };
         case CHANGE_MEMBER_TYPE:
@@ -593,8 +568,8 @@ function plannerReducer(state = initialState, action) {
         case TOGGLE_PLANNER_INFO_MODAL_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                 },
                 modal: {
                     ...state.modal,
@@ -604,38 +579,38 @@ function plannerReducer(state = initialState, action) {
         case CREATE_LOCATION_SUCCESS_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                     locaId: action.payload.data,
                 },
             };
         case UPDATE_LOCATION_SUCCESS_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                 },
             };
         case DELETE_LOCATION_SUCCESS_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                 },
             };
         case CHANGE_CUR_PLAN_ID_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                     planId: action.planId,
                 },
             };
         case CHANGE_CUR_PLANNER_ID_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                     plannerId: action.plannerId,
                 },
             };
@@ -656,11 +631,19 @@ function plannerReducer(state = initialState, action) {
         case CHANGE_PAGE_NUM_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                plannerData: {
+                    ...state.plannerData,
                     pageIndex: action.pageIndex,
                 },
             };
+        // case CHANGE_AREA_CODE_TYPE:
+        //     return {
+        //         ...state,
+        //         spotInfo: {
+        //             ...state.spotInfo,
+        //             areaCode: action.areaCode,
+        //         },
+        //     };
         default:
             return state;
     }

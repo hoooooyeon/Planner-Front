@@ -2,15 +2,18 @@ import { useCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditMap from '../../../components/planner/edit/EditMap';
-import { createMapAction, toggleMemberModalAction, togglePlannerInfoModalAction, updatePlanAction, updatePlannerAction } from '../../../modules/plannerModule';
+import { changeAreaCodeAction, createMapAction, toggleMemberModalAction, togglePlannerInfoModalAction, updatePlanAction, updatePlannerAction } from '../../../modules/plannerModule';
 import spotImg from '../../../lib/images/spot.png';
+import { changeKeywordAction, loadAreasAction, loadSpotsAction, searchSpotAction, updateAreaNumAction } from '../../../modules/spotModule';
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, spots } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, spots, currentInfo, areas } = useSelector(({ plannerReducer, spotReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
-        spots: plannerReducer.spots,
+        spots: spotReducer.spots,
+        areas: spotReducer.areas,
+        currentInfo: spotReducer.currentInfo,
         // map: plannerReducer.map,
     }));
 
@@ -32,7 +35,7 @@ const EditMapContainer = () => {
     // 지도 생성
     useEffect(() => {
         const options = {
-            center: new kakao.maps.LatLng(33.450701, 126.570667),
+            center: new kakao.maps.LatLng(37.5665, 126.978),
             level: 10,
         };
         const map = new kakao.maps.Map(mapRef.current, options);
@@ -61,14 +64,14 @@ const EditMapContainer = () => {
 
     // 지도에 여행지 마커로 표시 + 인포윈도우 표시
     const showSpotMarker = useCallback(() => {
-        if (map) {
+        if (map && spots) {
             let infowindow = new kakao.maps.InfoWindow({ removable: true });
             let marker;
             let markerPosition;
             let imageSize;
             let markerImage;
-            for (let i = 0; i < spots.length; i++) {
-                const { title, mapx, mapy } = spots[i];
+            for (let i = 0; i < spots.list.length; i++) {
+                const { title, mapx, mapy } = spots.list[i].info;
 
                 // 마커가 표시될 위치입니다
                 markerPosition = new kakao.maps.LatLng(mapy, mapx);
@@ -163,7 +166,226 @@ const EditMapContainer = () => {
         showRouteMarker();
     }, [showRouteMarker, showSpotMarker]);
 
-    return <EditMap mapRef={mapRef} planner={planner} onUpdatePlanner={onUpdatePlanner} onToggleMemberModal={onToggleMemberModal} onTogglePlannerInfoModal={onTogglePlannerInfoModal} />;
+    // 지도 중심 좌표 얻는 함수
+    const [centerCoord, setCenterCoord] = useState();
+    const getMapCenter = useCallback(() => {
+        let coord = map.getCenter();
+        setCenterCoord({
+            Lat: coord.getLat(),
+            Lng: coord.getLng(),
+        });
+    }, [map]);
+
+    // 지도 중심 좌표 얻기
+    useEffect(() => {
+        if (map) {
+            // 지도의 중심 좌표 얻기
+            kakao.maps.event.addListener(map, 'mouseup', getMapCenter);
+        }
+    }, [dispatch, map, getMapCenter, kakao.maps.event]);
+
+    // 중심 좌표를 통해 현재  지역 구하기
+    useEffect(() => {
+        const areaArr = [
+            {
+                title: '서울',
+                code: 1,
+                coord: {
+                    Lat: 37.5665,
+                    Lng: 126.978,
+                },
+            },
+            {
+                title: '인천',
+                code: 2,
+                coord: {
+                    Lat: 37.4563,
+                    Lng: 126.7052,
+                },
+            },
+            {
+                title: '대전',
+                code: 3,
+                coord: {
+                    Lat: 36.3504,
+                    Lng: 127.3845,
+                },
+            },
+            {
+                title: '대구',
+                code: 4,
+                coord: {
+                    Lat: 35.8714,
+                    Lng: 128.6014,
+                },
+            },
+            {
+                title: '광주',
+                code: 5,
+                coord: {
+                    Lat: 35.1595,
+                    Lng: 126.8526,
+                },
+            },
+            {
+                title: '부산',
+                code: 6,
+                coord: {
+                    Lat: 35.1796,
+                    Lng: 129.0756,
+                },
+            },
+            {
+                title: '울산',
+                code: 7,
+                coord: {
+                    Lat: 35.5384,
+                    Lng: 129.3114,
+                },
+            },
+            {
+                title: '세종',
+                code: 8,
+                coord: {
+                    Lat: 36.4801,
+                    Lng: 127.2882,
+                },
+            },
+            {
+                title: '경기도',
+                code: 31,
+                coord: {
+                    Lat: 37.4138,
+                    Lng: 127.5183,
+                },
+            },
+            {
+                title: '강원도',
+                code: 32,
+                coord: {
+                    Lat: 37.5557,
+                    Lng: 128.2092,
+                },
+            },
+            {
+                title: '충청북도',
+                code: 33,
+                coord: {
+                    Lat: 36.6357,
+                    Lng: 127.4912,
+                },
+            },
+            {
+                title: '충청남도',
+                code: 34,
+                coord: {
+                    Lat: 36.6588,
+                    Lng: 126.6728,
+                },
+            },
+            {
+                title: '경상북도',
+                code: 35,
+                coord: {
+                    Lat: 36.4919,
+                    Lng: 128.8889,
+                },
+            },
+            {
+                title: '경상남도',
+                code: 36,
+                coord: {
+                    Lat: 35.4606,
+                    Lng: 128.2132,
+                },
+            },
+            {
+                title: '전라북도',
+                code: 37,
+                coord: {
+                    Lat: 35.716,
+                    Lng: 127.1448,
+                },
+            },
+            {
+                title: '전라남도',
+                code: 38,
+                coord: {
+                    Lat: 34.8679,
+                    Lng: 126.991,
+                },
+            },
+            {
+                title: '제주도',
+                code: 39,
+                coord: {
+                    Lat: 33.4996,
+                    Lng: 126.5312,
+                },
+            },
+        ];
+        if (map) {
+            let arr = [];
+            let polyline;
+            let coordArr = [];
+            let minCoord;
+            let num;
+            if (centerCoord) {
+                areaArr.map((a) => {
+                    arr = [new kakao.maps.LatLng(centerCoord.Lat, centerCoord.Lng), new kakao.maps.LatLng(a.coord.Lat, a.coord.Lng)];
+                    polyline = new kakao.maps.Polyline({
+                        path: arr, // 선을 구성하는 좌표배열 입니다
+                    });
+                    coordArr = [...coordArr, polyline.getLength()];
+
+                    minCoord = Math.min(...coordArr);
+                    num = coordArr.findIndex((c) => c === minCoord);
+                    return coordArr;
+                });
+                dispatch(updateAreaNumAction(areaArr[num].code));
+            }
+        }
+    }, [centerCoord, dispatch, kakao.maps.LatLng, kakao.maps.Polyline, map]);
+
+    // 여행지 리스트 로드
+    const { areaNum, pageNum } = currentInfo;
+    useEffect(() => {
+        console.log(areaNum);
+        dispatch(loadSpotsAction(areaNum, pageNum));
+    }, [dispatch, areaNum, pageNum]);
+
+    // 지역 리스트 로드
+    useEffect(() => {
+        dispatch(loadAreasAction());
+    }, [dispatch]);
+
+    // 지역 선택 함수
+    const onUpdateAreaNum = (num) => {
+        dispatch(updateAreaNumAction(num));
+    };
+
+    // 여행지 키워드 입력
+    const onChangeKeyword = (keyword) => {
+        dispatch(changeKeywordAction(keyword));
+    };
+
+    // 여행지 검색
+    const onSearchSpot = () => {
+        dispatch(searchSpotAction({ areaCode, contentTypeId, keyword, page }));
+    };
+
+    return (
+        <EditMap
+            mapRef={mapRef}
+            planner={planner}
+            onUpdatePlanner={onUpdatePlanner}
+            onToggleMemberModal={onToggleMemberModal}
+            onTogglePlannerInfoModal={onTogglePlannerInfoModal}
+            areas={areas}
+            currentInfo={currentInfo}
+            onUpdateAreaNum={onUpdateAreaNum}
+        />
+    );
 };
 
 export default EditMapContainer;

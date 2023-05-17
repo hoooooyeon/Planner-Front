@@ -74,7 +74,7 @@ const RouteBox = styled.div`
 const EditRoute = ({
     planner,
     plan,
-    currentInfo,
+    plannerData,
     loading,
     onChangePlannerDateStart,
     onChangePlannerDateEnd,
@@ -141,7 +141,7 @@ const EditRoute = ({
                 <EditCalendar
                     planner={planner}
                     plan={plan}
-                    currentInfo={currentInfo}
+                    plannerData={plannerData}
                     onLoadPlan={onLoadPlan}
                     onCreatePlan={onCreatePlan}
                     onDeletePlan={onDeletePlan}
@@ -151,7 +151,7 @@ const EditRoute = ({
                     onUpdateSubPlan={onUpdateSubPlan}
                     onChangePlans={onChangePlans}
                 />
-                <EditRouteList planner={planner} plan={plan} currentInfo={currentInfo} onUpdatePlan={onUpdatePlan} onDeleteLocation={onDeleteLocation} onChangeLocation={onChangeLocation} onUpdateTrans={onUpdateTrans} />
+                <EditRouteList planner={planner} plan={plan} plannerData={plannerData} onUpdatePlan={onUpdatePlan} onDeleteLocation={onDeleteLocation} onChangeLocation={onChangeLocation} onUpdateTrans={onUpdateTrans} />
             </RouteBox>
         </EditRouteBlock>
     );

@@ -1,15 +1,19 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditList from '../../../components/planner/edit/EditList';
 import { changePlanLocationAction, createLocationAction } from '../../../modules/plannerModule';
+import { loadSpotsAction } from '../../../modules/spotModule';
 
 const EditListContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, spots, plan, currentInfo, map } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, spots, plan, currentInfo, plannerData, map } = useSelector(({ plannerReducer, spotReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
-        spots: plannerReducer.spots,
+        spots: spotReducer.spots,
+        currentInfo: spotReducer.currentInfo,
+        // spots: plannerReducer.spots,
         plan: plannerReducer.plan,
-        currentInfo: plannerReducer.currentInfo,
+        plannerData: plannerReducer.plannerData,
         map: plannerReducer.map,
     }));
 
@@ -17,15 +21,15 @@ const EditListContainer = () => {
         dispatch(changePlanLocationAction(location));
     };
 
-    const { plannerId, planId } = { ...currentInfo };
+    const { plannerId, planId } = { ...plannerData };
 
     const onCreateLocation = (spot) => {
-        const { title, contentid, firstimage, firstimage2, addr, mapx, mapy } = spot;
+        const { title, contentid, firstimage, firstimage2, addr1, mapx, mapy } = spot;
         const locationContentId = contentid;
         const locationImage = firstimage !== '' ? firstimage : firstimage2;
         const locationTransportation = 1;
         const locationName = title;
-        const locationAddr = addr;
+        const locationAddr = addr1;
         const locationMapx = mapx;
         const locationMapy = mapy;
 
@@ -39,6 +43,12 @@ const EditListContainer = () => {
         // // 해당 마커로 이동
         // map.panTo(moveLatLon);
     };
+
+    // 여행지 불러오기
+    const { areaNum, pageNum } = currentInfo;
+    useEffect(() => {
+        dispatch(loadSpotsAction(areaNum, pageNum));
+    }, [dispatch, areaNum, pageNum]);
 
     return <EditList spots={spots} onChangePlanLocation={onChangePlanLocation} onCreateLocation={onCreateLocation} onMoveMarker={onMoveMarker} />;
 };

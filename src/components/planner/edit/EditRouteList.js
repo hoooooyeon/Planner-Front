@@ -70,7 +70,7 @@ const SpotItem = styled.div`
     z-index: 99;
 `;
 
-const Img = styled.div`
+const Img = styled.img`
     border-radius: 5%;
     border: 1px solid gray;
     width: 80px;
@@ -110,7 +110,7 @@ const LineDiv = styled.div`
     height: 1rem;
 `;
 
-const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocation, onChangeLocation, onUpdateTrans }) => {
+const EditRouteList = ({ planner, plan, plannerData, onUpdatePlan, onDeleteLocation, onChangeLocation, onUpdateTrans }) => {
     const { plans } = { ...planner };
 
     const categoryList = [
@@ -162,7 +162,7 @@ const EditRouteList = ({ planner, plan, currentInfo, onUpdatePlan, onDeleteLocat
             {plans &&
                 plans.map((p, i) => (
                     <RouteList
-                        aria-current={p.planId === currentInfo.planId ? 'plan' : null}
+                        aria-current={p.planId === plannerData.planId ? 'plan' : null}
                         key={i}
                         // ref={containerRef}
                         // onDrop={(e) => common.onDrop(e, isDrag, plansArr, dragItemIndex, overItemIndex, item, index, plans)}

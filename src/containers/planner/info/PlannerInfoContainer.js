@@ -6,15 +6,15 @@ import spotImg from '../../../lib/images/spot.png';
 
 const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, currentInfo, spots } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, plannerData, spots } = useSelector(({ plannerReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
-        currentInfo: plannerReducer.currentInfo,
+        plannerData: plannerReducer.plannerData,
         spots: plannerReducer.spots,
     }));
 
     const { plannerId, plans } = { ...planner };
-    const { planId } = { ...currentInfo };
+    const { planId } = { ...plannerData };
 
     const onDeletePlanner = () => {
         dispatch(deletePlannerAction(plannerId));
@@ -28,7 +28,7 @@ const PlannerInfoContainer = () => {
         dispatch(togglePlannerInfoModalAction());
     };
 
-    // 수정페이지 도달시 맨처음 currentInfo planId 설정.
+    // 수정페이지 도달시 맨처음 plannerData planId 설정.
     useEffect(() => {
         if (!planId && planner && plans.length !== 0) {
             dispatch(changeCurPlanIdAction(plans[0].planId));
@@ -39,11 +39,11 @@ const PlannerInfoContainer = () => {
 
     // planner 정보 가져오기
     useEffect(() => {
-        const { plannerId } = currentInfo;
+        const { plannerId } = plannerData;
         if (plannerId) {
             dispatch(loadPlannerAction(plannerId));
         }
-    }, [dispatch, currentInfo]);
+    }, [dispatch, plannerData]);
 
     const onChangeCurPlanId = (planId) => {
         dispatch(changeCurPlanIdAction(planId));
@@ -141,7 +141,7 @@ const PlannerInfoContainer = () => {
     return (
         <PlannerInfo
             planner={planner}
-            currentInfo={currentInfo}
+            plannerData={plannerData}
             mapRef={mapRef}
             onDeletePlanner={onDeletePlanner}
             onToggleMemberModal={onToggleMemberModal}

@@ -100,7 +100,7 @@ const RouteLine = styled.div`
     top: -42px;
 `;
 
-const InfoRoute = ({ planner, currentInfo, onChangeCurPlanId }) => {
+const InfoRoute = ({ planner, plannerData, onChangeCurPlanId }) => {
     const { plans } = { ...planner };
 
     const [isShadow, setIsShadow] = useState(false);
@@ -143,7 +143,7 @@ const InfoRoute = ({ planner, currentInfo, onChangeCurPlanId }) => {
             <InfoDatination isShadow={isShadow} planner={planner} onChangeCurPlanId={onChangeCurPlanId} />
             {plans &&
                 plans.map((p, i) => (
-                    <RouteList ref={listRef} aria-current={p.planId === currentInfo.planId ? 'plan' : null}>
+                    <RouteList ref={listRef} aria-current={p.planId === plannerData.planId ? 'plan' : null}>
                         {p.planLocations.map((pl, i) => {
                             const { locationId, locationName, locationTransportation } = pl;
                             return (

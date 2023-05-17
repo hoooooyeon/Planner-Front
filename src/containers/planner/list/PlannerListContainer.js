@@ -5,13 +5,13 @@ import { changeCurPlannerIdAction, changePlannerAccountAction, createPlannerActi
 
 const PlannerListContainer = () => {
     const dispatch = useDispatch();
-    const { myPlanners, sharePlanners, plannerError, planner, account, currentInfo } = useSelector(({ plannerReducer, authReducer }) => ({
+    const { myPlanners, sharePlanners, plannerError, planner, account, plannerData } = useSelector(({ plannerReducer, authReducer }) => ({
         account: authReducer.account,
         myPlanners: plannerReducer.myPlanners,
         sharePlanners: plannerReducer.sharePlanners,
         plannerError: plannerReducer.plannerError,
         planner: plannerReducer.planner,
-        currentInfo: plannerReducer.currentInfo,
+        plannerData: plannerReducer.plannerData,
     }));
 
     const letsFormat = (d) => {
@@ -27,7 +27,7 @@ const PlannerListContainer = () => {
         }
     }, [dispatch, account]);
 
-    const { accountId, creator } = { ...currentInfo };
+    const { accountId, creator } = { ...plannerData };
 
     const onCreatePlanner = () => {
         let title = `${creator}의 여행 플래너`;
@@ -43,15 +43,15 @@ const PlannerListContainer = () => {
 
     // 나의 플래너리스트 가져오기
     useEffect(() => {
-        const { accountId } = currentInfo;
+        const { accountId } = plannerData;
         const page = 1;
         if (accountId) {
             dispatch(loadMyPlannerListAction(accountId, page));
         }
-    }, [dispatch, currentInfo]);
+    }, [dispatch, plannerData]);
 
     // 공유 플래너리스트 가져오기
-    const { pageIndex } = currentInfo;
+    const { pageIndex } = plannerData;
     useEffect(() => {
         dispatch(loadSharePlannerListAction(pageIndex));
     }, [dispatch, pageIndex]);
