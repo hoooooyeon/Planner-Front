@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditList from '../../../components/planner/edit/EditList';
 import { changePlanLocationAction, createLocationAction } from '../../../modules/plannerModule';
-import { loadDetailSpotAction, loadSpotsAction, unloadDetailSpotAction, updateDetailSpotAction } from '../../../modules/spotModule';
+import { loadDetailSpotAction, loadSpotsAction, unloadDetailSpotAction, updateContentTypeId, updateContentTypeIdAction, updateDetailSpotAction } from '../../../modules/spotModule';
 
 const EditListContainer = () => {
     const dispatch = useDispatch();
@@ -45,10 +45,10 @@ const EditListContainer = () => {
     };
 
     // 여행지 불러오기
-    const { areaNum, pageNum } = currentInfo;
+    const { areaNum, pageNum, contentTypeId } = { ...currentInfo };
     useEffect(() => {
-        dispatch(loadSpotsAction(areaNum, pageNum));
-    }, [dispatch, areaNum, pageNum]);
+        dispatch(loadSpotsAction(areaNum, contentTypeId, pageNum));
+    }, [dispatch, areaNum, pageNum, contentTypeId]);
 
     // 여행지 상세정보 불러오기
     const onOpenDetail = (spot) => {
@@ -61,7 +61,22 @@ const EditListContainer = () => {
         dispatch(unloadDetailSpotAction());
     };
 
-    return <EditList spots={spots} detail={detail} onChangePlanLocation={onChangePlanLocation} onCreateLocation={onCreateLocation} onMoveMarker={onMoveMarker} onOpenDetail={onOpenDetail} onCloseDetail={onCloseDetail} />;
+    const onUpdateContentTypeId = (id) => {
+        dispatch(updateContentTypeIdAction(id));
+    };
+
+    return (
+        <EditList
+            spots={spots}
+            detail={detail}
+            onChangePlanLocation={onChangePlanLocation}
+            onCreateLocation={onCreateLocation}
+            onMoveMarker={onMoveMarker}
+            onOpenDetail={onOpenDetail}
+            onCloseDetail={onCloseDetail}
+            onUpdateContentTypeId={onUpdateContentTypeId}
+        />
+    );
 };
 
 export default EditListContainer;

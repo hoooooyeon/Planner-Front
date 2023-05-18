@@ -48,8 +48,10 @@ const SEARCH_SPOT_TYPE = 'spot/SEARCH_SPOT';
 const SEARCH_SPOT_SUCCESS_TYPE = 'spot/SEARCH_SPOT_SUCCESS';
 const SEARCH_SPOT_FAILURE_TYPE = 'spot/SEARCH_SPOT_FAILURE';
 
+const UPDATE_CONTENT_TYPE_ID_TYPE = 'spot/UPDATE_CONTENT_TYPE_ID';
+
 export const loadAreasAction = () => ({ type: LOAD_AREAS_TYPE });
-export const loadSpotsAction = (areaCode, page) => ({ type: LOAD_SPOTS_TYPE, areaCode, page });
+export const loadSpotsAction = (areaCode, contentTypeId, page) => ({ type: LOAD_SPOTS_TYPE, areaCode, contentTypeId, page });
 export const updateAreaNumAction = (num) => ({ type: UPDATE_AREA_NUM_TYPE, num });
 export const updatePageNumAction = (num) => ({ type: UPDATE_PAGE_NUM_TYPE, num });
 export const updateBlockNumAction = (num) => ({ type: UPDATE_BLOCK_NUM_TYPE, num });
@@ -69,6 +71,7 @@ export const cleanCurrentInfoAction = () => ({ type: CLEAN_CURRENT_INFO_TYPE });
 export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, keyword });
 export const resetKeywordAction = () => ({ type: RESET_KEYWORD_TYPE });
 export const searchSpotAction = ({ areaCode, contentTypeId, keyword, index }) => ({ type: SEARCH_SPOT_TYPE, areaCode, contentTypeId, keyword, index });
+export const updateContentTypeIdAction = (contentTypeId) => ({ type: UPDATE_CONTENT_TYPE_ID_TYPE, contentTypeId });
 
 const loadAreasSaga = createSaga(LOAD_AREAS_TYPE, spotAPI.loadAreas);
 const loadSpotsSaga = createSaga(LOAD_SPOTS_TYPE, spotAPI.loadSpots);
@@ -304,6 +307,14 @@ function spotReducer(state = initialState, action) {
                         };
                     }),
                     totalCount: action.payload.data.totalCount,
+                },
+            };
+        case UPDATE_CONTENT_TYPE_ID_TYPE:
+            return {
+                ...state,
+                currentInfo: {
+                    ...state.currentInfo,
+                    contentTypeId: action.contentTypeId,
                 },
             };
         default:

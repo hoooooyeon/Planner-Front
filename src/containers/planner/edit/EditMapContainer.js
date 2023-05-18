@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import EditMap from '../../../components/planner/edit/EditMap';
 import { changeAreaCodeAction, createMapAction, toggleMemberModalAction, togglePlannerInfoModalAction, updatePlanAction, updatePlannerAction } from '../../../modules/plannerModule';
 import spotImg from '../../../lib/images/spot.png';
-import { changeKeywordAction, loadAreasAction, loadSpotsAction, resetKeywordAction, searchSpotAction, updateAreaNumAction } from '../../../modules/spotModule';
+import { changeKeywordAction, cleanCurrentInfoAction, loadAreasAction, loadSpotsAction, resetKeywordAction, searchSpotAction, updateAreaNumAction } from '../../../modules/spotModule';
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
@@ -351,8 +351,8 @@ const EditMapContainer = () => {
     const { areaNum, pageNum, contentTypeId } = { ...currentInfo };
     // 여행지 리스트 로드
     useEffect(() => {
-        dispatch(loadSpotsAction(areaNum, pageNum));
-    }, [dispatch, areaNum, pageNum]);
+        dispatch(loadSpotsAction(areaNum, contentTypeId, pageNum));
+    }, [dispatch, areaNum, contentTypeId, pageNum]);
 
     // 지역 리스트 로드
     useEffect(() => {
@@ -379,6 +379,10 @@ const EditMapContainer = () => {
         dispatch(searchSpotAction({ areaCode, contentTypeId, keyword, index }));
     };
 
+    const onResetSpotData = () => {
+        dispatch(cleanCurrentInfoAction());
+    };
+
     return (
         <EditMap
             mapRef={mapRef}
@@ -393,6 +397,7 @@ const EditMapContainer = () => {
             onChangeKeyword={onChangeKeyword}
             onResetKeyword={onResetKeyword}
             onSearchSpot={onSearchSpot}
+            onResetSpotData={onResetSpotData}
         />
     );
 };

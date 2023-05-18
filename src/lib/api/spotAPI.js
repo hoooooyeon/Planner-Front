@@ -6,8 +6,8 @@ export const loadAreas = () => {
 };
 
 // 지역에 따른 여행지
-export const loadSpots = async ({ areaCode, page }) => {
-    return client.get(`/api/spots/lists-area?areaCode=${areaCode}&contentTypeId=12&index=${page}`);
+export const loadSpots = async ({ areaCode, contentTypeId, page }) => {
+    return client.get(`/api/spots/lists-area?areaCode=${areaCode}&contentTypeId=${contentTypeId}&index=${page}`);
 };
 
 // 여행지 상세 정보

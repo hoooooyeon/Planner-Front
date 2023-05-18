@@ -119,23 +119,26 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-const EditList = ({ spots, detail, onChangePlanLocation, onCreateLocation, onMoveMarker, onOpenDetail, onCloseDetail }) => {
+const EditList = ({ spots, detail, onChangePlanLocation, onCreateLocation, onMoveMarker, onOpenDetail, onCloseDetail, onUpdateContentTypeId }) => {
+    const categoryList = [
+        { label: '관광지', id: 12, icon: faLocationDot },
+        { label: '문화시설', id: 14, icon: faLocationDot },
+        { label: '행사', id: 15, icon: faLocationDot },
+        { label: '레포츠', id: 28, icon: faLocationDot },
+        { label: '숙박', id: 32, icon: faBed },
+        { label: '쇼핑', id: 38, icon: faLocationDot },
+        { label: '음식점', id: 39, icon: faUtensils },
+    ];
     return (
         <>
             <EditListBlock>
                 <MenuList>
-                    <MenuItem>
-                        <StyledFontAwesomeIcon icon={faLocationDot} />
-                        <p>관광지</p>
-                    </MenuItem>
-                    <MenuItem>
-                        <StyledFontAwesomeIcon icon={faBed} />
-                        <p>숙소</p>
-                    </MenuItem>
-                    <MenuItem>
-                        <StyledFontAwesomeIcon icon={faUtensils} />
-                        <p>식당</p>
-                    </MenuItem>
+                    {categoryList.map((c, i) => (
+                        <MenuItem onClick={() => onUpdateContentTypeId(c.id)} key={i}>
+                            <StyledFontAwesomeIcon icon={c.icon} />
+                            <p>{c.label}</p>
+                        </MenuItem>
+                    ))}
                     <MenuItem>
                         <StyledFontAwesomeIcon icon={faHeart} />
                         <p>좋아요</p>

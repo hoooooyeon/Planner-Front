@@ -148,7 +148,7 @@ const InvisibleInput = styled.input`
     display: none;
 `;
 
-const EditMap = ({ mapRef, keyword, onToggleMemberModal, onTogglePlannerInfoModal, getLocationByAddress, areas, currentInfo, onUpdateAreaNum, onChangeKeyword, onSearchSpot, onResetKeyword }) => {
+const EditMap = ({ mapRef, keyword, onToggleMemberModal, onTogglePlannerInfoModal, getLocationByAddress, areas, currentInfo, onUpdateAreaNum, onChangeKeyword, onSearchSpot, onResetKeyword, onResetSpotData }) => {
     const [isSearch, setIsSearch] = useState(false);
 
     const onSearch = () => {
@@ -172,7 +172,7 @@ const EditMap = ({ mapRef, keyword, onToggleMemberModal, onTogglePlannerInfoModa
                 <Button onClick={onToggleMemberModal}>멤버 초대</Button>
                 <Button onClick={onTogglePlannerInfoModal}>플래너 정보 수정</Button>
                 <Button onClick={onSearch}>장소 검색</Button>
-                <Button>
+                <Button onClick={onResetSpotData}>
                     <Link to="/PlannerInfo">일정 저장</Link>
                 </Button>
             </ButtonBox>
