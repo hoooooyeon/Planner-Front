@@ -30,6 +30,6 @@ export const removeSpotLike = ({ spotId }) => {
 };
 
 // 여행지 검색
-export const searchSpot = ({ areaCode, contentTypeId, keyword, page }) => {
-    return client.get(`/api/spots/lists-keyword?areaCode=${areaCode}&contentTypeId=${contentTypeId}&keyword=${keyword}&index=${page}`);
+export const searchSpot = ({ areaCode, contentTypeId, keyword, index }) => {
+    return client.get(`/api/spots/lists-keyword?areaCode=${areaCode}&contentTypeId=${contentTypeId}&keyword=${keyword}&index=${index}`);
 };

@@ -42,7 +42,8 @@ const CLEAN_SPOTS_TYPE = 'spot/CLEAN_SPOTS';
 const CLEAN_LIKE_LIST_TYPE = 'spot/CLEAN_LIKE_LIST';
 const CLEAN_CURRENT_INFO_TYPE = 'spot/CLEAN_CURRENT_INFO';
 
-const CHANGE_KEYWORD_TYPE = 'spot/CHANGE_KEYWORD_NAME';
+const CHANGE_KEYWORD_TYPE = 'spot/CHANGE_KEYWORD';
+const RESET_KEYWORD_TYPE = 'spot/RESET_KEYWORD';
 const SEARCH_SPOT_TYPE = 'spot/SEARCH_SPOT';
 const SEARCH_SPOT_SUCCESS_TYPE = 'spot/SEARCH_SPOT_SUCCESS';
 const SEARCH_SPOT_FAILURE_TYPE = 'spot/SEARCH_SPOT_FAILURE';
@@ -66,7 +67,8 @@ export const cleanSpotsAction = () => ({ type: CLEAN_SPOTS_TYPE });
 export const cleanLikeListAction = () => ({ type: CLEAN_LIKE_LIST_TYPE });
 export const cleanCurrentInfoAction = () => ({ type: CLEAN_CURRENT_INFO_TYPE });
 export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, keyword });
-export const searchSpotAction = ({ areaCode, contentTypeId, keyword, page }) => ({ type: SEARCH_SPOT_TYPE, areaCode, contentTypeId, keyword, page });
+export const resetKeywordAction = () => ({ type: RESET_KEYWORD_TYPE });
+export const searchSpotAction = ({ areaCode, contentTypeId, keyword, index }) => ({ type: SEARCH_SPOT_TYPE, areaCode, contentTypeId, keyword, index });
 
 const loadAreasSaga = createSaga(LOAD_AREAS_TYPE, spotAPI.loadAreas);
 const loadSpotsSaga = createSaga(LOAD_SPOTS_TYPE, spotAPI.loadSpots);
@@ -97,9 +99,10 @@ const initialState = {
         blockNum: 0,
         totalPage: null,
         pagination: null,
+        contentTypeId: 12,
     },
     likeList: null,
-    search: null,
+    keyword: null,
 };
 
 function spotReducer(state = initialState, action) {
@@ -114,10 +117,8 @@ function spotReducer(state = initialState, action) {
         case LOAD_DETAIL_SPOT_FAILURE_TYPE:
         case ADD_SPOT_LIKE_FAILURE_TYPE:
         case REMOVE_SPOT_LIKE_FAILURE_TYPE:
-        case ADD_SPOT_LIKE_FAILURE_TYPE:
-        case REMOVE_SPOT_LIKE_FAILURE_TYPE:
         case CHECK_LIKE_LIST_FAILURE_TYPE:
-        case SEARCH_SPOT_SUCCESS_TYPE:
+        case SEARCH_SPOT_FAILURE_TYPE:
             return {
                 ...state,
                 spotError: action.payload.error,
@@ -275,13 +276,19 @@ function spotReducer(state = initialState, action) {
                     blockNum: 0,
                     totalPage: null,
                     pagination: null,
+                    contentTypeId: 12,
                 },
             };
 
         case CHANGE_KEYWORD_TYPE:
             return {
                 ...state,
-                search: action.keyword,
+                keyword: action.keyword,
+            };
+        case RESET_KEYWORD_TYPE:
+            return {
+                ...state,
+                keyword: null,
             };
 
         case SEARCH_SPOT_SUCCESS_TYPE:

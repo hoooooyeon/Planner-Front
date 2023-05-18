@@ -4,6 +4,8 @@ import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { faBed } from '@fortawesome/free-solid-svg-icons';
 import { faUtensils } from '@fortawesome/free-solid-svg-icons';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import EditListDetailModal from './EditListDetailModal';
+import { useState } from 'react';
 
 const EditListBlock = styled.div`
     width: 350px;
@@ -117,7 +119,7 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-const EditList = ({ spots, onChangePlanLocation, onCreateLocation, onMoveMarker }) => {
+const EditList = ({ spots, detail, onChangePlanLocation, onCreateLocation, onMoveMarker, onOpenDetail, onCloseDetail }) => {
     return (
         <>
             <EditListBlock>
@@ -158,6 +160,13 @@ const EditList = ({ spots, onChangePlanLocation, onCreateLocation, onMoveMarker 
                                     <Name>{title}</Name>
                                     <Button
                                         onClick={() => {
+                                            onOpenDetail(s);
+                                        }}
+                                    >
+                                        정보
+                                    </Button>
+                                    <Button
+                                        onClick={() => {
                                             onCreateLocation(s.info);
                                         }}
                                     >
@@ -167,6 +176,7 @@ const EditList = ({ spots, onChangePlanLocation, onCreateLocation, onMoveMarker 
                             );
                         })}
                 </List>
+                {detail && <EditListDetailModal detail={detail} onCloseDetail={onCloseDetail} />}
             </EditListBlock>
         </>
     );

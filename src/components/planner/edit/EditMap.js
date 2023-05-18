@@ -144,12 +144,17 @@ const CloseButton = styled.button`
     cursor: pointer;
 `;
 
-const EditMap = ({ mapRef, planner, onCreatePlanner, onUpdatePlanner, onToggleMemberModal, onTogglePlannerInfoModal, getLocationByAddress, areas, currentInfo, onUpdateAreaNum }) => {
+const InvisibleInput = styled.input`
+    display: none;
+`;
+
+const EditMap = ({ mapRef, keyword, onToggleMemberModal, onTogglePlannerInfoModal, getLocationByAddress, areas, currentInfo, onUpdateAreaNum, onChangeKeyword, onSearchSpot, onResetKeyword }) => {
     const [isSearch, setIsSearch] = useState(false);
 
     const onSearch = () => {
         if (isSearch) {
             setIsSearch(false);
+            onResetKeyword();
         } else {
             setIsSearch(true);
         }
@@ -166,7 +171,6 @@ const EditMap = ({ mapRef, planner, onCreatePlanner, onUpdatePlanner, onToggleMe
                 <Button>사용 방법</Button>
                 <Button onClick={onToggleMemberModal}>멤버 초대</Button>
                 <Button onClick={onTogglePlannerInfoModal}>플래너 정보 수정</Button>
-                <Button onClick={getLocationByAddress}>장소 검색</Button>
                 <Button onClick={onSearch}>장소 검색</Button>
                 <Button>
                     <Link to="/PlannerInfo">일정 저장</Link>
@@ -196,10 +200,15 @@ const EditMap = ({ mapRef, planner, onCreatePlanner, onUpdatePlanner, onToggleMe
                             <SearchInput
                                 placeholder="장소 검색"
                                 type="text"
-                                onChange={(e) => {}}
-                                // value={}
+                                value={keyword}
+                                onChange={(e) => {
+                                    onChangeKeyword(e.target.value);
+                                }}
                             />
-                            <SearchButton>검색</SearchButton>
+                            <InvisibleInput type="text" />
+                            <SearchButton type="button" onClick={onSearchSpot}>
+                                검색
+                            </SearchButton>
                         </SearchForm>
                     </>
                 </SearchBox>

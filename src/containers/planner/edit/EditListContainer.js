@@ -2,16 +2,16 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditList from '../../../components/planner/edit/EditList';
 import { changePlanLocationAction, createLocationAction } from '../../../modules/plannerModule';
-import { loadSpotsAction } from '../../../modules/spotModule';
+import { loadDetailSpotAction, loadSpotsAction, unloadDetailSpotAction, updateDetailSpotAction } from '../../../modules/spotModule';
 
 const EditListContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, spots, plan, currentInfo, plannerData, map } = useSelector(({ plannerReducer, spotReducer }) => ({
+    const { planner, plannerError, spots, plan, currentInfo, plannerData, detail, map } = useSelector(({ plannerReducer, spotReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         spots: spotReducer.spots,
         currentInfo: spotReducer.currentInfo,
-        // spots: plannerReducer.spots,
+        detail: spotReducer.detail,
         plan: plannerReducer.plan,
         plannerData: plannerReducer.plannerData,
         map: plannerReducer.map,
@@ -50,7 +50,18 @@ const EditListContainer = () => {
         dispatch(loadSpotsAction(areaNum, pageNum));
     }, [dispatch, areaNum, pageNum]);
 
-    return <EditList spots={spots} onChangePlanLocation={onChangePlanLocation} onCreateLocation={onCreateLocation} onMoveMarker={onMoveMarker} />;
+    // 여행지 상세정보 불러오기
+    const onOpenDetail = (spot) => {
+        dispatch(loadDetailSpotAction(spot.info.contentid));
+        dispatch(updateDetailSpotAction(spot));
+    };
+
+    // 여행지 상세정보 모달 닫기
+    const onCloseDetail = () => {
+        dispatch(unloadDetailSpotAction());
+    };
+
+    return <EditList spots={spots} detail={detail} onChangePlanLocation={onChangePlanLocation} onCreateLocation={onCreateLocation} onMoveMarker={onMoveMarker} onOpenDetail={onOpenDetail} onCloseDetail={onCloseDetail} />;
 };
 
 export default EditListContainer;

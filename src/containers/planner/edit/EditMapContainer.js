@@ -4,16 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import EditMap from '../../../components/planner/edit/EditMap';
 import { changeAreaCodeAction, createMapAction, toggleMemberModalAction, togglePlannerInfoModalAction, updatePlanAction, updatePlannerAction } from '../../../modules/plannerModule';
 import spotImg from '../../../lib/images/spot.png';
-import { changeKeywordAction, loadAreasAction, loadSpotsAction, searchSpotAction, updateAreaNumAction } from '../../../modules/spotModule';
+import { changeKeywordAction, loadAreasAction, loadSpotsAction, resetKeywordAction, searchSpotAction, updateAreaNumAction } from '../../../modules/spotModule';
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, spots, currentInfo, areas } = useSelector(({ plannerReducer, spotReducer }) => ({
+    const { planner, plannerError, spots, currentInfo, areas, keyword } = useSelector(({ plannerReducer, spotReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         spots: spotReducer.spots,
         areas: spotReducer.areas,
         currentInfo: spotReducer.currentInfo,
+        keyword: spotReducer.keyword,
         // map: plannerReducer.map,
     }));
 
@@ -347,10 +348,9 @@ const EditMapContainer = () => {
         }
     }, [centerCoord, dispatch, kakao.maps.LatLng, kakao.maps.Polyline, map]);
 
+    const { areaNum, pageNum, contentTypeId } = { ...currentInfo };
     // 여행지 리스트 로드
-    const { areaNum, pageNum } = currentInfo;
     useEffect(() => {
-        console.log(areaNum);
         dispatch(loadSpotsAction(areaNum, pageNum));
     }, [dispatch, areaNum, pageNum]);
 
@@ -369,21 +369,30 @@ const EditMapContainer = () => {
         dispatch(changeKeywordAction(keyword));
     };
 
+    const onResetKeyword = () => {
+        dispatch(resetKeywordAction());
+    };
     // 여행지 검색
     const onSearchSpot = () => {
-        dispatch(searchSpotAction({ areaCode, contentTypeId, keyword, page }));
+        let areaCode = areaNum;
+        let index = pageNum;
+        dispatch(searchSpotAction({ areaCode, contentTypeId, keyword, index }));
     };
 
     return (
         <EditMap
             mapRef={mapRef}
             planner={planner}
+            areas={areas}
+            currentInfo={currentInfo}
+            keyword={keyword}
             onUpdatePlanner={onUpdatePlanner}
             onToggleMemberModal={onToggleMemberModal}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
-            areas={areas}
-            currentInfo={currentInfo}
             onUpdateAreaNum={onUpdateAreaNum}
+            onChangeKeyword={onChangeKeyword}
+            onResetKeyword={onResetKeyword}
+            onSearchSpot={onSearchSpot}
         />
     );
 };
