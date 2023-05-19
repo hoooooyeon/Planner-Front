@@ -280,6 +280,7 @@ function spotReducer(state = initialState, action) {
                     totalPage: null,
                     pagination: null,
                     contentTypeId: 12,
+                    editListPageIndex: 1,
                 },
             };
 
@@ -317,6 +318,7 @@ function spotReducer(state = initialState, action) {
                     contentTypeId: action.contentTypeId,
                 },
             };
+
         default:
             return state;
     }

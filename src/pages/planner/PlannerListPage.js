@@ -2,7 +2,7 @@ import Footer from '../../components/common/Footer';
 import Header from '../../components/common/Header';
 import MyPlannerListContainer from '../../containers/planner/list/MyPlannerListContainer';
 import ShareListContainer from '../../containers/planner/list/ShareListContainer';
-import PlannerListPaginationContainer from '../../containers/planner/list/PlannerListPaginationContainer';
+import ShareListPaginationContainer from '../../containers/planner/list/ShareListPaginationContainer';
 
 const PlannerListPage = () => {
     return (
@@ -10,7 +10,7 @@ const PlannerListPage = () => {
             <Header />
             <MyPlannerListContainer />
             <ShareListContainer />
-            <PlannerListPaginationContainer />
+            <ShareListPaginationContainer />
             <Footer />
         </>
     );

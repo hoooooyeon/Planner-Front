@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditList from '../../../components/planner/edit/EditList';
 import { changePlanLocationAction, createLocationAction } from '../../../modules/plannerModule';
-import { loadDetailSpotAction, loadSpotsAction, unloadDetailSpotAction, updateContentTypeId, updateContentTypeIdAction, updateDetailSpotAction } from '../../../modules/spotModule';
+import { loadDetailSpotAction, loadSpotsAction, unloadDetailSpotAction, updateContentTypeIdAction, updateDetailSpotAction, updatePageNumAction } from '../../../modules/spotModule';
+import * as common from '../../../lib/utils/CommonFunction';
 
 const EditListContainer = () => {
     const dispatch = useDispatch();
@@ -65,6 +66,46 @@ const EditListContainer = () => {
         dispatch(updateContentTypeIdAction(id));
     };
 
+    const { totalCount } = { ...spots };
+    // 뿌려줄 페이지 배열
+    const [pageArr, setPageArr] = useState([]);
+    // 보여질 페이지네이션의 개수 기준
+    const [block, setBlock] = useState(0);
+    // 보여질 페이지네이션의 개수
+    const count = 5;
+    // 보여질 아이템의 개수
+    const itemCount = 10;
+    // 마지막 페이지
+    const pageLastIndex = Math.ceil(totalCount / itemCount);
+
+    // // 뿌려줄 페이지네이션 배열 생성  함수
+    useEffect(() => {
+        if (spots) {
+            common.creaetPageArr(pageLastIndex, setPageArr, count, block);
+        }
+    }, [pageLastIndex, count, block, spots]);
+
+    // 페이지 버튼
+    const onUpdatePageIndex = (pageIndex) => {
+        dispatch(updatePageNumAction(pageIndex));
+    };
+
+    const prevPage = () => {
+        common.prevPage(pageNum, onUpdatePageIndex, setBlock, count);
+    };
+
+    const nextPage = () => {
+        common.nextPage(pageNum, pageLastIndex, onUpdatePageIndex);
+    };
+
+    const firstPage = () => {
+        common.firstPage(onUpdatePageIndex, setBlock);
+    };
+
+    const lastPage = () => {
+        common.lastPage(onUpdatePageIndex, pageLastIndex, setBlock, count);
+    };
+
     return (
         <EditList
             spots={spots}
@@ -75,6 +116,12 @@ const EditListContainer = () => {
             onOpenDetail={onOpenDetail}
             onCloseDetail={onCloseDetail}
             onUpdateContentTypeId={onUpdateContentTypeId}
+            pageArr={pageArr}
+            onUpdatePageIndex={onUpdatePageIndex}
+            prevPage={prevPage}
+            nextPage={nextPage}
+            firstPage={firstPage}
+            lastPage={lastPage}
         />
     );
 };

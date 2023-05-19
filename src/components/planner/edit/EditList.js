@@ -6,6 +6,7 @@ import { faUtensils } from '@fortawesome/free-solid-svg-icons';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import EditListDetailModal from './EditListDetailModal';
 import { useState } from 'react';
+import Pagination from '../../common/Pagination';
 
 const EditListBlock = styled.div`
     width: 350px;
@@ -119,7 +120,7 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-const EditList = ({ spots, detail, onChangePlanLocation, onCreateLocation, onMoveMarker, onOpenDetail, onCloseDetail, onUpdateContentTypeId }) => {
+const EditList = ({ spots, detail, onChangePlanLocation, onCreateLocation, onMoveMarker, onOpenDetail, onCloseDetail, onUpdateContentTypeId, pageArr, onUpdatePageIndex, prevPage, nextPage, firstPage, lastPage }) => {
     const categoryList = [
         { label: '관광지', id: 12, icon: faLocationDot },
         { label: '문화시설', id: 14, icon: faLocationDot },
@@ -179,6 +180,7 @@ const EditList = ({ spots, detail, onChangePlanLocation, onCreateLocation, onMov
                             );
                         })}
                 </List>
+                <Pagination pageArr={pageArr} onUpdatePageIndex={onUpdatePageIndex} prevPage={prevPage} nextPage={nextPage} firstPage={firstPage} lastPage={lastPage} />
                 {detail && <EditListDetailModal detail={detail} onCloseDetail={onCloseDetail} />}
             </EditListBlock>
         </>
