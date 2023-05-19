@@ -293,8 +293,8 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
                 <Slider list={sharePlanners} scroll={true} transition={transition}>
                     {/* <HiddenBox ref={hiddenBoxRef}>
                     <Shares ref={listRef}> */}
-                    {sharePlanners &&
-                        sharePlanners.map((p) => (
+                    {sharePlanners.list &&
+                        sharePlanners.list.map((p) => (
                             // sharePlanners.slice(block, block + limit).map((p) => (
                             <ShareItem
                                 key={p.plannerId}

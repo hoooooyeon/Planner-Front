@@ -58,7 +58,7 @@ const AreaBox = styled.div`
     top: 5%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 999;
+    z-index: 1001;
 }
 `;
 
@@ -77,6 +77,19 @@ const AreaSelect = styled.select`
     option:disabled {
         display: none;
     }
+`;
+
+const Background = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 const SearchBox = styled.div`
@@ -166,7 +179,6 @@ const EditMap = ({ mapRef, keyword, onToggleMemberModal, onTogglePlannerInfoModa
     return (
         <EditMapBlock>
             <Map ref={mapRef} />
-
             <ButtonBox>
                 <Button>사용 방법</Button>
                 <Button onClick={onToggleMemberModal}>멤버 초대</Button>
@@ -193,25 +205,27 @@ const EditMap = ({ mapRef, keyword, onToggleMemberModal, onTogglePlannerInfoModa
                 </AreaSelect>
             </AreaBox>
             {isSearch && (
-                <SearchBox>
-                    <CloseButton onClick={onSearch}>닫기</CloseButton>
-                    <>
-                        <SearchForm>
-                            <SearchInput
-                                placeholder="장소 검색"
-                                type="text"
-                                value={keyword}
-                                onChange={(e) => {
-                                    onChangeKeyword(e.target.value);
-                                }}
-                            />
-                            <InvisibleInput type="text" />
-                            <SearchButton type="button" onClick={onSearchSpot}>
-                                검색
-                            </SearchButton>
-                        </SearchForm>
-                    </>
-                </SearchBox>
+                <Background>
+                    <SearchBox>
+                        <CloseButton onClick={onSearch}>닫기</CloseButton>
+                        <>
+                            <SearchForm>
+                                <SearchInput
+                                    placeholder="장소 검색"
+                                    type="text"
+                                    value={keyword}
+                                    onChange={(e) => {
+                                        onChangeKeyword(e.target.value);
+                                    }}
+                                />
+                                <InvisibleInput type="text" />
+                                <SearchButton type="button" onClick={onSearchSpot}>
+                                    검색
+                                </SearchButton>
+                            </SearchForm>
+                        </>
+                    </SearchBox>
+                </Background>
             )}
         </EditMapBlock>
     );

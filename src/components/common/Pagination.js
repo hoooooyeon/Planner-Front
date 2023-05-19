@@ -43,7 +43,7 @@ const PageButton = styled.div`
     }
 `;
 
-const Pagination = ({ pageArr, onChangePageNum, nextPage, prevPage, firstPage, lastPage }) => {
+const Pagination = ({ pageArr, onChangePageIndex, nextPage, prevPage, firstPage, lastPage }) => {
     return (
         <PaginationBlock>
             <PaginationBox>
@@ -56,7 +56,7 @@ const Pagination = ({ pageArr, onChangePageNum, nextPage, prevPage, firstPage, l
                 {pageArr &&
                     pageArr.map((i) => {
                         return (
-                            <PageButton key={i} onClick={() => onChangePageNum(i)}>
+                            <PageButton key={i} onClick={() => onChangePageIndex(i)}>
                                 {i}
                             </PageButton>
                         );

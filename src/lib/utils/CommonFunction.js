@@ -1,4 +1,7 @@
-// 드래그 함수
+/** 드래그 앤 드롭 */
+
+import { useCallback } from 'react';
+
 // 바꿀 일정의 index 구하기
 function getElementIndex(p, itemsArr, items) {
     itemsArr.current = items;
@@ -28,6 +31,7 @@ function getIndex(dragItem, overItemIndex, index, itemsArr, dragItemIndex, items
         index = 1000;
     }
 }
+// 드래그 시작
 export function onDragStart(e, p, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items) {
     setIsDrag(true);
     // 순서 이동 모션
@@ -47,6 +51,7 @@ export function onDragStart(e, p, setIsDrag, dragTarget, posY, dragItem, dragIte
     dragItem.current = p;
     dragItemIndex.current = getElementIndex(p, itemsArr, items);
 }
+// 드래그 이동
 export function onDragMove(e, isDrag, posY, containerRef, itemRef, dragItemIndex, dragTarget, setIsDrag, overTargetArr, itemsArr, dragItem, overItem, overItemIndex, setOverTargetArr) {
     if (isDrag) {
         // 마우스 포인터가 이동한 거리
@@ -67,6 +72,7 @@ export function onDragMove(e, isDrag, posY, containerRef, itemRef, dragItemIndex
         }
     }
 }
+// 드래그한 요소가 드롭될 요소와 겹침
 export function onDragEnter(e, p, isDrag, overItem, overItemIndex, overTarget, dragTarget, overTargetArr, setOverTargetArr, dragItemIndex, itemRef, itemsArr, items) {
     if (isDrag) {
         // 순서 이동 기능
@@ -101,6 +107,7 @@ export function onDragEnter(e, p, isDrag, overItem, overItemIndex, overTarget, d
         }
     }
 }
+// 드래그 종료
 export function onDragEnd(setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr) {
     setIsDrag(false);
 
@@ -122,6 +129,7 @@ export function onDragEnd(setIsDrag, overTargetArr, dragTarget, itemsArr, dragIt
     overItemIndex.current = null;
     setOverTargetArr([]);
 }
+// 드래그 요소를 드롭당할 요소에 드롭
 export function onDrop(e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, items) {
     e.preventDefault();
 
@@ -133,6 +141,43 @@ export function onDrop(e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragIt
         getIndex(dragItem, overItemIndex, index, itemsArr, dragItemIndex, items);
     }
 }
+// 드래그 요소가 드롭 요소위에 지나감(ondrop 사용시 필수)
 export function onDragOver(e) {
     e.preventDefault();
+}
+
+/** 페이지네이션 */
+// 페이지네이션 배열 생성 함수
+export function creaetPageArr(pageLastIndex, setPageArr, count, block) {
+    const arr = Array.from({ length: pageLastIndex }, (_, i) => i + 1);
+
+    setPageArr(arr.slice(count * block, count * (block + 1)));
+}
+// 이전 페이지로
+export function prevPage(pageIndex, onChangePageIndex, setBlock, count) {
+    if (!(pageIndex === 1)) {
+        onChangePageIndex(pageIndex - 1);
+        if (pageIndex % count === 1) {
+            setBlock((block) => block - 1);
+        }
+    }
+}
+// 다음 페이지로
+export function nextPage(pageIndex, pageLastIndex, onChangePageIndex, count, setBlock) {
+    if (!(pageIndex === pageLastIndex)) {
+        onChangePageIndex(pageIndex + 1);
+        if (pageIndex % count === 0) {
+            setBlock((block) => block + 1);
+        }
+    }
+}
+// 첫번째 페이지로
+export function firstPage(onChangePageIndex, setBlock) {
+    onChangePageIndex(1);
+    setBlock(0);
+}
+// 마지막 페이지로
+export function lastPage(onChangePageIndex, pageLastIndex, setBlock, count) {
+    onChangePageIndex(pageLastIndex);
+    setBlock(Math.ceil(pageLastIndex / count - 1));
 }

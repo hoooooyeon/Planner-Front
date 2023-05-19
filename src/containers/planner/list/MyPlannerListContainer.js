@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import PlannerList from '../../../components/planner/list/PlannerList';
-import { changeCurPlannerIdAction, changePlannerAccountAction, createPlannerAction, loadMyPlannerListAction, loadPlannerAction, loadSharePlannerListAction } from '../../../modules/plannerModule';
+import { changeCurPlannerIdAction, changeMyPageIndexAction, changePlannerAccountAction, createPlannerAction, loadMyPlannerListAction, loadPlannerAction } from '../../../modules/plannerModule';
+import * as common from '../../../lib/utils/CommonFunction';
+import MyPlannerList from '../../../components/planner/list/MyPlannerList';
 
-const PlannerListContainer = () => {
+const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
-    const { myPlanners, sharePlanners, plannerError, planner, account, plannerData } = useSelector(({ plannerReducer, authReducer }) => ({
+    const { myPlanners, plannerError, planner, account, plannerData } = useSelector(({ plannerReducer, authReducer }) => ({
         account: authReducer.account,
         myPlanners: plannerReducer.myPlanners,
-        sharePlanners: plannerReducer.sharePlanners,
         plannerError: plannerReducer.plannerError,
         planner: plannerReducer.planner,
         plannerData: plannerReducer.plannerData,
@@ -19,6 +19,9 @@ const PlannerListContainer = () => {
         return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
     };
 
+    const { accountId, creator, myPageIndex } = { ...plannerData };
+    const { pageLastIndex } = { ...myPlanners };
+
     // 회원 정보 가져오기
     useEffect(() => {
         if (account) {
@@ -26,8 +29,6 @@ const PlannerListContainer = () => {
             dispatch(changePlannerAccountAction(accountId, nickname));
         }
     }, [dispatch, account]);
-
-    const { accountId, creator } = { ...plannerData };
 
     const onCreatePlanner = () => {
         let title = `${creator}의 여행 플래너`;
@@ -43,18 +44,10 @@ const PlannerListContainer = () => {
 
     // 나의 플래너리스트 가져오기
     useEffect(() => {
-        const { accountId } = plannerData;
-        const page = 1;
         if (accountId) {
-            dispatch(loadMyPlannerListAction(accountId, page));
+            dispatch(loadMyPlannerListAction(accountId, myPageIndex));
         }
-    }, [dispatch, plannerData]);
-
-    // 공유 플래너리스트 가져오기
-    const { pageIndex } = plannerData;
-    useEffect(() => {
-        dispatch(loadSharePlannerListAction(pageIndex));
-    }, [dispatch, pageIndex]);
+    }, [dispatch, accountId, myPageIndex]);
 
     // 플래너 정보 가져오기
     const onLoadPlanner = (plannerId) => {
@@ -64,7 +57,31 @@ const PlannerListContainer = () => {
     const onChangeCurPlannerId = (plannerId) => {
         dispatch(changeCurPlannerIdAction(plannerId));
     };
-    return <PlannerList myPlanners={myPlanners} sharePlanners={sharePlanners} planner={planner} plannerError={plannerError} onCreatePlanner={onCreatePlanner} onLoadPlanner={onLoadPlanner} onChangeCurPlannerId={onChangeCurPlannerId} />;
+
+    const onChangePageIndex = (pageIndex) => {
+        dispatch(changeMyPageIndexAction(pageIndex));
+    };
+
+    const prevPage = () => {
+        common.prevPage(myPageIndex, onChangePageIndex);
+    };
+
+    const nextPage = () => {
+        common.nextPage(myPageIndex, pageLastIndex, onChangePageIndex);
+    };
+
+    return (
+        <MyPlannerList
+            myPlanners={myPlanners}
+            planner={planner}
+            plannerError={plannerError}
+            onCreatePlanner={onCreatePlanner}
+            onLoadPlanner={onLoadPlanner}
+            onChangeCurPlannerId={onChangeCurPlannerId}
+            prevPage={prevPage}
+            nextPage={nextPage}
+        />
+    );
 };
 
-export default PlannerListContainer;
+export default MyPlannerListContainer;

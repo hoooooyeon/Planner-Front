@@ -1,14 +1,16 @@
 import Footer from '../../components/common/Footer';
 import Header from '../../components/common/Header';
-import PlannerListContainer from '../../containers/planner/list/PlannerListContainer';
-import PaginationContainer from '../../containers/planner/PaginationContainer';
+import MyPlannerListContainer from '../../containers/planner/list/MyPlannerListContainer';
+import ShareListContainer from '../../containers/planner/list/ShareListContainer';
+import PlannerListPaginationContainer from '../../containers/planner/list/PlannerListPaginationContainer';
 
 const PlannerListPage = () => {
     return (
         <>
             <Header />
-            <PlannerListContainer />
-            <PaginationContainer />
+            <MyPlannerListContainer />
+            <ShareListContainer />
+            <PlannerListPaginationContainer />
             <Footer />
         </>
     );

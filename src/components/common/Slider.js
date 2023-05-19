@@ -48,7 +48,7 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const Slider = ({ children, list, scroll, transition }) => {
+const Slider = ({ children, list, scroll, transition, page, onChangePageIndex, prevPage, nextPage }) => {
     const hiddenBoxRef = useRef();
     const listRef = useRef();
 
@@ -114,8 +114,17 @@ const Slider = ({ children, list, scroll, transition }) => {
 
         if (sliderX.current > 0) {
             sliderX.current = 0;
-        } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.clientWidth) {
-            sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.clientWidth;
+            if (page) {
+                prevPage();
+            }
+        } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth) {
+            sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth;
+
+            // } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.clientWidth) {
+            //     sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.clientWidth;
+            if (page) {
+                nextPage();
+            }
         }
         listRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
         listRef.current.style.transitionDuration = ' 1000ms';
@@ -155,11 +164,7 @@ const Slider = ({ children, list, scroll, transition }) => {
             };
         }
     });
-    const history = useHistory();
-    const handleDragStart = (e) => {
-        e.preventDefault();
-        // history.push('/PlannerList');
-    };
+
     return (
         <>
             <HiddenBox ref={hiddenBoxRef} scroll={scroll}>

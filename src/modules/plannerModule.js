@@ -107,7 +107,8 @@ const CHANGE_LOCATION_TYPE = 'planner/CHANGE_LOCATION';
 
 const CREATE_MAP_TYPE = 'planner/CREATE_MAP';
 
-const CHANGE_PAGE_NUM_TYPE = 'planner/CHANGE_PAGE_NUM';
+const CHANGE_SHARE_PAGE_INDEX_TYPE = 'planner/CHANGE_SHARE_PAGE_INDEX';
+const CHANGE_MY_PAGE_INDEX_TYPE = 'planner/CHANGE_MY_PAGE_INDEX';
 
 const CHANGE_AREA_CODE_TYPE = 'planner/CHANGE_AREA_CODE';
 
@@ -186,7 +187,8 @@ export const changeCurPlannerIdAction = (plannerId) => ({ type: CHANGE_CUR_PLANN
 export const changePlansAction = (plans) => ({ type: CHANGE_PLANS_TYPE, plans });
 export const changeLocationAction = (location) => ({ type: CHANGE_LOCATION_TYPE, location });
 export const createMapAction = (mapData) => ({ type: CREATE_MAP_TYPE, mapData });
-export const changePageNumAction = (pageIndex) => ({ type: CHANGE_PAGE_NUM_TYPE, pageIndex });
+export const changeSharePageIndexAction = (pageIndex) => ({ type: CHANGE_SHARE_PAGE_INDEX_TYPE, pageIndex });
+export const changeMyPageIndexAction = (pageIndex) => ({ type: CHANGE_MY_PAGE_INDEX_TYPE, pageIndex });
 export const changeAreaCodeAction = (areaCode) => ({ type: CHANGE_AREA_CODE_TYPE, areaCode });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
@@ -251,7 +253,6 @@ const initialState = {
         memoId: null,
         accountId: null,
         creator: null,
-        pageIndex: 1,
     },
     map: null,
 };
@@ -265,15 +266,20 @@ function plannerReducer(state = initialState, action) {
         case LOAD_MY_PLANNER_LIST_SUCCESS_TYPE:
             return {
                 ...state,
-                myPlanners: action.payload.data.list,
+                myPlanners: {
+                    ...state.myPlanners,
+                    list: action.payload.data.list,
+                    totalCount: action.payload.data.totalCount,
+                    pageLastIndex: action.payload.data.pageLastIndex,
+                },
             };
         case LOAD_SHARE_PLANNER_LIST_SUCCESS_TYPE:
             return {
                 ...state,
-                sharePlanners: action.payload.data.list,
-                plannerData: {
-                    ...state.plannerData,
-                    pageIndex: action.payload.data.pageIndex,
+                sharePlanners: {
+                    ...state.sharePlanners,
+                    list: action.payload.data.list,
+                    totalCount: action.payload.data.totalCount,
                     pageLastIndex: action.payload.data.pageLastIndex,
                 },
             };
@@ -391,15 +397,20 @@ function plannerReducer(state = initialState, action) {
                     // ...state.plannerData,
                     accountId: action.accountId,
                     creator: action.nickname,
-                    pageIndex: 1,
+                    myPageIndex: 1,
+                    sharePageIndex: 1,
                 },
                 // spotInfo: {
                 //     areaCode: 39,
                 //     pageIndex: 1,
                 // },
                 planner: null,
-                myPlanners: null,
-                sharePlanners: null,
+                // myPlanners: {
+                //     pageIndex: 1,
+                // },
+                // sharePlanners: {
+                //     pageIndex: 1,
+                // },
                 // planner: {
                 //     accountId: action.accountId,
                 //     creator: action.nickname,
@@ -628,22 +639,22 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 map: action.mapData,
             };
-        case CHANGE_PAGE_NUM_TYPE:
+        case CHANGE_SHARE_PAGE_INDEX_TYPE:
             return {
                 ...state,
                 plannerData: {
                     ...state.plannerData,
-                    pageIndex: action.pageIndex,
+                    sharePageIndex: action.pageIndex,
                 },
             };
-        // case CHANGE_AREA_CODE_TYPE:
-        //     return {
-        //         ...state,
-        //         spotInfo: {
-        //             ...state.spotInfo,
-        //             areaCode: action.areaCode,
-        //         },
-        //     };
+        case CHANGE_MY_PAGE_INDEX_TYPE:
+            return {
+                ...state,
+                plannerData: {
+                    ...state.plannerData,
+                    myPageIndex: action.pageIndex,
+                },
+            };
         default:
             return state;
     }
