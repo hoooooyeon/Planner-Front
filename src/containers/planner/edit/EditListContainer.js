@@ -95,7 +95,7 @@ const EditListContainer = () => {
     };
 
     const nextPage = () => {
-        common.nextPage(pageNum, pageLastIndex, onUpdatePageIndex);
+        common.nextPage(pageNum, pageLastIndex, onUpdatePageIndex, count, setBlock);
     };
 
     const firstPage = () => {

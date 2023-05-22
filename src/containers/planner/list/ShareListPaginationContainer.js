@@ -27,27 +27,27 @@ const PlannerListPaginationContainer = () => {
     }, [pageLastIndex, count, block]);
 
     // 페이지 버튼
-    const onChangePageIndex = (pageIndex) => {
+    const onUpdatePageIndex = (pageIndex) => {
         dispatch(changeSharePageIndexAction(pageIndex));
     };
 
     const prevPage = () => {
-        common.prevPage(sharePageIndex, onChangePageIndex, setBlock, count);
+        common.prevPage(sharePageIndex, onUpdatePageIndex, setBlock, count);
     };
 
     const nextPage = () => {
-        common.nextPage(sharePageIndex, pageLastIndex, onChangePageIndex);
+        common.nextPage(sharePageIndex, pageLastIndex, onUpdatePageIndex, count, setBlock);
     };
 
     const firstPage = () => {
-        common.firstPage(onChangePageIndex, setBlock);
+        common.firstPage(onUpdatePageIndex, setBlock);
     };
 
     const lastPage = () => {
-        common.lastPage(onChangePageIndex, pageLastIndex, setBlock, count);
+        common.lastPage(onUpdatePageIndex, pageLastIndex, setBlock, count);
     };
 
-    return <Pagination pageLastIndex={pageLastIndex} pageArr={pageArr} onChangePageIndex={onChangePageIndex} nextPage={nextPage} prevPage={prevPage} firstPage={firstPage} lastPage={lastPage} />;
+    return <Pagination pageLastIndex={pageLastIndex} pageArr={pageArr} onUpdatePageIndex={onUpdatePageIndex} nextPage={nextPage} prevPage={prevPage} firstPage={firstPage} lastPage={lastPage} />;
 };
 
 export default PlannerListPaginationContainer;
