@@ -212,9 +212,9 @@ const MyPlannerList = ({ myPlanners, onResetPlannerInfoForm, onCreatePlanner, on
             history.push('/PlannerInfo');
         }
     };
-    if (!myPlanners) {
-        return <div>Loading...</div>;
-    }
+    // if (!myPlanners) {
+    //     return <div>Loading...</div>;
+    // }
     return (
         <MyPlannerListBlock>
             <Container>
@@ -226,33 +226,38 @@ const MyPlannerList = ({ myPlanners, onResetPlannerInfoForm, onCreatePlanner, on
                         </Link>
                     </Button>
                 </TitleBox>
-                <Slider list={myPlanners} transition={transition} page={true} prevPage={prevPage} nextPage={nextPage}>
-                    {/* <HiddenBox ref={hiddenBoxRef}>
+
+                {myPlanners ? (
+                    <Slider list={myPlanners} transition={transition} page={true} prevPage={prevPage} nextPage={nextPage}>
+                        {/* <HiddenBox ref={hiddenBoxRef}>
                     <Planners ref={plannersRef}> */}
-                    {myPlanners.list &&
-                        myPlanners.list.map((p) => (
-                            <PlannerItem
-                                key={p.plannerId}
-                                onClick={() => {
-                                    // onLoadPlanner(p.plannerId);
-                                    onChangeCurPlannerId(p.plannerId);
-                                    allowTransition();
-                                }}
-                            >
-                                {/* <Link to="/PlannerInfo"> */}
-                                <SimpleMap />
-                                <InfoBox>
-                                    <Name>{p.title}</Name>
-                                    <Date>
-                                        {p.planDateStart} ~ {p.planDateEnd}
-                                    </Date>
-                                </InfoBox>
-                                {/* </Link> */}
-                            </PlannerItem>
-                        ))}
-                    {/* </Planners>
+                        {myPlanners.list &&
+                            myPlanners.list.map((p) => (
+                                <PlannerItem
+                                    key={p.plannerId}
+                                    onClick={() => {
+                                        // onLoadPlanner(p.plannerId);
+                                        onChangeCurPlannerId(p.plannerId);
+                                        allowTransition();
+                                    }}
+                                >
+                                    {/* <Link to="/PlannerInfo"> */}
+                                    <SimpleMap />
+                                    <InfoBox>
+                                        <Name>{p.title}</Name>
+                                        <Date>
+                                            {p.planDateStart} ~ {p.planDateEnd}
+                                        </Date>
+                                    </InfoBox>
+                                    {/* </Link> */}
+                                </PlannerItem>
+                            ))}
+                        {/* </Planners>
                 </HiddenBox> */}
-                </Slider>
+                    </Slider>
+                ) : (
+                    <div>플래너가 없습니다. </div>
+                )}
             </Container>
         </MyPlannerListBlock>
     );

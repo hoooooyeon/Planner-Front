@@ -436,6 +436,9 @@ function plannerReducer(state = initialState, action) {
         case DELETE_PLANNER_SUCCESS_TYPE:
             return {
                 ...state,
+                plannerData: {
+                    ...state.plannerData,
+                },
             };
         case TOGGLE_LIKE_PLANNER_SUCCESS_TYPE:
             return {
