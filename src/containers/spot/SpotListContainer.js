@@ -19,6 +19,9 @@ import {
     updateDetailSpotAction,
     updatePageNumAction,
     updateSpotsLikeAction,
+    changeKeywordAction,
+    searchSpotAction,
+    updateContentTypeIdAction,
 } from '../../modules/spotModule';
 
 const SpotListContainer = ({
@@ -26,9 +29,11 @@ const SpotListContainer = ({
     spots,
     spotError,
     detail,
-    currentInfo,
+    spotData,
     account,
     likeList,
+    keyword,
+    contentTypeList,
     loadAreas,
     loadSpots,
     loadDetailSpot,
@@ -45,8 +50,11 @@ const SpotListContainer = ({
     cleanCurrentInfo,
     toggleDetailLike,
     updateDetailSpot,
+    changeKeyword,
+    searchSpot,
+    updateContentTypeId,
 }) => {
-    const { areaNum, pageNum } = currentInfo;
+    const { areaIndex, pageIndex, contentTypeId } = spotData;
 
     // 지역 가져오기
     useEffect(() => {
@@ -58,9 +66,9 @@ const SpotListContainer = ({
     // 여행지 가져오기
     useEffect(() => {
         if (areas) {
-            loadSpots(areaNum, pageNum);
+            loadSpots({ areaIndex, contentTypeId, pageIndex });
         }
-    }, [loadSpots, areaNum, pageNum, areas]);
+    }, [loadSpots, areaIndex, pageIndex, areas, contentTypeId]);
 
     // 여행지 상세정보 모달 열기
     const sDrag = useRef(false);
@@ -75,14 +83,14 @@ const SpotListContainer = ({
 
     // 여행지 첫페이지
     const mDrag = useRef(false);
-    const onFirstSpotsPage = (areaCode) => {
+    const onFirstSpotsPage = (areaIndex) => {
         if (mDrag.current) {
             // e.stopPropagation();
             mDrag.current = false;
             return;
         }
         // if (spots) {
-        updateAreaNum(areaCode);
+        updateAreaNum(areaIndex);
         updatePageNum(1);
         updateBlockNum(0);
         // }
@@ -114,7 +122,7 @@ const SpotListContainer = ({
     // 여행지 초기화
     useEffect(() => {
         cleanSpots();
-    }, [areaNum, pageNum, cleanSpots]);
+    }, [areaIndex, pageIndex, cleanSpots]);
 
     // 여행지 페이지에서 벗어날 때 정보 초기화
     useEffect(() => {
@@ -141,17 +149,34 @@ const SpotListContainer = ({
         cleanLikeList();
     }, [cleanLikeList, detail]);
 
+    // 여행지 검색할 키워드 타이핑
+    const onChangeKeyword = (keyword) => {
+        changeKeyword(keyword);
+    };
+
+    const onSearchSpot = () => {
+        searchSpot({ areaIndex, contentTypeId, keyword, pageIndex });
+    };
+
+    const onUpdateContentTypeId = (contentTypeId) => {
+        updateContentTypeId(contentTypeId);
+    };
+
     return (
         <SpotList
             areas={areas}
             spots={spots}
             spotError={spotError}
             detail={detail}
-            currentInfo={currentInfo}
+            spotData={spotData}
+            contentTypeList={contentTypeList}
             onFirstSpotsPage={onFirstSpotsPage}
             onUnloadDetailSpot={unloadDetailSpot}
             onToggleSpotLike={onToggleSpotLike}
             onOpenDetail={onOpenDetail}
+            onChangeKeyword={onChangeKeyword}
+            onSearchSpot={onSearchSpot}
+            onUpdateContentTypeId={onUpdateContentTypeId}
             mDrag={mDrag}
             sDrag={sDrag}
         />
@@ -163,16 +188,18 @@ const mapStateToProps = (state) => ({
     spots: state.spotReducer.spots,
     detail: state.spotReducer.detail,
     spotError: state.spotReducer.spotError,
-    currentInfo: state.spotReducer.currentInfo,
+    spotData: state.spotReducer.spotData,
     likeList: state.spotReducer.likeList,
+    keyword: state.spotReducer.keyword,
+    contentTypeList: state.spotReducer.contentTypeList,
     account: state.authReducer.account,
 });
 const mapDispatchToProps = (dispatch) => ({
     loadAreas: () => {
         dispatch(loadAreasAction());
     },
-    loadSpots: (areaCode, page) => {
-        dispatch(loadSpotsAction(areaCode, page));
+    loadSpots: (areaIndex, page) => {
+        dispatch(loadSpotsAction(areaIndex, page));
     },
     updateAreaNum: (num) => {
         dispatch(updateAreaNumAction(num));
@@ -215,6 +242,15 @@ const mapDispatchToProps = (dispatch) => ({
     },
     cleanCurrentInfo: () => {
         dispatch(cleanCurrentInfoAction());
+    },
+    changeKeyword: (keyword) => {
+        dispatch(changeKeywordAction(keyword));
+    },
+    searchSpot: (areaIndex, contentTypeId, keyword, index) => {
+        dispatch(searchSpotAction(areaIndex, contentTypeId, keyword, index));
+    },
+    updateContentTypeId: (contentTypeId) => {
+        dispatch(updateContentTypeIdAction(contentTypeId));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);

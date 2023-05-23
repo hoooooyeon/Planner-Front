@@ -6,8 +6,8 @@ export const loadAreas = () => {
 };
 
 // 지역에 따른 여행지
-export const loadSpots = async ({ areaCode, page }) => {
-    return client.get(`/api/spots/lists-area?areaCode=${areaCode}&contentTypeId=12&index=${page}`);
+export const loadSpots = ({ areaIndex, contentTypeId, pageIndex }) => {
+    return client.get(`/api/spots/lists-area?areaCode=${areaIndex}&contentTypeId=${contentTypeId}&index=${pageIndex}`);
 };
 
 // 여행지 상세 정보
@@ -27,4 +27,9 @@ export const addSpotLike = ({ spotId }) => {
 // 여행지 좋아요 삭제
 export const removeSpotLike = ({ spotId }) => {
     return client.delete(`/api/spots/likes/${spotId}`);
+};
+
+// 여행지 검색
+export const searchSpot = ({ areaIndex, contentTypeId, keyword, pageIndex }) => {
+    return client.get(`/api/spots/lists-keyword?areaCode=${areaIndex}&contentTypeId=${contentTypeId}&keyword=${keyword}&index=${pageIndex}`);
 };

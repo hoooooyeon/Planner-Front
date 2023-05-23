@@ -1,70 +1,58 @@
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import SpotPagination from '../../components/spot/SpotPagination';
+import Pagination from '../../components/common/Pagination';
 import { updateBlockNumAction, updatePageNumAction, updateTotalPageAction, updatePaginationAction } from '../../modules/spotModule';
+import * as common from '../../lib/utils/CommonFunction';
 
-const SpotPaginationContainer = ({ spots, currentInfo, updatePageNumAction, updateBlockNumAction, updateTotalPageAction, updatePaginationAction }) => {
-    const { pageNum, blockNum, totalPage } = currentInfo;
+const SpotPaginationContainer = ({ spots, spotData, updatePageNumAction, updateBlockNumAction, updateTotalPageAction, updatePaginationAction }) => {
+    const { totalCount } = { ...spots };
+    const { pageIndex } = { ...spotData };
+    // 뿌려줄 페이지 배열
+    const [pageArr, setPageArr] = useState([]);
+    // 보여질 페이지네이션의 개수 기준
+    const [block, setBlock] = useState(0);
+    // 보여질 페이지네이션의 개수
+    const count = 5;
+    // 보여질 아이템의 개수
+    const itemCount = 10;
+    // 마지막 페이지
+    const pageLastIndex = Math.ceil(totalCount / itemCount);
 
-    const [blockArea, setBlockArea] = useState(0); // 페이지네이션 block의 기준
-    const [countArr, setCountArr] = useState(); // 페이지네이션의 총합 배열
-    const pageLimit = 10; // 보여질 페이지네이션의 개수
-
-    // 페이지네이션 배열 생성
-    useEffect(() => {
-        const createArr = () => {
-            if (totalPage) {
-                const iArr = [];
-                for (let i = 0; i < totalPage; i++) {
-                    iArr[i] = i + 1;
-                }
-                return iArr;
-            }
-        };
-        setCountArr(createArr);
-    }, [totalPage]);
-
+    // // 뿌려줄 페이지네이션 배열 생성  함수
     useEffect(() => {
         if (spots) {
-            const { totalCount } = spots;
-            updateTotalPageAction(Math.ceil(totalCount / 10));
-            setBlockArea(blockNum * pageLimit);
-            if (countArr) {
-                updatePaginationAction(countArr.slice(blockArea, pageLimit + blockArea));
-            }
+            common.creaetPageArr(pageLastIndex, setPageArr, count, block);
         }
-    }, [blockNum, spots, updateTotalPageAction, blockArea, countArr, updatePaginationAction]);
+    }, [pageLastIndex, count, block, spots]);
 
-    const onFirstPage = () => {
-        updatePageNumAction(1);
-        updateBlockNumAction(0);
-    };
-    const onLastPage = () => {
-        updatePageNumAction(totalPage);
-        updateBlockNumAction(Math.floor(totalPage / pageLimit));
+    // 페이지 버튼
+    const onUpdatePageIndex = (pageIndex) => {
+        updatePageNumAction(pageIndex);
     };
 
-    const onPrevPage = () => {
-        if (pageNum <= 1) return;
-        if (pageNum - 1 <= pageLimit * blockNum) {
-            updateBlockNumAction(blockNum - 1);
-        }
-        updatePageNumAction(pageNum - 1);
+    const prevPage = () => {
+        common.prevPage(pageIndex, onUpdatePageIndex, setBlock, count);
     };
-    const onNextPage = () => {
-        if (pageNum >= totalPage) return;
-        if (pageLimit * (blockNum + 1) < pageNum + 1) {
-            updateBlockNumAction(blockNum + 1);
-        }
-        updatePageNumAction(pageNum + 1);
+
+    const nextPage = () => {
+        common.nextPage(pageIndex, pageLastIndex, onUpdatePageIndex, count, setBlock);
     };
-    return <SpotPagination spots={spots} currentInfo={currentInfo} onFirstPage={onFirstPage} onLastPage={onLastPage} onNextPage={onNextPage} onPrevPage={onPrevPage} onUpdatePageNum={updatePageNumAction} />;
+
+    const firstPage = () => {
+        common.firstPage(onUpdatePageIndex, setBlock);
+    };
+
+    const lastPage = () => {
+        common.lastPage(onUpdatePageIndex, pageLastIndex, setBlock, count);
+    };
+
+    return <Pagination spots={spots} pageArr={pageArr} spotData={spotData} onUpdatePageIndex={onUpdatePageIndex} prevPage={prevPage} nextPage={nextPage} firstPage={firstPage} lastPage={lastPage} />;
 };
 
 export default connect(
     (state) => ({
         spots: state.spotReducer.spots,
-        currentInfo: state.spotReducer.currentInfo,
+        spotData: state.spotReducer.spotData,
     }),
     {
         updatePageNumAction,

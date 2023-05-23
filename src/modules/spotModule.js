@@ -42,8 +42,16 @@ const CLEAN_SPOTS_TYPE = 'spot/CLEAN_SPOTS';
 const CLEAN_LIKE_LIST_TYPE = 'spot/CLEAN_LIKE_LIST';
 const CLEAN_CURRENT_INFO_TYPE = 'spot/CLEAN_CURRENT_INFO';
 
+const CHANGE_KEYWORD_TYPE = 'spot/CHANGE_KEYWORD';
+const RESET_KEYWORD_TYPE = 'spot/RESET_KEYWORD';
+const SEARCH_SPOT_TYPE = 'spot/SEARCH_SPOT';
+const SEARCH_SPOT_SUCCESS_TYPE = 'spot/SEARCH_SPOT_SUCCESS';
+const SEARCH_SPOT_FAILURE_TYPE = 'spot/SEARCH_SPOT_FAILURE';
+
+const UPDATE_CONTENT_TYPE_ID_TYPE = 'spot/UPDATE_CONTENT_TYPE_ID';
+
 export const loadAreasAction = () => ({ type: LOAD_AREAS_TYPE });
-export const loadSpotsAction = (areaCode, page) => ({ type: LOAD_SPOTS_TYPE, areaCode, page });
+export const loadSpotsAction = ({ areaIndex, contentTypeId, pageIndex }) => ({ type: LOAD_SPOTS_TYPE, areaIndex, contentTypeId, pageIndex });
 export const updateAreaNumAction = (num) => ({ type: UPDATE_AREA_NUM_TYPE, num });
 export const updatePageNumAction = (num) => ({ type: UPDATE_PAGE_NUM_TYPE, num });
 export const updateBlockNumAction = (num) => ({ type: UPDATE_BLOCK_NUM_TYPE, num });
@@ -60,6 +68,10 @@ export const checkLikeListAction = (accountId, spotId) => ({ type: CHECK_LIKE_LI
 export const cleanSpotsAction = () => ({ type: CLEAN_SPOTS_TYPE });
 export const cleanLikeListAction = () => ({ type: CLEAN_LIKE_LIST_TYPE });
 export const cleanCurrentInfoAction = () => ({ type: CLEAN_CURRENT_INFO_TYPE });
+export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, keyword });
+export const resetKeywordAction = () => ({ type: RESET_KEYWORD_TYPE });
+export const searchSpotAction = ({ areaIndex, contentTypeId, keyword, pageIndex }) => ({ type: SEARCH_SPOT_TYPE, areaIndex, contentTypeId, keyword, pageIndex });
+export const updateContentTypeIdAction = (contentTypeId) => ({ type: UPDATE_CONTENT_TYPE_ID_TYPE, contentTypeId });
 
 const loadAreasSaga = createSaga(LOAD_AREAS_TYPE, spotAPI.loadAreas);
 const loadSpotsSaga = createSaga(LOAD_SPOTS_TYPE, spotAPI.loadSpots);
@@ -67,6 +79,7 @@ const loadDetailSpotSaga = createSaga(LOAD_DETAIL_SPOT_TYPE, spotAPI.loadDetailS
 const addSpotLikeSaga = createSaga(ADD_SPOT_LIKE_TYPE, spotAPI.addSpotLike);
 const removeSpotLikeSaga = createSaga(REMOVE_SPOT_LIKE_TYPE, spotAPI.removeSpotLike);
 const checkLikeListSaga = createSaga(CHECK_LIKE_LIST_TYPE, spotAPI.checkLikeList);
+const searchSpotSaga = createSaga(SEARCH_SPOT_TYPE, spotAPI.searchSpot);
 
 export function* spotSaga() {
     yield takeLatest(LOAD_AREAS_TYPE, loadAreasSaga);
@@ -75,6 +88,7 @@ export function* spotSaga() {
     yield takeLatest(ADD_SPOT_LIKE_TYPE, addSpotLikeSaga);
     yield takeLatest(REMOVE_SPOT_LIKE_TYPE, removeSpotLikeSaga);
     yield takeLatest(CHECK_LIKE_LIST_TYPE, checkLikeListSaga);
+    yield takeLatest(SEARCH_SPOT_TYPE, searchSpotSaga);
 }
 
 const initialState = {
@@ -82,14 +96,22 @@ const initialState = {
     spots: null,
     detail: null,
     spotError: null,
-    currentInfo: {
-        areaNum: 1,
-        pageNum: 1,
-        blockNum: 0,
-        totalPage: null,
-        pagination: null,
+    spotData: {
+        areaIndex: 1,
+        pageIndex: 1,
+        contentTypeId: 12,
     },
     likeList: null,
+    keyword: null,
+    contentTypeList: [
+        { label: '관광지', id: 12 },
+        { label: '문화시설', id: 14 },
+        { label: '행사', id: 15 },
+        { label: '레포츠', id: 28 },
+        { label: '숙박', id: 32 },
+        { label: '쇼핑', id: 38 },
+        { label: '음식점', id: 39 },
+    ],
 };
 
 function spotReducer(state = initialState, action) {
@@ -100,6 +122,12 @@ function spotReducer(state = initialState, action) {
                 areas: action.payload.data.items,
             };
         case LOAD_AREAS_FAILURE_TYPE:
+        case LOAD_SPOTS_FAILURE_TYPE:
+        case LOAD_DETAIL_SPOT_FAILURE_TYPE:
+        case ADD_SPOT_LIKE_FAILURE_TYPE:
+        case REMOVE_SPOT_LIKE_FAILURE_TYPE:
+        case CHECK_LIKE_LIST_FAILURE_TYPE:
+        case SEARCH_SPOT_FAILURE_TYPE:
             return {
                 ...state,
                 spotError: action.payload.error,
@@ -119,48 +147,44 @@ function spotReducer(state = initialState, action) {
                     totalCount: action.payload.data.totalCount,
                 },
             };
-        case LOAD_SPOTS_FAILURE_TYPE:
-            return {
-                ...state,
-                spotError: action.payload.error,
-            };
+
         case UPDATE_AREA_NUM_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
-                    areaNum: action.num,
+                spotData: {
+                    ...state.spotData,
+                    areaIndex: action.num,
                 },
             };
         case UPDATE_PAGE_NUM_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
-                    pageNum: action.num,
+                spotData: {
+                    ...state.spotData,
+                    pageIndex: action.num,
                 },
             };
         case UPDATE_BLOCK_NUM_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                spotData: {
+                    ...state.spotData,
                     blockNum: action.num,
                 },
             };
         case UPDATE_TOTAL_PAGE_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                spotData: {
+                    ...state.spotData,
                     totalPage: action.num,
                 },
             };
         case UPDATE_PAGINATION_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                spotData: {
+                    ...state.spotData,
                     pagination: action.num,
                 },
             };
@@ -175,11 +199,7 @@ function spotReducer(state = initialState, action) {
                     },
                 },
             };
-        case LOAD_DETAIL_SPOT_FAILURE_TYPE:
-            return {
-                ...state,
-                spotError: action.payload.error,
-            };
+
         case UPDATE_DETAIL_SPOT_TYPE:
             return {
                 ...state,
@@ -207,11 +227,6 @@ function spotReducer(state = initialState, action) {
                     },
                 },
             };
-        case ADD_SPOT_LIKE_FAILURE_TYPE:
-            return {
-                ...state,
-                spotError: action.payload.error,
-            };
         case REMOVE_SPOT_LIKE_SUCCESS_TYPE:
             return {
                 ...state,
@@ -221,11 +236,6 @@ function spotReducer(state = initialState, action) {
                         likeCount: state.detail.info.likeCount - 1,
                     },
                 },
-            };
-        case REMOVE_SPOT_LIKE_FAILURE_TYPE:
-            return {
-                ...state,
-                spotError: action.payload.error,
             };
         case UPDATE_SPOTS_LIKE_TYPE:
             return {
@@ -253,34 +263,64 @@ function spotReducer(state = initialState, action) {
                     },
                 },
             };
-        case CHECK_LIKE_LIST_SUCCESS_TYPE: {
+        case CHECK_LIKE_LIST_SUCCESS_TYPE:
             return {
                 ...state,
 
                 likeList: action.payload.data,
             };
-        }
-        case CHECK_LIKE_LIST_FAILURE_TYPE: {
-            return { ...state, spotError: action.payload.error };
-        }
-        case CLEAN_SPOTS_TYPE: {
+
+        case CLEAN_SPOTS_TYPE:
             return { ...state, likeList: null, spots: null };
-        }
-        case CLEAN_LIKE_LIST_TYPE: {
+
+        case CLEAN_LIKE_LIST_TYPE:
             return { ...state, likeList: null };
-        }
-        case CLEAN_CURRENT_INFO_TYPE: {
+
+        case CLEAN_CURRENT_INFO_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    areaNum: 1,
-                    pageNum: 1,
-                    blockNum: 0,
-                    totalPage: null,
-                    pagination: null,
+                spotData: {
+                    areaIndex: 1,
+                    pageIndex: 1,
+                    contentTypeId: 12,
                 },
             };
-        }
+
+        case CHANGE_KEYWORD_TYPE:
+            return {
+                ...state,
+                keyword: action.keyword,
+            };
+        case RESET_KEYWORD_TYPE:
+            return {
+                ...state,
+                keyword: null,
+            };
+
+        case SEARCH_SPOT_SUCCESS_TYPE:
+            return {
+                ...state,
+                spots: {
+                    list: action.payload.data.items.map((item) => {
+                        return {
+                            info: {
+                                ...item,
+                                like: false,
+                            },
+                        };
+                    }),
+                    totalCount: action.payload.data.totalCount,
+                },
+            };
+        case UPDATE_CONTENT_TYPE_ID_TYPE:
+            return {
+                ...state,
+                spotData: {
+                    ...state.spotData,
+                    contentTypeId: action.contentTypeId,
+                },
+            };
+
         default:
             return state;
     }
