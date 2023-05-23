@@ -102,7 +102,59 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const SpotList = ({ areas, spots, spotError, detail, spotData, contentTypeList, mDrag, sDrag, onFirstSpotsPage, onUnloadDetailSpot, onToggleSpotLike, onOpenDetail, onChangeKeyword, onSearchSpot, onUpdateContentTypeId }) => {
+const SearchBox = styled.div`
+    width: 30rem;
+    background: #cdd9ac;
+    padding: 10px;
+    height: 4rem;
+    z-index: 999;
+`;
+
+const SearchForm = styled.form`
+    padding: 10px 15px;
+    width: 28rem;
+    height: 2rem;
+    display: flex;
+    background-color: #cdd9ac;
+    align-items: center;
+    justify-content: space-around;
+
+    /* input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    } */
+`;
+
+const SearchInput = styled.input`
+    width: 20rem;
+    height: 2rem;
+    border: none;
+    border-radius: 10px;
+    padding: 0 10px;
+    &:focus {
+        outline: none;
+    }
+`;
+
+const SearchButton = styled.button`
+    border: none;
+    border-radius: 0.5rem;
+    width: 5rem;
+    height: 2rem;
+    background-color: rgba(255, 203, 193, 80%);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    &:hover {
+        transform: translate(1px, -1px);
+    }
+`;
+const InvisibleInput = styled.input`
+    display: none;
+`;
+
+const SpotList = ({ areas, spots, spotError, detail, spotData, keyword, contentTypeList, mDrag, sDrag, onFirstSpotsPage, onUnloadDetailSpot, onToggleSpotLike, onOpenDetail, onChangeKeyword, onSearchSpot, onUpdateContentTypeId }) => {
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
         e.target.src = defaultImg;
@@ -280,7 +332,22 @@ const SpotList = ({ areas, spots, spotError, detail, spotData, contentTypeList, 
         <SpotListBlock>
             <Container>
                 <MenuTitle>추천 여행지</MenuTitle>
-
+                <SearchBox>
+                    <SearchForm>
+                        <SearchInput
+                            placeholder="장소 검색"
+                            type="text"
+                            value={keyword}
+                            onChange={(e) => {
+                                onChangeKeyword(e.target.value);
+                            }}
+                        />
+                        <InvisibleInput type="text" />
+                        <SearchButton type="button" onClick={onSearchSpot}>
+                            검색
+                        </SearchButton>
+                    </SearchForm>
+                </SearchBox>
                 {contentTypeList && (
                     <Slider list={contentTypeList}>
                         {contentTypeList.map((c) => (

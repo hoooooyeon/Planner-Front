@@ -169,6 +169,7 @@ const SpotListContainer = ({
             spotError={spotError}
             detail={detail}
             spotData={spotData}
+            keyword={keyword}
             contentTypeList={contentTypeList}
             onFirstSpotsPage={onFirstSpotsPage}
             onUnloadDetailSpot={unloadDetailSpot}
