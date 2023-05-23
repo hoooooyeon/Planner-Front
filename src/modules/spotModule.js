@@ -51,7 +51,7 @@ const SEARCH_SPOT_FAILURE_TYPE = 'spot/SEARCH_SPOT_FAILURE';
 const UPDATE_CONTENT_TYPE_ID_TYPE = 'spot/UPDATE_CONTENT_TYPE_ID';
 
 export const loadAreasAction = () => ({ type: LOAD_AREAS_TYPE });
-export const loadSpotsAction = (areaCode, contentTypeId, page) => ({ type: LOAD_SPOTS_TYPE, areaCode, contentTypeId, page });
+export const loadSpotsAction = ({ areaIndex, contentTypeId, pageIndex }) => ({ type: LOAD_SPOTS_TYPE, areaIndex, contentTypeId, pageIndex });
 export const updateAreaNumAction = (num) => ({ type: UPDATE_AREA_NUM_TYPE, num });
 export const updatePageNumAction = (num) => ({ type: UPDATE_PAGE_NUM_TYPE, num });
 export const updateBlockNumAction = (num) => ({ type: UPDATE_BLOCK_NUM_TYPE, num });
@@ -70,7 +70,7 @@ export const cleanLikeListAction = () => ({ type: CLEAN_LIKE_LIST_TYPE });
 export const cleanCurrentInfoAction = () => ({ type: CLEAN_CURRENT_INFO_TYPE });
 export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, keyword });
 export const resetKeywordAction = () => ({ type: RESET_KEYWORD_TYPE });
-export const searchSpotAction = ({ areaCode, contentTypeId, keyword, index }) => ({ type: SEARCH_SPOT_TYPE, areaCode, contentTypeId, keyword, index });
+export const searchSpotAction = ({ areaIndex, contentTypeId, keyword, pageIndex }) => ({ type: SEARCH_SPOT_TYPE, areaIndex, contentTypeId, keyword, pageIndex });
 export const updateContentTypeIdAction = (contentTypeId) => ({ type: UPDATE_CONTENT_TYPE_ID_TYPE, contentTypeId });
 
 const loadAreasSaga = createSaga(LOAD_AREAS_TYPE, spotAPI.loadAreas);
@@ -96,16 +96,22 @@ const initialState = {
     spots: null,
     detail: null,
     spotError: null,
-    currentInfo: {
-        areaNum: 1,
-        pageNum: 1,
-        blockNum: 0,
-        totalPage: null,
-        pagination: null,
+    spotData: {
+        areaIndex: 1,
+        pageIndex: 1,
         contentTypeId: 12,
     },
     likeList: null,
     keyword: null,
+    contentTypeList: [
+        { label: '관광지', id: 12 },
+        { label: '문화시설', id: 14 },
+        { label: '행사', id: 15 },
+        { label: '레포츠', id: 28 },
+        { label: '숙박', id: 32 },
+        { label: '쇼핑', id: 38 },
+        { label: '음식점', id: 39 },
+    ],
 };
 
 function spotReducer(state = initialState, action) {
@@ -145,40 +151,40 @@ function spotReducer(state = initialState, action) {
         case UPDATE_AREA_NUM_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
-                    areaNum: action.num,
+                spotData: {
+                    ...state.spotData,
+                    areaIndex: action.num,
                 },
             };
         case UPDATE_PAGE_NUM_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
-                    pageNum: action.num,
+                spotData: {
+                    ...state.spotData,
+                    pageIndex: action.num,
                 },
             };
         case UPDATE_BLOCK_NUM_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                spotData: {
+                    ...state.spotData,
                     blockNum: action.num,
                 },
             };
         case UPDATE_TOTAL_PAGE_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                spotData: {
+                    ...state.spotData,
                     totalPage: action.num,
                 },
             };
         case UPDATE_PAGINATION_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                spotData: {
+                    ...state.spotData,
                     pagination: action.num,
                 },
             };
@@ -273,14 +279,10 @@ function spotReducer(state = initialState, action) {
         case CLEAN_CURRENT_INFO_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    areaNum: 1,
-                    pageNum: 1,
-                    blockNum: 0,
-                    totalPage: null,
-                    pagination: null,
+                spotData: {
+                    areaIndex: 1,
+                    pageIndex: 1,
                     contentTypeId: 12,
-                    editListPageIndex: 1,
                 },
             };
 
@@ -313,8 +315,8 @@ function spotReducer(state = initialState, action) {
         case UPDATE_CONTENT_TYPE_ID_TYPE:
             return {
                 ...state,
-                currentInfo: {
-                    ...state.currentInfo,
+                spotData: {
+                    ...state.spotData,
                     contentTypeId: action.contentTypeId,
                 },
             };

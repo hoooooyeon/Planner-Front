@@ -7,15 +7,16 @@ import * as common from '../../../lib/utils/CommonFunction';
 
 const EditListContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, spots, plan, currentInfo, plannerData, detail, map } = useSelector(({ plannerReducer, spotReducer }) => ({
+    const { planner, plannerError, spots, plan, spotData, plannerData, detail, map, contentTypeList } = useSelector(({ plannerReducer, spotReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         spots: spotReducer.spots,
-        currentInfo: spotReducer.currentInfo,
+        spotData: spotReducer.spotData,
         detail: spotReducer.detail,
         plan: plannerReducer.plan,
         plannerData: plannerReducer.plannerData,
         map: plannerReducer.map,
+        contentTypeList: spotReducer.contentTypeList,
     }));
 
     const onChangePlanLocation = (location) => {
@@ -46,10 +47,10 @@ const EditListContainer = () => {
     };
 
     // 여행지 불러오기
-    const { areaNum, pageNum, contentTypeId } = { ...currentInfo };
+    const { areaIndex, pageIndex, contentTypeId } = { ...spotData };
     useEffect(() => {
-        dispatch(loadSpotsAction(areaNum, contentTypeId, pageNum));
-    }, [dispatch, areaNum, pageNum, contentTypeId]);
+        dispatch(loadSpotsAction({ areaIndex, contentTypeId, pageIndex }));
+    }, [dispatch, areaIndex, pageIndex, contentTypeId]);
 
     // 여행지 상세정보 불러오기
     const onOpenDetail = (spot) => {
@@ -91,11 +92,11 @@ const EditListContainer = () => {
     };
 
     const prevPage = () => {
-        common.prevPage(pageNum, onUpdatePageIndex, setBlock, count);
+        common.prevPage(pageIndex, onUpdatePageIndex, setBlock, count);
     };
 
     const nextPage = () => {
-        common.nextPage(pageNum, pageLastIndex, onUpdatePageIndex, count, setBlock);
+        common.nextPage(pageIndex, pageLastIndex, onUpdatePageIndex, count, setBlock);
     };
 
     const firstPage = () => {
@@ -122,6 +123,7 @@ const EditListContainer = () => {
             nextPage={nextPage}
             firstPage={firstPage}
             lastPage={lastPage}
+            contentTypeList={contentTypeList}
         />
     );
 };

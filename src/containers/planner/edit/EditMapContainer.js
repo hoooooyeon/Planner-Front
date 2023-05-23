@@ -8,13 +8,14 @@ import { changeKeywordAction, cleanCurrentInfoAction, loadAreasAction, loadSpots
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, spots, currentInfo, areas, keyword } = useSelector(({ plannerReducer, spotReducer }) => ({
+    const { planner, plannerError, spots, spotData, areas, keyword, contentTypeList } = useSelector(({ plannerReducer, spotReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         spots: spotReducer.spots,
         areas: spotReducer.areas,
-        currentInfo: spotReducer.currentInfo,
+        spotData: spotReducer.spotData,
         keyword: spotReducer.keyword,
+        contentTypeList: spotReducer.contentTypeList,
         // map: plannerReducer.map,
     }));
 
@@ -348,11 +349,11 @@ const EditMapContainer = () => {
         }
     }, [centerCoord, dispatch, kakao.maps.LatLng, kakao.maps.Polyline, map]);
 
-    const { areaNum, pageNum, contentTypeId } = { ...currentInfo };
+    const { areaIndex, pageIndex, contentTypeId } = { ...spotData };
     // 여행지 리스트 로드
     useEffect(() => {
-        dispatch(loadSpotsAction(areaNum, contentTypeId, pageNum));
-    }, [dispatch, areaNum, contentTypeId, pageNum]);
+        dispatch(loadSpotsAction({ areaIndex, contentTypeId, pageIndex }));
+    }, [dispatch, areaIndex, contentTypeId, pageIndex]);
 
     // 지역 리스트 로드
     useEffect(() => {
@@ -374,9 +375,7 @@ const EditMapContainer = () => {
     };
     // 여행지 검색
     const onSearchSpot = () => {
-        let areaCode = areaNum;
-        let index = pageNum;
-        dispatch(searchSpotAction({ areaCode, contentTypeId, keyword, index }));
+        dispatch(searchSpotAction({ areaIndex, contentTypeId, keyword, pageIndex }));
     };
 
     const onResetSpotData = () => {
@@ -388,7 +387,7 @@ const EditMapContainer = () => {
             mapRef={mapRef}
             planner={planner}
             areas={areas}
-            currentInfo={currentInfo}
+            spotData={spotData}
             keyword={keyword}
             onUpdatePlanner={onUpdatePlanner}
             onToggleMemberModal={onToggleMemberModal}

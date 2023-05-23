@@ -120,23 +120,26 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-const EditList = ({ spots, detail, onChangePlanLocation, onCreateLocation, onMoveMarker, onOpenDetail, onCloseDetail, onUpdateContentTypeId, pageArr, onUpdatePageIndex, prevPage, nextPage, firstPage, lastPage }) => {
-    const categoryList = [
-        { label: '관광지', id: 12, icon: faLocationDot },
-        { label: '문화시설', id: 14, icon: faLocationDot },
-        { label: '행사', id: 15, icon: faLocationDot },
-        { label: '레포츠', id: 28, icon: faLocationDot },
-        { label: '숙박', id: 32, icon: faBed },
-        { label: '쇼핑', id: 38, icon: faLocationDot },
-        { label: '음식점', id: 39, icon: faUtensils },
-    ];
+const EditList = ({ spots, detail, onChangePlanLocation, onCreateLocation, onMoveMarker, onOpenDetail, onCloseDetail, onUpdateContentTypeId, pageArr, onUpdatePageIndex, prevPage, nextPage, firstPage, lastPage, contentTypeList }) => {
+    // const categoryList = [
+    //     { label: '관광지', id: 12, icon: faLocationDot },
+    //     { label: '문화시설', id: 14, icon: faLocationDot },
+    //     { label: '행사', id: 15, icon: faLocationDot },
+    //     { label: '레포츠', id: 28, icon: faLocationDot },
+    //     { label: '숙박', id: 32, icon: faBed },
+    //     { label: '쇼핑', id: 38, icon: faLocationDot },
+    //     { label: '음식점', id: 39, icon: faUtensils },
+    // ];
+
+    const iconList = [faLocationDot, faLocationDot, faLocationDot, faLocationDot, faBed, faLocationDot, faUtensils];
     return (
         <>
             <EditListBlock>
                 <MenuList>
-                    {categoryList.map((c, i) => (
+                    {contentTypeList.map((c, i) => (
+                        // {categoryList.map((c, i) => (
                         <MenuItem onClick={() => onUpdateContentTypeId(c.id)} key={i}>
-                            <StyledFontAwesomeIcon icon={c.icon} />
+                            <StyledFontAwesomeIcon icon={iconList[i]} />
                             <p>{c.label}</p>
                         </MenuItem>
                     ))}

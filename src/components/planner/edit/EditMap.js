@@ -161,7 +161,7 @@ const InvisibleInput = styled.input`
     display: none;
 `;
 
-const EditMap = ({ mapRef, keyword, onToggleMemberModal, onTogglePlannerInfoModal, getLocationByAddress, areas, currentInfo, onUpdateAreaNum, onChangeKeyword, onSearchSpot, onResetKeyword, onResetSpotData }) => {
+const EditMap = ({ mapRef, keyword, onToggleMemberModal, onTogglePlannerInfoModal, getLocationByAddress, areas, spotData, onUpdateAreaNum, onChangeKeyword, onSearchSpot, onResetKeyword, onResetSpotData }) => {
     const [isSearch, setIsSearch] = useState(false);
 
     const onSearch = () => {
@@ -191,7 +191,7 @@ const EditMap = ({ mapRef, keyword, onToggleMemberModal, onTogglePlannerInfoModa
             <AreaBox>
                 <AreaSelect
                     required
-                    value={currentInfo.areaNum}
+                    value={spotData.areaNum}
                     onChange={(e) => {
                         onUpdateAreaNum(e.target.value);
                     }}
