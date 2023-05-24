@@ -6,6 +6,10 @@ const LOAD_AREAS_TYPE = 'spot/LOAD_AREAS';
 const LOAD_AREAS_SUCCESS_TYPE = 'spot/LOAD_AREAS_SUCCESS';
 const LOAD_AREAS_FAILURE_TYPE = 'spot/LOAD_AREAS_FAILURE';
 
+const LOAD_SLIDER_SPOTS_TYPE = 'spot/LOAD_SLIDER_SPOTS';
+const LOAD_SLIDER_SPOTS_SUCCESS_TYPE = 'spot/LOAD_SLIDER_SPOTS_SUCCESS';
+const LOAD_SLIDER_SPOTS_FAILURE_TYPE = 'spot/LOAD_SLIDER_SPOTS_FAILURE';
+
 const LOAD_SPOTS_TYPE = 'spot/LOAD_SPOTS';
 const LOAD_SPOTS_SUCCESS_TYPE = 'spot/LOAD_SPOTS_SUCCESS';
 const LOAD_SPOTS_FAILURE_TYPE = 'spot/LOAD_SPOTS_FAILURE';
@@ -52,6 +56,7 @@ const UPDATE_CONTENT_TYPE_ID_TYPE = 'spot/UPDATE_CONTENT_TYPE_ID';
 
 export const loadAreasAction = () => ({ type: LOAD_AREAS_TYPE });
 export const loadSpotsAction = ({ areaIndex, contentTypeId, pageIndex }) => ({ type: LOAD_SPOTS_TYPE, areaIndex, contentTypeId, pageIndex });
+export const loadSliderSpotsAction = ({ areaIndex, contentTypeId, pageIndex }) => ({ type: LOAD_SLIDER_SPOTS_TYPE, areaIndex, contentTypeId, pageIndex });
 export const updateAreaNumAction = (num) => ({ type: UPDATE_AREA_NUM_TYPE, num });
 export const updatePageNumAction = (num) => ({ type: UPDATE_PAGE_NUM_TYPE, num });
 export const updateBlockNumAction = (num) => ({ type: UPDATE_BLOCK_NUM_TYPE, num });
@@ -75,6 +80,7 @@ export const updateContentTypeIdAction = (contentTypeId) => ({ type: UPDATE_CONT
 
 const loadAreasSaga = createSaga(LOAD_AREAS_TYPE, spotAPI.loadAreas);
 const loadSpotsSaga = createSaga(LOAD_SPOTS_TYPE, spotAPI.loadSpots);
+const loadSliderSpotsSaga = createSaga(LOAD_SLIDER_SPOTS_TYPE, spotAPI.loadSpots);
 const loadDetailSpotSaga = createSaga(LOAD_DETAIL_SPOT_TYPE, spotAPI.loadDetailSpot);
 const addSpotLikeSaga = createSaga(ADD_SPOT_LIKE_TYPE, spotAPI.addSpotLike);
 const removeSpotLikeSaga = createSaga(REMOVE_SPOT_LIKE_TYPE, spotAPI.removeSpotLike);
@@ -84,6 +90,7 @@ const searchSpotSaga = createSaga(SEARCH_SPOT_TYPE, spotAPI.searchSpot);
 export function* spotSaga() {
     yield takeLatest(LOAD_AREAS_TYPE, loadAreasSaga);
     yield takeLatest(LOAD_SPOTS_TYPE, loadSpotsSaga);
+    yield takeLatest(LOAD_SLIDER_SPOTS_TYPE, loadSliderSpotsSaga);
     yield takeLatest(LOAD_DETAIL_SPOT_TYPE, loadDetailSpotSaga);
     yield takeLatest(ADD_SPOT_LIKE_TYPE, addSpotLikeSaga);
     yield takeLatest(REMOVE_SPOT_LIKE_TYPE, removeSpotLikeSaga);
@@ -93,6 +100,7 @@ export function* spotSaga() {
 
 const initialState = {
     areas: null,
+    sliderSpots: null,
     spots: null,
     detail: null,
     spotError: null,
@@ -102,7 +110,7 @@ const initialState = {
         contentTypeId: 12,
     },
     likeList: null,
-    keyword: null,
+    keyword: '',
     contentTypeList: [
         { label: '관광지', id: 12 },
         { label: '문화시설', id: 14 },
@@ -123,6 +131,7 @@ function spotReducer(state = initialState, action) {
             };
         case LOAD_AREAS_FAILURE_TYPE:
         case LOAD_SPOTS_FAILURE_TYPE:
+        case LOAD_SLIDER_SPOTS_FAILURE_TYPE:
         case LOAD_DETAIL_SPOT_FAILURE_TYPE:
         case ADD_SPOT_LIKE_FAILURE_TYPE:
         case REMOVE_SPOT_LIKE_FAILURE_TYPE:
@@ -147,6 +156,11 @@ function spotReducer(state = initialState, action) {
                     totalCount: action.payload.data.totalCount,
                 },
             };
+        case LOAD_SLIDER_SPOTS_SUCCESS_TYPE:
+            return {
+                ...state,
+                sliderSpots: action.payload.data.items,
+            };
 
         case UPDATE_AREA_NUM_TYPE:
             return {
@@ -154,6 +168,7 @@ function spotReducer(state = initialState, action) {
                 spotData: {
                     ...state.spotData,
                     areaIndex: action.num,
+                    pageIndex: 1,
                 },
             };
         case UPDATE_PAGE_NUM_TYPE:
@@ -266,7 +281,6 @@ function spotReducer(state = initialState, action) {
         case CHECK_LIKE_LIST_SUCCESS_TYPE:
             return {
                 ...state,
-
                 likeList: action.payload.data,
             };
 
@@ -294,7 +308,7 @@ function spotReducer(state = initialState, action) {
         case RESET_KEYWORD_TYPE:
             return {
                 ...state,
-                keyword: null,
+                keyword: '',
             };
 
         case SEARCH_SPOT_SUCCESS_TYPE:
@@ -318,6 +332,7 @@ function spotReducer(state = initialState, action) {
                 spotData: {
                     ...state.spotData,
                     contentTypeId: action.contentTypeId,
+                    pageIndex: 1,
                 },
             };
 

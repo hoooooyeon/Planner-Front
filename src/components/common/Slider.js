@@ -48,7 +48,7 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const Slider = ({ children, list, scroll, transition, page, onChangePageIndex, prevPage, nextPage }) => {
+const Slider = ({ children, list, scroll, transition, page, drag, onChangePageIndex, prevPage, nextPage }) => {
     const hiddenBoxRef = useRef();
     const listRef = useRef();
 
@@ -64,7 +64,6 @@ const Slider = ({ children, list, scroll, transition, page, onChangePageIndex, p
     const scrollRef = useRef();
     let scrollMoveX = 0;
 
-    const drag = useRef(false);
     // 슬라이드 마우스 다운
     const sliderStart = (e) => {
         isSlide = true;
@@ -150,7 +149,7 @@ const Slider = ({ children, list, scroll, transition, page, onChangePageIndex, p
 
     useEffect(() => {
         if (list) {
-            let refValue = listRef.current;
+            let refValue = hiddenBoxRef.current;
             refValue.addEventListener('mousedown', sliderStart);
             window.addEventListener('mousemove', sliderMove);
             window.addEventListener('mouseup', sliderEnd);

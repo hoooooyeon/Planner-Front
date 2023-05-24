@@ -87,7 +87,7 @@ const SpotItem = ({ spot, onChangeErrorImg, onOpenDetail }) => {
             <ImgBox>
                 <Img src={firstimage} alt={title} onError={onChangeErrorImg} />
                 <IconBox>
-                    <StyledFontAwesomeIcon icon={faStar} like={like} />
+                    <StyledFontAwesomeIcon icon={faStar} like={like ? like.toString() : undefined} />
                 </IconBox>
             </ImgBox>
             <Name>{title}</Name>

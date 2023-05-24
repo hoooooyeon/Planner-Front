@@ -27,6 +27,7 @@ const SliderList = styled.ul`
     width: calc(5 * 100%);
     transform: translateX(-20%);
     margin: 0;
+    padding: 0;
 `;
 
 const SliderItem = styled.li`
@@ -37,9 +38,19 @@ const SliderItem = styled.li`
     display: flex;
     align-items: flex-end;
     justify-content: center;
+    position: relative;
     h1 {
         color: white;
+        position: absolute;
+        top: 80%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
+`;
+
+const Img = styled.img`
+    width: 100%;
+    height: 100%;
 `;
 
 // const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
@@ -68,11 +79,9 @@ const SliderItem = styled.li`
 // bottom: 50%;
 // `;
 
-const SpotSlider = () => {
-    const TOTAL_SLIDES = 5;
+const SpotSlider = ({ sliderSpots }) => {
     const [currentIndex, setCurrentIndex] = useState(2);
     const listRef = useRef();
-    const itemRef = useRef();
 
     // 슬라이더 버튼
     // const handleSwipe = (direction) => {
@@ -81,30 +90,33 @@ const SpotSlider = () => {
 
     // 무한 슬라이더
     useEffect(() => {
-        if (currentIndex === 1) {
-            setTimeout(() => {
-                listRef.current.style = 'transform: translateX(-' + 20 * (TOTAL_SLIDES - 2) + '%)';
-                listRef.current.style.transition = '0s';
-                setCurrentIndex(TOTAL_SLIDES - 1);
-            }, 800);
-        }
-        if (currentIndex === TOTAL_SLIDES) {
-            setTimeout(() => {
-                listRef.current.style = 'transform: translateX(-' + 20 + '%)';
-                listRef.current.style.transition = '0s';
-                setCurrentIndex(2);
-            }, 800);
-        }
-        // 자동 슬라이더
-        const timeoutId = setInterval(() => {
-            if (currentIndex < TOTAL_SLIDES) {
-                setCurrentIndex((currentIndex) => currentIndex + 1);
-            } else {
-                setCurrentIndex(1);
+        if (sliderSpots) {
+            const TOTAL_SLIDES = sliderSpots.length;
+            if (currentIndex === 1) {
+                setTimeout(() => {
+                    listRef.current.style = 'transform: translateX(-' + 20 * (TOTAL_SLIDES - 2) + '%)';
+                    listRef.current.style.transition = '0s';
+                    setCurrentIndex(TOTAL_SLIDES - 1);
+                }, 800);
             }
-        }, 2500);
-        return () => clearInterval(timeoutId);
-    }, [currentIndex]);
+            if (currentIndex === TOTAL_SLIDES) {
+                setTimeout(() => {
+                    listRef.current.style = 'transform: translateX(-' + 20 + '%)';
+                    listRef.current.style.transition = '0s';
+                    setCurrentIndex(2);
+                }, 800);
+            }
+            // 자동 슬라이더
+            const timeoutId = setInterval(() => {
+                if (currentIndex < TOTAL_SLIDES) {
+                    setCurrentIndex((currentIndex) => currentIndex + 1);
+                } else {
+                    setCurrentIndex(1);
+                }
+            }, 2500);
+            return () => clearInterval(timeoutId);
+        }
+    }, [currentIndex, sliderSpots]);
 
     // 슬라이더 스타일 변경
     useEffect(() => {
@@ -116,21 +128,13 @@ const SpotSlider = () => {
         <SpotSliderBlock>
             <Container>
                 <SliderList ref={listRef}>
-                    <SliderItem ref={itemRef}>
-                        <h1>clone마계인천</h1>
-                    </SliderItem>
-                    <SliderItem>
-                        <h1>천안시장</h1>
-                    </SliderItem>
-                    <SliderItem>
-                        <h1>안산드레스</h1>
-                    </SliderItem>
-                    <SliderItem>
-                        <h1>마계인천</h1>
-                    </SliderItem>
-                    <SliderItem>
-                        <h1>clone천안시장</h1>
-                    </SliderItem>
+                    {sliderSpots &&
+                        sliderSpots.map((s, i) => (
+                            <SliderItem key={i}>
+                                <Img alt={s.title} src={s.image} />
+                                <h1>{s.title}</h1>
+                            </SliderItem>
+                        ))}
                 </SliderList>
                 {/* <PrevButton  icon={faAngleLeft} onClick={() => handleSwipe(-1)} />
                 <NextButton  icon={faAngleRight} onClick={() => handleSwipe(1)} /> */}

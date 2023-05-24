@@ -20,6 +20,7 @@ import {
     updatePageNumAction,
     updateSpotsLikeAction,
     changeKeywordAction,
+    resetKeywordAction,
     searchSpotAction,
     updateContentTypeIdAction,
 } from '../../modules/spotModule';
@@ -53,6 +54,7 @@ const SpotListContainer = ({
     changeKeyword,
     searchSpot,
     updateContentTypeId,
+    resetKeyword,
 }) => {
     const { areaIndex, pageIndex, contentTypeId } = spotData;
 
@@ -71,10 +73,10 @@ const SpotListContainer = ({
     }, [loadSpots, areaIndex, pageIndex, areas, contentTypeId]);
 
     // 여행지 상세정보 모달 열기
-    const sDrag = useRef(false);
+    const drag = useRef(false);
     const onOpenDetail = (spot) => {
-        if (sDrag.current) {
-            sDrag.current = false;
+        if (drag.current) {
+            drag.current = false;
             return;
         }
         loadDetailSpot(spot.info.contentid);
@@ -82,11 +84,10 @@ const SpotListContainer = ({
     };
 
     // 여행지 첫페이지
-    const mDrag = useRef(false);
     const onFirstSpotsPage = (areaIndex) => {
-        if (mDrag.current) {
+        if (drag.current) {
             // e.stopPropagation();
-            mDrag.current = false;
+            drag.current = false;
             return;
         }
         // if (spots) {
@@ -153,14 +154,26 @@ const SpotListContainer = ({
     const onChangeKeyword = (keyword) => {
         changeKeyword(keyword);
     };
+    const onResetKeyword = () => {
+        resetKeyword();
+    };
 
     const onSearchSpot = () => {
+        const pageIndex = 1;
         searchSpot({ areaIndex, contentTypeId, keyword, pageIndex });
     };
 
     const onUpdateContentTypeId = (contentTypeId) => {
         updateContentTypeId(contentTypeId);
     };
+
+    const sliderSpots = [
+        { title: '광안리해수욕장', image: 'http://tong.visitkorea.or.kr/cms/resource/75/2648975_image2_1.jpg' },
+        { title: '강남', image: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg' },
+        { title: '한라산', image: 'http://tong.visitkorea.or.kr/cms/resource/99/2870099_image2_1.jpg' },
+        { title: '광안리해수욕장', image: 'http://tong.visitkorea.or.kr/cms/resource/75/2648975_image2_1.jpg' },
+        { title: '강남', image: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg' },
+    ];
 
     return (
         <SpotList
@@ -170,16 +183,17 @@ const SpotListContainer = ({
             detail={detail}
             spotData={spotData}
             keyword={keyword}
+            sliderSpots={sliderSpots}
             contentTypeList={contentTypeList}
             onFirstSpotsPage={onFirstSpotsPage}
             onUnloadDetailSpot={unloadDetailSpot}
             onToggleSpotLike={onToggleSpotLike}
             onOpenDetail={onOpenDetail}
             onChangeKeyword={onChangeKeyword}
+            onResetKeyword={onResetKeyword}
             onSearchSpot={onSearchSpot}
             onUpdateContentTypeId={onUpdateContentTypeId}
-            mDrag={mDrag}
-            sDrag={sDrag}
+            drag={drag}
         />
     );
 };
@@ -246,6 +260,9 @@ const mapDispatchToProps = (dispatch) => ({
     },
     changeKeyword: (keyword) => {
         dispatch(changeKeywordAction(keyword));
+    },
+    resetKeyword: () => {
+        dispatch(resetKeywordAction());
     },
     searchSpot: (areaIndex, contentTypeId, keyword, index) => {
         dispatch(searchSpotAction(areaIndex, contentTypeId, keyword, index));

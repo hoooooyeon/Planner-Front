@@ -4,6 +4,7 @@ import defaultImg from '../../lib/images/defaultImg.jpg';
 import SpotDetailModal from './SpotDetailModal';
 import { useEffect, useRef, useState } from 'react';
 import Slider from '../common/Slider';
+import SpotSlider from './SpotSlider';
 
 const SpotListBlock = styled.div`
     width: 100%;
@@ -154,7 +155,25 @@ const InvisibleInput = styled.input`
     display: none;
 `;
 
-const SpotList = ({ areas, spots, spotError, detail, spotData, keyword, contentTypeList, mDrag, sDrag, onFirstSpotsPage, onUnloadDetailSpot, onToggleSpotLike, onOpenDetail, onChangeKeyword, onSearchSpot, onUpdateContentTypeId }) => {
+const SpotList = ({
+    areas,
+    spots,
+    spotError,
+    detail,
+    spotData,
+    keyword,
+    sliderSpots,
+    contentTypeList,
+    drag,
+    onFirstSpotsPage,
+    onUnloadDetailSpot,
+    onToggleSpotLike,
+    onOpenDetail,
+    onChangeKeyword,
+    onResetKeyword,
+    onSearchSpot,
+    onUpdateContentTypeId,
+}) => {
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
         e.target.src = defaultImg;
@@ -330,6 +349,7 @@ const SpotList = ({ areas, spots, spotError, detail, spotData, keyword, contentT
     const { areaIndex } = spotData;
     return (
         <SpotListBlock>
+            <SpotSlider sliderSpots={sliderSpots} />
             <Container>
                 <MenuTitle>추천 여행지</MenuTitle>
                 <SearchBox>
@@ -349,7 +369,7 @@ const SpotList = ({ areas, spots, spotError, detail, spotData, keyword, contentT
                     </SearchForm>
                 </SearchBox>
                 {contentTypeList && (
-                    <Slider list={contentTypeList}>
+                    <Slider list={contentTypeList} drag={drag}>
                         {contentTypeList.map((c) => (
                             <AreaItem key={c.id} onClick={() => onUpdateContentTypeId(c.id)}>
                                 {c.label}
@@ -358,7 +378,7 @@ const SpotList = ({ areas, spots, spotError, detail, spotData, keyword, contentT
                     </Slider>
                 )}
                 {areas && (
-                    <Slider list={areas}>
+                    <Slider list={areas} drag={drag}>
                         {/* <HiddenBox ref={menuBoxRef}>
                     <Menu ref={menuRef}> */}
 
@@ -373,17 +393,17 @@ const SpotList = ({ areas, spots, spotError, detail, spotData, keyword, contentT
                 )}
 
                 {spots && (
-                    <Slider list={spots.list} scroll={true}>
+                    <Slider list={spots.list} scroll={true} drag={drag}>
                         {/* <HiddenBox ref={listBoxRef}>
-                             <List ref={listRef}> */}
+                            <List ref={listRef}> */}
                         {spots.list.map((spot) => (
                             <SpotItem spot={spot} key={spot.info.contentid} onChangeErrorImg={onChangeErrorImg} onOpenDetail={onOpenDetail} />
                         ))}
                         {/* </List>
-                        </HiddenBox> */}
-                        {/* <ScrollBox ref={scrollBoxRef}>
-                            <Scroll ref={scrollRef} />
-                        </ScrollBox> */}
+                        </HiddenBox>
+                         <ScrollBox ref={scrollBoxRef}>
+                             <Scroll ref={scrollRef} />
+                         </ScrollBox> */}
                     </Slider>
                 )}
                 {detail && <SpotDetailModal detail={detail} onChangeErrorImg={onChangeErrorImg} onUnloadDetailSpot={onUnloadDetailSpot} onToggleSpotLike={onToggleSpotLike} />}
