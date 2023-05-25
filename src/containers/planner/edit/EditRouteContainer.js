@@ -25,13 +25,14 @@ import {
 
 const EditRouteContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, plan, newPlanId, plannerData, loading, location } = useSelector(({ plannerReducer, loadingReducer }) => ({
+    const { planner, plannerError, plan, newPlanId, plannerData, loading, location, transList } = useSelector(({ plannerReducer, loadingReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         plan: plannerReducer.plan,
         plannerData: plannerReducer.plannerData,
         loading: loadingReducer.loading,
         location: plannerReducer.location,
+        transList: plannerReducer.transList,
     }));
 
     const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
@@ -175,6 +176,7 @@ const EditRouteContainer = () => {
             plan={plan}
             plannerData={plannerData}
             loading={loading}
+            transList={transList}
             onChangePlannerDateStart={onChangePlannerDateStart}
             onChangePlannerDateEnd={onChangePlannerDateEnd}
             onCreatePlan={onCreatePlan}

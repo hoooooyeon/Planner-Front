@@ -6,10 +6,11 @@ import spotImg from '../../../lib/images/spot.png';
 
 const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, plannerData, spots } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, plannerData, transList, spots } = useSelector(({ plannerReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         plannerData: plannerReducer.plannerData,
+        transList: plannerReducer.transList,
         spots: plannerReducer.spots,
     }));
 
@@ -45,8 +46,11 @@ const PlannerInfoContainer = () => {
         }
     }, [dispatch, plannerData]);
 
+    const drag = useRef(false);
     const onChangeCurPlanId = (planId) => {
-        dispatch(changeCurPlanIdAction(planId));
+        if (!drag.current) {
+            dispatch(changeCurPlanIdAction(planId));
+        }
     };
 
     const onToggleLikePlanner = () => {
@@ -142,7 +146,9 @@ const PlannerInfoContainer = () => {
         <PlannerInfo
             planner={planner}
             plannerData={plannerData}
+            transList={transList}
             mapRef={mapRef}
+            drag={drag}
             onDeletePlanner={onDeletePlanner}
             onToggleMemberModal={onToggleMemberModal}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}

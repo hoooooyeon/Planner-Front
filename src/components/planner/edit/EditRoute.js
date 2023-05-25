@@ -75,6 +75,8 @@ const EditRoute = ({
     planner,
     plan,
     plannerData,
+
+    transList,
     loading,
     onChangePlannerDateStart,
     onChangePlannerDateEnd,
@@ -151,7 +153,16 @@ const EditRoute = ({
                     onUpdateSubPlan={onUpdateSubPlan}
                     onChangePlans={onChangePlans}
                 />
-                <EditRouteList planner={planner} plan={plan} plannerData={plannerData} onUpdatePlan={onUpdatePlan} onDeleteLocation={onDeleteLocation} onChangeLocation={onChangeLocation} onUpdateTrans={onUpdateTrans} />
+                <EditRouteList
+                    planner={planner}
+                    plan={plan}
+                    plannerData={plannerData}
+                    transList={transList}
+                    onUpdatePlan={onUpdatePlan}
+                    onDeleteLocation={onDeleteLocation}
+                    onChangeLocation={onChangeLocation}
+                    onUpdateTrans={onUpdateTrans}
+                />
             </RouteBox>
         </EditRouteBlock>
     );

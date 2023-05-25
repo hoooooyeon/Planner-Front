@@ -100,7 +100,7 @@ const RouteLine = styled.div`
     top: -42px;
 `;
 
-const InfoRoute = ({ planner, plannerData, onChangeCurPlanId }) => {
+const InfoRoute = ({ planner, plannerData, transList, drag, onChangeCurPlanId }) => {
     const { plans } = { ...planner };
 
     const [isShadow, setIsShadow] = useState(false);
@@ -123,16 +123,7 @@ const InfoRoute = ({ planner, plannerData, onChangeCurPlanId }) => {
     //     };
     // });
 
-    const categoryList = [
-        { label: '비행기', value: faPlane },
-        { label: '기차', value: faTrainSubway },
-        { label: '버스', value: faBus },
-        { label: '택시', value: faTaxi },
-        { label: '오토바이', value: faBicycle },
-        { label: '도보', value: faPersonWalking },
-    ];
-    let a = [1];
-    let b = 1;
+    const transIconList = [faPlane, faTrainSubway, faBus, faTaxi, faBicycle, faPersonWalking];
     const locationIconList = [faLocationDot, faBed, faUtensils];
 
     if (!planner) {
@@ -140,7 +131,7 @@ const InfoRoute = ({ planner, plannerData, onChangeCurPlanId }) => {
     }
     return (
         <InfoRouteBlock>
-            <InfoDatination isShadow={isShadow} planner={planner} onChangeCurPlanId={onChangeCurPlanId} />
+            <InfoDatination isShadow={isShadow} planner={planner} drag={drag} onChangeCurPlanId={onChangeCurPlanId} />
             {plans &&
                 plans.map((p, i) => (
                     <RouteList ref={listRef} aria-current={p.planId === plannerData.planId ? 'plan' : null}>
@@ -150,8 +141,8 @@ const InfoRoute = ({ planner, plannerData, onChangeCurPlanId }) => {
                                 <RouteItem key={locationId}>
                                     <RouteLine />
                                     <TransItem>
-                                        <StyledFontAwesomeIcon icon={categoryList[locationTransportation - 1].value} />
-                                        {categoryList[locationTransportation - 1].label}
+                                        <StyledFontAwesomeIcon icon={transIconList[locationTransportation - 1]} />
+                                        {transList && transList[locationTransportation - 1].label}
                                     </TransItem>
                                     <SpotItem>
                                         <StyledFontAwesomeIcon icon={faBed} />

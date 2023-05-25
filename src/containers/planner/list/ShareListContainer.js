@@ -14,12 +14,12 @@ const ShareListContainer = () => {
     }));
 
     // 공유 플래너리스트 가져오기
-    const { sharePageIndex } = { ...plannerData };
+    const { accountId, sharePageIndex } = { ...plannerData };
     useEffect(() => {
-        if (account) {
+        if (accountId) {
             dispatch(loadSharePlannerListAction(sharePageIndex));
         }
-    }, [dispatch, sharePageIndex, account]);
+    }, [dispatch, sharePageIndex, accountId]);
 
     // 플래너 정보 가져오기
     const onLoadPlanner = (plannerId) => {

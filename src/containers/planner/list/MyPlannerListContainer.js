@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeCurPlannerIdAction, changeMyPageIndexAction, changePlannerAccountAction, createPlannerAction, loadMyPlannerListAction, loadPlannerAction } from '../../../modules/plannerModule';
+import { changeCurPlannerIdAction, changeMyPageIndexAction, changePlannerAccountAction, createPlannerAction, loadPlannerAction } from '../../../modules/plannerModule';
 import * as common from '../../../lib/utils/CommonFunction';
 import MyPlannerList from '../../../components/planner/list/MyPlannerList';
+import { loadMyPlannerListAction } from '../../../modules/ProfileModule';
 
 const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
-    const { myPlanners, plannerError, planner, account, plannerData } = useSelector(({ plannerReducer, authReducer }) => ({
+    const { myPlanners, plannerError, planner, account, plannerData } = useSelector(({ plannerReducer, authReducer, profileReducer }) => ({
         account: authReducer.account,
-        myPlanners: plannerReducer.myPlanners,
+        myPlanners: profileReducer.myPlanners,
         plannerError: plannerReducer.plannerError,
         planner: plannerReducer.planner,
         plannerData: plannerReducer.plannerData,

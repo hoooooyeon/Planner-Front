@@ -102,7 +102,7 @@ const initialState = {
         contentTypeId: 12,
     },
     likeList: null,
-    keyword: null,
+    keyword: '',
     contentTypeList: [
         { label: '관광지', id: 12 },
         { label: '문화시설', id: 14 },
@@ -294,7 +294,7 @@ function spotReducer(state = initialState, action) {
         case RESET_KEYWORD_TYPE:
             return {
                 ...state,
-                keyword: null,
+                keyword: '',
             };
 
         case SEARCH_SPOT_SUCCESS_TYPE:

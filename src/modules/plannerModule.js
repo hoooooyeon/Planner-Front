@@ -3,10 +3,6 @@ import * as profileAPI from '../lib/api/profileAPI';
 import { takeLatest, takeEvery } from 'redux-saga/effects';
 import createSaga from '../lib/createSaga';
 
-const LOAD_MY_PLANNER_LIST_TYPE = 'planner/LOAD_MY_PLANNER_LIST';
-const LOAD_MY_PLANNER_LIST_SUCCESS_TYPE = 'planner/LOAD_MY_PLANNER_LIST_SUCCESS';
-const LOAD_MY_PLANNER_LIST_FAILURE_TYPE = 'planner/LOAD_MY_PLANNER_LIST_FAILURE';
-
 const LOAD_SHARE_PLANNER_LIST_TYPE = 'planner/LOAD_SHARE_PLANNER_LIST';
 const LOAD_SHARE_PLANNER_LIST_SUCCESS_TYPE = 'planner/LOAD_SHARE_PLANNER_LIST_SUCCESS';
 const LOAD_SHARE_PLANNER_LIST_FAILURE_TYPE = 'planner/LOAD_SHARE_PLANNER_LIST_FAILURE';
@@ -125,7 +121,6 @@ export const createPlannerAction = ({ accountId, creator, title, planDateStart, 
     memberTypeId,
 });
 export const updatePlannerAction = ({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }) => ({ type: UPDATE_PLANNER_TYPE, plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
-export const loadMyPlannerListAction = (accountId, page) => ({ type: LOAD_MY_PLANNER_LIST_TYPE, accountId, page });
 export const loadSharePlannerListAction = (page) => ({ type: LOAD_SHARE_PLANNER_LIST_TYPE, page });
 export const loadPlannerAction = (plannerId) => ({ type: LOAD_PLANNER_TYPE, plannerId });
 export const changePlannerTitleAction = (title) => ({ type: CHANGE_PLANNER_TITLE_TYPE, title });
@@ -193,7 +188,6 @@ export const changeAreaCodeAction = (areaCode) => ({ type: CHANGE_AREA_CODE_TYPE
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
-const loadMyPlannerListSaga = createSaga(LOAD_MY_PLANNER_LIST_TYPE, profileAPI.loadMyPlannerList);
 const loadSharePlannerListSaga = createSaga(LOAD_SHARE_PLANNER_LIST_TYPE, plannerAPI.loadSharePlannerList);
 const loadPlannerSaga = createSaga(LOAD_PLANNER_TYPE, plannerAPI.loadPlanner);
 const deletePlannerSaga = createSaga(DELETE_PLANNER_TYPE, plannerAPI.deletePlanner);
@@ -213,7 +207,6 @@ const deleteLocationSaga = createSaga(DELETE_LOCATION_TYPE, plannerAPI.deleteLoc
 export function* plannerSaga() {
     yield takeLatest(CREATE_PLANNER_TYPE, createPlannerSaga);
     yield takeLatest(UPDATE_PLANNER_TYPE, updatePlannerSaga);
-    yield takeLatest(LOAD_MY_PLANNER_LIST_TYPE, loadMyPlannerListSaga);
     yield takeLatest(LOAD_SHARE_PLANNER_LIST_TYPE, loadSharePlannerListSaga);
     yield takeLatest(LOAD_PLANNER_TYPE, loadPlannerSaga);
     yield takeLatest(DELETE_PLANNER_TYPE, deletePlannerSaga);
@@ -232,7 +225,6 @@ export function* plannerSaga() {
 }
 
 const initialState = {
-    myPlanners: null,
     sharePlanners: null,
     planner: null,
     plannerError: null,
@@ -255,6 +247,18 @@ const initialState = {
         creator: null,
     },
     map: null,
+    transList: [
+        {
+            label: '비행기',
+            value: 1,
+        },
+        { label: '기차', value: 2 },
+        { label: '버스', value: 3 },
+        { label: '택시', value: 4 },
+        { label: '오토바이', value: 5 },
+        { label: '도보', value: 6 },
+    ],
+    // transList: ['비행기', '기차', '버스', '택시', '오토바이', '도보'],
 };
 const letsFormat = (d) => {
     const date = new Date(d);
@@ -263,16 +267,6 @@ const letsFormat = (d) => {
 
 function plannerReducer(state = initialState, action) {
     switch (action.type) {
-        case LOAD_MY_PLANNER_LIST_SUCCESS_TYPE:
-            return {
-                ...state,
-                myPlanners: {
-                    ...state.myPlanners,
-                    list: action.payload.data.list,
-                    totalCount: action.payload.data.totalCount,
-                    pageLastIndex: action.payload.data.pageLastIndex,
-                },
-            };
         case LOAD_SHARE_PLANNER_LIST_SUCCESS_TYPE:
             return {
                 ...state,
@@ -283,8 +277,12 @@ function plannerReducer(state = initialState, action) {
                     pageLastIndex: action.payload.data.pageLastIndex,
                 },
             };
-        case LOAD_MY_PLANNER_LIST_FAILURE_TYPE:
         case LOAD_SHARE_PLANNER_LIST_FAILURE_TYPE:
+            return {
+                ...state,
+                sharePlanners: null,
+                plannerError: action.payload.error,
+            };
         case LOAD_PLANNER_FAILURE_TYPE:
         case CREATE_PLANNER_FAILURE_TYPE:
         case UPDATE_PLANNER_FAILURE_TYPE:

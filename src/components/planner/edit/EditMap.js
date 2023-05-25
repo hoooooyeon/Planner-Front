@@ -219,7 +219,13 @@ const EditMap = ({ mapRef, keyword, onToggleMemberModal, onTogglePlannerInfoModa
                                     }}
                                 />
                                 <InvisibleInput type="text" />
-                                <SearchButton type="button" onClick={onSearchSpot}>
+                                <SearchButton
+                                    type="button"
+                                    onClick={() => {
+                                        onSearchSpot();
+                                        onSearch();
+                                    }}
+                                >
                                     검색
                                 </SearchButton>
                             </SearchForm>

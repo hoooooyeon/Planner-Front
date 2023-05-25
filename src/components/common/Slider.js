@@ -48,7 +48,7 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const Slider = ({ children, list, scroll, transition, page, onChangePageIndex, prevPage, nextPage }) => {
+const Slider = ({ children, list, scroll, transition, drag, page, onChangePageIndex, prevPage, nextPage }) => {
     const hiddenBoxRef = useRef();
     const listRef = useRef();
 
@@ -58,18 +58,19 @@ const Slider = ({ children, list, scroll, transition, page, onChangePageIndex, p
     const moveX = useRef(0);
     const sliderX = useRef(0);
 
-    const TOTAL_SLIDE = 4;
+    const TOTAL_SLIDE = list.length;
 
     const scrollBoxRef = useRef();
     const scrollRef = useRef();
     let scrollMoveX = 0;
 
-    const drag = useRef(false);
     // 슬라이드 마우스 다운
     const sliderStart = (e) => {
         isSlide = true;
         startX = e.clientX;
-        drag.current = false;
+        if (drag) {
+            drag.current = false;
+        }
         if (transition) {
             transition.current = true;
         }
@@ -98,7 +99,7 @@ const Slider = ({ children, list, scroll, transition, page, onChangePageIndex, p
                 scrollRef.current.style.transitionDuration = '0ms';
             }
 
-            if (!drag.current) {
+            if (drag) {
                 drag.current = true;
             }
             if (transition) {

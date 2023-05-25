@@ -17,6 +17,10 @@ const profileImageUpdateType = 'profile/PROFILE_IMAGE_UPDATE';
 const profileImageUpdateSuccessType = 'profile/PROFILE_IMAGE_UPDATE_SUCCESS';
 const profileImageUpdateFailureType = 'profile/PROFILE_IMAGE_UPDATE_FAILURE';
 
+const LOAD_MY_PLANNER_LIST_TYPE = 'planner/LOAD_MY_PLANNER_LIST';
+const LOAD_MY_PLANNER_LIST_SUCCESS_TYPE = 'planner/LOAD_MY_PLANNER_LIST_SUCCESS';
+const LOAD_MY_PLANNER_LIST_FAILURE_TYPE = 'planner/LOAD_MY_PLANNER_LIST_FAILURE';
+
 // 액션 함수
 export const initializeAction = () => ({
     type: initializeType,
@@ -50,14 +54,18 @@ export const profileImageUpdateAction = ({ accountId, formData }) => ({
     formData,
 });
 
+export const loadMyPlannerListAction = (accountId, page) => ({ type: LOAD_MY_PLANNER_LIST_TYPE, accountId, page });
+
 const profileLoad = createSaga(profileLoadType, profileAPI.profileLoad);
 const profileUpdate = createSaga(profileUpdateType, profileAPI.profileUpdate);
 const profileImageUpdate = createSaga(profileImageUpdateType, profileAPI.profileImageUpdate);
+const loadMyPlannerListSaga = createSaga(LOAD_MY_PLANNER_LIST_TYPE, profileAPI.loadMyPlannerList);
 
 export function* profileSaga() {
     yield takeLatest(profileLoadType, profileLoad);
     yield takeLatest(profileUpdateType, profileUpdate);
     yield takeLatest(profileImageUpdateType, profileImageUpdate);
+    yield takeLatest(LOAD_MY_PLANNER_LIST_TYPE, loadMyPlannerListSaga);
 }
 
 const initialState = {
@@ -68,6 +76,7 @@ const initialState = {
     profile: null,
     profileUpdate: false,
     profileError: null,
+    myPlanners: null,
 };
 
 function profileReducer(state = initialState, action) {
@@ -103,7 +112,22 @@ function profileReducer(state = initialState, action) {
         case profileImageUpdateFailureType: {
             return { ...state, profileUpdate: false, profileError: action.payload.message };
         }
-
+        case LOAD_MY_PLANNER_LIST_SUCCESS_TYPE:
+            return {
+                ...state,
+                myPlanners: {
+                    ...state.myPlanners,
+                    list: action.payload.data.list,
+                    totalCount: action.payload.data.totalCount,
+                    pageLastIndex: action.payload.data.pageLastIndex,
+                },
+            };
+        case LOAD_MY_PLANNER_LIST_FAILURE_TYPE:
+            return {
+                ...state,
+                myPlanners: null,
+                profileError: action.payload.message,
+            };
         default: {
             return state;
         }

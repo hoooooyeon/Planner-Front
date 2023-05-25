@@ -281,7 +281,7 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
         }
     };
 
-    if (!sharePlanners) {
+    if (!sharePlanners || plannerError) {
         return <div>Loading...</div>;
     }
     return (

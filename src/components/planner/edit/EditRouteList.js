@@ -110,29 +110,21 @@ const LineDiv = styled.div`
     height: 1rem;
 `;
 
-const EditRouteList = ({ planner, plan, plannerData, onUpdatePlan, onDeleteLocation, onChangeLocation, onUpdateTrans }) => {
+const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, onDeleteLocation, onChangeLocation, onUpdateTrans }) => {
     const { plans } = { ...planner };
 
-    const categoryList = [
-        {
-            label: '비행기',
-            value: 1,
-        },
-        { label: '기차', value: 2 },
-        { label: '버스', value: 3 },
-        { label: '택시', value: 4 },
-        { label: '오토바이', value: 5 },
-        { label: '도보', value: 6 },
-        // {
-        //     value: '비행기',
-        //     key: 'plane',
-        // },
-        // { value: '기차', key: 'train' },
-        // { value: '버스', key: 'bus' },
-        // { value: '택시', key: 'taxi' },
-        // { value: '오토바이', key: 'bicycle' },
-        // { value: '도보', key: 'walking' },
-    ];
+    // const categoryList = [
+    //     {
+    //         label: '비행기',
+    //         value: 1,
+    //     },
+    //     { label: '기차', value: 2 },
+    //     { label: '버스', value: 3 },
+    //     { label: '택시', value: 4 },
+    //     { label: '오토바이', value: 5 },
+    //     { label: '도보', value: 6 },
+
+    // ];
 
     const containerRef = useRef();
     const itemRef = useRef();
@@ -201,11 +193,12 @@ const EditRouteList = ({ planner, plan, plannerData, onUpdatePlan, onDeleteLocat
                                             {/* <option value="" disabled>
                                             선택
                                         </option> */}
-                                            {categoryList.map((c, i) => (
-                                                <option value={c.value} key={c.value}>
-                                                    {c.label}
-                                                </option>
-                                            ))}
+                                            {transList &&
+                                                transList.map((t) => (
+                                                    <option value={t.value} key={t.value}>
+                                                        {t.label}
+                                                    </option>
+                                                ))}
                                         </TransItem>
                                         <LineDiv />
                                         <SpotItem>
