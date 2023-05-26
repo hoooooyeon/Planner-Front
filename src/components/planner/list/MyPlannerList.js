@@ -122,7 +122,7 @@ const SimpleMap = styled.div`
     }
 `;
 
-const MyPlannerList = ({ myPlanners, onResetPlannerInfoForm, onCreatePlanner, onChangeCurPlannerId, prevPage, nextPage }) => {
+const MyPlannerList = ({ plannerError, myPlanners, onResetPlannerInfoForm, onCreatePlanner, onChangeCurPlannerId, prevPage, nextPage }) => {
     // const hiddenBoxRef = useRef();
     // const plannersRef = useRef();
 
@@ -212,9 +212,9 @@ const MyPlannerList = ({ myPlanners, onResetPlannerInfoForm, onCreatePlanner, on
             history.push('/PlannerInfo');
         }
     };
-    // if (!myPlanners) {
-    //     return <div>Loading...</div>;
-    // }
+    if (plannerError) {
+        return <div>Loading...</div>;
+    }
     return (
         <MyPlannerListBlock>
             <Container>

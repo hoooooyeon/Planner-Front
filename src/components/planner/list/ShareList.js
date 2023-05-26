@@ -281,7 +281,7 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
         }
     };
 
-    if (!sharePlanners || plannerError) {
+    if (plannerError) {
         return <div>Loading...</div>;
     }
     return (
@@ -290,39 +290,43 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
                 <TitleBox>
                     <p>다른 이용자들의 플래너</p>
                 </TitleBox>
-                <Slider list={sharePlanners} scroll={true} transition={transition}>
-                    {/* <HiddenBox ref={hiddenBoxRef}>
+                {sharePlanners ? (
+                    <Slider list={sharePlanners} scroll={true} transition={transition}>
+                        {/* <HiddenBox ref={hiddenBoxRef}>
                     <Shares ref={listRef}> */}
-                    {sharePlanners.list &&
-                        sharePlanners.list.map((p) => (
-                            // sharePlanners.slice(block, block + limit).map((p) => (
-                            <ShareItem
-                                key={p.plannerId}
-                                // drag={drag.current}
-                                onClick={() => {
-                                    // onLoadPlanner(p.plannerId);
-                                    onChangeCurPlannerId(p.plannerId);
-                                    allowTransition();
-                                }}
-                            >
-                                {/* <Link to="/PlannerInfo"> */}
-                                <SimpleMap />
-                                <InfoBox>
-                                    <Name>{p.title}</Name>
-                                    <Date>
-                                        {p.planDateStart} ~ {p.planDateEnd}
-                                        {/* {new Date(planner.planDateStart).format('YYYY-MM-DD')} ~ {planner.planDateEnd} */}
-                                    </Date>
-                                </InfoBox>
-                                {/* </Link> */}
-                            </ShareItem>
-                        ))}
-                    {/* </Shares>
+                        {sharePlanners.list &&
+                            sharePlanners.list.map((p) => (
+                                // sharePlanners.slice(block, block + limit).map((p) => (
+                                <ShareItem
+                                    key={p.plannerId}
+                                    // drag={drag.current}
+                                    onClick={() => {
+                                        // onLoadPlanner(p.plannerId);
+                                        onChangeCurPlannerId(p.plannerId);
+                                        allowTransition();
+                                    }}
+                                >
+                                    {/* <Link to="/PlannerInfo"> */}
+                                    <SimpleMap />
+                                    <InfoBox>
+                                        <Name>{p.title}</Name>
+                                        <Date>
+                                            {p.planDateStart} ~ {p.planDateEnd}
+                                            {/* {new Date(planner.planDateStart).format('YYYY-MM-DD')} ~ {planner.planDateEnd} */}
+                                        </Date>
+                                    </InfoBox>
+                                    {/* </Link> */}
+                                </ShareItem>
+                            ))}
+                        {/* </Shares>
                 </HiddenBox> */}
-                    {/* <ScrollBox ref={scrollBoxRef}>
+                        {/* <ScrollBox ref={scrollBoxRef}>
                     <Scroll ref={scrollRef} />
                 </ScrollBox> */}
-                </Slider>
+                    </Slider>
+                ) : (
+                    <div>플래너가 없습니다.</div>
+                )}
             </Container>
         </ShareListBlock>
     );
