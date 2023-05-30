@@ -4,8 +4,8 @@ export const writeReview = ({ plannerId, title, content, writer }) => {
     return client.post(`/api/reviews`, { plannerId, title, content, writer });
 };
 
-export const loadReviewList = () => {
-    return client.get(`/api/reviews`);
+export const loadReviewList = ({ pageIndex }) => {
+    return client.get(`/api/reviews?page=${pageIndex}`);
 };
 
 export const loadReview = ({ reviewId }) => {
@@ -26,4 +26,16 @@ export const fileUpload = ({ formData }) => {
             'Content-Type': 'multipart/form-data'
         }
     });
+};
+
+export const writeComment = (comment) => {
+    return client.post(`/api/reviews/${comment.reviewId}/comments`, comment);
+};
+
+export const updateComment = ({ reviewId, commentId, commentText }) => {
+    return client.patch(`/api/reviews/${reviewId}/comments/${commentId}`, { commentId, reviewId, content: commentText });
+}
+
+export const deleteComment = ({ reviewId, commentId }) => {
+    return client.delete(`/api/reviews/${reviewId}/comments/${commentId}`);
 };

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import tempImage from '../../images/temp.jpg';
 import Button from '../common/Button';
 import { Link, NavLink } from 'react-router-dom';
+import Pagination from '../common/Pagination';
 
 const ReviewButton = styled.button`
     background-color: transparent;
@@ -211,7 +212,7 @@ const Review = ({ reviewList, areaCodes, selectAreaCode, onSelectChange, onRevie
                     <ReviewListEmtpy>데이터가 없습니다.</ReviewListEmtpy>
                 )}
             </ReviewListBox>
-            <ReivewPageBox>
+            {/* <ReivewPageBox>
                 <PageButton>
                     <FontAwesomeIcon icon={faAngleLeft} />
                     뒤로
@@ -223,7 +224,7 @@ const Review = ({ reviewList, areaCodes, selectAreaCode, onSelectChange, onRevie
                     앞으로
                     <FontAwesomeIcon icon={faAngleRight} />
                 </PageButton>
-            </ReivewPageBox>
+            </ReivewPageBox> */}
         </MainContainer>
     );
 };
