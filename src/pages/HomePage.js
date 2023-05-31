@@ -1,19 +1,18 @@
-
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
-import Intro from '../components/home/Intro';
-import HomePlanner from '../components/home/HomePlanner';
-import HomeReview from '../components/home/HomeReview';
-import HomeSpot from '../components/home/HomeSpot';
+import Main from '../components/home/Main';
+import HomePlannerList from '../components/home/HomePlannerList';
+import HomeReviewList from '../components/home/HomeReviewList';
+import HomeSpotList from '../components/home/HomeSpotList';
 
 const HomePage = () => {
   return (
     <>
       <Header />
-      <Intro />
-      <HomePlanner />
-      <HomeReview />
-      <HomeSpot />
+      <Main />
+      <HomePlannerList />
+      <HomeReviewList />
+      <HomeSpotList />
       <Footer />
     </>
   );

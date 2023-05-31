@@ -1,16 +1,19 @@
 import styled from 'styled-components';
 
-const HomeSpotBlock = styled.div`
+const HomeSpotListBlock = styled.div`
   width: 100%;
   height: 100%;
-  margin: 50px auto;
+  margin: 0;
+  padding: 0;
+  background-color: white;
 `;
 
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  margin: 0 auto;
-  @media all and (min-width: 768px) {
+  margin: 0;
+  padding: 5rem 0;
+  /* @media all and (min-width: 768px) {
     width: calc(100% - 40px);
     padding: 0 20px;
   }
@@ -20,32 +23,27 @@ const Container = styled.div`
   }
   @media all and (min-width: 1280px) {
     width: 1024px;
-  }
-  h3 {
-    margin-left: 20px;
-  }
+  } */
 `;
 
 const SpotList = styled.ul`
   list-style-type: none;
   height: 100%;
   margin: 0 auto;
-  padding: 0 20px;
+  /* padding: 0 20px; */
   display: inline-block;
-  width: calc(100% - 40px);
+  /* width: calc(100% - 40px); */
+  width: 100%;
+  padding: 0;
   @media all and (min-width: 1025px) {
-    width: 100%;
   }
 `;
 
 const SpotItem = styled.li`
-  
   float: left;
-  border-radius: 2px;
-  box-shadow: 3px 3px 7px 1px gray;
   /* padding: 0 6px 12px; */
-  margin: 0.5%;
-  width: 24%;
+  /* margin: 0.5%; */
+  width: 33.33%;
   position: relative;
   &:hover {
     cursor: pointer;
@@ -70,102 +68,84 @@ const Img = styled.img`
     height: 250px;
   }
 `;
-const Name = styled.div`
-  position: relative;
-  bottom: 0;
-  height: 35px;
-  line-height: 35px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding: 0 10px;
-  font-weight: bold;
-  background-color: white;
+
+const Header = styled.div`
+  text-align: center;
+  margin-bottom: 3rem;
 `;
 
-const HomeSpot = () => {
+const HomeSpotList = () => {
   return (
-    <HomeSpotBlock>
+    <HomeSpotListBlock>
       <Container>
-        <h3>여행지</h3>
+        <Header>
+          <h3>여행지 리스트</h3>
+        </Header>
         <SpotList>
           <SpotItem>
             <ImgBox>
               <Img />
             </ImgBox>
-            <Name>title</Name>
           </SpotItem>
           <SpotItem>
             <ImgBox>
               <Img />
             </ImgBox>
-            <Name>title</Name>
           </SpotItem>
           <SpotItem>
             <ImgBox>
               <Img />
             </ImgBox>
-            <Name>title</Name>
           </SpotItem>
           <SpotItem>
             <ImgBox>
               <Img />
             </ImgBox>
-            <Name>title</Name>
           </SpotItem>
           <SpotItem>
             <ImgBox>
               <Img />
             </ImgBox>
-            <Name>title</Name>
           </SpotItem>
           <SpotItem>
             <ImgBox>
               <Img />
             </ImgBox>
-            <Name>title</Name>
           </SpotItem>
           <SpotItem>
             <ImgBox>
               <Img />
             </ImgBox>
-            <Name>title</Name>
           </SpotItem>
           <SpotItem>
             <ImgBox>
               <Img />
             </ImgBox>
-            <Name>title</Name>
           </SpotItem>
           <SpotItem>
             <ImgBox>
               <Img />
             </ImgBox>
-            <Name>title</Name>
           </SpotItem>
           <SpotItem>
             <ImgBox>
               <Img />
             </ImgBox>
-            <Name>title</Name>
           </SpotItem>
           <SpotItem>
             <ImgBox>
               <Img />
             </ImgBox>
-            <Name>title</Name>
           </SpotItem>
-
           <SpotItem>
             <ImgBox>
               <Img />
             </ImgBox>
-            <Name>title</Name>
           </SpotItem>
         </SpotList>
       </Container>
-    </HomeSpotBlock>
+    </HomeSpotListBlock>
   );
 };
 
-export default HomeSpot;
+export default HomeSpotList;

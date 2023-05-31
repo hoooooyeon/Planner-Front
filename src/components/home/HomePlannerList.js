@@ -1,29 +1,36 @@
 import styled from 'styled-components';
 
-const HomePlannerBlock = styled.div`
+const HomePlannerListBlock = styled.div`
   width: 100%;
   height: 100%;
-  margin: 50px auto;
+  margin: 0;
+  padding: 0;
+  background-color: white;
 `;
 
 const Container = styled.div`
   width: 100%;
   height: 100%;
   margin: 0 auto;
+  padding: 8rem 0;
+
   @media all and (min-width: 768px) {
     width: calc(100% - 40px);
-    padding: 0 20px;
+    /* padding: 0 20px; */
   }
   @media all and (min-width: 960px) {
     width: 930px;
-    padding: 0;
+    /* padding: 0; */
   }
   @media all and (min-width: 1280px) {
     width: 1024px;
   }
-  h3 {
-    margin-left: 20px;
-  }
+`;
+
+const Header = styled.div`
+  /* margin-left: 20px; */
+  text-align: center;
+  margin-bottom: 3rem;
 `;
 
 const PlannerList = styled.ul`
@@ -92,11 +99,14 @@ const Date = styled.p`
   }
 `;
 
-const HomePlanner = () => {
+const HomePlannerList = () => {
   return (
-    <HomePlannerBlock>
+    <HomePlannerListBlock>
       <Container>
-        <h3>사용자들의 플래너</h3>
+        <Header>
+          <h3>다른 이용자들의 플래너</h3>
+          <p>먼저 여행을 다녀온 이용자들의 플래너를 살펴보세요.</p>
+        </Header>
         <PlannerList>
           <PlannerItem>
             <SimpleMap />
@@ -128,8 +138,8 @@ const HomePlanner = () => {
           </PlannerItem>
         </PlannerList>
       </Container>
-    </HomePlannerBlock>
+    </HomePlannerListBlock>
   );
 };
 
-export default HomePlanner;
+export default HomePlannerList;
