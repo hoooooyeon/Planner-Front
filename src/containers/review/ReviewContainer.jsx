@@ -3,12 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 import Review from '../../components/review/ReviewList';
 import { initializeReviewAction, loadReviewListAction } from '../../modules/reviewModule';
-import { QueryStringUtil } from '../../lib/utils/QueryStringUtil';
 
 const ReviewContainer = ({ history, location, match }) => {
     const dispatch = useDispatch();
-    const queryStringInfo = QueryStringUtil.seperate(location.search);
-    // const page = queryStringInfo.page || 1;
     const { reviewList, page, status } = useSelector(({ reviewReducer }) => ({
         reviewList: reviewReducer.reviewList,
         page: reviewReducer.page,

@@ -4,6 +4,7 @@ import * as reviewAPI from '../lib/api/reviewAPI';
 
 // 액션 타입
 const INITIALIZE_REVIEW_TYPE = 'review/INITAILIZE'
+const INITIALIZE_PROPERTY_TYPE = 'review/INITIALIZE_PORPERTY';
 const LOAD_REVIEW_LIST_TYPE = 'review/LOAD_REVIEWLIST';
 const LOAD_REVIEW_LIST_SUCCESS_TYPE = 'review/LOAD_REVIEWLIST_SUCCESS';
 const LOAD_REVIEW_LIST_FAILURE_TYPE = 'review/LOAD_REVIEWLIST_FAILURE';
@@ -36,8 +37,12 @@ const DELETE_COMMENT_SUCCESS_TYPE = 'reivew/DELETE_COMMENT_SUCCESS';
 const DELETE_COMMENT_FAILURE_TYPE = 'reivew/DELETE_COMMENT_FAILURE';
 
 // 액션
-export const initializeReviewAction = ({ property, value }) => ({
+export const initializeReviewAction = () => ({
     type: INITIALIZE_REVIEW_TYPE,
+});
+
+export const initializePropertyAction = ({ property, value }) => ({
+    type: INITIALIZE_PROPERTY_TYPE,
     property,
     value
 });
@@ -138,6 +143,7 @@ const initialState = {
     newFileList: [],
     newReviewId: null,
     newCommentId: null,
+    commentUpdate: false,
     page: 1,
     status: {
         state: null,
@@ -149,7 +155,9 @@ function reviewReducer(state = initialState, action) {
     switch (action.type) {
         case INITIALIZE_REVIEW_TYPE: {
             return { ...initialState };
-            //return { ...state, [action.property]: action.value || initialState[action.property] };
+        }
+        case INITIALIZE_PROPERTY_TYPE: {
+            return { ...state, [action.property]: action.value };
         }
         case LOAD_REVIEW_LIST_SUCCESS_TYPE: {
             return { ...state, reviewList: action.payload.data.list };
@@ -177,7 +185,7 @@ function reviewReducer(state = initialState, action) {
             return { ...state, newCommentId: action.payload.data };
         }
         case UPDATE_COMMENT_SUCCESS_TYPE: {
-            return { ...state, status: { state: action.payload.state, message: action.payload.message } };
+            return { ...state, commentUpdate: action.payload.state };
         }
         case DELETE_COMMENT_SUCCESS_TYPE: return state;
         case LOAD_REVIEW_LIST_FAILURE_TYPE:

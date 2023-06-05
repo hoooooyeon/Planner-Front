@@ -32,8 +32,8 @@ export const writeComment = (comment) => {
     return client.post(`/api/reviews/${comment.reviewId}/comments`, comment);
 };
 
-export const updateComment = ({ reviewId, commentId, commentText }) => {
-    return client.patch(`/api/reviews/${reviewId}/comments/${commentId}`, { commentId, reviewId, content: commentText });
+export const updateComment = ({ reviewId, commentId, content }) => {
+    return client.patch(`/api/reviews/${reviewId}/comments/${commentId}`, { commentId, reviewId, content });
 }
 
 export const deleteComment = ({ reviewId, commentId }) => {
