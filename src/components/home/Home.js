@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <HomeBlock>
       <Intro />
-      <PlannerList type="home" />
+      {/* <PlannerList type="home" /> */}
       {/* <ReviewList type="home" /> */}
       <SpotSlider home="true" />
     </HomeBlock>

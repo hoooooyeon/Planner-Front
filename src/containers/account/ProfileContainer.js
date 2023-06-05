@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Profile from '../../components/account/Profile';
-import { changeFieldAction, initializeAction, initializeErrorAction, profileImageUpdateAction, profileLoadAction, profileUpdateAction } from '../../modules/ProfileModule';
+import { changeFieldAction, initializeAction, initializeErrorAction, profileImageUpdateAction, profileLoadAction, profileUpdateAction } from '../../modules/profileModule';
 
 const ProfileContainer = () => {
     const dispatch = useDispatch();
