@@ -228,7 +228,7 @@ const MyPlannerList = ({ plannerError, myPlanners, onResetPlannerInfoForm, onCre
                 </TitleBox>
 
                 {myPlanners ? (
-                    <Slider list={myPlanners} transition={transition} page={true} prevPage={prevPage} nextPage={nextPage}>
+                    <Slider list={myPlanners.list} transition={transition} page={true} prevPage={prevPage} nextPage={nextPage}>
                         {/* <HiddenBox ref={hiddenBoxRef}>
                     <Planners ref={plannersRef}> */}
                         {myPlanners.list &&

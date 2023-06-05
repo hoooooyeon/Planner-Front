@@ -291,7 +291,7 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
                     <p>다른 이용자들의 플래너</p>
                 </TitleBox>
                 {sharePlanners ? (
-                    <Slider list={sharePlanners} scroll={true} transition={transition}>
+                    <Slider list={sharePlanners.list} scroll={true} transition={transition}>
                         {/* <HiddenBox ref={hiddenBoxRef}>
                     <Shares ref={listRef}> */}
                         {sharePlanners.list &&
