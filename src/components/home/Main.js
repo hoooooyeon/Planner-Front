@@ -10,13 +10,12 @@ const MainBlock = styled.div`
   height: 100%;
   margin: 0;
   padding: 0;
-  position: sticky;
-  top: 0;
-  z-index: -1;
-  /* overflow: hidden; */
+  position: relative;
+  background-color: rgb(250, 244, 235);
 `;
 
 const MainBox = styled.div`
+  z-index: 99;
   width: 100%;
   height: 100%;
   display: flex;
@@ -32,21 +31,26 @@ const MainBox = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+  @media all and (max-width: 479px) {
+    display: none;
+  }
 `;
 
 const Text = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  color: lightgray;
+  @media all and (max-width: 479px) {
+    display: none;
+  }
 `;
 
-const MainVideo = styled(ReactPlayer)``;
-
-const StyledLink = styled.a`
+const StyledLink = styled(Link)`
   text-decoration: none;
   margin-top: 60px;
+  color: white;
   &:hover {
     cursor: pointer;
   }
@@ -60,7 +64,7 @@ const Main = () => {
   const [isVideo, setIsVideo] = useState();
   useEffect(() => {
     const videoArr = ['/videos/intro_city.mp4', '/videos/intro_train.mp4', '/videos/intro_waterfall.mp4'];
-    let num = Math.round(Math.random() * (videoArr.length - 1));
+    const num = Math.round(Math.random() * (videoArr.length - 1));
 
     setIsVideo(videoArr[num]);
   }, []);
@@ -72,14 +76,13 @@ const Main = () => {
       <video  autoPlay muted loop>
         <source src="/videos/intro_city_night.mp4" type="videos/mp4" />
       </video> */}
-      <MainVideo playing muted loop url={isVideo} width="100%" height="100%" />
+      <ReactPlayer playing muted loop url={isVideo} width="100%" height="100%" />
+
       <MainBox>
         <Text>
           <p>모든 것이 봄 자체 한국 여행의 모든 것을 담았다.</p>
         </Text>
         <Title>여행 계획 플래너</Title>
-        <br />
-        <Title>한국 다봄</Title>
         <StyledLink to="/PlannerList">
           플래너 생성하러 가기
           <StyledFontAwesomeIcon icon={faChevronRight} />

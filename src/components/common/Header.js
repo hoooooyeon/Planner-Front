@@ -3,16 +3,14 @@ import { Link } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import palette from '../../lib/styles/palette';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
-// import SideNav from './sideNav';
+import SideNav from './SideNav';
 import { useState } from 'react';
 
 const HeaderBlock = styled.div`
-  /* width: 100%; */
   height: 75px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   position: fixed;
   top: 0;
@@ -20,21 +18,18 @@ const HeaderBlock = styled.div`
   right: 0;
   background-color: none;
   z-index: 999;
-  padding: 0 40px;
+  padding: 0;
   margin: 0;
   a {
     color: white;
     text-decoration: none;
+    font-weight: bold;
+    white-space: nowrap;
   }
   h1 {
     font-size: 1.2rem;
     font-weight: bold;
-    @media all and (min-width: 768px) {
-      font-size: 24px;
-    }
-    @media all and (min-width: 1025px) {
-      font-size: 25px;
-    }
+    white-space: nowrap;
   }
   ${(props) =>
     props.styled &&
@@ -44,6 +39,10 @@ const HeaderBlock = styled.div`
         color: black;
       }
     `}
+  @media all and (min-width: 768px) {
+    justify-content: space-between;
+    padding: 0 10rem;
+  }
 `;
 
 const MenuList = styled.ul`
@@ -55,42 +54,38 @@ const MenuList = styled.ul`
   li {
     font-size: 0.9rem;
     margin: 0 30px;
-    @media all and (min-width: 1025px) {
-      font-size: 1rem;
-    }
   }
 `;
 
 const AccountList = styled.ul`
-  display: flex;
   align-items: center;
   list-style: none;
+  display: none;
+  @media all and (min-width: 768px) {
+    display: flex;
+  }
   li {
-    font-size: 11px;
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
     margin: 0 8px;
-    @media all and (min-width: 768px) {
-      font-size: 12px;
-    }
-    @media all and (min-width: 1025px) {
-      font-size: 13px;
-    }
-    a {
-      /* color: gray; */
-    }
   }
 `;
 
 const Account = styled.div`
   display: flex;
   align-items: center;
-
   .user-img {
-    //background-color: skyblue;
     border-radius: 10px;
     margin-right: 10px;
     width: 40px;
     height: 40px;
   }
+`;
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+  margin-right: 10px;
+  font-size: 1.5rem;
 `;
 
 const Header = ({ account }) => {
@@ -137,7 +132,7 @@ const Header = ({ account }) => {
       ) : (
         <AccountList>
           <li>
-            <FontAwesomeIcon icon={faCircleUser} />
+            <StyledFontAwesomeIcon icon={faCircleUser} />
             <Link to="/Login">로그인</Link>
           </li>
           {/* <li>
@@ -145,7 +140,7 @@ const Header = ({ account }) => {
           </li> */}
         </AccountList>
       )}
-      {/* <SideNav /> */}
+      <SideNav />
     </HeaderBlock>
   );
 };
