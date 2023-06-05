@@ -10,7 +10,9 @@ export const loadingFinishAction = () => ({
     type: loadingFinishType
 });
 
-const initialState = {};
+const initialState = {
+    loading: false
+};
 
 function loadingReducer(state = initialState, action) {
     switch (action.type) {
