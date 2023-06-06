@@ -41,7 +41,10 @@ const HeaderBlock = styled.div`
     `}
   @media all and (min-width: 768px) {
     justify-content: space-between;
-    padding: 0 10rem;
+    padding: 0 9rem;
+  }
+  @media all and (min-width: 1200px) {
+    padding: 0 9rem;
   }
 `;
 

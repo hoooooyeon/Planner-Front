@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const HomeSpotListBlock = styled.div`
@@ -14,19 +13,7 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   margin: 0;
-  padding-top: 3rem;
-  padding-bottom: 8rem;
-  /* @media all and (min-width: 768px) {
-    width: calc(100% - 40px);
-    padding: 0 20px;
-  }
-  @media all and (min-width: 960px) {
-    width: 930px;
-    padding: 0;
-  }
-  @media all and (min-width: 1280px) {
-    width: 1024px;
-  } */
+  padding: 3rem 0 8rem;
 `;
 const Header = styled.div`
   text-align: center;
@@ -44,13 +31,13 @@ const SpotList = styled.ul`
   width: 100%;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  @media all and (min-width: 1025px) {
+  grid-template-columns: repeat(2, 1fr);
+  @media all and (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
   }
 `;
 
 const SpotItem = styled.li`
-  width: 100%;
   position: relative;
   &:hover {
     cursor: pointer;
@@ -72,7 +59,6 @@ const ImgOveray = styled.div`
     transform: translate(-50%, -50%);
     font-weight: bold;
     font-size: 0.8rem;
-    /* color: white; */
   }
 `;
 const Img = styled.img`
@@ -81,12 +67,6 @@ const Img = styled.img`
   border: none;
   margin: auto;
   display: block;
-  /* @media all and (min-width: 960px) {
-    height: 200px;
-  }
-  @media all and (min-width: 1280px) {
-    height: 250px;
-  } */
 `;
 
 const HomeSpotList = () => {
