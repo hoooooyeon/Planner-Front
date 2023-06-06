@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import palette from '../../lib/styles/palette';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
-import SideNav from './SideNav';
+import SideNav from './sideNav';
 import { useState } from 'react';
 
 const HeaderBlock = styled.div`
