@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
 import {
     addSpotLikeAction,
-    checkLikeListAction,
     cleanCurrentInfoAction,
     cleanLikeListAction,
     cleanSpotsAction,
@@ -18,6 +17,7 @@ import {
     updateBlockNumAction,
     updateDetailSpotAction,
     updatePageNumAction,
+    updateContentIdAction,
     updateSpotsLikeAction,
     changeKeywordAction,
     resetKeywordAction,
@@ -41,7 +41,6 @@ const SpotListContainer = ({
     updateAreaNum,
     updatePageNum,
     updateBlockNum,
-    checkLikeList,
     addSpotLike,
     removeSpotLike,
     unloadDetailSpot,
@@ -54,6 +53,7 @@ const SpotListContainer = ({
     changeKeyword,
     searchSpot,
     updateContentTypeId,
+    updateContentId,
     resetKeyword,
 }) => {
     const { areaIndex, pageIndex, contentTypeId } = spotData;
@@ -70,7 +70,7 @@ const SpotListContainer = ({
         if (areas) {
             loadSpots({ areaIndex, contentTypeId, pageIndex });
         }
-    }, [loadSpots, areaIndex, pageIndex, areas, contentTypeId]);
+    }, [loadSpots, areaIndex, pageIndex, areas, contentTypeId, spotData]);
 
     // 여행지 상세정보 모달 열기
     const drag = useRef(false);
@@ -79,9 +79,16 @@ const SpotListContainer = ({
             drag.current = false;
             return;
         }
-        loadDetailSpot(spot.info.contentid);
+        // loadDetailSpot(spot.contentid);
         updateDetailSpot(spot);
+        updateContentId(spot.contentid);
     };
+    useEffect(() => {
+        if (spotData.contentId) {
+            const { contentId } = spotData;
+            loadDetailSpot(contentId);
+        }
+    }, [loadDetailSpot, spotData]);
 
     // 여행지 첫페이지
     const onFirstSpotsPage = (areaIndex) => {
@@ -96,29 +103,6 @@ const SpotListContainer = ({
         updateBlockNum(0);
         // }
     };
-
-    // 사용자의 좋아요 여행지 비교
-    useEffect(() => {
-        if (spots && account) {
-            const { accountId } = account;
-            const contentIdArr = spots.list.map((spot) => {
-                return spot.info.contentid;
-            });
-            if (!likeList) {
-                // 여행지 좋아요 여부를 확인해 받아와 likeList에 넣는다.
-                checkLikeList(accountId, contentIdArr);
-            }
-        }
-    }, [spots, account, checkLikeList, updateSpotsLike, likeList]);
-
-    // loadspots시작 cleanspots loadSpots성공 checklikeList시작 성공 updatespotslike
-    // 여행지 좋아요 최신화
-    useEffect(() => {
-        if (spots && likeList) {
-            // 받아온 좋아요(likeList)를 여행지 데이터에 넣어준다.
-            updateSpotsLike(likeList);
-        }
-    }, [likeList, updateSpotsLike]);
 
     // 여행지 초기화
     useEffect(() => {
@@ -135,12 +119,13 @@ const SpotListContainer = ({
 
     // 여행지 좋아요 토글
     const onToggleSpotLike = (contentId) => {
-        const { like } = detail.info;
-        toggleDetailLike();
-        if (like === false) {
-            addSpotLike(contentId);
+        const { likeState } = detail;
+        // toggleDetailLike();
+
+        if (likeState === false) {
+            addSpotLike({ contentId });
         } else {
-            removeSpotLike(contentId);
+            removeSpotLike({ contentId });
         }
     };
 
@@ -225,6 +210,9 @@ const mapDispatchToProps = (dispatch) => ({
     updateBlockNum: (num) => {
         dispatch(updateBlockNumAction(num));
     },
+    updateContentId: (id) => {
+        dispatch(updateContentIdAction(id));
+    },
     loadDetailSpot: (id) => {
         dispatch(loadDetailSpotAction(id));
     },
@@ -233,9 +221,6 @@ const mapDispatchToProps = (dispatch) => ({
     },
     unloadDetailSpot: () => {
         dispatch(unloadDetailSpotAction());
-    },
-    checkLikeList: (accountId, spotId) => {
-        dispatch(checkLikeListAction(accountId, spotId));
     },
     addSpotLike: (spotId) => {
         dispatch(addSpotLikeAction(spotId));

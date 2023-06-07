@@ -397,7 +397,7 @@ const SpotList = ({
                         {/* <HiddenBox ref={listBoxRef}>
                             <List ref={listRef}> */}
                         {spots.list.map((spot) => (
-                            <SpotItem spot={spot} key={spot.info.contentid} onChangeErrorImg={onChangeErrorImg} onOpenDetail={onOpenDetail} />
+                            <SpotItem spot={spot} key={spot.contentid} onChangeErrorImg={onChangeErrorImg} onOpenDetail={onOpenDetail} />
                         ))}
                         {/* </List>
                         </HiddenBox>

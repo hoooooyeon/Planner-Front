@@ -15,18 +15,18 @@ export const loadDetailSpot = ({ id }) => {
     return client.get(`/api/spots/lists/${id}`);
 };
 // 여행지 좋아요 체크
-export const checkLikeList = ({ accountId, spotId }) => {
-    return client.get(`/api/users/likes/${accountId}/check?contentIds=${spotId}`);
-};
+// export const checkLikeList = ({ accountId, spotId }) => {
+//     return client.get(`/api/users/likes/${accountId}/check?contentIds=${spotId}`);
+// };
 
 // 여행지 좋아요 추가
-export const addSpotLike = ({ spotId }) => {
-    return client.post(`/api/spots/likes/${spotId}`);
+export const addSpotLike = ({ contentId }) => {
+    return client.post(`/api/spots/likes/${contentId}`, { contentId });
 };
 
 // 여행지 좋아요 삭제
-export const removeSpotLike = ({ spotId }) => {
-    return client.delete(`/api/spots/likes/${spotId}`);
+export const removeSpotLike = ({ contentId }) => {
+    return client.delete(`/api/spots/likes/${contentId}`, { contentId });
 };
 
 // 여행지 검색

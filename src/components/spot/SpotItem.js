@@ -76,7 +76,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 `;
 
 const SpotItem = ({ spot, onChangeErrorImg, onOpenDetail }) => {
-    const { title, firstimage, like } = spot.info;
+    const { title, firstimage, likeState } = spot;
 
     return (
         <SpotItemBlock
@@ -87,7 +87,7 @@ const SpotItem = ({ spot, onChangeErrorImg, onOpenDetail }) => {
             <ImgBox>
                 <Img src={firstimage} alt={title} onError={onChangeErrorImg} />
                 <IconBox>
-                    <StyledFontAwesomeIcon icon={faStar} like={like ? like.toString() : undefined} />
+                    <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
                 </IconBox>
             </ImgBox>
             <Name>{title}</Name>

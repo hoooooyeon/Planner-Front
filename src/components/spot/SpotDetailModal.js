@@ -91,7 +91,7 @@ const LikeBox = styled.div`
 `;
 
 const SpotDetailModal = ({ detail, onUnloadDetailSpot, onToggleSpotLike }) => {
-    const { title, firstimage, overview, contentid, likeCount, like } = detail.info;
+    const { title, firstimage, overview, contentid, likeCount, likeState } = detail;
 
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
@@ -124,7 +124,7 @@ const SpotDetailModal = ({ detail, onUnloadDetailSpot, onToggleSpotLike }) => {
                             <InfoHeader>
                                 <Title>{title}</Title>
                                 <LikeBox
-                                    like={like}
+                                    like={likeState}
                                     onClick={() => {
                                         onToggleSpotLike(contentid);
                                     }}
