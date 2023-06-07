@@ -108,6 +108,10 @@ const Date = styled.p`
         font-size: 0.7rem;
     }
 `;
+const Map = styled.div`
+    width: 100%;
+    height: 100%;
+`;
 
 const SimpleMap = styled.div`
     height: 14vw;
@@ -122,7 +126,7 @@ const SimpleMap = styled.div`
     }
 `;
 
-const MyPlannerList = ({ plannerError, myPlanners, onResetPlannerInfoForm, onCreatePlanner, onChangeCurPlannerId, prevPage, nextPage }) => {
+const MyPlannerList = ({ mapRef, plannerError, myPlanners, onResetPlannerInfoForm, onCreatePlanner, onChangeCurPlannerId, prevPage, nextPage }) => {
     // const hiddenBoxRef = useRef();
     // const plannersRef = useRef();
 
@@ -242,7 +246,8 @@ const MyPlannerList = ({ plannerError, myPlanners, onResetPlannerInfoForm, onCre
                                     }}
                                 >
                                     {/* <Link to="/PlannerInfo"> */}
-                                    <SimpleMap />
+
+                                    <Map ref={mapRef} />
                                     <InfoBox>
                                         <Name>{p.title}</Name>
                                         <Date>
