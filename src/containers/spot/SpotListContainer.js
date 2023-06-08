@@ -102,6 +102,8 @@ const SpotListContainer = ({
         updatePageNum(1);
         updateBlockNum(0);
         // }
+        resetKeyword();
+        setSearchResultText('');
     };
 
     // 여행지 초기화
@@ -143,21 +145,25 @@ const SpotListContainer = ({
         resetKeyword();
     };
 
+    const [searchResultText, setSearchResultText] = useState('');
     const onSearchSpot = () => {
         const pageIndex = 1;
         searchSpot({ areaIndex, contentTypeId, keyword, pageIndex });
+        setSearchResultText(keyword);
     };
 
     const onUpdateContentTypeId = (contentTypeId) => {
         updateContentTypeId(contentTypeId);
+        resetKeyword();
+        setSearchResultText('');
     };
 
     const sliderSpots = [
-        { title: '광안리해수욕장', image: 'http://tong.visitkorea.or.kr/cms/resource/75/2648975_image2_1.jpg' },
-        { title: '강남', image: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg' },
-        { title: '한라산', image: 'http://tong.visitkorea.or.kr/cms/resource/99/2870099_image2_1.jpg' },
-        { title: '광안리해수욕장', image: 'http://tong.visitkorea.or.kr/cms/resource/75/2648975_image2_1.jpg' },
-        { title: '강남', image: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg' },
+        { title: '광안리해수욕장', image: 'http://tong.visitkorea.or.kr/cms/resource/75/2648975_image2_1.jpg', overview: '(부산 관광지)' },
+        { title: '강남', image: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg', overview: '(서울 관광지)' },
+        { title: '한라산', image: 'http://tong.visitkorea.or.kr/cms/resource/99/2870099_image2_1.jpg', overview: '(제주도 관광지)' },
+        { title: '광안리해수욕장', image: 'http://tong.visitkorea.or.kr/cms/resource/75/2648975_image2_1.jpg', overview: '(부산 관광지)' },
+        { title: '강남', image: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg', overview: '(서울 관광지)' },
     ];
 
     return (
@@ -179,6 +185,7 @@ const SpotListContainer = ({
             onSearchSpot={onSearchSpot}
             onUpdateContentTypeId={onUpdateContentTypeId}
             drag={drag}
+            searchResultText={searchResultText}
         />
     );
 };

@@ -8,17 +8,15 @@ const HiddenBox = styled.div`
     z-index: 1;
 `;
 
-const List = styled.ul`
+const List = styled.div`
     width: 100%;
     height: 100%;
     margin: 0 auto;
-    padding: 0 15px;
     display: flex;
     ${(props) =>
         props.scroll &&
         css`
             width: 750px;
-            display: inline-block;
             @media all and (min-width: 768px) {
                 width: 100%;
             }

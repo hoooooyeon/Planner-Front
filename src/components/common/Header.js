@@ -17,7 +17,7 @@ const HeaderBlock = styled.div`
     top: 0;
     background-color: white;
     z-index: 999;
-    padding: 0 40px;
+    padding: 0 9rem;
     a {
         color: black;
         text-decoration: none;

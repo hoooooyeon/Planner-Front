@@ -8,9 +8,7 @@ const SpotItemBlock = styled.li`
     width: 200px;
     float: left;
     border-radius: 2px;
-    box-shadow: 3px 3px 7px 1px ${palette.gray[1]};
-    /* padding: 0 6px 12px; */
-    margin: 0.5%;
+    margin: 0.1%;
     position: relative;
     @media all and (min-width: 768px) {
         width: 24%;
@@ -26,43 +24,36 @@ const ImgBox = styled.div`
     margin: 0;
     overflow: hidden;
     position: relative;
-    /* height: 150px;
-
-    @media all and (min-width: 960px) {
-        height: 200px;
-    }
-    @media all and (min-width: 1280px) {
-        height: 250px;
-    } */
 `;
 
 const Img = styled.img`
     width: 100%;
-    height: 150px;
     border: none;
     margin: 0;
-    padding: 0;
     display: block;
     -webkit-user-drag: none;
-    @media all and (min-width: 960px) {
-        height: 200px;
+    object-fit: cover;
+    /* height: 150px; */
+    @media all and (min-width: 768px) {
+        /* height: 150px; */
     }
-    @media all and (min-width: 1280px) {
-        height: 250px;
+    @media all and (min-width: 1024px) {
+        /* height: 250px; */
     }
 `;
 
 const Name = styled.div`
-    position: relative;
-    bottom: 0;
-    height: 35px;
-    line-height: 35px;
+    height: 2rem;
+    line-height: 2rem;
+    padding: 0.1rem 0.5rem 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: 0 10px;
+    font-size: 0.8rem;
     font-weight: bold;
     background-color: white;
+    border: 0.1rem solid lightgray;
+    border-top: 0;
 `;
 
 const IconBox = styled.div`
