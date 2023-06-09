@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import palette from '../../lib/styles/palette';
 
 const SpotItemBlock = styled.li`
-    flex-shrink: 0;
     width: 200px;
     float: left;
-    border-radius: 2px;
-    margin: 0.1%;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    border: none;
+    margin: 0.5%;
     position: relative;
     @media all and (min-width: 768px) {
         width: 24%;
@@ -20,29 +20,30 @@ const SpotItemBlock = styled.li`
 
 const ImgBox = styled.div`
     background-color: lightgray;
-    padding: 0;
     margin: 0;
     overflow: hidden;
     position: relative;
+    padding-top: 75%;
+    width: 100%;
+    border-radius: 0.5rem 0.5rem 0 0;
 `;
 
 const Img = styled.img`
     width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
     border: none;
+    border-radius: 0.5rem 0.5rem 0 0;
     margin: 0;
     display: block;
     -webkit-user-drag: none;
     object-fit: cover;
-    /* height: 150px; */
-    @media all and (min-width: 768px) {
-        /* height: 150px; */
-    }
-    @media all and (min-width: 1024px) {
-        /* height: 250px; */
-    }
 `;
 
 const Name = styled.div`
+    text-align: center;
     height: 2rem;
     line-height: 2rem;
     padding: 0.1rem 0.5rem 0;
@@ -52,8 +53,8 @@ const Name = styled.div`
     font-size: 0.8rem;
     font-weight: bold;
     background-color: white;
-    border: 0.1rem solid lightgray;
     border-top: 0;
+    border-radius: 0 0 0.5rem 0.5rem;
 `;
 
 const IconBox = styled.div`

@@ -1,28 +1,28 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
 import {
     addSpotLikeAction,
-    cleanCurrentInfoAction,
-    cleanLikeListAction,
-    cleanSpotsAction,
+    resetSpotDataAction,
+    resetLikeListAction,
+    resetSpotsAction,
     loadAreasAction,
     loadDetailSpotAction,
     loadSpotsAction,
     removeSpotLikeAction,
     toggleDetailLikeAction,
     unloadDetailSpotAction,
-    updateAreaNumAction,
-    updateBlockNumAction,
-    updateDetailSpotAction,
-    updatePageNumAction,
-    updateContentIdAction,
-    updateSpotsLikeAction,
+    changeAreaIndexAction,
+    changeBlockIndexAction,
+    changeDetailSpotAction,
+    changePageIndexAction,
+    changeContentIdAction,
+    changeSpotsLikeAction,
     changeKeywordAction,
     resetKeywordAction,
     searchSpotAction,
-    updateContentTypeIdAction,
+    changeContentTypeIdAction,
 } from '../../modules/spotModule';
 
 const SpotListContainer = ({
@@ -38,22 +38,22 @@ const SpotListContainer = ({
     loadAreas,
     loadSpots,
     loadDetailSpot,
-    updateAreaNum,
-    updatePageNum,
-    updateBlockNum,
+    changeAreaIndex,
+    changePageIndex,
+    changeBlockIndex,
     addSpotLike,
     removeSpotLike,
     unloadDetailSpot,
-    updateSpotsLike,
-    cleanSpots,
-    cleanLikeList,
-    cleanCurrentInfo,
+    changeSpotsLike,
+    resetSpots,
+    resetLikeList,
+    resetSpotData,
     toggleDetailLike,
-    updateDetailSpot,
+    changeDetailSpot,
     changeKeyword,
     searchSpot,
-    updateContentTypeId,
-    updateContentId,
+    changeContentTypeId,
+    changeContentId,
     resetKeyword,
 }) => {
     const { areaIndex, pageIndex, contentTypeId } = spotData;
@@ -79,9 +79,8 @@ const SpotListContainer = ({
             drag.current = false;
             return;
         }
-        // loadDetailSpot(spot.contentid);
-        updateDetailSpot(spot);
-        updateContentId(spot.contentid);
+        changeDetailSpot(spot);
+        changeContentId(spot.contentid);
     };
     useEffect(() => {
         if (spotData.contentId) {
@@ -91,38 +90,37 @@ const SpotListContainer = ({
     }, [loadDetailSpot, spotData]);
 
     // 여행지 첫페이지
-    const onFirstSpotsPage = (areaIndex) => {
+    const onClickArea = (areaIndex) => {
         if (drag.current) {
-            // e.stopPropagation();
             drag.current = false;
             return;
         }
-        // if (spots) {
-        updateAreaNum(areaIndex);
-        updatePageNum(1);
-        updateBlockNum(0);
-        // }
+        changeAreaIndex(areaIndex);
+        changePageIndex(1);
+        // changeBlockIndex(0);
+
         resetKeyword();
         setSearchResultText('');
     };
 
     // 여행지 초기화
-    useEffect(() => {
-        cleanSpots();
-    }, [areaIndex, pageIndex, cleanSpots]);
+    // useEffect(() => {
+    //     resetSpots();
+    // resetLikeList();
+    // }, [areaIndex, pageIndex, resetSpots]);
 
     // 여행지 페이지에서 벗어날 때 정보 초기화
     useEffect(() => {
         return () => {
-            cleanSpots();
-            cleanCurrentInfo();
+            resetSpots();
+            // resetLikeList();
+            resetSpotData();
         };
-    }, [cleanCurrentInfo, cleanSpots]);
+    }, [resetSpotData, resetSpots, resetLikeList]);
 
     // 여행지 좋아요 토글
     const onToggleSpotLike = (contentId) => {
         const { likeState } = detail;
-        // toggleDetailLike();
 
         if (likeState === false) {
             addSpotLike({ contentId });
@@ -132,10 +130,10 @@ const SpotListContainer = ({
     };
 
     // 좋아요리스트 초기화
-    // 여행지 좋아요 토글 시, cleaning 후 updatespotslike
-    useEffect(() => {
-        cleanLikeList();
-    }, [cleanLikeList, detail]);
+    // 여행지 좋아요 토글 시, reseting 후 changespotslike
+    // useEffect(() => {
+    //     resetLikeList();
+    // }, [resetLikeList, detail]);
 
     // 여행지 검색할 키워드 타이핑
     const onChangeKeyword = (keyword) => {
@@ -152,8 +150,8 @@ const SpotListContainer = ({
         setSearchResultText(keyword);
     };
 
-    const onUpdateContentTypeId = (contentTypeId) => {
-        updateContentTypeId(contentTypeId);
+    const onChangeContentTypeId = (contentTypeId) => {
+        changeContentTypeId(contentTypeId);
         resetKeyword();
         setSearchResultText('');
     };
@@ -176,14 +174,14 @@ const SpotListContainer = ({
             keyword={keyword}
             sliderSpots={sliderSpots}
             contentTypeList={contentTypeList}
-            onFirstSpotsPage={onFirstSpotsPage}
+            onClickArea={onClickArea}
             onUnloadDetailSpot={unloadDetailSpot}
             onToggleSpotLike={onToggleSpotLike}
             onOpenDetail={onOpenDetail}
             onChangeKeyword={onChangeKeyword}
             onResetKeyword={onResetKeyword}
             onSearchSpot={onSearchSpot}
-            onUpdateContentTypeId={onUpdateContentTypeId}
+            onChangeContentTypeId={onChangeContentTypeId}
             drag={drag}
             searchResultText={searchResultText}
         />
@@ -208,23 +206,23 @@ const mapDispatchToProps = (dispatch) => ({
     loadSpots: (areaIndex, page) => {
         dispatch(loadSpotsAction(areaIndex, page));
     },
-    updateAreaNum: (num) => {
-        dispatch(updateAreaNumAction(num));
+    changeAreaIndex: (index) => {
+        dispatch(changeAreaIndexAction(index));
     },
-    updatePageNum: (num) => {
-        dispatch(updatePageNumAction(num));
+    changePageIndex: (index) => {
+        dispatch(changePageIndexAction(index));
     },
-    updateBlockNum: (num) => {
-        dispatch(updateBlockNumAction(num));
+    changeBlockIndex: (index) => {
+        dispatch(changeBlockIndexAction(index));
     },
-    updateContentId: (id) => {
-        dispatch(updateContentIdAction(id));
+    changeContentId: (id) => {
+        dispatch(changeContentIdAction(id));
     },
     loadDetailSpot: (id) => {
         dispatch(loadDetailSpotAction(id));
     },
-    updateDetailSpot: (spotInfo) => {
-        dispatch(updateDetailSpotAction(spotInfo));
+    changeDetailSpot: (spotInfo) => {
+        dispatch(changeDetailSpotAction(spotInfo));
     },
     unloadDetailSpot: () => {
         dispatch(unloadDetailSpotAction());
@@ -235,20 +233,20 @@ const mapDispatchToProps = (dispatch) => ({
     removeSpotLike: (spotId) => {
         dispatch(removeSpotLikeAction(spotId));
     },
-    updateSpotsLike: (likes) => {
-        dispatch(updateSpotsLikeAction(likes));
+    changeSpotsLike: (likes) => {
+        dispatch(changeSpotsLikeAction(likes));
     },
     toggleDetailLike: () => {
         dispatch(toggleDetailLikeAction());
     },
-    cleanSpots: () => {
-        dispatch(cleanSpotsAction());
+    resetSpots: () => {
+        dispatch(resetSpotsAction());
     },
-    cleanLikeList: () => {
-        dispatch(cleanLikeListAction());
+    resetLikeList: () => {
+        dispatch(resetLikeListAction());
     },
-    cleanCurrentInfo: () => {
-        dispatch(cleanCurrentInfoAction());
+    resetSpotData: () => {
+        dispatch(resetSpotDataAction());
     },
     changeKeyword: (keyword) => {
         dispatch(changeKeywordAction(keyword));
@@ -259,8 +257,8 @@ const mapDispatchToProps = (dispatch) => ({
     searchSpot: (areaIndex, contentTypeId, keyword, index) => {
         dispatch(searchSpotAction(areaIndex, contentTypeId, keyword, index));
     },
-    updateContentTypeId: (contentTypeId) => {
-        dispatch(updateContentTypeIdAction(contentTypeId));
+    changeContentTypeId: (contentTypeId) => {
+        dispatch(changeContentTypeIdAction(contentTypeId));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);

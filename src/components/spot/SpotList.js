@@ -15,7 +15,6 @@ const SpotListBlock = styled.div`
 const Container = styled.div`
     margin: 3rem auto;
     padding: 1rem;
-
     @media all and (min-width: 768px) {
         padding: 0 9rem;
     }
@@ -29,8 +28,8 @@ const MenuTitle = styled.div`
 const List = styled.ul`
     margin: 0 auto;
     padding: 0;
-    /* display: inline-block; */
-    /* grid-template-columns: repeat(4, 1fr); */
+    width: 100%;
+    height: 100%;
 `;
 
 const FormDiv = styled.div`
@@ -57,7 +56,7 @@ const Form = styled.form`
     @media all and (max-width: 1023px) {
         flex-direction: column;
         justify-content: center;
-        align-items: flex-start;
+        /* align-items: flex-start; */
     }
 `;
 
@@ -170,14 +169,13 @@ const SpotList = ({
     sliderSpots,
     contentTypeList,
     drag,
-    onFirstSpotsPage,
+    onClickArea,
     onUnloadDetailSpot,
     onToggleSpotLike,
     onOpenDetail,
     onChangeKeyword,
-    onResetKeyword,
     onSearchSpot,
-    onUpdateContentTypeId,
+    onChangeContentTypeId,
     searchResultText,
 }) => {
     // 대체 이미지 넣기
@@ -202,7 +200,7 @@ const SpotList = ({
                                     required
                                     value={spotData.areaIndex}
                                     onChange={(e) => {
-                                        onFirstSpotsPage(e.target.value);
+                                        onClickArea(e.target.value);
                                     }}
                                 >
                                     {areas &&
@@ -219,7 +217,7 @@ const SpotList = ({
                                     required
                                     value={spotData.contentTypeId}
                                     onChange={(e) => {
-                                        onUpdateContentTypeId(e.target.value);
+                                        onChangeContentTypeId(e.target.value);
                                     }}
                                 >
                                     {contentTypeList &&

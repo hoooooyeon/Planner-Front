@@ -4,25 +4,27 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import { faBackward } from '@fortawesome/free-solid-svg-icons';
 import { faForward } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const PaginationBlock = styled.div`
     width: 100%;
-    margin: 50px auto;
+    margin: 3rem auto;
+    display: flex;
+    @media all and (max-width: 767px) {
+        padding: 0 1rem;
+    }
 `;
 
 const PaginationBox = styled.div`
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
     display: flex;
+    margin: 0 auto;
 `;
 
 const PageButton = styled.div`
     border-radius: 8px;
     padding: 8px;
     margin: 0;
-    font-size: 1rem;
+    font-size: 0.9rem;
     &:hover {
         background: lightblue;
         cursor: pointer;
@@ -43,28 +45,27 @@ const PageButton = styled.div`
     }
 `;
 
-const Pagination = ({ pageArr, onUpdatePageIndex, nextPage, prevPage, firstPage, lastPage }) => {
+const Pagination = ({ pageArr, onIndexPage, onNextPage, onPreviousPage, onFirstPage, onLastPage }) => {
     return (
         <PaginationBlock>
             <PaginationBox>
-                <PageButton onClick={firstPage}>
+                <PageButton onClick={onFirstPage}>
                     <FontAwesomeIcon icon={faBackward} />
                 </PageButton>
-                <PageButton onClick={prevPage}>
+                <PageButton onClick={onPreviousPage}>
                     <FontAwesomeIcon icon={faCaretLeft} />
                 </PageButton>
-                {pageArr &&
-                    pageArr.map((i) => {
-                        return (
-                            <PageButton key={i} onClick={() => onUpdatePageIndex(i)}>
-                                {i}
-                            </PageButton>
-                        );
-                    })}
-                <PageButton onClick={nextPage}>
+                {pageArr.map((i) => {
+                    return (
+                        <PageButton key={i} onClick={() => onIndexPage(i)}>
+                            {i}
+                        </PageButton>
+                    );
+                })}
+                <PageButton onClick={onNextPage}>
                     <FontAwesomeIcon icon={faCaretRight} />
                 </PageButton>
-                <PageButton onClick={lastPage}>
+                <PageButton onClick={onLastPage}>
                     <FontAwesomeIcon icon={faForward} />
                 </PageButton>
             </PaginationBox>

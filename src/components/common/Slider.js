@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { useHistory } from 'react-router';
 import styled, { css } from 'styled-components';
 
 const HiddenBox = styled.div`
@@ -16,7 +15,7 @@ const List = styled.div`
     ${(props) =>
         props.scroll &&
         css`
-            width: 750px;
+            width: 850px;
             @media all and (min-width: 768px) {
                 width: 100%;
             }
