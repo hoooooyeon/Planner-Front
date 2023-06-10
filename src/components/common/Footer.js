@@ -11,6 +11,7 @@ const FooterBlock = styled.div`
     position: relative;
     height: 300px;
     display: flex;
+    /* color: black; */
     flex-direction: column;
     justify-content: center;
     align-items: center;
