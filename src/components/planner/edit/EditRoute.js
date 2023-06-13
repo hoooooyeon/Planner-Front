@@ -1,26 +1,27 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import EditCalendar from './EditCalendar';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useEffect, useState } from 'react';
 import EditRouteList from './EditRouteList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
-
 const EditRouteBlock = styled.div`
-    width: 370px;
-    background-color: #f5f5f5;
-    height: 750px;
+    /* width: 400px; */
+    background-color: white;
+    height: 100%;
     float: left;
 `;
 
 const InfoDiv = styled.div`
+    background-color: #f5f5f5;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     margin-bottom: 1rem;
 `;
 
 const InfoBox = styled.div`
+    position: relative;
     padding: 1rem;
     display: flex;
     flex-direction: column;
@@ -29,22 +30,27 @@ const InfoBox = styled.div`
 `;
 
 const Logo = styled.div`
-    font-size: 2rem;
+    background-color: #f5f5f5;
+    font-size: 1.7rem;
     font-weight: bold;
     text-align: center;
-    padding: 0.5rem 0;
+    padding: 1rem 0;
 `;
 
 const Title = styled.div`
     font-weight: bold;
-    margin-bottom: 0.3rem;
+    margin: 2rem 0 0.3rem;
     font-size: 1.3rem;
+    /* width:  */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const Creator = styled.div`
     font-size: 0.9rem;
     color: gray;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 `;
 
 const Dates = styled.div`
@@ -58,7 +64,7 @@ const ShadowDiv = styled.div`
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     border-radius: 0.2rem 0.5rem 0.5rem 0.2rem;
     &:last-child {
-        margin-left: 1rem;
+        margin-left: 2rem;
     }
 `;
 
@@ -96,9 +102,10 @@ const StyledDatePicker = styled(DatePicker)`
     &:focus {
         outline: none;
     }
-    &:first-of-type {
-        cursor: pointer;
-    }
+`;
+
+const PointerStyledDatePicker = styled(StyledDatePicker)`
+    cursor: pointer;
 `;
 
 const SetIcon = styled(FontAwesomeIcon)`
@@ -114,7 +121,58 @@ const UpdatedDate = styled.div`
 `;
 
 const RouteBox = styled.div`
+    width: 400px;
     display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+    background-color: #f5f5f5;
+`;
+
+const MenuIcon = styled(FontAwesomeIcon)`
+    position: absolute;
+    top: 10px;
+    left: 378px;
+    font-size: 1.4rem;
+    cursor: pointer;
+`;
+
+const DropDown = styled.div`
+    display: none;
+    ${(props) =>
+        props.dropDown &&
+        css`
+            display: block;
+        `}
+`;
+
+const DropDownArrow = styled.div`
+    transform: rotate(45deg);
+    position: absolute;
+    top: 36px;
+    left: 380px;
+    width: 1rem;
+    height: 1rem;
+    z-index: 1001;
+    background-color: white;
+`;
+
+const DropDownMenu = styled.ul`
+    position: absolute;
+    line-height: 25px;
+    top: 30px;
+    width: 4.4rem;
+    left: 309px;
+    z-index: 1000;
+    border-radius: 0.5rem;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border: none;
+    padding: 0.5rem 1rem;
+    li {
+        font-size: 0.8rem;
+    }
 `;
 
 const EditRoute = ({
@@ -146,6 +204,22 @@ const EditRoute = ({
         setEndDate(new Date(planDateEnd));
     }, [planDateStart, planDateEnd]);
 
+    const [dropDown, setDropDown] = useState(false);
+
+    const onClickDropDown = () => {
+        setDropDown(!dropDown);
+    };
+    const onCloseDropDown = () => {
+        if (dropDown) {
+            setDropDown(false);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('click', onCloseDropDown);
+        return () => window.removeEventListener('click', onCloseDropDown);
+    });
+
     if (!planner) {
         return <div>Loading...</div>;
     }
@@ -154,6 +228,14 @@ const EditRoute = ({
             <InfoDiv>
                 <Logo>한국다봄</Logo>
                 <InfoBox>
+                    <MenuIcon icon={faEllipsis} onClick={onClickDropDown} />
+                    <DropDown dropDown={dropDown}>
+                        <DropDownArrow />
+                        <DropDownMenu>
+                            <li>정보 수정</li>
+                            <li>멤버 초대</li>
+                        </DropDownMenu>
+                    </DropDown>
                     <Title>{title}</Title>
                     <Creator>By {creator}</Creator>
                     <Dates>
@@ -161,7 +243,7 @@ const EditRoute = ({
                             <DateBox>
                                 <p>Start Date</p>
                                 <SetIcon icon={faGear} />
-                                <StyledDatePicker
+                                <PointerStyledDatePicker
                                     selected={startDate}
                                     minDate={new Date()}
                                     onChange={(date) => {

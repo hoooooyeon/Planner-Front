@@ -52,14 +52,14 @@ export function onDragStart(e, p, setIsDrag, dragTarget, posY, dragItem, dragIte
     dragItemIndex.current = getElementIndex(p, itemsArr, items);
 }
 // 드래그 이동
-export function onDragMove(e, isDrag, posY, containerRef, itemRef, dragItemIndex, dragTarget, setIsDrag, overTargetArr, itemsArr, dragItem, overItem, overItemIndex, setOverTargetArr) {
+export function onDragMove(e, isDrag, posY, containerRef, itemHeight, dragItemIndex, dragTarget, setIsDrag, overTargetArr, itemsArr, dragItem, overItem, overItemIndex, setOverTargetArr) {
     if (isDrag) {
         // 마우스 포인터가 이동한 거리
         const diffY = e.clientY - posY.current;
 
         // 드래그가 가능한 컨테이너 크기
         const containerHeight = containerRef.current.getBoundingClientRect().height;
-        const itemHeight = itemRef.current.getBoundingClientRect().height;
+        // const itemHeight = itemRef.current.getBoundingClientRect().height;
 
         // 드래그되는 모션
         e.currentTarget.style.top = `${Math.min(Math.max(-itemHeight * dragItemIndex.current, diffY), containerHeight - itemHeight * (dragItemIndex.current + 1))}px`;
@@ -73,7 +73,7 @@ export function onDragMove(e, isDrag, posY, containerRef, itemRef, dragItemIndex
     }
 }
 // 드래그한 요소가 드롭될 요소와 겹침
-export function onDragEnter(e, p, isDrag, overItem, overItemIndex, overTarget, dragTarget, overTargetArr, setOverTargetArr, dragItemIndex, itemRef, itemsArr, items) {
+export function onDragEnter(e, p, isDrag, overItem, overItemIndex, overTarget, dragTarget, overTargetArr, setOverTargetArr, dragItemIndex, itemHeight, itemsArr, items) {
     if (isDrag) {
         // 순서 이동 기능
         overItem.current = p;
@@ -93,9 +93,11 @@ export function onDragEnter(e, p, isDrag, overItem, overItemIndex, overTarget, d
 
             // 드래그 요소와 타겟 요소의 위치에 따른 위/아래 모션 결정
             if (dragItemIndex.current < overItemIndex.current) {
-                e.currentTarget.style.transform = `translateY(-${itemRef.current.getBoundingClientRect().height}px)`;
+                e.currentTarget.style.transform = `translateY(-${itemHeight}px)`;
+                // e.currentTarget.style.transform = `translateY(-${itemRef.current.getBoundingClientRect().height}px)`;
             } else {
-                e.currentTarget.style.transform = `translateY(${itemRef.current.getBoundingClientRect().height}px)`;
+                e.currentTarget.style.transform = `translateY(${itemHeight}px)`;
+                // e.currentTarget.style.transform = `translateY(${itemRef.current.getBoundingClientRect().height}px)`;
             }
 
             // 벌어진 요소가 다시 제자리로 이동

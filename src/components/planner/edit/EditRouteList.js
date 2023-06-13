@@ -3,26 +3,25 @@ import styled from 'styled-components';
 import * as common from '../../../lib/utils/CommonFunction';
 
 const EditRouteListBlock = styled.div`
+    /* width: 250px; */
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0.5rem;
-`;
-
-const RouteLine = styled.div`
-    background-color: #cdd9ac;
-    width: 0.2rem;
-    height: 153px;
-    position: absolute;
-    top: -10px;
+    padding: 0.3rem;
+    border-radius: 1rem;
+    background-color: rgb(110, 110, 110);
+    box-shadow: 0 0 5px rgb(120, 120, 120);
 `;
 
 const RouteList = styled.div`
     display: none;
     flex-direction: column;
     align-items: center;
-    padding: 0.5rem;
+    padding: 0.3rem;
     position: relative;
+    background-color: rgb(80, 80, 80);
+    border: 0.2rem inset rgb(100, 100, 100);
+    border-radius: 1rem;
     &[aria-current] {
         display: flex;
     }
@@ -33,16 +32,34 @@ const RouteItem = styled.div`
     flex-direction: column;
     align-items: center;
     position: relative;
-    &:nth-child(1) {
-        select {
+
+    background-color: rgb(110, 110, 110);
+    border: 0.2rem inset rgb(140, 140, 140);
+    border-radius: 1rem;
+    cursor: pointer;
+    /* padding: 0.2rem 0.5rem 0.5rem 0.2rem; */
+    padding: 0.5rem;
+    /* &:nth-child(1) {
+        & > div {
             display: none;
         }
-    }
+        /* select {
+            display: none;
+        } */
+    } */
+`;
+
+const RouteBox = styled.div`
+    background-color: rgb(110, 110, 110);
+    border: 0.2rem inset rgb(140, 140, 140);
+    border-radius: 1rem;
+    padding: 0.3rem;
 `;
 
 const TransItem = styled.select`
-    border-radius: 0.5rem;
-    border: 0.2rem solid #cdd9ac;
+    border: 0.2rem outset rgb(140, 140, 140);
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 1rem;
     width: 80px;
     height: 40px;
     z-index: 1;
@@ -58,15 +75,15 @@ const TransItem = styled.select`
 `;
 
 const SpotItem = styled.div`
-    border: 0.2rem solid #cdd9ac;
-    border-radius: 0.5rem;
+    border: 0.2rem outset rgb(140, 140, 140);
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    width: 290px;
+    width: 200px;
     height: 90px;
     /* margin: 0.5rem 0; */
-    background-color: white;
     z-index: 99;
 `;
 
@@ -104,7 +121,7 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-const LineDiv = styled.div`
+const RouteLine = styled.div`
     border-right: 0.2rem solid #cdd9ac;
     /* width: rem; */
     height: 1rem;
@@ -112,19 +129,6 @@ const LineDiv = styled.div`
 
 const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, onDeleteLocation, onChangeLocation, onUpdateTrans }) => {
     const { plans } = { ...planner };
-
-    // const categoryList = [
-    //     {
-    //         label: '비행기',
-    //         value: 1,
-    //     },
-    //     { label: '기차', value: 2 },
-    //     { label: '버스', value: 3 },
-    //     { label: '택시', value: 4 },
-    //     { label: '오토바이', value: 5 },
-    //     { label: '도보', value: 6 },
-
-    // ];
 
     const containerRef = useRef();
     const itemRef = useRef();
@@ -153,13 +157,7 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
         <EditRouteListBlock ref={containerRef} onDrop={(e) => common.onDrop(e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, plans)} onDragOver={(e) => common.onDragOver(e)}>
             {plans &&
                 plans.map((p, i) => (
-                    <RouteList
-                        aria-current={p.planId === plannerData.planId ? 'plan' : null}
-                        key={i}
-                        // ref={containerRef}
-                        // onDrop={(e) => common.onDrop(e, isDrag, plansArr, dragItemIndex, overItemIndex, item, index, plans)}
-                        // onDragOver={(e) => common.onDragOver(e)}
-                    >
+                    <RouteList aria-current={p.planId === plannerData.planId ? 'plan' : null} key={i}>
                         {p.planLocations &&
                             p.planLocations.map((pl, i) => {
                                 const { locationId, locationName, locationImage, locationTransportation } = pl;
@@ -181,41 +179,44 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                             common.onDragEnter(e, pl, isDrag, overItem, overItemIndex, overTarget, dragTarget, overTargetArr, setOverTargetArr, dragItemIndex, itemRef, itemsArr, p.planLocations);
                                         }}
                                     >
-                                        <LineDiv />
                                         {/* <RouteLine /> */}
-                                        <TransItem
-                                            required
-                                            value={locationTransportation}
-                                            onChange={(e) => {
-                                                onUpdateTrans(e.target.value, pl);
-                                            }}
-                                        >
-                                            {/* <option value="" disabled>
+                                        <RouteBox>
+                                            <TransItem
+                                                required
+                                                value={locationTransportation}
+                                                onChange={(e) => {
+                                                    onUpdateTrans(e.target.value, pl);
+                                                }}
+                                            >
+                                                {/* <option value="" disabled>
                                             선택
                                         </option> */}
-                                            {transList &&
-                                                transList.map((t) => (
-                                                    <option value={t.value} key={t.value}>
-                                                        {t.label}
-                                                    </option>
-                                                ))}
-                                        </TransItem>
-                                        <LineDiv />
-                                        <SpotItem>
-                                            <Img
+                                                {transList &&
+                                                    transList.map((t) => (
+                                                        <option value={t.value} key={t.value}>
+                                                            {t.label}
+                                                        </option>
+                                                    ))}
+                                            </TransItem>
+                                        </RouteBox>
+                                        {/* <RouteLine /> */}
+                                        <RouteBox>
+                                            <SpotItem>
+                                                {/* <Img
                                                 src={locationImage}
                                                 alt={locationId}
                                                 // onError={onChangeErrorImg}
-                                            />
-                                            <Name>{locationName}</Name>
-                                            <Button
+                                            /> */}
+                                                <Name>{locationName}</Name>
+                                                {/* <Button
                                                 onClick={() => {
                                                     onDeleteLocation(locationId);
                                                 }}
                                             >
                                                 삭제
-                                            </Button>
-                                        </SpotItem>
+                                            </Button> */}
+                                            </SpotItem>
+                                        </RouteBox>
                                     </RouteItem>
                                 );
                             })}
