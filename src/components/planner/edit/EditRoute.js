@@ -124,7 +124,7 @@ const RouteBox = styled.div`
     width: 400px;
     display: flex;
     align-items: flex-start;
-    justify-content: space-around;
+    justify-content: flex-start;
     box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.1);
     padding: 0.5rem;
     background-color: #f5f5f5;
@@ -140,6 +140,7 @@ const MenuIcon = styled(FontAwesomeIcon)`
 
 const DropDown = styled.div`
     display: none;
+    position: relative;
     ${(props) =>
         props.dropDown &&
         css`
@@ -150,8 +151,8 @@ const DropDown = styled.div`
 const DropDownArrow = styled.div`
     transform: rotate(45deg);
     position: absolute;
-    top: 36px;
-    left: 380px;
+    top: 20px;
+    left: 363px;
     width: 1rem;
     height: 1rem;
     z-index: 1001;
@@ -161,9 +162,9 @@ const DropDownArrow = styled.div`
 const DropDownMenu = styled.ul`
     position: absolute;
     line-height: 25px;
-    top: 30px;
+    top: 11px;
     width: 4.4rem;
-    left: 309px;
+    left: 291px;
     z-index: 1000;
     border-radius: 0.5rem;
     background-color: white;

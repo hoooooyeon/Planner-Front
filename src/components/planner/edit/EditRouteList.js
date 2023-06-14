@@ -1,27 +1,27 @@
-import { useRef, useState } from 'react';
-import styled from 'styled-components';
+import { useEffect, useRef, useState } from 'react';
+import styled, { css } from 'styled-components';
 import * as common from '../../../lib/utils/CommonFunction';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBus } from '@fortawesome/free-solid-svg-icons'; // 버스
+import { faTaxi } from '@fortawesome/free-solid-svg-icons'; // 택시
+import { faPlane } from '@fortawesome/free-solid-svg-icons'; // 비행기
+import { faPersonWalking } from '@fortawesome/free-solid-svg-icons'; // 도보
+import { faBicycle } from '@fortawesome/free-solid-svg-icons'; // 자전거 or 오토바이
+import { faTrainSubway } from '@fortawesome/free-solid-svg-icons'; // 지하철 or 기차
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+
 const EditRouteListBlock = styled.div`
-    /* width: 250px; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0.3rem;
-    border-radius: 1rem;
-    background-color: rgb(110, 110, 110);
-    box-shadow: 0 0 5px rgb(120, 120, 120);
+    /* padding: 0.5rem; */
+    margin-left: 1rem;
 `;
 
 const RouteList = styled.div`
     display: none;
     flex-direction: column;
     align-items: center;
-    padding: 0.3rem;
     position: relative;
-    background-color: rgb(80, 80, 80);
-    border: 0.2rem inset rgb(100, 100, 100);
-    border-radius: 1rem;
     &[aria-current] {
         display: flex;
     }
@@ -32,93 +32,143 @@ const RouteItem = styled.div`
     flex-direction: column;
     align-items: center;
     position: relative;
-
-    background-color: rgb(110, 110, 110);
-    border: 0.2rem inset rgb(140, 140, 140);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     border-radius: 1rem;
     cursor: pointer;
-    /* padding: 0.2rem 0.5rem 0.5rem 0.2rem; */
-    padding: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 2rem 1.5rem 0.5rem 1.5rem;
+    &:hover {
+        background-color: rgb(240, 240, 240);
+    }
     /* &:nth-child(1) {
-        & > div {
+        select {
             display: none;
         }
-        /* select {
-            display: none;
-        } */
     } */
 `;
 
-const RouteBox = styled.div`
-    background-color: rgb(110, 110, 110);
-    border: 0.2rem inset rgb(140, 140, 140);
+const RouteBox = styled.div``;
+
+const TransItem = styled.div`
+    position: absolute;
+    top: 12px;
+
     border-radius: 1rem;
-    padding: 0.3rem;
+
+    width: 2.5rem;
+    height: 2.5rem;
+    z-index: 100;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
-const TransItem = styled.select`
-    border: 0.2rem outset rgb(140, 140, 140);
-    background-color: rgba(0, 0, 0, 0.3);
+const TransIcon = styled(FontAwesomeIcon)`
+    border-radius: 2rem;
+    padding: 0.3rem;
+    &:hover {
+        background-color: lightgray;
+    }
+`;
+
+const DropDown = styled.div`
+    display: none;
+    position: relative;
+    /* ${(props) =>
+        props.dropDown &&
+        css`
+            display: block;
+        `} */
+`;
+
+const DropDownMenu = styled.div`
+    display: flex;
+    position: absolute;
+    top: -48px;
+    left: 30px;
     border-radius: 1rem;
-    width: 80px;
-    height: 40px;
-    z-index: 1;
-    &:invalid {
-        color: lightgray;
-    }
-    &:focus {
-        outline: none;
-    }
-    option:disabled {
-        display: none;
-    }
+    padding: 0.1rem 0.5rem;
+    z-index: 101;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    align-items: center;
+    justify-content: space-around;
+`;
+const DropDownArrow = styled.div`
+    /* transform: rotate(45deg); */
+    position: absolute;
+    top: -21px;
+    left: 21px;
+    border-radius: 2rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    z-index: 103;
+    background-color: white;
 `;
 
 const SpotItem = styled.div`
-    border: 0.2rem outset rgb(140, 140, 140);
-    background-color: rgba(0, 0, 0, 0.3);
     border-radius: 1rem;
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    width: 200px;
-    height: 90px;
-    /* margin: 0.5rem 0; */
+
+    padding: 0.5rem;
+    width: 13rem;
+    height: 3.5rem;
+    background-color: white;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     z-index: 99;
 `;
 
 const Img = styled.img`
     border-radius: 5%;
-    border: 1px solid gray;
-    width: 80px;
-    height: 80px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    width: 3.5rem;
+    height: 3.5rem;
+`;
+
+const TextInfo = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-left: 0.5rem;
 `;
 
 const Name = styled.div`
-    width: 120px;
-    height: 2.4em;
-    overflow-y: auto;
+    width: 8rem;
+    height: 1rem;
+    overflow: hidden;
     white-space: wrap;
-    line-height: 1.2;
-    text-align: left;
-    word-wrap: break-word;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    -ms-overflow-style: none;
-    &::-webkit-scrollbar {
-        display: none;
-    }
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
 `;
 
-const Button = styled.button`
+const Address = styled.div`
+    width: 8rem;
+    height: 1rem;
+    overflow: hidden;
+    white-space: wrap;
+    font-size: 0.1rem;
+    color: lightgray;
+`;
+
+const DeleteButton = styled.div`
     border: none;
     border-radius: 0.5rem;
-    background-color: #9aad67;
-    color: white;
-    width: 4rem;
-    height: 2rem;
     cursor: pointer;
+    position: absolute;
+    top: 28px;
+    left: 235px;
+    z-index: 100;
+`;
+
+const DeleteIcon = styled(FontAwesomeIcon)`
+    font-size: 1.2rem;
+    background-color: white;
+    border-radius: 2rem;
+    color: rgb(150, 150, 150);
 `;
 
 const RouteLine = styled.div`
@@ -127,6 +177,16 @@ const RouteLine = styled.div`
     height: 1rem;
 `;
 
+const MoveIcon = styled(FontAwesomeIcon)`
+    z-index: 100;
+    position: absolute;
+    top: 50px;
+    left: 9px;
+    color: lightgray;
+`;
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+    /* margin-right: 0.5rem; */
+`;
 const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, onDeleteLocation, onChangeLocation, onUpdateTrans }) => {
     const { plans } = { ...planner };
 
@@ -149,6 +209,24 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
     const [overTargetArr, setOverTargetArr] = useState([]);
     const [isDrag, setIsDrag] = useState(false);
 
+    const transIconList = [faPlane, faTrainSubway, faBus, faTaxi, faBicycle, faPersonWalking];
+
+    const [hoveredItemId, setHoveredItemId] = useState(null);
+    const [dropDownItemId, setDropDownItemId] = useState(null);
+
+    const handleOpen = (setItemId, itemId) => {
+        setItemId(itemId);
+    };
+
+    const handleClose = (setItemId) => {
+        setItemId(null);
+    };
+
+    useEffect(() => {
+        window.addEventListener('click', handleClose(setDropDownItemId));
+        return () => window.removeEventListener('click', handleClose(setDropDownItemId));
+    }, [setDropDownItemId]);
+
     if (!planner) {
         return <div>Loading...</div>;
     }
@@ -156,11 +234,11 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
     return (
         <EditRouteListBlock ref={containerRef} onDrop={(e) => common.onDrop(e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, plans)} onDragOver={(e) => common.onDragOver(e)}>
             {plans &&
-                plans.map((p, i) => (
-                    <RouteList aria-current={p.planId === plannerData.planId ? 'plan' : null} key={i}>
+                plans.map((p, j) => (
+                    <RouteList aria-current={p.planId === plannerData.planId ? 'plan' : null} key={j}>
                         {p.planLocations &&
                             p.planLocations.map((pl, i) => {
-                                const { locationId, locationName, locationImage, locationTransportation } = pl;
+                                const { locationId, locationName, locationAddr, locationImage, locationTransportation } = pl;
                                 return (
                                     <RouteItem
                                         ref={itemRef}
@@ -178,45 +256,51 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                         onDragEnter={(e) => {
                                             common.onDragEnter(e, pl, isDrag, overItem, overItemIndex, overTarget, dragTarget, overTargetArr, setOverTargetArr, dragItemIndex, itemRef, itemsArr, p.planLocations);
                                         }}
+                                        onMouseEnter={() => handleOpen(setHoveredItemId, i)}
+                                        onMouseLeave={() => handleClose(setHoveredItemId)}
                                     >
-                                        {/* <RouteLine /> */}
-                                        <RouteBox>
-                                            <TransItem
-                                                required
-                                                value={locationTransportation}
-                                                onChange={(e) => {
-                                                    onUpdateTrans(e.target.value, pl);
-                                                }}
-                                            >
-                                                {/* <option value="" disabled>
-                                            선택
-                                        </option> */}
-                                                {transList &&
-                                                    transList.map((t) => (
-                                                        <option value={t.value} key={t.value}>
-                                                            {t.label}
-                                                        </option>
+                                        {hoveredItemId === i && <MoveIcon icon={faEllipsisVertical} />}
+                                        <TransItem
+                                            // onChange={(e) => {
+                                            //     onUpdateTrans(e.target.value, pl);
+                                            // }}
+                                            onClick={() => handleOpen(setDropDownItemId, i)}
+                                        >
+                                            <StyledFontAwesomeIcon icon={transIconList[locationTransportation - 1]} />
+
+                                            {/* {transList && transList[locationTransportation - 1].label} */}
+                                        </TransItem>
+                                        {dropDownItemId === i && (
+                                            <DropDown dropDown={() => handleClose(setDropDownItemId)}>
+                                                <DropDownArrow />
+                                                <DropDownMenu>
+                                                    {transIconList.map((_, i) => (
+                                                        <li>
+                                                            <TransIcon icon={transIconList[i]} />
+                                                        </li>
                                                     ))}
-                                            </TransItem>
-                                        </RouteBox>
-                                        {/* <RouteLine /> */}
-                                        <RouteBox>
-                                            <SpotItem>
-                                                {/* <Img
+                                                </DropDownMenu>
+                                            </DropDown>
+                                        )}
+                                        <SpotItem>
+                                            <Img
                                                 src={locationImage}
                                                 alt={locationId}
                                                 // onError={onChangeErrorImg}
-                                            /> */}
+                                            />
+                                            <TextInfo>
                                                 <Name>{locationName}</Name>
-                                                {/* <Button
-                                                onClick={() => {
-                                                    onDeleteLocation(locationId);
-                                                }}
-                                            >
-                                                삭제
-                                            </Button> */}
-                                            </SpotItem>
-                                        </RouteBox>
+
+                                                <Address>{locationAddr.split(' ')[0]}</Address>
+                                            </TextInfo>
+                                        </SpotItem>
+                                        <DeleteButton
+                                            onClick={() => {
+                                                onDeleteLocation(locationId);
+                                            }}
+                                        >
+                                            <DeleteIcon icon={faCircleXmark} />
+                                        </DeleteButton>
                                     </RouteItem>
                                 );
                             })}
