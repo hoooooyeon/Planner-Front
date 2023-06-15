@@ -13,8 +13,13 @@ import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 
 const EditRouteListBlock = styled.div`
-    /* padding: 0.5rem; */
-    margin-left: 1rem;
+    margin-left: 0.5rem;
+    height: 30.5rem;
+    overflow: auto;
+    border-radius: 1rem;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
 
 const RouteList = styled.div`
@@ -22,6 +27,7 @@ const RouteList = styled.div`
     flex-direction: column;
     align-items: center;
     position: relative;
+    padding: 0 0.5rem;
     &[aria-current] {
         display: flex;
     }
@@ -37,6 +43,7 @@ const RouteItem = styled.div`
     cursor: pointer;
     margin-bottom: 1rem;
     padding: 2rem 1.5rem 0.5rem 1.5rem;
+    z-index: 100;
     &:hover {
         background-color: rgb(240, 240, 240);
     }
@@ -46,8 +53,6 @@ const RouteItem = styled.div`
         }
     } */
 `;
-
-const RouteBox = styled.div``;
 
 const TransItem = styled.div`
     position: absolute;
@@ -74,40 +79,34 @@ const TransIcon = styled(FontAwesomeIcon)`
 `;
 
 const DropDown = styled.div`
-    display: none;
     position: relative;
-    /* ${(props) =>
-        props.dropDown &&
-        css`
-            display: block;
-        `} */
 `;
 
 const DropDownMenu = styled.div`
     display: flex;
     position: absolute;
-    top: -48px;
-    left: 30px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 103;
+    overflow: hidden;
     border-radius: 1rem;
-    padding: 0.1rem 0.5rem;
-    z-index: 101;
+    padding: 0.5rem;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
     background-color: white;
     align-items: center;
     justify-content: space-around;
-`;
-const DropDownArrow = styled.div`
-    /* transform: rotate(45deg); */
-    position: absolute;
-    top: -21px;
-    left: 21px;
-    border-radius: 2rem;
-    width: 0.5rem;
-    height: 0.5rem;
-    z-index: 103;
-    background-color: white;
-`;
+    @keyframes fade-in {
+        0% {
+            width: 3rem;
+        }
+        100% {
+            width: 8rem;
+        }
+    }
 
+    animation: fade-in 0.5s ease-in-out;
+`;
 const SpotItem = styled.div`
     border-radius: 1rem;
     display: flex;
@@ -171,16 +170,10 @@ const DeleteIcon = styled(FontAwesomeIcon)`
     color: rgb(150, 150, 150);
 `;
 
-const RouteLine = styled.div`
-    border-right: 0.2rem solid #cdd9ac;
-    /* width: rem; */
-    height: 1rem;
-`;
-
 const MoveIcon = styled(FontAwesomeIcon)`
     z-index: 100;
     position: absolute;
-    top: 50px;
+    top: 49px;
     left: 9px;
     color: lightgray;
 `;
@@ -211,21 +204,24 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
 
     const transIconList = [faPlane, faTrainSubway, faBus, faTaxi, faBicycle, faPersonWalking];
 
-    const [hoveredItemId, setHoveredItemId] = useState(null);
     const [dropDownItemId, setDropDownItemId] = useState(null);
 
-    const handleOpen = (setItemId, itemId) => {
-        setItemId(itemId);
+    const onOpenDropDown = (itemId) => {
+        setDropDownItemId(itemId);
     };
 
-    const handleClose = (setItemId) => {
-        setItemId(null);
+    const onCloseDropDown = () => {
+        if (dropDownItemId !== null) {
+            setDropDownItemId(null);
+        }
     };
 
     useEffect(() => {
-        window.addEventListener('click', handleClose(setDropDownItemId));
-        return () => window.removeEventListener('click', handleClose(setDropDownItemId));
-    }, [setDropDownItemId]);
+        window.addEventListener('click', onCloseDropDown);
+        return () => {
+            window.removeEventListener('click', onCloseDropDown);
+        };
+    });
 
     if (!planner) {
         return <div>Loading...</div>;
@@ -256,26 +252,20 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                         onDragEnter={(e) => {
                                             common.onDragEnter(e, pl, isDrag, overItem, overItemIndex, overTarget, dragTarget, overTargetArr, setOverTargetArr, dragItemIndex, itemRef, itemsArr, p.planLocations);
                                         }}
-                                        onMouseEnter={() => handleOpen(setHoveredItemId, i)}
-                                        onMouseLeave={() => handleClose(setHoveredItemId)}
                                     >
-                                        {hoveredItemId === i && <MoveIcon icon={faEllipsisVertical} />}
-                                        <TransItem
-                                            // onChange={(e) => {
-                                            //     onUpdateTrans(e.target.value, pl);
-                                            // }}
-                                            onClick={() => handleOpen(setDropDownItemId, i)}
-                                        >
+                                        <MoveIcon icon={faEllipsisVertical} />
+                                        <TransItem onClick={() => onOpenDropDown(i)}>
                                             <StyledFontAwesomeIcon icon={transIconList[locationTransportation - 1]} />
-
-                                            {/* {transList && transList[locationTransportation - 1].label} */}
                                         </TransItem>
                                         {dropDownItemId === i && (
-                                            <DropDown dropDown={() => handleClose(setDropDownItemId)}>
-                                                <DropDownArrow />
+                                            <DropDown>
                                                 <DropDownMenu>
-                                                    {transIconList.map((_, i) => (
-                                                        <li>
+                                                    {transList.map((t, i) => (
+                                                        <li
+                                                            onClick={() => {
+                                                                onUpdateTrans(t.value, pl);
+                                                            }}
+                                                        >
                                                             <TransIcon icon={transIconList[i]} />
                                                         </li>
                                                     ))}

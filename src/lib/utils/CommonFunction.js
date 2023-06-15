@@ -38,11 +38,11 @@ export function onDragStart(e, p, setIsDrag, dragTarget, posY, dragItem, dragIte
 
     // 드래그시 반투명 이미지 제거
     let img = new Image();
-    e.dataTransfer.setDragImage(img, 10, 10);
+    // e.dataTransfer.setDragImage(img, 10, 10);
 
     // 드래그되는 요소
     dragTarget.current = e.currentTarget;
-    dragTarget.current.style.zIndex = '100';
+    dragTarget.current.style.zIndex = '101';
 
     // 마우스 포인터 좌표
     posY.current = e.clientY;
@@ -58,11 +58,14 @@ export function onDragMove(e, isDrag, posY, containerRef, itemRef, dragItemIndex
         const diffY = e.clientY - posY.current;
 
         // 드래그가 가능한 컨테이너 크기
-        const containerHeight = containerRef.current.getBoundingClientRect().height;
-        const itemHeight = itemRef.current.getBoundingClientRect().height;
+        const containerHeight = containerRef.current.scrollHeight;
+        // const containerHeight = containerRef.current.getBoundingClientRect().height;
+
+        const computedStyle = getComputedStyle(itemRef.current);
+        const itemHeight = itemRef.current.getBoundingClientRect().height + parseInt(computedStyle.marginTop);
 
         // 드래그되는 모션
-        e.currentTarget.style.top = `${Math.min(Math.max(-itemHeight * dragItemIndex.current, diffY), containerHeight - itemHeight * (dragItemIndex.current + 1))}px`;
+        // e.currentTarget.style.top = `${Math.min(Math.max(-itemHeight * dragItemIndex.current, diffY), containerHeight - itemHeight * (dragItemIndex.current + 1))}px`;
 
         dragTarget.current.style.pointerEvents = 'none';
 
@@ -92,10 +95,13 @@ export function onDragEnter(e, p, isDrag, overItem, overItemIndex, overTarget, d
             }
 
             // 드래그 요소와 타겟 요소의 위치에 따른 위/아래 모션 결정
+            const computedStyle = getComputedStyle(itemRef.current);
+            const itemHeight = itemRef.current.getBoundingClientRect().height + parseInt(computedStyle.marginTop);
+
             if (dragItemIndex.current < overItemIndex.current) {
-                e.currentTarget.style.transform = `translateY(-${itemRef.current.getBoundingClientRect().height}px)`;
+                e.currentTarget.style.transform = `translateY(-${itemHeight}px)`;
             } else {
-                e.currentTarget.style.transform = `translateY(${itemRef.current.getBoundingClientRect().height}px)`;
+                e.currentTarget.style.transform = `translateY(${itemHeight}px)`;
             }
 
             // 벌어진 요소가 다시 제자리로 이동
@@ -115,7 +121,7 @@ export function onDragEnd(setIsDrag, overTargetArr, dragTarget, itemsArr, dragIt
     // 드롭시 벌어진 요소 다시 제자리로 이동
     overTargetArr.forEach((item) => (item.style.transform = `translateY(${0}px)`));
 
-    dragTarget.current.style.zIndex = '0';
+    dragTarget.current.style.zIndex = '100';
     dragTarget.current.style.pointerEvents = 'auto';
 
     // 드래그된 요소 다시 제자리로 이동

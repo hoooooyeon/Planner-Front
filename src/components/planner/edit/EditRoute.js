@@ -121,7 +121,7 @@ const UpdatedDate = styled.div`
 `;
 
 const RouteBox = styled.div`
-    width: 400px;
+    /* width: 400px; */
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
@@ -133,7 +133,7 @@ const RouteBox = styled.div`
 const MenuIcon = styled(FontAwesomeIcon)`
     position: absolute;
     top: 10px;
-    left: 378px;
+    left: 356px;
     font-size: 1.4rem;
     cursor: pointer;
 `;
@@ -152,7 +152,7 @@ const DropDownArrow = styled.div`
     transform: rotate(45deg);
     position: absolute;
     top: 20px;
-    left: 363px;
+    left: 342px;
     width: 1rem;
     height: 1rem;
     z-index: 1001;
@@ -163,8 +163,8 @@ const DropDownMenu = styled.ul`
     position: absolute;
     line-height: 25px;
     top: 11px;
+    left: 270px;
     width: 4.4rem;
-    left: 291px;
     z-index: 1000;
     border-radius: 0.5rem;
     background-color: white;
@@ -227,7 +227,7 @@ const EditRoute = ({
     return (
         <EditRouteBlock>
             <InfoDiv>
-                <Logo>한국다봄</Logo>
+                {/* <Logo>한국다봄</Logo> */}
                 <InfoBox>
                     <MenuIcon icon={faEllipsis} onClick={onClickDropDown} />
                     <DropDown dropDown={dropDown}>

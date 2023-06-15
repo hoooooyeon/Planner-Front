@@ -13,42 +13,44 @@ const FlexDiv = styled.div`
     background-color: rgb(240, 240, 240);
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
     padding: 0.5rem;
+    width: 4rem;
+    height: 29.5rem;
 `;
 
 const EditCalendarBlock = styled.div`
-    /* background-color: rgb(80, 80, 80);
-    border: 0.2rem inset rgb(100, 100, 100); */
-
     border-radius: 1rem;
     z-index: 1;
     position: relative;
     padding: 0.5rem;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     background-color: rgb(235, 235, 235);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    overflow: auto;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
 
 const ItemBox = styled.div`
+    box-sizing: border-box;
     width: 3rem;
     height: 3rem;
     position: relative;
-    /* background-color: rgb(200, 200, 200); */
-    /* border: 0.2rem inset rgb(140, 140, 140); */
     border-radius: 1rem;
     cursor: pointer;
-    /* padding: 0.3rem 0.5rem 0.5rem 0.2rem; */
-    /* padding: 0.3rem; */
     border: none;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     & + & {
-        margin: 0.3rem 0;
+        margin-top: 0.5rem;
     }
     &:hover {
-        transition: transform 0.3s;
-        transform: scale(1.05);
+        /* transition: transform 0.3s;
+        transform: scale(1.05); */
     }
     &[aria-current] {
-        width: 3.2rem;
-        height: 3.2rem;
         box-shadow: 0 0 10px rgb(150, 150, 150);
         background-color: rgb(220, 220, 220);
     }
@@ -59,8 +61,6 @@ const Calendar = styled.div`
     height: 100%;
     text-align: center;
     line-height: 3rem;
-    /* border: 0.2rem outset rgb(140, 140, 140); */
-    /* background-color: rgba(0, 0, 0, 0.3); */
     background-color: white;
     border-radius: 1rem;
     font-size: 0.7rem;
@@ -75,9 +75,8 @@ const AddCal = styled(ItemBox)`
     display: flex;
     align-items: center;
     justify-content: center;
-    /* background-color: rgb(180, 180, 180); */
     border: none;
-
+    width: auto;
     box-shadow: 0 1px 4px rgb(100, 100, 100);
 `;
 
@@ -93,7 +92,6 @@ const DeleteButton = styled.div`
     top: -2px;
     left: 35px;
     border-radius: 2rem;
-    /* border: 0.2rem outset rgb(140, 140, 140); */
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
@@ -141,7 +139,6 @@ const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, 
     return (
         <FlexDiv>
             <AddCal
-                ref={itemRef}
                 onClick={() => {
                     onAddDate(planDateEnd);
                     onCreatePlan();
@@ -155,6 +152,7 @@ const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, 
                 {plans &&
                     plans.map((p, i) => (
                         <ItemBox
+                            ref={itemRef}
                             aria-current={p.planId === plannerData.planId ? 'date' : null}
                             onClick={() => {
                                 onChangeCurPlanId(p.planId);
