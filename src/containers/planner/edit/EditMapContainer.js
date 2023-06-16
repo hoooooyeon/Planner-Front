@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditMap from '../../../components/planner/edit/EditMap';
-import { changeAreaCodeAction, createMapAction, toggleMemberModalAction, togglePlannerInfoModalAction, updatePlanAction, updatePlannerAction } from '../../../modules/plannerModule';
+import { createMapAction, updatePlannerAction } from '../../../modules/plannerModule';
 import spotImg from '../../../lib/images/spot.png';
-import { changeKeywordAction, cleanCurrentInfoAction, loadAreasAction, loadSpotsAction, resetKeywordAction, searchSpotAction, updateAreaNumAction } from '../../../modules/spotModule';
+import { loadSpotsAction, resetSpotDataAction, changeAreaIndexAction } from '../../../modules/spotModule';
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
@@ -22,13 +22,6 @@ const EditMapContainer = () => {
     const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
     const onUpdatePlanner = () => {
         dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
-    };
-
-    const onToggleMemberModal = () => {
-        dispatch(toggleMemberModalAction());
-    };
-    const onTogglePlannerInfoModal = () => {
-        dispatch(togglePlannerInfoModalAction());
     };
 
     const mapRef = useRef(null);
@@ -73,7 +66,7 @@ const EditMapContainer = () => {
             let imageSize;
             let markerImage;
             for (let i = 0; i < spots.list.length; i++) {
-                const { title, mapx, mapy } = spots.list[i].info;
+                const { title, mapx, mapy } = spots.list[i];
 
                 // 마커가 표시될 위치입니다
                 markerPosition = new kakao.maps.LatLng(mapy, mapx);
@@ -344,7 +337,7 @@ const EditMapContainer = () => {
                     num = coordArr.findIndex((c) => c === minCoord);
                     return coordArr;
                 });
-                dispatch(updateAreaNumAction(areaArr[num].code));
+                dispatch(changeAreaIndexAction(areaArr[num].code));
             }
         }
     }, [centerCoord, dispatch, kakao.maps.LatLng, kakao.maps.Polyline, map]);
@@ -355,50 +348,11 @@ const EditMapContainer = () => {
         dispatch(loadSpotsAction({ areaIndex, contentTypeId, pageIndex }));
     }, [dispatch, areaIndex, contentTypeId, pageIndex]);
 
-    // 지역 리스트 로드
-    useEffect(() => {
-        dispatch(loadAreasAction());
-    }, [dispatch]);
-
-    // 지역 선택 함수
-    const onUpdateAreaNum = (num) => {
-        dispatch(updateAreaNumAction(num));
-    };
-
-    // 여행지 키워드 입력
-    const onChangeKeyword = (keyword) => {
-        dispatch(changeKeywordAction(keyword));
-    };
-
-    const onResetKeyword = () => {
-        dispatch(resetKeywordAction());
-    };
-    // 여행지 검색
-    const onSearchSpot = () => {
-        dispatch(searchSpotAction({ areaIndex, contentTypeId, keyword, pageIndex }));
-    };
-
     const onResetSpotData = () => {
-        dispatch(cleanCurrentInfoAction());
+        dispatch(resetSpotDataAction());
     };
 
-    return (
-        <EditMap
-            mapRef={mapRef}
-            planner={planner}
-            areas={areas}
-            spotData={spotData}
-            keyword={keyword}
-            onUpdatePlanner={onUpdatePlanner}
-            onToggleMemberModal={onToggleMemberModal}
-            onTogglePlannerInfoModal={onTogglePlannerInfoModal}
-            onUpdateAreaNum={onUpdateAreaNum}
-            onChangeKeyword={onChangeKeyword}
-            onResetKeyword={onResetKeyword}
-            onSearchSpot={onSearchSpot}
-            onResetSpotData={onResetSpotData}
-        />
-    );
+    return <EditMap mapRef={mapRef} planner={planner} areas={areas} spotData={spotData} keyword={keyword} onUpdatePlanner={onUpdatePlanner} onResetSpotData={onResetSpotData} />;
 };
 
 export default EditMapContainer;

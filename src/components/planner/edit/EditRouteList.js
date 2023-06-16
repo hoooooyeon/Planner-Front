@@ -13,7 +13,7 @@ import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 
 const EditRouteListBlock = styled.div`
-    margin-left: 0.5rem;
+    margin-left: 0.2rem;
     height: 30.5rem;
     overflow: auto;
     border-radius: 1rem;
@@ -42,7 +42,7 @@ const RouteItem = styled.div`
     border-radius: 1rem;
     cursor: pointer;
     margin-bottom: 1rem;
-    padding: 2rem 1.5rem 0.5rem 1.5rem;
+    padding: 2rem 1.4rem 0.5rem 1.4rem;
     z-index: 100;
     &:hover {
         background-color: rgb(240, 240, 240);
@@ -68,13 +68,9 @@ const TransItem = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-`;
-
-const TransIcon = styled(FontAwesomeIcon)`
-    border-radius: 2rem;
-    padding: 0.3rem;
     &:hover {
-        background-color: lightgray;
+        transition: transform 0.3s ease;
+        transform: scale(1.05);
     }
 `;
 
@@ -82,16 +78,16 @@ const DropDown = styled.div`
     position: relative;
 `;
 
-const DropDownMenu = styled.div`
+const DropDownMenu = styled.ul`
     display: flex;
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -87%);
     z-index: 103;
     overflow: hidden;
     border-radius: 1rem;
-    padding: 0.5rem;
+    padding: 0.7rem 0.5rem;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
     background-color: white;
     align-items: center;
@@ -106,7 +102,35 @@ const DropDownMenu = styled.div`
     }
 
     animation: fade-in 0.5s ease-in-out;
+
+    li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        &:hover {
+            transition: transform 0.3s ease;
+            transform: translate(0, -5px);
+        }
+    }
 `;
+const TransIcon = styled(FontAwesomeIcon)`
+    border-radius: 2rem;
+    padding: 0.3rem;
+`;
+
+const TransName = styled.div`
+    font-size: 0.1rem;
+    padding: 0.2rem 0.4rem;
+    font-weight: bold;
+    color: gray;
+    white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    border-radius: 1rem;
+    position: absolute;
+    top: 20px;
+`;
+
 const SpotItem = styled.div`
     border-radius: 1rem;
     display: flex;
@@ -121,7 +145,7 @@ const SpotItem = styled.div`
 `;
 
 const Img = styled.img`
-    border-radius: 5%;
+    border-radius: 0.5rem;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     width: 3.5rem;
     height: 3.5rem;
@@ -142,6 +166,7 @@ const Name = styled.div`
     white-space: wrap;
     font-size: 0.8rem;
     margin-bottom: 0.3rem;
+    text-overflow: ellipsis;
 `;
 
 const Address = styled.div`
@@ -151,6 +176,7 @@ const Address = styled.div`
     white-space: wrap;
     font-size: 0.1rem;
     color: lightgray;
+    text-overflow: ellipsis;
 `;
 
 const DeleteButton = styled.div`
@@ -205,15 +231,19 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
     const transIconList = [faPlane, faTrainSubway, faBus, faTaxi, faBicycle, faPersonWalking];
 
     const [dropDownItemId, setDropDownItemId] = useState(null);
+    const [hoveredNameId, setHoveredNameId] = useState(null);
 
-    const onOpenDropDown = (itemId) => {
-        setDropDownItemId(itemId);
+    const handleOpen = (setItemId, id) => {
+        setItemId(id);
     };
 
     const onCloseDropDown = () => {
         if (dropDownItemId !== null) {
             setDropDownItemId(null);
         }
+    };
+    const onCloseName = () => {
+        setHoveredNameId(null);
     };
 
     useEffect(() => {
@@ -254,7 +284,7 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                         }}
                                     >
                                         <MoveIcon icon={faEllipsisVertical} />
-                                        <TransItem onClick={() => onOpenDropDown(i)}>
+                                        <TransItem onClick={() => handleOpen(setDropDownItemId, i)}>
                                             <StyledFontAwesomeIcon icon={transIconList[locationTransportation - 1]} />
                                         </TransItem>
                                         {dropDownItemId === i && (
@@ -265,8 +295,11 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                                             onClick={() => {
                                                                 onUpdateTrans(t.value, pl);
                                                             }}
+                                                            onMouseEnter={() => handleOpen(setHoveredNameId, i)}
+                                                            onMouseLeave={onCloseName}
                                                         >
                                                             <TransIcon icon={transIconList[i]} />
+                                                            {hoveredNameId === i && <TransName>{t.label}</TransName>}
                                                         </li>
                                                     ))}
                                                 </DropDownMenu>

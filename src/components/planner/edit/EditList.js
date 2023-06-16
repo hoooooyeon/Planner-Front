@@ -1,157 +1,369 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faTrophy } from '@fortawesome/free-solid-svg-icons';
+import { faLandmarkFlag } from '@fortawesome/free-solid-svg-icons';
+import { faHotel } from '@fortawesome/free-solid-svg-icons';
+import { faRankingStar } from '@fortawesome/free-solid-svg-icons';
 import { faBed } from '@fortawesome/free-solid-svg-icons';
 import { faUtensils } from '@fortawesome/free-solid-svg-icons';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faBagShopping } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import EditListDetailModal from './EditListDetailModal';
 import { useState } from 'react';
 import Pagination from '../../common/Pagination';
 
 const EditListBlock = styled.div`
+    position: absolute;
+    right: 0;
+    top: 0;
     width: 350px;
-    height: 750px;
+    height: 100vh;
     background-color: #f5f5f5;
     float: left;
+    z-index: 200;
 `;
 
 const MenuList = styled.div`
-    width: calc(100% - 10px);
+    padding: 0.7rem 0.5rem;
     display: flex;
-    padding: 5px;
-    background-color: #cdd9ac;
     justify-content: center;
 `;
 
 const MenuItem = styled.div`
-    border: 3px solid #cdd9ac;
-    background-color: white;
-    border-radius: 10%;
-    width: 4.5rem;
-    height: 4.5rem;
-    font-size: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #3a3934;
+    cursor: pointer;
+    position: relative;
     & + & {
-        margin-left: 1px;
-    }
-    p {
-        line-height: 1px;
-        color: #3a3934;
-        font-size: 0.8rem;
-        font-weight: bold;
+        margin-left: 0.2rem;
     }
     &:hover {
-        border: 3px solid #9aad67;
-        transform: translateY(-3px);
-        cursor: pointer;
+        transition: transform 0.3s ease;
+        transform: translate(0, -5px);
     }
+`;
+
+const MenuIcon = styled(FontAwesomeIcon)`
+    border-radius: 2rem;
+
+    width: 1.2rem;
+    height: 1.2rem;
+    padding: 0.6rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    margin-bottom: 0.2rem;
+`;
+
+const IconName = styled.div`
+    font-size: 0.1rem;
+    padding: 0.2rem 0.4rem;
+    font-weight: bold;
+    color: gray;
+    white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    border-radius: 1rem;
+    position: absolute;
+    top: 35px;
 `;
 
 const List = styled.div`
-    padding: 1px 0 5px;
+    height: 35rem;
+    padding: 0.5rem 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-`;
-
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    width: 1.5rem;
-    height: 1.5rem;
-`;
-
-const ListItem = styled.div`
-    /* border-radius: 0.5rem; */
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    width: 100%;
-    height: 90px;
-    background-color: white;
-    z-index: 99;
-    /* box-shadow: 3px 3px 7px 1px rgb(0, 0, 0, 30%); */
-    /* border: 1px solid lightgray; */
-    border-width: 1px 0;
-    border-style: solid;
-    border-color: lightgray;
-    & + & {
-        margin-top: 1px;
-    }
-    &:hover {
-        /* transform: translate(1px, -1px); */
-        background-color: #ffcbc14f;
-    }
-`;
-
-const Img = styled.img`
-    border-radius: 5%;
-    border: 1px solid gray;
-    width: 80px;
-    height: 80px;
-`;
-
-const Name = styled.div`
-    width: 120px;
-    height: 2.4em;
-    overflow-y: auto;
-    white-space: wrap;
-    line-height: 1.2;
-    text-align: left;
-    word-wrap: break-word;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    -ms-overflow-style: none;
+    overflow: auto;
+    z-index: 200;
     &::-webkit-scrollbar {
         display: none;
     }
 `;
 
-const Button = styled.button`
-    border: none;
-    border-radius: 0.5rem;
-    background-color: #9aad67;
-    color: white;
-    width: 4rem;
-    height: 2rem;
-    cursor: pointer;
+const ListItem = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99;
+    padding: 0.5rem;
+    &:hover {
+        background-color: #ffcbc14f;
+    }
 `;
 
-const EditList = ({ spots, detail, onChangePlanLocation, onCreateLocation, onMoveMarker, onOpenDetail, onCloseDetail, onUpdateContentTypeId, pageArr, onUpdatePageIndex, prevPage, nextPage, firstPage, lastPage, contentTypeList }) => {
-    // const categoryList = [
-    //     { label: '관광지', id: 12, icon: faLocationDot },
-    //     { label: '문화시설', id: 14, icon: faLocationDot },
-    //     { label: '행사', id: 15, icon: faLocationDot },
-    //     { label: '레포츠', id: 28, icon: faLocationDot },
-    //     { label: '숙박', id: 32, icon: faBed },
-    //     { label: '쇼핑', id: 38, icon: faLocationDot },
-    //     { label: '음식점', id: 39, icon: faUtensils },
-    // ];
+const Img = styled.img`
+    border-radius: 0.5rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    width: 5rem;
+    height: 5rem;
+`;
+const TextInfo = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
-    const iconList = [faLocationDot, faLocationDot, faLocationDot, faLocationDot, faBed, faLocationDot, faUtensils];
+    margin: 0 0.8rem;
+`;
+
+const Name = styled.div`
+    width: 8rem;
+    height: 1.2rem;
+    overflow: hidden;
+    white-space: wrap;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+    text-overflow: ellipsis;
+`;
+
+const Address = styled.div`
+    width: 8rem;
+    height: 1rem;
+    overflow: hidden;
+    white-space: wrap;
+    font-size: 0.6rem;
+    color: lightgray;
+    text-overflow: ellipsis;
+`;
+
+const Icons = styled.div`
+    display: flex;
+`;
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+    font-size: 1.3rem;
+    border-radius: 2rem;
+    padding: 0.5rem;
+    height: 1rem;
+    width: 1rem;
+    background-color: rgb(230, 230, 230);
+    cursor: pointer;
+    & + & {
+        margin-left: 0.5rem;
+    }
+    &:hover {
+        transition: transform 0.3s ease;
+        transform: scale(1.1);
+    }
+`;
+const FormDiv = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const Form = styled.form`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.2rem 1rem 1rem;
+`;
+
+const SearchBox = styled.div`
+    display: flex;
+    width: 100%;
+    @media all and (max-width: 1023px) {
+        margin: 1rem 0 0 0;
+    }
+`;
+
+const SearchInput = styled.input`
+    width: 100%;
+    height: 2.5rem;
+    border: none;
+    padding: 0 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 0.5rem 0 0 0.5rem;
+    &:focus {
+        outline: none;
+    }
+    @media all and (min-width: 1024px) {
+        margin-left: 1rem;
+    }
+`;
+
+const SearchButton = styled.button`
+    border: none;
+    border-radius: 0 0.5rem 0.5rem 0;
+    min-width: 5rem;
+    height: 2.5rem;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    white-space: nowrap;
+    cursor: pointer;
+    @media all and (max-width: 1023px) {
+        max-width: 3rem;
+        min-width: 3rem;
+        width: 100%;
+    }
+`;
+const InvisibleInput = styled.input`
+    display: none;
+`;
+
+const SearchResult = styled.h3`
+    margin: 1rem 0;
+`;
+
+const SelectDiv = styled.div`
+    display: flex;
+`;
+
+const SelectBox = styled.div`
+    display: flex;
+    align-items: center;
+    height: 2.5rem;
+    padding-right: 1rem;
+    & + & {
+        padding-left: 1rem;
+    }
+    @media all and (max-width: 1023px) {
+        & + & {
+            border-right: none;
+        }
+    }
+`;
+
+const Select = styled.select`
+    border-radius: 0.5rem;
+    border: none;
+    width: 100%;
+    min-width: 6rem;
+    height: 2.5rem;
+    text-align-last: center;
+    cursor: pointer;
+    &:invalid {
+        color: lightgray;
+    }
+    &:focus {
+        outline: none;
+    }
+    option:disabled {
+        display: none;
+    }
+    option {
+        cursor: pointer;
+    }
+    @media all and (max-width: 1023px) {
+        min-width: 1rem;
+    }
+`;
+
+const Label = styled.label`
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+    color: gray;
+    @media all and (min-width: 480px) {
+        white-space: nowrap;
+    }
+`;
+
+const EditList = ({
+    spots,
+    areas,
+    keyword,
+    detail,
+    spotData,
+    searchResultText,
+    onChangePlanLocation,
+    onCreateLocation,
+    onMoveMarker,
+    onOpenDetail,
+    onCloseDetail,
+    onUchangeContentTypeId,
+    pageArr,
+    onChangePageIndex,
+    prevPage,
+    nextPage,
+    firstPage,
+    lastPage,
+    contentTypeList,
+    onChangeAreaIndex,
+    onResetKeyword,
+    onChangeKeyword,
+    onSearchSpot,
+}) => {
+    const iconList = [faLandmarkFlag, faHotel, faRankingStar, faTrophy, faBed, faBagShopping, faUtensils];
+
+    const [hoveredItemId, setHoveredItemId] = useState(null);
+
+    const onOpenName = (itemId) => {
+        setHoveredItemId(itemId);
+    };
+
+    const onCloseName = () => {
+        if (hoveredItemId !== null) {
+        }
+        setHoveredItemId(null);
+    };
     return (
         <>
             <EditListBlock>
                 <MenuList>
                     {contentTypeList.map((c, i) => (
-                        // {categoryList.map((c, i) => (
-                        <MenuItem onClick={() => onUpdateContentTypeId(c.id)} key={i}>
-                            <StyledFontAwesomeIcon icon={iconList[i]} />
-                            <p>{c.label}</p>
+                        <MenuItem onClick={() => onUchangeContentTypeId(c.id)} key={i} onMouseEnter={() => onOpenName(i)} onMouseLeave={onCloseName}>
+                            <MenuIcon icon={iconList[i]} />
+                            {hoveredItemId === i && <IconName>{c.label}</IconName>}
                         </MenuItem>
                     ))}
-                    <MenuItem>
-                        <StyledFontAwesomeIcon icon={faHeart} />
-                        <p>좋아요</p>
+                    <MenuItem onMouseEnter={() => onOpenName(7)} onMouseLeave={onCloseName}>
+                        <MenuIcon icon={faHeart} />
+                        {hoveredItemId === 7 && <IconName>좋아요</IconName>}
                     </MenuItem>
                 </MenuList>
+                <FormDiv>
+                    <Form>
+                        <SelectDiv>
+                            <SelectBox>
+                                <Label>지역</Label>
+                                <Select
+                                    required
+                                    value={spotData.areaIndex}
+                                    onChange={(e) => {
+                                        onChangeAreaIndex(e.target.value);
+                                    }}
+                                >
+                                    {areas &&
+                                        areas.map((area) => (
+                                            <option value={area.code} key={area.code}>
+                                                {area.name}
+                                            </option>
+                                        ))}
+                                </Select>
+                            </SelectBox>
+                        </SelectDiv>
+                        <SearchBox>
+                            <SearchInput
+                                placeholder="키워드 검색"
+                                type="text"
+                                value={keyword}
+                                onChange={(e) => {
+                                    onChangeKeyword(e.target.value);
+                                }}
+                            />
+                            <InvisibleInput type="text" />
+                            <SearchButton type="button" onClick={onSearchSpot}>
+                                <FontAwesomeIcon icon={faMagnifyingGlass} />
+                            </SearchButton>
+                        </SearchBox>
+                    </Form>
+                    {searchResultText.length > 0 ? <SearchResult>' {searchResultText} ' 에 대한 검색 결과...</SearchResult> : null}
+                </FormDiv>
+
                 <List>
                     {spots &&
                         spots.list.map((s, i) => {
-                            const { firstimage, firstimage2, title } = s.info;
+                            const { firstimage, firstimage2, title, addr1 } = s;
                             return (
                                 <ListItem
                                     key={i}
@@ -164,26 +376,30 @@ const EditList = ({ spots, detail, onChangePlanLocation, onCreateLocation, onMov
                                         alt={title}
                                         // onError={onChangeErrorImg}
                                     />
-                                    <Name>{title}</Name>
-                                    <Button
-                                        onClick={() => {
-                                            onOpenDetail(s);
-                                        }}
-                                    >
-                                        정보
-                                    </Button>
-                                    <Button
-                                        onClick={() => {
-                                            onCreateLocation(s.info);
-                                        }}
-                                    >
-                                        추가
-                                    </Button>
+                                    <TextInfo>
+                                        <Name>{title}</Name>
+                                        <Address>{addr1.split(' ')[0]}</Address>
+                                    </TextInfo>
+                                    <Icons>
+                                        <StyledFontAwesomeIcon
+                                            onClick={() => {
+                                                onOpenDetail(s);
+                                            }}
+                                            icon={faExclamation}
+                                        />
+
+                                        <StyledFontAwesomeIcon
+                                            onClick={() => {
+                                                onCreateLocation(s);
+                                            }}
+                                            icon={faPlus}
+                                        />
+                                    </Icons>
                                 </ListItem>
                             );
                         })}
                 </List>
-                <Pagination pageArr={pageArr} onUpdatePageIndex={onUpdatePageIndex} prevPage={prevPage} nextPage={nextPage} firstPage={firstPage} lastPage={lastPage} />
+                {/* <Pagination pageArr={pageArr} onUpdatePageIndex={onChangePageIndex} prevPage={prevPage} nextPage={nextPage} firstPage={firstPage} lastPage={lastPage} /> */}
                 {detail && <EditListDetailModal detail={detail} onCloseDetail={onCloseDetail} />}
             </EditListBlock>
         </>

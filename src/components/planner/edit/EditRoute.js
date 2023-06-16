@@ -8,9 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 const EditRouteBlock = styled.div`
-    /* width: 400px; */
     background-color: white;
-    height: 100%;
+    /* width: 392px; */
+    height: 100vh;
     float: left;
 `;
 
@@ -26,22 +26,22 @@ const InfoBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 `;
 
 const Logo = styled.div`
     background-color: #f5f5f5;
-    font-size: 1.7rem;
+    font-size: 1rem;
     font-weight: bold;
     text-align: center;
-    padding: 1rem 0;
+    padding: 0.5rem 0 0;
 `;
 
 const Title = styled.div`
     font-weight: bold;
     margin: 2rem 0 0.3rem;
     font-size: 1.3rem;
-    /* width:  */
+    width: 21rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -51,11 +51,15 @@ const Creator = styled.div`
     font-size: 0.9rem;
     color: gray;
     margin-bottom: 2rem;
+    width: 21rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const Dates = styled.div`
     display: flex;
-    z-index: 999;
+    z-index: 150;
     justify-content: space-around;
     margin-left: 0.5rem;
 `;
@@ -85,6 +89,13 @@ const DateBox = styled.div`
         font-size: 0.7rem;
         width: 4rem;
         text-align: center;
+    }
+`;
+
+const StartDateBox = styled(DateBox)`
+    &:hover {
+        transition: transform 0.3s ease;
+        transform: scale(1.03);
     }
 `;
 
@@ -121,12 +132,11 @@ const UpdatedDate = styled.div`
 `;
 
 const RouteBox = styled.div`
-    /* width: 400px; */
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.1);
-    padding: 0.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
     background-color: #f5f5f5;
 `;
 
@@ -136,6 +146,10 @@ const MenuIcon = styled(FontAwesomeIcon)`
     left: 356px;
     font-size: 1.4rem;
     cursor: pointer;
+    &:hover {
+        transition: transform 0.3s ease;
+        transform: scale(1.2);
+    }
 `;
 
 const DropDown = styled.div`
@@ -171,8 +185,13 @@ const DropDownMenu = styled.ul`
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border: none;
     padding: 0.5rem 1rem;
+    text-align: center;
     li {
+        cursor: pointer;
         font-size: 0.8rem;
+        &:hover {
+            font-weight: bold;
+        }
     }
 `;
 
@@ -194,6 +213,8 @@ const EditRoute = ({
     onChangePlans,
     onChangeLocation,
     onUpdateTrans,
+    onToggleMemberModal,
+    onTogglePlannerInfoModal,
 }) => {
     const { title, creator, planDateStart, planDateEnd, updateDate } = { ...planner };
     const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : null);
@@ -233,15 +254,15 @@ const EditRoute = ({
                     <DropDown dropDown={dropDown}>
                         <DropDownArrow />
                         <DropDownMenu>
-                            <li>정보 수정</li>
-                            <li>멤버 초대</li>
+                            <li onClick={onTogglePlannerInfoModal}>정보 수정</li>
+                            <li onClick={onToggleMemberModal}>멤버 초대</li>
                         </DropDownMenu>
                     </DropDown>
                     <Title>{title}</Title>
                     <Creator>By {creator}</Creator>
                     <Dates>
                         <ShadowDiv>
-                            <DateBox>
+                            <StartDateBox>
                                 <p>Start Date</p>
                                 <SetIcon icon={faGear} />
                                 <PointerStyledDatePicker
@@ -253,7 +274,7 @@ const EditRoute = ({
                                     dateFormat=" yyyy. MM. dd "
                                     placeholderText="여행 기간"
                                 />
-                            </DateBox>
+                            </StartDateBox>
                         </ShadowDiv>
                         <ShadowDiv>
                             <DateBox>

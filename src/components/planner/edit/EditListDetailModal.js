@@ -21,7 +21,7 @@ const Overview = styled.div`
 `;
 
 const EditListDetailModal = ({ detail, onCloseDetail }) => {
-    const { title, firstimage, overview } = detail.info;
+    const { title, firstimage, overview } = detail;
     return (
         <Modal modalVisible={detail} onModalClose={onCloseDetail} title="여행지 상세정보">
             <DetailBox>

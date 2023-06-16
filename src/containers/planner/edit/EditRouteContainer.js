@@ -18,6 +18,8 @@ import {
     deletePlanAction,
     loadPlanAction,
     loadPlannerAction,
+    toggleMemberModalAction,
+    togglePlannerInfoModalAction,
     updateLocationAction,
     updatePlanAction,
     updatePlannerAction,
@@ -170,6 +172,13 @@ const EditRouteContainer = () => {
         }
     };
 
+    const onToggleMemberModal = () => {
+        dispatch(toggleMemberModalAction());
+    };
+    const onTogglePlannerInfoModal = () => {
+        dispatch(togglePlannerInfoModalAction());
+    };
+
     return (
         <EditRoute
             planner={planner}
@@ -192,6 +201,8 @@ const EditRouteContainer = () => {
             onChangePlans={onChangePlans}
             onChangeLocation={onChangeLocation}
             onUpdateTrans={onUpdateTrans}
+            onToggleMemberModal={onToggleMemberModal}
+            onTogglePlannerInfoModal={onTogglePlannerInfoModal}
         />
     );
 };

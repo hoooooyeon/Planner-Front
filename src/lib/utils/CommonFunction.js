@@ -38,7 +38,7 @@ export function onDragStart(e, p, setIsDrag, dragTarget, posY, dragItem, dragIte
 
     // 드래그시 반투명 이미지 제거
     let img = new Image();
-    // e.dataTransfer.setDragImage(img, 10, 10);
+    e.dataTransfer.setDragImage(img, 10, 10);
 
     // 드래그되는 요소
     dragTarget.current = e.currentTarget;
@@ -65,7 +65,7 @@ export function onDragMove(e, isDrag, posY, containerRef, itemRef, dragItemIndex
         const itemHeight = itemRef.current.getBoundingClientRect().height + parseInt(computedStyle.marginTop);
 
         // 드래그되는 모션
-        // e.currentTarget.style.top = `${Math.min(Math.max(-itemHeight * dragItemIndex.current, diffY), containerHeight - itemHeight * (dragItemIndex.current + 1))}px`;
+        e.currentTarget.style.top = `${Math.min(Math.max(-itemHeight * dragItemIndex.current, diffY), containerHeight - itemHeight * (dragItemIndex.current + 1))}px`;
 
         dragTarget.current.style.pointerEvents = 'none';
 

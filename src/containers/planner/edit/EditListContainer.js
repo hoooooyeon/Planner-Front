@@ -2,15 +2,29 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditList from '../../../components/planner/edit/EditList';
 import { changePlanLocationAction, createLocationAction } from '../../../modules/plannerModule';
-import { loadDetailSpotAction, loadSpotsAction, unloadDetailSpotAction, updateContentTypeIdAction, updateDetailSpotAction, updatePageNumAction } from '../../../modules/spotModule';
+import {
+    loadDetailSpotAction,
+    loadSpotsAction,
+    unloadDetailSpotAction,
+    changeContentTypeIdAction,
+    changeDetailSpotAction,
+    changePageIndexAction,
+    changeAreaIndexAction,
+    loadAreasAction,
+    changeKeywordAction,
+    resetKeywordAction,
+    searchSpotAction,
+} from '../../../modules/spotModule';
 import * as common from '../../../lib/utils/CommonFunction';
 
 const EditListContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, spots, plan, spotData, plannerData, detail, map, contentTypeList } = useSelector(({ plannerReducer, spotReducer }) => ({
+    const { planner, plannerError, spots, plan, keyword, areas, spotData, plannerData, detail, map, contentTypeList } = useSelector(({ plannerReducer, spotReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         spots: spotReducer.spots,
+        areas: spotReducer.areas,
+        keyword: spotReducer.keyword,
         spotData: spotReducer.spotData,
         detail: spotReducer.detail,
         plan: plannerReducer.plan,
@@ -54,8 +68,8 @@ const EditListContainer = () => {
 
     // 여행지 상세정보 불러오기
     const onOpenDetail = (spot) => {
-        dispatch(loadDetailSpotAction(spot.info.contentid));
-        dispatch(updateDetailSpotAction(spot));
+        dispatch(loadDetailSpotAction(spot.contentid));
+        dispatch(changeDetailSpotAction(spot));
     };
 
     // 여행지 상세정보 모달 닫기
@@ -63,8 +77,32 @@ const EditListContainer = () => {
         dispatch(unloadDetailSpotAction());
     };
 
-    const onUpdateContentTypeId = (id) => {
-        dispatch(updateContentTypeIdAction(id));
+    const onUchangeContentTypeId = (id) => {
+        dispatch(changeContentTypeIdAction(id));
+    };
+
+    // 지역 리스트 로드
+    useEffect(() => {
+        dispatch(loadAreasAction());
+    }, [dispatch]);
+
+    // 지역 선택 함수
+    const onChangeAreaIndex = (num) => {
+        dispatch(changeAreaIndexAction(num));
+    };
+
+    const [searchResultText, setSearchResultText] = useState('');
+    // 여행지 키워드 입력
+    const onChangeKeyword = (keyword) => {
+        dispatch(changeKeywordAction(keyword));
+    };
+
+    const onResetKeyword = () => {
+        dispatch(resetKeywordAction());
+    };
+    // 여행지 검색
+    const onSearchSpot = () => {
+        dispatch(searchSpotAction({ areaIndex, contentTypeId, keyword, pageIndex }));
     };
 
     const { totalCount } = { ...spots };
@@ -87,43 +125,51 @@ const EditListContainer = () => {
     }, [pageLastIndex, count, block, spots]);
 
     // 페이지 버튼
-    const onUpdatePageIndex = (pageIndex) => {
-        dispatch(updatePageNumAction(pageIndex));
+    const onChangePageIndex = (pageIndex) => {
+        dispatch(changePageIndexAction(pageIndex));
     };
 
     const prevPage = () => {
-        common.prevPage(pageIndex, onUpdatePageIndex, setBlock, count);
+        common.prevPage(pageIndex, onChangePageIndex, setBlock, count);
     };
 
     const nextPage = () => {
-        common.nextPage(pageIndex, pageLastIndex, onUpdatePageIndex, count, setBlock);
+        common.nextPage(pageIndex, pageLastIndex, onChangePageIndex, count, setBlock);
     };
 
     const firstPage = () => {
-        common.firstPage(onUpdatePageIndex, setBlock);
+        common.firstPage(onChangePageIndex, setBlock);
     };
 
     const lastPage = () => {
-        common.lastPage(onUpdatePageIndex, pageLastIndex, setBlock, count);
+        common.lastPage(onChangePageIndex, pageLastIndex, setBlock, count);
     };
 
     return (
         <EditList
             spots={spots}
+            areas={areas}
+            keyword={keyword}
             detail={detail}
+            spotData={spotData}
+            contentTypeList={contentTypeList}
+            pageArr={pageArr}
+            searchResultText={searchResultText}
             onChangePlanLocation={onChangePlanLocation}
             onCreateLocation={onCreateLocation}
             onMoveMarker={onMoveMarker}
             onOpenDetail={onOpenDetail}
             onCloseDetail={onCloseDetail}
-            onUpdateContentTypeId={onUpdateContentTypeId}
-            pageArr={pageArr}
-            onUpdatePageIndex={onUpdatePageIndex}
+            onUchangeContentTypeId={onUchangeContentTypeId}
+            onChangePageIndex={onChangePageIndex}
             prevPage={prevPage}
             nextPage={nextPage}
             firstPage={firstPage}
             lastPage={lastPage}
-            contentTypeList={contentTypeList}
+            onChangeAreaIndex={onChangeAreaIndex}
+            onResetKeyword={onResetKeyword}
+            onChangeKeyword={onChangeKeyword}
+            onSearchSpot={onSearchSpot}
         />
     );
 };

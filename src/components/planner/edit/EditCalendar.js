@@ -78,6 +78,10 @@ const AddCal = styled(ItemBox)`
     border: none;
     width: auto;
     box-shadow: 0 1px 4px rgb(100, 100, 100);
+    &:hover {
+        transition: transform 0.3s ease;
+        transform: scale(1.05);
+    }
 `;
 
 const CalIcon = styled(FontAwesomeIcon)`
