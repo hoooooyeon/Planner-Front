@@ -8,7 +8,6 @@ import { useState } from 'react';
 
 const PaginationBlock = styled.div`
     width: 100%;
-    margin: 50px auto;
 `;
 
 const PaginationBox = styled.div`
@@ -22,7 +21,7 @@ const PageButton = styled.div`
     border-radius: 8px;
     padding: 8px;
     margin: 0;
-    font-size: 1rem;
+    font-size: 0.9rem;
     &:hover {
         background: lightblue;
         cursor: pointer;

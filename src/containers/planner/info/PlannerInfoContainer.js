@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfo from '../../../components/planner/info/PlannerInfo';
 import { changeCurPlanIdAction, deletePlannerAction, loadPlanAction, loadPlannerAction, toggleLikePlannerAction, toggleMemberModalAction, togglePlannerInfoModalAction } from '../../../modules/plannerModule';
-import spotImg from '../../../lib/images/spot.png';
+import circleImg from '../../../lib/images/circle.png';
 
 const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
@@ -108,7 +108,7 @@ const PlannerInfoContainer = () => {
                     imageSize = new kakao.maps.Size(10, 10);
 
                     // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-                    let markerImage = new kakao.maps.MarkerImage(spotImg, imageSize);
+                    let markerImage = new kakao.maps.MarkerImage(circleImg, imageSize);
 
                     // 마커를 생성합니다
                     marker = new kakao.maps.Marker({

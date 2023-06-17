@@ -4,13 +4,9 @@ import styled from 'styled-components';
 
 const EditMapBlock = styled.div`
     width: calc(100% - 392px);
-    /* width: 100%; */
     height: 100vh;
     float: left;
     position: relative;
-    @media all and (min-width: 768px) {
-        width: calc(100% - 742px);
-    }
 `;
 
 const Map = styled.div`
@@ -19,8 +15,8 @@ const Map = styled.div`
 `;
 
 const ButtonBox = styled.div`
-    position: absolute;
-    left: 10px;
+    position: fixed;
+    left: 405px;
     top: 10px;
     z-index: 150;
     display: flex;
@@ -63,51 +59,6 @@ const EditMap = ({ mapRef, onResetSpotData }) => {
                     <Link to="/PlannerInfo">일정 저장</Link>
                 </Button>
             </ButtonBox>
-            {/* <AreaBox>
-                <AreaSelect
-                    required
-                    value={spotData.areaIndex}
-                    onChange={(e) => {
-                        onUpdateAreaNum(e.target.value);
-                    }}
-                >
-                    {areas &&
-                        areas.map((area) => (
-                            <option value={area.code} key={area.code}>
-                                {area.name}
-                            </option>
-                        ))}
-                </AreaSelect>
-            </AreaBox> */}
-            {/* {isSearch && (
-                <Background>
-                    <SearchBox>
-                        <CloseButton onClick={onSearch}>닫기</CloseButton>
-                        <>
-                            <SearchForm>
-                                <SearchInput
-                                    placeholder="장소 검색"
-                                    type="text"
-                                    value={keyword}
-                                    onChange={(e) => {
-                                        onChangeKeyword(e.target.value);
-                                    }}
-                                />
-                                <InvisibleInput type="text" />
-                                <SearchButton
-                                    type="button"
-                                    onClick={() => {
-                                        onSearchSpot();
-                                        onSearch();
-                                    }}
-                                >
-                                    검색
-                                </SearchButton>
-                            </SearchForm>
-                        </>
-                    </SearchBox>
-                </Background>
-            )} */}
         </EditMapBlock>
     );
 };

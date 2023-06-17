@@ -9,21 +9,27 @@ import { faUtensils } from '@fortawesome/free-solid-svg-icons';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { faBagShopping } from '@fortawesome/free-solid-svg-icons';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { faExclamation } from '@fortawesome/free-solid-svg-icons';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
+import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import EditListDetailModal from './EditListDetailModal';
 import { useState } from 'react';
 import Pagination from '../../common/Pagination';
+import EditSpotList from './EditSpotList';
+import { useEffect } from 'react';
+import { useRef } from 'react';
 
 const EditListBlock = styled.div`
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
+    bottom: 0;
     width: 350px;
     height: 100vh;
     background-color: white;
     float: left;
     z-index: 200;
+    transform: ${(props) => (props.navOpen ? 'translateX(0px)' : 'translateX(350px)')};
+    transition: 0.4s ease;
 `;
 
 const MenuList = styled.div`
@@ -72,88 +78,6 @@ const IconName = styled.div`
     top: 35px;
 `;
 
-const List = styled.div`
-    height: 30.5rem;
-    padding: 0.5rem 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: auto;
-    z-index: 200;
-    background-color: #f5f5f5;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
-    &::-webkit-scrollbar {
-        display: none;
-    }
-`;
-
-const ListItem = styled.div`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 99;
-    padding: 0.5rem;
-    &:hover {
-        background-color: #ffcbc14f;
-    }
-`;
-
-const Img = styled.img`
-    border-radius: 0.5rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-    width: 5rem;
-    height: 5rem;
-`;
-const TextInfo = styled.div`
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    margin: 0 0.8rem;
-`;
-
-const Name = styled.div`
-    width: 8rem;
-    height: 1.2rem;
-    overflow: hidden;
-    white-space: wrap;
-    text-overflow: ellipsis;
-    font-size: 0.9rem;
-    margin-bottom: 0.3rem;
-`;
-
-const Address = styled.div`
-    width: 8rem;
-    height: 1rem;
-    overflow: hidden;
-    white-space: wrap;
-    font-size: 0.6rem;
-    color: lightgray;
-    text-overflow: ellipsis;
-`;
-
-const Icons = styled.div`
-    display: flex;
-`;
-
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    font-size: 1.3rem;
-    border-radius: 2rem;
-    padding: 0.5rem;
-    height: 1rem;
-    width: 1rem;
-    background-color: rgb(230, 230, 230);
-    cursor: pointer;
-    & + & {
-        margin-left: 0.5rem;
-    }
-    &:hover {
-        transition: transform 0.3s ease;
-        transform: scale(1.1);
-    }
-`;
 const FormDiv = styled.div`
     display: flex;
     align-items: center;
@@ -194,7 +118,7 @@ const SearchInput = styled.input`
 const SearchButton = styled.button`
     border: none;
     border-radius: 0 0.5rem 0.5rem 0;
-    min-width: 5rem;
+    min-width: 3rem;
     height: 2.5rem;
     background-color: rgba(0, 0, 0, 0.1);
     color: white;
@@ -202,11 +126,6 @@ const SearchButton = styled.button`
     font-weight: bold;
     white-space: nowrap;
     cursor: pointer;
-    @media all and (max-width: 1023px) {
-        max-width: 3rem;
-        min-width: 3rem;
-        width: 100%;
-    }
 `;
 const InvisibleInput = styled.input`
     display: none;
@@ -243,11 +162,6 @@ const SelectBox = styled.div`
     & + & {
         padding-left: 1rem;
     }
-    @media all and (max-width: 1023px) {
-        & + & {
-            border-right: none;
-        }
-    }
 `;
 
 const Select = styled.select`
@@ -268,18 +182,37 @@ const Select = styled.select`
     option:disabled {
         display: none;
     }
-    @media all and (max-width: 1023px) {
-        min-width: 1rem;
-    }
 `;
 
 const Label = styled.label`
     margin-right: 0.5rem;
     font-size: 0.9rem;
     color: gray;
-    @media all and (min-width: 480px) {
-        white-space: nowrap;
+    white-space: nowrap;
+`;
+
+const NavArrowIcon = styled(FontAwesomeIcon)`
+    position: absolute;
+    top: 16px;
+    left: -41px;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 2rem;
+    padding: 0.3rem;
+    background: white;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+
+    &:hover {
+        transition: transform 0.3s ease;
+        transform: scale(1.1);
     }
+`;
+
+const PageBox = styled.div`
+    width: 100%;
+    padding: 1rem;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
 `;
 
 const EditList = ({
@@ -320,9 +253,37 @@ const EditList = ({
         }
         setHoveredItemId(null);
     };
+
+    const navRef = useRef();
+    const [navOpen, setNavOpen] = useState(true);
+    const [resizeNav, setResizeNav] = useState(false);
+
+    // nav 토글 함수
+    const onToggleNav = () => {
+        setNavOpen(!navOpen);
+    };
+
+    // 창 크기에 따른 nav 자동 종료
+    const resizeNavClose = () => {
+        if (window.innerWidth <= 767 && resizeNav) {
+            setNavOpen(false);
+            setResizeNav(false);
+        } else if (window.innerWidth >= 768) {
+            setResizeNav(true);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('resize', resizeNavClose);
+        return () => {
+            window.removeEventListener('resize', resizeNavClose);
+        };
+    });
+
     return (
         <>
-            <EditListBlock>
+            <EditListBlock ref={navRef} navOpen={navOpen}>
+                {navOpen ? <NavArrowIcon onClick={onToggleNav} icon={faCaretRight} /> : <NavArrowIcon onClick={onToggleNav} icon={faCaretLeft} />}
                 <FormDiv>
                     <SelectDiv>
                         <SelectBox>
@@ -380,49 +341,12 @@ const EditList = ({
                         </ResultBox>
                     </Form>
                 </FormDiv>
-
-                <List>
-                    {spots &&
-                        spots.list.map((s, i) => {
-                            const { firstimage, firstimage2, title, addr1 } = s;
-                            return (
-                                <ListItem
-                                    key={i}
-                                    onClick={() => {
-                                        onMoveMarker(s);
-                                    }}
-                                >
-                                    <Img
-                                        src={firstimage || firstimage2}
-                                        alt={title}
-                                        // onError={onChangeErrorImg}
-                                    />
-                                    <TextInfo>
-                                        <Name>{title}</Name>
-                                        <Address>{addr1.split(' ')[0]}</Address>
-                                    </TextInfo>
-                                    <Icons>
-                                        <StyledFontAwesomeIcon
-                                            onClick={() => {
-                                                onOpenDetail(s);
-                                            }}
-                                            icon={faExclamation}
-                                        />
-
-                                        <StyledFontAwesomeIcon
-                                            onClick={() => {
-                                                onCreateLocation(s);
-                                            }}
-                                            icon={faPlus}
-                                        />
-                                    </Icons>
-                                </ListItem>
-                            );
-                        })}
-                </List>
-                {/* <Pagination pageArr={pageArr} onUpdatePageIndex={onChangePageIndex} prevPage={prevPage} nextPage={nextPage} firstPage={firstPage} lastPage={lastPage} /> */}
-                {detail && <EditListDetailModal detail={detail} onCloseDetail={onCloseDetail} />}
+                <EditSpotList spots={spots} onMoveMarker={onMoveMarker} onOpenDetail={onOpenDetail} onCreateLocation={onCreateLocation} />
+                <PageBox>
+                    <Pagination pageArr={pageArr} onUpdatePageIndex={onChangePageIndex} prevPage={prevPage} nextPage={nextPage} firstPage={firstPage} lastPage={lastPage} />
+                </PageBox>
             </EditListBlock>
+            {detail && <EditListDetailModal detail={detail} onCloseDetail={onCloseDetail} />}
         </>
     );
 };

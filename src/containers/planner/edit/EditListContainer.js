@@ -19,15 +19,13 @@ import * as common from '../../../lib/utils/CommonFunction';
 
 const EditListContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, spots, plan, keyword, areas, spotData, plannerData, detail, map, contentTypeList } = useSelector(({ plannerReducer, spotReducer }) => ({
-        planner: plannerReducer.planner,
+    const { plannerError, spots, keyword, areas, spotData, plannerData, detail, map, contentTypeList } = useSelector(({ plannerReducer, spotReducer }) => ({
         plannerError: plannerReducer.plannerError,
         spots: spotReducer.spots,
         areas: spotReducer.areas,
         keyword: spotReducer.keyword,
         spotData: spotReducer.spotData,
         detail: spotReducer.detail,
-        plan: plannerReducer.plan,
         plannerData: plannerReducer.plannerData,
         map: plannerReducer.map,
         contentTypeList: spotReducer.contentTypeList,
