@@ -26,7 +26,6 @@ const InfoBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 `;
 
 const Logo = styled.div`
@@ -135,7 +134,7 @@ const RouteBox = styled.div`
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
     padding: 0.5rem 0.5rem 0.5rem 1rem;
     background-color: #f5f5f5;
 `;

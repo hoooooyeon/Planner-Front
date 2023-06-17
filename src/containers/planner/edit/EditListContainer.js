@@ -103,6 +103,7 @@ const EditListContainer = () => {
     // 여행지 검색
     const onSearchSpot = () => {
         dispatch(searchSpotAction({ areaIndex, contentTypeId, keyword, pageIndex }));
+        setSearchResultText(keyword);
     };
 
     const { totalCount } = { ...spots };

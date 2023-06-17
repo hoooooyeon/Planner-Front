@@ -21,13 +21,13 @@ const EditListBlock = styled.div`
     top: 0;
     width: 350px;
     height: 100vh;
-    background-color: #f5f5f5;
+    background-color: white;
     float: left;
     z-index: 200;
 `;
 
 const MenuList = styled.div`
-    padding: 0.7rem 0.5rem;
+    padding: 1rem 0 0.8rem;
     display: flex;
     justify-content: center;
 `;
@@ -40,7 +40,7 @@ const MenuItem = styled.div`
     cursor: pointer;
     position: relative;
     & + & {
-        margin-left: 0.2rem;
+        margin-left: 0.3rem;
     }
     &:hover {
         transition: transform 0.3s ease;
@@ -51,8 +51,8 @@ const MenuItem = styled.div`
 const MenuIcon = styled(FontAwesomeIcon)`
     border-radius: 2rem;
 
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 1rem;
+    height: 1rem;
     padding: 0.6rem;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     background-color: white;
@@ -73,13 +73,15 @@ const IconName = styled.div`
 `;
 
 const List = styled.div`
-    height: 35rem;
+    height: 30.5rem;
     padding: 0.5rem 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow: auto;
     z-index: 200;
+    background-color: #f5f5f5;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
     &::-webkit-scrollbar {
         display: none;
     }
@@ -117,9 +119,9 @@ const Name = styled.div`
     height: 1.2rem;
     overflow: hidden;
     white-space: wrap;
+    text-overflow: ellipsis;
     font-size: 0.9rem;
     margin-bottom: 0.3rem;
-    text-overflow: ellipsis;
 `;
 
 const Address = styled.div`
@@ -155,6 +157,11 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 const FormDiv = styled.div`
     display: flex;
     align-items: center;
+    flex-direction: column;
+    padding: 0.9rem 1rem 0;
+    margin-bottom: 1rem;
+    background-color: #f5f5f5;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 `;
 
 const Form = styled.form`
@@ -163,15 +170,12 @@ const Form = styled.form`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 0.2rem 1rem 1rem;
+    padding: 0.2rem 1rem;
 `;
 
 const SearchBox = styled.div`
     display: flex;
     width: 100%;
-    @media all and (max-width: 1023px) {
-        margin: 1rem 0 0 0;
-    }
 `;
 
 const SearchInput = styled.input`
@@ -179,14 +183,11 @@ const SearchInput = styled.input`
     height: 2.5rem;
     border: none;
     padding: 0 0.5rem;
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: bold;
     border-radius: 0.5rem 0 0 0.5rem;
     &:focus {
         outline: none;
-    }
-    @media all and (min-width: 1024px) {
-        margin-left: 1rem;
     }
 `;
 
@@ -210,13 +211,28 @@ const SearchButton = styled.button`
 const InvisibleInput = styled.input`
     display: none;
 `;
+const ResultBox = styled.div`
+    display: flex;
 
-const SearchResult = styled.h3`
-    margin: 1rem 0;
+    align-items: center;
+    width: 20rem;
+    height: 2rem;
+    padding: 0.8rem 0;
+    color: gray;
+    font-size: 0.9rem;
+`;
+
+const SearchResult = styled.div`
+    font-weight: bold;
+    overflow: hidden;
+    white-space: wrap;
+    text-overflow: ellipsis;
+    max-width: 50%;
 `;
 
 const SelectDiv = styled.div`
     display: flex;
+    width: 100%;
 `;
 
 const SelectBox = styled.div`
@@ -241,6 +257,7 @@ const Select = styled.select`
     min-width: 6rem;
     height: 2.5rem;
     text-align-last: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     &:invalid {
         color: lightgray;
@@ -250,9 +267,6 @@ const Select = styled.select`
     }
     option:disabled {
         display: none;
-    }
-    option {
-        cursor: pointer;
     }
     @media all and (max-width: 1023px) {
         min-width: 1rem;
@@ -309,39 +323,40 @@ const EditList = ({
     return (
         <>
             <EditListBlock>
-                <MenuList>
-                    {contentTypeList.map((c, i) => (
-                        <MenuItem onClick={() => onUchangeContentTypeId(c.id)} key={i} onMouseEnter={() => onOpenName(i)} onMouseLeave={onCloseName}>
-                            <MenuIcon icon={iconList[i]} />
-                            {hoveredItemId === i && <IconName>{c.label}</IconName>}
-                        </MenuItem>
-                    ))}
-                    <MenuItem onMouseEnter={() => onOpenName(7)} onMouseLeave={onCloseName}>
-                        <MenuIcon icon={faHeart} />
-                        {hoveredItemId === 7 && <IconName>좋아요</IconName>}
-                    </MenuItem>
-                </MenuList>
                 <FormDiv>
+                    <SelectDiv>
+                        <SelectBox>
+                            <Label>지역</Label>
+                            <Select
+                                required
+                                value={spotData.areaIndex}
+                                onChange={(e) => {
+                                    onChangeAreaIndex(e.target.value);
+                                }}
+                            >
+                                {areas &&
+                                    areas.map((area) => (
+                                        <option value={area.code} key={area.code}>
+                                            {area.name}
+                                        </option>
+                                    ))}
+                            </Select>
+                        </SelectBox>
+                    </SelectDiv>
+
+                    <MenuList>
+                        {contentTypeList.map((c, i) => (
+                            <MenuItem onClick={() => onUchangeContentTypeId(c.id)} key={i} onMouseEnter={() => onOpenName(i)} onMouseLeave={onCloseName}>
+                                <MenuIcon icon={iconList[i]} />
+                                {hoveredItemId === i && <IconName>{c.label}</IconName>}
+                            </MenuItem>
+                        ))}
+                        <MenuItem onMouseEnter={() => onOpenName(7)} onMouseLeave={onCloseName}>
+                            <MenuIcon icon={faHeart} />
+                            {hoveredItemId === 7 && <IconName>좋아요</IconName>}
+                        </MenuItem>
+                    </MenuList>
                     <Form>
-                        <SelectDiv>
-                            <SelectBox>
-                                <Label>지역</Label>
-                                <Select
-                                    required
-                                    value={spotData.areaIndex}
-                                    onChange={(e) => {
-                                        onChangeAreaIndex(e.target.value);
-                                    }}
-                                >
-                                    {areas &&
-                                        areas.map((area) => (
-                                            <option value={area.code} key={area.code}>
-                                                {area.name}
-                                            </option>
-                                        ))}
-                                </Select>
-                            </SelectBox>
-                        </SelectDiv>
                         <SearchBox>
                             <SearchInput
                                 placeholder="키워드 검색"
@@ -356,8 +371,14 @@ const EditList = ({
                                 <FontAwesomeIcon icon={faMagnifyingGlass} />
                             </SearchButton>
                         </SearchBox>
+                        <ResultBox>
+                            {searchResultText.length > 0 ? (
+                                <>
+                                    ' <SearchResult>{searchResultText}</SearchResult> ' 에 대한 검색 결과...
+                                </>
+                            ) : null}
+                        </ResultBox>
                     </Form>
-                    {searchResultText.length > 0 ? <SearchResult>' {searchResultText} ' 에 대한 검색 결과...</SearchResult> : null}
                 </FormDiv>
 
                 <List>
