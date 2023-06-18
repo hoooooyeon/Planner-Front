@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { useHistory } from 'react-router';
 import styled, { css } from 'styled-components';
 
 const HiddenBox = styled.div`
@@ -8,17 +7,15 @@ const HiddenBox = styled.div`
     z-index: 1;
 `;
 
-const List = styled.ul`
+const List = styled.div`
     width: 100%;
     height: 100%;
     margin: 0 auto;
-    padding: 0 15px;
     display: flex;
     ${(props) =>
         props.scroll &&
         css`
-            width: 750px;
-            display: inline-block;
+            width: 850px;
             @media all and (min-width: 768px) {
                 width: 100%;
             }
@@ -48,7 +45,7 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const Slider = ({ children, list, scroll, transition, drag, page, onChangePageIndex, prevPage, nextPage }) => {
+const Slider = ({ children, list, scroll, transition, page, drag, onChangePageIndex, prevPage, nextPage }) => {
     const hiddenBoxRef = useRef();
     const listRef = useRef();
 
@@ -58,7 +55,7 @@ const Slider = ({ children, list, scroll, transition, drag, page, onChangePageIn
     const moveX = useRef(0);
     const sliderX = useRef(0);
 
-    const TOTAL_SLIDE = list.length;
+    const TOTAL_SLIDE = 4;
 
     const scrollBoxRef = useRef();
     const scrollRef = useRef();
@@ -99,7 +96,7 @@ const Slider = ({ children, list, scroll, transition, drag, page, onChangePageIn
                 scrollRef.current.style.transitionDuration = '0ms';
             }
 
-            if (drag) {
+            if (!drag.current) {
                 drag.current = true;
             }
             if (transition) {
@@ -151,7 +148,7 @@ const Slider = ({ children, list, scroll, transition, drag, page, onChangePageIn
 
     useEffect(() => {
         if (list) {
-            let refValue = listRef.current;
+            let refValue = hiddenBoxRef.current;
             refValue.addEventListener('mousedown', sliderStart);
             window.addEventListener('mousemove', sliderMove);
             window.addEventListener('mouseup', sliderEnd);

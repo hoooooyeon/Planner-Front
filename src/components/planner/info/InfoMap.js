@@ -5,30 +5,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 const MapBlock = styled.div`
-    width: 500px;
-    height: 500px;
-    margin-right: 10px;
-    position: relative;
-    // 페이지 크기에 맞게 너비와 높이의 줄어듬.
-    /* @media all and (min-width: 768px){
-    height: 45vw;
-    width: 45vw;
-  } */
-    @media all and (min-width: 768px) {
-        width: 65%;
-        height: 600px;
-    }
-    /* @media all and (min-width: 960px) {
     width: 60%;
-    height: 600px;
-  } */
+    /* height: 40vw; */
+    position: relative;
 `;
 
 const Map = styled.div`
+    border-radius: 0.5rem;
     width: 100%;
     height: 100%;
     pointer-events: none;
-    /* box-sizing: border-box; */
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 `;
 
 const IconBox = styled.div`
@@ -43,7 +30,7 @@ const IconBox = styled.div`
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: #ef9a9a;
-    font-size: 20px;
+    font-size: 1rem;
 `;
 
 const InfoMap = ({ planner, mapRef, onToggleLikePlanner }) => {

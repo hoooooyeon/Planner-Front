@@ -33,8 +33,6 @@ const PlannerInfoContainer = () => {
     useEffect(() => {
         if (!planId && planner && plans.length !== 0) {
             dispatch(changeCurPlanIdAction(plans[0].planId));
-        } else if (!planId && planner && plans.length === 0) {
-            // dispatch(changeCurPlanIdAction(1));
         }
     }, [dispatch, plans, planner, planId]);
 
@@ -65,7 +63,7 @@ const PlannerInfoContainer = () => {
         if (mapRef.current) {
             const options = {
                 center: new kakao.maps.LatLng(33.450701, 126.570667),
-                level: 10,
+                level: 7,
             };
             const map = new kakao.maps.Map(mapRef.current, options);
             setMap(map);

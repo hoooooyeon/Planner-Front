@@ -164,7 +164,7 @@ const EditMapContainer = () => {
             // 인포윈도우 생성 함수
             function addInfowindow(marker, title) {
                 return () => {
-                    infowindow.setContent(`<div>${title}</div>`);
+                    infowindow.setContent(`<div style="padding:5px;">${title}</div>`);
                     infowindow.open(map, marker);
                 };
             }

@@ -6,114 +6,40 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import Slider from '../../common/Slider';
 
 const InfoDatinationBlock = styled.div`
-    width: calc(100% - 10px);
-    /* margin: 0 auto; */
-    padding: 5px 0;
-    /* display: flex; */
-    /* align-items: center; */
-    border-bottom: 0.2rem solid #cdd9ac;
-    border-radius: 10px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
     ${(props) =>
         props.isShadow &&
         css`
-            box-shadow: 0px 3px 7px 1px rgb(0, 0, 0, 30%);
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
         `}
 `;
 
-const HiddenBox = styled.div`
-    overflow: hidden;
-    width: calc(100% - 6.8rem);
-    position: relative;
-    padding: 5px 0;
-`;
-
-const DateList = styled.div`
+const DateList = styled.ul`
     display: flex;
-    /* width: 15.4rem; */
-    width: 100%;
-    /* transform: translateX(16rem); */
+    padding: 0.5rem;
+    margin: 0;
 `;
 
-const DateBox = styled.div`
-    /* width: 4rem;
-    height: 4rem; */
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    flex-basis: 20%;
-    flex-shrink: 0;
-    line-height: 3rem;
-    &:hover {
-        cursor: pointer;
-        transform: translateY(-3px);
-        background-color: #cdd9ac;
-    }
-`;
-
-const DateButton = styled.div`
-    border-radius: 50px;
-    border: 0.2rem solid #cdd9ac;
-    /* width: 3rem;
-  height: 3rem; */
+const DateButton = styled.li`
+    border-radius: 1rem;
+    margin-left: 0.5rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
     text-align: center;
+    font-size: 0.7rem;
     font-weight: bold;
-    /* color: white; */
-    background-color: white;
-    &[aria-current] {
-        background-color: #cdd9ac;
-    }
-`;
-// const DateButton = styled.div`
-//     border-radius: 50px;
-//     border: 0.2rem solid #cdd9ac;
-//     width: 100%;
-//     flex-basis: 21%;
-//     flex-shrink: 0;
-//     /* width: 3rem;
-//   height: 3rem; */
-//     text-align: center;
-//     line-height: 3rem;
-//     font-weight: bold;
-//     /* color: white; */
-//     background-color: white;
-//     float: left;
-//     margin: 0 0.1rem;
-//     &:hover {
-//         cursor: pointer;
-//         transform: translateY(-3px);
-//         background-color: #cdd9ac;
-//     }
-//     &[aria-current] {
-//         background-color: #cdd9ac;
-//     }
-// `;
-
-const ButtonLine = styled.div`
-    width: 0.5rem;
-    height: 0.2rem;
-    background-color: #cdd9ac;
-
-    /* position: absolute; */
-    /* top: 31px; */
-`;
-
-const SwipeButton = styled.div`
-    border-radius: 50px;
-    border: 0.2rem solid #cdd9ac;
-    width: 3rem;
-    height: 3rem;
-    background-color: white;
-    /* color: white; */
-    font-size: 1.5rem;
+    padding: 0.5rem;
     text-align: center;
-    line-height: 3rem;
-
+    line-height: 2rem;
+    background-color: white;
+    display: flex;
+    cursor: pointer;
     &:hover {
-        cursor: pointer;
-        transform: translateY(-3px);
-        background-color: #cdd9ac;
+        transition: transform 0.3s ease;
+        transform: translate(0, -5px);
+    }
+    &[aria-current] {
+        background-color: rgb(200, 200, 200);
     }
 `;
 
@@ -153,38 +79,28 @@ const InfoDatination = ({ isShadow, planner, plannerData, drag, onChangeCurPlanI
         return ('0' + (date.getMonth() + 1)).slice(-2) + '/' + ('0' + date.getDate()).slice(-2);
     };
 
-    if (!planner) {
+    if (!plans) {
         return <div>Loading...</div>;
     }
     return (
         <InfoDatinationBlock isShadow={isShadow}>
-            {/* <SwipeButton onClick={handlePrev}>
-                <FontAwesomeIcon icon={faCaretLeft} />
-            </SwipeButton> */}
-            {/* <HiddenBox>
-                <DateList ref={dateRef}> */}
             <Slider list={plans} drag={drag}>
-                {plans &&
-                    plans.map((p, i) => (
-                        <DateBox ref={buttonRef} key={p.planId}>
-                            <ButtonLine />
+                <DateList>
+                    {plans &&
+                        plans.map((p, i) => (
                             <DateButton
-                                //  aria-current={p.planId === plannerData.planId ? 'date' : null}
+                                ref={buttonRef}
+                                key={p.planId}
+                                aria-current={p.planId === plannerData.planId ? 'date' : null}
                                 onClick={() => {
                                     onChangeCurPlanId(p.planId);
                                 }}
                             >
                                 {letsFormat(p.planDate)}
                             </DateButton>
-                            {/* <ButtonLine /> */}
-                        </DateBox>
-                    ))}
+                        ))}
+                </DateList>
             </Slider>
-            {/* </DateList>
-            </HiddenBox> */}
-            {/* <SwipeButton onClick={handleNext}>
-                <FontAwesomeIcon icon={faCaretRight} />
-            </SwipeButton> */}
         </InfoDatinationBlock>
     );
 };

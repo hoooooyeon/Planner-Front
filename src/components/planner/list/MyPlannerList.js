@@ -127,88 +127,6 @@ const SimpleMap = styled.div`
 `;
 
 const MyPlannerList = ({ mapRef, plannerError, myPlanners, onResetPlannerInfoForm, onCreatePlanner, onChangeCurPlannerId, prevPage, nextPage }) => {
-    // const hiddenBoxRef = useRef();
-    // const plannersRef = useRef();
-
-    // let isSlide = false; // 슬라이더 이벤트 실행 조건
-    // let startX = 0; // 마우스 클릭한 x 좌표
-    // let currentX = 0; // 마우스 이동한 x 좌표
-    // const moveX = useRef(0); // 현재 x 좌표 + 마우스 이동할 x 좌표
-    // const sliderX = useRef(0); // 슬라이더 x 좌표
-
-    // const TOTAL_SLIDE = 8;
-
-    // const pDrag = useRef(false);
-
-    // // 슬라이드 마우스 다운
-    // const sliderStart = (e) => {
-    //     startX = e.clientX;
-    //     isSlide = true;
-    //     pDrag.current = false;
-    // };
-
-    // // 슬라이드 마우스 이동
-    // const sliderMove = (e) => {
-    //     if (isSlide) {
-    //         currentX = e.clientX;
-    //         moveX.current = sliderX.current + currentX - startX;
-
-    //         plannersRef.current.style.transform = ' translateX(' + moveX.current + 'px)';
-    //         plannersRef.current.style.transitionDuration = ' 0s';
-
-    //         if (!pDrag.current) {
-    //             pDrag.current = true;
-    //         }
-    //         //   if (sDrag.current) {
-    //         //     sDrag.current = false;
-    //         //     return;
-    //         // }
-    //     }
-    // };
-
-    // // 슬라이드 마우스 업
-    // const sliderEnd = (e) => {
-    //     let itemSize = plannersRef.current.scrollWidth / TOTAL_SLIDE;
-    //     sliderX.current = Math.round(moveX.current / itemSize) * itemSize;
-
-    //     if (sliderX.current > 0) {
-    //         sliderX.current = 0;
-    //     } else if (sliderX.current < hiddenBoxRef.current.clientWidth - plannersRef.current.scrollWidth) {
-    //         sliderX.current = hiddenBoxRef.current.clientWidth - plannersRef.current.scrollWidth;
-    //     }
-
-    //     plannersRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
-    //     plannersRef.current.style.transitionDuration = ' 1s';
-    //     isSlide = false;
-    // };
-
-    // // 너비 변경시 슬라이더 조절
-    // const sliderResize = () => {
-    //     if (sliderX.current > 0) {
-    //         sliderX.current = 0;
-    //     } else if (sliderX.current < plannersRef.current.clientWidth - plannersRef.current.scrollWidth) {
-    //         sliderX.current = hiddenBoxRef.current.clientWidth - plannersRef.current.scrollWidth;
-    //     }
-
-    //     plannersRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
-    //     plannersRef.current.style.transitionDuration = '0s';
-    // };
-
-    // useEffect(() => {
-    //     let refValue = plannersRef.current;
-    //     refValue.addEventListener('mousedown', sliderStart);
-    //     window.addEventListener('mousemove', sliderMove);
-    //     window.addEventListener('mouseup', sliderEnd);
-    //     window.addEventListener('resize', sliderResize);
-
-    //     return () => {
-    //         refValue.removeEventListener('mousedown', sliderStart);
-    //         window.removeEventListener('mousemove', sliderMove);
-    //         window.removeEventListener('mouseup', sliderEnd);
-    //         window.removeEventListener('resize', sliderResize);
-    //     };
-    // });
-
     const history = useHistory();
     const transition = useRef(false);
     const allowTransition = () => {
@@ -233,8 +151,6 @@ const MyPlannerList = ({ mapRef, plannerError, myPlanners, onResetPlannerInfoFor
 
                 {myPlanners ? (
                     <Slider list={myPlanners.list} transition={transition} page={true} prevPage={prevPage} nextPage={nextPage}>
-                        {/* <HiddenBox ref={hiddenBoxRef}>
-                    <Planners ref={plannersRef}> */}
                         {myPlanners.list &&
                             myPlanners.list.map((p) => (
                                 <PlannerItem
@@ -257,8 +173,6 @@ const MyPlannerList = ({ mapRef, plannerError, myPlanners, onResetPlannerInfoFor
                                     {/* </Link> */}
                                 </PlannerItem>
                             ))}
-                        {/* </Planners>
-                </HiddenBox> */}
                     </Slider>
                 ) : (
                     <div>플래너가 없습니다. </div>

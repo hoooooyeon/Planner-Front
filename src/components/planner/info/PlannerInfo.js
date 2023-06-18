@@ -15,76 +15,86 @@ const PlannerInfoBlock = styled.div`
     width: 100%;
     height: 100%;
     background-color: #f5f5f5;
-    padding: 10px 0 30px;
+    padding-top: 70px;
 `;
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    margin: 0px auto;
-    h3 {
-        /* color: #9AAD67; */
-    }
+    padding: 0 1rem;
+    margin: 0 auto;
     @media all and (min-width: 768px) {
-        width: 738px;
-    }
-    @media all and (min-width: 960px) {
-        width: 930px;
-    }
-    @media all and (min-width: 1280px) {
-        width: 1024px;
+        padding: 0 9rem;
     }
 `;
 
 const InfoHeader = styled.div`
     display: flex;
     align-items: center;
+    h3 {
+        white-space: nowrap;
+    }
 `;
 
-const Set = styled.div`
-    display: flex;
-    flex-direction: column;
+const MenuBox = styled.div`
     position: relative;
+    padding-left: 1rem;
 `;
 
-const SetButton = styled.button`
+const MenuList = styled.ul`
+    display: none;
+    padding: 0;
+    @media all and (min-width: 1024px) {
+        display: flex;
+    }
+`;
+
+const MenuItem = styled.li`
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    margin-left: 0.5rem;
+    box-shadow: 0 0px 2px rgba(0, 0, 0, 0.5);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    background-color: white;
+    cursor: pointer;
+    a {
+        color: black;
+    }
+`;
+
+const Menu = styled.div`
     width: 4rem;
     height: 2rem;
     align-items: center;
-    border-radius: 10px;
-    border: 2px solid #cdd9ac;
-    display: flex;
-    margin-left: 10px;
-    font-size: 15px;
+    border-radius: 0.5rem;
     justify-content: space-evenly;
+    background-color: white;
+    box-shadow: 0 0px 2px rgba(0, 0, 0, 0.5);
     cursor: pointer;
+    display: none;
+    @media all and (max-width: 1023px) {
+        display: flex;
+    }
 `;
 
 const DropDownMenu = styled.ul`
-    border: 1px solid lightgray;
-    display: none;
     position: absolute;
     z-index: 10;
-    width: 8rem;
+    width: 7rem;
     flex-direction: column;
     padding: 0;
     background-color: white;
-    border-radius: 5px;
-    top: 20px;
+    border-radius: 0.5rem;
+    top: 24px;
     left: 10px;
-    font-size: 0.8rem;
-    box-shadow: 3px 3px 7px 1px rgb(0, 0, 0, 30%);
-    ${(props) =>
-        props.isDropDown &&
-        css`
-            display: flex;
-        `}
-
+    font-size: 0.7rem;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
     li {
         cursor: pointer;
         padding: 5px 10px;
         &:hover {
-            background-color: #cdd9ac;
+            font-weight: bold;
         }
         a {
             display: block;
@@ -95,34 +105,28 @@ const DropDownMenu = styled.ul`
 
 const FlexBox = styled.div`
     display: flex;
-    justify-content: space-around;
-    flex-direction: row;
-    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
 `;
 
 const PlannerInfo = ({ planner, mapRef, plannerData, transList, drag, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal, onChangeCurPlanId, onToggleLikePlanner }) => {
-    const { plans } = { ...planner };
+    const menuRef = useRef();
     const [isDropDown, setIsDropDown] = useState(false);
 
-    const onDropDown = () => {
-        if (isDropDown) {
-            setIsDropDown(false);
-        } else {
-            setIsDropDown(true);
-        }
+    const onOpenDropDown = () => {
+        setIsDropDown(!isDropDown);
     };
 
-    const menuRef = useRef();
-    const onDropUp = () => {
+    const onCloseDropDown = () => {
         if (isDropDown) {
             setIsDropDown(false);
         }
     };
 
     useEffect(() => {
-        window.addEventListener('click', onDropUp);
+        window.addEventListener('click', onCloseDropDown);
         return () => {
-            window.removeEventListener('click', onDropUp);
+            window.removeEventListener('click', onCloseDropDown);
         };
     });
 
@@ -134,22 +138,32 @@ const PlannerInfo = ({ planner, mapRef, plannerData, transList, drag, onDeletePl
             <Container>
                 <InfoHeader>
                     <h3>따수베어님의 플래너</h3>
-                    <Set>
-                        <SetButton onClick={onDropDown}>
+                    <MenuBox>
+                        <MenuList>
+                            <MenuItem onClick={onTogglePlannerInfoModal}>플래너 정보 수정</MenuItem>
+                            <MenuItem>
+                                <Link to="/PlannerEdit">플래너 루트 수정</Link>
+                            </MenuItem>
+                            <MenuItem onClick={onToggleMemberModal}>멤버 초대</MenuItem>
+                            <MenuItem onClick={onDeletePlanner}>플래너 삭제</MenuItem>
+                        </MenuList>
+                        <Menu onClick={onOpenDropDown}>
                             <FontAwesomeIcon icon={faGear} />
                             <p>관리</p>
-                        </SetButton>
-                        <DropDownMenu isDropDown={isDropDown} ref={menuRef}>
-                            <li onClick={onToggleMemberModal}>멤버 초대</li>
-                            <li onClick={onTogglePlannerInfoModal}>플래너 정보 수정</li>
-                            <li>
-                                <Link to="/PlannerEdit">플래너 루트 수정</Link>
-                            </li>
-                            <li onClick={onDeletePlanner}>
-                                <Link to="/PlannerList">플래너 삭제</Link>
-                            </li>
-                        </DropDownMenu>
-                    </Set>
+                        </Menu>
+                        {isDropDown && (
+                            <DropDownMenu isDropDown={isDropDown} ref={menuRef}>
+                                <li onClick={onTogglePlannerInfoModal}>플래너 정보 수정</li>
+                                <li>
+                                    <Link to="/PlannerEdit">플래너 루트 수정</Link>
+                                </li>
+                                <li onClick={onToggleMemberModal}>멤버 초대</li>
+                                <li onClick={onDeletePlanner}>
+                                    <Link to="/PlannerList">플래너 삭제</Link>
+                                </li>
+                            </DropDownMenu>
+                        )}
+                    </MenuBox>
                 </InfoHeader>
                 <FlexBox>
                     <InfoMap planner={planner} mapRef={mapRef} onToggleLikePlanner={onToggleLikePlanner} />

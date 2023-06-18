@@ -15,28 +15,24 @@ import { useState } from 'react';
 import { useRef } from 'react';
 
 const InfoRouteBlock = styled.div`
-    width: 350px;
-    height: 574px;
+    width: 30%;
+    height: 40vw;
     background-color: white;
-    border: 0.2rem solid #cdd9ac;
-    border-radius: 1rem;
-    flex-direction: column;
+    border-radius: 0.5rem;
     display: flex;
-    padding-bottom: 1rem;
-    /* align-items: center; */
-    margin-top: 20px;
-    @media all and (min-width: 768px) {
-        margin-top: 0px;
-    }
+    flex-direction: column;
+    padding: 1rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
 `;
 
 const RouteList = styled.div`
     height: 100%;
-    overflow-y: auto;
+    overflow: auto;
     display: none;
     flex-direction: column;
     align-items: center;
     position: relative;
+    margin-top: 1rem;
     &::-webkit-scrollbar {
         display: none;
     }
@@ -46,24 +42,17 @@ const RouteList = styled.div`
 `;
 
 const RouteItem = styled.div`
-    /* width: 70%; */
     display: flex;
-    flex-direction: column;
-    align-items: center;
     position: relative;
-    top: -38px;
-    z-index: 1;
-    /* border: 0.2rem solid lightblue; */
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 `;
 
-const TransItem = styled.div`
-    width: 75px;
-    display: flex;
-    padding: 0.5rem 1rem;
-    border: 0.2rem solid #cdd9ac;
-    border-radius: 1rem;
-    font-size: 0.8rem;
-    font-weight: bold;
+const TransItem = styled(FontAwesomeIcon)`
+    width: 2rem;
+    height: 2rem;
+    padding: 1rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    border-radius: 2rem;
     background-color: white;
     z-index: 1;
 `;
@@ -71,8 +60,8 @@ const TransItem = styled.div`
 const SpotItem = styled.div`
     width: 200px;
     display: flex;
-    padding: 0.5rem 1rem;
-    border: 0.2rem solid #cdd9ac;
+    padding: 1rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     border-radius: 1rem;
     background-color: white;
     margin: 20px 0;
@@ -131,7 +120,7 @@ const InfoRoute = ({ planner, plannerData, transList, drag, onChangeCurPlanId })
     }
     return (
         <InfoRouteBlock>
-            <InfoDatination isShadow={isShadow} planner={planner} drag={drag} onChangeCurPlanId={onChangeCurPlanId} />
+            {plans && <InfoDatination isShadow={isShadow} planner={planner} drag={drag} onChangeCurPlanId={onChangeCurPlanId} />}
             {plans &&
                 plans.map((p, i) => (
                     <RouteList ref={listRef} aria-current={p.planId === plannerData.planId ? 'plan' : null}>
@@ -140,10 +129,10 @@ const InfoRoute = ({ planner, plannerData, transList, drag, onChangeCurPlanId })
                             return (
                                 <RouteItem key={locationId}>
                                     <RouteLine />
-                                    <TransItem>
-                                        <StyledFontAwesomeIcon icon={transIconList[locationTransportation - 1]} />
-                                        {transList && transList[locationTransportation - 1].label}
-                                    </TransItem>
+                                    {/* <TransItem> */}
+                                    <StyledFontAwesomeIcon icon={transIconList[locationTransportation - 1]} />
+                                    {transList && transList[locationTransportation - 1].label}
+                                    {/* </TransItem> */}
                                     <SpotItem>
                                         <StyledFontAwesomeIcon icon={faBed} />
                                         <RouteSpotName>{locationName}</RouteSpotName>
