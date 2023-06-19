@@ -31,10 +31,10 @@ const PlannerInfoContainer = () => {
 
     // 수정페이지 도달시 맨처음 plannerData planId 설정.
     useEffect(() => {
-        if (!planId && planner && plans.length !== 0) {
+        if (!planId && plans && plans.length !== 0) {
             dispatch(changeCurPlanIdAction(plans[0].planId));
         }
-    }, [dispatch, plans, planner, planId]);
+    }, [dispatch, plans, planId]);
 
     // planner 정보 가져오기
     useEffect(() => {

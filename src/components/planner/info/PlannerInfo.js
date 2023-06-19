@@ -104,9 +104,12 @@ const DropDownMenu = styled.ul`
 `;
 
 const FlexBox = styled.div`
-    display: flex;
-    justify-content: space-between;
     width: 100%;
+    padding: 1rem 0;
+    @media all and (min-width: 768px) {
+        display: flex;
+        justify-content: space-between;
+    }
 `;
 
 const PlannerInfo = ({ planner, mapRef, plannerData, transList, drag, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal, onChangeCurPlanId, onToggleLikePlanner }) => {

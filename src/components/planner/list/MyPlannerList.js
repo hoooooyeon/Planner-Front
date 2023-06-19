@@ -127,10 +127,11 @@ const SimpleMap = styled.div`
 `;
 
 const MyPlannerList = ({ mapRef, plannerError, myPlanners, onResetPlannerInfoForm, onCreatePlanner, onChangeCurPlannerId, prevPage, nextPage }) => {
+    const itemRef = useRef();
     const history = useHistory();
-    const transition = useRef(false);
+    const drag = useRef(false);
     const allowTransition = () => {
-        if (transition.current) {
+        if (!drag.current) {
             history.push('/PlannerInfo');
         }
     };
@@ -150,11 +151,12 @@ const MyPlannerList = ({ mapRef, plannerError, myPlanners, onResetPlannerInfoFor
                 </TitleBox>
 
                 {myPlanners ? (
-                    <Slider list={myPlanners.list} transition={transition} page={true} prevPage={prevPage} nextPage={nextPage}>
+                    <Slider list={myPlanners.list} itemRef={itemRef} drag={drag} page={true} prevPage={prevPage} nextPage={nextPage}>
                         {myPlanners.list &&
                             myPlanners.list.map((p) => (
                                 <PlannerItem
                                     key={p.plannerId}
+                                    ref={itemRef}
                                     onClick={() => {
                                         // onLoadPlanner(p.plannerId);
                                         onChangeCurPlannerId(p.plannerId);

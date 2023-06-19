@@ -397,6 +397,8 @@ function plannerReducer(state = initialState, action) {
                     creator: action.nickname,
                     myPageIndex: 1,
                     sharePageIndex: 1,
+                    plannerId: null,
+                    planId: null,
                 },
                 // spotInfo: {
                 //     areaCode: 39,

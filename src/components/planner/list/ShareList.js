@@ -30,28 +30,6 @@ const Container = styled.div`
     }
 `;
 
-const HiddenBox = styled.div`
-    margin: 0 auto;
-    overflow: hidden;
-    z-index: 1;
-    /* width: calc(100% - 40px);
-  padding: 0 20px; */
-`;
-
-const Shares = styled.ul`
-    width: 750px;
-    height: 100%;
-    margin: 0 auto;
-    padding: 0 15px;
-    display: inline-block;
-    /* padding: 0 20px 0 0; */
-
-    @media all and (min-width: 768px) {
-        width: 100%;
-        padding: 0;
-    }
-`;
-
 const TitleBox = styled.div`
     font-size: 1.3rem;
     margin-left: 20px;
@@ -60,6 +38,11 @@ const TitleBox = styled.div`
     @media all and (min-width: 768px) {
         margin-left: 0;
     }
+`;
+
+const Shares = styled.ul`
+    display: flex;
+    flex-wrap: wrap;
 `;
 
 const ShareItem = styled.li`
@@ -162,130 +145,10 @@ const Map = styled.div`
     width: 500px;
     height: 500px;
     border: 1px solid red;
+    display: none;
 `;
 
 const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlannerId }) => {
-    // const hiddenBoxRef = useRef();
-    // const listRef = useRef();
-    // const itemRef = useRef();
-
-    // let isSlide = false; // 슬라이더 이벤트 실행 조건
-    // let startX = 0; // 마우스 클릭한 x 좌표
-    // let currentX = 0; // 마우스 이동한 x 좌표
-    // const moveX = useRef(0);
-    // const sliderX = useRef(0);
-
-    // const TOTAL_SLIDE = 4;
-
-    // const scrollBoxRef = useRef();
-    // const scrollRef = useRef();
-    // let scrollMoveX = 0;
-
-    // const drag = useRef(false);
-    // // 슬라이드 마우스 다운
-    // const sliderStart = (e) => {
-    //     startX = e.clientX;
-    //     currentX = 0;
-    //     isSlide = true;
-    //     drag.current = false;
-    //     console.log('1' + drag.current);
-    // };
-
-    // // 슬라이드 마우스 이동
-    // const sliderMove = (e) => {
-    //     if (isSlide) {
-    //         currentX = e.clientX;
-    //         moveX.current = sliderX.current + currentX - startX;
-
-    //         listRef.current.style.transform = 'translateX(' + moveX.current + 'px)';
-    //         listRef.current.style.transitionDuration = '0ms';
-
-    //         scrollMoveX = -((moveX.current / -(hiddenBoxRef.current.clientWidth - listRef.current.clientWidth)) * 100);
-
-    //         if (scrollMoveX < 0) {
-    //             scrollMoveX = 0;
-    //         } else if (scrollMoveX > 100) {
-    //             scrollMoveX = 100;
-    //         }
-    //         scrollBoxRef.current.style.opacity = 1;
-    //         scrollBoxRef.current.style.transitionDuration = '400ms';
-
-    //         scrollRef.current.style.transform = 'translateX(' + scrollMoveX + '%)';
-    //         scrollRef.current.style.transitionDuration = '0ms';
-
-    //         // if (currentX === 0) {
-    //         //     // itemRef.current.style.pointerEvents = 'auto';
-    //         //     // itemRef.current.style.color = 'black';
-    //         //     drag.current = false;
-    //         // } else {
-    //         //     // itemRef.current.style.pointerEvents = 'none';
-    //         //     // itemRef.current.style.color = 'red';
-    //         //     drag.current = true;
-    //         // }
-
-    //         if (!drag.current) {
-    //             drag.current = true;
-
-    //             console.log('2' + drag.current);
-    //         }
-    //     }
-    // };
-
-    // // 슬라이드 마우스 업
-    // const sliderEnd = (e) => {
-    //     let itemSize = listRef.current.scrollWidth / TOTAL_SLIDE;
-    //     sliderX.current = Math.round(moveX.current / itemSize) * itemSize;
-
-    //     if (sliderX.current > 0) {
-    //         sliderX.current = 0;
-    //     } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.clientWidth) {
-    //         sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.clientWidth;
-    //     }
-    //     listRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
-    //     listRef.current.style.transitionDuration = ' 1000ms';
-    //     scrollBoxRef.current.style.opacity = 0;
-    //     scrollBoxRef.current.style.transitionDuration = '2000ms';
-
-    //     isSlide = false;
-    //     console.log('3' + drag.current);
-    // };
-
-    // // 너비 변경시 슬라이더 조절
-    // const sliderResize = () => {
-    //     if (sliderX.current > 0) {
-    //         sliderX.current = 0;
-    //     } else if (sliderX.current < listRef.current.clientWidth - listRef.current.scrollWidth) {
-    //         sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth;
-    //     }
-    //     listRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
-    //     listRef.current.style.transitionDuration = '0ms';
-    // };
-
-    // useEffect(() => {
-    //     if (sharePlanners) {
-    //         let refValue = listRef.current;
-    //         refValue.addEventListener('mousedown', sliderStart);
-    //         window.addEventListener('mousemove', sliderMove);
-    //         window.addEventListener('mouseup', sliderEnd);
-    //         window.addEventListener('resize', sliderResize);
-
-    //         return () => {
-    //             refValue.removeEventListener('mousedown', sliderStart);
-    //             window.removeEventListener('mousemove', sliderMove);
-    //             window.removeEventListener('mouseup', sliderEnd);
-    //             window.removeEventListener('resize', sliderResize);
-    //         };
-    //     }
-    // });
-
-    // 드래그시 페이지 전환 막기
-    const history = useHistory();
-    const transition = useRef(false);
-    const allowTransition = () => {
-        if (transition.current) {
-            history.push('/PlannerInfo');
-        }
-    };
     const areaArr = [
         {
             title: '서울',
@@ -507,6 +370,16 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
         showRouteMarker();
     }, [showRouteMarker]);
 
+    const itemRef = useRef();
+    // 드래그시 페이지 전환 막기
+    const history = useHistory();
+    const drag = useRef(false);
+    const allowTransition = () => {
+        if (!drag.current) {
+            history.push('/PlannerInfo');
+        }
+    };
+
     if (plannerError) {
         return <div>Loading...</div>;
     }
@@ -518,38 +391,33 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
                 </TitleBox>
                 {mapArr && mapArr.map((m) => <Map id={m} />)}
                 {sharePlanners ? (
-                    <Slider list={sharePlanners.list} scroll={true} transition={transition}>
-                        {/* <HiddenBox ref={hiddenBoxRef}>
-                    <Shares ref={listRef}> */}
-                        {sharePlanners.list &&
-                            sharePlanners.list.map((p) => (
-                                // sharePlanners.slice(block, block + limit).map((p) => (
-                                <ShareItem
-                                    key={p.plannerId}
-                                    // drag={drag.current}
-                                    onClick={() => {
-                                        // onLoadPlanner(p.plannerId);
-                                        onChangeCurPlannerId(p.plannerId);
-                                        allowTransition();
-                                    }}
-                                >
-                                    {/* <Link to="/PlannerInfo"> */}
-                                    <SimpleMap />
-                                    <InfoBox>
-                                        <Name>{p.title}</Name>
-                                        <Date>
-                                            {p.planDateStart} ~ {p.planDateEnd}
-                                            {/* {new Date(planner.planDateStart).format('YYYY-MM-DD')} ~ {planner.planDateEnd} */}
-                                        </Date>
-                                    </InfoBox>
-                                    {/* </Link> */}
-                                </ShareItem>
-                            ))}
-                        {/* </Shares>
-                </HiddenBox> */}
-                        {/* <ScrollBox ref={scrollBoxRef}>
-                    <Scroll ref={scrollRef} />
-                </ScrollBox> */}
+                    <Slider list={sharePlanners.list} itemRef={itemRef} scroll={true} drag={drag}>
+                        <Shares>
+                            {sharePlanners.list &&
+                                sharePlanners.list.map((p) => (
+                                    <ShareItem
+                                        key={p.plannerId}
+                                        ref={itemRef}
+                                        // drag={drag.current}
+                                        onClick={() => {
+                                            // onLoadPlanner(p.plannerId);
+                                            onChangeCurPlannerId(p.plannerId);
+                                            allowTransition();
+                                        }}
+                                    >
+                                        {/* <Link to="/PlannerInfo"> */}
+                                        <SimpleMap />
+                                        <InfoBox>
+                                            <Name>{p.title}</Name>
+                                            <Date>
+                                                {p.planDateStart} ~ {p.planDateEnd}
+                                                {/* {new Date(planner.planDateStart).format('YYYY-MM-DD')} ~ {planner.planDateEnd} */}
+                                            </Date>
+                                        </InfoBox>
+                                        {/* </Link> */}
+                                    </ShareItem>
+                                ))}
+                        </Shares>
                     </Slider>
                 ) : (
                     <div>플래너가 없습니다.</div>

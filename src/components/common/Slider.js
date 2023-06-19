@@ -5,6 +5,7 @@ const HiddenBox = styled.div`
     margin: 0 auto;
     overflow: hidden;
     z-index: 1;
+    width: 100%;
 `;
 
 const List = styled.div`
@@ -45,7 +46,7 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const Slider = ({ children, list, scroll, transition, page, drag, onChangePageIndex, prevPage, nextPage }) => {
+const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPage }) => {
     const hiddenBoxRef = useRef();
     const listRef = useRef();
 
@@ -67,9 +68,6 @@ const Slider = ({ children, list, scroll, transition, page, drag, onChangePageIn
         startX = e.clientX;
         if (drag) {
             drag.current = false;
-        }
-        if (transition) {
-            transition.current = true;
         }
     };
 
@@ -96,43 +94,46 @@ const Slider = ({ children, list, scroll, transition, page, drag, onChangePageIn
                 scrollRef.current.style.transitionDuration = '0ms';
             }
 
-            if (!drag.current) {
+            if (drag && !drag.current) {
                 drag.current = true;
-            }
-            if (transition) {
-                transition.current = false;
             }
         }
     };
 
     // 슬라이드 마우스 업
     const sliderEnd = (e) => {
-        let itemSize = listRef.current.scrollWidth / TOTAL_SLIDE;
-        sliderX.current = Math.round(moveX.current / itemSize) * itemSize;
+        if (itemRef) {
+            const computedStyle = getComputedStyle(itemRef.current);
+            const itemWidth = itemRef.current.getBoundingClientRect().height + parseInt(computedStyle.marginTop);
 
-        if (sliderX.current > 0) {
-            sliderX.current = 0;
-            if (page) {
-                prevPage();
+            sliderX.current = Math.round(moveX.current / itemWidth) * itemWidth;
+            // let itemSize = listRef.current.scrollWidth / TOTAL_SLIDE;
+            // sliderX.current = Math.round(moveX.current / itemSize) * itemSize;
+
+            if (sliderX.current > 0) {
+                sliderX.current = 0;
+                if (page) {
+                    prevPage();
+                }
+            } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth) {
+                sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth;
+
+                // } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.clientWidth) {
+                //     sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.clientWidth;
+                if (page) {
+                    nextPage();
+                }
             }
-        } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth) {
-            sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth;
+            listRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
+            listRef.current.style.transitionDuration = ' 1000ms';
 
-            // } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.clientWidth) {
-            //     sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.clientWidth;
-            if (page) {
-                nextPage();
+            if (scroll) {
+                scrollBoxRef.current.style.opacity = 0;
+                scrollBoxRef.current.style.transitionDuration = '2000ms';
             }
-        }
-        listRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
-        listRef.current.style.transitionDuration = ' 1000ms';
 
-        if (scroll) {
-            scrollBoxRef.current.style.opacity = 0;
-            scrollBoxRef.current.style.transitionDuration = '2000ms';
+            isSlide = false;
         }
-
-        isSlide = false;
     };
 
     // 너비 변경시 슬라이더 조절

@@ -249,8 +249,6 @@ const EditList = ({
     };
 
     const onCloseName = () => {
-        if (hoveredItemId !== null) {
-        }
         setHoveredItemId(null);
     };
 

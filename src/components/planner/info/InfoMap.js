@@ -6,8 +6,11 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 const MapBlock = styled.div`
     width: 60%;
-    /* height: 40vw; */
     position: relative;
+    @media all and (max-width: 767px) {
+        width: 100%;
+        height: 80vw;
+    }
 `;
 
 const Map = styled.div`
