@@ -5,11 +5,10 @@ import { changeMemoContentAction, changeMemoTitleAction, createMemoAction, delet
 
 const InfoPostContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, curMemo, plannerData } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, curMemo } = useSelector(({ plannerReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         curMemo: plannerReducer.curMemo,
-        plannerData: plannerReducer.plannerData,
     }));
     const { title, content } = { ...curMemo };
     const { plannerId } = { ...planner };
@@ -40,11 +39,6 @@ const InfoPostContainer = () => {
         dispatch(resetMemoAction());
     };
 
-    // 플래너 정보 가져오기
-    const onLoadPlanner = () => {
-        dispatch(loadPlannerAction(plannerId));
-    };
-
     return (
         <InfoPostList
             planner={planner}
@@ -56,7 +50,6 @@ const InfoPostContainer = () => {
             onChangeMemoContent={onChangeMemoContent}
             onLoadMemo={onLoadMemo}
             onResetMemo={onResetMemo}
-            onLoadPlanner={onLoadPlanner}
         />
     );
 };

@@ -7,11 +7,6 @@ import { faPlane } from '@fortawesome/free-solid-svg-icons'; // 비행기
 import { faPersonWalking } from '@fortawesome/free-solid-svg-icons'; // 도보
 import { faBicycle } from '@fortawesome/free-solid-svg-icons'; // 자전거 or 오토바이
 import { faTrainSubway } from '@fortawesome/free-solid-svg-icons'; // 지하철 or 기차
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons'; // 여행지
-import { faBed } from '@fortawesome/free-solid-svg-icons'; // 숙소
-import { faUtensils } from '@fortawesome/free-solid-svg-icons'; // 식당
-import { useEffect } from 'react';
-import { useState } from 'react';
 import { useRef } from 'react';
 import Slider from '../../common/Slider';
 
@@ -22,13 +17,13 @@ const InfoRouteBlock = styled.div`
     flex-direction: column;
     padding: 1rem;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
-    width: 30%;
+    width: 35%;
     height: 40vw;
-
+    margin-left: 1rem;
     @media all and (max-width: 767px) {
         width: calc(100% - 2rem);
         height: auto;
-        margin-top: 1rem;
+        margin: 1rem 0 0;
         padding: 1rem 1rem 2rem;
     }
 `;
@@ -158,7 +153,7 @@ const InfoRoute = ({ planner, plannerData, transList, drag, onChangeCurPlanId })
                 {plans && (
                     <Slider list={plans} itemRef={itemRef}>
                         {plans.map((p, i) => (
-                            <RouteList aria-current={p.planId === plannerData.planId ? 'plan' : null}>
+                            <RouteList aria-current={p.planId === plannerData.planId ? 'plan' : null} key={p.planId}>
                                 {p.planLocations.map((pl, i) => {
                                     const { locationId, locationName, locationTransportation, locationImage } = pl;
                                     return (

@@ -1,134 +1,127 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { useRef } from 'react';
-import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons'; // 버스
+import { faPen } from '@fortawesome/free-solid-svg-icons'; // 버스
 
 const PostItem = styled.div`
-    border: 1px solid #cdd9ac;
-    border-radius: 5px;
-    margin-bottom: 1rem;
-    /* display: flex; */
-    flex-direction: column;
-    padding: 10px;
-    /* display: none; */
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    & + & {
+        margin-top: 1.5rem;
+    }
 `;
 
 const PostHeader = styled.div`
+    position: relative;
+    width: 40%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-`;
-
-const HeaderInfo = styled.div`
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    flex-direction: column;
+    padding-right: 0.5rem;
 `;
 
 const Number = styled.p`
     font-weight: bold;
-    font-size: 1.2rem;
-    margin-right: 1rem;
+    font-size: 0.9rem;
+    color: gray;
+    margin: 0;
 `;
 
 const Title = styled.p`
     font-weight: bold;
+    margin: 0 0 0.5rem 1.5rem;
+    width: 100%;
+    height: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const Date = styled.p`
     color: lightgray;
-    font-size: 0.8rem;
+    font-size: 0.5rem;
+    margin: 0 0 0 1.5rem;
+    width: 100%;
+    height: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+
+const PostContent = styled.div`
+    width: 55%;
+    margin-left: 1rem;
 `;
 
 const Text = styled.div`
-    overflow-y: hidden;
-    visibility: hidden;
-    max-height: 0px;
-    transition: max-height 300ms ease-in-out;
-    margin-top: -25px;
-    /* border: 1px solid lightgray;
-  border-radius: 1rem; */
-    padding: 1rem;
-    ${(props) =>
-        props.isMax &&
-        css`
-            visibility: visible;
-            max-height: 200px;
-        `}
+    font-size: 0.8rem;
+    height: 4rem;
+    overflow: hidden;
+    word-wrap: break-word;
+    display: -webkit-box;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    p {
+        margin: 0;
+    }
 `;
 
 const ButtonBox = styled.div`
     display: flex;
-    justify-content: flex-end;
-
-    padding-top: 10px;
+    align-items: center;
+    position: absolute;
+    right: -16px;
+    top: -14px;
 `;
 
-const Button = styled.button`
-    border-radius: 0.5rem;
-    border: none;
-    background-color: #9aad67;
-    color: white;
-    width: 4rem;
-    height: 2rem;
-    margin-left: 1rem;
-    font-weight: bold;
-    &:hover {
-        cursor: pointer;
-        background-color: #f4d284;
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+    border-radius: 2rem;
+    background-color: white;
+    padding: 0.5rem;
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    & + & {
+        margin-left: 0.5rem;
     }
 `;
 
-const InfoPostItem = ({ memo, onDeleteMemo, onLoadMemo, setIsEdit, onLoadPlanner }) => {
+const InfoPostItem = ({ memo, onDeleteMemo, onLoadMemo, setIsEdit }) => {
     const textRef = useRef();
-    const [isMax, setIsMax] = useState(false);
-    const onMax = () => {
-        if (isMax === false) {
-            setIsMax(true);
-        } else {
-            setIsMax(false);
-        }
-    };
+
     const { memoId, title, content, updateDate } = memo;
 
-    const onDeletePostMd = async () => {
-        const deleteMemo = () => {
-            onDeleteMemo(memoId);
-        };
-
-        const load = () => {
-            onLoadPlanner();
-        };
-        await deleteMemo();
-        // await load();
+    const onDeletePostMd = () => {
+        onDeleteMemo(memoId);
     };
 
     return (
-        <>
-            <PostItem>
-                <PostHeader>
-                    <HeaderInfo>
-                        <Number>{memoId}</Number>
-                        <div>
-                            <Title>{title}</Title>
-                            <Date>{updateDate}</Date>
-                        </div>
-                    </HeaderInfo>
-                    <ButtonBox>
-                        {isMax ? <Button onClick={onMax}>Min</Button> : <Button onClick={onMax}>Max</Button>}
-                        <Button
-                            onClick={() => {
-                                setIsEdit(true);
-                                onLoadMemo(memo);
-                            }}
-                        >
-                            Edit
-                        </Button>
-                        <Button onClick={onDeletePostMd}>Delete</Button>
-                    </ButtonBox>
-                </PostHeader>
-                <Text ref={textRef} dangerouslySetInnerHTML={{ __html: content }} isMax={isMax}></Text>
-            </PostItem>
-        </>
+        <PostItem>
+            <PostHeader>
+                <Number>{memoId}</Number>
+                <Title>{title}</Title>
+                <Date>{updateDate}</Date>
+            </PostHeader>
+            <PostContent>
+                <Text ref={textRef} dangerouslySetInnerHTML={{ __html: content }}></Text>
+            </PostContent>
+            <ButtonBox>
+                <StyledFontAwesomeIcon
+                    icon={faPen}
+                    onClick={() => {
+                        setIsEdit(true);
+                        onLoadMemo(memo);
+                    }}
+                />
+                <StyledFontAwesomeIcon icon={faXmark} onClick={onDeletePostMd} />
+            </ButtonBox>
+        </PostItem>
     );
 };
 

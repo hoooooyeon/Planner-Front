@@ -1,8 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import styled, { css } from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
-import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
+import { useRef } from 'react';
+import styled from 'styled-components';
 import Slider from '../../common/Slider';
 
 const InfoDatinationBlock = styled.div`
@@ -16,34 +13,48 @@ const DateList = styled.ul`
     width: 100%;
 `;
 
-const DateButton = styled.li`
-    border-radius: 1rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    font-size: 0.7rem;
-    font-weight: bold;
-    width: 2.5rem;
-    height: 2.5rem;
-    line-height: 2.5rem;
-    padding: 0.5rem;
-    text-align: center;
-    background-color: white;
-    display: flex;
+const DateBox = styled.li`
+    position: relative;
+    border-radius: 2rem;
     cursor: pointer;
-    white-space: nowrap;
     & + & {
         margin-left: 0.5rem;
-    }
-    &:hover {
-        transition: transform 0.3s ease;
-        transform: translate(0, -5px);
     }
     &[aria-current] {
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     }
 `;
 
-const InfoDatination = ({ isShadow, planner, plannerData, drag, onChangeCurPlanId }) => {
+const DateButton = styled.div`
+    width: 2.5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    font-weight: bold;
+    white-space: nowrap;
+    font-size: 0.7rem;
+    padding: 0.5rem;
+    background-color: white;
+    border-radius: 2rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    &:hover {
+        transition: transform 0.3s ease;
+        transform: scale(1.1);
+    }
+`;
+
+const RouteLine = styled.div`
+    background-color: rgba(0, 0, 0, 0.1);
+    width: 2rem;
+    height: 0.2rem;
+    position: absolute;
+    left: 16%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+`;
+
+const InfoDatination = ({ planner, plannerData, drag, onChangeCurPlanId }) => {
     const { plans } = { ...planner };
 
     const letsFormat = (d) => {
@@ -62,7 +73,7 @@ const InfoDatination = ({ isShadow, planner, plannerData, drag, onChangeCurPlanI
                 <DateList>
                     {plans &&
                         plans.map((p, i) => (
-                            <DateButton
+                            <DateBox
                                 ref={itemRef}
                                 key={p.planId}
                                 aria-current={p.planId === plannerData.planId ? 'date' : null}
@@ -70,8 +81,9 @@ const InfoDatination = ({ isShadow, planner, plannerData, drag, onChangeCurPlanI
                                     onChangeCurPlanId(p.planId);
                                 }}
                             >
-                                {letsFormat(p.planDate)}
-                            </DateButton>
+                                <DateButton>{letsFormat(p.planDate)}</DateButton>
+                                {i !== 0 && <RouteLine />}
+                            </DateBox>
                         ))}
                 </DateList>
             </Slider>

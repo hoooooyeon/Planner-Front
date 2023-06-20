@@ -1,62 +1,57 @@
 import { useEffect, useRef, useState } from 'react';
-
 import styled, { css } from 'styled-components';
 import Modal from '../../common/Modal';
 import InfoEditItem from './InfoEditItem';
 import InfoPostItem from './InfoPostItem';
-// import airplaneDay from '../../../lib/img/airplane-day.jpg';
-// import airplaneNight from '../../../lib/img/airplane-night.jpg';
+import ad1 from '../../../lib/images/ad1.jpg';
+import ad2 from '../../../lib/images/ad2.jpg';
 
 const InfoPostListBlock = styled.div`
-    width: 100%;
-    height: 550px;
     background-color: #f5f5f5;
-    padding-top: 30px;
+    padding-top: 1rem;
+    width: 100%;
+    height: 100%;
 `;
 
 const Container = styled.div`
-    height: 100%;
-    margin: 0px auto;
+    margin: 0 auto;
+    padding: 0 1rem 1rem;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     @media all and (min-width: 768px) {
-        width: 738px;
-    }
-    @media all and (min-width: 960px) {
-        width: 930px;
-    }
-    @media all and (min-width: 1280px) {
-        width: 1024px;
+        padding: 0 9rem 1rem;
     }
 `;
 
 const PostListBlock = styled.div`
-    width: 65%;
-    min-width: 400px;
-    height: 100%;
-    /* height: calc(100% - 1rem); */
-    border: 0.2rem solid #cdd9ac;
-    border-radius: 10px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
     background-color: white;
+    padding: 1rem;
+    width: calc(100% - 2rem);
+    height: 20rem;
+    @media all and (min-width: 768px) {
+        width: calc(60% - 2rem);
+        height: calc(40vw - 2rem);
+    }
 `;
 
 const PostListHeader = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 1rem;
-
-    ${(props) =>
-        props.isShadow &&
-        css`
-            box-shadow: 0px 3px 7px 1px rgb(0, 0, 0, 30%);
-        `}
+    h3 {
+        margin: 0;
+    }
 `;
 
 const PostList = styled.div`
-    height: calc(100% - 5rem);
-    overflow-y: auto;
-    padding: 0 1rem;
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    height: calc(100% - 6rem);
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
     &::-webkit-scrollbar {
         display: none;
     }
@@ -65,33 +60,31 @@ const PostList = styled.div`
 const Button = styled.button`
     border-radius: 0.5rem;
     border: none;
-    background-color: #9aad67;
-    color: white;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     width: 5rem;
     height: 2rem;
-    margin-left: 1rem;
     font-weight: bold;
+    cursor: pointer;
     &:hover {
-        cursor: pointer;
-        background-color: #f4d284;
+        background-color: rgba(0, 0, 0, 0.1);
     }
 `;
 
 const Ad = styled.div`
-    width: 350px;
-    height: 100%;
-    margin-left: 5px;
+    width: calc(35% + 2rem);
+    height: 40vw;
+    margin-left: 1rem;
     display: none;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     transition: all 0.3s;
     position: relative;
-    border-radius: 10px;
-    /* background-image: url(./airplane-day.jpg);
-  background-size: 100%; */
-    /* &:hover {
-    background-image: url(./airplane-night.jpg);
-  } */
+    border-radius: 0.5rem;
+    @media all and (min-width: 768px) {
+        display: block;
+    }
     div {
-        width: 100%;
+        width: calc(100% - 2rem);
+        padding: 1rem;
         color: white;
         font-weight: bold;
         position: absolute;
@@ -100,68 +93,35 @@ const Ad = styled.div`
         transform: translate(-50%, -50%);
         text-align: center;
         font-size: 0.9rem;
-        @media all and (min-width: 960px) {
-            font-size: 1rem;
-        }
-    }
-    @media all and (min-width: 768px) {
-        /* display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; */
-        display: block;
+        pointer-events: none;
     }
 `;
 
 const Img = styled.img`
     width: 100%;
     height: 100%;
-    border-radius: 10px;
+    border-radius: 1rem;
+    object-fit: cover;
 `;
-
-/**
- * (메모는 나의 플래너 정보 페이지에서만 보임)
- * 1. 메모 생성 버튼 => editItem이 생성됨.
- * 2. editItem 입력 후 확인 버튼 => editItem 자리에 postItem이 생성됨.
- * 3. postItem의 edit버튼 => postItem 자리에 editItem이 생성되고 나머진 2와 동일.
- * 4. postItem의 max버튼 => postItem의 text만큼 높이가 변경됨.
- */
-const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent, onLoadMemo, onResetMemo, onLoadPlanner }) => {
+const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent, onLoadMemo, onResetMemo }) => {
     const { planMemos } = { ...planner };
 
-    const [isChange, setIsChange] = useState(false);
+    const [isChanged, setIsChanged] = useState(false);
     const adRef = useRef();
 
-    const onChangeTrue = () => {
-        setIsChange(true);
-    };
-    const onChangeFalse = () => {
-        setIsChange(false);
-    };
-
-    const [isShadow, setIsShadow] = useState(false);
-    const listRef = useRef();
-
-    const handleShadow = () => {
-        if (listRef.current.scrollTop === 0) {
-            setIsShadow(false);
-        } else {
-            setIsShadow(true);
-        }
+    const onChangeHovered = () => {
+        setIsChanged(!isChanged);
     };
 
     useEffect(() => {
         let refAd = adRef.current;
-        let refList = listRef.current;
-        if (refAd && refList) {
-            refAd.addEventListener('mouseover', onChangeTrue);
-            refAd.addEventListener('mouseout', onChangeFalse);
-            refList.addEventListener('scroll', handleShadow);
+        if (refAd) {
+            refAd.addEventListener('mouseover', onChangeHovered);
+            refAd.addEventListener('mouseout', onChangeHovered);
 
             return () => {
-                refAd.removeEventListener('mouseover', onChangeTrue);
-                refAd.removeEventListener('mouseout', onChangeFalse);
-                refList.removeEventListener('scroll', handleShadow);
+                refAd.removeEventListener('mouseover', onChangeHovered);
+                refAd.removeEventListener('mouseout', onChangeHovered);
             };
         }
     });
@@ -169,35 +129,22 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
     const [isCreate, setIsCreate] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
 
-    const onCreatePostMd = async () => {
+    const onCreatePostMd = () => {
         setIsCreate(false);
-        const create = () => {
-            onCreateMemo();
-        };
-        const load = () => {
-            onLoadPlanner();
-        };
-        // create();
-        // load();
-        await create();
-        // await load();
+        onCreateMemo();
+        onResetMemo();
     };
 
-    const onEditPostMd = async () => {
+    const onEditPostMd = () => {
         setIsEdit(false);
-        const update = () => {
-            onUpdateMemo(curMemo.memoId);
-        };
-        const load = () => {
-            onLoadPlanner();
-        };
-        await update();
-        // await load();
+        onUpdateMemo(curMemo.memoId);
+        onResetMemo();
     };
 
     const onCancelPostMd = () => {
         setIsEdit(false);
         setIsCreate(false);
+        onResetMemo();
     };
 
     if (!planner) {
@@ -207,7 +154,7 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
         <InfoPostListBlock>
             <Container>
                 <PostListBlock>
-                    <PostListHeader isShadow={isShadow}>
+                    <PostListHeader>
                         <h3>Memo</h3>
                         <Button
                             onClick={() => {
@@ -218,10 +165,10 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
                             ADD
                         </Button>
                     </PostListHeader>
-                    <PostList ref={listRef}>
+                    <PostList>
                         {planMemos &&
                             planMemos.map((memo) => {
-                                return <InfoPostItem key={memo.memoId} memo={memo} onDeleteMemo={onDeleteMemo} onLoadMemo={onLoadMemo} setIsEdit={setIsEdit} onLoadPlanner={onLoadPlanner} />;
+                                return <InfoPostItem key={memo.memoId} memo={memo} onDeleteMemo={onDeleteMemo} onLoadMemo={onLoadMemo} setIsEdit={setIsEdit} />;
                             })}
                     </PostList>
                     {/* 메모 생성 모달 */}
@@ -233,20 +180,22 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
                         <InfoEditItem curMemo={curMemo} onChangeMemoTitle={onChangeMemoTitle} onChangeMemoContent={onChangeMemoContent} />
                     </Modal>
                 </PostListBlock>
-                {!isChange ? (
-                    <Ad ref={adRef}>
-                        {/* <Img src={airplaneDay} alt="airplane-day" /> */}
-                        <div>
-                            바쁜 일정 중에 잊는 것들이 있을 수가 있어요. <br />
-                            여행에 필요한 정보들을 기록해 보세요.
-                        </div>
-                    </Ad>
-                ) : (
-                    <Ad ref={adRef}>
-                        {/* <Img src={airplaneNight} alt="airplane-night" /> */}
-                        <div>한국다봄을 앱에서도 사용해 보세요.</div>
-                    </Ad>
-                )}
+                <Ad ref={adRef}>
+                    {!isChanged ? (
+                        <>
+                            <Img src={ad1} alt="ad1" />
+                            <div>
+                                바쁜 일정 중에 잊는 것들이 있을 수 있어요. <br />
+                                여행에 필요한 정보들을 기록해 보세요.
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <Img src={ad1} alt="ad2" />
+                            <div>한국다봄을 앱에서도 곧 만나 보실 수 있어요.</div>
+                        </>
+                    )}
+                </Ad>
             </Container>
         </InfoPostListBlock>
     );

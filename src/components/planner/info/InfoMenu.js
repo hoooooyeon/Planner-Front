@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
 const InfoMenuBlock = styled.div`
-    /* width: 100%; */
-    /* height: 5rem; */
     background-color: white;
     padding: 0.5rem 0;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
@@ -13,7 +11,6 @@ const Container = styled.div`
     height: 100%;
     display: flex;
     justify-content: center;
-
     padding: 0.1rem 1rem;
     flex-direction: column;
     @media all and (min-width: 768px) {

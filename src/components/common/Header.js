@@ -102,7 +102,7 @@ const Header = ({ account }) => {
 
     useEffect(() => {
         window.addEventListener('scroll', headerStyling);
-
+        headerStyling();
         return () => {
             window.removeEventListener('scroll', headerStyling);
         };

@@ -37,7 +37,7 @@ const InfoEditItem = ({ curMemo, onChangeMemoTitle, onChangeMemoContent }) => {
         toolbar: [[{ header: [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], [{ color: [] }, { background: [] }], ['clean']],
     };
 
-    const { title, content, memoId } = curMemo;
+    const { title, content } = { ...curMemo };
     return (
         <InfoEditItemBlock>
             <InfoEditItemTitleBox>
@@ -45,7 +45,7 @@ const InfoEditItem = ({ curMemo, onChangeMemoTitle, onChangeMemoContent }) => {
                     name="title"
                     placeholder="Title"
                     type="text"
-                    value={title}
+                    value={title || ''}
                     onChange={(e) => {
                         onChangeMemoTitle(e.target.value);
                     }}
@@ -55,7 +55,7 @@ const InfoEditItem = ({ curMemo, onChangeMemoTitle, onChangeMemoContent }) => {
                 placeholder="내용을 입력해주세요."
                 theme="snow"
                 modules={modules}
-                value={content}
+                value={content || ''}
                 onChange={(e) => {
                     onChangeMemoContent(e);
                 }}

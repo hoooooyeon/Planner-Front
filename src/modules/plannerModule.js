@@ -106,8 +106,6 @@ const CREATE_MAP_TYPE = 'planner/CREATE_MAP';
 const CHANGE_SHARE_PAGE_INDEX_TYPE = 'planner/CHANGE_SHARE_PAGE_INDEX';
 const CHANGE_MY_PAGE_INDEX_TYPE = 'planner/CHANGE_MY_PAGE_INDEX';
 
-const CHANGE_AREA_CODE_TYPE = 'planner/CHANGE_AREA_CODE';
-
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
     accountId,
@@ -184,7 +182,6 @@ export const changeLocationAction = (location) => ({ type: CHANGE_LOCATION_TYPE,
 export const createMapAction = (mapData) => ({ type: CREATE_MAP_TYPE, mapData });
 export const changeSharePageIndexAction = (pageIndex) => ({ type: CHANGE_SHARE_PAGE_INDEX_TYPE, pageIndex });
 export const changeMyPageIndexAction = (pageIndex) => ({ type: CHANGE_MY_PAGE_INDEX_TYPE, pageIndex });
-export const changeAreaCodeAction = (areaCode) => ({ type: CHANGE_AREA_CODE_TYPE, areaCode });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -230,6 +227,7 @@ const initialState = {
     plannerError: null,
     plan: null,
     curMemo: {
+        memoId: null,
         title: null,
         content: null,
     },

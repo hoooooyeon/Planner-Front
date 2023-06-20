@@ -61,6 +61,9 @@ const MenuItem = styled.li`
     a {
         color: black;
     }
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.01);
+    }
 `;
 
 const Menu = styled.div`
