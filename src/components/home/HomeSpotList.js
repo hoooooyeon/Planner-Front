@@ -19,7 +19,7 @@ const Header = styled.div`
   text-align: center;
   margin-bottom: 3rem;
   h3 {
-    margin: 0;
+    margin: 0 0 1rem 0;
   }
 `;
 
@@ -39,9 +39,6 @@ const SpotList = styled.ul`
 
 const SpotItem = styled.li`
   position: relative;
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const ImgOveray = styled.div`
@@ -67,6 +64,14 @@ const Img = styled.img`
   border: none;
   margin: auto;
   display: block;
+`;
+
+const Text = styled.div`
+  font-size: 0.9rem;
+  color: gray;
+  & + & {
+    margin-top: 0.5rem;
+  }
 `;
 
 const HomeSpotList = () => {
@@ -188,6 +193,8 @@ const HomeSpotList = () => {
       <Container>
         <Header>
           <h3>여행지 리스트</h3>
+          <Text>한국의 다양한 여행지들을 만나보세요.</Text>
+          <Text>구석구석 숨어있는 특별한 장소와 여정들이 당신을 기다리고 있을지도 몰라요.</Text>
         </Header>
         <SpotList>
           {spotArr &&

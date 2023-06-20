@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import palette from '../../lib/styles/palette';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
-import SideNav from './sideNav';
+// import SideNav from './sideNav';
 import { useState } from 'react';
 
 const HeaderBlock = styled.div`
@@ -105,11 +105,11 @@ const Header = ({ account }) => {
 
   useEffect(() => {
     window.addEventListener('scroll', headerStyling);
-
+    headerStyling();
     return () => {
       window.removeEventListener('scroll', headerStyling);
     };
-  });
+  }, []);
 
   return (
     <HeaderBlock ref={headerRef} styled={styled}>
@@ -143,7 +143,7 @@ const Header = ({ account }) => {
           </li> */}
         </AccountList>
       )}
-      <SideNav />
+      {/* <SideNav /> */}
     </HeaderBlock>
   );
 };
