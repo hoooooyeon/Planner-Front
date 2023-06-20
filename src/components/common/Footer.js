@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import footerImg from '../../lib/images/footerImg.jpg';
 
 const FooterBlock = styled.div`
   width: 100%;
@@ -12,6 +11,7 @@ const FooterBlock = styled.div`
 
 const RelativeDiv = styled.div`
   position: relative;
+  background-color: rgba(0, 0, 0, 0.3);
 `;
 
 const FooterBox = styled.div`
@@ -123,17 +123,6 @@ const Info = styled.div`
     align-items: center;
   }
 `;
-const UpButton = styled(FontAwesomeIcon)`
-  font-size: 30px;
-  /* position: absolute;
-  right: 50px;
-  display: none; */
-  float: right;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
 
 const FlexDiv = styled.div`
   display: flex;
@@ -154,17 +143,10 @@ const ColumnDiv = styled.div`
 `;
 
 const Footer = () => {
-  const onScrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
-
   return (
     <FooterBlock>
       <RelativeDiv>
-        <Img alt="footerImg" src={'http://tong.visitkorea.or.kr/cms/resource/28/2774128_image2_1.jpg'} />
+        <Img alt="footerImg" src={footerImg} />
         <FooterBox>
           <Music>
             <h3>Currently vibing to:</h3>
@@ -198,7 +180,6 @@ const Footer = () => {
         <div>대한민국 여행의 전부</div>
         <div>한국다봄</div>
       </Logo>
-      {/* <UpButton icon={faArrowUp} onClick={onScrollToTop} /> */}
     </FooterBlock>
   );
 };

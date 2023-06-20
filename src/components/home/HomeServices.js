@@ -7,6 +7,9 @@ import { faCircleChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { faCircleChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Slider from '../common/Slider';
+import serviceImg1 from '../../lib/images/serviceImg1.jpg';
+import serviceImg2 from '../../lib/images/serviceImg2.jpg';
+import serviceImg3 from '../../lib/images/serviceImg3.jpg';
 
 const HomeServicesBlock = styled.div`
   width: 100%;
@@ -48,6 +51,8 @@ const ServiceItem = styled.li`
 
 const OverviewBox = styled.div`
   width: 250px;
+  font-weight: bold;
+  color: gray;
   p {
     font-size: 0.8rem;
   }
@@ -156,20 +161,20 @@ const HomeServices = () => {
     {
       title: 'Planner',
       link: '/PlannerList',
-      firstimage: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg',
+      firstimage: serviceImg1,
       overview1: '다른 여행자들의 플래너를 살펴보고, 동료들과 직접 여행 계획을 세워보세요.',
     },
     {
       title: 'Community',
       link: '/ReviewList',
-      firstimage: 'http://tong.visitkorea.or.kr/cms/resource/23/2678623_image2_1.jpg',
+      firstimage: serviceImg2,
       overview1: '여행을 끝낸 여행자들의 후기를 살펴보세요.',
       overview2: '그리고 여행자들끼리 여행 정보를 공유해보세요.',
     },
     {
       title: 'Spot',
       link: '/Spot',
-      firstimage: 'http://tong.visitkorea.or.kr/cms/resource/30/1857230_image2_1.jpg',
+      firstimage: serviceImg3,
       overview1: '가고 싶은 여행지를 검색해보고 그 여행지에 대한 정보를 얻어보세요.',
     },
   ];
