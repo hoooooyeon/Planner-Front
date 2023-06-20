@@ -1,132 +1,338 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 import Slider from '../../common/Slider';
+import circle from '../../../lib/images/circle.png';
 
 const MyPlannerListBlock = styled.div`
     width: 100%;
     height: 100%;
-    padding: 15px 0;
     background-color: #f5f5f5;
-    /* background-color: #f1eee0; */
+    margin-top: 70px;
 `;
 
 const Container = styled.div`
-    padding: 0 15px;
+    padding: 1rem;
     margin: 0 auto;
     @media all and (min-width: 768px) {
-        width: 738px;
-    }
-    @media all and (min-width: 960px) {
-        width: 930px;
-    }
-    @media all and (min-width: 1280px) {
-        width: 1024px;
+        padding: 1rem 9rem;
     }
 `;
 
-const HiddenBox = styled.div`
-    overflow: hidden;
-    z-index: 1;
-`;
-
-const Planners = styled.ul`
-    display: flex;
-    padding: 10px 0;
+const PlannerList = styled.ul`
     width: 100%;
     height: 100%;
+    display: flex;
+    margin: 0 auto;
+    padding: 0.5rem 1rem;
 `;
 
-const TitleBox = styled.div`
+const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 1rem;
 `;
 
-const Title = styled.p`
-    font-size: 1.3rem;
+const HeaderTitle = styled.p`
+    font-size: 1.2rem;
     font-weight: bold;
+    margin: 0;
 `;
 
 const Button = styled.button`
     width: 7rem;
     height: 3rem;
-    background-color: #9aad67;
+    background-color: white;
     border: none;
     border-radius: 0.5rem;
-    font-weight: bolder;
+    font-weight: bold;
     font-size: 0.9rem;
     text-align: center;
     line-height: 3rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
     a {
-        color: white;
+        color: black;
         text-decoration: none;
         display: block;
     }
 `;
 const PlannerItem = styled.li`
-    width: 100%;
-    height: 100%;
     flex-basis: 22.5%;
+    height: 20vw;
     flex-shrink: 0;
     margin-left: 0.5%;
     background-color: white;
-    border: 1px solid ivory;
     border-radius: 0.5rem;
-    box-shadow: 3px 3px 7px 1px rgb(0, 0, 0, 30%);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    overflow: hidden;
     &:hover {
-        cursor: pointer;
-        box-shadow: 3px 4px 14px 2px rgb(0, 0, 0, 30%);
-        transform: translateY(-5px);
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease;
+        transform: translate(0, -5px);
     }
 `;
 const InfoBox = styled.div`
-    height: 60px;
+    height: 4rem;
     margin: 0;
-    padding: 3px;
-    border-top: 1px solid lightgray;
+    padding: 0.5rem;
+    box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+const Title = styled.div`
+    font-size: 0.8rem;
+    font-weight: bold;
     overflow: hidden;
 `;
-const Name = styled.p`
-    margin: 0 0 8px 0;
+const Creator = styled.div`
     font-size: 0.7rem;
-    @media all and (min-width: 768px) {
-        font-size: 0.8rem;
-    }
-    @media all and (min-width: 960px) {
-        font-size: 0.9rem;
-    }
-`;
-const Date = styled.p`
-    margin: 0;
-    font-size: 0.4rem;
     color: gray;
-    @media all and (min-width: 768px) {
-        font-size: 0.6rem;
-    }
-    @media all and (min-width: 960px) {
-        font-size: 0.7rem;
-    }
+    overflow: hidden;
 `;
-const Map = styled.div`
-    width: 100%;
-    height: 100%;
+const Date = styled.div`
+    font-size: 0.4rem;
+    color: lightgray;
+    margin-top: 0.5rem;
+    overflow: hidden;
 `;
 
-const SimpleMap = styled.div`
-    height: 14vw;
-    @media all and (min-width: 768px) {
-        height: 120px;
-    }
-    @media all and (min-width: 960px) {
-        height: 160px;
-    }
-    @media all and (min-width: 1280px) {
-        height: 190px;
-    }
+const Map = styled.div`
+    width: 100%;
+    height: calc(100% - 4rem);
 `;
 
 const MyPlannerList = ({ mapRef, plannerError, myPlanners, onResetPlannerInfoForm, onCreatePlanner, onChangeCurPlannerId, prevPage, nextPage }) => {
+    const areaArr = [
+        {
+            title: '서울',
+            code: 1,
+            coord: {
+                Lat: 37.5665,
+                Lng: 126.978,
+            },
+        },
+        {
+            title: '인천',
+            code: 2,
+            coord: {
+                Lat: 37.4563,
+                Lng: 126.7052,
+            },
+        },
+        {
+            title: '대전',
+            code: 3,
+            coord: {
+                Lat: 36.3504,
+                Lng: 127.3845,
+            },
+        },
+        {
+            title: '대구',
+            code: 4,
+            coord: {
+                Lat: 35.8714,
+                Lng: 128.6014,
+            },
+        },
+        {
+            title: '광주',
+            code: 5,
+            coord: {
+                Lat: 35.1595,
+                Lng: 126.8526,
+            },
+        },
+        {
+            title: '부산',
+            code: 6,
+            coord: {
+                Lat: 35.1796,
+                Lng: 129.0756,
+            },
+        },
+        {
+            title: '울산',
+            code: 7,
+            coord: {
+                Lat: 35.5384,
+                Lng: 129.3114,
+            },
+        },
+        {
+            title: '세종',
+            code: 8,
+            coord: {
+                Lat: 36.4801,
+                Lng: 127.2882,
+            },
+        },
+        {
+            title: '경기도',
+            code: 31,
+            coord: {
+                Lat: 37.4138,
+                Lng: 127.5183,
+            },
+        },
+        {
+            title: '강원도',
+            code: 32,
+            coord: {
+                Lat: 37.5557,
+                Lng: 128.2092,
+            },
+        },
+        {
+            title: '충청북도',
+            code: 33,
+            coord: {
+                Lat: 36.6357,
+                Lng: 127.4912,
+            },
+        },
+        {
+            title: '충청남도',
+            code: 34,
+            coord: {
+                Lat: 36.6588,
+                Lng: 126.6728,
+            },
+        },
+        {
+            title: '경상북도',
+            code: 35,
+            coord: {
+                Lat: 36.4919,
+                Lng: 128.8889,
+            },
+        },
+        {
+            title: '경상남도',
+            code: 36,
+            coord: {
+                Lat: 35.4606,
+                Lng: 128.2132,
+            },
+        },
+        {
+            title: '전라북도',
+            code: 37,
+            coord: {
+                Lat: 35.716,
+                Lng: 127.1448,
+            },
+        },
+        {
+            title: '전라남도',
+            code: 38,
+            coord: {
+                Lat: 34.8679,
+                Lng: 126.991,
+            },
+        },
+        {
+            title: '제주도',
+            code: 39,
+            coord: {
+                Lat: 33.4996,
+                Lng: 126.5312,
+            },
+        },
+    ];
+    // map
+    const [maps, setMaps] = useState([]);
+    const { kakao } = window;
+    const mapArr = ['map1', 'map2'];
+    // 지도 생성
+    useEffect(() => {
+        mapArr.forEach((m, i) => {
+            let container = document.getElementById(mapArr[i]);
+
+            //지도를 담을 영역의 DOM 레퍼런스
+            let options = {
+                //지도를 생성할 때 필요한 기본 옵션
+                center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+                level: 10, //지도의 레벨(확대, 축소 정도)
+            };
+
+            let newMap = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+            setMaps((maps) => [...maps, newMap]);
+        });
+    }, [kakao.maps.LatLng, kakao.maps.Map]);
+
+    useEffect(() => {
+        if (maps.length > 0) {
+            maps.forEach((map, i) => {
+                let bounds = new kakao.maps.LatLngBounds();
+                for (let j = 0; j < areaArr.length; j++) {
+                    const { Lat, Lng } = areaArr[j].coord;
+
+                    // LatLngBounds 객체에 좌표를 추가합니다
+                    bounds.extend(new kakao.maps.LatLng(Lat, Lng));
+                }
+                if (Object.keys(bounds).length !== 0) {
+                    // 지도에 루트에 포함된 마커들이 보이도록 범위 재설정
+                    map.setBounds(bounds);
+                }
+            });
+        }
+    }, [maps, kakao.maps.LatLng, kakao.maps.LatLngBounds]);
+
+    const showRouteMarker = useCallback(() => {
+        if (maps.length > 0) {
+            maps.forEach((map) => {
+                let linePath = [];
+                let markerPosition;
+                let imageSize;
+                let marker;
+                let polyline;
+                for (let j = 0; j < areaArr.length; j++) {
+                    const { Lat, Lng } = areaArr[j].coord;
+                    // 마커가 표시될 위치입니다
+                    markerPosition = new kakao.maps.LatLng(Lat, Lng);
+                    imageSize = new kakao.maps.Size(10, 10);
+                    // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+                    let markerImage = new kakao.maps.MarkerImage(circle, imageSize);
+                    // 마커를 생성합니다
+                    marker = new kakao.maps.Marker({
+                        position: markerPosition,
+                        clickable: true,
+                        image: markerImage,
+                    });
+                    // 마커가 지도 위에 표시되도록 설정합니다
+                    marker.setMap(map);
+                    // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+                    linePath = [...linePath, new kakao.maps.LatLng(Lat, Lng)];
+                }
+                // 지도에 표시할 선을 생성합니다
+                polyline = new kakao.maps.Polyline({
+                    path: linePath, // 선을 구성하는 좌표배열 입니다
+                    strokeWeight: 5, // 선의 두께 입니다
+                    strokeColor: 'red', // 선의 색깔입니다
+                    strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                    strokeStyle: 'solid', // 선의 스타일입니다
+                });
+                // 지도에 선을 표시합니다
+                polyline.setMap(map);
+            });
+        }
+    }, [kakao.maps.LatLng, kakao.maps.Polyline, kakao.maps.Marker, kakao.maps.MarkerImage, kakao.maps.Size, maps]);
+
+    useEffect(() => {
+        showRouteMarker();
+    }, [showRouteMarker]);
+
     const itemRef = useRef();
     const history = useHistory();
     const drag = useRef(false);
@@ -141,40 +347,39 @@ const MyPlannerList = ({ mapRef, plannerError, myPlanners, onResetPlannerInfoFor
     return (
         <MyPlannerListBlock>
             <Container>
-                <TitleBox>
-                    <Title>나의 플래너</Title>
+                <Header>
+                    <HeaderTitle>나의 플래너</HeaderTitle>
                     <Button>
                         <Link to="/PlannerEdit" onClick={onCreatePlanner}>
                             플래너 생성
                         </Link>
                     </Button>
-                </TitleBox>
+                </Header>
 
                 {myPlanners ? (
                     <Slider list={myPlanners.list} itemRef={itemRef} drag={drag} page={true} prevPage={prevPage} nextPage={nextPage}>
-                        {myPlanners.list &&
-                            myPlanners.list.map((p) => (
-                                <PlannerItem
-                                    key={p.plannerId}
-                                    ref={itemRef}
-                                    onClick={() => {
-                                        // onLoadPlanner(p.plannerId);
-                                        onChangeCurPlannerId(p.plannerId);
-                                        allowTransition();
-                                    }}
-                                >
-                                    {/* <Link to="/PlannerInfo"> */}
-
-                                    <Map ref={mapRef} />
-                                    <InfoBox>
-                                        <Name>{p.title}</Name>
-                                        <Date>
-                                            {p.planDateStart} ~ {p.planDateEnd}
-                                        </Date>
-                                    </InfoBox>
-                                    {/* </Link> */}
-                                </PlannerItem>
-                            ))}
+                        <PlannerList>
+                            {myPlanners.list &&
+                                myPlanners.list.map((p) => (
+                                    <PlannerItem
+                                        key={p.plannerId}
+                                        ref={itemRef}
+                                        onClick={() => {
+                                            onChangeCurPlannerId(p.plannerId);
+                                            allowTransition();
+                                        }}
+                                    >
+                                        <Map ref={mapRef} />
+                                        <InfoBox>
+                                            <Title>{p.title}</Title>
+                                            <Creator>{p.creator}</Creator>
+                                            <Date>
+                                                {p.planDateStart} ~ {p.planDateEnd}
+                                            </Date>
+                                        </InfoBox>
+                                    </PlannerItem>
+                                ))}
+                        </PlannerList>
                     </Slider>
                 ) : (
                     <div>플래너가 없습니다. </div>
