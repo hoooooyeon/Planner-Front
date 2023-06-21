@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurPlannerIdAction, changeMyPageIndexAction, changePlannerAccountAction, createPlannerAction, loadPlannerAction } from '../../../modules/plannerModule';
 import * as common from '../../../lib/utils/CommonFunction';
@@ -59,17 +59,25 @@ const MyPlannerListContainer = () => {
         dispatch(changeCurPlannerIdAction(plannerId));
     };
 
-    const onChangePageIndex = (pageIndex) => {
-        dispatch(changeMyPageIndexAction(pageIndex));
+    // 마지막 페이지
+    const maxPage = pageLastIndex;
+    // 현재 페이지
+    const [page, setPage] = useState(1);
+
+    const onNextPage = () => {
+        if (!(page === maxPage)) {
+            setPage((index) => index + 1);
+        }
+    };
+    const onPreviousPage = () => {
+        if (!(page === 1)) {
+            setPage((index) => index - 1);
+        }
     };
 
-    const prevPage = () => {
-        common.prevPage(myPageIndex, onChangePageIndex);
-    };
-
-    const nextPage = () => {
-        common.nextPage(myPageIndex, pageLastIndex, onChangePageIndex);
-    };
+    useEffect(() => {
+        dispatch(changeMyPageIndexAction(page));
+    }, [page, dispatch]);
 
     return (
         <MyPlannerList
@@ -79,8 +87,8 @@ const MyPlannerListContainer = () => {
             onCreatePlanner={onCreatePlanner}
             onLoadPlanner={onLoadPlanner}
             onChangeCurPlannerId={onChangeCurPlannerId}
-            prevPage={prevPage}
-            nextPage={nextPage}
+            onPreviousPage={onPreviousPage}
+            onNextPage={onNextPage}
         />
     );
 };
