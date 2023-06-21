@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeCurPlannerIdAction, changeMyPageIndexAction, changePlannerAccountAction, createPlannerAction, loadPlannerAction } from '../../../modules/plannerModule';
-import * as common from '../../../lib/utils/CommonFunction';
+import { changeCurPlannerIdAction, changeMyPageIndexAction, createPlannerAction, loadPlannerAction, resetPlannerDataAction } from '../../../modules/plannerModule';
 import MyPlannerList from '../../../components/planner/list/MyPlannerList';
 import { loadMyPlannerListAction } from '../../../modules/ProfileModule';
 
@@ -20,25 +19,24 @@ const MyPlannerListContainer = () => {
         return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
     };
 
-    const { accountId, creator, myPageIndex } = { ...plannerData };
+    const { myPageIndex } = { ...plannerData };
     const { pageLastIndex } = { ...myPlanners };
 
-    // 회원 정보 가져오기
+    const { accountId, nickname } = { ...account };
+
     useEffect(() => {
-        if (account) {
-            const { accountId, nickname } = account;
-            dispatch(changePlannerAccountAction(accountId, nickname));
-        }
-    }, [dispatch, account]);
+        dispatch(resetPlannerDataAction());
+    }, [dispatch]);
 
     const onCreatePlanner = () => {
-        let title = `${creator}의 여행 플래너`;
+        let title = `${nickname}의 여행 플래너`;
         let planDateStart = letsFormat(new Date());
         let planDateEnd = letsFormat(new Date());
         let planMembers = [];
         let expense = 0;
         let memberCount = 1;
         let memberTypeId = 1;
+        const creator = nickname;
 
         dispatch(createPlannerAction({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }));
     };

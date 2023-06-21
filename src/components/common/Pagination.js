@@ -8,16 +8,18 @@ import { useEffect, useState } from 'react';
 
 const PaginationBlock = styled.div`
     width: 100%;
-    margin: 3rem auto;
+    height: 100%;
+    margin: 0 auto;
     display: flex;
-    @media all and (max-width: 767px) {
-        padding: 0 1rem;
-    }
 `;
 
-const PaginationBox = styled.div`
+const Container = styled.div`
     display: flex;
     margin: 0 auto;
+    padding: 1rem;
+    @media all and (min-width: 768px) {
+        padding: 1rem 9rem;
+    }
 `;
 
 const PageButton = styled.div`
@@ -48,7 +50,7 @@ const PageButton = styled.div`
 const Pagination = ({ pageArr, onIndexPage, onNextPage, onPreviousPage, onFirstPage, onLastPage }) => {
     return (
         <PaginationBlock>
-            <PaginationBox>
+            <Container>
                 <PageButton onClick={onFirstPage}>
                     <FontAwesomeIcon icon={faBackward} />
                 </PageButton>
@@ -68,7 +70,7 @@ const Pagination = ({ pageArr, onIndexPage, onNextPage, onPreviousPage, onFirstP
                 <PageButton onClick={onLastPage}>
                     <FontAwesomeIcon icon={faForward} />
                 </PageButton>
-            </PaginationBox>
+            </Container>
         </PaginationBlock>
     );
 };

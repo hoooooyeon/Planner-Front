@@ -57,7 +57,7 @@ const ShareItem = styled.li`
     }
 `;
 const InfoBox = styled.div`
-    height: 2rem;
+    height: 2.5rem;
     margin: 0;
     padding: 0.5rem;
     box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.1);

@@ -2,7 +2,11 @@ import styled from 'styled-components';
 import Modal from '../common/Modal';
 
 const MemberBox = styled.div`
-    padding: 10px 0;
+    width: 25rem;
+    height: 15rem;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 0.5rem;
 `;
 const InviteBox = styled.div`
     display: flex;
@@ -10,29 +14,39 @@ const InviteBox = styled.div`
 `;
 const Text = styled.input`
     width: 80%;
-    height: 25px;
-    font-size: 15px;
+    height: 2rem;
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0 0.5rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    &:placeholder {
+        color: lightgray;
+    }
+    &:focus {
+        background-color: rgba(0, 0, 0, 0.1);
+        outline: none;
+    }
 `;
 
 const Button = styled.button`
     width: 3.5rem;
     height: 2rem;
-    border-radius: 10px;
+    border-radius: 0.5rem;
     border: none;
-    background-color: rgba(255, 203, 193, 80%);
-    color: white;
+    background-color: white;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     font-weight: bold;
     cursor: pointer;
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
 `;
 
 const MemberList = styled.ul`
-    border: 1px solid black;
-    width: calc(100% - 20px);
-    max-height: 100px;
-    min-height: 50px;
-    padding: 10px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
     overflow: auto;
-    line-height: 15px;
+    height: 8rem;
 `;
 
 const Member = styled.li`
@@ -58,7 +72,7 @@ const MemberModal = ({ planner, members, modal, onChangeMember, onDeleteMember, 
     return (
         <Modal
             modalVisible={modal.member}
-            title="멤버 초대"
+            title="멤버 관리"
             onModalClose={() => {
                 onToggleMemberModal();
                 onResetMember();
@@ -79,7 +93,7 @@ const MemberModal = ({ planner, members, modal, onChangeMember, onDeleteMember, 
                     />
                     <Button onClick={onInviteMemberMd}>초대</Button>
                 </InviteBox>
-                <h4>현재 멤버</h4>
+                <h5>현재 멤버</h5>
                 <MemberList>
                     {planMembers &&
                         planMembers.map((m, i) =>

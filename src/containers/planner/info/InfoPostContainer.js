@@ -1,17 +1,24 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InfoPostList from '../../../components/planner/info/InfoPostList';
-import { changeMemoContentAction, changeMemoTitleAction, createMemoAction, deleteMemoAction, loadMemoAction, loadPlannerAction, resetMemoAction, updateMemoAction } from '../../../modules/plannerModule';
+import { createMemoAction, deleteMemoAction, updateMemoAction } from '../../../modules/plannerModule';
 
 const InfoPostContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, curMemo } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError } = useSelector(({ plannerReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
-        curMemo: plannerReducer.curMemo,
     }));
-    const { title, content } = { ...curMemo };
     const { plannerId } = { ...planner };
+
+    const [curMemo, setCurMemo] = useState({
+        memoId: null,
+        title: '',
+        content: '',
+    });
+
+    const title = curMemo.title;
+    const content = curMemo.content;
 
     const onCreateMemo = () => {
         dispatch(createMemoAction({ plannerId, title, content }));
@@ -26,17 +33,23 @@ const InfoPostContainer = () => {
     };
 
     const onChangeMemoTitle = (title) => {
-        dispatch(changeMemoTitleAction(title));
+        setCurMemo({
+            ...curMemo,
+            title: title,
+        });
     };
 
     const onChangeMemoContent = (content) => {
-        dispatch(changeMemoContentAction(content));
+        setCurMemo({
+            ...curMemo,
+            content: content,
+        });
     };
     const onLoadMemo = (memo) => {
-        dispatch(loadMemoAction(memo));
+        setCurMemo({ memoId: memo.memoId, title: memo.title, content: memo.content });
     };
     const onResetMemo = () => {
-        dispatch(resetMemoAction());
+        setCurMemo({ memoId: null, title: '', content: '' });
     };
 
     return (

@@ -2,16 +2,9 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditRoute from '../../../components/planner/edit/EditRoute';
-import { createPlan } from '../../../lib/api/plannerAPI';
 import {
     changeCurPlanIdAction,
     changeLocationAction,
-    changePlannerDateEndAction,
-    changePlannerDateStartAction,
-    changePlannerExpenseAction,
-    changePlannerMemberCategoryAction,
-    changePlannerMemberCountAction,
-    changePlannerTitleAction,
     changePlansAction,
     createPlanAction,
     deleteLocationAction,
@@ -27,7 +20,7 @@ import {
 
 const EditRouteContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, plan, newPlanId, plannerData, loading, location, transList } = useSelector(({ plannerReducer, loadingReducer }) => ({
+    const { planner, plannerError, plan, plannerData, loading, transList } = useSelector(({ plannerReducer, loadingReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         plan: plannerReducer.plan,
@@ -75,14 +68,20 @@ const EditRouteContainer = () => {
 
         dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
     };
+    const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : null);
+    const [endDate, setEndDate] = useState(planDateEnd ? new Date(planDateEnd) : null);
 
     const onChangePlannerDateStart = (date) => {
-        dispatch(changePlannerDateStartAction(date));
+        setStartDate(date);
     };
 
     const onChangePlannerDateEnd = (date) => {
-        dispatch(changePlannerDateEndAction(date));
+        setEndDate(date);
     };
+    useEffect(() => {
+        onChangePlannerDateStart(new Date(planDateStart));
+        onChangePlannerDateEnd(new Date(planDateEnd));
+    }, [planDateStart, planDateEnd]);
 
     const onCreatePlan = () => {
         const planDate = letsFormat(new Date(planDateEnd));
@@ -96,8 +95,6 @@ const EditRouteContainer = () => {
             dispatch(changeCurPlanIdAction(plans[0].planId));
         }
     };
-
-    const onUpdatePlan = () => {};
 
     // 일정 날짜 최신화
     useEffect(() => {
@@ -114,22 +111,6 @@ const EditRouteContainer = () => {
             }
         }
     }, [dispatch, planDateStart, planDateEnd, plannerId]);
-
-    // 현재  curPlanId인 plan 삭제시, curPlanId 최신화
-    useEffect(() => {
-        // if (planner && plans.length > 1) {
-        //     let count = 0;
-        //     for (let i = 0; i < plans.length; i++) {
-        //         if (plans[i].planId === planId) {
-        //             count++;
-        //         }
-        //     }
-        //     if (count === 0) {
-        //         dispatch(changeCurPlanIdAction(plans[0].planId));
-        //     }
-        // }
-        // 생성할때 plaid가 바껴도 다시 [0]으로 돌아간다
-    }, [dispatch, planner, plans, planId]);
 
     const onLoadPlan = (plan) => {
         dispatch(loadPlanAction(plan));
@@ -186,12 +167,13 @@ const EditRouteContainer = () => {
             plannerData={plannerData}
             loading={loading}
             transList={transList}
+            startDate={startDate}
+            endDate={endDate}
             onChangePlannerDateStart={onChangePlannerDateStart}
             onChangePlannerDateEnd={onChangePlannerDateEnd}
             onCreatePlan={onCreatePlan}
             onDeletePlan={onDeletePlan}
             onLoadPlan={onLoadPlan}
-            onUpdatePlan={onUpdatePlan}
             onDeleteLocation={onDeleteLocation}
             onUpdatePlannerDate={onUpdatePlannerDate}
             onChangeCurPlanId={onChangeCurPlanId}

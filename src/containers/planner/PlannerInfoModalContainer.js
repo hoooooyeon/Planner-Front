@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfoModal from '../../components/planner/PlannerInfoModal';
-import { changePlannerExpenseAction, changePlannerMemberCategoryAction, changePlannerMemberCountAction, changePlannerTitleAction, loadPlannerAction, togglePlannerInfoModalAction, updatePlannerAction } from '../../modules/plannerModule';
+import { togglePlannerInfoModalAction, updatePlannerAction } from '../../modules/plannerModule';
 
 const PlannerInfoModalContainer = () => {
     const dispatch = useDispatch();
@@ -10,45 +12,45 @@ const PlannerInfoModalContainer = () => {
         modal: plannerReducer.modal,
     }));
 
-    const { plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
+    const { plannerId, planDateStart, planDateEnd, title, expense, memberCount, memberTypeId } = { ...planner };
+    const [curTitle, setCurTitle] = useState(title);
+    const [curExpense, setCurExpense] = useState(expense);
+    const [curMemberCount, setCurMemberCount] = useState(memberCount);
+    const [curMemberTypeId, setCurMemberTypeId] = useState(memberTypeId);
+
+    useEffect(() => {
+        setCurTitle(title);
+        setCurExpense(expense);
+        setCurMemberCount(memberCount);
+        setCurMemberTypeId(memberTypeId);
+    }, [title, expense, memberCount, memberTypeId, modal]);
 
     const onUpdatePlanner = () => {
+        const title = curTitle;
+        const expense = curExpense;
+        const memberCount = curMemberCount;
+        const memberTypeId = curMemberTypeId;
         dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
-    };
-
-    const onChangePlannerTitle = (title) => {
-        dispatch(changePlannerTitleAction(title));
-    };
-    const onChangePlannerExpense = (expense) => {
-        dispatch(changePlannerExpenseAction(expense));
-    };
-    const onChangePlannerMemberCount = (count) => {
-        dispatch(changePlannerMemberCountAction(count));
-    };
-    const onChangePlannerMemberCategory = (memberTypeId) => {
-        dispatch(changePlannerMemberCategoryAction(memberTypeId));
     };
 
     const onTogglePlannerInfoModal = () => {
         dispatch(togglePlannerInfoModalAction());
     };
 
-    // 플래너 정보 가져오기
-    const onLoadPlanner = (plannerId) => {
-        dispatch(loadPlannerAction(plannerId));
-    };
-
     return (
         <PlannerInfoModal
             planner={planner}
             modal={modal}
-            onChangePlannerExpense={onChangePlannerExpense}
-            onChangePlannerMemberCategory={onChangePlannerMemberCategory}
-            onChangePlannerMemberCount={onChangePlannerMemberCount}
-            onChangePlannerTitle={onChangePlannerTitle}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onUpdatePlanner={onUpdatePlanner}
-            onLoadPlanner={onLoadPlanner}
+            curTitle={curTitle}
+            curExpense={curExpense}
+            curMemberCount={curMemberCount}
+            curMemberTypeId={curMemberTypeId}
+            setCurTitle={setCurTitle}
+            setCurExpense={setCurExpense}
+            setCurMemberCount={setCurMemberCount}
+            setCurMemberTypeId={setCurMemberTypeId}
         />
     );
 };

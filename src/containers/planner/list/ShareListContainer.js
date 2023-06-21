@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeCurPlannerIdAction, changeMyPageIndexAction, changePlannerAccountAction, createPlannerAction, loadMyPlannerListAction, loadPlannerAction, loadSharePlannerListAction } from '../../../modules/plannerModule';
+import { changeCurPlannerIdAction, loadPlannerAction, loadSharePlannerListAction } from '../../../modules/plannerModule';
 import ShareList from '../../../components/planner/list/ShareList';
 
 const ShareListContainer = () => {
@@ -14,7 +14,8 @@ const ShareListContainer = () => {
     }));
 
     // 공유 플래너리스트 가져오기
-    const { accountId, sharePageIndex } = { ...plannerData };
+    const { sharePageIndex } = { ...plannerData };
+    const { accountId } = { ...account };
     useEffect(() => {
         if (accountId) {
             dispatch(loadSharePlannerListAction(sharePageIndex));

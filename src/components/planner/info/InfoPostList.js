@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import Modal from '../../common/Modal';
-import InfoEditItem from './InfoEditItem';
+import MemoModal from './MemoModal';
 import InfoPostItem from './InfoPostItem';
 import ad1 from '../../../lib/images/ad1.jpg';
 import ad2 from '../../../lib/images/ad2.jpg';
@@ -172,13 +172,9 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
                             })}
                     </PostList>
                     {/* 메모 생성 모달 */}
-                    <Modal modalVisible={isCreate} title="메모 생성" onModalClose={onCancelPostMd} onModalConfirm={onCreatePostMd}>
-                        <InfoEditItem curMemo={curMemo} onChangeMemoTitle={onChangeMemoTitle} onChangeMemoContent={onChangeMemoContent} />
-                    </Modal>
+                    <MemoModal curMemo={curMemo} onChangeMemoTitle={onChangeMemoTitle} onChangeMemoContent={onChangeMemoContent} isState={isCreate} onModalClose={onCancelPostMd} onModalConfirm={onCreatePostMd} />
                     {/* 메모 수정 모달 */}
-                    <Modal modalVisible={isEdit} title="메모 수정" onModalClose={onCancelPostMd} onModalConfirm={onEditPostMd}>
-                        <InfoEditItem curMemo={curMemo} onChangeMemoTitle={onChangeMemoTitle} onChangeMemoContent={onChangeMemoContent} />
-                    </Modal>
+                    <MemoModal curMemo={curMemo} onChangeMemoTitle={onChangeMemoTitle} onChangeMemoContent={onChangeMemoContent} isState={isEdit} onModalClose={onCancelPostMd} onModalConfirm={onEditPostMd} />
                 </PostListBlock>
                 <Ad ref={adRef}>
                     {!isChanged ? (

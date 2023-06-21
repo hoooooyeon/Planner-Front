@@ -2,11 +2,15 @@ import Modal from '../common/Modal';
 import styled from 'styled-components';
 
 const InfoForm = styled.form`
-    padding: 10px 15px;
-    width: calc(100% - 30px);
+    width: 25rem;
+    height: 10rem;
     display: flex;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     flex-direction: column;
-    background-color: #cdd9ac;
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    justify-content: center;
     input::placeholder {
         color: lightgray;
     }
@@ -15,53 +19,61 @@ const InfoForm = styled.form`
         -webkit-appearance: none;
         margin: 0;
     }
-`;
-
-const Title = styled.input`
-    height: 40px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 10px;
-    padding: 0 10px;
-    &:focus {
+    input:focus {
+        background-color: rgba(0, 0, 0, 0.1);
         outline: none;
     }
 `;
 const FlexDiv = styled.div`
     display: flex;
-    height: 100%;
-    justify-content: space-between;
+    & + & {
+        margin-top: 0.5rem;
+    }
+`;
+
+const Label = styled.div`
+    height: 2rem;
+    line-height: 2rem;
+    color: gray;
+    margin-right: 1rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+`;
+
+const Title = styled.input`
+    width: 100%;
+    height: 2rem;
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0 0.5rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 `;
 
 const Funds = styled.input`
-    width: 90px;
-    height: 30px;
+    width: 4rem;
+    height: 2rem;
     border: none;
-    border-radius: 10px;
-    padding: 0 10px;
-    &:focus {
-        outline: none;
-    }
+    border-radius: 0.3rem;
+    padding: 0 0.5rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 `;
 
 const People = styled.input`
-    width: 35px;
-    height: 30px;
+    width: 2rem;
+    height: 2rem;
     border: none;
-    border-radius: 10px;
-    padding: 0 10px;
-
-    &:focus {
-        outline: none;
-    }
+    border-radius: 0.3rem;
+    padding: 0 0.5rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 `;
 
 const Category = styled.select`
-    width: 100px;
-    height: 30px;
+    width: 5rem;
+    height: 2rem;
     border: none;
-    border-radius: 10px;
+    border-radius: 0.3rem;
     text-align: center;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     &:invalid {
         color: lightgray;
     }
@@ -73,27 +85,13 @@ const Category = styled.select`
     }
 `;
 
-const PlannerInfoModal = ({ planner, modal, onLoadPlanner, onUpdatePlanner, onChangePlannerExpense, onChangePlannerMemberCategory, onChangePlannerMemberCount, onChangePlannerTitle, onTogglePlannerInfoModal }) => {
-    // const onEditPost = async () => {
-    //     setIsEdit(false);
-    //     const update = () => {
-    //         onUpdateMemo(curMemo.memoId);
-    //     };
-    //     const load = () => {
-    //         onLoadPlanner();
-    //     };
-    //     await update();
-    //     await load();
-    // };
-
+const PlannerInfoModal = ({ planner, modal, onUpdatePlanner, onTogglePlannerInfoModal, curTitle, curExpense, curMemberCount, curMemberTypeId, setCurTitle, setCurExpense, setCurMemberCount, setCurMemberTypeId }) => {
     const categoryList = [
         { label: '혼자', value: 1 },
         { label: '연인', value: 2 },
         { label: '친구', value: 3 },
         { label: '가족', value: 4 },
     ];
-
-    const { title, expense, memberCount, memberTypeId } = { ...planner };
 
     if (!planner) {
         return <div>Loading...</div>;
@@ -106,40 +104,49 @@ const PlannerInfoModal = ({ planner, modal, onLoadPlanner, onUpdatePlanner, onCh
             onModalConfirm={() => {
                 onUpdatePlanner();
                 onTogglePlannerInfoModal();
-                // onLoadPlanner();
             }}
         >
             <InfoForm>
-                <Title
-                    placeholder="플래너 이름"
-                    type="text"
-                    onChange={(e) => {
-                        onChangePlannerTitle(e.target.value);
-                    }}
-                    value={title}
-                />
                 <FlexDiv>
-                    <Funds
-                        placeholder="여행 자금"
-                        type="number"
-                        value={expense}
+                    <Label>플래너 제목</Label>
+                    <Title
+                        placeholder="플래너 이름"
+                        type="text"
                         onChange={(e) => {
-                            onChangePlannerExpense(e.target.value);
+                            setCurTitle(e.target.value);
+                        }}
+                        value={curTitle}
+                    />
+                </FlexDiv>
+                <FlexDiv>
+                    <Label>여행 비용</Label>{' '}
+                    <Funds
+                        placeholder="비용"
+                        type="number"
+                        value={curExpense}
+                        onChange={(e) => {
+                            setCurExpense(e.target.value);
                         }}
                     ></Funds>
+                </FlexDiv>
+                <FlexDiv>
+                    <Label>여행 멤버 인원</Label>
                     <People
                         placeholder="인원"
                         type="number"
-                        value={memberCount}
+                        value={curMemberCount}
                         onChange={(e) => {
-                            onChangePlannerMemberCount(e.target.value);
+                            setCurMemberCount(e.target.value);
                         }}
                     ></People>
+                </FlexDiv>
+                <FlexDiv>
+                    <Label>여행 멤버 유형</Label>{' '}
                     <Category
                         required
-                        value={memberTypeId}
+                        value={curMemberTypeId}
                         onChange={(e) => {
-                            onChangePlannerMemberCategory(e.target.value);
+                            setCurMemberTypeId(e.target.value);
                         }}
                     >
                         {categoryList.map((c) => (

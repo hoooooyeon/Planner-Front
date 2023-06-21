@@ -33,6 +33,7 @@ const InfoHeader = styled.div`
     align-items: center;
     h3 {
         white-space: nowrap;
+        margin: 0;
     }
 `;
 
@@ -150,7 +151,7 @@ const PlannerInfo = ({ planner, mapRef, plannerData, transList, drag, onDeletePl
                             <MenuItem>
                                 <Link to="/PlannerEdit">플래너 루트 수정</Link>
                             </MenuItem>
-                            <MenuItem onClick={onToggleMemberModal}>멤버 초대</MenuItem>
+                            <MenuItem onClick={onToggleMemberModal}>멤버 관리</MenuItem>
                             <MenuItem onClick={onDeletePlanner}>플래너 삭제</MenuItem>
                         </MenuList>
                         <Menu onClick={onOpenDropDown}>
@@ -163,7 +164,7 @@ const PlannerInfo = ({ planner, mapRef, plannerData, transList, drag, onDeletePl
                                 <li>
                                     <Link to="/PlannerEdit">플래너 루트 수정</Link>
                                 </li>
-                                <li onClick={onToggleMemberModal}>멤버 초대</li>
+                                <li onClick={onToggleMemberModal}>멤버 관리</li>
                                 <li onClick={onDeletePlanner}>
                                     <Link to="/PlannerList">플래너 삭제</Link>
                                 </li>

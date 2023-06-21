@@ -4,6 +4,7 @@ import Slider from '../../common/Slider';
 
 const InfoDatinationBlock = styled.div`
     border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
 `;
 
 const DateList = styled.ul`

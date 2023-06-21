@@ -1,18 +1,19 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MemberModal from '../../components/planner/MemberModal';
-import { changeMemberAction, deleteMemberAction, inviteMemberAction, resetMemberAction, toggleMemberModalAction } from '../../modules/plannerModule';
+import { deleteMemberAction, inviteMemberAction, toggleMemberModalAction } from '../../modules/plannerModule';
 
 const MemberModalContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, members, modal } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, modal } = useSelector(({ plannerReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
-        members: plannerReducer.members,
         modal: plannerReducer.modal,
     }));
 
     const { plannerId } = { ...planner };
+
+    const [members, setMembers] = useState([]);
 
     const onInviteMember = () => {
         dispatch(inviteMemberAction({ plannerId, members }));
@@ -22,25 +23,16 @@ const MemberModalContainer = () => {
     };
 
     const onChangeMember = (members) => {
-        dispatch(changeMemberAction(members));
+        setMembers([members]);
     };
 
     const onResetMember = () => {
-        dispatch(resetMemberAction());
+        setMembers([]);
     };
 
     const onToggleMemberModal = () => {
         dispatch(toggleMemberModalAction());
     };
-
-    // planner 정보 가져오기
-    //  useEffect(() => {
-    //     if (plannerData && plannerId) {
-    //         // const { curPlannerId } = plannerData;
-    //         // dispatch(loadPlannerAction(curPlannerId));
-    //         dispatch(loadPlannerAction(plannerId));
-    //     }
-    // }, [dispatch, plannerData, plannerId]);
 
     return (
         <MemberModal

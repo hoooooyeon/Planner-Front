@@ -151,15 +151,15 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
         if (list) {
             let refValue = hiddenBoxRef.current;
             refValue.addEventListener('mousedown', sliderStart);
-            window.addEventListener('mousemove', sliderMove);
-            window.addEventListener('mouseup', sliderEnd);
-            window.addEventListener('resize', sliderResize);
+            refValue.addEventListener('mousemove', sliderMove);
+            refValue.addEventListener('mouseup', sliderEnd);
+            refValue.addEventListener('resize', sliderResize);
 
             return () => {
                 refValue.removeEventListener('mousedown', sliderStart);
-                window.removeEventListener('mousemove', sliderMove);
-                window.removeEventListener('mouseup', sliderEnd);
-                window.removeEventListener('resize', sliderResize);
+                refValue.removeEventListener('mousemove', sliderMove);
+                refValue.removeEventListener('mouseup', sliderEnd);
+                refValue.removeEventListener('resize', sliderResize);
             };
         }
     });

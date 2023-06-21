@@ -9,7 +9,6 @@ import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 const EditRouteBlock = styled.div`
     background-color: white;
-    /* width: 392px; */
     height: 100vh;
     float: left;
 `;
@@ -199,6 +198,8 @@ const EditRoute = ({
     plan,
     plannerData,
     transList,
+    startDate,
+    endDate,
     onCreatePlan,
     onDeletePlan,
     onLoadPlan,
@@ -215,15 +216,7 @@ const EditRoute = ({
     onToggleMemberModal,
     onTogglePlannerInfoModal,
 }) => {
-    const { title, creator, planDateStart, planDateEnd, updateDate } = { ...planner };
-    const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : null);
-    const [endDate, setEndDate] = useState(planDateEnd ? new Date(planDateEnd) : null);
-
-    // datePicker의 날짜와 planner의 날짜를 각각 나눔.
-    useEffect(() => {
-        setStartDate(new Date(planDateStart));
-        setEndDate(new Date(planDateEnd));
-    }, [planDateStart, planDateEnd]);
+    const { title, creator, updateDate } = { ...planner };
 
     const [dropDown, setDropDown] = useState(false);
 
@@ -254,7 +247,7 @@ const EditRoute = ({
                         <DropDownArrow />
                         <DropDownMenu>
                             <li onClick={onTogglePlannerInfoModal}>정보 수정</li>
-                            <li onClick={onToggleMemberModal}>멤버 초대</li>
+                            <li onClick={onToggleMemberModal}>멤버 관리</li>
                         </DropDownMenu>
                     </DropDown>
                     <Title>{title}</Title>
