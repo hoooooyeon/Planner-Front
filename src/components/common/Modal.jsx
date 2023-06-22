@@ -19,61 +19,61 @@ const ModalBox = styled.div`
     position: absolute;
     z-index: 1;
     background-color: white;
-    min-width: 450px;
-    border-radius: 4px;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.5rem 1rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 `;
 
 const ModalHeader = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 35px;
+    height: 2rem;
+    padding: 0 0.5rem;
+    margin-bottom: 0.5rem;
 `;
 
 const ModalTitle = styled.div`
-    color: black;
     font-weight: bold;
-    margin-left: 20px;
 `;
 
 const ModalClose = styled(FontAwesomeIcon)`
-    margin-right: 20px;
-
+    cursor: pointer;
     &:hover {
-        color: skyblue;
+        color: lightgray;
     }
 `;
 
 const ModalBody = styled.div`
-    min-height: 100px;
-    margin-top: 10px;
-    margin-left: 20px;
-    font-weight: bold;
+    padding: 0 0.5rem;
+    margin: 0 auto;
 `;
 
 const ModalFooter = styled.div`
-    min-height: 50px;
+    height: 2rem;
     display: flex;
     justify-content: right;
     align-items: center;
-
-    & > button:last-child {
-        margin-right: 20px;
-    }
+    padding: 0 0.5rem;
+    margin-top: 1rem;
 `;
 
 const ModalButton = styled.button`
     background-color: white;
     color: black;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     font-weight: bold;
     width: 80px;
     height: 40px;
     border: none;
-    border-radius: 4px;
-
+    border-radius: 0.5rem;
+    cursor: pointer;
     &:hover {
-        color: skyblue;
+        color: white;
         background-color: #ececec;
+    }
+    & + & {
+        margin-left: 1rem;
     }
 `;
 
@@ -84,7 +84,7 @@ const Modal = ({ modalVisible, title, children, modalCloseText = '닫기', modal
             <ModalBox>
                 <ModalHeader>
                     <ModalTitle>{title}</ModalTitle>
-                    <ModalClose icon={faXmark} />
+                    <ModalClose icon={faXmark} onClick={onModalClose} />
                 </ModalHeader>
                 <ModalBody>{children}</ModalBody>
                 <ModalFooter>

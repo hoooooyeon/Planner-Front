@@ -12,11 +12,11 @@ import {
     loadSpotsAction,
     removeSpotLikeAction,
     toggleDetailLikeAction,
-    unloadDetailSpotAction,
     changeAreaIndexAction,
     changeBlockIndexAction,
     changeDetailSpotAction,
     changePageIndexAction,
+    toggleSpotDetailModalAction,
     changeContentIdAction,
     changeSpotsLikeAction,
     changeKeywordAction,
@@ -30,6 +30,7 @@ const SpotListContainer = ({
     spots,
     spotError,
     detail,
+    spotModal,
     spotData,
     account,
     likeList,
@@ -43,7 +44,6 @@ const SpotListContainer = ({
     changeBlockIndex,
     addSpotLike,
     removeSpotLike,
-    unloadDetailSpot,
     changeSpotsLike,
     resetSpots,
     resetLikeList,
@@ -55,6 +55,7 @@ const SpotListContainer = ({
     changeContentTypeId,
     changeContentId,
     resetKeyword,
+    toggleSpotDetailModal,
 }) => {
     const { areaIndex, pageIndex, contentTypeId } = spotData;
 
@@ -81,6 +82,7 @@ const SpotListContainer = ({
         }
         changeDetailSpot(spot);
         changeContentId(spot.contentid);
+        toggleSpotDetailModal();
     };
     useEffect(() => {
         if (spotData.contentId) {
@@ -169,21 +171,20 @@ const SpotListContainer = ({
             areas={areas}
             spots={spots}
             spotError={spotError}
-            detail={detail}
+            spotModal={spotModal}
             spotData={spotData}
             keyword={keyword}
             sliderSpots={sliderSpots}
+            drag={drag}
+            searchResultText={searchResultText}
             contentTypeList={contentTypeList}
             onClickArea={onClickArea}
-            onUnloadDetailSpot={unloadDetailSpot}
             onToggleSpotLike={onToggleSpotLike}
             onOpenDetail={onOpenDetail}
             onChangeKeyword={onChangeKeyword}
             onResetKeyword={onResetKeyword}
             onSearchSpot={onSearchSpot}
             onChangeContentTypeId={onChangeContentTypeId}
-            drag={drag}
-            searchResultText={searchResultText}
         />
     );
 };
@@ -198,6 +199,7 @@ const mapStateToProps = (state) => ({
     keyword: state.spotReducer.keyword,
     contentTypeList: state.spotReducer.contentTypeList,
     account: state.authReducer.account,
+    spotModal: state.spotReducer.spotModal,
 });
 const mapDispatchToProps = (dispatch) => ({
     loadAreas: () => {
@@ -223,9 +225,6 @@ const mapDispatchToProps = (dispatch) => ({
     },
     changeDetailSpot: (spotInfo) => {
         dispatch(changeDetailSpotAction(spotInfo));
-    },
-    unloadDetailSpot: () => {
-        dispatch(unloadDetailSpotAction());
     },
     addSpotLike: (spotId) => {
         dispatch(addSpotLikeAction(spotId));
@@ -259,6 +258,9 @@ const mapDispatchToProps = (dispatch) => ({
     },
     changeContentTypeId: (contentTypeId) => {
         dispatch(changeContentTypeIdAction(contentTypeId));
+    },
+    toggleSpotDetailModal: () => {
+        dispatch(toggleSpotDetailModalAction());
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);

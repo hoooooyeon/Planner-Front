@@ -18,7 +18,7 @@ const CHANGE_CONTENT_ID_TYPE = 'spot/CHANGE_CONTENT_ID';
 const LOAD_DETAIL_SPOT_TYPE = 'spot/LOAD_DETAIL_SPOT';
 const LOAD_DETAIL_SPOT_SUCCESS_TYPE = 'spot/LOAD_DETAIL_SPOT_SUCCESS';
 const LOAD_DETAIL_SPOT_FAILURE_TYPE = 'spot/LOAD_DETAIL_SPOT_FAILURE';
-const UNLOAD_DETAIL_SPOT_TYPE = 'spot/UNLOAD_DETAIL_SPOT';
+const RESET_DETAIL_SPOT_TYPE = 'spot/RESET_DETAIL_SPOT';
 
 const CHANGE_DETAIL_SPOT_TYPE = 'spot/CHANGE_DETAIL_SPOT';
 
@@ -45,6 +45,8 @@ const SEARCH_SPOT_FAILURE_TYPE = 'spot/SEARCH_SPOT_FAILURE';
 
 const CHANGE_CONTENT_TYPE_ID_TYPE = 'spot/CHANGE_CONTENT_TYPE_ID';
 
+const TOGGLE_SPOT_DETAIL_MODAL_TYPE = 'spot/TOGGLE_SPOT_DETAIL_MODAL';
+
 export const loadAreasAction = () => ({ type: LOAD_AREAS_TYPE });
 export const loadSpotsAction = ({ areaIndex, contentTypeId, pageIndex }) => ({ type: LOAD_SPOTS_TYPE, areaIndex, contentTypeId, pageIndex });
 export const changeAreaIndexAction = (index) => ({ type: CHANGE_AREA_INDEX_TYPE, index });
@@ -52,7 +54,7 @@ export const changePageIndexAction = (index) => ({ type: CHANGE_PAGE_INDEX_TYPE,
 export const changeBlockIndexAction = (index) => ({ type: CHANGE_BLOCK_INDEX_TYPE, index });
 export const changeContentIdAction = (id) => ({ type: CHANGE_CONTENT_ID_TYPE, id });
 export const loadDetailSpotAction = (id) => ({ type: LOAD_DETAIL_SPOT_TYPE, id });
-export const unloadDetailSpotAction = () => ({ type: UNLOAD_DETAIL_SPOT_TYPE });
+export const resetDetailSpotAction = () => ({ type: RESET_DETAIL_SPOT_TYPE });
 export const changeDetailSpotAction = (spotInfo) => ({ type: CHANGE_DETAIL_SPOT_TYPE, spotInfo });
 export const addSpotLikeAction = ({ contentId }) => ({ type: ADD_SPOT_LIKE_TYPE, contentId });
 export const removeSpotLikeAction = ({ contentId }) => ({ type: REMOVE_SPOT_LIKE_TYPE, contentId });
@@ -65,6 +67,7 @@ export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, ke
 export const resetKeywordAction = () => ({ type: RESET_KEYWORD_TYPE });
 export const searchSpotAction = ({ areaIndex, contentTypeId, keyword, pageIndex }) => ({ type: SEARCH_SPOT_TYPE, areaIndex, contentTypeId, keyword, pageIndex });
 export const changeContentTypeIdAction = (contentTypeId) => ({ type: CHANGE_CONTENT_TYPE_ID_TYPE, contentTypeId });
+export const toggleSpotDetailModalAction = () => ({ type: TOGGLE_SPOT_DETAIL_MODAL_TYPE });
 
 const loadAreasSaga = createSaga(LOAD_AREAS_TYPE, spotAPI.loadAreas);
 const loadSpotsSaga = createSaga(LOAD_SPOTS_TYPE, spotAPI.loadSpots);
@@ -94,6 +97,7 @@ const initialState = {
         contentTypeId: 12,
         contentId: null,
     },
+    spotModal: false,
     keyword: '',
     contentTypeList: [
         { label: '관광지', id: 12 },
@@ -185,7 +189,7 @@ function spotReducer(state = initialState, action) {
                     firstimage: action.spotInfo.firstimage,
                 },
             };
-        case UNLOAD_DETAIL_SPOT_TYPE:
+        case RESET_DETAIL_SPOT_TYPE:
             return {
                 ...state,
                 detail: null,
@@ -279,7 +283,11 @@ function spotReducer(state = initialState, action) {
                     pageIndex: 1,
                 },
             };
-
+        case TOGGLE_SPOT_DETAIL_MODAL_TYPE:
+            return {
+                ...state,
+                spotModal: !state.spotModal,
+            };
         default:
             return state;
     }
