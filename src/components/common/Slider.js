@@ -140,7 +140,7 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
     const sliderResize = () => {
         if (sliderX.current > 0) {
             sliderX.current = 0;
-        } else if (sliderX.current < listRef.current.clientWidth - listRef.current.scrollWidth) {
+        } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth) {
             sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth;
         }
         listRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
@@ -154,6 +154,7 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
             refValue.addEventListener('mousemove', sliderMove);
             refValue.addEventListener('mouseup', sliderEnd);
             refValue.addEventListener('resize', sliderResize);
+            sliderResize();
 
             return () => {
                 refValue.removeEventListener('mousedown', sliderStart);

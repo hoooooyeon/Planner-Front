@@ -79,8 +79,10 @@ const EditRouteContainer = () => {
         setEndDate(date);
     };
     useEffect(() => {
-        onChangePlannerDateStart(new Date(planDateStart));
-        onChangePlannerDateEnd(new Date(planDateEnd));
+        if (planDateStart && planDateEnd) {
+            onChangePlannerDateStart(new Date(planDateStart));
+            onChangePlannerDateEnd(new Date(planDateEnd));
+        }
     }, [planDateStart, planDateEnd]);
 
     const onCreatePlan = () => {

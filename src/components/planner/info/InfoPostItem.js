@@ -4,49 +4,48 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons'; // 버스
 import { faPen } from '@fortawesome/free-solid-svg-icons'; // 버스
 
-const PostItem = styled.div`
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-    border-radius: 0.5rem;
-    padding: 1rem;
+const PostItem = styled.li`
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 1rem;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     position: relative;
-    & + & {
-        margin-top: 1.5rem;
-    }
+    justify-content: space-between;
 `;
 
 const PostHeader = styled.div`
-    position: relative;
-    width: 40%;
+    /* position: relative; */
+    /* width: 40%; */
     display: flex;
-    flex-direction: column;
-    padding-right: 0.5rem;
+    align-items: center;
 `;
 
-const Number = styled.p`
-    font-weight: bold;
-    font-size: 0.9rem;
+const Number = styled.div`
+    font-size: 0.7rem;
     color: gray;
-    margin: 0;
-`;
-
-const Title = styled.p`
-    font-weight: bold;
-    margin: 0 0 0.5rem 1.5rem;
-    width: 100%;
-    height: 1rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 `;
 
-const Date = styled.p`
+const Title = styled.div`
+    font-weight: bold;
+    /* margin: 0 0 0.5rem 1.5rem; */
+    /* width: 100%; */
+    /* height: 1rem; */
+    width: 15rem;
+    font-size: 0.9rem;
+    margin-left: 1.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+
+const Date = styled.div`
     color: lightgray;
     font-size: 0.5rem;
-    margin: 0 0 0 1.5rem;
-    width: 100%;
-    height: 1rem;
+    /* width: 100%;
+    height: 1rem; */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -74,17 +73,17 @@ const Text = styled.div`
 const ButtonBox = styled.div`
     display: flex;
     align-items: center;
-    position: absolute;
+    /* position: absolute;
     right: -16px;
-    top: -14px;
+    top: -14px; */
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     border-radius: 2rem;
     background-color: white;
-    padding: 0.5rem;
-    width: 1rem;
-    height: 1rem;
+    padding: 0.3rem;
+    width: 0.7rem;
+    height: 0.7rem;
     cursor: pointer;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     & + & {
@@ -106,11 +105,11 @@ const InfoPostItem = ({ memo, onDeleteMemo, onLoadMemo, setIsEdit }) => {
             <PostHeader>
                 <Number>{memoId}</Number>
                 <Title>{title}</Title>
-                <Date>{updateDate}</Date>
+                {/* <Date>updated {updateDate}</Date> */}
             </PostHeader>
-            <PostContent>
+            {/* <PostContent>
                 <Text ref={textRef} dangerouslySetInnerHTML={{ __html: content }}></Text>
-            </PostContent>
+            </PostContent> */}
             <ButtonBox>
                 <StyledFontAwesomeIcon
                     icon={faPen}

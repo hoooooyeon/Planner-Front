@@ -45,10 +45,12 @@ const PostListHeader = styled.div`
     }
 `;
 
-const PostList = styled.div`
-    margin-top: 2rem;
-    padding: 1rem 2rem;
-    height: calc(100% - 6rem);
+const PostList = styled.ul`
+    /* margin-top: 2rem; */
+    border-top: 1px solid navy;
+    border-bottom: 1px solid navy;
+    padding: 0;
+    height: calc(100% - 4rem);
     display: flex;
     flex-direction: column;
     overflow: auto;

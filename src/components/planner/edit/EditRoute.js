@@ -264,7 +264,6 @@ const EditRoute = ({
                                         onUpdatePlannerDate(date);
                                     }}
                                     dateFormat=" yyyy. MM. dd "
-                                    placeholderText="여행 기간"
                                 />
                             </StartDateBox>
                         </ShadowDiv>

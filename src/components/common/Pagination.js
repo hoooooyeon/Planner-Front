@@ -11,14 +11,14 @@ const PaginationBlock = styled.div`
     height: 100%;
     margin: 0 auto;
     display: flex;
+    justify-content: center;
 `;
 
 const Container = styled.div`
     display: flex;
     margin: 0 auto;
-    padding: 1rem;
     @media all and (min-width: 768px) {
-        padding: 1rem 9rem;
+        padding: 0rem 9rem;
     }
 `;
 
