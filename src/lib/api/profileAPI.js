@@ -13,6 +13,6 @@ export const profileImageUpdate = ({ accountId, formData }) => {
 };
 
 // 내 플래너리스트 조회
-export const loadMyPlannerList = ({ accountId, page }) => {
-    return client.get(`/api/users/${accountId}/planners?page=${page}`, { accountId, page });
+export const loadMyPlannerList = ({ accountId, pageNum, itemCount, sortCriteria }) => {
+    return client.get(`/api/users/${accountId}/planners?itemCount=${itemCount}&sortCriteria=${sortCriteria}&keyword=&pageNum=${pageNum}`, { accountId, pageNum, itemCount, sortCriteria });
 };

@@ -87,8 +87,10 @@ const CHANGE_LOCATION_TYPE = 'planner/CHANGE_LOCATION';
 
 const CREATE_MAP_TYPE = 'planner/CREATE_MAP';
 
-const CHANGE_SHARE_PAGE_INDEX_TYPE = 'planner/CHANGE_SHARE_PAGE_INDEX';
-const CHANGE_MY_PAGE_INDEX_TYPE = 'planner/CHANGE_MY_PAGE_INDEX';
+const CHANGE_PAGE_NUM_TYPE = 'planner/CHANGE_PAGE_NUM';
+
+const CHANGE_KEYWORD_TYPE = 'planner/CHANGE_KEYWORD';
+const CHANGE_RESULT_KEYWORD_TYPE = 'planner/CHANGE_RESULT_KEYWORD';
 
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
@@ -103,7 +105,7 @@ export const createPlannerAction = ({ accountId, creator, title, planDateStart, 
     memberTypeId,
 });
 export const updatePlannerAction = ({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }) => ({ type: UPDATE_PLANNER_TYPE, plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
-export const loadSharePlannerListAction = (page) => ({ type: LOAD_SHARE_PLANNER_LIST_TYPE, page });
+export const loadSharePlannerListAction = ({ itemCount, sortCriteria, keyword, pageNum }) => ({ type: LOAD_SHARE_PLANNER_LIST_TYPE, itemCount, sortCriteria, keyword, pageNum });
 export const loadPlannerAction = (plannerId) => ({ type: LOAD_PLANNER_TYPE, plannerId });
 export const resetPlannerDataAction = () => ({ type: RESET_PLANNER_DATA_TYPE });
 export const deletePlannerAction = (plannerId) => ({ type: DELETE_PLANNER_TYPE, plannerId });
@@ -151,8 +153,9 @@ export const changeCurPlannerIdAction = (plannerId) => ({ type: CHANGE_CUR_PLANN
 export const changePlansAction = (plans) => ({ type: CHANGE_PLANS_TYPE, plans });
 export const changeLocationAction = (location) => ({ type: CHANGE_LOCATION_TYPE, location });
 export const createMapAction = (mapData) => ({ type: CREATE_MAP_TYPE, mapData });
-export const changeSharePageIndexAction = (pageIndex) => ({ type: CHANGE_SHARE_PAGE_INDEX_TYPE, pageIndex });
-export const changeMyPageIndexAction = (pageIndex) => ({ type: CHANGE_MY_PAGE_INDEX_TYPE, pageIndex });
+export const changePageNumAction = (pageNum) => ({ type: CHANGE_PAGE_NUM_TYPE, pageNum });
+export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, keyword });
+export const changeResultKeywordAction = (keyword) => ({ type: CHANGE_RESULT_KEYWORD_TYPE, keyword });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -205,10 +208,12 @@ const initialState = {
         planId: null,
         locaId: null,
         memoId: null,
-        myPageIndex: 1,
-        sharePageIndex: 1,
+        pageNum: 1,
     },
-    map: null,
+    keyword: {
+        curKeyword: '',
+        resultKeyword: '',
+    },
     transList: [
         {
             label: '비행기',
@@ -231,12 +236,7 @@ function plannerReducer(state = initialState, action) {
         case LOAD_SHARE_PLANNER_LIST_SUCCESS_TYPE:
             return {
                 ...state,
-                sharePlanners: {
-                    ...state.sharePlanners,
-                    list: action.payload.data.list,
-                    totalCount: action.payload.data.totalCount,
-                    pageLastIndex: action.payload.data.pageLastIndex,
-                },
+                sharePlanners: action.payload.data,
             };
         case LOAD_SHARE_PLANNER_LIST_FAILURE_TYPE:
             return {
@@ -449,20 +449,28 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 map: action.mapData,
             };
-        case CHANGE_SHARE_PAGE_INDEX_TYPE:
+        case CHANGE_PAGE_NUM_TYPE:
             return {
                 ...state,
                 plannerData: {
                     ...state.plannerData,
-                    sharePageIndex: action.pageIndex,
+                    pageNum: action.pageNum,
                 },
             };
-        case CHANGE_MY_PAGE_INDEX_TYPE:
+        case CHANGE_KEYWORD_TYPE:
             return {
                 ...state,
-                plannerData: {
-                    ...state.plannerData,
-                    myPageIndex: action.pageIndex,
+                keyword: {
+                    curKeyword: action.keyword,
+                    resultKeyword: state.keyword.resultKeyword,
+                },
+            };
+        case CHANGE_RESULT_KEYWORD_TYPE:
+            return {
+                ...state,
+                keyword: {
+                    curKeyword: state.keyword.curKeyword,
+                    resultKeyword: action.keyword,
                 },
             };
         default:

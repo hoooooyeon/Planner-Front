@@ -54,7 +54,7 @@ export const profileImageUpdateAction = ({ accountId, formData }) => ({
     formData,
 });
 
-export const loadMyPlannerListAction = (accountId, page) => ({ type: LOAD_MY_PLANNER_LIST_TYPE, accountId, page });
+export const loadMyPlannerListAction = ({ accountId, pageNum, itemCount, sortCriteria }) => ({ type: LOAD_MY_PLANNER_LIST_TYPE, accountId, pageNum, itemCount, sortCriteria });
 
 const profileLoad = createSaga(profileLoadType, profileAPI.profileLoad);
 const profileUpdate = createSaga(profileUpdateType, profileAPI.profileUpdate);
@@ -115,17 +115,11 @@ function profileReducer(state = initialState, action) {
         case LOAD_MY_PLANNER_LIST_SUCCESS_TYPE:
             return {
                 ...state,
-                myPlanners: {
-                    ...state.myPlanners,
-                    list: action.payload.data.list,
-                    totalCount: action.payload.data.totalCount,
-                    pageLastIndex: action.payload.data.pageLastIndex,
-                },
+                myPlanners: action.payload.data,
             };
         case LOAD_MY_PLANNER_LIST_FAILURE_TYPE:
             return {
                 ...state,
-                myPlanners: null,
                 profileError: action.payload.message,
             };
         default: {

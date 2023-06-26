@@ -1,8 +1,8 @@
 import client from './client';
 
 // 다른 사용자들의 플래너리스트 조회
-export const loadSharePlannerList = ({ page }) => {
-    return client.get(`/api/planners?page=${page}`, { page });
+export const loadSharePlannerList = ({ itemCount, sortCriteria, keyword, pageNum }) => {
+    return client.get(`api/planners?itemCount=${itemCount}&sortCriteria=${sortCriteria}&keyword=${keyword}&pageNum=${pageNum}`, { itemCount, sortCriteria, keyword, pageNum });
 };
 
 // 플래너정보 조회

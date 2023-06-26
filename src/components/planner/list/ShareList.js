@@ -4,6 +4,9 @@ import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import Slider from '../../common/Slider';
 import circle from '../../../lib/images/circle.png';
+import ShareListSearchForm from './ShareListSearchForm';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const ShareListBlock = styled.div`
     width: 100%;
@@ -99,7 +102,17 @@ const Map = styled.div`
     left: 0;
 `;
 
-const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlannerId }) => {
+const IconBox = styled.div`
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 5px;
+`;
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+    color: ${(props) => (props.like ? 'yellow' : 'black')};
+`;
+
+const ShareList = ({ sharePlanners, plannerError, curKeyword, sortCriteria, resultKeyword, onChangeCurPlannerId, onChangeKeyword, onChangeResultKeyword, onChangeSort }) => {
     // const areaArr = [
     //     {
     //         title: '서울',
@@ -338,6 +351,7 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
         <ShareListBlock>
             <Container>
                 <HeaderTitle>다른 이용자들의 플래너</HeaderTitle>
+                <ShareListSearchForm curKeyword={curKeyword} sortCriteria={sortCriteria} resultKeyword={resultKeyword} onChangeKeyword={onChangeKeyword} onChangeResultKeyword={onChangeResultKeyword} onChangeSort={onChangeSort} />
                 {/* {mapArr && mapArr.map((m) => <Map id={m} />)} */}
                 {sharePlanners ? (
                     <Slider list={sharePlanners.list} itemRef={itemRef} scroll={true} drag={drag}>
@@ -352,7 +366,12 @@ const ShareList = ({ sharePlanners, plannerError, onLoadPlanner, onChangeCurPlan
                                             allowTransition();
                                         }}
                                     >
-                                        <MapBox>{/* <Map id="map1" /> */}</MapBox>
+                                        <MapBox>
+                                            {/* <Map id="map1" /> */}
+                                            <IconBox>
+                                                <StyledFontAwesomeIcon icon={faStar} like={p.likeState ? p.likeState.toString() : undefined} />
+                                            </IconBox>
+                                        </MapBox>
                                         <InfoBox>
                                             <Title>{p.title}</Title>
                                             <Date>

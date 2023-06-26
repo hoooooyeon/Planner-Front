@@ -132,7 +132,6 @@ const InvisibleInput = styled.input`
 `;
 const ResultBox = styled.div`
     display: flex;
-
     align-items: center;
     width: 20rem;
     height: 2rem;

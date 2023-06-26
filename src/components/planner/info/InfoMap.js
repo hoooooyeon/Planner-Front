@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const MapBlock = styled.div`
     width: 60%;
@@ -24,6 +24,7 @@ const Map = styled.div`
 const IconBox = styled.div`
     border: 2px solid gray;
     border-radius: 5px;
+    display: flex;
     position: absolute;
     top: 10px;
     left: 10px;
@@ -32,11 +33,13 @@ const IconBox = styled.div`
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: #ef9a9a;
+    color: ${(props) => (props.like ? 'yellow' : 'black')};
     font-size: 1rem;
 `;
 
 const InfoMap = ({ planner, mapRef, onToggleLikePlanner }) => {
+    const { likeState, likeCount } = { ...planner };
+
     if (!mapRef) {
         return <div>Loading...</div>;
     }
@@ -44,7 +47,8 @@ const InfoMap = ({ planner, mapRef, onToggleLikePlanner }) => {
         <MapBlock>
             <Map ref={mapRef} />
             <IconBox onClick={onToggleLikePlanner}>
-                <StyledFontAwesomeIcon icon={faHeart} />
+                <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
+                <div>{likeCount}</div>
             </IconBox>
         </MapBlock>
     );

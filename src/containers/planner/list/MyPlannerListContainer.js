@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeCurPlannerIdAction, changeMyPageIndexAction, createPlannerAction, loadPlannerAction, resetPlannerDataAction } from '../../../modules/plannerModule';
+import { changeCurPlannerIdAction, createPlannerAction, loadPlannerAction, resetPlannerDataAction } from '../../../modules/plannerModule';
 import MyPlannerList from '../../../components/planner/list/MyPlannerList';
 import { loadMyPlannerListAction } from '../../../modules/ProfileModule';
 
 const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
-    const { myPlanners, plannerError, planner, account, plannerData } = useSelector(({ plannerReducer, authReducer, profileReducer }) => ({
+    const { myPlanners, plannerError, planner, account } = useSelector(({ plannerReducer, authReducer, profileReducer }) => ({
         account: authReducer.account,
         myPlanners: profileReducer.myPlanners,
         plannerError: plannerReducer.plannerError,
         planner: plannerReducer.planner,
-        plannerData: plannerReducer.plannerData,
     }));
 
     const letsFormat = (d) => {
@@ -19,9 +18,7 @@ const MyPlannerListContainer = () => {
         return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
     };
 
-    const { myPageIndex } = { ...plannerData };
     const { pageLastIndex } = { ...myPlanners };
-
     const { accountId, nickname } = { ...account };
 
     useEffect(() => {
@@ -41,12 +38,15 @@ const MyPlannerListContainer = () => {
         dispatch(createPlannerAction({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }));
     };
 
+    const [pageNum, setPageNum] = useState(1);
     // 나의 플래너리스트 가져오기
     useEffect(() => {
         if (accountId) {
-            dispatch(loadMyPlannerListAction(accountId, myPageIndex));
+            const itemCount = 10;
+            const sortCriteria = 2;
+            dispatch(loadMyPlannerListAction({ accountId, pageNum, itemCount, sortCriteria }));
         }
-    }, [dispatch, accountId, myPageIndex]);
+    }, [dispatch, accountId, pageNum]);
 
     // 플래너 정보 가져오기
     const onLoadPlanner = (plannerId) => {
@@ -74,8 +74,8 @@ const MyPlannerListContainer = () => {
     };
 
     useEffect(() => {
-        dispatch(changeMyPageIndexAction(page));
-    }, [page, dispatch]);
+        setPageNum(page);
+    }, [page]);
 
     return (
         <MyPlannerList

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from '../../../components/common/Pagination';
-import { changeSharePageIndexAction } from '../../../modules/plannerModule';
+import { changePageNumAction } from '../../../modules/plannerModule';
 
 const PlannerListPaginationContainer = () => {
     const dispatch = useDispatch();
@@ -11,7 +11,7 @@ const PlannerListPaginationContainer = () => {
     }));
 
     const { pageLastIndex } = { ...sharePlanners };
-    const { sharePageIndex } = { ...plannerData };
+    const { pageNum } = { ...plannerData };
 
     // 뿌려줄 페이지 배열
     const [pageArr, setPageArr] = useState([]);
@@ -32,12 +32,12 @@ const PlannerListPaginationContainer = () => {
     }, [block, maxPage]);
 
     useEffect(() => {
-        if (sharePageIndex === 1) {
+        if (pageNum === 1) {
             setBlock(0);
-        } else if (sharePageIndex === maxPage) {
+        } else if (pageNum === maxPage) {
             setBlock(Math.ceil(maxPage / limitIndex - 1));
         }
-    }, [sharePageIndex, maxPage]);
+    }, [pageNum, maxPage]);
 
     const onIndexPage = (index) => {
         setPage(index);
@@ -45,7 +45,7 @@ const PlannerListPaginationContainer = () => {
     const onNextPage = () => {
         if (!(page === maxPage)) {
             setPage((index) => index + 1);
-            if (sharePageIndex % limitIndex === 0) {
+            if (pageNum % limitIndex === 0) {
                 setBlock((block) => block + 1);
             }
         }
@@ -66,7 +66,7 @@ const PlannerListPaginationContainer = () => {
     };
 
     useEffect(() => {
-        dispatch(changeSharePageIndexAction(page));
+        dispatch(changePageNumAction(page));
     }, [page, dispatch]);
 
     return <Pagination pageLastIndex={pageLastIndex} pageArr={pageArr} onIndexPage={onIndexPage} onNextPage={onNextPage} onPreviousPage={onPreviousPage} onFirstPage={onFirstPage} onLastPage={onLastPage} />;
