@@ -1,24 +1,22 @@
 import { useEffect, useRef } from 'react';
-import { useHistory } from 'react-router';
 import styled, { css } from 'styled-components';
 
 const HiddenBox = styled.div`
     margin: 0 auto;
     overflow: hidden;
     z-index: 1;
+    width: 100%;
 `;
 
-const List = styled.ul`
+const List = styled.div`
     width: 100%;
     height: 100%;
     margin: 0 auto;
-    padding: 0 15px;
     display: flex;
     ${(props) =>
         props.scroll &&
         css`
-            width: 750px;
-            display: inline-block;
+            width: 850px;
             @media all and (min-width: 768px) {
                 width: 100%;
             }
@@ -48,7 +46,7 @@ const Scroll = styled.div`
     background-color: gray;
 `;
 
-const Slider = ({ children, list, scroll, transition, page, drag, onChangePageIndex, prevPage, nextPage }) => {
+const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPage }) => {
     const hiddenBoxRef = useRef();
     const listRef = useRef();
 
@@ -68,9 +66,8 @@ const Slider = ({ children, list, scroll, transition, page, drag, onChangePageIn
     const sliderStart = (e) => {
         isSlide = true;
         startX = e.clientX;
-        drag.current = false;
-        if (transition) {
-            transition.current = true;
+        if (drag) {
+            drag.current = false;
         }
     };
 
@@ -97,43 +94,46 @@ const Slider = ({ children, list, scroll, transition, page, drag, onChangePageIn
                 scrollRef.current.style.transitionDuration = '0ms';
             }
 
-            if (!drag.current) {
+            if (drag && !drag.current) {
                 drag.current = true;
-            }
-            if (transition) {
-                transition.current = false;
             }
         }
     };
 
     // 슬라이드 마우스 업
     const sliderEnd = (e) => {
-        let itemSize = listRef.current.scrollWidth / TOTAL_SLIDE;
-        sliderX.current = Math.round(moveX.current / itemSize) * itemSize;
+        if (itemRef) {
+            const computedStyle = getComputedStyle(itemRef.current);
+            const itemWidth = itemRef.current.getBoundingClientRect().height + parseInt(computedStyle.marginTop);
 
-        if (sliderX.current > 0) {
-            sliderX.current = 0;
-            if (page) {
-                prevPage();
+            sliderX.current = Math.round(moveX.current / itemWidth) * itemWidth;
+            // let itemSize = listRef.current.scrollWidth / TOTAL_SLIDE;
+            // sliderX.current = Math.round(moveX.current / itemSize) * itemSize;
+
+            if (sliderX.current > 0) {
+                sliderX.current = 0;
+                if (page) {
+                    prevPage();
+                }
+            } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth) {
+                sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth;
+
+                // } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.clientWidth) {
+                //     sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.clientWidth;
+                if (page) {
+                    nextPage();
+                }
             }
-        } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth) {
-            sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth;
+            listRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
+            listRef.current.style.transitionDuration = ' 1000ms';
 
-            // } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.clientWidth) {
-            //     sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.clientWidth;
-            if (page) {
-                nextPage();
+            if (scroll) {
+                scrollBoxRef.current.style.opacity = 0;
+                scrollBoxRef.current.style.transitionDuration = '2000ms';
             }
-        }
-        listRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
-        listRef.current.style.transitionDuration = ' 1000ms';
 
-        if (scroll) {
-            scrollBoxRef.current.style.opacity = 0;
-            scrollBoxRef.current.style.transitionDuration = '2000ms';
+            isSlide = false;
         }
-
-        isSlide = false;
     };
 
     // 너비 변경시 슬라이더 조절
@@ -151,15 +151,15 @@ const Slider = ({ children, list, scroll, transition, page, drag, onChangePageIn
         if (list) {
             let refValue = hiddenBoxRef.current;
             refValue.addEventListener('mousedown', sliderStart);
-            window.addEventListener('mousemove', sliderMove);
-            window.addEventListener('mouseup', sliderEnd);
-            window.addEventListener('resize', sliderResize);
+            refValue.addEventListener('mousemove', sliderMove);
+            refValue.addEventListener('mouseup', sliderEnd);
+            refValue.addEventListener('resize', sliderResize);
 
             return () => {
                 refValue.removeEventListener('mousedown', sliderStart);
-                window.removeEventListener('mousemove', sliderMove);
-                window.removeEventListener('mouseup', sliderEnd);
-                window.removeEventListener('resize', sliderResize);
+                refValue.removeEventListener('mousemove', sliderMove);
+                refValue.removeEventListener('mouseup', sliderEnd);
+                refValue.removeEventListener('resize', sliderResize);
             };
         }
     });

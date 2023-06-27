@@ -1,7 +1,4 @@
-import styled, { css } from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
 
 const SpotSliderBlock = styled.div`
@@ -14,12 +11,6 @@ const Container = styled.div`
     overflow: hidden;
     width: 100%;
     padding: 0;
-    @media all and (min-width: 768px) {
-        width: calc(100% - 80px);
-    }
-    @media all and (min-width: 960px) {
-        width: 100%;
-    }
 `;
 
 const SliderList = styled.ul`
@@ -32,61 +23,42 @@ const SliderList = styled.ul`
 
 const SliderItem = styled.li`
     width: 100%;
-    height: 44vw;
-    background-color: lightgray;
     float: left;
     display: flex;
     align-items: flex-end;
     justify-content: center;
     position: relative;
-    h1 {
+    h2 {
         color: white;
         position: absolute;
         top: 80%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
+    h3 {
+        color: white;
+        position: absolute;
+        top: 87%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    @media all and (max-width: 320px) {
+        h2,
+        h3 {
+            display: none;
+        }
+    }
 `;
 
 const Img = styled.img`
     width: 100%;
-    height: 100%;
+    height: 500px;
+    object-fit: cover;
 `;
-
-// const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-//     z-index: 100;
-//     font-size: 30px;
-//     position: absolute;
-//     top: 380px;
-//     &:hover {
-//         cursor: pointer;
-//     }
-//     ${(props) =>
-//         props.home &&
-//         css`
-//             top: 0;
-//         `}
-// `;
-
-// const PrevButton = styled(StyledFontAwesomeIcon)`
-//     left: 10%;
-//     position: absolute;
-//     bottom: 50%;
-// `;
-// const NextButton = styled(StyledFontAwesomeIcon)`
-// right: 10%
-// position: absolute;
-// bottom: 50%;
-// `;
 
 const SpotSlider = ({ sliderSpots }) => {
     const [currentIndex, setCurrentIndex] = useState(2);
     const listRef = useRef();
-
-    // 슬라이더 버튼
-    // const handleSwipe = (direction) => {
-    //     setCurrentIndex(currentIndex + direction);
-    // };
 
     // 무한 슬라이더
     useEffect(() => {
@@ -132,12 +104,11 @@ const SpotSlider = ({ sliderSpots }) => {
                         sliderSpots.map((s, i) => (
                             <SliderItem key={i}>
                                 <Img alt={s.title} src={s.image} />
-                                <h1>{s.title}</h1>
+                                <h2>{s.title}</h2>
+                                <h3>{s.overview}</h3>
                             </SliderItem>
                         ))}
                 </SliderList>
-                {/* <PrevButton  icon={faAngleLeft} onClick={() => handleSwipe(-1)} />
-                <NextButton  icon={faAngleRight} onClick={() => handleSwipe(1)} /> */}
             </Container>
         </SpotSliderBlock>
     );

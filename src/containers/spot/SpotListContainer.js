@@ -1,28 +1,22 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
 import {
     addSpotLikeAction,
-    checkLikeListAction,
-    cleanCurrentInfoAction,
-    cleanLikeListAction,
-    cleanSpotsAction,
+    resetSpotDataAction,
+    resetSpotsAction,
     loadAreasAction,
     loadDetailSpotAction,
     loadSpotsAction,
     removeSpotLikeAction,
-    toggleDetailLikeAction,
-    unloadDetailSpotAction,
-    updateAreaNumAction,
-    updateBlockNumAction,
-    updateDetailSpotAction,
-    updatePageNumAction,
-    updateSpotsLikeAction,
-    changeKeywordAction,
-    resetKeywordAction,
+    changeAreaIndexAction,
+    changeDetailSpotAction,
+    changePageIndexAction,
+    toggleSpotDetailModalAction,
+    changeContentIdAction,
     searchSpotAction,
-    updateContentTypeIdAction,
+    changeContentTypeIdAction,
 } from '../../modules/spotModule';
 
 const SpotListContainer = ({
@@ -30,33 +24,26 @@ const SpotListContainer = ({
     spots,
     spotError,
     detail,
+    spotModal,
     spotData,
     account,
-    likeList,
-    keyword,
     contentTypeList,
     loadAreas,
     loadSpots,
     loadDetailSpot,
-    updateAreaNum,
-    updatePageNum,
-    updateBlockNum,
-    checkLikeList,
+    changeAreaIndex,
+    changePageIndex,
     addSpotLike,
     removeSpotLike,
-    unloadDetailSpot,
-    updateSpotsLike,
-    cleanSpots,
-    cleanLikeList,
-    cleanCurrentInfo,
-    toggleDetailLike,
-    updateDetailSpot,
-    changeKeyword,
+    resetSpots,
+    resetSpotData,
+    changeDetailSpot,
     searchSpot,
-    updateContentTypeId,
-    resetKeyword,
+    changeContentTypeId,
+    changeContentId,
+    toggleSpotDetailModal,
 }) => {
-    const { areaIndex, pageIndex, contentTypeId } = spotData;
+    const { areaIndex, pageIndex, contentTypeId, contentId } = { ...spotData };
 
     // 지역 가져오기
     useEffect(() => {
@@ -70,109 +57,82 @@ const SpotListContainer = ({
         if (areas) {
             loadSpots({ areaIndex, contentTypeId, pageIndex });
         }
-    }, [loadSpots, areaIndex, pageIndex, areas, contentTypeId]);
+    }, [loadSpots, areaIndex, pageIndex, areas, contentTypeId, spotData]);
 
     // 여행지 상세정보 모달 열기
     const drag = useRef(false);
     const onOpenDetail = (spot) => {
         if (drag.current) {
-            drag.current = false;
+            drag.current = true;
             return;
         }
-        loadDetailSpot(spot.info.contentid);
-        updateDetailSpot(spot);
+        changeDetailSpot(spot);
+        changeContentId(spot.contentId);
+        toggleSpotDetailModal();
     };
+    useEffect(() => {
+        if (contentId) {
+            loadDetailSpot(contentId);
+        }
+    }, [loadDetailSpot, contentId, spotData]);
 
-    // 여행지 첫페이지
-    const onFirstSpotsPage = (areaIndex) => {
+    // 지역  선택
+    const onClickArea = (areaIndex) => {
         if (drag.current) {
-            // e.stopPropagation();
             drag.current = false;
             return;
         }
-        // if (spots) {
-        updateAreaNum(areaIndex);
-        updatePageNum(1);
-        updateBlockNum(0);
-        // }
+        changeAreaIndex(areaIndex);
+        changePageIndex(1);
+
+        setCurKeyword('');
+        setResultKeyword('');
     };
-
-    // 사용자의 좋아요 여행지 비교
-    useEffect(() => {
-        if (spots && account) {
-            const { accountId } = account;
-            const contentIdArr = spots.list.map((spot) => {
-                return spot.info.contentid;
-            });
-            if (!likeList) {
-                // 여행지 좋아요 여부를 확인해 받아와 likeList에 넣는다.
-                checkLikeList(accountId, contentIdArr);
-            }
-        }
-    }, [spots, account, checkLikeList, updateSpotsLike, likeList]);
-
-    // loadspots시작 cleanspots loadSpots성공 checklikeList시작 성공 updatespotslike
-    // 여행지 좋아요 최신화
-    useEffect(() => {
-        if (spots && likeList) {
-            // 받아온 좋아요(likeList)를 여행지 데이터에 넣어준다.
-            updateSpotsLike(likeList);
-        }
-    }, [likeList, updateSpotsLike]);
-
-    // 여행지 초기화
-    useEffect(() => {
-        cleanSpots();
-    }, [areaIndex, pageIndex, cleanSpots]);
 
     // 여행지 페이지에서 벗어날 때 정보 초기화
     useEffect(() => {
         return () => {
-            cleanSpots();
-            cleanCurrentInfo();
+            resetSpots();
+            resetSpotData();
         };
-    }, [cleanCurrentInfo, cleanSpots]);
+    }, [resetSpotData, resetSpots]);
 
     // 여행지 좋아요 토글
     const onToggleSpotLike = (contentId) => {
-        const { like } = detail.info;
-        toggleDetailLike();
-        if (like === false) {
-            addSpotLike(contentId);
+        const { likeState } = detail;
+
+        if (likeState === false) {
+            addSpotLike({ contentId });
         } else {
-            removeSpotLike(contentId);
+            removeSpotLike({ contentId });
         }
     };
 
-    // 좋아요리스트 초기화
-    // 여행지 좋아요 토글 시, cleaning 후 updatespotslike
-    useEffect(() => {
-        cleanLikeList();
-    }, [cleanLikeList, detail]);
-
     // 여행지 검색할 키워드 타이핑
     const onChangeKeyword = (keyword) => {
-        changeKeyword(keyword);
-    };
-    const onResetKeyword = () => {
-        resetKeyword();
+        setCurKeyword(keyword);
     };
 
+    const [curKeyword, setCurKeyword] = useState('');
+    const [resultKeyword, setResultKeyword] = useState('');
     const onSearchSpot = () => {
         const pageIndex = 1;
-        searchSpot({ areaIndex, contentTypeId, keyword, pageIndex });
+        searchSpot({ areaIndex, contentTypeId, curKeyword, pageIndex });
+        setResultKeyword(curKeyword);
     };
 
-    const onUpdateContentTypeId = (contentTypeId) => {
-        updateContentTypeId(contentTypeId);
+    const onChangeContentTypeId = (contentTypeId) => {
+        changeContentTypeId(contentTypeId);
+        setCurKeyword('');
+        setResultKeyword('');
     };
 
     const sliderSpots = [
-        { title: '광안리해수욕장', image: 'http://tong.visitkorea.or.kr/cms/resource/75/2648975_image2_1.jpg' },
-        { title: '강남', image: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg' },
-        { title: '한라산', image: 'http://tong.visitkorea.or.kr/cms/resource/99/2870099_image2_1.jpg' },
-        { title: '광안리해수욕장', image: 'http://tong.visitkorea.or.kr/cms/resource/75/2648975_image2_1.jpg' },
-        { title: '강남', image: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg' },
+        { title: '광안리해수욕장', image: 'http://tong.visitkorea.or.kr/cms/resource/75/2648975_image2_1.jpg', overview: '(부산 관광지)' },
+        { title: '강남', image: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg', overview: '(서울 관광지)' },
+        { title: '한라산', image: 'http://tong.visitkorea.or.kr/cms/resource/99/2870099_image2_1.jpg', overview: '(제주도 관광지)' },
+        { title: '광안리해수욕장', image: 'http://tong.visitkorea.or.kr/cms/resource/75/2648975_image2_1.jpg', overview: '(부산 관광지)' },
+        { title: '강남', image: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg', overview: '(서울 관광지)' },
     ];
 
     return (
@@ -180,20 +140,19 @@ const SpotListContainer = ({
             areas={areas}
             spots={spots}
             spotError={spotError}
-            detail={detail}
+            spotModal={spotModal}
             spotData={spotData}
-            keyword={keyword}
             sliderSpots={sliderSpots}
+            drag={drag}
+            curKeyword={curKeyword}
+            resultKeyword={resultKeyword}
             contentTypeList={contentTypeList}
-            onFirstSpotsPage={onFirstSpotsPage}
-            onUnloadDetailSpot={unloadDetailSpot}
+            onClickArea={onClickArea}
             onToggleSpotLike={onToggleSpotLike}
             onOpenDetail={onOpenDetail}
             onChangeKeyword={onChangeKeyword}
-            onResetKeyword={onResetKeyword}
             onSearchSpot={onSearchSpot}
-            onUpdateContentTypeId={onUpdateContentTypeId}
-            drag={drag}
+            onChangeContentTypeId={onChangeContentTypeId}
         />
     );
 };
@@ -208,6 +167,7 @@ const mapStateToProps = (state) => ({
     keyword: state.spotReducer.keyword,
     contentTypeList: state.spotReducer.contentTypeList,
     account: state.authReducer.account,
+    spotModal: state.spotReducer.spotModal,
 });
 const mapDispatchToProps = (dispatch) => ({
     loadAreas: () => {
@@ -216,26 +176,20 @@ const mapDispatchToProps = (dispatch) => ({
     loadSpots: (areaIndex, page) => {
         dispatch(loadSpotsAction(areaIndex, page));
     },
-    updateAreaNum: (num) => {
-        dispatch(updateAreaNumAction(num));
+    changeAreaIndex: (index) => {
+        dispatch(changeAreaIndexAction(index));
     },
-    updatePageNum: (num) => {
-        dispatch(updatePageNumAction(num));
+    changePageIndex: (index) => {
+        dispatch(changePageIndexAction(index));
     },
-    updateBlockNum: (num) => {
-        dispatch(updateBlockNumAction(num));
+    changeContentId: (id) => {
+        dispatch(changeContentIdAction(id));
     },
     loadDetailSpot: (id) => {
         dispatch(loadDetailSpotAction(id));
     },
-    updateDetailSpot: (spotInfo) => {
-        dispatch(updateDetailSpotAction(spotInfo));
-    },
-    unloadDetailSpot: () => {
-        dispatch(unloadDetailSpotAction());
-    },
-    checkLikeList: (accountId, spotId) => {
-        dispatch(checkLikeListAction(accountId, spotId));
+    changeDetailSpot: (spotInfo) => {
+        dispatch(changeDetailSpotAction(spotInfo));
     },
     addSpotLike: (spotId) => {
         dispatch(addSpotLikeAction(spotId));
@@ -243,32 +197,20 @@ const mapDispatchToProps = (dispatch) => ({
     removeSpotLike: (spotId) => {
         dispatch(removeSpotLikeAction(spotId));
     },
-    updateSpotsLike: (likes) => {
-        dispatch(updateSpotsLikeAction(likes));
+    resetSpots: () => {
+        dispatch(resetSpotsAction());
     },
-    toggleDetailLike: () => {
-        dispatch(toggleDetailLikeAction());
-    },
-    cleanSpots: () => {
-        dispatch(cleanSpotsAction());
-    },
-    cleanLikeList: () => {
-        dispatch(cleanLikeListAction());
-    },
-    cleanCurrentInfo: () => {
-        dispatch(cleanCurrentInfoAction());
-    },
-    changeKeyword: (keyword) => {
-        dispatch(changeKeywordAction(keyword));
-    },
-    resetKeyword: () => {
-        dispatch(resetKeywordAction());
+    resetSpotData: () => {
+        dispatch(resetSpotDataAction());
     },
     searchSpot: (areaIndex, contentTypeId, keyword, index) => {
         dispatch(searchSpotAction(areaIndex, contentTypeId, keyword, index));
     },
-    updateContentTypeId: (contentTypeId) => {
-        dispatch(updateContentTypeIdAction(contentTypeId));
+    changeContentTypeId: (contentTypeId) => {
+        dispatch(changeContentTypeIdAction(contentTypeId));
+    },
+    toggleSpotDetailModal: () => {
+        dispatch(toggleSpotDetailModalAction());
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);
