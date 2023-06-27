@@ -5,7 +5,7 @@ import palette from '../../lib/styles/palette';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
-import SideNav from './sideNav';
+import SideNav from './SideNav';
 import { useState } from 'react';
 
 const HeaderBlock = styled.div`
