@@ -12,14 +12,13 @@ const LOAD_SPOTS_FAILURE_TYPE = 'spot/LOAD_SPOTS_FAILURE';
 
 const CHANGE_AREA_INDEX_TYPE = 'spot/CHANGE_AREA_INDEX';
 const CHANGE_PAGE_INDEX_TYPE = 'spot/CHANGE_PAGE_INDEX';
-const CHANGE_BLOCK_INDEX_TYPE = 'spot/CHANGE_BLOCK_INDEX';
 const CHANGE_CONTENT_ID_TYPE = 'spot/CHANGE_CONTENT_ID';
 
 const LOAD_DETAIL_SPOT_TYPE = 'spot/LOAD_DETAIL_SPOT';
 const LOAD_DETAIL_SPOT_SUCCESS_TYPE = 'spot/LOAD_DETAIL_SPOT_SUCCESS';
 const LOAD_DETAIL_SPOT_FAILURE_TYPE = 'spot/LOAD_DETAIL_SPOT_FAILURE';
-const RESET_DETAIL_SPOT_TYPE = 'spot/RESET_DETAIL_SPOT';
 
+const RESET_DETAIL_SPOT_TYPE = 'spot/RESET_DETAIL_SPOT';
 const CHANGE_DETAIL_SPOT_TYPE = 'spot/CHANGE_DETAIL_SPOT';
 
 const ADD_SPOT_LIKE_TYPE = 'spot/ADD_SPOT_LIKE';
@@ -30,15 +29,9 @@ const REMOVE_SPOT_LIKE_TYPE = 'spot/REMOVE_SPOT_LIKE';
 const REMOVE_SPOT_LIKE_SUCCESS_TYPE = 'spot/REMOVE_SPOT_LIKE_SUCCESS';
 const REMOVE_SPOT_LIKE_FAILURE_TYPE = 'spot/REMOVE_SPOT_LIKE_FAILURE';
 
-const CHANGE_SPOTS_LIKE_TYPE = 'spot/CHANGE_SPOTS_LIKE';
-const TOGGLE_DETAIL_LIKE_TYPE = 'spot/TOGGLE_DETAIL_LIKE';
-
 const RESET_SPOTS_TYPE = 'spot/RESET_SPOTS';
-const RESET_LIKE_LIST_TYPE = 'spot/RESET_LIKE_LIST';
 const RESET_SPOT_DATA_TYPE = 'spot/RESET_SPOT_DATA';
 
-const CHANGE_KEYWORD_TYPE = 'spot/CHANGE_KEYWORD';
-const RESET_KEYWORD_TYPE = 'spot/RESET_KEYWORD';
 const SEARCH_SPOT_TYPE = 'spot/SEARCH_SPOT';
 const SEARCH_SPOT_SUCCESS_TYPE = 'spot/SEARCH_SPOT_SUCCESS';
 const SEARCH_SPOT_FAILURE_TYPE = 'spot/SEARCH_SPOT_FAILURE';
@@ -51,21 +44,15 @@ export const loadAreasAction = () => ({ type: LOAD_AREAS_TYPE });
 export const loadSpotsAction = ({ areaIndex, contentTypeId, pageIndex }) => ({ type: LOAD_SPOTS_TYPE, areaIndex, contentTypeId, pageIndex });
 export const changeAreaIndexAction = (index) => ({ type: CHANGE_AREA_INDEX_TYPE, index });
 export const changePageIndexAction = (index) => ({ type: CHANGE_PAGE_INDEX_TYPE, index });
-export const changeBlockIndexAction = (index) => ({ type: CHANGE_BLOCK_INDEX_TYPE, index });
 export const changeContentIdAction = (id) => ({ type: CHANGE_CONTENT_ID_TYPE, id });
 export const loadDetailSpotAction = (id) => ({ type: LOAD_DETAIL_SPOT_TYPE, id });
 export const resetDetailSpotAction = () => ({ type: RESET_DETAIL_SPOT_TYPE });
 export const changeDetailSpotAction = (spotInfo) => ({ type: CHANGE_DETAIL_SPOT_TYPE, spotInfo });
-export const addSpotLikeAction = ({ contentId }) => ({ type: ADD_SPOT_LIKE_TYPE, contentId });
+export const addSpotLikeAction = ({ contentId, title, image }) => ({ type: ADD_SPOT_LIKE_TYPE, contentId, title, image });
 export const removeSpotLikeAction = ({ contentId }) => ({ type: REMOVE_SPOT_LIKE_TYPE, contentId });
-export const changeSpotsLikeAction = (likes) => ({ type: CHANGE_SPOTS_LIKE_TYPE, likes });
-export const toggleDetailLikeAction = () => ({ type: TOGGLE_DETAIL_LIKE_TYPE });
 export const resetSpotsAction = () => ({ type: RESET_SPOTS_TYPE });
-export const resetLikeListAction = () => ({ type: RESET_LIKE_LIST_TYPE });
 export const resetSpotDataAction = () => ({ type: RESET_SPOT_DATA_TYPE });
-export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, keyword });
-export const resetKeywordAction = () => ({ type: RESET_KEYWORD_TYPE });
-export const searchSpotAction = ({ areaIndex, contentTypeId, keyword, pageIndex }) => ({ type: SEARCH_SPOT_TYPE, areaIndex, contentTypeId, keyword, pageIndex });
+export const searchSpotAction = ({ areaIndex, contentTypeId, curKeyword, pageIndex }) => ({ type: SEARCH_SPOT_TYPE, areaIndex, contentTypeId, curKeyword, pageIndex });
 export const changeContentTypeIdAction = (contentTypeId) => ({ type: CHANGE_CONTENT_TYPE_ID_TYPE, contentTypeId });
 export const toggleSpotDetailModalAction = () => ({ type: TOGGLE_SPOT_DETAIL_MODAL_TYPE });
 
@@ -98,7 +85,6 @@ const initialState = {
         contentId: null,
     },
     spotModal: false,
-    keyword: '',
     contentTypeList: [
         { label: '관광지', id: 12 },
         { label: '문화시설', id: 14 },
@@ -153,14 +139,6 @@ function spotReducer(state = initialState, action) {
                     pageIndex: action.index,
                 },
             };
-        case CHANGE_BLOCK_INDEX_TYPE:
-            return {
-                ...state,
-                spotData: {
-                    ...state.spotData,
-                    blockNum: action.num,
-                },
-            };
 
         case CHANGE_CONTENT_ID_TYPE:
             return {
@@ -171,6 +149,7 @@ function spotReducer(state = initialState, action) {
                 },
             };
         case LOAD_DETAIL_SPOT_SUCCESS_TYPE:
+            console.log(action.payload.data);
             return {
                 ...state,
                 detail: {
@@ -184,9 +163,8 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 detail: {
                     ...state.detail,
-                    title: action.spotInfo.title,
-                    contentid: action.spotInfo.contentid,
-                    firstimage: action.spotInfo.firstimage,
+                    image: action.spotInfo.firstImage,
+                    contentId: action.spotInfo.contentId,
                 },
             };
         case RESET_DETAIL_SPOT_TYPE:
@@ -212,37 +190,9 @@ function spotReducer(state = initialState, action) {
                     ...state.spotData,
                 },
             };
-        case CHANGE_SPOTS_LIKE_TYPE:
-            return {
-                ...state,
-                spots: {
-                    list: action.likes.map((like, i) => {
-                        return {
-                            info: {
-                                ...state.spots.list[i].info,
-                                like: String(like.contentId) === state.spots.list[i].info.contentid ? like.state : false,
-                            },
-                        };
-                    }),
-                    totalCount: state.spots.totalCount,
-                },
-            };
 
-        case TOGGLE_DETAIL_LIKE_TYPE:
-            return {
-                ...state,
-                // detail: {
-                //     info: {
-                //         ...state.detail.info,
-                //         like: !state.detail.info.like,
-                //     },
-                // },
-            };
         case RESET_SPOTS_TYPE:
             return { ...state, spots: null };
-
-        case RESET_LIKE_LIST_TYPE:
-            return { ...state, likeList: null };
 
         case RESET_SPOT_DATA_TYPE:
             return {
@@ -254,18 +204,6 @@ function spotReducer(state = initialState, action) {
                     contentId: null,
                 },
             };
-
-        case CHANGE_KEYWORD_TYPE:
-            return {
-                ...state,
-                keyword: action.keyword,
-            };
-        case RESET_KEYWORD_TYPE:
-            return {
-                ...state,
-                keyword: '',
-            };
-
         case SEARCH_SPOT_SUCCESS_TYPE:
             return {
                 ...state,

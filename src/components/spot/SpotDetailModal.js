@@ -51,7 +51,8 @@ const FlexDiv = styled.div`
 `;
 const Label = styled.div`
     height: 2rem;
-    line-height: 2rem;
+    line-height: 1.3rem;
+
     color: gray;
     margin-right: 1rem;
     font-size: 0.8rem;
@@ -62,12 +63,14 @@ const Title = styled.div`
     height: 2rem;
     border: none;
     padding: 0 0.5rem;
+    font-size: 0.9rem;
 `;
 const Addr = styled.div`
     width: 100%;
     height: 2rem;
     border: none;
     padding: 0 0.5rem;
+    font-size: 0.9rem;
 `;
 const Overview = styled.div`
     width: 100%;
@@ -75,30 +78,31 @@ const Overview = styled.div`
     border: none;
     padding: 0 0.5rem;
     overflow: auto;
+    font-size: 0.9rem;
 `;
 
 const LikeBox = styled.div`
-    background-color: lightgray;
-    color: white;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
     border-radius: 5px;
     padding: 10px;
     display: flex;
     align-items: center;
     height: 1rem;
+    position: absolute;
+    top: 9px;
+    right: 8px;
     cursor: pointer;
-    ${(props) =>
-        props.like &&
-        css`
-            background-color: #f1eee0;
-            color: #ef9a9a;
-        `}
+
     div {
         margin-left: 5px;
     }
 `;
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+    color: ${(props) => (props.like ? 'yellow' : 'lightgray')};
+`;
 
-const SpotDetailModal = ({ spotModal, detail, onResetDetailSpot, onToggleSpotDetailModal, onToggleSpotLike }) => {
-    const { title, firstimage, overview, contentid, likeCount, likeState } = { ...detail };
+const SpotDetailModal = ({ spotModal, detail, onResetDetailSpot, onToggleSpotDetailModal, onToggleDetailLike }) => {
+    const { title, image, overview, addr1, likeCount, likeState } = { ...detail };
 
     // 모달 외부 스크롤 고정
     // useEffect(() => {
@@ -129,53 +133,28 @@ const SpotDetailModal = ({ spotModal, detail, onResetDetailSpot, onToggleSpotDet
         >
             <DetailModalBlock>
                 <ImgBox>
-                    <Img src={firstimage} alt={title} />
+                    <Img src={image} alt={title} />
                 </ImgBox>
                 <InfoBox>
+                    <LikeBox onClick={onToggleDetailLike}>
+                        <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
+                        <div>{likeCount}</div>
+                    </LikeBox>
                     <FlexDiv>
                         <Label>이름</Label>
                         <Title>{title}</Title>
                     </FlexDiv>
                     <FlexDiv>
                         <Label>주소</Label>
-
-                        <Addr>aaaaa</Addr>
+                        <Addr>{addr1}</Addr>
                     </FlexDiv>
                     <FlexDiv>
-                        <Label>설명 글</Label>
-
+                        <Label>설명</Label>
                         <Overview>{overview}</Overview>
                     </FlexDiv>
                 </InfoBox>
             </DetailModalBlock>
         </Modal>
-        // <>
-        //     {detail && (
-        //         <Background onClick={onResetDetailSpot}>
-        //             <ModalContainer onClick={(e) => e.stopPropagation()}>
-        //                 <Img src={firstimage} alt={title}  />
-        //                 <Info>
-        //                     <CloseButton>
-        //                         <FontAwesomeIcon icon={faXmark} onClick={onResetDetailSpot} />
-        //                     </CloseButton>
-        //                     <InfoHeader>
-        //                         <Title>{title}</Title>
-        //                         <LikeBox
-        //                             like={likeState}
-        //                             onClick={() => {
-        //                                 onToggleSpotLike(contentid);
-        //                             }}
-        //                         >
-        //                             <FontAwesomeIcon icon={faStar} />
-        //                             <div>{likeCount}</div>
-        //                         </LikeBox>
-        //                     </InfoHeader>
-        //                     <Detail>{overview}</Detail>
-        //                 </Info>
-        //             </ModalContainer>
-        //         </Background>
-        //     )}
-        // </>
     );
 };
 

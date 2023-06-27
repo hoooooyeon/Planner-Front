@@ -5,22 +5,16 @@ import SpotList from '../../components/spot/SpotList';
 import {
     addSpotLikeAction,
     resetSpotDataAction,
-    resetLikeListAction,
     resetSpotsAction,
     loadAreasAction,
     loadDetailSpotAction,
     loadSpotsAction,
     removeSpotLikeAction,
-    toggleDetailLikeAction,
     changeAreaIndexAction,
-    changeBlockIndexAction,
     changeDetailSpotAction,
     changePageIndexAction,
     toggleSpotDetailModalAction,
     changeContentIdAction,
-    changeSpotsLikeAction,
-    changeKeywordAction,
-    resetKeywordAction,
     searchSpotAction,
     changeContentTypeIdAction,
 } from '../../modules/spotModule';
@@ -33,31 +27,23 @@ const SpotListContainer = ({
     spotModal,
     spotData,
     account,
-    likeList,
-    keyword,
     contentTypeList,
     loadAreas,
     loadSpots,
     loadDetailSpot,
     changeAreaIndex,
     changePageIndex,
-    changeBlockIndex,
     addSpotLike,
     removeSpotLike,
-    changeSpotsLike,
     resetSpots,
-    resetLikeList,
     resetSpotData,
-    toggleDetailLike,
     changeDetailSpot,
-    changeKeyword,
     searchSpot,
     changeContentTypeId,
     changeContentId,
-    resetKeyword,
     toggleSpotDetailModal,
 }) => {
-    const { areaIndex, pageIndex, contentTypeId } = spotData;
+    const { areaIndex, pageIndex, contentTypeId, contentId } = { ...spotData };
 
     // 지역 가져오기
     useEffect(() => {
@@ -77,21 +63,20 @@ const SpotListContainer = ({
     const drag = useRef(false);
     const onOpenDetail = (spot) => {
         if (drag.current) {
-            drag.current = false;
+            drag.current = true;
             return;
         }
         changeDetailSpot(spot);
-        changeContentId(spot.contentid);
+        changeContentId(spot.contentId);
         toggleSpotDetailModal();
     };
     useEffect(() => {
-        if (spotData.contentId) {
-            const { contentId } = spotData;
+        if (contentId) {
             loadDetailSpot(contentId);
         }
-    }, [loadDetailSpot, spotData]);
+    }, [loadDetailSpot, contentId, spotData]);
 
-    // 여행지 첫페이지
+    // 지역  선택
     const onClickArea = (areaIndex) => {
         if (drag.current) {
             drag.current = false;
@@ -99,26 +84,18 @@ const SpotListContainer = ({
         }
         changeAreaIndex(areaIndex);
         changePageIndex(1);
-        // changeBlockIndex(0);
 
-        resetKeyword();
-        setSearchResultText('');
+        setCurKeyword('');
+        setResultKeyword('');
     };
-
-    // 여행지 초기화
-    // useEffect(() => {
-    //     resetSpots();
-    // resetLikeList();
-    // }, [areaIndex, pageIndex, resetSpots]);
 
     // 여행지 페이지에서 벗어날 때 정보 초기화
     useEffect(() => {
         return () => {
             resetSpots();
-            // resetLikeList();
             resetSpotData();
         };
-    }, [resetSpotData, resetSpots, resetLikeList]);
+    }, [resetSpotData, resetSpots]);
 
     // 여행지 좋아요 토글
     const onToggleSpotLike = (contentId) => {
@@ -131,31 +108,23 @@ const SpotListContainer = ({
         }
     };
 
-    // 좋아요리스트 초기화
-    // 여행지 좋아요 토글 시, reseting 후 changespotslike
-    // useEffect(() => {
-    //     resetLikeList();
-    // }, [resetLikeList, detail]);
-
     // 여행지 검색할 키워드 타이핑
     const onChangeKeyword = (keyword) => {
-        changeKeyword(keyword);
-    };
-    const onResetKeyword = () => {
-        resetKeyword();
+        setCurKeyword(keyword);
     };
 
-    const [searchResultText, setSearchResultText] = useState('');
+    const [curKeyword, setCurKeyword] = useState('');
+    const [resultKeyword, setResultKeyword] = useState('');
     const onSearchSpot = () => {
         const pageIndex = 1;
-        searchSpot({ areaIndex, contentTypeId, keyword, pageIndex });
-        setSearchResultText(keyword);
+        searchSpot({ areaIndex, contentTypeId, curKeyword, pageIndex });
+        setResultKeyword(curKeyword);
     };
 
     const onChangeContentTypeId = (contentTypeId) => {
         changeContentTypeId(contentTypeId);
-        resetKeyword();
-        setSearchResultText('');
+        setCurKeyword('');
+        setResultKeyword('');
     };
 
     const sliderSpots = [
@@ -173,16 +142,15 @@ const SpotListContainer = ({
             spotError={spotError}
             spotModal={spotModal}
             spotData={spotData}
-            keyword={keyword}
             sliderSpots={sliderSpots}
             drag={drag}
-            searchResultText={searchResultText}
+            curKeyword={curKeyword}
+            resultKeyword={resultKeyword}
             contentTypeList={contentTypeList}
             onClickArea={onClickArea}
             onToggleSpotLike={onToggleSpotLike}
             onOpenDetail={onOpenDetail}
             onChangeKeyword={onChangeKeyword}
-            onResetKeyword={onResetKeyword}
             onSearchSpot={onSearchSpot}
             onChangeContentTypeId={onChangeContentTypeId}
         />
@@ -214,9 +182,6 @@ const mapDispatchToProps = (dispatch) => ({
     changePageIndex: (index) => {
         dispatch(changePageIndexAction(index));
     },
-    changeBlockIndex: (index) => {
-        dispatch(changeBlockIndexAction(index));
-    },
     changeContentId: (id) => {
         dispatch(changeContentIdAction(id));
     },
@@ -232,26 +197,11 @@ const mapDispatchToProps = (dispatch) => ({
     removeSpotLike: (spotId) => {
         dispatch(removeSpotLikeAction(spotId));
     },
-    changeSpotsLike: (likes) => {
-        dispatch(changeSpotsLikeAction(likes));
-    },
-    toggleDetailLike: () => {
-        dispatch(toggleDetailLikeAction());
-    },
     resetSpots: () => {
         dispatch(resetSpotsAction());
     },
-    resetLikeList: () => {
-        dispatch(resetLikeListAction());
-    },
     resetSpotData: () => {
         dispatch(resetSpotDataAction());
-    },
-    changeKeyword: (keyword) => {
-        dispatch(changeKeywordAction(keyword));
-    },
-    resetKeyword: () => {
-        dispatch(resetKeywordAction());
     },
     searchSpot: (areaIndex, contentTypeId, keyword, index) => {
         dispatch(searchSpotAction(areaIndex, contentTypeId, keyword, index));

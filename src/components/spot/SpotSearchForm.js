@@ -129,7 +129,7 @@ const Label = styled.label`
     }
 `;
 
-const SpotSearchForm = ({ areas, searchResultText, keyword, spotData, contentTypeList, onClickArea, onChangeContentTypeId, onSearchSpot, onChangeKeyword }) => {
+const SpotSearchForm = ({ areas, resultKeyword, curKeyword, spotData, contentTypeList, onClickArea, onChangeContentTypeId, onSearchSpot, onChangeKeyword }) => {
     return (
         <>
             <FormDiv>
@@ -174,7 +174,7 @@ const SpotSearchForm = ({ areas, searchResultText, keyword, spotData, contentTyp
                         <SearchInput
                             placeholder="키워드 검색"
                             type="text"
-                            value={keyword}
+                            value={curKeyword}
                             onChange={(e) => {
                                 onChangeKeyword(e.target.value);
                             }}
@@ -186,7 +186,7 @@ const SpotSearchForm = ({ areas, searchResultText, keyword, spotData, contentTyp
                     </SearchBox>
                 </Form>
             </FormDiv>
-            {searchResultText.length > 0 ? <SearchResult>' {searchResultText} ' 에 대한 검색 결과...</SearchResult> : null}
+            {resultKeyword.length > 0 ? <SearchResult>' {resultKeyword} ' 에 대한 검색 결과...</SearchResult> : null}
         </>
     );
 };

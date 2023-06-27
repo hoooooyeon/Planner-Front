@@ -1,6 +1,7 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SpotDetailModal from '../../components/spot/SpotDetailModal';
-import { resetDetailSpotAction, toggleDetailLikeAction, toggleSpotDetailModalAction } from '../../modules/spotModule';
+import { addSpotLikeAction, removeSpotLikeAction, resetDetailSpotAction, toggleDetailLikeAction, toggleSpotDetailModalAction } from '../../modules/spotModule';
 
 const SpotDetailModalContainer = () => {
     const dispatch = useDispatch();
@@ -10,19 +11,25 @@ const SpotDetailModalContainer = () => {
         spotModal: spotReducer.spotModal,
     }));
 
+    const { likeState, title, image, contentId } = { ...detail };
+
     const onToggleSpotDetailModal = () => {
         dispatch(toggleSpotDetailModalAction());
     };
 
     const onToggleDetailLike = () => {
-        dispatch(toggleDetailLikeAction());
+        if (likeState) {
+            dispatch(removeSpotLikeAction({ contentId }));
+        } else if (!likeState) {
+            dispatch(addSpotLikeAction({ title, contentId, image }));
+        }
     };
 
     const onResetDetailSpot = () => {
         dispatch(resetDetailSpotAction());
     };
 
-    return <SpotDetailModal spotModal={spotModal} detail={detail} onResetDetailSpot={onResetDetailSpot} onToggleSpotDetailModal={onToggleSpotDetailModal} />;
+    return <SpotDetailModal spotModal={spotModal} detail={detail} onResetDetailSpot={onResetDetailSpot} onToggleSpotDetailModal={onToggleSpotDetailModal} onToggleDetailLike={onToggleDetailLike} />;
 };
 
 export default SpotDetailModalContainer;

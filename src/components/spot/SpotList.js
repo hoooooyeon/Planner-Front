@@ -97,7 +97,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: ${(props) => (props.like ? 'yellow' : 'lightgray')};
 `;
 
-const SpotList = ({ areas, spots, spotError, spotData, keyword, sliderSpots, contentTypeList, drag, onClickArea, onToggleSpotLike, onOpenDetail, onChangeKeyword, onSearchSpot, onChangeContentTypeId, searchResultText }) => {
+const SpotList = ({ areas, spots, spotError, spotData, curKeyword, resultKeyword, sliderSpots, contentTypeList, drag, onClickArea, onOpenDetail, onChangeKeyword, onSearchSpot, onChangeContentTypeId }) => {
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
         e.target.src = defaultImg;
@@ -115,8 +115,8 @@ const SpotList = ({ areas, spots, spotError, spotData, keyword, sliderSpots, con
                 <MenuTitle>여행지를 찾아 보세요.</MenuTitle>
                 <SpotSearchForm
                     areas={areas}
-                    searchResultText={searchResultText}
-                    keyword={keyword}
+                    resultKeyword={resultKeyword}
+                    curKeyword={curKeyword}
                     spotData={spotData}
                     contentTypeList={contentTypeList}
                     onClickArea={onClickArea}
@@ -128,16 +128,17 @@ const SpotList = ({ areas, spots, spotError, spotData, keyword, sliderSpots, con
                     <Slider list={spots.list} scroll={true} drag={drag} itemRef={itemRef}>
                         <List>
                             {spots.list.map((spot) => {
-                                const { title, firstimage, likeState } = spot;
+                                const { title, firstImage, likeState, contentId } = spot;
                                 return (
                                     <SpotItem
                                         ref={itemRef}
                                         onClick={() => {
                                             onOpenDetail(spot);
                                         }}
+                                        key={contentId}
                                     >
                                         <ImgBox>
-                                            <Img src={firstimage} alt={title} onError={onChangeErrorImg} />
+                                            <Img src={firstImage} alt={title} onError={onChangeErrorImg} />
                                             <IconBox>
                                                 <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
                                             </IconBox>
