@@ -1,4 +1,5 @@
 import './App.css';
+import './css/theme.css';
 import { Route, Switch } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import SpotPage from './pages/SpotPage';

@@ -5,16 +5,12 @@ import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
 
 const RegisterPage = () => {
-  return (
-    <>
-      <Header />
-      <AuthTemplate>
-        {/* <Auth type="register" /> */}
-        <RegisterContainer type="register" />
-      </AuthTemplate>
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <RegisterContainer type="register" />
+            <Footer />
+        </>
+    );
 };
 
 export default RegisterPage;

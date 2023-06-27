@@ -55,10 +55,11 @@ const LoginContainer = ({ history, type }) => {
     useEffect(() => {
         return () => {
             dispatch(initialize());
+            dispatch(initializeError());
         };
     }, [dispatch]);
 
-    return <Auth type={type} form={form} onChange={onChange} onSubmit={onSubmit} authError={state.message} />;
+    return <Auth type={type} form={form} onChange={onChange} onSubmit={onSubmit} authError={authError} />;
 };
 
 export default withRouter(LoginContainer);
