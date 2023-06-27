@@ -56,8 +56,6 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
     const moveX = useRef(0);
     const sliderX = useRef(0);
 
-    const TOTAL_SLIDE = 4;
-
     const scrollBoxRef = useRef();
     const scrollRef = useRef();
     let scrollMoveX = 0;
@@ -107,8 +105,6 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
             const itemWidth = itemRef.current.getBoundingClientRect().height + parseInt(computedStyle.marginTop);
 
             sliderX.current = Math.round(moveX.current / itemWidth) * itemWidth;
-            // let itemSize = listRef.current.scrollWidth / TOTAL_SLIDE;
-            // sliderX.current = Math.round(moveX.current / itemSize) * itemSize;
 
             if (sliderX.current > 0) {
                 sliderX.current = 0;
@@ -117,9 +113,6 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
                 }
             } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth) {
                 sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth;
-
-                // } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.clientWidth) {
-                //     sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.clientWidth;
                 if (page) {
                     nextPage();
                 }
@@ -153,14 +146,14 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
             refValue.addEventListener('mousedown', sliderStart);
             refValue.addEventListener('mousemove', sliderMove);
             refValue.addEventListener('mouseup', sliderEnd);
-            refValue.addEventListener('resize', sliderResize);
+            window.addEventListener('resize', sliderResize);
             sliderResize();
 
             return () => {
                 refValue.removeEventListener('mousedown', sliderStart);
                 refValue.removeEventListener('mousemove', sliderMove);
                 refValue.removeEventListener('mouseup', sliderEnd);
-                refValue.removeEventListener('resize', sliderResize);
+                window.removeEventListener('resize', sliderResize);
             };
         }
     });
