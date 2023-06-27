@@ -7,6 +7,7 @@ const initializeType = 'auth/INITIALIZE';
 const initializeFormType = 'auth/INITIALIZE_FORM';
 const initializeErrorType = 'auth/INITIALIZE_ERROR';
 const changeFieldType = 'auth/CHANGE_FIELD';
+const validateType = 'auth/VALIDATE';
 
 const loginType = "auth/LOGIN";
 const loginSuccessType = "auth/LOGIN_SUCCESS";
@@ -35,6 +36,11 @@ export const changeField = ({ form, field, value }) => ({
     form,
     field,
     value
+});
+
+export const validateFieldAction = (validState) => ({
+    type: validateType,
+    validState
 });
 
 export const loginAction = ({ email, password }) => ({
@@ -69,13 +75,13 @@ const initialState = {
         email: '',
         password: '',
         passwordConfirm: '',
-        userName: '',
-        nickName: '',
+        username: '',
+        nickname: '',
         phone: ''
     },
     account: null,
     token: '',
-    authError: null,
+    authError: {},
     state: {
         state: false,
         message: ''
@@ -99,12 +105,13 @@ function authReducer(state = initialState, action) {
         case loginSuccessType: {
             return { ...state, account: action.payload.data, state: { ...action.payload }, token: action.payload.token };
         }
-        case loginFailureType: {
-            return { ...state, authError: action.payload.message, state: { ...action.payload } };
-        }
         case registerSuccessType: {
             return { ...state, state: { ...action.payload } };
         }
+        case validateType: {
+            return { ...state, authError: { ...action.validState } };
+        }
+        case loginFailureType:
         case registerFailureType: {
             return { ...state, authError: action.payload.message, state: { ...action.payload } };
         }

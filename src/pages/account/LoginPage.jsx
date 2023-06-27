@@ -5,16 +5,12 @@ import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
 
 const LoginPage = () => {
-  return (
-    <>
-      <Header />
-      <AuthTemplate>
-        {/* <Auth type="login" /> */}
-        <LoginContainer type="login" />
-      </AuthTemplate>
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <LoginContainer type="login" />
+            <Footer />
+        </>
+    );
 };
 
 export default LoginPage;
