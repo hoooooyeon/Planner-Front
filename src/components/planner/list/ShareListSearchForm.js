@@ -104,7 +104,7 @@ const Label = styled.label`
     }
 `;
 const ResultBox = styled.div`
-    height: 1.5rem;
+    /* height: 1.5rem; */
     margin: 1rem 0;
     h3 {
         margin: 0;
@@ -113,14 +113,11 @@ const ResultBox = styled.div`
 const InvisibleInput = styled.input`
     display: none;
 `;
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    /* background-color: white; */
-`;
+
 const IconBox = styled.div`
     background-color: white;
     height: 2.5rem;
     line-height: 2.5rem;
-    /* width: 1rem; */
     padding: 0 0.5rem;
 `;
 const ShareListSearchForm = ({ curKeyword, sortCriteria, resultKeyword, onChangeKeyword, onChangeSort, onChangeResultKeyword }) => {
@@ -149,7 +146,7 @@ const ShareListSearchForm = ({ curKeyword, sortCriteria, resultKeyword, onChange
 
                     <IconBox>
                         {curKeyword.length > 0 ? (
-                            <StyledFontAwesomeIcon
+                            <FontAwesomeIcon
                                 onClick={() => {
                                     onChangeKeyword('');
                                 }}

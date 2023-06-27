@@ -116,7 +116,7 @@ const FlexBox = styled.div`
     }
 `;
 
-const PlannerInfo = ({ planner, mapRef, plannerData, transList, drag, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal, onChangeCurPlanId, onToggleLikePlanner }) => {
+const PlannerInfo = ({ account, planner, mapRef, plannerData, transList, drag, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal, onChangeCurPlanId, onToggleLikePlanner }) => {
     const menuRef = useRef();
     const [isDropDown, setIsDropDown] = useState(false);
 
@@ -177,7 +177,7 @@ const PlannerInfo = ({ planner, mapRef, plannerData, transList, drag, onDeletePl
                     <InfoRoute planner={planner} plannerData={plannerData} transList={transList} drag={drag} onChangeCurPlanId={onChangeCurPlanId} />
                 </FlexBox>
             </Container>
-            <InfoMenu planner={planner} />
+            {account && <InfoMenu planner={planner} />}
         </PlannerInfoBlock>
     );
 };

@@ -77,7 +77,7 @@ const Title = styled.div`
 const Date = styled.div`
     font-size: 0.4rem;
     color: lightgray;
-    margin-top: 0.5rem;
+    margin-top: 0.6rem;
     overflow: hidden;
 `;
 

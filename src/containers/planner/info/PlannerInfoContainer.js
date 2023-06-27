@@ -6,12 +6,12 @@ import circleImg from '../../../lib/images/circle.png';
 
 const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, plannerData, transList, spots } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, plannerData, transList, account } = useSelector(({ plannerReducer, authReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         plannerData: plannerReducer.plannerData,
         transList: plannerReducer.transList,
-        spots: plannerReducer.spots,
+        account: authReducer.account,
     }));
 
     const { plannerId, plans } = { ...planner };
@@ -142,6 +142,7 @@ const PlannerInfoContainer = () => {
 
     return (
         <PlannerInfo
+            account={account}
             planner={planner}
             plannerData={plannerData}
             transList={transList}

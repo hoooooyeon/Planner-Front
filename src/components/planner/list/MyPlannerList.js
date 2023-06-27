@@ -98,11 +98,12 @@ const Creator = styled.div`
     font-size: 0.7rem;
     color: gray;
     overflow: hidden;
+    margin-top: 0.2rem;
 `;
 const Date = styled.div`
     font-size: 0.4rem;
     color: lightgray;
-    margin-top: 0.5rem;
+    margin-top: 0.2rem;
     overflow: hidden;
 `;
 const MapBox = styled.div`

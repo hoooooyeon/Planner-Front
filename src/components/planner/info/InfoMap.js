@@ -22,8 +22,9 @@ const Map = styled.div`
 `;
 
 const IconBox = styled.div`
-    border: 2px solid gray;
-    border-radius: 5px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 0.3rem;
     display: flex;
     position: absolute;
     top: 10px;
