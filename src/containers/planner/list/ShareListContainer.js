@@ -50,13 +50,18 @@ const ShareListContainer = () => {
         dispatch(changeResultKeywordAction(curKeyword));
     };
 
+    // 검색 키워드 초기화
+    useEffect(() => {
+        dispatch(changeKeywordAction(''));
+        dispatch(changeResultKeywordAction(''));
+    }, [dispatch]);
+
     return (
         <ShareList
             sharePlanners={sharePlanners}
             planner={planner}
             plannerError={plannerError}
-            curKeyword={curKeyword}
-            resultKeyword={resultKeyword}
+            keyword={keyword}
             sortCriteria={sortCriteria}
             onLoadPlanner={onLoadPlanner}
             onChangeCurPlannerId={onChangeCurPlannerId}

@@ -112,7 +112,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: ${(props) => (props.like ? 'yellow' : 'black')};
 `;
 
-const ShareList = ({ sharePlanners, plannerError, curKeyword, sortCriteria, resultKeyword, onChangeCurPlannerId, onChangeKeyword, onChangeResultKeyword, onChangeSort }) => {
+const ShareList = ({ sharePlanners, plannerError, keyword, sortCriteria, resultKeyword, onChangeCurPlannerId, onChangeKeyword, onChangeResultKeyword, onChangeSort }) => {
     // const areaArr = [
     //     {
     //         title: '서울',
@@ -351,7 +351,7 @@ const ShareList = ({ sharePlanners, plannerError, curKeyword, sortCriteria, resu
         <ShareListBlock>
             <Container>
                 <HeaderTitle>다른 이용자들의 플래너</HeaderTitle>
-                <ShareListSearchForm curKeyword={curKeyword} sortCriteria={sortCriteria} resultKeyword={resultKeyword} onChangeKeyword={onChangeKeyword} onChangeResultKeyword={onChangeResultKeyword} onChangeSort={onChangeSort} />
+                <ShareListSearchForm keyword={keyword} sortCriteria={sortCriteria} resultKeyword={resultKeyword} onChangeKeyword={onChangeKeyword} onChangeResultKeyword={onChangeResultKeyword} onChangeSort={onChangeSort} />
                 {/* {mapArr && mapArr.map((m) => <Map id={m} />)} */}
                 {sharePlanners ? (
                     <Slider list={sharePlanners.list} itemRef={itemRef} scroll={true} drag={drag}>

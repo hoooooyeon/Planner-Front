@@ -120,7 +120,8 @@ const IconBox = styled.div`
     line-height: 2.5rem;
     padding: 0 0.5rem;
 `;
-const ShareListSearchForm = ({ curKeyword, sortCriteria, resultKeyword, onChangeKeyword, onChangeSort, onChangeResultKeyword }) => {
+const ShareListSearchForm = ({ keyword, sortCriteria, onChangeKeyword, onChangeSort, onChangeResultKeyword }) => {
+    const { curKeyword, resultKeyword } = { ...keyword };
     return (
         <>
             <ShareListSearchFormBlock>
@@ -143,7 +144,7 @@ const ShareListSearchForm = ({ curKeyword, sortCriteria, resultKeyword, onChange
                             onChangeKeyword(e.target.value);
                         }}
                     />
-
+                    <InvisibleInput type="text" />
                     <IconBox>
                         {curKeyword.length > 0 ? (
                             <FontAwesomeIcon
@@ -154,7 +155,6 @@ const ShareListSearchForm = ({ curKeyword, sortCriteria, resultKeyword, onChange
                             />
                         ) : null}
                     </IconBox>
-                    <InvisibleInput type="text" />
                     <Button type="button" onClick={onChangeResultKeyword}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
                     </Button>

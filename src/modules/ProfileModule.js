@@ -17,9 +17,13 @@ const profileImageUpdateType = 'profile/PROFILE_IMAGE_UPDATE';
 const profileImageUpdateSuccessType = 'profile/PROFILE_IMAGE_UPDATE_SUCCESS';
 const profileImageUpdateFailureType = 'profile/PROFILE_IMAGE_UPDATE_FAILURE';
 
-const LOAD_MY_PLANNER_LIST_TYPE = 'planner/LOAD_MY_PLANNER_LIST';
-const LOAD_MY_PLANNER_LIST_SUCCESS_TYPE = 'planner/LOAD_MY_PLANNER_LIST_SUCCESS';
-const LOAD_MY_PLANNER_LIST_FAILURE_TYPE = 'planner/LOAD_MY_PLANNER_LIST_FAILURE';
+const LOAD_MY_PLANNER_LIST_TYPE = 'profile/LOAD_MY_PLANNER_LIST';
+const LOAD_MY_PLANNER_LIST_SUCCESS_TYPE = 'profile/LOAD_MY_PLANNER_LIST_SUCCESS';
+const LOAD_MY_PLANNER_LIST_FAILURE_TYPE = 'profile/LOAD_MY_PLANNER_LIST_FAILURE';
+
+const LOAD_LIKE_LIST_TYPE = 'profile/LOAD_LIKE_LIST';
+const LOAD_LIKE_LIST_SUCCESS_TYPE = 'profile/LOAD_LIKE_LIST_SUCCESS';
+const LOAD_LIKE_LIST_FAILURE_TYPE = 'profile/LOAD_LIKE_LIST_FAILURE';
 
 // 액션 함수
 export const initializeAction = () => ({
@@ -56,16 +60,20 @@ export const profileImageUpdateAction = ({ accountId, formData }) => ({
 
 export const loadMyPlannerListAction = ({ accountId, pageNum, itemCount, sortCriteria }) => ({ type: LOAD_MY_PLANNER_LIST_TYPE, accountId, pageNum, itemCount, sortCriteria });
 
+export const loadLikeListAction = ({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }) => ({ type: LOAD_LIKE_LIST_TYPE, accountId, itemCount, sortCriteria, keyword, postType, pageNum });
+
 const profileLoad = createSaga(profileLoadType, profileAPI.profileLoad);
 const profileUpdate = createSaga(profileUpdateType, profileAPI.profileUpdate);
 const profileImageUpdate = createSaga(profileImageUpdateType, profileAPI.profileImageUpdate);
 const loadMyPlannerListSaga = createSaga(LOAD_MY_PLANNER_LIST_TYPE, profileAPI.loadMyPlannerList);
+const loadLikeListSaga = createSaga(LOAD_LIKE_LIST_TYPE, profileAPI.loadLikeList);
 
 export function* profileSaga() {
     yield takeLatest(profileLoadType, profileLoad);
     yield takeLatest(profileUpdateType, profileUpdate);
     yield takeLatest(profileImageUpdateType, profileImageUpdate);
     yield takeLatest(LOAD_MY_PLANNER_LIST_TYPE, loadMyPlannerListSaga);
+    yield takeLatest(LOAD_LIKE_LIST_TYPE, loadLikeListSaga);
 }
 
 const initialState = {
@@ -77,6 +85,7 @@ const initialState = {
     profileUpdate: false,
     profileError: null,
     myPlanners: null,
+    likeList: null,
 };
 
 function profileReducer(state = initialState, action) {
@@ -118,6 +127,16 @@ function profileReducer(state = initialState, action) {
                 myPlanners: action.payload.data,
             };
         case LOAD_MY_PLANNER_LIST_FAILURE_TYPE:
+            return {
+                ...state,
+                profileError: action.payload.message,
+            };
+        case LOAD_LIKE_LIST_SUCCESS_TYPE:
+            return {
+                ...state,
+                likeList: action.payload.data,
+            };
+        case LOAD_LIKE_LIST_FAILURE_TYPE:
             return {
                 ...state,
                 profileError: action.payload.message,

@@ -1,34 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditList from '../../../components/planner/edit/EditList';
-import { changePlanLocationAction, createLocationAction } from '../../../modules/plannerModule';
-import {
-    loadDetailSpotAction,
-    loadSpotsAction,
-    unloadDetailSpotAction,
-    changeContentTypeIdAction,
-    changeDetailSpotAction,
-    changePageIndexAction,
-    changeAreaIndexAction,
-    loadAreasAction,
-    changeKeywordAction,
-    resetKeywordAction,
-    searchSpotAction,
-} from '../../../modules/spotModule';
+import { changeKeywordAction, changePageNumAction, changePlanLocationAction, changeResultKeywordAction, createLocationAction } from '../../../modules/plannerModule';
+import { loadDetailSpotAction, loadSpotsAction, unloadDetailSpotAction, changeContentTypeIdAction, changeDetailSpotAction, changeAreaIndexAction, loadAreasAction, searchSpotAction } from '../../../modules/spotModule';
 import * as common from '../../../lib/utils/CommonFunction';
+import { loadLikeListAction } from '../../../modules/ProfileModule';
 
 const EditListContainer = () => {
     const dispatch = useDispatch();
-    const { plannerError, spots, keyword, areas, spotData, plannerData, detail, map, contentTypeList } = useSelector(({ plannerReducer, spotReducer }) => ({
+    const { plannerError, spots, account, keyword, areas, spotData, plannerData, detail, map, contentTypeList, likeList } = useSelector(({ plannerReducer, spotReducer, profileReducer, authReducer }) => ({
+        account: authReducer.account,
         plannerError: plannerReducer.plannerError,
         spots: spotReducer.spots,
         areas: spotReducer.areas,
-        keyword: spotReducer.keyword,
+        keyword: plannerReducer.keyword,
         spotData: spotReducer.spotData,
         detail: spotReducer.detail,
         plannerData: plannerReducer.plannerData,
         map: plannerReducer.map,
         contentTypeList: spotReducer.contentTypeList,
+        likeList: profileReducer.likeList,
     }));
 
     const onChangePlanLocation = (location) => {
@@ -50,16 +41,14 @@ const EditListContainer = () => {
         dispatch(createLocationAction({ plannerId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId }));
     };
 
-    // 선택한 여행지로 지도 시점 이동
-    const onMoveMarker = (spotData) => {
-        // const { mapx, mapy } = spotData;
-        // let moveLatLon = new window.kakao.maps.LatLng(mapy, mapx);
-        // // 해당 마커로 이동
-        // map.panTo(moveLatLon);
-    };
-
     // 여행지 불러오기
     const { areaIndex, pageIndex, contentTypeId } = { ...spotData };
+    const [menuIndex, setMenuIndex] = useState(0);
+
+    const onChangeMenuIndex = (index) => {
+        setMenuIndex(index);
+    };
+
     useEffect(() => {
         dispatch(loadSpotsAction({ areaIndex, contentTypeId, pageIndex }));
     }, [dispatch, areaIndex, pageIndex, contentTypeId]);
@@ -75,7 +64,7 @@ const EditListContainer = () => {
         dispatch(unloadDetailSpotAction());
     };
 
-    const onUchangeContentTypeId = (id) => {
+    const onChangeContentTypeId = (id) => {
         dispatch(changeContentTypeIdAction(id));
     };
 
@@ -89,60 +78,110 @@ const EditListContainer = () => {
         dispatch(changeAreaIndexAction(num));
     };
 
-    const [searchResultText, setSearchResultText] = useState('');
+    const { curKeyword, resultKeyword } = { ...keyword };
     // 여행지 키워드 입력
-    const onChangeKeyword = (keyword) => {
+    const onChangeCurKeyword = (keyword) => {
         dispatch(changeKeywordAction(keyword));
     };
 
-    const onResetKeyword = () => {
-        dispatch(resetKeywordAction());
-    };
     // 여행지 검색
-    const onSearchSpot = () => {
-        dispatch(searchSpotAction({ areaIndex, contentTypeId, keyword, pageIndex }));
-        setSearchResultText(keyword);
+    const onChangeResultKeyword = () => {
+        dispatch(changeResultKeywordAction(curKeyword));
     };
+
+    useEffect(() => {
+        if (resultKeyword.length !== 0) {
+            const keyword = resultKeyword;
+            dispatch(searchSpotAction({ areaIndex, contentTypeId, keyword, pageIndex }));
+        }
+    }, [resultKeyword]);
+
+    const [likeKeyword, setLikeKeyword] = useState('');
+    const { accountId } = { ...account };
+
+    const onChangeLikeKeyword = () => {
+        setLikeKeyword(curKeyword);
+    };
+
+    useEffect(() => {
+        const itemCount = 12;
+        const sortCriteria = 2;
+        const postType = 2;
+        const keyword = likeKeyword;
+
+        dispatch(loadLikeListAction({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }));
+    }, [likeKeyword]);
 
     const { totalCount } = { ...spots };
+    const { pageLastIndex } = { ...likeList };
+    const { pageNum } = { ...plannerData };
+
     // 뿌려줄 페이지 배열
     const [pageArr, setPageArr] = useState([]);
-    // 보여질 페이지네이션의 개수 기준
+    // 페이지의 10단위
     const [block, setBlock] = useState(0);
     // 보여질 페이지네이션의 개수
-    const count = 5;
-    // 보여질 아이템의 개수
-    const itemCount = 10;
+    const limitIndex = 10;
     // 마지막 페이지
-    const pageLastIndex = Math.ceil(totalCount / itemCount);
+    const maxPage = useRef();
+    // const maxPage = Math.ceil(totalCount / limitIndex);
 
-    // // 뿌려줄 페이지네이션 배열 생성  함수
+    // 현재 페이지
+    const [page, setPage] = useState(1);
+
     useEffect(() => {
         if (spots) {
-            common.creaetPageArr(pageLastIndex, setPageArr, count, block);
+            maxPage.current = Math.ceil(totalCount / limitIndex);
         }
-    }, [pageLastIndex, count, block, spots]);
+        if (likeList) {
+            maxPage.current = pageLastIndex;
+        }
+    });
 
-    // 페이지 버튼
-    const onChangePageIndex = (pageIndex) => {
-        dispatch(changePageIndexAction(pageIndex));
+    // 페이지네이션 배열 생성 함수
+    useEffect(() => {
+        const arr = Array.from({ length: maxPage }, (_, i) => i + 1);
+
+        setPageArr(arr.slice(limitIndex * block, limitIndex * (block + 1)));
+    }, [block, maxPage]);
+
+    useEffect(() => {
+        if (pageNum === 1) {
+            setBlock(0);
+        } else if (pageNum === maxPage) {
+            setBlock(Math.ceil(maxPage / limitIndex - 1));
+        }
+    }, [pageNum, maxPage]);
+
+    const onIndexPage = (index) => {
+        setPage(index);
+    };
+    const onNextPage = () => {
+        if (!(page === maxPage)) {
+            setPage((index) => index + 1);
+            if (pageNum % limitIndex === 0) {
+                setBlock((block) => block + 1);
+            }
+        }
+    };
+    const onPreviousPage = () => {
+        if (!(page === 1)) {
+            setPage((index) => index - 1);
+            if (page % limitIndex === 1) {
+                setBlock((block) => block - 1);
+            }
+        }
+    };
+    const onFirstPage = () => {
+        setPage(1);
+    };
+    const onLastPage = () => {
+        setPage(maxPage);
     };
 
-    const prevPage = () => {
-        common.prevPage(pageIndex, onChangePageIndex, setBlock, count);
-    };
-
-    const nextPage = () => {
-        common.nextPage(pageIndex, pageLastIndex, onChangePageIndex, count, setBlock);
-    };
-
-    const firstPage = () => {
-        common.firstPage(onChangePageIndex, setBlock);
-    };
-
-    const lastPage = () => {
-        common.lastPage(onChangePageIndex, pageLastIndex, setBlock, count);
-    };
+    useEffect(() => {
+        dispatch(changePageNumAction(page));
+    }, [page, dispatch]);
 
     return (
         <EditList
@@ -153,22 +192,23 @@ const EditListContainer = () => {
             spotData={spotData}
             contentTypeList={contentTypeList}
             pageArr={pageArr}
-            searchResultText={searchResultText}
+            likeKeyword={likeKeyword}
             onChangePlanLocation={onChangePlanLocation}
             onCreateLocation={onCreateLocation}
-            onMoveMarker={onMoveMarker}
             onOpenDetail={onOpenDetail}
             onCloseDetail={onCloseDetail}
-            onUchangeContentTypeId={onUchangeContentTypeId}
-            onChangePageIndex={onChangePageIndex}
-            prevPage={prevPage}
-            nextPage={nextPage}
-            firstPage={firstPage}
-            lastPage={lastPage}
+            onChangeContentTypeId={onChangeContentTypeId}
+            menuIndex={menuIndex}
+            onChangeMenuIndex={onChangeMenuIndex}
+            onIndexPage={onIndexPage}
+            onPreviousPage={onPreviousPage}
+            onNextPage={onNextPage}
+            onFirstPage={onFirstPage}
+            onLastPage={onLastPage}
             onChangeAreaIndex={onChangeAreaIndex}
-            onResetKeyword={onResetKeyword}
-            onChangeKeyword={onChangeKeyword}
-            onSearchSpot={onSearchSpot}
+            onChangeCurKeyword={onChangeCurKeyword}
+            onChangeResultKeyword={onChangeResultKeyword}
+            onChangeLikeKeyword={onChangeLikeKeyword}
         />
     );
 };
