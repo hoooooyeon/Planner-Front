@@ -53,9 +53,6 @@ const DELETE_PLAN_TYPE = 'planner/DELETE_PLAN';
 const DELETE_PLAN_SUCCESS_TYPE = 'planner/DELETE_PLAN_SUCCESS';
 const DELETE_PLAN_FAILURE_TYPE = 'planner/DELETE_PLAN_FAILURE';
 
-const LOAD_PLAN_TYPE = 'planner/LOAD_PLAN';
-const CHANGE_PLAN_LOCATION_TYPE = 'planner/CHANGE_PLAN_LOCATION';
-
 const INVITE_MEMBER_TYPE = 'planner/INVITE_MEMBER';
 const INVITE_MEMBER_SUCCESS_TYPE = 'planner/INVITE_MEMBER_SUCCESS';
 const INVITE_MEMBER_FAILURE_TYPE = 'planner/INVITE_MEMBER_FAILURE';
@@ -116,8 +113,6 @@ export const deleteMemoAction = ({ plannerId, memoId }) => ({ type: DELETE_MEMO_
 export const createPlanAction = ({ plannerId, planDate, planLocations }) => ({ type: CREATE_PLAN_TYPE, plannerId, planDate, planLocations });
 export const updatePlanAction = ({ planId, plannerId, planDate }) => ({ type: UPDATE_PLAN_TYPE, plannerId, planDate, planId });
 export const deletePlanAction = ({ plannerId, planId }) => ({ type: DELETE_PLAN_TYPE, plannerId, planId });
-export const loadPlanAction = (plan) => ({ type: LOAD_PLAN_TYPE, plan });
-export const changePlanLocationAction = (location) => ({ type: CHANGE_PLAN_LOCATION_TYPE, location });
 export const inviteMemberAction = ({ plannerId, members }) => ({ type: INVITE_MEMBER_TYPE, plannerId, members });
 export const deleteMemberAction = ({ plannerId, nickName }) => ({ type: DELETE_MEMBER_TYPE, plannerId, nickName });
 export const toggleMemberModalAction = () => ({ type: TOGGLE_MEMBER_MODAL_TYPE });
@@ -347,23 +342,7 @@ function plannerReducer(state = initialState, action) {
                     ...state.plannerData,
                 },
             };
-        case CHANGE_PLAN_LOCATION_TYPE:
-            return {
-                ...state,
-                plan: {
-                    ...state.plan,
-                    planLocations: [
-                        ...state.plan.planLocations,
-                        {
-                            title: action.location.title,
-                            locationContentId: action.location.contentid,
-                            locationImage: action.location.firstimage || action.location.firstimage2,
-                            locationTransportation: 0,
-                            planId: state.plan.planId,
-                        },
-                    ],
-                },
-            };
+
         case INVITE_MEMBER_SUCCESS_TYPE:
             return {
                 ...state,

@@ -202,7 +202,6 @@ const EditRoute = ({
     endDate,
     onCreatePlan,
     onDeletePlan,
-    onLoadPlan,
     onUpdatePlan,
     onDeleteLocation,
     onUpdatePlannerDate,
@@ -282,7 +281,6 @@ const EditRoute = ({
                     planner={planner}
                     plan={plan}
                     plannerData={plannerData}
-                    onLoadPlan={onLoadPlan}
                     onCreatePlan={onCreatePlan}
                     onDeletePlan={onDeletePlan}
                     onChangeCurPlanId={onChangeCurPlanId}

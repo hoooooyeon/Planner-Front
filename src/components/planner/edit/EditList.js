@@ -5,7 +5,8 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import EditListDetailModal from './EditListDetailModal';
 import { useState } from 'react';
 import Pagination from '../../common/Pagination';
-import EditSpotList from './EditSpotList';
+import { faExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import EditListSearchForm from './EditListSearchForm';
@@ -22,6 +23,89 @@ const EditListBlock = styled.div`
     z-index: 200;
     transform: ${(props) => (props.navOpen ? 'translateX(0px)' : 'translateX(350px)')};
     transition: 0.4s ease;
+`;
+
+const List = styled.div`
+    height: 29rem;
+    padding: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+    z-index: 200;
+    background-color: #f5f5f5;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
+    &::-webkit-scrollbar {
+        display: none;
+    }
+`;
+
+const ListItem = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99;
+    padding: 0.5rem;
+    &:hover {
+        background-color: #ffcbc14f;
+    }
+`;
+
+const Img = styled.img`
+    border-radius: 0.5rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    width: 5rem;
+    height: 5rem;
+`;
+const TextInfo = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    margin: 0 0.8rem;
+`;
+
+const Name = styled.div`
+    width: 8rem;
+    height: 1.2rem;
+    overflow: hidden;
+    white-space: wrap;
+    text-overflow: ellipsis;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+`;
+
+const Address = styled.div`
+    width: 8rem;
+    height: 1rem;
+    overflow: hidden;
+    white-space: wrap;
+    font-size: 0.6rem;
+    color: lightgray;
+    text-overflow: ellipsis;
+`;
+
+const Icons = styled.div`
+    display: flex;
+`;
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+    font-size: 1.3rem;
+    border-radius: 2rem;
+    padding: 0.5rem;
+    height: 1rem;
+    width: 1rem;
+    background-color: rgb(230, 230, 230);
+    cursor: pointer;
+    & + & {
+        margin-left: 0.5rem;
+    }
+    &:hover {
+        transition: transform 0.3s ease;
+        transform: scale(1.1);
+    }
 `;
 
 const NavArrowIcon = styled(FontAwesomeIcon)`
@@ -49,31 +133,28 @@ const PageBox = styled.div`
 
 const EditList = ({
     spots,
-    areas,
-    keyword,
     detail,
-    spotData,
-    onChangePlanLocation,
     onCreateLocation,
-    onMoveMarker,
     onOpenDetail,
     onCloseDetail,
-    onChangeContentTypeId,
+    likeList,
     pageArr,
-    likeKeyword,
     onIndexPage,
     onPreviousPage,
     onNextPage,
     onFirstPage,
     onLastPage,
+    keyword,
+    spotData,
+    areas,
     contentTypeList,
+    likeKeyword,
     onChangeAreaIndex,
-    onChangeCurKeyword,
+    onChangeContentTypeId,
     onChangeResultKeyword,
-    onSearchSpot,
-    menuIndex,
-    onChangeMenuIndex,
     onChangeLikeKeyword,
+    onChangeCurKeyword,
+    onLoadLikeList,
 }) => {
     const navRef = useRef();
     const [navOpen, setNavOpen] = useState(true);
@@ -105,8 +186,86 @@ const EditList = ({
         <>
             <EditListBlock ref={navRef} navOpen={navOpen}>
                 {navOpen ? <NavArrowIcon onClick={onToggleNav} icon={faCaretRight} /> : <NavArrowIcon onClick={onToggleNav} icon={faCaretLeft} />}
-                <EditListSearchForm />
-                <EditSpotList spots={spots} onMoveMarker={onMoveMarker} onOpenDetail={onOpenDetail} onCreateLocation={onCreateLocation} />
+                <EditListSearchForm
+                    keyword={keyword}
+                    spotData={spotData}
+                    areas={areas}
+                    contentTypeList={contentTypeList}
+                    likeKeyword={likeKeyword}
+                    onChangeAreaIndex={onChangeAreaIndex}
+                    onChangeContentTypeId={onChangeContentTypeId}
+                    onChangeResultKeyword={onChangeResultKeyword}
+                    onChangeLikeKeyword={onChangeLikeKeyword}
+                    onChangeCurKeyword={onChangeCurKeyword}
+                    onLoadLikeList={onLoadLikeList}
+                    onIndexPage={onIndexPage}
+                />
+                <List>
+                    {spots &&
+                        spots.list.map((s, i) => {
+                            const { firstimage, firstimage2, title, addr1 } = s;
+                            return (
+                                <ListItem key={i}>
+                                    <Img
+                                        src={firstimage || firstimage2}
+                                        alt={title}
+                                        // onError={onChangeErrorImg}
+                                    />
+                                    <TextInfo>
+                                        <Name>{title}</Name>
+                                        <Address>{addr1.split(' ')[0]}</Address>
+                                    </TextInfo>
+                                    <Icons>
+                                        <StyledFontAwesomeIcon
+                                            onClick={() => {
+                                                onOpenDetail(s);
+                                            }}
+                                            icon={faExclamation}
+                                        />
+
+                                        <StyledFontAwesomeIcon
+                                            onClick={() => {
+                                                onCreateLocation(s);
+                                            }}
+                                            icon={faPlus}
+                                        />
+                                    </Icons>
+                                </ListItem>
+                            );
+                        })}
+                    {likeList &&
+                        likeList.list.map((s, i) => {
+                            const { firstimage, firstimage2, title } = s;
+                            return (
+                                <ListItem key={i}>
+                                    <Img
+                                        src={firstimage || firstimage2}
+                                        alt={title}
+                                        // onError={onChangeErrorImg}
+                                    />
+                                    <TextInfo>
+                                        <Name>{title}</Name>
+                                        {/* <Address>{addr1.split(' ')[0]}</Address> */}
+                                    </TextInfo>
+                                    <Icons>
+                                        <StyledFontAwesomeIcon
+                                            onClick={() => {
+                                                onOpenDetail(s);
+                                            }}
+                                            icon={faExclamation}
+                                        />
+
+                                        <StyledFontAwesomeIcon
+                                            onClick={() => {
+                                                onCreateLocation(s);
+                                            }}
+                                            icon={faPlus}
+                                        />
+                                    </Icons>
+                                </ListItem>
+                            );
+                        })}
+                </List>
                 <PageBox>
                     <Pagination pageArr={pageArr} onIndexPage={onIndexPage} onPreviousPage={onPreviousPage} onNextPage={onNextPage} onFirstPage={onFirstPage} onLastPage={onLastPage} />
                 </PageBox>

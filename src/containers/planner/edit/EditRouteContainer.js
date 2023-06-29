@@ -9,7 +9,6 @@ import {
     createPlanAction,
     deleteLocationAction,
     deletePlanAction,
-    loadPlanAction,
     loadPlannerAction,
     toggleMemberModalAction,
     togglePlannerInfoModalAction,
@@ -114,10 +113,6 @@ const EditRouteContainer = () => {
         }
     }, [dispatch, planDateStart, planDateEnd, plannerId]);
 
-    const onLoadPlan = (plan) => {
-        dispatch(loadPlanAction(plan));
-    };
-
     const onDeleteLocation = (locationId) => {
         dispatch(deleteLocationAction({ plannerId, locationId, planId }));
     };
@@ -175,7 +170,6 @@ const EditRouteContainer = () => {
             onChangePlannerDateEnd={onChangePlannerDateEnd}
             onCreatePlan={onCreatePlan}
             onDeletePlan={onDeletePlan}
-            onLoadPlan={onLoadPlan}
             onDeleteLocation={onDeleteLocation}
             onUpdatePlannerDate={onUpdatePlannerDate}
             onChangeCurPlanId={onChangeCurPlanId}

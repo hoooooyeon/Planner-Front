@@ -7,7 +7,7 @@ export const loadAreas = () => {
 
 // 지역에 따른 여행지
 export const loadSpots = ({ areaIndex, contentTypeId, pageIndex }) => {
-    return client.get(`/api/spots/lists-area?areaCode=${areaIndex}&contentTypeId=${contentTypeId}&index=${pageIndex}`);
+    return client.get(`/api/spots/lists-area?areaCode=${areaIndex}&contentTypeId=${contentTypeId}&pageNo=${pageIndex}`);
 };
 
 // 여행지 상세 정보
@@ -27,5 +27,5 @@ export const removeSpotLike = ({ contentId }) => {
 
 // 여행지 검색
 export const searchSpot = ({ areaIndex, contentTypeId, keyword, pageIndex }) => {
-    return client.get(`/api/spots/lists-keyword?areaCode=${areaIndex}&contentTypeId=${contentTypeId}&keyword=${keyword}&index=${pageIndex}`);
+    return client.get(`/api/spots/lists-keyword?areaCode=${areaIndex}&contentTypeId=${contentTypeId}&keyword=${keyword}&pageNo=${pageIndex}`);
 };

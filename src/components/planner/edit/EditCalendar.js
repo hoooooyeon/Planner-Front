@@ -106,7 +106,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 }
 `;
 
-const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, onLoadPlan, onChangeCurPlanId, onAddDate, onSubDate, onUpdateSubPlan, onChangePlans }) => {
+const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, onChangeCurPlanId, onAddDate, onSubDate, onUpdateSubPlan, onChangePlans }) => {
     const { planDateEnd, plans } = { ...planner };
 
     const letsFormat = (d) => {

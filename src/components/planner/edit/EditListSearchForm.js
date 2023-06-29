@@ -10,6 +10,7 @@ import { faBagShopping } from '@fortawesome/free-solid-svg-icons';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
+import { useState } from 'react';
 
 const MenuList = styled.div`
     padding: 1rem 0 0.8rem;
@@ -42,6 +43,9 @@ const MenuIcon = styled(FontAwesomeIcon)`
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     background-color: white;
     margin-bottom: 0.2rem;
+    &[aria-current] {
+        background-color: lightblue;
+    }
 `;
 
 const IconName = styled.div`
@@ -176,7 +180,7 @@ const IconBox = styled.div`
     padding: 0 0.5rem;
 `;
 
-const EditListSearchForm = ({}) => {
+const EditListSearchForm = ({ keyword, spotData, areas, contentTypeList, likeKeyword, onChangeAreaIndex, onChangeContentTypeId, onChangeResultKeyword, onChangeLikeKeyword, onChangeCurKeyword, onIndexPage }) => {
     const iconList = [faLandmarkFlag, faHotel, faRankingStar, faTrophy, faBed, faBagShopping, faUtensils];
 
     const [hoveredItemId, setHoveredItemId] = useState(null);
@@ -190,6 +194,7 @@ const EditListSearchForm = ({}) => {
     };
 
     const { curKeyword, resultKeyword } = { ...keyword };
+    const { contentTypeId } = { ...spotData };
 
     return (
         <FormDiv>
@@ -218,22 +223,29 @@ const EditListSearchForm = ({}) => {
                     <MenuItem
                         onClick={() => {
                             onChangeContentTypeId(c.id);
-                            onChangeMenuIndex(i);
+                            onIndexPage(1);
                         }}
                         key={i}
                         onMouseEnter={() => onOpenName(i)}
                         onMouseLeave={onCloseName}
                     >
-                        <MenuIcon icon={iconList[i]} />
+                        <MenuIcon icon={iconList[i]} aria-current={contentTypeId === c.id ? 'cur' : null} />
                         {hoveredItemId === i && <IconName>{c.label}</IconName>}
                     </MenuItem>
                 ))}
-                <MenuItem onClick={() => onChangeMenuIndex(7)} onMouseEnter={() => onOpenName(7)} onMouseLeave={onCloseName} key={7}>
-                    <MenuIcon icon={faHeart} />
+                <MenuItem
+                    onClick={() => {
+                        onIndexPage(1);
+                        onChangeContentTypeId(0);
+                    }}
+                    onMouseEnter={() => onOpenName(7)}
+                    onMouseLeave={onCloseName}
+                >
+                    <MenuIcon icon={faHeart} aria-current={contentTypeId === 0 ? 'cur' : null} />
                     {hoveredItemId === 7 && <IconName>좋아요</IconName>}
                 </MenuItem>
             </MenuList>
-            {menuIndex < 7 && (
+            {contentTypeId !== 0 && (
                 <Form>
                     <SearchBox>
                         <SearchInput
@@ -268,11 +280,11 @@ const EditListSearchForm = ({}) => {
                     </ResultBox>
                 </Form>
             )}
-            {menuIndex === 7 && (
+            {contentTypeId === 0 && (
                 <Form>
                     <SearchBox>
                         <SearchInput
-                            placeholder="좋아요 키워드 검색"
+                            placeholder="키워드 검색"
                             type="text"
                             value={curKeyword}
                             onChange={(e) => {
