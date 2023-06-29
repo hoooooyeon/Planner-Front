@@ -10,13 +10,14 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 const SpotListBlock = styled.div`
     width: 100%;
     height: 100%;
+    background-color: white;
 `;
 
 const Container = styled.div`
-    margin: 3rem auto;
-    padding: 1rem;
+    margin: 0 auto;
+    padding: 3rem 1rem;
     @media all and (min-width: 768px) {
-        padding: 0 9rem;
+        padding: 3rem 9rem;
     }
 `;
 
@@ -97,7 +98,22 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: ${(props) => (props.like ? 'yellow' : 'lightgray')};
 `;
 
-const SpotList = ({ areas, spots, spotError, spotData, curKeyword, resultKeyword, sliderSpots, contentTypeList, drag, onClickArea, onOpenDetail, onChangeKeyword, onSearchSpot, onChangeContentTypeId }) => {
+const SpotList = ({
+    areas,
+    spots,
+    spotError,
+    spotData,
+    curKeyword,
+    resultKeyword,
+    sliderSpots,
+    contentTypeList,
+    drag,
+    onClickArea,
+    onOpenDetail,
+    onChangeCurKeyword,
+    onChangeContentTypeId,
+    onChangeResultKeyword,
+}) => {
     // 대체 이미지 넣기
     const onChangeErrorImg = (e) => {
         e.target.src = defaultImg;
@@ -121,8 +137,8 @@ const SpotList = ({ areas, spots, spotError, spotData, curKeyword, resultKeyword
                     contentTypeList={contentTypeList}
                     onClickArea={onClickArea}
                     onChangeContentTypeId={onChangeContentTypeId}
-                    onSearchSpot={onSearchSpot}
-                    onChangeKeyword={onChangeKeyword}
+                    onChangeCurKeyword={onChangeCurKeyword}
+                    onChangeResultKeyword={onChangeResultKeyword}
                 />
                 {spots && (
                     <Slider list={spots.list} scroll={true} drag={drag} itemRef={itemRef}>
@@ -140,7 +156,10 @@ const SpotList = ({ areas, spots, spotError, spotData, curKeyword, resultKeyword
                                         <ImgBox>
                                             <Img src={firstImage} alt={title} onError={onChangeErrorImg} />
                                             <IconBox>
-                                                <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
+                                                <StyledFontAwesomeIcon
+                                                    icon={faStar}
+                                                    like={likeState ? likeState.toString() : undefined}
+                                                />
                                             </IconBox>
                                         </ImgBox>
                                         <Name>{title}</Name>

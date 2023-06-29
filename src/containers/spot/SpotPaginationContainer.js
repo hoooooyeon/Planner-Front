@@ -5,7 +5,7 @@ import { changePageIndexAction } from '../../modules/spotModule';
 
 const SpotPaginationContainer = ({ spots, spotData, changePageIndexAction }) => {
     const { totalCount } = { ...spots };
-    const { pageIndex } = { ...spotData };
+    const { pageNo } = { ...spotData };
 
     // 뿌려줄 페이지 배열
     const [pageArr, setPageArr] = useState([]);
@@ -26,12 +26,12 @@ const SpotPaginationContainer = ({ spots, spotData, changePageIndexAction }) => 
     }, [block, maxPage]);
 
     useEffect(() => {
-        if (pageIndex === 1) {
+        if (pageNo === 1) {
             setBlock(0);
-        } else if (pageIndex === maxPage) {
+        } else if (pageNo === maxPage) {
             setBlock(Math.ceil(maxPage / limitIndex - 1));
         }
-    }, [pageIndex, maxPage]);
+    }, [pageNo, maxPage]);
 
     const onIndexPage = (index) => {
         setPage(index);
@@ -39,7 +39,7 @@ const SpotPaginationContainer = ({ spots, spotData, changePageIndexAction }) => 
     const onNextPage = () => {
         if (!(page === maxPage)) {
             setPage((index) => index + 1);
-            if (pageIndex % limitIndex === 0) {
+            if (pageNo % limitIndex === 0) {
                 setBlock((block) => block + 1);
             }
         }
@@ -63,7 +63,16 @@ const SpotPaginationContainer = ({ spots, spotData, changePageIndexAction }) => 
         changePageIndexAction(page);
     }, [page, changePageIndexAction]);
 
-    return <Pagination pageArr={pageArr} onIndexPage={onIndexPage} onNextPage={onNextPage} onPreviousPage={onPreviousPage} onFirstPage={onFirstPage} onLastPage={onLastPage} />;
+    return (
+        <Pagination
+            pageArr={pageArr}
+            onIndexPage={onIndexPage}
+            onNextPage={onNextPage}
+            onPreviousPage={onPreviousPage}
+            onFirstPage={onFirstPage}
+            onLastPage={onLastPage}
+        />
+    );
 };
 
 export default connect(

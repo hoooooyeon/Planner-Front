@@ -8,10 +8,12 @@ import { useEffect, useState } from 'react';
 
 const PaginationBlock = styled.div`
     width: 100%;
-    margin: 3rem auto;
+    margin: 0 auto;
     display: flex;
+    background-color: white;
+    padding: 1rem 0;
     @media all and (max-width: 767px) {
-        padding: 0 1rem;
+        padding: 1rem;
     }
 `;
 

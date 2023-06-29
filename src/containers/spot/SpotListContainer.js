@@ -43,7 +43,7 @@ const SpotListContainer = ({
     changeContentId,
     toggleSpotDetailModal,
 }) => {
-    const { areaIndex, pageIndex, contentTypeId, contentId } = { ...spotData };
+    const { areaCode, pageNo, contentTypeId, contentId } = { ...spotData };
 
     // 지역 가져오기
     useEffect(() => {
@@ -55,9 +55,9 @@ const SpotListContainer = ({
     // 여행지 가져오기
     useEffect(() => {
         if (areas) {
-            loadSpots({ areaIndex, contentTypeId, pageIndex });
+            loadSpots({ areaCode, contentTypeId, pageNo });
         }
-    }, [loadSpots, areaIndex, pageIndex, areas, contentTypeId, spotData]);
+    }, [loadSpots, areaCode, pageNo, areas, contentTypeId, spotData]);
 
     // 여행지 상세정보 모달 열기
     const drag = useRef(false);
@@ -108,18 +108,24 @@ const SpotListContainer = ({
         }
     };
 
-    // 여행지 검색할 키워드 타이핑
-    const onChangeKeyword = (keyword) => {
-        setCurKeyword(keyword);
-    };
-
     const [curKeyword, setCurKeyword] = useState('');
     const [resultKeyword, setResultKeyword] = useState('');
-    const onSearchSpot = () => {
-        const pageIndex = 1;
-        searchSpot({ areaIndex, contentTypeId, curKeyword, pageIndex });
-        setResultKeyword(curKeyword);
+    // 여행지 키워드로 검색
+    const onChangeCurKeyword = (keyword) => {
+        setCurKeyword(keyword);
     };
+    const onChangeResultKeyword = () => {
+        if (curKeyword.lenght !== 0) {
+            setResultKeyword(curKeyword);
+        }
+    };
+
+    useEffect(() => {
+        if (resultKeyword.length !== 0) {
+            const pageNo = 1;
+            searchSpot({ areaCode, contentTypeId, curKeyword, pageNo });
+        }
+    }, [resultKeyword]);
 
     const onChangeContentTypeId = (contentTypeId) => {
         changeContentTypeId(contentTypeId);
@@ -128,11 +134,31 @@ const SpotListContainer = ({
     };
 
     const sliderSpots = [
-        { title: '광안리해수욕장', image: 'http://tong.visitkorea.or.kr/cms/resource/75/2648975_image2_1.jpg', overview: '(부산 관광지)' },
-        { title: '강남', image: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg', overview: '(서울 관광지)' },
-        { title: '한라산', image: 'http://tong.visitkorea.or.kr/cms/resource/99/2870099_image2_1.jpg', overview: '(제주도 관광지)' },
-        { title: '광안리해수욕장', image: 'http://tong.visitkorea.or.kr/cms/resource/75/2648975_image2_1.jpg', overview: '(부산 관광지)' },
-        { title: '강남', image: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg', overview: '(서울 관광지)' },
+        {
+            title: '광안리해수욕장',
+            image: 'http://tong.visitkorea.or.kr/cms/resource/75/2648975_image2_1.jpg',
+            overview: '(부산 관광지)',
+        },
+        {
+            title: '강남',
+            image: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg',
+            overview: '(서울 관광지)',
+        },
+        {
+            title: '한라산',
+            image: 'http://tong.visitkorea.or.kr/cms/resource/99/2870099_image2_1.jpg',
+            overview: '(제주도 관광지)',
+        },
+        {
+            title: '광안리해수욕장',
+            image: 'http://tong.visitkorea.or.kr/cms/resource/75/2648975_image2_1.jpg',
+            overview: '(부산 관광지)',
+        },
+        {
+            title: '강남',
+            image: 'http://tong.visitkorea.or.kr/cms/resource/08/1984608_image2_1.jpg',
+            overview: '(서울 관광지)',
+        },
     ];
 
     return (
@@ -150,8 +176,8 @@ const SpotListContainer = ({
             onClickArea={onClickArea}
             onToggleSpotLike={onToggleSpotLike}
             onOpenDetail={onOpenDetail}
-            onChangeKeyword={onChangeKeyword}
-            onSearchSpot={onSearchSpot}
+            onChangeCurKeyword={onChangeCurKeyword}
+            onChangeResultKeyword={onChangeResultKeyword}
             onChangeContentTypeId={onChangeContentTypeId}
         />
     );
@@ -173,8 +199,8 @@ const mapDispatchToProps = (dispatch) => ({
     loadAreas: () => {
         dispatch(loadAreasAction());
     },
-    loadSpots: (areaIndex, page) => {
-        dispatch(loadSpotsAction(areaIndex, page));
+    loadSpots: ({ areaCode, contentTypeId, pageNo }) => {
+        dispatch(loadSpotsAction({ areaCode, contentTypeId, pageNo }));
     },
     changeAreaIndex: (index) => {
         dispatch(changeAreaIndexAction(index));
@@ -203,8 +229,8 @@ const mapDispatchToProps = (dispatch) => ({
     resetSpotData: () => {
         dispatch(resetSpotDataAction());
     },
-    searchSpot: (areaIndex, contentTypeId, keyword, index) => {
-        dispatch(searchSpotAction(areaIndex, contentTypeId, keyword, index));
+    searchSpot: ({ areaCode, contentTypeId, curKeyword, pageNo }) => {
+        dispatch(searchSpotAction({ areaCode, contentTypeId, curKeyword, pageNo }));
     },
     changeContentTypeId: (contentTypeId) => {
         dispatch(changeContentTypeIdAction(contentTypeId));
