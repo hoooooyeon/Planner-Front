@@ -47,11 +47,6 @@ const RouteItem = styled.div`
     &:hover {
         background-color: rgb(240, 240, 240);
     }
-    /* &:nth-child(1) {
-        select {
-            display: none;
-        }
-    } */
 `;
 
 const TransItem = styled.div`
@@ -253,11 +248,28 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
         };
     });
 
+    const onMouseDown = () => {
+        itemRef.current.style.zIndex = 1000;
+    };
+
+    const scrollTop = useRef();
+    const handleScroll = () => {
+        scrollTop.current = containerRef.current.scrollTop;
+    };
+    useEffect(() => {
+        const container = containerRef.current;
+        container.addEventListener('scroll', handleScroll);
+        return () => {
+            container.removeEventListener('scroll', handleScroll);
+        };
+    });
+
     if (!planner) {
         return <div>Loading...</div>;
     }
 
     return (
+        // <EditRouteListBlock ref={containerRef}>
         <EditRouteListBlock ref={containerRef} onDrop={(e) => common.onDrop(e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, plans)} onDragOver={(e) => common.onDragOver(e)}>
             {plans &&
                 plans.map((p, j) => (
@@ -266,6 +278,7 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                             p.planLocations.map((pl, i) => {
                                 const { locationId, locationName, locationAddr, locationImage, locationTransportation } = pl;
                                 return (
+                                    // <RouteItem ref={itemRef} key={i}>
                                     <RouteItem
                                         ref={itemRef}
                                         key={i}
@@ -274,10 +287,10 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                             common.onDragStart(e, pl, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, p.planLocations);
                                         }}
                                         onDrag={(e) => {
-                                            common.onDragMove(e, isDrag, posY, containerRef, itemRef, dragItemIndex, dragTarget, setIsDrag, overTargetArr, itemsArr, dragItem, overItem, overItemIndex, setOverTargetArr);
+                                            common.onDragMove(e, isDrag, posY, containerRef, itemRef, dragItemIndex, dragTarget, setIsDrag, overTargetArr, itemsArr, dragItem, overItem, overItemIndex, setOverTargetArr, scrollTop);
                                         }}
                                         onDragEnd={(e) => {
-                                            common.onDragEnd(setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr);
+                                            common.onDragEnd(setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr, scrollTop);
                                         }}
                                         onDragEnter={(e) => {
                                             common.onDragEnter(e, pl, isDrag, overItem, overItemIndex, overTarget, dragTarget, overTargetArr, setOverTargetArr, dragItemIndex, itemRef, itemsArr, p.planLocations);
