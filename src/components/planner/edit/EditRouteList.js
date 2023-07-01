@@ -248,17 +248,17 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
         };
     });
 
-    const onMouseDown = () => {
-        itemRef.current.style.zIndex = 1000;
-    };
-
     const scrollTop = useRef();
+    const initialScrollTop = useRef(0);
+
     const handleScroll = () => {
         scrollTop.current = containerRef.current.scrollTop;
     };
+
     useEffect(() => {
         const container = containerRef.current;
         container.addEventListener('scroll', handleScroll);
+        handleScroll();
         return () => {
             container.removeEventListener('scroll', handleScroll);
         };
@@ -269,79 +269,97 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
     }
 
     return (
-        // <EditRouteListBlock ref={containerRef}>
         <EditRouteListBlock ref={containerRef} onDrop={(e) => common.onDrop(e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, plans)} onDragOver={(e) => common.onDragOver(e)}>
             {plans &&
-                plans.map((p, j) => (
-                    <RouteList aria-current={p.planId === plannerData.planId ? 'plan' : null} key={j}>
-                        {p.planLocations &&
-                            p.planLocations.map((pl, i) => {
-                                const { locationId, locationName, locationAddr, locationImage, locationTransportation } = pl;
-                                return (
-                                    // <RouteItem ref={itemRef} key={i}>
-                                    <RouteItem
-                                        ref={itemRef}
-                                        key={i}
-                                        draggable
-                                        onDragStart={(e) => {
-                                            common.onDragStart(e, pl, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, p.planLocations);
-                                        }}
-                                        onDrag={(e) => {
-                                            common.onDragMove(e, isDrag, posY, containerRef, itemRef, dragItemIndex, dragTarget, setIsDrag, overTargetArr, itemsArr, dragItem, overItem, overItemIndex, setOverTargetArr, scrollTop);
-                                        }}
-                                        onDragEnd={(e) => {
-                                            common.onDragEnd(setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr, scrollTop);
-                                        }}
-                                        onDragEnter={(e) => {
-                                            common.onDragEnter(e, pl, isDrag, overItem, overItemIndex, overTarget, dragTarget, overTargetArr, setOverTargetArr, dragItemIndex, itemRef, itemsArr, p.planLocations);
-                                        }}
-                                    >
-                                        <MoveIcon icon={faEllipsisVertical} />
-                                        <TransItem onClick={() => handleOpen(setDropDownItemId, i)}>
-                                            <StyledFontAwesomeIcon icon={transIconList[locationTransportation - 1]} />
-                                        </TransItem>
-                                        {dropDownItemId === i && (
-                                            <DropDown>
-                                                <DropDownMenu>
-                                                    {transList.map((t, i) => (
-                                                        <li
-                                                            onClick={() => {
-                                                                onUpdateTrans(t.value, pl);
-                                                            }}
-                                                            onMouseEnter={() => handleOpen(setHoveredNameId, i)}
-                                                            onMouseLeave={onCloseName}
-                                                        >
-                                                            <TransIcon icon={transIconList[i]} />
-                                                            {hoveredNameId === i && <TransName>{t.label}</TransName>}
-                                                        </li>
-                                                    ))}
-                                                </DropDownMenu>
-                                            </DropDown>
-                                        )}
-                                        <SpotItem>
-                                            <Img
-                                                src={locationImage}
-                                                alt={locationId}
-                                                // onError={onChangeErrorImg}
-                                            />
-                                            <TextInfo>
-                                                <Name>{locationName}</Name>
-
-                                                <Address>{locationAddr.split(' ')[0]}</Address>
-                                            </TextInfo>
-                                        </SpotItem>
-                                        <DeleteButton
-                                            onClick={() => {
-                                                onDeleteLocation(locationId);
+                plans.map((p, j) => {
+                    const items = p.planLocations;
+                    return (
+                        <RouteList aria-current={p.planId === plannerData.planId ? 'plan' : null} key={j}>
+                            {items &&
+                                items.map((item, i) => {
+                                    const { locationId, locationName, locationAddr, locationImage, locationTransportation } = item;
+                                    return (
+                                        <RouteItem
+                                            ref={itemRef}
+                                            key={i}
+                                            draggable
+                                            onDragStart={(e) => {
+                                                common.onDragStart({ e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop });
+                                            }}
+                                            onDrag={(e) => {
+                                                common.onDragMove({
+                                                    e,
+                                                    isDrag,
+                                                    posY,
+                                                    containerRef,
+                                                    itemRef,
+                                                    dragItemIndex,
+                                                    dragTarget,
+                                                    setIsDrag,
+                                                    overTargetArr,
+                                                    itemsArr,
+                                                    dragItem,
+                                                    overItem,
+                                                    overItemIndex,
+                                                    setOverTargetArr,
+                                                    scrollTop,
+                                                    initialScrollTop,
+                                                });
+                                            }}
+                                            onDragEnd={(e) => {
+                                                common.onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr });
+                                            }}
+                                            onDragEnter={(e) => {
+                                                common.onDragEnter({ e, item, isDrag, overItem, overItemIndex, overTarget, dragTarget, overTargetArr, setOverTargetArr, dragItemIndex, itemRef, itemsArr, items });
                                             }}
                                         >
-                                            <DeleteIcon icon={faCircleXmark} />
-                                        </DeleteButton>
-                                    </RouteItem>
-                                );
-                            })}
-                    </RouteList>
-                ))}
+                                            <MoveIcon icon={faEllipsisVertical} />
+                                            <TransItem onClick={() => handleOpen(setDropDownItemId, i)}>
+                                                <StyledFontAwesomeIcon icon={transIconList[locationTransportation - 1]} />
+                                            </TransItem>
+                                            {dropDownItemId === i && (
+                                                <DropDown>
+                                                    <DropDownMenu>
+                                                        {transList.map((t, i) => (
+                                                            <li
+                                                                onClick={() => {
+                                                                    onUpdateTrans(t.value, item);
+                                                                }}
+                                                                onMouseEnter={() => handleOpen(setHoveredNameId, i)}
+                                                                onMouseLeave={onCloseName}
+                                                            >
+                                                                <TransIcon icon={transIconList[i]} />
+                                                                {hoveredNameId === i && <TransName>{t.label}</TransName>}
+                                                            </li>
+                                                        ))}
+                                                    </DropDownMenu>
+                                                </DropDown>
+                                            )}
+                                            <SpotItem>
+                                                <Img
+                                                    src={locationImage}
+                                                    alt={locationId}
+                                                    // onError={onChangeErrorImg}
+                                                />
+                                                <TextInfo>
+                                                    <Name>{locationName}</Name>
+
+                                                    <Address>{locationAddr.split(' ')[0]}</Address>
+                                                </TextInfo>
+                                            </SpotItem>
+                                            <DeleteButton
+                                                onClick={() => {
+                                                    onDeleteLocation(locationId);
+                                                }}
+                                            >
+                                                <DeleteIcon icon={faCircleXmark} />
+                                            </DeleteButton>
+                                        </RouteItem>
+                                    );
+                                })}
+                        </RouteList>
+                    );
+                })}
         </EditRouteListBlock>
     );
 };
