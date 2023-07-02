@@ -33,7 +33,7 @@ function getIndex(dragItem, overItemIndex, index, itemsArr, dragItemIndex, items
 }
 
 // 드래그 시작
-export function onDragStart(e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop) {
+export function onDragStart({ e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop }) {
     setIsDrag(true);
     // 순서 이동 모션
 
@@ -55,7 +55,7 @@ export function onDragStart(e, item, setIsDrag, dragTarget, posY, dragItem, drag
     dragItemIndex.current = getElementIndex(item, itemsArr, items);
 }
 // 드래그 이동
-export function onDragMove(e, isDrag, posY, containerRef, itemRef, dragItemIndex, dragTarget, scrollTop, initialScrollTop) {
+export function onDragMove({ e, isDrag, posY, containerRef, itemRef, dragItemIndex, dragTarget, scrollTop, initialScrollTop }) {
     if (isDrag) {
         // 마우스 포인터가 이동한 거리
         const diffY = e.clientY - posY.current;
@@ -69,13 +69,14 @@ export function onDragMove(e, isDrag, posY, containerRef, itemRef, dragItemIndex
         const itemPos = diffY - initialScrollTop.current + scrollTop.current;
 
         // 드래그되는 모션
-        e.currentTarget.style.top = `${Math.min(Math.max(-itemHeight * dragItemIndex.current, itemPos), containerHeight - itemHeight * (dragItemIndex.current + 1))}px`;
+        e.currentTarget.style.top = `${itemPos}px`;
+        // e.currentTarget.style.top = `${Math.min(Math.max(-itemHeight * dragItemIndex.current, itemPos), containerHeight - itemHeight * (dragItemIndex.current + 1))}px`;
 
         dragTarget.current.style.pointerEvents = 'none';
     }
 }
 // 드래그한 요소가 드롭될 요소와 겹침
-export function onDragEnter(e, item, isDrag, overItem, overItemIndex, overTarget, dragTarget, overTargetArr, setOverTargetArr, dragItemIndex, itemRef, itemsArr, items) {
+export function onDragEnter({ e, item, isDrag, overItem, overItemIndex, overTarget, dragTarget, overTargetArr, setOverTargetArr, dragItemIndex, itemRef, itemsArr, items }) {
     if (isDrag) {
         // 순서 이동 기능
         overItem.current = item;
@@ -94,13 +95,16 @@ export function onDragEnter(e, item, isDrag, overItem, overItemIndex, overTarget
             }
 
             // 드래그 요소와 타겟 요소의 위치에 따른 위/아래 모션 결정
-            const computedStyle = getComputedStyle(itemRef.current);
-            const itemHeight = itemRef.current.getBoundingClientRect().height + parseInt(computedStyle.marginTop);
+            if (itemRef.current) {
+                const computedStyle = getComputedStyle(itemRef.current);
+                const itemHeight = itemRef.current.getBoundingClientRect().height + parseInt(computedStyle.marginBottom);
+                console.log(itemRef.current.getBoundingClientRect());
 
-            if (dragItemIndex.current < overItemIndex.current) {
-                e.currentTarget.style.transform = `translateY(-${itemHeight}px)`;
-            } else {
-                e.currentTarget.style.transform = `translateY(${itemHeight}px)`;
+                if (dragItemIndex.current < overItemIndex.current) {
+                    e.currentTarget.style.transform = `translateY(-${itemHeight}px)`;
+                } else {
+                    e.currentTarget.style.transform = `translateY(${itemHeight}px)`;
+                }
             }
 
             // 벌어진 요소가 다시 제자리로 이동
@@ -113,7 +117,7 @@ export function onDragEnter(e, item, isDrag, overItem, overItemIndex, overTarget
     }
 }
 // 드래그 종료
-export function onDragEnd(setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr) {
+export function onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr }) {
     setIsDrag(false);
 
     // 이동 모션
@@ -135,7 +139,7 @@ export function onDragEnd(setIsDrag, overTargetArr, dragTarget, itemsArr, dragIt
     setOverTargetArr([]);
 }
 // 드래그 요소를 드롭당할 요소에 드롭
-export function onDrop(e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, items) {
+export function onDrop({ e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, items }) {
     e.preventDefault();
 
     if (isDrag) {

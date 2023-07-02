@@ -269,12 +269,17 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
     }
 
     return (
-        <EditRouteListBlock ref={containerRef} onDrop={(e) => common.onDrop(e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, plans)} onDragOver={(e) => common.onDragOver(e)}>
+        <EditRouteListBlock ref={containerRef}>
             {plans &&
                 plans.map((p, j) => {
                     const items = p.planLocations;
                     return (
-                        <RouteList aria-current={p.planId === plannerData.planId ? 'plan' : null} key={j}>
+                        <RouteList
+                            onDrop={(e) => common.onDrop({ e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, items })}
+                            onDragOver={(e) => common.onDragOver(e)}
+                            aria-current={p.planId === plannerData.planId ? 'plan' : null}
+                            key={j}
+                        >
                             {items &&
                                 items.map((item, i) => {
                                     const { locationId, locationName, locationAddr, locationImage, locationTransportation } = item;
@@ -295,13 +300,6 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                                     itemRef,
                                                     dragItemIndex,
                                                     dragTarget,
-                                                    setIsDrag,
-                                                    overTargetArr,
-                                                    itemsArr,
-                                                    dragItem,
-                                                    overItem,
-                                                    overItemIndex,
-                                                    setOverTargetArr,
                                                     scrollTop,
                                                     initialScrollTop,
                                                 });
