@@ -33,7 +33,7 @@ const Title = styled.div`
     /* margin: 0 0 0.5rem 1.5rem; */
     /* width: 100%; */
     /* height: 1rem; */
-    width: 15rem;
+    width: 10rem;
     font-size: 0.9rem;
     margin-left: 1.5rem;
     white-space: nowrap;

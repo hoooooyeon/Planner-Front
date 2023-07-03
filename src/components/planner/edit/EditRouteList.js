@@ -205,7 +205,7 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
     const { plans } = { ...planner };
 
     const containerRef = useRef();
-    const itemRef = useRef();
+    const itemsRef = useRef([]);
 
     const itemsArr = useRef();
     const dragItem = useRef();
@@ -264,6 +264,28 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
         };
     });
 
+    const itemHeight = useRef();
+    // useEffect(() => {
+    //     if (itemRef.current) {
+    //         const computedStyle = getComputedStyle(itemRef.current);
+    //         itemHeight.current = itemRef.current.getBoundingClientRect().height + parseInt(computedStyle.marginBottom);
+    //         console.log( parseInt(computedStyle.marginBottom));
+    //     }
+    // }, [itemRef.current]);
+
+    useEffect(() => {
+        if (itemsRef.current) {
+            itemsRef.current.forEach((eRow, j) => {
+                eRow.forEach((e, i) => {
+                    if (e) {
+                        itemHeight.current = e.getBoundingClientRect().height;
+                        console.log(itemHeight.current);
+                    }
+                });
+            });
+        }
+    }, [itemsRef.current]);
+
     if (!planner) {
         return <div>Loading...</div>;
     }
@@ -278,15 +300,20 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                             onDrop={(e) => common.onDrop({ e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, items })}
                             onDragOver={(e) => common.onDragOver(e)}
                             aria-current={p.planId === plannerData.planId ? 'plan' : null}
-                            key={j}
+                            // key={p.planId}
                         >
                             {items &&
                                 items.map((item, i) => {
                                     const { locationId, locationName, locationAddr, locationImage, locationTransportation } = item;
                                     return (
                                         <RouteItem
-                                            ref={itemRef}
-                                            key={i}
+                                            ref={(e) => {
+                                                if (!itemsRef.current[j]) {
+                                                    itemsRef.current[j] = [];
+                                                }
+                                                itemsRef.current[j][i] = e;
+                                            }}
+                                            // key={item.locationId}
                                             draggable
                                             onDragStart={(e) => {
                                                 common.onDragStart({ e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop });
@@ -297,18 +324,34 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                                     isDrag,
                                                     posY,
                                                     containerRef,
-                                                    itemRef,
+                                                    // itemRef,
                                                     dragItemIndex,
                                                     dragTarget,
                                                     scrollTop,
                                                     initialScrollTop,
+                                                    itemHeight,
                                                 });
                                             }}
                                             onDragEnd={(e) => {
                                                 common.onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr });
                                             }}
                                             onDragEnter={(e) => {
-                                                common.onDragEnter({ e, item, isDrag, overItem, overItemIndex, overTarget, dragTarget, overTargetArr, setOverTargetArr, dragItemIndex, itemRef, itemsArr, items });
+                                                common.onDragEnter({
+                                                    e,
+                                                    item,
+                                                    isDrag,
+                                                    overItem,
+                                                    overItemIndex,
+                                                    overTarget,
+                                                    dragTarget,
+                                                    overTargetArr,
+                                                    setOverTargetArr,
+                                                    dragItemIndex,
+                                                    // itemRef,
+                                                    itemsArr,
+                                                    items,
+                                                    itemHeight,
+                                                });
                                             }}
                                         >
                                             <MoveIcon icon={faEllipsisVertical} />
