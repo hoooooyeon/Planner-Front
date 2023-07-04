@@ -9,14 +9,14 @@ function getElementIndex(p, itemsArr, items) {
 }
 
 // 선택 일정과 바꿀 일정을 바꿈
-function switchItem(itemsArr, dragItemIndex, overItemIndex, dragItem) {
+function switchItem({ itemsArr, dragItemIndex, overItemIndex, dragItem }) {
     itemsArr.current.splice(dragItemIndex.current, 1);
     itemsArr.current.splice(overItemIndex.current, 0, dragItem.current);
     return itemsArr.current;
 }
 
 // db에서 순서를 세팅할 index를 구함.
-function getIndex(dragItem, overItemIndex, index, itemsArr, dragItemIndex, items) {
+function getIndex({ dragItem, overItemIndex, index, itemsArr, dragItemIndex, items }) {
     let prevIndex;
     let nextIndex;
     let curItemIndex = getElementIndex(dragItem.current, itemsArr, items);
@@ -63,14 +63,10 @@ export function onDragMove({ e, isDrag, posY, containerRef, dragItemIndex, dragT
         // 드래그가 가능한 컨테이너 크기
         const containerHeight = containerRef.current.scrollHeight;
 
-        // const computedStyle = getComputedStyle(itemRef.current);
-        // const itemHeight = itemRef.current.getBoundingClientRect().height + parseInt(computedStyle.marginBottom);
-
         const itemPos = diffY - initialScrollTop.current + scrollTop.current;
 
         // 드래그되는 모션
-        e.currentTarget.style.top = `${itemPos}px`;
-        // e.currentTarget.style.top = `${Math.min(Math.max(-itemHeight.current * dragItemIndex.current, itemPos), containerHeight - itemHeight.current * (dragItemIndex.current + 1))}px`;
+        e.currentTarget.style.top = `${Math.min(Math.max(-itemHeight.current * dragItemIndex.current, itemPos), containerHeight - itemHeight.current * (dragItemIndex.current + 1))}px`;
 
         dragTarget.current.style.pointerEvents = 'none';
     }
@@ -140,8 +136,8 @@ export function onDrop({ e, isDrag, itemsArr, dragItemIndex, overItemIndex, drag
         // 이동 기능
         // onChangePlans(switchItem(itemsArr, dragItemIndex, overItemIndex, dragItem));
 
-        switchItem(itemsArr, dragItemIndex, overItemIndex, dragItem);
-        getIndex(dragItem, overItemIndex, index, itemsArr, dragItemIndex, items);
+        switchItem({ itemsArr, dragItemIndex, overItemIndex, dragItem });
+        getIndex({ dragItem, overItemIndex, index, itemsArr, dragItemIndex, items });
     }
 }
 // 드래그 요소가 드롭 요소위에 지나감(ondrop 사용시 필수)

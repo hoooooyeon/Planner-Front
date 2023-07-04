@@ -34,7 +34,7 @@ const RouteList = styled.div`
 `;
 
 const RouteItem = styled.div`
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     position: relative;
@@ -44,6 +44,9 @@ const RouteItem = styled.div`
     margin-bottom: 1rem;
     padding: 2rem 1.4rem 0.5rem 1.4rem;
     z-index: 100;
+    &[aria-current] {
+        display: flex;
+    }
     &:hover {
         background-color: rgb(240, 240, 240);
     }
@@ -265,23 +268,21 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
     });
 
     const itemHeight = useRef();
-    // useEffect(() => {
-    //     if (itemRef.current) {
-    //         const computedStyle = getComputedStyle(itemRef.current);
-    //         itemHeight.current = itemRef.current.getBoundingClientRect().height + parseInt(computedStyle.marginBottom);
-    //         console.log( parseInt(computedStyle.marginBottom));
-    //     }
-    // }, [itemRef.current]);
-
     useEffect(() => {
         if (itemsRef.current) {
-            itemsRef.current.forEach((eRow, j) => {
-                eRow.forEach((e, i) => {
-                    if (e) {
-                        itemHeight.current = e.getBoundingClientRect().height;
-                        console.log(itemHeight.current);
-                    }
-                });
+            itemsRef.current.forEach((eRow) => {
+                if (eRow) {
+                    eRow.forEach((e) => {
+                        if (e) {
+                            const computedStyle = getComputedStyle(e);
+                            const display = computedStyle.display;
+                            const marginBottom = parseInt(computedStyle.marginBottom);
+                            if (display === 'flex') {
+                                itemHeight.current = e.getBoundingClientRect().height + marginBottom;
+                            }
+                        }
+                    });
+                }
             });
         }
     }, [itemsRef.current]);
@@ -299,7 +300,7 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                         <RouteList
                             onDrop={(e) => common.onDrop({ e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, items })}
                             onDragOver={(e) => common.onDragOver(e)}
-                            aria-current={p.planId === plannerData.planId ? 'plan' : null}
+                            aria-current={p.planId === plannerData.planId ? 'cur' : null}
                             // key={p.planId}
                         >
                             {items &&
@@ -307,6 +308,7 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                     const { locationId, locationName, locationAddr, locationImage, locationTransportation } = item;
                                     return (
                                         <RouteItem
+                                            aria-current={p.planId === plannerData.planId ? 'cur' : null}
                                             ref={(e) => {
                                                 if (!itemsRef.current[j]) {
                                                     itemsRef.current[j] = [];
@@ -324,7 +326,6 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                                     isDrag,
                                                     posY,
                                                     containerRef,
-                                                    // itemRef,
                                                     dragItemIndex,
                                                     dragTarget,
                                                     scrollTop,
@@ -347,7 +348,6 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                                     overTargetArr,
                                                     setOverTargetArr,
                                                     dragItemIndex,
-                                                    // itemRef,
                                                     itemsArr,
                                                     items,
                                                     itemHeight,

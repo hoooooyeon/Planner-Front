@@ -119,7 +119,7 @@ const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, 
         onSubDate(planDateEnd);
     };
     const containerRef = useRef();
-    const itemRef = useRef();
+    const itemsRef = useRef([]);
 
     const itemsArr = useRef();
     const dragItem = useRef();
@@ -153,6 +153,19 @@ const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, 
         };
     });
 
+    const itemHeight = useRef();
+    useEffect(() => {
+        if (itemsRef.current) {
+            itemsRef.current.forEach((e) => {
+                if (e) {
+                    const computedStyle = getComputedStyle(e);
+                    const marginBottom = parseInt(computedStyle.marginTop);
+                    itemHeight.current = e.getBoundingClientRect().height + marginBottom;
+                }
+            });
+        }
+    }, [itemsRef.current]);
+
     if (!planner) {
         return <div>Loading...</div>;
     }
@@ -166,28 +179,18 @@ const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, 
             >
                 <CalIcon icon={faCalendarPlus} />
             </AddCal>
-            <EditCalendarBlock
-                ref={containerRef}
-                onDrop={(e) =>
-                    common.onDrop(
-                        e,
-                        isDrag,
-                        itemsArr,
-                        dragItemIndex,
-                        overItemIndex,
-                        dragItem,
-                        index,
-                        // plans
-                    )
-                }
-                onDragOver={(e) => common.onDragOver(e)}
-            >
+            <EditCalendarBlock ref={containerRef} onDrop={(e) => common.onDrop({ e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, items })} onDragOver={(e) => common.onDragOver(e)}>
                 {/* 혹시 plans가 null이되는 버그가 발생할수도? */}
                 {/* {console.log(plans)} */}
                 {items &&
                     items.map((item, i) => (
                         <ItemBox
-                            ref={itemRef}
+                            ref={(e) => {
+                                if (!itemsRef.current) {
+                                    itemsRef.current = [];
+                                }
+                                itemsRef.current[i] = e;
+                            }}
                             aria-current={item.planId === plannerData.planId ? 'date' : null}
                             onClick={() => {
                                 onChangeCurPlanId(item.planId);
@@ -198,13 +201,13 @@ const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, 
                                 common.onDragStart({ e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop });
                             }}
                             onDrag={(e) => {
-                                common.onDragMove(e, isDrag, posY, containerRef, itemRef, dragItemIndex, dragTarget, setIsDrag, overTargetArr, itemsArr, dragItem, overItem, overItemIndex, setOverTargetArr);
+                                common.onDragMove({ e, isDrag, posY, containerRef, dragItemIndex, dragTarget, scrollTop, initialScrollTop, itemHeight });
                             }}
-                            onDragEnd={(e) => {
-                                common.onDragEnd(setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr);
+                            onDragEnd={() => {
+                                common.onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr });
                             }}
                             onDragEnter={(e) => {
-                                common.onDragEnter(
+                                common.onDragEnter({
                                     e,
                                     item,
                                     isDrag,
@@ -215,10 +218,11 @@ const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, 
                                     overTargetArr,
                                     setOverTargetArr,
                                     dragItemIndex,
-                                    itemRef,
+
                                     itemsArr,
-                                    // plans
-                                );
+                                    items,
+                                    itemHeight,
+                                });
                             }}
                         >
                             <Calendar>{letsFormat(item.planDate)}</Calendar>
