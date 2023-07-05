@@ -7,6 +7,7 @@ import ProfilePage from './pages/account/ProfilePage';
 import PlannerInfoPage from './pages/planner/PlannerInfoPage';
 import PlannerEditPage from './pages/planner/PlannerEditPage';
 import PlannerListPage from './pages/planner/PlannerListPage';
+import PrivateRoute from './components/common/PrivateRoute';
 
 const App = () => {
     return (
@@ -17,7 +18,7 @@ const App = () => {
             <Route path="/Profile" component={ProfilePage} />
             <Route path="/PlannerInfo" component={PlannerInfoPage} />
             <Route path="/PlannerList" component={PlannerListPage} />
-            <Route path="/PlannerEdit" component={PlannerEditPage} />
+            <PrivateRoute path="/PlannerEdit" component={PlannerEditPage} />
         </>
     );
 };

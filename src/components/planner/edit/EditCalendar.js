@@ -18,6 +18,7 @@ const FlexDiv = styled.div`
 `;
 
 const EditCalendarBlock = styled.div`
+    height: 100%;
     border-radius: 1rem;
     z-index: 1;
     position: relative;
@@ -27,7 +28,6 @@ const EditCalendarBlock = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     overflow: auto;
     &::-webkit-scrollbar {
         display: none;
