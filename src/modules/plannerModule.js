@@ -110,8 +110,8 @@ export const toggleLikePlannerAction = (plannerId) => ({ type: TOGGLE_LIKE_PLANN
 export const createMemoAction = ({ plannerId, title, content }) => ({ type: CREATE_MEMO_TYPE, plannerId, title, content });
 export const updateMemoAction = ({ plannerId, memoId, title, content }) => ({ type: UPDATE_MEMO_TYPE, plannerId, memoId, title, content });
 export const deleteMemoAction = ({ plannerId, memoId }) => ({ type: DELETE_MEMO_TYPE, plannerId, memoId });
-export const createPlanAction = ({ plannerId, planDate, planLocations }) => ({ type: CREATE_PLAN_TYPE, plannerId, planDate, planLocations });
-export const updatePlanAction = ({ planId, plannerId, planDate }) => ({ type: UPDATE_PLAN_TYPE, plannerId, planDate, planId });
+export const createPlanAction = ({ plannerId, planDate }) => ({ type: CREATE_PLAN_TYPE, plannerId, planDate });
+export const updatePlanAction = ({ planId, plannerId, planDate, index }) => ({ type: UPDATE_PLAN_TYPE, plannerId, planDate, planId, index });
 export const deletePlanAction = ({ plannerId, planId }) => ({ type: DELETE_PLAN_TYPE, plannerId, planId });
 export const inviteMemberAction = ({ plannerId, members }) => ({ type: INVITE_MEMBER_TYPE, plannerId, members });
 export const deleteMemberAction = ({ plannerId, nickName }) => ({ type: DELETE_MEMBER_TYPE, plannerId, nickName });
@@ -129,7 +129,7 @@ export const createLocationAction = ({ plannerId, locationName, locationContentI
     locationTransportation,
     planId,
 });
-export const updateLocationAction = ({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId }) => ({
+export const updateLocationAction = ({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId, index }) => ({
     type: UPDATE_LOCATION_TYPE,
     plannerId,
     locationId,
@@ -141,6 +141,7 @@ export const updateLocationAction = ({ plannerId, locationId, locationName, loca
     locationMapy,
     locationTransportation,
     planId,
+    index,
 });
 export const deleteLocationAction = ({ plannerId, locationId, planId }) => ({ type: DELETE_LOCATION_TYPE, plannerId, locationId, planId });
 export const changeCurPlanIdAction = (planId) => ({ type: CHANGE_CUR_PLAN_ID_TYPE, planId });

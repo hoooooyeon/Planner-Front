@@ -46,13 +46,13 @@ export const deleteMemo = ({ plannerId, memoId }) => {
 };
 
 // 일정 생성
-export const createPlan = ({ plannerId, planDate, planLocations }) => {
-    return client.post(`/api/planners/${plannerId}/plans`, { plannerId, planDate, planLocations });
+export const createPlan = ({ plannerId, planDate }) => {
+    return client.post(`/api/planners/${plannerId}/plans`, { plannerId, planDate });
 };
 
 // 일정 수정
-export const updatePlan = ({ plannerId, planId, planDate }) => {
-    return client.patch(`/api/planners/${plannerId}/plans/${planId}`, { plannerId, planId, planDate });
+export const updatePlan = ({ plannerId, planId, planDate, index }) => {
+    return client.patch(`/api/planners/${plannerId}/plans/${planId}`, { plannerId, planId, planDate, index });
 };
 
 // 일정 삭제
@@ -76,7 +76,7 @@ export const createLocation = ({ plannerId, locationName, locationContentId, loc
 };
 
 // 여행지 수정
-export const updateLocation = ({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId }) => {
+export const updateLocation = ({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId, index }) => {
     return client.patch(`/api/planners/${plannerId}/plans/${planId}/plan-locations/${locationId}`, {
         plannerId,
         locationId,
@@ -88,6 +88,7 @@ export const updateLocation = ({ plannerId, locationId, locationName, locationCo
         locationMapy,
         locationTransportation,
         planId,
+        index,
     });
 };
 

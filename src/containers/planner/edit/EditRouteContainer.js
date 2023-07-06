@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditRoute from '../../../components/planner/edit/EditRoute';
@@ -31,6 +31,7 @@ const EditRouteContainer = () => {
 
     const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
     const { planId } = { ...plannerData };
+    const sortIndex = useRef();
 
     const letsFormat = (d) => {
         const date = new Date(d);
@@ -77,6 +78,7 @@ const EditRouteContainer = () => {
     const onChangePlannerDateEnd = (date) => {
         setEndDate(date);
     };
+
     useEffect(() => {
         if (planDateStart && planDateEnd) {
             onChangePlannerDateStart(new Date(planDateStart));
@@ -86,15 +88,23 @@ const EditRouteContainer = () => {
 
     const onCreatePlan = () => {
         const planDate = letsFormat(new Date(planDateEnd));
-        const planLocations = [];
 
-        dispatch(createPlanAction({ plannerId, planDate, planLocations }));
+        dispatch(createPlanAction({ plannerId, planDate }));
     };
     const onDeletePlan = (planId) => {
         dispatch(deletePlanAction({ plannerId, planId }));
         if (planner && plans.length > 1 && planId === plannerData.planId) {
             dispatch(changeCurPlanIdAction(plans[0].planId));
         }
+    };
+
+    const [curPlan, setCurPlan] = useState();
+    const onUpdatePlan = () => {
+        const planDate = curPlan.planDate;
+        const planId = curPlan.planId;
+        const index = sortIndex.current;
+
+        dispatch(updatePlanAction({ plannerId, planId, planDate, index }));
     };
 
     // 일정 날짜 최신화
@@ -105,14 +115,22 @@ const EditRouteContainer = () => {
         if (plans) {
             for (let i = 0; i < plans.length; i++) {
                 planId = plans[i].planId;
+                const index = 1024 * (i + 1);
+
                 if (i >= 1) {
                     planDate = letsFormat(date.setDate(date.getDate() + 1));
                 }
-                dispatch(updatePlanAction({ plannerId, planId, planDate }));
+                dispatch(updatePlanAction({ plannerId, planId, planDate, index }));
             }
         }
     }, [dispatch, planDateStart, planDateEnd, plannerId]);
 
+    const [curLocation, setCurLocation] = useState();
+    const onUpdateLocation = () => {
+        const { locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation } = curLocation;
+        const index = sortIndex.current;
+        dispatch(updateLocationAction({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId, index }));
+    };
     const onDeleteLocation = (locationId) => {
         dispatch(deleteLocationAction({ plannerId, locationId, planId }));
     };
@@ -166,6 +184,11 @@ const EditRouteContainer = () => {
             transList={transList}
             startDate={startDate}
             endDate={endDate}
+            sortIndex={sortIndex}
+            curPlan={curPlan}
+            curLocation={curLocation}
+            setCurPlan={setCurPlan}
+            setCurLocation={setCurLocation}
             onChangePlannerDateStart={onChangePlannerDateStart}
             onChangePlannerDateEnd={onChangePlannerDateEnd}
             onCreatePlan={onCreatePlan}
@@ -181,6 +204,8 @@ const EditRouteContainer = () => {
             onUpdateTrans={onUpdateTrans}
             onToggleMemberModal={onToggleMemberModal}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
+            onUpdatePlan={onUpdatePlan}
+            onUpdateLocation={onUpdateLocation}
         />
     );
 };

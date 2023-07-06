@@ -200,9 +200,9 @@ const EditRoute = ({
     transList,
     startDate,
     endDate,
+    sortIndex,
     onCreatePlan,
     onDeletePlan,
-    onUpdatePlan,
     onDeleteLocation,
     onUpdatePlannerDate,
     onChangeCurPlanId,
@@ -214,6 +214,12 @@ const EditRoute = ({
     onUpdateTrans,
     onToggleMemberModal,
     onTogglePlannerInfoModal,
+    onUpdatePlan,
+    onUpdateLocation,
+    curPlan,
+    curLocation,
+    setCurPlan,
+    setCurLocation,
 }) => {
     const { title, creator, updateDate } = { ...planner };
 
@@ -281,6 +287,7 @@ const EditRoute = ({
                     planner={planner}
                     plan={plan}
                     plannerData={plannerData}
+                    sortIndex={sortIndex}
                     onCreatePlan={onCreatePlan}
                     onDeletePlan={onDeletePlan}
                     onChangeCurPlanId={onChangeCurPlanId}
@@ -288,16 +295,21 @@ const EditRoute = ({
                     onSubDate={onSubDate}
                     onUpdateSubPlan={onUpdateSubPlan}
                     onChangePlans={onChangePlans}
+                    onUpdatePlan={onUpdatePlan}
+                    setCurPlan={setCurPlan}
                 />
                 <EditRouteList
                     planner={planner}
                     plan={plan}
                     plannerData={plannerData}
+                    sortIndex={sortIndex}
                     transList={transList}
                     onUpdatePlan={onUpdatePlan}
                     onDeleteLocation={onDeleteLocation}
                     onChangeLocation={onChangeLocation}
                     onUpdateTrans={onUpdateTrans}
+                    onUpdateLocation={onUpdateLocation}
+                    setCurLocation={setCurLocation}
                 />
             </RouteBox>
         </EditRouteBlock>

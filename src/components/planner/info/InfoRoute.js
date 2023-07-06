@@ -157,10 +157,7 @@ const InfoRoute = ({ planner, plannerData, transList, drag, onChangeCurPlanId })
                                 {p.planLocations.map((pl, i) => {
                                     const { locationId, locationName, locationTransportation, locationImage } = pl;
                                     return (
-                                        <RouteItem
-                                            //  key={locationId}
-                                            ref={itemRef}
-                                        >
+                                        <RouteItem key={locationId} ref={itemRef}>
                                             {i !== 0 && <RouteLine />}
                                             <StyledFontAwesomeIcon icon={transIconList[locationTransportation - 1]} />
                                             <SpotItem>

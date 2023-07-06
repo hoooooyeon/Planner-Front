@@ -106,7 +106,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 }
 `;
 
-const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, onChangeCurPlanId, onAddDate, onSubDate, onUpdateSubPlan, onChangePlans }) => {
+const EditCalendar = ({ planner, plannerData, sortIndex, onCreatePlan, onDeletePlan, onChangeCurPlanId, onAddDate, onSubDate, onUpdateSubPlan, onChangePlans, onUpdatePlan, setCurPlan, curPlan }) => {
     const { planDateEnd, plans: items } = { ...planner };
 
     const letsFormat = (d) => {
@@ -114,7 +114,7 @@ const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, 
         return ('0' + (date.getMonth() + 1)).slice(-2) + '/' + ('0' + date.getDate()).slice(-2);
     };
 
-    const onClickDeletePlan = async (planId) => {
+    const onClickDeletePlan = (planId) => {
         onDeletePlan(planId);
         onSubDate(planDateEnd);
     };
@@ -129,8 +129,6 @@ const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, 
 
     const dragTarget = useRef();
     const overTarget = useRef();
-
-    let index = 0;
 
     let posY = useRef(0);
 
@@ -166,6 +164,14 @@ const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, 
         }
     }, [itemsRef.current]);
 
+    const onUpdateSortIndex = (item) => {
+        onUpdatePlan(item);
+    };
+
+    const onChangeCurItem = (plan) => {
+        setCurPlan(plan);
+    };
+
     if (!planner) {
         return <div>Loading...</div>;
     }
@@ -179,7 +185,7 @@ const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, 
             >
                 <CalIcon icon={faCalendarPlus} />
             </AddCal>
-            <EditCalendarBlock ref={containerRef} onDrop={(e) => common.onDrop({ e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, items })} onDragOver={(e) => common.onDragOver(e)}>
+            <EditCalendarBlock ref={containerRef} onDrop={(e) => common.onDrop({ e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, items, sortIndex, onUpdateSortIndex })} onDragOver={(e) => common.onDragOver(e)}>
                 {/* 혹시 plans가 null이되는 버그가 발생할수도? */}
                 {/* {console.log(plans)} */}
                 {items &&
@@ -198,7 +204,7 @@ const EditCalendar = ({ planner, plan, plannerData, onCreatePlan, onDeletePlan, 
                             key={item.planId}
                             draggable
                             onDragStart={(e) => {
-                                common.onDragStart({ e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop });
+                                common.onDragStart({ e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop, onChangeCurItem });
                             }}
                             onDrag={(e) => {
                                 common.onDragMove({ e, isDrag, posY, containerRef, dragItemIndex, dragTarget, scrollTop, initialScrollTop, itemHeight });

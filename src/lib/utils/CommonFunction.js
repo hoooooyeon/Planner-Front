@@ -1,45 +1,51 @@
 /** 드래그 앤 드롭 */
-
-import { useCallback, useRef } from 'react';
-
 // 바꿀 일정의 index 구하기
-function getElementIndex(p, itemsArr, items) {
+function getElementIndex(item, itemsArr, items) {
     itemsArr.current = items;
-    return itemsArr.current.findIndex((plan) => plan === p);
+    return itemsArr.current.findIndex((e) => e === item);
 }
 
 // 선택 일정과 바꿀 일정을 바꿈
 function switchItem({ itemsArr, dragItemIndex, overItemIndex, dragItem }) {
     itemsArr.current.splice(dragItemIndex.current, 1);
     itemsArr.current.splice(overItemIndex.current, 0, dragItem.current);
-    return itemsArr.current;
 }
 
 // db에서 순서를 세팅할 index를 구함.
-function getIndex({ dragItem, overItemIndex, index, itemsArr, dragItemIndex, items }) {
+function getIndex({ dragItem, overItemIndex, sortIndex, itemsArr, items }) {
     let prevIndex;
     let nextIndex;
     let curItemIndex = getElementIndex(dragItem.current, itemsArr, items);
 
     if (overItemIndex.current === 0) {
-        index = 500;
+        sortIndex.current = itemsArr.current[curItemIndex + 1].index / 2;
     } else if (overItemIndex.current === itemsArr.current.length - 1) {
-        index = 2000;
-    } else if (dragItemIndex) {
-        prevIndex = itemsArr.current[curItemIndex - 1];
-        nextIndex = itemsArr.current[curItemIndex + 1];
-        index = 1000;
+        sortIndex.current = itemsArr.current[itemsArr.current.length - 1].index + 1024;
+    } else {
+        prevIndex = itemsArr.current[curItemIndex - 1].index;
+        nextIndex = itemsArr.current[curItemIndex + 1].index;
+        sortIndex.current = (prevIndex + nextIndex) / 2;
     }
 }
 
 // 드래그 시작
-export function onDragStart({ e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop }) {
+export function onDragStart({ dataRef, e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop, onChangeCurItem }) {
     setIsDrag(true);
-    // 순서 이동 모션
 
+    onChangeCurItem(item);
+
+    // 순서 이동 모션
     // 드래그시 반투명 이미지 제거
-    let img = new Image();
-    e.dataTransfer.setDragImage(img, 10, 10);
+    // let img = new Image();
+    // e.dataTransfer.setDragImage(img, 10, 10);
+
+    e.dataTransfer.setData('text/plain', item.current);
+    // 복사된 요소 생성
+    const clonedElement = e.target.cloneNode(true);
+    e.dataTransfer.setDragImage(clonedElement, 10, 10);
+
+    // 드래그 중인 요소의 스타일 변경
+    clonedElement.style.backgroundColor = 'red';
 
     // 드래그되는 요소
     dragTarget.current = e.currentTarget;
@@ -55,7 +61,7 @@ export function onDragStart({ e, item, setIsDrag, dragTarget, posY, dragItem, dr
     dragItemIndex.current = getElementIndex(item, itemsArr, items);
 }
 // 드래그 이동
-export function onDragMove({ e, isDrag, posY, containerRef, dragItemIndex, dragTarget, scrollTop, initialScrollTop, itemHeight }) {
+export function onDragMove({ dataRef, e, isDrag, posY, containerRef, dragItemIndex, dragTarget, scrollTop, initialScrollTop, itemHeight }) {
     if (isDrag) {
         // 마우스 포인터가 이동한 거리
         const diffY = e.clientY - posY.current;
@@ -66,7 +72,8 @@ export function onDragMove({ e, isDrag, posY, containerRef, dragItemIndex, dragT
         const itemPos = diffY - initialScrollTop.current + scrollTop.current;
 
         // 드래그되는 모션
-        e.currentTarget.style.top = `${Math.min(Math.max(-itemHeight.current * dragItemIndex.current, itemPos), containerHeight - itemHeight.current * (dragItemIndex.current + 1))}px`;
+        // e.currentTarget.style.top = `${Math.min(Math.max(-itemHeight.current * dragItemIndex.current, itemPos), containerHeight - itemHeight.current * (dragItemIndex.current + 1))}px`;
+        // dataRef.current.style.top = `${Math.min(Math.max(-itemHeight.current * dragItemIndex.current, itemPos), containerHeight - itemHeight.current * (dragItemIndex.current + 1))}px`;
 
         dragTarget.current.style.pointerEvents = 'none';
     }
@@ -118,7 +125,7 @@ export function onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, drag
     dragTarget.current.style.pointerEvents = 'auto';
 
     // 드래그된 요소 다시 제자리로 이동
-    dragTarget.current.style.top = `${0}px`;
+    // dragTarget.current.style.top = `${0}px`;
 
     // 사용 변수 초기화
     itemsArr.current = null;
@@ -129,15 +136,15 @@ export function onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, drag
     setOverTargetArr([]);
 }
 // 드래그 요소를 드롭당할 요소에 드롭
-export function onDrop({ e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, items }) {
+export function onDrop({ e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, items, sortIndex, onUpdateSortIndex }) {
     e.preventDefault();
 
     if (isDrag) {
         // 이동 기능
-        // onChangePlans(switchItem(itemsArr, dragItemIndex, overItemIndex, dragItem));
 
         switchItem({ itemsArr, dragItemIndex, overItemIndex, dragItem });
-        getIndex({ dragItem, overItemIndex, index, itemsArr, dragItemIndex, items });
+        getIndex({ dragItem, overItemIndex, sortIndex, itemsArr, items });
+        onUpdateSortIndex();
     }
 }
 // 드래그 요소가 드롭 요소위에 지나감(ondrop 사용시 필수)

@@ -18,8 +18,9 @@ import { loadLikeListAction, resetLikeListAction } from '../../../modules/Profil
 
 const EditListContainer = () => {
     const dispatch = useDispatch();
-    const { plannerError, spots, account, keyword, areas, spotData, plannerData, detail, contentTypeList, likeList } = useSelector(({ plannerReducer, spotReducer, profileReducer, authReducer }) => ({
+    const { planner, plannerError, spots, account, keyword, areas, spotData, plannerData, detail, contentTypeList, likeList } = useSelector(({ plannerReducer, spotReducer, profileReducer, authReducer }) => ({
         account: authReducer.account,
+        planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         spots: spotReducer.spots,
         areas: spotReducer.areas,
@@ -34,9 +35,9 @@ const EditListContainer = () => {
     const { plannerId, planId, pageNum } = { ...plannerData };
 
     const onCreateLocation = (spot) => {
-        const { title, contentid, firstimage, firstimage2, addr1, mapx, mapy } = spot;
-        const locationContentId = contentid;
-        const locationImage = firstimage !== '' ? firstimage : firstimage2;
+        const { title, contentId, firstImage, firstImage2, addr1, mapx, mapy } = spot;
+        const locationContentId = contentId;
+        const locationImage = firstImage !== '' ? firstImage : firstImage2;
         const locationTransportation = 1;
         const locationName = title;
         const locationAddr = addr1;

@@ -204,7 +204,7 @@ const MoveIcon = styled(FontAwesomeIcon)`
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     /* margin-right: 0.5rem; */
 `;
-const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, onDeleteLocation, onChangeLocation, onUpdateTrans }) => {
+const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, onDeleteLocation, onChangeLocation, onUpdateTrans, onUpdateLocation, sortIndex, setCurLocation }) => {
     const { plans } = { ...planner };
 
     const containerRef = useRef();
@@ -218,8 +218,6 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
 
     const dragTarget = useRef();
     const overTarget = useRef();
-
-    let index = 0;
 
     let posY = useRef(0);
 
@@ -287,6 +285,16 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
         }
     }, [itemsRef.current]);
 
+    const onUpdateSortIndex = () => {
+        onUpdateLocation();
+    };
+
+    const onChangeCurItem = (item) => {
+        setCurLocation(item);
+    };
+
+    const dataRef = useRef();
+
     if (!planner) {
         return <div>Loading...</div>;
     }
@@ -298,10 +306,10 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                     const items = p.planLocations;
                     return (
                         <RouteList
-                            onDrop={(e) => common.onDrop({ e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, index, items })}
+                            onDrop={(e) => common.onDrop({ e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, sortIndex, items, onUpdateSortIndex })}
                             onDragOver={(e) => common.onDragOver(e)}
                             aria-current={p.planId === plannerData.planId ? 'cur' : null}
-                            // key={p.planId}
+                            key={p.planId}
                         >
                             {items &&
                                 items.map((item, i) => {
@@ -315,23 +323,13 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                                 }
                                                 itemsRef.current[j][i] = e;
                                             }}
-                                            // key={item.locationId}
+                                            key={i}
                                             draggable
                                             onDragStart={(e) => {
-                                                common.onDragStart({ e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop });
+                                                common.onDragStart({ dataRef, e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop, onChangeCurItem });
                                             }}
                                             onDrag={(e) => {
-                                                common.onDragMove({
-                                                    e,
-                                                    isDrag,
-                                                    posY,
-                                                    containerRef,
-                                                    dragItemIndex,
-                                                    dragTarget,
-                                                    scrollTop,
-                                                    initialScrollTop,
-                                                    itemHeight,
-                                                });
+                                                common.onDragMove({ dataRef, e, isDrag, posY, containerRef, dragItemIndex, dragTarget, scrollTop, initialScrollTop, itemHeight });
                                             }}
                                             onDragEnd={(e) => {
                                                 common.onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr });
@@ -384,7 +382,6 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                                 />
                                                 <TextInfo>
                                                     <Name>{locationName}</Name>
-
                                                     <Address>{locationAddr.split(' ')[0]}</Address>
                                                 </TextInfo>
                                             </SpotItem>
