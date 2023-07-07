@@ -18,6 +18,7 @@ const FlexDiv = styled.div`
 `;
 
 const EditCalendarBlock = styled.div`
+    width: 3rem;
     height: 100%;
     border-radius: 1rem;
     z-index: 1;

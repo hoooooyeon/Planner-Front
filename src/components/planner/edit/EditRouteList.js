@@ -351,6 +351,9 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                                     itemHeight,
                                                 });
                                             }}
+                                            onDragLeave={(e) => {
+                                                common.onDragLeave(e);
+                                            }}
                                         >
                                             <MoveIcon icon={faEllipsisVertical} />
                                             <TransItem onClick={() => handleOpen(setDropDownItemId, i)}>
@@ -382,7 +385,7 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                                 />
                                                 <TextInfo>
                                                     <Name>{locationName}</Name>
-                                                    <Address>{locationAddr.split(' ')[0]}</Address>
+                                                    {/* <Address>{locationAddr.split(' ')[0]}</Address> */}
                                                 </TextInfo>
                                             </SpotItem>
                                             <DeleteButton

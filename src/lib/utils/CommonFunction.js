@@ -17,11 +17,12 @@ function getIndex({ dragItem, overItemIndex, sortIndex, itemsArr, items }) {
     let nextIndex;
     let curItemIndex = getElementIndex(dragItem.current, itemsArr, items);
 
-    if (overItemIndex.current === 0) {
+    if (curItemIndex === 0) {
         sortIndex.current = itemsArr.current[curItemIndex + 1].index / 2;
-    } else if (overItemIndex.current === itemsArr.current.length - 1) {
+    } else if (curItemIndex === itemsArr.current.length - 1) {
         sortIndex.current = itemsArr.current[itemsArr.current.length - 1].index + 1024;
     } else {
+        // console.log(itemsArr.current[curItemIndex - 1]);
         prevIndex = itemsArr.current[curItemIndex - 1].index;
         nextIndex = itemsArr.current[curItemIndex + 1].index;
         sortIndex.current = (prevIndex + nextIndex) / 2;
@@ -36,16 +37,11 @@ export function onDragStart({ dataRef, e, item, setIsDrag, dragTarget, posY, dra
 
     // 순서 이동 모션
     // 드래그시 반투명 이미지 제거
-    // let img = new Image();
-    // e.dataTransfer.setDragImage(img, 10, 10);
+    let img = new Image();
+    e.dataTransfer.setDragImage(img, 10, 10);
 
-    e.dataTransfer.setData('text/plain', item.current);
-    // 복사된 요소 생성
-    const clonedElement = e.target.cloneNode(true);
-    e.dataTransfer.setDragImage(clonedElement, 10, 10);
-
-    // 드래그 중인 요소의 스타일 변경
-    clonedElement.style.backgroundColor = 'red';
+    const elementAssign = Object.assign({}, item);
+    // console.log(elementAssign);
 
     // 드래그되는 요소
     dragTarget.current = e.currentTarget;
@@ -72,7 +68,7 @@ export function onDragMove({ dataRef, e, isDrag, posY, containerRef, dragItemInd
         const itemPos = diffY - initialScrollTop.current + scrollTop.current;
 
         // 드래그되는 모션
-        // e.currentTarget.style.top = `${Math.min(Math.max(-itemHeight.current * dragItemIndex.current, itemPos), containerHeight - itemHeight.current * (dragItemIndex.current + 1))}px`;
+        e.currentTarget.style.top = `${Math.min(Math.max(-itemHeight.current * dragItemIndex.current, itemPos), containerHeight - itemHeight.current * (dragItemIndex.current + 1))}px`;
         // dataRef.current.style.top = `${Math.min(Math.max(-itemHeight.current * dragItemIndex.current, itemPos), containerHeight - itemHeight.current * (dragItemIndex.current + 1))}px`;
 
         dragTarget.current.style.pointerEvents = 'none';
@@ -88,6 +84,7 @@ export function onDragEnter({ e, item, isDrag, overItem, overItemIndex, overTarg
         // 순서 이동 모션
         // 타겟 요소
         overTarget.current = e.currentTarget;
+        console.log(e.target);
 
         // 타겟 요소의 벌어지는 모션
         // 드래그 요소와 타겟 요소가 다른지 확인
@@ -113,6 +110,12 @@ export function onDragEnter({ e, item, isDrag, overItem, overItemIndex, overTarg
         }
     }
 }
+
+export function onDragLeave(e) {
+    // { e, overTarget, overTargetArr, setOverTargetArr }
+    console.log(e.target);
+}
+
 // 드래그 종료
 export function onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr }) {
     setIsDrag(false);
@@ -125,7 +128,7 @@ export function onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, drag
     dragTarget.current.style.pointerEvents = 'auto';
 
     // 드래그된 요소 다시 제자리로 이동
-    // dragTarget.current.style.top = `${0}px`;
+    dragTarget.current.style.top = `${0}px`;
 
     // 사용 변수 초기화
     itemsArr.current = null;
