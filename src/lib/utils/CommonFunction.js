@@ -5,13 +5,13 @@ function getElementIndex(item, itemsArr, items) {
     return itemsArr.current.findIndex((e) => e === item);
 }
 
-// 선택 일정과 바꿀 일정을 바꿈
+// 드래그 일정과 타겟 일정 순서 바꿈
 function switchItem({ itemsArr, dragItemIndex, overItemIndex, dragItem }) {
     itemsArr.current.splice(dragItemIndex.current, 1);
     itemsArr.current.splice(overItemIndex.current, 0, dragItem.current);
 }
 
-// db에서 순서를 세팅할 index를 구함.
+// db에서 순서를 정렬할 index를 구함.
 function getIndex({ dragItem, overItemIndex, sortIndex, itemsArr, items }) {
     let prevIndex;
     let nextIndex;
@@ -30,7 +30,7 @@ function getIndex({ dragItem, overItemIndex, sortIndex, itemsArr, items }) {
 }
 
 // 드래그 시작
-export function onDragStart({ dataRef, e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop, onChangeCurItem }) {
+export function onDragStart({ cloneRef, dataRef, e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop, onChangeCurItem, onCloneElement, itemHeight, onChangeStyle }) {
     setIsDrag(true);
 
     onChangeCurItem(item);
@@ -40,14 +40,21 @@ export function onDragStart({ dataRef, e, item, setIsDrag, dragTarget, posY, dra
     let img = new Image();
     e.dataTransfer.setDragImage(img, 10, 10);
 
-    const elementAssign = Object.assign({}, item);
-    // console.log(elementAssign);
-
     // 드래그되는 요소
     dragTarget.current = e.currentTarget;
     dragTarget.current.style.zIndex = '101';
 
+    const computedStyle = getComputedStyle(dragTarget.current);
+    const marginBottom = parseInt(computedStyle.marginBottom);
+    const height = dragTarget.current.getBoundingClientRect().height;
+    itemHeight.current = height + marginBottom;
+
     initialScrollTop.current = scrollTop.current ? scrollTop.current : 0;
+
+    onCloneElement();
+    // onChangeStyle('blue');
+    // onChangeStyle(e.clientY - initialScrollTop.current);
+    onChangeStyle(400);
 
     // 마우스 포인터 좌표
     posY.current = e.clientY;
@@ -84,7 +91,6 @@ export function onDragEnter({ e, item, isDrag, overItem, overItemIndex, overTarg
         // 순서 이동 모션
         // 타겟 요소
         overTarget.current = e.currentTarget;
-        console.log(e.target);
 
         // 타겟 요소의 벌어지는 모션
         // 드래그 요소와 타겟 요소가 다른지 확인
@@ -113,11 +119,10 @@ export function onDragEnter({ e, item, isDrag, overItem, overItemIndex, overTarg
 
 export function onDragLeave(e) {
     // { e, overTarget, overTargetArr, setOverTargetArr }
-    console.log(e.target);
 }
 
 // 드래그 종료
-export function onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr }) {
+export function onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr, onDeleteElement }) {
     setIsDrag(false);
 
     // 이동 모션
@@ -129,6 +134,8 @@ export function onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, drag
 
     // 드래그된 요소 다시 제자리로 이동
     dragTarget.current.style.top = `${0}px`;
+
+    onDeleteElement();
 
     // 사용 변수 초기화
     itemsArr.current = null;

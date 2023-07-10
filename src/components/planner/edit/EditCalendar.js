@@ -153,17 +153,17 @@ const EditCalendar = ({ planner, plannerData, sortIndex, onCreatePlan, onDeleteP
     });
 
     const itemHeight = useRef();
-    useEffect(() => {
-        if (itemsRef.current) {
-            itemsRef.current.forEach((e) => {
-                if (e) {
-                    const computedStyle = getComputedStyle(e);
-                    const marginBottom = parseInt(computedStyle.marginTop);
-                    itemHeight.current = e.getBoundingClientRect().height + marginBottom;
-                }
-            });
-        }
-    }, [itemsRef.current]);
+    // useEffect(() => {
+    //     if (itemsRef.current) {
+    //         itemsRef.current.forEach((e) => {
+    //             if (e) {
+    //                 const computedStyle = getComputedStyle(e);
+    //                 const marginBottom = parseInt(computedStyle.marginTop);
+    //                 itemHeight.current = e.getBoundingClientRect().height + marginBottom;
+    //             }
+    //         });
+    //     }
+    // }, [itemsRef.current]);
 
     const onUpdateSortIndex = (item) => {
         onUpdatePlan(item);
@@ -192,12 +192,12 @@ const EditCalendar = ({ planner, plannerData, sortIndex, onCreatePlan, onDeleteP
                 {items &&
                     items.map((item, i) => (
                         <ItemBox
-                            ref={(e) => {
-                                if (!itemsRef.current) {
-                                    itemsRef.current = [];
-                                }
-                                itemsRef.current[i] = e;
-                            }}
+                            // ref={(e) => {
+                            //     if (!itemsRef.current) {
+                            //         itemsRef.current = [];
+                            //     }
+                            //     itemsRef.current[i] = e;
+                            // }}
                             aria-current={item.planId === plannerData.planId ? 'date' : null}
                             onClick={() => {
                                 onChangeCurPlanId(item.planId);
@@ -205,7 +205,7 @@ const EditCalendar = ({ planner, plannerData, sortIndex, onCreatePlan, onDeleteP
                             key={item.planId}
                             draggable
                             onDragStart={(e) => {
-                                common.onDragStart({ e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop, onChangeCurItem });
+                                common.onDragStart({ e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop, onChangeCurItem, itemHeight });
                             }}
                             onDrag={(e) => {
                                 common.onDragMove({ e, isDrag, posY, containerRef, dragItemIndex, dragTarget, scrollTop, initialScrollTop, itemHeight });

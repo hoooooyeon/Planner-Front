@@ -11,6 +11,7 @@ import { faBicycle } from '@fortawesome/free-solid-svg-icons'; // 자전거 or �
 import { faTrainSubway } from '@fortawesome/free-solid-svg-icons'; // 지하철 or 기차
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+import { cloneElement } from 'react';
 
 const EditRouteListBlock = styled.div`
     margin-left: 0.2rem;
@@ -52,12 +53,24 @@ const RouteItem = styled.div`
     }
 `;
 
+const CloneItem = styled.div`
+    width: 224px;
+    height: 72px;
+    margin-bottom: 1rem;
+    padding: 2rem 1.4rem 0.5rem 1.4rem;
+    background: red;
+    position: relative;
+    ${(props) =>
+        props.cloneElStyle &&
+        css`
+            top: ${props.cloneElStyle}px;
+        `}
+`;
+
 const TransItem = styled.div`
     position: absolute;
     top: 12px;
-
     border-radius: 1rem;
-
     width: 2.5rem;
     height: 2.5rem;
     z-index: 100;
@@ -98,7 +111,6 @@ const DropDownMenu = styled.ul`
             width: 8rem;
         }
     }
-
     animation: fade-in 0.5s ease-in-out;
 
     li {
@@ -266,24 +278,24 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
     });
 
     const itemHeight = useRef();
-    useEffect(() => {
-        if (itemsRef.current) {
-            itemsRef.current.forEach((eRow) => {
-                if (eRow) {
-                    eRow.forEach((e) => {
-                        if (e) {
-                            const computedStyle = getComputedStyle(e);
-                            const display = computedStyle.display;
-                            const marginBottom = parseInt(computedStyle.marginBottom);
-                            if (display === 'flex') {
-                                itemHeight.current = e.getBoundingClientRect().height + marginBottom;
-                            }
-                        }
-                    });
-                }
-            });
-        }
-    }, [itemsRef.current]);
+    // useEffect(() => {
+    //     if (itemsRef.current) {
+    //         itemsRef.current.forEach((eRow) => {
+    //             if (eRow) {
+    //                 eRow.forEach((e) => {
+    //                     if (e) {
+    //                         const computedStyle = getComputedStyle(e);
+    //                         const display = computedStyle.display;
+    //                         const marginBottom = parseInt(computedStyle.marginBottom);
+    //                         if (display === 'flex') {
+    //                             itemHeight.current = e.getBoundingClientRect().height + marginBottom;
+    //                         }
+    //                     }
+    //                 });
+    //             }
+    //         });
+    //     }
+    // }, [itemsRef.current]);
 
     const onUpdateSortIndex = () => {
         onUpdateLocation();
@@ -294,6 +306,24 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
     };
 
     const dataRef = useRef();
+
+    const [cloneElement, setCloneElement] = useState(null);
+    const [cloneElStyle, setCloneElStyle] = useState(0);
+
+    const cloneRef = useRef();
+    const onCloneElement = () => {
+        const element = <CloneItem ref={cloneRef} cloneElStyle={cloneElStyle} onDragEnter={(e) => console.log(e.target.getBoundingClientRect())} />;
+        setCloneElement(element);
+    };
+
+    const onDeleteElement = () => {
+        setCloneElement(null);
+        setCloneElStyle(0);
+    };
+
+    const onChangeStyle = (top) => {
+        setCloneElStyle(top);
+    };
 
     if (!planner) {
         return <div>Loading...</div>;
@@ -317,22 +347,40 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                     return (
                                         <RouteItem
                                             aria-current={p.planId === plannerData.planId ? 'cur' : null}
-                                            ref={(e) => {
-                                                if (!itemsRef.current[j]) {
-                                                    itemsRef.current[j] = [];
-                                                }
-                                                itemsRef.current[j][i] = e;
-                                            }}
+                                            // ref={(e) => {
+                                            //     if (!itemsRef.current[j]) {
+                                            //         itemsRef.current[j] = [];
+                                            //     }
+                                            //     itemsRef.current[j][i] = e;
+                                            // }}
                                             key={i}
                                             draggable
                                             onDragStart={(e) => {
-                                                common.onDragStart({ dataRef, e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop, onChangeCurItem });
+                                                common.onDragStart({
+                                                    cloneRef,
+                                                    dataRef,
+                                                    e,
+                                                    item,
+                                                    setIsDrag,
+                                                    dragTarget,
+                                                    posY,
+                                                    dragItem,
+                                                    dragItemIndex,
+                                                    itemsArr,
+                                                    items,
+                                                    scrollTop,
+                                                    initialScrollTop,
+                                                    onChangeCurItem,
+                                                    onCloneElement,
+                                                    itemHeight,
+                                                    onChangeStyle,
+                                                });
                                             }}
                                             onDrag={(e) => {
                                                 common.onDragMove({ dataRef, e, isDrag, posY, containerRef, dragItemIndex, dragTarget, scrollTop, initialScrollTop, itemHeight });
                                             }}
                                             onDragEnd={(e) => {
-                                                common.onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr });
+                                                common.onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr, onDeleteElement });
                                             }}
                                             onDragEnter={(e) => {
                                                 common.onDragEnter({
@@ -385,7 +433,7 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                                 />
                                                 <TextInfo>
                                                     <Name>{locationName}</Name>
-                                                    {/* <Address>{locationAddr.split(' ')[0]}</Address> */}
+                                                    <Address>{locationAddr.split(' ')[0]}</Address>
                                                 </TextInfo>
                                             </SpotItem>
                                             <DeleteButton
@@ -398,6 +446,7 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                         </RouteItem>
                                     );
                                 })}
+                            {cloneElement}
                         </RouteList>
                     );
                 })}
