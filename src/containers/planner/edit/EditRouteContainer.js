@@ -107,14 +107,16 @@ const EditRouteContainer = () => {
         dispatch(updatePlanAction({ plannerId, planId, planDate, index }));
     };
 
+    const [updatePlans, setUpdatePlans] = useState();
     // 일정 날짜 최신화
     useEffect(() => {
         let date = new Date(planDateStart);
         let planDate = letsFormat(date);
-        let planId = 0;
+        console.log(updatePlans);
+
         if (plans) {
             for (let i = 0; i < plans.length; i++) {
-                planId = plans[i].planId;
+                const planId = plans[i].planId;
                 const index = 1024 * (i + 1);
 
                 if (i >= 1) {
@@ -123,7 +125,7 @@ const EditRouteContainer = () => {
                 dispatch(updatePlanAction({ plannerId, planId, planDate, index }));
             }
         }
-    }, [dispatch, planDateStart, planDateEnd, plannerId]);
+    }, [dispatch, planDateStart, planDateEnd, plannerId, updatePlans]);
 
     const [curLocation, setCurLocation] = useState();
     const onUpdateLocation = () => {
@@ -161,7 +163,6 @@ const EditRouteContainer = () => {
 
     const onUpdateTrans = (trans, locationData) => {
         if (planner) {
-            // const { locationId, locationName, locationImage, locationContentId } = location;
             const { locationId, locationName, locationImage, locationContentId, locationAddr, locationMapx, locationMapy } = locationData;
             let locationTransportation = trans;
             dispatch(updateLocationAction({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId }));
@@ -173,6 +174,22 @@ const EditRouteContainer = () => {
     };
     const onTogglePlannerInfoModal = () => {
         dispatch(togglePlannerInfoModalAction());
+    };
+
+    const [cloneElement, setCloneElement] = useState(false);
+    const [cloneElStyle, setCloneElStyle] = useState(0);
+
+    const onCloneElement = () => {
+        setCloneElement(true);
+    };
+
+    const onDeleteElement = () => {
+        setCloneElement(false);
+        setCloneElStyle(0);
+    };
+
+    const onChangeStyle = (top) => {
+        setCloneElStyle(top);
     };
 
     return (
@@ -187,6 +204,11 @@ const EditRouteContainer = () => {
             sortIndex={sortIndex}
             curPlan={curPlan}
             curLocation={curLocation}
+            cloneElement={cloneElement}
+            cloneElStyle={cloneElStyle}
+            onCloneElement={onCloneElement}
+            onDeleteElement={onDeleteElement}
+            onChangeStyle={onChangeStyle}
             setCurPlan={setCurPlan}
             setCurLocation={setCurLocation}
             onChangePlannerDateStart={onChangePlannerDateStart}
@@ -206,6 +228,7 @@ const EditRouteContainer = () => {
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onUpdatePlan={onUpdatePlan}
             onUpdateLocation={onUpdateLocation}
+            setUpdatePlans={setUpdatePlans}
         />
     );
 };

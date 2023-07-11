@@ -220,6 +220,12 @@ const EditRoute = ({
     curLocation,
     setCurPlan,
     setCurLocation,
+    cloneElement,
+    cloneElStyle,
+    onCloneElement,
+    onDeleteElement,
+    onChangeStyle,
+    setUpdatePlans,
 }) => {
     const { title, creator, updateDate } = { ...planner };
 
@@ -297,6 +303,12 @@ const EditRoute = ({
                     onChangePlans={onChangePlans}
                     onUpdatePlan={onUpdatePlan}
                     setCurPlan={setCurPlan}
+                    cloneElement={cloneElement}
+                    cloneElStyle={cloneElStyle}
+                    onCloneElement={onCloneElement}
+                    onDeleteElement={onDeleteElement}
+                    onChangeStyle={onChangeStyle}
+                    setUpdatePlans={setUpdatePlans}
                 />
                 <EditRouteList
                     planner={planner}
@@ -310,6 +322,12 @@ const EditRoute = ({
                     onUpdateTrans={onUpdateTrans}
                     onUpdateLocation={onUpdateLocation}
                     setCurLocation={setCurLocation}
+                    cloneElement={cloneElement}
+                    cloneElStyle={cloneElStyle}
+                    onCloneElement={onCloneElement}
+                    onDeleteElement={onDeleteElement}
+                    onChangeStyle={onChangeStyle}
+                    setUpdatePlans={setUpdatePlans}
                 />
             </RouteBox>
         </EditRouteBlock>

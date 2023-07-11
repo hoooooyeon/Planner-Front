@@ -42,9 +42,9 @@ const RouteItem = styled.div`
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     border-radius: 1rem;
     cursor: pointer;
-    margin-bottom: 1rem;
     padding: 2rem 1.4rem 0.5rem 1.4rem;
     z-index: 100;
+    margin-bottom: 1rem;
     &[aria-current] {
         display: flex;
     }
@@ -216,7 +216,25 @@ const MoveIcon = styled(FontAwesomeIcon)`
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     /* margin-right: 0.5rem; */
 `;
-const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, onDeleteLocation, onChangeLocation, onUpdateTrans, onUpdateLocation, sortIndex, setCurLocation }) => {
+const EditRouteList = ({
+    planner,
+    plan,
+    plannerData,
+    transList,
+    onUpdatePlan,
+    onDeleteLocation,
+    onChangeLocation,
+    onUpdateTrans,
+    onUpdateLocation,
+    sortIndex,
+    setCurLocation,
+    cloneElement,
+    cloneElStyle,
+    onCloneElement,
+    onDeleteElement,
+    onChangeStyle,
+    setUpdatePlans,
+}) => {
     const { plans } = { ...planner };
 
     const containerRef = useRef();
@@ -278,51 +296,14 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
     });
 
     const itemHeight = useRef();
-    // useEffect(() => {
-    //     if (itemsRef.current) {
-    //         itemsRef.current.forEach((eRow) => {
-    //             if (eRow) {
-    //                 eRow.forEach((e) => {
-    //                     if (e) {
-    //                         const computedStyle = getComputedStyle(e);
-    //                         const display = computedStyle.display;
-    //                         const marginBottom = parseInt(computedStyle.marginBottom);
-    //                         if (display === 'flex') {
-    //                             itemHeight.current = e.getBoundingClientRect().height + marginBottom;
-    //                         }
-    //                     }
-    //                 });
-    //             }
-    //         });
-    //     }
-    // }, [itemsRef.current]);
 
-    const onUpdateSortIndex = () => {
+    const onUpdateSortIndex = (index) => {
         onUpdateLocation();
+        setUpdatePlans(index);
     };
 
     const onChangeCurItem = (item) => {
         setCurLocation(item);
-    };
-
-    const dataRef = useRef();
-
-    const [cloneElement, setCloneElement] = useState(null);
-    const [cloneElStyle, setCloneElStyle] = useState(0);
-
-    const cloneRef = useRef();
-    const onCloneElement = () => {
-        const element = <CloneItem ref={cloneRef} cloneElStyle={cloneElStyle} onDragEnter={(e) => console.log(e.target.getBoundingClientRect())} />;
-        setCloneElement(element);
-    };
-
-    const onDeleteElement = () => {
-        setCloneElement(null);
-        setCloneElStyle(0);
-    };
-
-    const onChangeStyle = (top) => {
-        setCloneElStyle(top);
     };
 
     if (!planner) {
@@ -347,18 +328,10 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                     return (
                                         <RouteItem
                                             aria-current={p.planId === plannerData.planId ? 'cur' : null}
-                                            // ref={(e) => {
-                                            //     if (!itemsRef.current[j]) {
-                                            //         itemsRef.current[j] = [];
-                                            //     }
-                                            //     itemsRef.current[j][i] = e;
-                                            // }}
                                             key={i}
                                             draggable
                                             onDragStart={(e) => {
                                                 common.onDragStart({
-                                                    cloneRef,
-                                                    dataRef,
                                                     e,
                                                     item,
                                                     setIsDrag,
@@ -377,7 +350,7 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                                 });
                                             }}
                                             onDrag={(e) => {
-                                                common.onDragMove({ dataRef, e, isDrag, posY, containerRef, dragItemIndex, dragTarget, scrollTop, initialScrollTop, itemHeight });
+                                                common.onDragMove({ e, isDrag, posY, containerRef, dragItemIndex, dragTarget, scrollTop, initialScrollTop, itemHeight });
                                             }}
                                             onDragEnd={(e) => {
                                                 common.onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr, onDeleteElement });
@@ -398,9 +371,6 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                                     items,
                                                     itemHeight,
                                                 });
-                                            }}
-                                            onDragLeave={(e) => {
-                                                common.onDragLeave(e);
                                             }}
                                         >
                                             <MoveIcon icon={faEllipsisVertical} />
@@ -446,7 +416,17 @@ const EditRouteList = ({ planner, plan, plannerData, transList, onUpdatePlan, on
                                         </RouteItem>
                                     );
                                 })}
-                            {cloneElement}
+                            {cloneElement && (
+                                <CloneItem
+                                    cloneElStyle={cloneElStyle}
+                                    onDragEnter={() => {
+                                        common.onCloneEnter({
+                                            overItemIndex,
+                                            dragItemIndex,
+                                        });
+                                    }}
+                                />
+                            )}
                         </RouteList>
                     );
                 })}

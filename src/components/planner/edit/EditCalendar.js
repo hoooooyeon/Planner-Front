@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import * as common from '../../../lib/utils/CommonFunction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
@@ -44,9 +44,8 @@ const ItemBox = styled.div`
     cursor: pointer;
     border: none;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    & + & {
-        margin-top: 0.5rem;
-    }
+
+    margin-bottom: 0.5rem;
     &:hover {
         /* transition: transform 0.3s;
         transform: scale(1.05); */
@@ -55,6 +54,19 @@ const ItemBox = styled.div`
         box-shadow: 0 0 10px rgb(150, 150, 150);
         background-color: rgb(220, 220, 220);
     }
+`;
+
+const CloneItem = styled.div`
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 0.5rem;
+    background: red;
+    position: relative;
+    ${(props) =>
+        props.cloneElStyle &&
+        css`
+            top: ${props.cloneElStyle}px;
+        `}
 `;
 
 const Calendar = styled.div`
@@ -107,7 +119,27 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 }
 `;
 
-const EditCalendar = ({ planner, plannerData, sortIndex, onCreatePlan, onDeletePlan, onChangeCurPlanId, onAddDate, onSubDate, onUpdateSubPlan, onChangePlans, onUpdatePlan, setCurPlan, curPlan }) => {
+const EditCalendar = ({
+    planner,
+    plannerData,
+    sortIndex,
+    onCreatePlan,
+    onDeletePlan,
+    onChangeCurPlanId,
+    onAddDate,
+    onSubDate,
+    onUpdateSubPlan,
+    onChangePlans,
+    onUpdatePlan,
+    setCurPlan,
+    curPlan,
+    cloneElement,
+    cloneElStyle,
+    onCloneElement,
+    onDeleteElement,
+    onChangeStyle,
+    setUpdatePlans,
+}) => {
     const { planDateEnd, plans: items } = { ...planner };
 
     const letsFormat = (d) => {
@@ -153,20 +185,10 @@ const EditCalendar = ({ planner, plannerData, sortIndex, onCreatePlan, onDeleteP
     });
 
     const itemHeight = useRef();
-    // useEffect(() => {
-    //     if (itemsRef.current) {
-    //         itemsRef.current.forEach((e) => {
-    //             if (e) {
-    //                 const computedStyle = getComputedStyle(e);
-    //                 const marginBottom = parseInt(computedStyle.marginTop);
-    //                 itemHeight.current = e.getBoundingClientRect().height + marginBottom;
-    //             }
-    //         });
-    //     }
-    // }, [itemsRef.current]);
 
-    const onUpdateSortIndex = (item) => {
-        onUpdatePlan(item);
+    const onUpdateSortIndex = (index) => {
+        onUpdatePlan();
+        setUpdatePlans(index);
     };
 
     const onChangeCurItem = (plan) => {
@@ -192,12 +214,6 @@ const EditCalendar = ({ planner, plannerData, sortIndex, onCreatePlan, onDeleteP
                 {items &&
                     items.map((item, i) => (
                         <ItemBox
-                            // ref={(e) => {
-                            //     if (!itemsRef.current) {
-                            //         itemsRef.current = [];
-                            //     }
-                            //     itemsRef.current[i] = e;
-                            // }}
                             aria-current={item.planId === plannerData.planId ? 'date' : null}
                             onClick={() => {
                                 onChangeCurPlanId(item.planId);
@@ -205,13 +221,13 @@ const EditCalendar = ({ planner, plannerData, sortIndex, onCreatePlan, onDeleteP
                             key={item.planId}
                             draggable
                             onDragStart={(e) => {
-                                common.onDragStart({ e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop, onChangeCurItem, itemHeight });
+                                common.onDragStart({ e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop, onChangeCurItem, onCloneElement, itemHeight, onChangeStyle });
                             }}
                             onDrag={(e) => {
                                 common.onDragMove({ e, isDrag, posY, containerRef, dragItemIndex, dragTarget, scrollTop, initialScrollTop, itemHeight });
                             }}
                             onDragEnd={() => {
-                                common.onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr });
+                                common.onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr, onDeleteElement });
                             }}
                             onDragEnter={(e) => {
                                 common.onDragEnter({
@@ -225,7 +241,6 @@ const EditCalendar = ({ planner, plannerData, sortIndex, onCreatePlan, onDeleteP
                                     overTargetArr,
                                     setOverTargetArr,
                                     dragItemIndex,
-
                                     itemsArr,
                                     items,
                                     itemHeight,
@@ -241,7 +256,18 @@ const EditCalendar = ({ planner, plannerData, sortIndex, onCreatePlan, onDeleteP
                                 <StyledFontAwesomeIcon icon={faCircleXmark} />
                             </DeleteButton>
                         </ItemBox>
-                    ))}
+                    ))}{' '}
+                {cloneElement && (
+                    <CloneItem
+                        cloneElStyle={cloneElStyle}
+                        onDragEnter={() => {
+                            common.onCloneEnter({
+                                overItemIndex,
+                                dragItemIndex,
+                            });
+                        }}
+                    />
+                )}
             </EditCalendarBlock>
         </FlexDiv>
     );
