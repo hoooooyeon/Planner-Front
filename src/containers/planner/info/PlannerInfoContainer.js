@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfo from '../../../components/planner/info/PlannerInfo';
 import { changeCurPlanIdAction, deletePlannerAction, loadPlanAction, loadPlannerAction, toggleLikePlannerAction, toggleMemberModalAction, togglePlannerInfoModalAction } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
+import { useHistory } from 'react-router';
 
 const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
+
     const { planner, plannerError, plannerData, transList, account } = useSelector(({ plannerReducer, authReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
@@ -16,6 +19,7 @@ const PlannerInfoContainer = () => {
 
     const { plannerId, plans } = { ...planner };
     const { planId } = { ...plannerData };
+    const { accountId } = { ...account };
 
     const onDeletePlanner = () => {
         dispatch(deletePlannerAction(plannerId));
@@ -52,7 +56,13 @@ const PlannerInfoContainer = () => {
     };
 
     const onToggleLikePlanner = () => {
-        dispatch(toggleLikePlannerAction(plannerId));
+        if (accountId) {
+            dispatch(toggleLikePlannerAction(plannerId));
+        } else {
+            alert('로그인이 필요합니다.');
+
+            history.push('/login');
+        }
     };
 
     const mapRef = useRef(null);
@@ -142,7 +152,7 @@ const PlannerInfoContainer = () => {
 
     return (
         <PlannerInfo
-            account={account}
+            accountId={accountId}
             planner={planner}
             plannerData={plannerData}
             transList={transList}

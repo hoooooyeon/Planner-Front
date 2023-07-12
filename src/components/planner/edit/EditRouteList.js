@@ -58,7 +58,6 @@ const CloneItem = styled.div`
     height: 72px;
     margin-bottom: 1rem;
     padding: 2rem 1.4rem 0.5rem 1.4rem;
-    background: red;
     position: relative;
     ${(props) =>
         props.cloneElStyle &&
@@ -223,7 +222,6 @@ const EditRouteList = ({
     transList,
     onUpdatePlan,
     onDeleteLocation,
-    onChangeLocation,
     onUpdateTrans,
     onUpdateLocation,
     sortIndex,

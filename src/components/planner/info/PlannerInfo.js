@@ -116,7 +116,7 @@ const FlexBox = styled.div`
     }
 `;
 
-const PlannerInfo = ({ account, planner, mapRef, plannerData, transList, drag, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal, onChangeCurPlanId, onToggleLikePlanner }) => {
+const PlannerInfo = ({ accountId, planner, mapRef, plannerData, transList, drag, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal, onChangeCurPlanId, onToggleLikePlanner }) => {
     const menuRef = useRef();
     const [isDropDown, setIsDropDown] = useState(false);
 
@@ -145,39 +145,41 @@ const PlannerInfo = ({ account, planner, mapRef, plannerData, transList, drag, o
             <Container>
                 <InfoHeader>
                     <h3>따수베어님의 플래너</h3>
-                    <MenuBox>
-                        <MenuList>
-                            <MenuItem onClick={onTogglePlannerInfoModal}>플래너 정보 수정</MenuItem>
-                            <MenuItem>
-                                <Link to="/PlannerEdit">플래너 루트 수정</Link>
-                            </MenuItem>
-                            <MenuItem onClick={onToggleMemberModal}>멤버 관리</MenuItem>
-                            <MenuItem onClick={onDeletePlanner}>플래너 삭제</MenuItem>
-                        </MenuList>
-                        <Menu onClick={onOpenDropDown}>
-                            <FontAwesomeIcon icon={faGear} />
-                            <p>관리</p>
-                        </Menu>
-                        {isDropDown && (
-                            <DropDownMenu isDropDown={isDropDown} ref={menuRef}>
-                                <li onClick={onTogglePlannerInfoModal}>플래너 정보 수정</li>
-                                <li>
+                    {accountId && (
+                        <MenuBox>
+                            <MenuList>
+                                <MenuItem onClick={onTogglePlannerInfoModal}>플래너 정보 수정</MenuItem>
+                                <MenuItem>
                                     <Link to="/PlannerEdit">플래너 루트 수정</Link>
-                                </li>
-                                <li onClick={onToggleMemberModal}>멤버 관리</li>
-                                <li onClick={onDeletePlanner}>
-                                    <Link to="/PlannerList">플래너 삭제</Link>
-                                </li>
-                            </DropDownMenu>
-                        )}
-                    </MenuBox>
+                                </MenuItem>
+                                <MenuItem onClick={onToggleMemberModal}>멤버 관리</MenuItem>
+                                <MenuItem onClick={onDeletePlanner}>플래너 삭제</MenuItem>
+                            </MenuList>
+                            <Menu onClick={onOpenDropDown}>
+                                <FontAwesomeIcon icon={faGear} />
+                                <p>관리</p>
+                            </Menu>
+                            {isDropDown && (
+                                <DropDownMenu isDropDown={isDropDown} ref={menuRef}>
+                                    <li onClick={onTogglePlannerInfoModal}>플래너 정보 수정</li>
+                                    <li>
+                                        <Link to="/PlannerEdit">플래너 루트 수정</Link>
+                                    </li>
+                                    <li onClick={onToggleMemberModal}>멤버 관리</li>
+                                    <li onClick={onDeletePlanner}>
+                                        <Link to="/PlannerList">플래너 삭제</Link>
+                                    </li>
+                                </DropDownMenu>
+                            )}
+                        </MenuBox>
+                    )}
                 </InfoHeader>
                 <FlexBox>
                     <InfoMap planner={planner} mapRef={mapRef} onToggleLikePlanner={onToggleLikePlanner} />
                     <InfoRoute planner={planner} plannerData={plannerData} transList={transList} drag={drag} onChangeCurPlanId={onChangeCurPlanId} />
                 </FlexBox>
             </Container>
-            {account && <InfoMenu planner={planner} />}
+            <InfoMenu planner={planner} />
         </PlannerInfoBlock>
     );
 };

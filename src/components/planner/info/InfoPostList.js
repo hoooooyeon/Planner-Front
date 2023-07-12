@@ -105,7 +105,7 @@ const Img = styled.img`
     border-radius: 1rem;
     object-fit: cover;
 `;
-const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent, onLoadMemo, onResetMemo }) => {
+const InfoPostList = ({ planner, curMemo, accountId, onCreateMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent, onLoadMemo, onResetMemo }) => {
     const { planMemos } = { ...planner };
 
     const [isChanged, setIsChanged] = useState(false);
@@ -151,6 +151,8 @@ const InfoPostList = ({ planner, curMemo, onCreateMemo, onUpdateMemo, onDeleteMe
 
     if (!planner) {
         return <div>Loading...</div>;
+    } else if (!accountId) {
+        return null;
     }
     return (
         <InfoPostListBlock>

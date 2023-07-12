@@ -5,11 +5,13 @@ import { createMemoAction, deleteMemoAction, updateMemoAction } from '../../../m
 
 const InfoPostContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, account } = useSelector(({ plannerReducer, authReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
+        account: authReducer.account,
     }));
     const { plannerId } = { ...planner };
+    const { accountId } = { ...account };
 
     const [curMemo, setCurMemo] = useState({
         memoId: null,
@@ -56,6 +58,7 @@ const InfoPostContainer = () => {
         <InfoPostList
             planner={planner}
             curMemo={curMemo}
+            accountId={accountId}
             onCreateMemo={onCreateMemo}
             onUpdateMemo={onUpdateMemo}
             onDeleteMemo={onDeleteMemo}

@@ -44,7 +44,6 @@ const ItemBox = styled.div`
     cursor: pointer;
     border: none;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-
     margin-bottom: 0.5rem;
     &:hover {
         /* transition: transform 0.3s;
@@ -60,7 +59,6 @@ const CloneItem = styled.div`
     width: 3rem;
     height: 3rem;
     margin-bottom: 0.5rem;
-    background: red;
     position: relative;
     ${(props) =>
         props.cloneElStyle &&
@@ -129,7 +127,6 @@ const EditCalendar = ({
     onAddDate,
     onSubDate,
     onUpdateSubPlan,
-    onChangePlans,
     onUpdatePlan,
     setCurPlan,
     curPlan,

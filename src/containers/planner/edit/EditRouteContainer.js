@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import EditRoute from '../../../components/planner/edit/EditRoute';
 import {
     changeCurPlanIdAction,
-    changeLocationAction,
-    changePlansAction,
     createPlanAction,
     deleteLocationAction,
     deletePlanAction,
@@ -38,7 +36,7 @@ const EditRouteContainer = () => {
         return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
     };
 
-    // 기존 날짜에 수가 더해짐 리렌더링시 정상임
+    // 시작 날짜 선택 함수
     const onUpdatePlannerDate = (date) => {
         let planDateStart = letsFormat(date);
         let planDateEnd = letsFormat(date);
@@ -61,7 +59,7 @@ const EditRouteContainer = () => {
         dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
     };
 
-    // plan 삭제시 해당 날짜  제거
+    // plan 삭제시 날짜 하루 제거
     const onSubDate = (date) => {
         let curDate = new Date(date);
         let planDateEnd = letsFormat(curDate.setDate(curDate.getDate() - 1));
@@ -98,6 +96,7 @@ const EditRouteContainer = () => {
         }
     };
 
+    // 날짜 순서 수정
     const [curPlan, setCurPlan] = useState();
     const onUpdatePlan = () => {
         const planDate = curPlan.planDate;
@@ -112,7 +111,6 @@ const EditRouteContainer = () => {
     useEffect(() => {
         let date = new Date(planDateStart);
         let planDate = letsFormat(date);
-        console.log(updatePlans);
 
         if (plans) {
             for (let i = 0; i < plans.length; i++) {
@@ -127,6 +125,7 @@ const EditRouteContainer = () => {
         }
     }, [dispatch, planDateStart, planDateEnd, plannerId, updatePlans]);
 
+    // 로케이션 순서 수정
     const [curLocation, setCurLocation] = useState();
     const onUpdateLocation = () => {
         const { locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation } = curLocation;
@@ -149,18 +148,6 @@ const EditRouteContainer = () => {
         dispatch(changeCurPlanIdAction(planId));
     };
 
-    // 일정 변경 함수
-    // 현재 아무 기능은 없다.
-    // plans 배열을 복사하고 거기서 순서를 바꾼 뒤 바뀐 순서에서 양 옆의 index의 1/2의 값을 가져온 뒤
-    // 해당 요소의 index를  업뎃해준다. 그 뒤 db에서 index로 순서대로 정렬
-    const onChangePlans = (plans) => {
-        dispatch(changePlansAction(plans));
-    };
-
-    const onChangeLocation = (location) => {
-        dispatch(changeLocationAction(location));
-    };
-
     const onUpdateTrans = (trans, locationData) => {
         if (planner) {
             const { locationId, locationName, locationImage, locationContentId, locationAddr, locationMapx, locationMapy } = locationData;
@@ -176,6 +163,7 @@ const EditRouteContainer = () => {
         dispatch(togglePlannerInfoModalAction());
     };
 
+    // 드래그시 클론요소 생성 관련 함수
     const [cloneElement, setCloneElement] = useState(false);
     const [cloneElStyle, setCloneElStyle] = useState(0);
 
@@ -221,8 +209,6 @@ const EditRouteContainer = () => {
             onAddDate={onAddDate}
             onSubDate={onSubDate}
             // onUpdateSubPlan={onUpdateSubPlan}
-            onChangePlans={onChangePlans}
-            onChangeLocation={onChangeLocation}
             onUpdateTrans={onUpdateTrans}
             onToggleMemberModal={onToggleMemberModal}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}

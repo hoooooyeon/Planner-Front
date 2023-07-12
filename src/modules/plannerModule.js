@@ -78,12 +78,6 @@ const DELETE_LOCATION_FAILURE_TYPE = 'planner/DELETE_LOCATION_FAILURE';
 const CHANGE_CUR_PLAN_ID_TYPE = 'planner/CHANGE_CUR_PLAN_ID';
 const CHANGE_CUR_PLANNER_ID_TYPE = 'planner/CHANGE_CUR_PLANNER_ID';
 
-const CHANGE_PLANS_TYPE = 'planner/CHANGE_PLANS';
-
-const CHANGE_LOCATION_TYPE = 'planner/CHANGE_LOCATION';
-
-const CREATE_MAP_TYPE = 'planner/CREATE_MAP';
-
 const CHANGE_PAGE_NUM_TYPE = 'planner/CHANGE_PAGE_NUM';
 
 const CHANGE_KEYWORD_TYPE = 'planner/CHANGE_KEYWORD';
@@ -146,9 +140,6 @@ export const updateLocationAction = ({ plannerId, locationId, locationName, loca
 export const deleteLocationAction = ({ plannerId, locationId, planId }) => ({ type: DELETE_LOCATION_TYPE, plannerId, locationId, planId });
 export const changeCurPlanIdAction = (planId) => ({ type: CHANGE_CUR_PLAN_ID_TYPE, planId });
 export const changeCurPlannerIdAction = (plannerId) => ({ type: CHANGE_CUR_PLANNER_ID_TYPE, plannerId });
-export const changePlansAction = (plans) => ({ type: CHANGE_PLANS_TYPE, plans });
-export const changeLocationAction = (location) => ({ type: CHANGE_LOCATION_TYPE, location });
-export const createMapAction = (mapData) => ({ type: CREATE_MAP_TYPE, mapData });
 export const changePageNumAction = (pageNum) => ({ type: CHANGE_PAGE_NUM_TYPE, pageNum });
 export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, keyword });
 export const changeResultKeywordAction = (keyword) => ({ type: CHANGE_RESULT_KEYWORD_TYPE, keyword });
@@ -218,10 +209,6 @@ const initialState = {
         { label: '오토바이', value: 5 },
         { label: '도보', value: 6 },
     ],
-};
-const letsFormat = (d) => {
-    const date = new Date(d);
-    return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
 };
 
 function plannerReducer(state = initialState, action) {
@@ -412,20 +399,7 @@ function plannerReducer(state = initialState, action) {
                     plannerId: action.plannerId,
                 },
             };
-        case CHANGE_PLANS_TYPE:
-            return {
-                ...state,
-            };
-        case CHANGE_LOCATION_TYPE:
-            return {
-                ...state,
-                location: action.location,
-            };
-        case CREATE_MAP_TYPE:
-            return {
-                ...state,
-                map: action.mapData,
-            };
+
         case CHANGE_PAGE_NUM_TYPE:
             return {
                 ...state,

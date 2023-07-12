@@ -209,8 +209,6 @@ const EditRoute = ({
     onAddDate,
     onSubDate,
     onUpdateSubPlan,
-    onChangePlans,
-    onChangeLocation,
     onUpdateTrans,
     onToggleMemberModal,
     onTogglePlannerInfoModal,
@@ -300,7 +298,6 @@ const EditRoute = ({
                     onAddDate={onAddDate}
                     onSubDate={onSubDate}
                     onUpdateSubPlan={onUpdateSubPlan}
-                    onChangePlans={onChangePlans}
                     onUpdatePlan={onUpdatePlan}
                     setCurPlan={setCurPlan}
                     cloneElement={cloneElement}
@@ -318,7 +315,6 @@ const EditRoute = ({
                     transList={transList}
                     onUpdatePlan={onUpdatePlan}
                     onDeleteLocation={onDeleteLocation}
-                    onChangeLocation={onChangeLocation}
                     onUpdateTrans={onUpdateTrans}
                     onUpdateLocation={onUpdateLocation}
                     setCurLocation={setCurLocation}

@@ -16,7 +16,6 @@ const ShareListContainer = () => {
     }));
 
     const { pageNum } = { ...plannerData };
-    const { accountId } = { ...account };
     const { curKeyword, resultKeyword } = { ...keyword };
     const [sortCriteria, setSortCriteria] = useState(2);
 
@@ -29,10 +28,8 @@ const ShareListContainer = () => {
         const itemCount = 12;
         const keyword = resultKeyword;
 
-        if (accountId) {
-            dispatch(loadSharePlannerListAction({ itemCount, sortCriteria, pageNum, keyword }));
-        }
-    }, [dispatch, pageNum, accountId, resultKeyword, sortCriteria]);
+        dispatch(loadSharePlannerListAction({ itemCount, sortCriteria, pageNum, keyword }));
+    }, [dispatch, pageNum, resultKeyword, sortCriteria]);
 
     // 플래너 정보 가져오기
     const onLoadPlanner = (plannerId) => {
