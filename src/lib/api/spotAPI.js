@@ -6,13 +6,15 @@ export const loadAreas = () => {
 };
 
 // 지역에 따른 여행지
-export const loadSpots = ({ areaCode, contentTypeId, pageNo }) => {
-    return client.get(`/api/spots/lists-area?areaCode=${areaCode}&contentTypeId=${contentTypeId}&pageNo=${pageNo}`);
+export const loadSpots = ({ areaCode, contentTypeId, pageNo, numOfRows }) => {
+    return client.get(
+        `/api/spots/lists-area?areaCode=${areaCode}&contentTypeId=${contentTypeId}&numOfRows=${numOfRows}&pageNo=${pageNo}`,
+    );
 };
 
 // 여행지 상세 정보
-export const loadDetailSpot = ({ id }) => {
-    return client.get(`/api/spots/lists/${id}`);
+export const loadDetailSpot = ({ contentId }) => {
+    return client.get(`/api/spots/lists/${contentId}`);
 };
 
 // 여행지 좋아요 추가
@@ -26,8 +28,8 @@ export const removeSpotLike = ({ contentId }) => {
 };
 
 // 여행지 검색
-export const searchSpot = ({ areaCode, contentTypeId, curKeyword, pageNo }) => {
+export const searchSpot = ({ areaCode, contentTypeId, curKeyword, pageNo, numOfRows }) => {
     return client.get(
-        `/api/spots/lists-keyword?areaCode=${areaCode}&contentTypeId=${contentTypeId}&keyword=${curKeyword}&pageNo=${pageNo}`,
+        `/api/spots/lists-keyword?areaCode=${areaCode}&contentTypeId=${contentTypeId}&numOfRows=${numOfRows}&keyword=${curKeyword}&pageNo=${pageNo}`,
     );
 };

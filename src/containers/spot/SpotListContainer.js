@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router';
 import SpotList from '../../components/spot/SpotList';
 import {
     addSpotLikeAction,
@@ -26,7 +27,6 @@ const SpotListContainer = ({
     detail,
     spotModal,
     spotData,
-    account,
     contentTypeList,
     loadAreas,
     loadSpots,
@@ -47,15 +47,14 @@ const SpotListContainer = ({
 
     // 지역 가져오기
     useEffect(() => {
-        if (account) {
-            loadAreas();
-        }
-    }, [loadAreas, account]);
+        loadAreas();
+    }, [loadAreas]);
 
+    const numOfRows = 12;
     // 여행지 가져오기
     useEffect(() => {
         if (areas) {
-            loadSpots({ areaCode, contentTypeId, pageNo });
+            loadSpots({ areaCode, contentTypeId, pageNo, numOfRows });
         }
     }, [loadSpots, areaCode, pageNo, areas, contentTypeId, spotData]);
 
@@ -72,7 +71,7 @@ const SpotListContainer = ({
     };
     useEffect(() => {
         if (contentId) {
-            loadDetailSpot(contentId);
+            loadDetailSpot({ contentId });
         }
     }, [loadDetailSpot, contentId, spotData]);
 
@@ -97,17 +96,6 @@ const SpotListContainer = ({
         };
     }, [resetSpotData, resetSpots]);
 
-    // 여행지 좋아요 토글
-    const onToggleSpotLike = (contentId) => {
-        const { likeState } = detail;
-
-        if (likeState === false) {
-            addSpotLike({ contentId });
-        } else {
-            removeSpotLike({ contentId });
-        }
-    };
-
     const [curKeyword, setCurKeyword] = useState('');
     const [resultKeyword, setResultKeyword] = useState('');
     // 여행지 키워드로 검색
@@ -123,7 +111,7 @@ const SpotListContainer = ({
     useEffect(() => {
         if (resultKeyword.length !== 0) {
             const pageNo = 1;
-            searchSpot({ areaCode, contentTypeId, curKeyword, pageNo });
+            searchSpot({ areaCode, contentTypeId, curKeyword, pageNo, numOfRows });
         }
     }, [resultKeyword]);
 
@@ -174,7 +162,6 @@ const SpotListContainer = ({
             resultKeyword={resultKeyword}
             contentTypeList={contentTypeList}
             onClickArea={onClickArea}
-            onToggleSpotLike={onToggleSpotLike}
             onOpenDetail={onOpenDetail}
             onChangeCurKeyword={onChangeCurKeyword}
             onChangeResultKeyword={onChangeResultKeyword}
@@ -187,20 +174,20 @@ const mapStateToProps = (state) => ({
     areas: state.spotReducer.areas,
     spots: state.spotReducer.spots,
     detail: state.spotReducer.detail,
+    account: state.authReducer.account,
     spotError: state.spotReducer.spotError,
     spotData: state.spotReducer.spotData,
     likeList: state.spotReducer.likeList,
     keyword: state.spotReducer.keyword,
     contentTypeList: state.spotReducer.contentTypeList,
-    account: state.authReducer.account,
     spotModal: state.spotReducer.spotModal,
 });
 const mapDispatchToProps = (dispatch) => ({
     loadAreas: () => {
         dispatch(loadAreasAction());
     },
-    loadSpots: ({ areaCode, contentTypeId, pageNo }) => {
-        dispatch(loadSpotsAction({ areaCode, contentTypeId, pageNo }));
+    loadSpots: ({ areaCode, contentTypeId, pageNo, numOfRows }) => {
+        dispatch(loadSpotsAction({ areaCode, contentTypeId, pageNo, numOfRows }));
     },
     changeAreaIndex: (index) => {
         dispatch(changeAreaIndexAction(index));
@@ -229,8 +216,8 @@ const mapDispatchToProps = (dispatch) => ({
     resetSpotData: () => {
         dispatch(resetSpotDataAction());
     },
-    searchSpot: ({ areaCode, contentTypeId, curKeyword, pageNo }) => {
-        dispatch(searchSpotAction({ areaCode, contentTypeId, curKeyword, pageNo }));
+    searchSpot: ({ areaCode, contentTypeId, curKeyword, pageNo, numOfRows }) => {
+        dispatch(searchSpotAction({ areaCode, contentTypeId, curKeyword, pageNo, numOfRows }));
     },
     changeContentTypeId: (contentTypeId) => {
         dispatch(changeContentTypeIdAction(contentTypeId));

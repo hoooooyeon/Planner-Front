@@ -41,16 +41,17 @@ const CHANGE_CONTENT_TYPE_ID_TYPE = 'spot/CHANGE_CONTENT_TYPE_ID';
 const TOGGLE_SPOT_DETAIL_MODAL_TYPE = 'spot/TOGGLE_SPOT_DETAIL_MODAL';
 
 export const loadAreasAction = () => ({ type: LOAD_AREAS_TYPE });
-export const loadSpotsAction = ({ areaCode, contentTypeId, pageNo }) => ({
+export const loadSpotsAction = ({ areaCode, contentTypeId, pageNo, numOfRows }) => ({
     type: LOAD_SPOTS_TYPE,
     areaCode,
     contentTypeId,
     pageNo,
+    numOfRows,
 });
 export const changeAreaIndexAction = (index) => ({ type: CHANGE_AREA_INDEX_TYPE, index });
 export const changePageIndexAction = (index) => ({ type: CHANGE_PAGE_INDEX_TYPE, index });
 export const changeContentIdAction = (id) => ({ type: CHANGE_CONTENT_ID_TYPE, id });
-export const loadDetailSpotAction = (id) => ({ type: LOAD_DETAIL_SPOT_TYPE, id });
+export const loadDetailSpotAction = ({ contentId }) => ({ type: LOAD_DETAIL_SPOT_TYPE, contentId });
 export const resetDetailSpotAction = () => ({ type: RESET_DETAIL_SPOT_TYPE });
 export const changeDetailSpotAction = (spotInfo) => ({ type: CHANGE_DETAIL_SPOT_TYPE, spotInfo });
 export const addSpotLikeAction = ({ contentId, title, image }) => ({
@@ -62,12 +63,13 @@ export const addSpotLikeAction = ({ contentId, title, image }) => ({
 export const removeSpotLikeAction = ({ contentId }) => ({ type: REMOVE_SPOT_LIKE_TYPE, contentId });
 export const resetSpotsAction = () => ({ type: RESET_SPOTS_TYPE });
 export const resetSpotDataAction = () => ({ type: RESET_SPOT_DATA_TYPE });
-export const searchSpotAction = ({ areaCode, contentTypeId, curKeyword, pageNo }) => ({
+export const searchSpotAction = ({ areaCode, contentTypeId, curKeyword, numOfRows, pageNo }) => ({
     type: SEARCH_SPOT_TYPE,
     areaCode,
     contentTypeId,
     curKeyword,
     pageNo,
+    numOfRows,
 });
 export const changeContentTypeIdAction = (contentTypeId) => ({ type: CHANGE_CONTENT_TYPE_ID_TYPE, contentTypeId });
 export const toggleSpotDetailModalAction = () => ({ type: TOGGLE_SPOT_DETAIL_MODAL_TYPE });
