@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import styled, { css } from 'styled-components';
@@ -32,6 +34,11 @@ const StyledInput = styled.input`
     width: 100%;
     height: 2rem;
     padding: 0 0.5rem;
+    ${(props) =>
+        props.hosted === false &&
+        css`
+            pointer-events: none;
+        `}
     &::placeholder {
         color: #beb9b9;
     }
@@ -40,17 +47,36 @@ const StyledInput = styled.input`
     }
 `;
 
-const MemoModal = ({ curMemo, onChangeMemoTitle, onChangeMemoContent, isState, onModalClose, onModalConfirm }) => {
+const StyledReactQuill = styled(ReactQuill)`
+    ${(props) =>
+        props.hosted === false &&
+        css`
+            pointer-events: none;
+        `}
+`;
+
+const MemoModal = ({ nickname, creator, curMemo, onChangeMemoTitle, onChangeMemoContent, isState, onModalClose, onModalConfirm }) => {
     const modules = {
         toolbar: [[{ header: [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], [{ color: [] }, { background: [] }], ['clean']],
     };
 
     const { title, content } = { ...curMemo };
+
+    const [hosted, setHosted] = useState(false);
+    useEffect(() => {
+        if (nickname === creator) {
+            setHosted(true);
+        } else {
+            setHosted(false);
+        }
+    }, [nickname, creator]);
+
     return (
         <Modal modalVisible={isState} title="메모 수정" onModalClose={onModalClose} onModalConfirm={onModalConfirm}>
             <MemoModalBlock>
                 <MemoModalHeader>
                     <StyledInput
+                        hosted={hosted}
                         name="title"
                         placeholder="Title"
                         type="text"
@@ -61,7 +87,8 @@ const MemoModal = ({ curMemo, onChangeMemoTitle, onChangeMemoContent, isState, o
                     />
                 </MemoModalHeader>
                 <MemoModalBody>
-                    <ReactQuill
+                    <StyledReactQuill
+                        hosted={hosted}
                         placeholder="내용을 입력해주세요."
                         theme="snow"
                         modules={modules}

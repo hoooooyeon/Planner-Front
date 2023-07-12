@@ -152,7 +152,7 @@ const PlannerInfoContainer = () => {
 
     return (
         <PlannerInfo
-            accountId={accountId}
+            account={account}
             planner={planner}
             plannerData={plannerData}
             transList={transList}

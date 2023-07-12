@@ -45,6 +45,7 @@ const ItemBox = styled.div`
     border: none;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     margin-bottom: 0.5rem;
+    z-index: 1;
     &:hover {
         /* transition: transform 0.3s;
         transform: scale(1.05); */
@@ -60,6 +61,7 @@ const CloneItem = styled.div`
     height: 3rem;
     margin-bottom: 0.5rem;
     position: relative;
+    background: red;
     ${(props) =>
         props.cloneElStyle &&
         css`

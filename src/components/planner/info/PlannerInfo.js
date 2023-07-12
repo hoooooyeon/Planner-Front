@@ -116,7 +116,9 @@ const FlexBox = styled.div`
     }
 `;
 
-const PlannerInfo = ({ accountId, planner, mapRef, plannerData, transList, drag, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal, onChangeCurPlanId, onToggleLikePlanner }) => {
+const PlannerInfo = ({ account, planner, mapRef, plannerData, transList, drag, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal, onChangeCurPlanId, onToggleLikePlanner }) => {
+    const { nickname } = { ...account };
+    const { creator } = { ...planner };
     const menuRef = useRef();
     const [isDropDown, setIsDropDown] = useState(false);
 
@@ -145,7 +147,7 @@ const PlannerInfo = ({ accountId, planner, mapRef, plannerData, transList, drag,
             <Container>
                 <InfoHeader>
                     <h3>따수베어님의 플래너</h3>
-                    {accountId && (
+                    {nickname === creator && (
                         <MenuBox>
                             <MenuList>
                                 <MenuItem onClick={onTogglePlannerInfoModal}>플래너 정보 수정</MenuItem>

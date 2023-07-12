@@ -46,7 +46,6 @@ const PostListHeader = styled.div`
 `;
 
 const PostList = styled.ul`
-    /* margin-top: 2rem; */
     border-top: 1px solid navy;
     border-bottom: 1px solid navy;
     padding: 0;
@@ -105,8 +104,9 @@ const Img = styled.img`
     border-radius: 1rem;
     object-fit: cover;
 `;
-const InfoPostList = ({ planner, curMemo, accountId, onCreateMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent, onLoadMemo, onResetMemo }) => {
-    const { planMemos } = { ...planner };
+const InfoPostList = ({ planner, curMemo, account, onCreateMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent, onLoadMemo, onResetMemo }) => {
+    const { planMemos, creator } = { ...planner };
+    const { accountId, nickname } = { ...account };
 
     const [isChanged, setIsChanged] = useState(false);
     const adRef = useRef();
@@ -133,14 +133,18 @@ const InfoPostList = ({ planner, curMemo, accountId, onCreateMemo, onUpdateMemo,
 
     const onCreatePostMd = () => {
         setIsCreate(false);
-        onCreateMemo();
         onResetMemo();
+        if (nickname === creator) {
+            onCreateMemo();
+        }
     };
 
     const onEditPostMd = () => {
         setIsEdit(false);
-        onUpdateMemo(curMemo.memoId);
         onResetMemo();
+        if (nickname === creator) {
+            onUpdateMemo(curMemo.memoId);
+        }
     };
 
     const onCancelPostMd = () => {
@@ -160,25 +164,45 @@ const InfoPostList = ({ planner, curMemo, accountId, onCreateMemo, onUpdateMemo,
                 <PostListBlock>
                     <PostListHeader>
                         <h3>Memo</h3>
-                        <Button
-                            onClick={() => {
-                                onResetMemo();
-                                setIsCreate(true);
-                            }}
-                        >
-                            ADD
-                        </Button>
+                        {nickname === creator && (
+                            <Button
+                                onClick={() => {
+                                    onResetMemo();
+                                    setIsCreate(true);
+                                }}
+                            >
+                                ADD
+                            </Button>
+                        )}
                     </PostListHeader>
                     <PostList>
                         {planMemos &&
                             planMemos.map((memo) => {
-                                return <InfoPostItem key={memo.memoId} memo={memo} onDeleteMemo={onDeleteMemo} onLoadMemo={onLoadMemo} setIsEdit={setIsEdit} />;
+                                return <InfoPostItem key={memo.memoId} memo={memo} onDeleteMemo={onDeleteMemo} onLoadMemo={onLoadMemo} setIsEdit={setIsEdit} account={account} planner={planner} />;
                             })}
                     </PostList>
                     {/* 메모 생성 모달 */}
-                    <MemoModal curMemo={curMemo} onChangeMemoTitle={onChangeMemoTitle} onChangeMemoContent={onChangeMemoContent} isState={isCreate} onModalClose={onCancelPostMd} onModalConfirm={onCreatePostMd} />
+                    <MemoModal
+                        nickname={nickname}
+                        creator={creator}
+                        curMemo={curMemo}
+                        onChangeMemoTitle={onChangeMemoTitle}
+                        onChangeMemoContent={onChangeMemoContent}
+                        isState={isCreate}
+                        onModalClose={onCancelPostMd}
+                        onModalConfirm={onCreatePostMd}
+                    />
                     {/* 메모 수정 모달 */}
-                    <MemoModal curMemo={curMemo} onChangeMemoTitle={onChangeMemoTitle} onChangeMemoContent={onChangeMemoContent} isState={isEdit} onModalClose={onCancelPostMd} onModalConfirm={onEditPostMd} />
+                    <MemoModal
+                        nickname={nickname}
+                        creator={creator}
+                        curMemo={curMemo}
+                        onChangeMemoTitle={onChangeMemoTitle}
+                        onChangeMemoContent={onChangeMemoContent}
+                        isState={isEdit}
+                        onModalClose={onCancelPostMd}
+                        onModalConfirm={onEditPostMd}
+                    />
                 </PostListBlock>
                 <Ad ref={adRef}>
                     {!isChanged ? (

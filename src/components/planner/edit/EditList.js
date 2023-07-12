@@ -57,6 +57,8 @@ const Img = styled.img`
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     width: 5rem;
     height: 5rem;
+    font-size: 0.7rem;
+    color: gray;
 `;
 const TextInfo = styled.div`
     height: 100%;

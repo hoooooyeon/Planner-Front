@@ -11,7 +11,6 @@ const InfoPostContainer = () => {
         account: authReducer.account,
     }));
     const { plannerId } = { ...planner };
-    const { accountId } = { ...account };
 
     const [curMemo, setCurMemo] = useState({
         memoId: null,
@@ -58,7 +57,7 @@ const InfoPostContainer = () => {
         <InfoPostList
             planner={planner}
             curMemo={curMemo}
-            accountId={accountId}
+            account={account}
             onCreateMemo={onCreateMemo}
             onUpdateMemo={onUpdateMemo}
             onDeleteMemo={onDeleteMemo}

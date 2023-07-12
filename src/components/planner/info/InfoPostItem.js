@@ -91,10 +91,10 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     }
 `;
 
-const InfoPostItem = ({ memo, onDeleteMemo, onLoadMemo, setIsEdit }) => {
-    const textRef = useRef();
-
-    const { memoId, title, content, updateDate } = memo;
+const InfoPostItem = ({ account, planner, memo, onDeleteMemo, onLoadMemo, setIsEdit }) => {
+    const { memoId, title } = memo;
+    const { nickname } = { ...account };
+    const { creator } = { ...planner };
 
     const onDeletePostMd = () => {
         onDeleteMemo(memoId);
@@ -105,11 +105,7 @@ const InfoPostItem = ({ memo, onDeleteMemo, onLoadMemo, setIsEdit }) => {
             <PostHeader>
                 <Number>{memoId}</Number>
                 <Title>{title}</Title>
-                {/* <Date>updated {updateDate}</Date> */}
             </PostHeader>
-            {/* <PostContent>
-                <Text ref={textRef} dangerouslySetInnerHTML={{ __html: content }}></Text>
-            </PostContent> */}
             <ButtonBox>
                 <StyledFontAwesomeIcon
                     icon={faPen}
@@ -118,7 +114,7 @@ const InfoPostItem = ({ memo, onDeleteMemo, onLoadMemo, setIsEdit }) => {
                         onLoadMemo(memo);
                     }}
                 />
-                <StyledFontAwesomeIcon icon={faXmark} onClick={onDeletePostMd} />
+                {nickname === creator && <StyledFontAwesomeIcon icon={faXmark} onClick={onDeletePostMd} />}
             </ButtonBox>
         </PostItem>
     );
