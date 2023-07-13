@@ -61,7 +61,6 @@ const CloneItem = styled.div`
     height: 3rem;
     margin-bottom: 0.5rem;
     position: relative;
-    background: red;
     ${(props) =>
         props.cloneElStyle &&
         css`
@@ -214,9 +213,6 @@ const EditCalendar = ({
                     items.map((item, i) => (
                         <ItemBox
                             aria-current={item.planId === plannerData.planId ? 'date' : null}
-                            onClick={() => {
-                                onChangeCurPlanId(item.planId);
-                            }}
                             key={item.planId}
                             draggable
                             onDragStart={(e) => {
@@ -246,7 +242,13 @@ const EditCalendar = ({
                                 });
                             }}
                         >
-                            <Calendar>{letsFormat(item.planDate)}</Calendar>
+                            <Calendar
+                                onClick={() => {
+                                    onChangeCurPlanId(item.planId);
+                                }}
+                            >
+                                {letsFormat(item.planDate)}
+                            </Calendar>
                             <DeleteButton
                                 onClick={() => {
                                     onClickDeletePlan(item.planId);
@@ -255,7 +257,7 @@ const EditCalendar = ({
                                 <StyledFontAwesomeIcon icon={faCircleXmark} />
                             </DeleteButton>
                         </ItemBox>
-                    ))}{' '}
+                    ))}
                 {cloneElement && (
                     <CloneItem
                         cloneElStyle={cloneElStyle}

@@ -9,7 +9,7 @@ import { loadSpotsAction, resetSpotDataAction, changeAreaIndexAction } from '../
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, spots, spotData, areas, keyword, contentTypeList } = useSelector(({ plannerReducer, spotReducer }) => ({
+    const { planner, plannerError, plannerData, spots, spotData, areas, keyword, contentTypeList } = useSelector(({ plannerReducer, spotReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         spots: spotReducer.spots,
@@ -17,7 +17,7 @@ const EditMapContainer = () => {
         spotData: spotReducer.spotData,
         keyword: spotReducer.keyword,
         contentTypeList: spotReducer.contentTypeList,
-        // map: plannerReducer.map,
+        plannerData: plannerReducer.plannerData,
     }));
 
     const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
@@ -201,11 +201,52 @@ const EditMapContainer = () => {
             }
         }
     }, [kakao.maps.LatLng, kakao.maps.Polyline, kakao.maps.InfoWindow, kakao.maps.event, kakao.maps.Marker, kakao.maps.MarkerImage, kakao.maps.Size, map, plans]);
+    const showDateRouteMarker = useCallback(() => {
+        if (map && plans) {
+            let linePath = [];
+            let polyline;
+
+            newMarkerArr.current = [];
+
+            let foundPlan;
+            for (let i = 0; i < plans.length; i++) {
+                foundPlan = plans.find((plan) => plan.planId === plannerData.planId);
+
+                if (foundPlan) {
+                    for (let j = 0; j < foundPlan.planLocations.length; j++) {
+                        const { locationMapx, locationMapy } = foundPlan.planLocations[j];
+
+                        // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+                        linePath = [...linePath, new kakao.maps.LatLng(locationMapy, locationMapx)];
+                    }
+
+                    // 지도에 표시할 선을 생성합니다
+                    polyline = new kakao.maps.Polyline({
+                        path: linePath, // 선을 구성하는 좌표배열 입니다
+                        strokeWeight: 3, // 선의 두께 입니다
+                        strokeColor: 'gray', // 선의 색깔입니다
+                        strokeOpacity: 0.5, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                        strokeStyle: 'solid', // 선의 스타일입니다
+                    });
+
+                    // 기존 라인을 지우고 새로 라인 긋기.
+                    if (line.current) {
+                        line.current.setMap(null);
+                    }
+
+                    line.current = polyline;
+                    // 지도에 선을 표시합니다
+                    polyline.setMap(map);
+                }
+            }
+        }
+    }, [kakao.maps.LatLng, kakao.maps.Polyline, map, plans, plannerData.planId]);
 
     useEffect(() => {
         showSpotMarker();
         showRouteMarker();
-    }, [showRouteMarker, showSpotMarker]);
+        // showDateRouteMarker();
+    }, [showRouteMarker, showSpotMarker, showDateRouteMarker]);
 
     // 지도 중심 좌표 얻는 함수
     const [centerCoord, setCenterCoord] = useState();

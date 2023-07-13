@@ -91,8 +91,8 @@ const EditRouteContainer = () => {
     };
     const onDeletePlan = (planId) => {
         dispatch(deletePlanAction({ plannerId, planId }));
-        if (planner && plans.length > 1 && planId === plannerData.planId) {
-            dispatch(changeCurPlanIdAction(plans[0].planId));
+        if (planner && plans.length > 0 && planId === plannerData.planId) {
+            // dispatch(changeCurPlanIdAction(plans[0].planId));
         }
     };
 
@@ -179,6 +179,20 @@ const EditRouteContainer = () => {
     const onChangeStyle = (top) => {
         setCloneElStyle(top);
     };
+
+    useEffect(() => {
+        if (plans.length > 0) {
+            let isPlanId = 0;
+            plans.forEach((p) => {
+                if (p.planId === planId) {
+                    isPlanId++;
+                }
+            });
+            if (isPlanId === 0) {
+                dispatch(changeCurPlanIdAction(plans[0].planId));
+            }
+        }
+    }, [dispatch, plans]);
 
     return (
         <EditRoute
