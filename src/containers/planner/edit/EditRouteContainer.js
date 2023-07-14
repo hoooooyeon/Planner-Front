@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditRoute from '../../../components/planner/edit/EditRoute';
 import {
+    changeAllRouteAction,
     changeCurPlanIdAction,
     createPlanAction,
     deleteLocationAction,
@@ -181,7 +182,7 @@ const EditRouteContainer = () => {
     };
 
     useEffect(() => {
-        if (plans.length > 0) {
+        if (plans && plans.length > 0) {
             let isPlanId = 0;
             plans.forEach((p) => {
                 if (p.planId === planId) {
@@ -193,6 +194,10 @@ const EditRouteContainer = () => {
             }
         }
     }, [dispatch, plans]);
+
+    const onClickDateRoute = () => {
+        dispatch(changeAllRouteAction(false));
+    };
 
     return (
         <EditRoute
@@ -222,13 +227,13 @@ const EditRouteContainer = () => {
             onChangeCurPlanId={onChangeCurPlanId}
             onAddDate={onAddDate}
             onSubDate={onSubDate}
-            // onUpdateSubPlan={onUpdateSubPlan}
             onUpdateTrans={onUpdateTrans}
             onToggleMemberModal={onToggleMemberModal}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onUpdatePlan={onUpdatePlan}
             onUpdateLocation={onUpdateLocation}
             setUpdatePlans={setUpdatePlans}
+            onClickDateRoute={onClickDateRoute}
         />
     );
 };

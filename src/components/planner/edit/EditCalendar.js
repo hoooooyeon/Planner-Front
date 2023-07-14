@@ -137,6 +137,7 @@ const EditCalendar = ({
     onDeleteElement,
     onChangeStyle,
     setUpdatePlans,
+    onClickDateRoute,
 }) => {
     const { planDateEnd, plans: items } = { ...planner };
 
@@ -245,6 +246,7 @@ const EditCalendar = ({
                             <Calendar
                                 onClick={() => {
                                     onChangeCurPlanId(item.planId);
+                                    onClickDateRoute();
                                 }}
                             >
                                 {letsFormat(item.planDate)}

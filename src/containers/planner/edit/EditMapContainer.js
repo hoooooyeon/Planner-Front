@@ -2,14 +2,14 @@ import { useCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditMap from '../../../components/planner/edit/EditMap';
-import { createMapAction, updatePlannerAction } from '../../../modules/plannerModule';
+import { changeAllRouteAction } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import locationImg from '../../../lib/images/location.png';
 import { loadSpotsAction, resetSpotDataAction, changeAreaIndexAction } from '../../../modules/spotModule';
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, plannerData, spots, spotData, areas, keyword, contentTypeList } = useSelector(({ plannerReducer, spotReducer }) => ({
+    const { planner, plannerError, plannerData, spots, spotData, allRoute } = useSelector(({ plannerReducer, spotReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         spots: spotReducer.spots,
@@ -18,12 +18,10 @@ const EditMapContainer = () => {
         keyword: spotReducer.keyword,
         contentTypeList: spotReducer.contentTypeList,
         plannerData: plannerReducer.plannerData,
+        allRoute: plannerReducer.allRoute,
     }));
 
     const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
-    const onUpdatePlanner = () => {
-        dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
-    };
 
     const mapRef = useRef(null);
     const [map, setMap] = useState();
@@ -36,9 +34,7 @@ const EditMapContainer = () => {
         };
         const map = new kakao.maps.Map(mapRef.current, options);
         setMap(map);
-
-        // dispatch(createMapAction(map));
-    }, []);
+    }, [mapRef.current]);
 
     // 지도의 좌표 전부 보이게 시점 변경
     const [view, setView] = useState(true);
@@ -482,7 +478,17 @@ const EditMapContainer = () => {
         dispatch(resetSpotDataAction());
     };
 
-    return <EditMap mapRef={mapRef} showDateRouteMarker={showDateRouteMarker} showAllRouteMarker={showAllRouteMarker} onResetSpotData={onResetSpotData} />;
+    const onClickAllRoute = () => {
+        if (allRoute) {
+            showDateRouteMarker();
+            dispatch(changeAllRouteAction(false));
+        } else {
+            showAllRouteMarker();
+            dispatch(changeAllRouteAction(true));
+        }
+    };
+
+    return <EditMap mapRef={mapRef} allRoute={allRoute} onClickAllRoute={onClickAllRoute} showDateRouteMarker={showDateRouteMarker} showAllRouteMarker={showAllRouteMarker} onResetSpotData={onResetSpotData} />;
 };
 
 export default EditMapContainer;

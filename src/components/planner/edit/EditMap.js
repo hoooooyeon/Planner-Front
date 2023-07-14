@@ -45,24 +45,13 @@ const Button = styled.button`
         line-height: 3rem;
     }
     ${(props) =>
-        props.isClicked &&
+        props.allRoute &&
         css`
             background-color: #ebdede;
         `}
 `;
 
-const EditMap = ({ mapRef, onResetSpotData, showDateRouteMarker, showAllRouteMarker }) => {
-    const [isClicked, setIsClicked] = useState(false);
-    const onClickSchedule = () => {
-        if (isClicked) {
-            showDateRouteMarker();
-            setIsClicked(false);
-        } else {
-            setIsClicked(true);
-            showAllRouteMarker();
-        }
-    };
-
+const EditMap = ({ mapRef, allRoute, onClickAllRoute, onResetSpotData, showDateRouteMarker, showAllRouteMarker }) => {
     if (!mapRef) {
         return <div>Loading...</div>;
     }
@@ -71,7 +60,7 @@ const EditMap = ({ mapRef, onResetSpotData, showDateRouteMarker, showAllRouteMar
             <Map ref={mapRef} />
             <ButtonBox>
                 <Button>사용 방법</Button>
-                <Button isClicked={isClicked} onClick={onClickSchedule}>
+                <Button allRoute={allRoute} onClick={onClickAllRoute}>
                     모든 일정 보기
                 </Button>
                 <Button onClick={onResetSpotData}>

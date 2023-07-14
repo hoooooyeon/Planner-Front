@@ -115,7 +115,24 @@ const FlexBox = styled.div`
     }
 `;
 
-const PlannerInfo = ({ account, planner, mapRef, plannerData, transList, drag, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal, onChangeCurPlanId, onToggleLikePlanner, showAllRouteMarker, showDateRouteMarker }) => {
+const PlannerInfo = ({
+    account,
+    planner,
+    mapRef,
+    allRoute,
+    plannerData,
+    transList,
+    drag,
+    onDeletePlanner,
+    onToggleMemberModal,
+    onTogglePlannerInfoModal,
+    onChangeCurPlanId,
+    onToggleLikePlanner,
+    showAllRouteMarker,
+    showDateRouteMarker,
+    onClickAllRoute,
+    onClickDateRoute,
+}) => {
     const { nickname } = { ...account };
     const { creator } = { ...planner };
     const menuRef = useRef();
@@ -176,8 +193,16 @@ const PlannerInfo = ({ account, planner, mapRef, plannerData, transList, drag, o
                     )}
                 </InfoHeader>
                 <FlexBox>
-                    <InfoMap planner={planner} mapRef={mapRef} onToggleLikePlanner={onToggleLikePlanner} showAllRouteMarker={showAllRouteMarker} showDateRouteMarker={showDateRouteMarker} />
-                    <InfoRoute planner={planner} plannerData={plannerData} transList={transList} drag={drag} onChangeCurPlanId={onChangeCurPlanId} />
+                    <InfoMap
+                        planner={planner}
+                        allRoute={allRoute}
+                        mapRef={mapRef}
+                        onToggleLikePlanner={onToggleLikePlanner}
+                        showAllRouteMarker={showAllRouteMarker}
+                        showDateRouteMarker={showDateRouteMarker}
+                        onClickAllRoute={onClickAllRoute}
+                    />
+                    <InfoRoute planner={planner} plannerData={plannerData} transList={transList} drag={drag} onChangeCurPlanId={onChangeCurPlanId} onClickDateRoute={onClickDateRoute} />
                 </FlexBox>
             </Container>
             <InfoMenu planner={planner} />

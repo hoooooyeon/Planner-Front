@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfo from '../../../components/planner/info/PlannerInfo';
-import { changeCurPlanIdAction, deletePlannerAction, loadPlanAction, loadPlannerAction, toggleLikePlannerAction, toggleMemberModalAction, togglePlannerInfoModalAction } from '../../../modules/plannerModule';
+import { changeAllRouteAction, changeCurPlanIdAction, deletePlannerAction, loadPlanAction, loadPlannerAction, toggleLikePlannerAction, toggleMemberModalAction, togglePlannerInfoModalAction } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import { useHistory } from 'react-router';
 
@@ -9,12 +9,13 @@ const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { planner, plannerError, plannerData, transList, account } = useSelector(({ plannerReducer, authReducer }) => ({
+    const { planner, plannerError, plannerData, allRoute, transList, account } = useSelector(({ plannerReducer, authReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         plannerData: plannerReducer.plannerData,
         transList: plannerReducer.transList,
         account: authReducer.account,
+        allRoute: plannerReducer.allRoute,
     }));
 
     const { plannerId, plans } = { ...planner };
@@ -270,6 +271,20 @@ const PlannerInfoContainer = () => {
         showDateRouteMarker();
     }, [showDateRouteMarker]);
 
+    const onClickAllRoute = () => {
+        if (allRoute) {
+            showDateRouteMarker();
+            dispatch(changeAllRouteAction(false));
+        } else {
+            showAllRouteMarker();
+            dispatch(changeAllRouteAction(true));
+        }
+    };
+
+    const onClickDateRoute = () => {
+        dispatch(changeAllRouteAction(false));
+    };
+
     return (
         <PlannerInfo
             account={account}
@@ -278,7 +293,10 @@ const PlannerInfoContainer = () => {
             transList={transList}
             mapRef={mapRef}
             drag={drag}
+            allRoute={allRoute}
+            onClickAllRoute={onClickAllRoute}
             onDeletePlanner={onDeletePlanner}
+            onClickDateRoute={onClickDateRoute}
             onToggleMemberModal={onToggleMemberModal}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onChangeCurPlanId={onChangeCurPlanId}

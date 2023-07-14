@@ -55,7 +55,7 @@ const ScheduleIcon = styled(FontAwesomeIcon)`
     background-color: white;
     border-radius: 1rem;
     ${(props) =>
-        props.isClicked &&
+        props.allRoute &&
         css`
             background-color: #ebdede;
         `}
@@ -67,7 +67,7 @@ const IconName = styled.div`
     border-radius: 0.3rem;
     cursor: pointer;
     position: absolute;
-    top: 45px;
+    top: -28px;
     right: 10px;
     z-index: 1;
     white-space: nowrap;
@@ -75,7 +75,7 @@ const IconName = styled.div`
     padding: 0.5rem;
 `;
 
-const InfoMap = ({ planner, mapRef, onToggleLikePlanner, showAllRouteMarker, showDateRouteMarker }) => {
+const InfoMap = ({ planner, mapRef, allRoute, onToggleLikePlanner, onClickAllRoute }) => {
     const { likeState, likeCount } = { ...planner };
 
     const [isHovered, setIsHovered] = useState(false);
@@ -88,17 +88,6 @@ const InfoMap = ({ planner, mapRef, onToggleLikePlanner, showAllRouteMarker, sho
         setIsHovered(false);
     };
 
-    const [isClicked, setIsClicked] = useState(false);
-    const onClickSchedule = () => {
-        if (isClicked) {
-            showDateRouteMarker();
-            setIsClicked(false);
-        } else {
-            setIsClicked(true);
-            showAllRouteMarker();
-        }
-    };
-
     if (!mapRef) {
         return <div>Loading...</div>;
     }
@@ -109,8 +98,8 @@ const InfoMap = ({ planner, mapRef, onToggleLikePlanner, showAllRouteMarker, sho
                 <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
                 <div>{likeCount}</div>
             </IconBox>
-            <AllSchedule onClick={onClickSchedule} onMouseEnter={onOpenName} onMouseLeave={onCloseName}>
-                <ScheduleIcon isClicked={isClicked} icon={faCalendarDays} />
+            <AllSchedule onClick={onClickAllRoute} onMouseEnter={onOpenName} onMouseLeave={onCloseName}>
+                <ScheduleIcon allRoute={allRoute} icon={faCalendarDays} />
             </AllSchedule>
             {isHovered && <IconName>모든 일정 보기</IconName>}
         </MapBlock>

@@ -55,7 +55,7 @@ const RouteLine = styled.div`
     z-index: -1;
 `;
 
-const InfoDatination = ({ planner, plannerData, drag, onChangeCurPlanId }) => {
+const InfoDatination = ({ planner, plannerData, drag, onChangeCurPlanId, onClickDateRoute }) => {
     const { plans } = { ...planner };
 
     const letsFormat = (d) => {
@@ -80,6 +80,7 @@ const InfoDatination = ({ planner, plannerData, drag, onChangeCurPlanId }) => {
                                 aria-current={p.planId === plannerData.planId ? 'date' : null}
                                 onClick={() => {
                                     onChangeCurPlanId(p.planId);
+                                    onClickDateRoute();
                                 }}
                             >
                                 <DateButton>{letsFormat(p.planDate)}</DateButton>

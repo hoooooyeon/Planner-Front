@@ -136,7 +136,7 @@ const RouteLine = styled.div`
     }
 `;
 
-const InfoRoute = ({ planner, plannerData, transList, drag, onChangeCurPlanId }) => {
+const InfoRoute = ({ planner, plannerData, transList, drag, onChangeCurPlanId, onClickDateRoute }) => {
     const { plans } = { ...planner };
 
     const transIconList = [faPlane, faTrainSubway, faBus, faTaxi, faBicycle, faPersonWalking];
@@ -148,7 +148,7 @@ const InfoRoute = ({ planner, plannerData, transList, drag, onChangeCurPlanId })
     }
     return (
         <InfoRouteBlock>
-            {plans && <InfoDatination planner={planner} plannerData={plannerData} drag={drag} onChangeCurPlanId={onChangeCurPlanId} />}
+            {plans && <InfoDatination planner={planner} plannerData={plannerData} drag={drag} onChangeCurPlanId={onChangeCurPlanId} onClickDateRoute={onClickDateRoute} />}
             <WidthDiv>
                 {plans && (
                     <Slider list={plans} itemRef={itemRef}>
