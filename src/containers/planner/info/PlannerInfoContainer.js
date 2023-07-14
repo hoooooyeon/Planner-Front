@@ -99,24 +99,32 @@ const PlannerInfoContainer = () => {
         }
     }, [map]);
 
-    const showRouteMarker = useCallback(() => {
+    const newMarkerArr = useRef([]);
+    const markerArr = useRef([]);
+    const line = useRef();
+    const showAllRouteMarker = () => {
         if (map && plans) {
+            let infowindow = new kakao.maps.InfoWindow({ removable: true });
             let linePath = [];
             let markerPosition;
             let imageSize;
+            let markerImage;
             let marker;
             let polyline;
+
+            newMarkerArr.current = [];
+
             for (let i = 0; i < plans.length; i++) {
                 const { planLocations } = plans[i];
                 for (let j = 0; j < planLocations.length; j++) {
-                    const { locationMapx, locationMapy } = planLocations[j];
+                    const { locationMapx, locationMapy, locationName } = planLocations[j];
 
                     // 마커가 표시될 위치입니다
                     markerPosition = new kakao.maps.LatLng(locationMapy, locationMapx);
                     imageSize = new kakao.maps.Size(10, 10);
 
                     // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-                    let markerImage = new kakao.maps.MarkerImage(circleImg, imageSize);
+                    markerImage = new kakao.maps.MarkerImage(circleImg, imageSize);
 
                     // 마커를 생성합니다
                     marker = new kakao.maps.Marker({
@@ -124,31 +132,143 @@ const PlannerInfoContainer = () => {
                         clickable: true,
                         image: markerImage,
                     });
-                    // 마커가 지도 위에 표시되도록 설정합니다
-                    marker.setMap(map);
+                    newMarkerArr.current.push(marker);
+
+                    // 마커에 인포윈도우 생성 및 켜기 이벤트 등록
+                    kakao.maps.event.addListener(marker, 'click', addInfowindow(marker, locationName));
+
+                    // 맵에 인포윈도우 끄기 이벤트 등록
+                    kakao.maps.event.addListener(map, 'click', removeInfowindow());
 
                     // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
                     linePath = [...linePath, new kakao.maps.LatLng(locationMapy, locationMapx)];
                 }
+            }
+            // 지도에 표시할 선을 생성합니다
+            polyline = new kakao.maps.Polyline({
+                path: linePath, // 선을 구성하는 좌표배열 입니다
+                strokeWeight: 3, // 선의 두께 입니다
+                strokeColor: 'gray', // 선의 색깔입니다
+                strokeOpacity: 0.5, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeStyle: 'solid', // 선의 스타일입니다
+            });
 
-                // 지도에 표시할 선을 생성합니다
-                polyline = new kakao.maps.Polyline({
-                    path: linePath, // 선을 구성하는 좌표배열 입니다
-                    strokeWeight: 3, // 선의 두께 입니다
-                    strokeColor: 'gray', // 선의 색깔입니다
-                    strokeOpacity: 0.5, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                    strokeStyle: 'solid', // 선의 스타일입니다
-                });
+            // 기존 라인을 지우고 새로 라인 긋기.
+            if (line.current) {
+                line.current.setMap(null);
+            }
 
-                // 지도에 선을 표시합니다
-                polyline.setMap(map);
+            line.current = polyline;
+            // 지도에 선을 표시합니다
+            polyline.setMap(map);
+
+            // 기존 마커를 지우고 새로 마커를 표시.
+            markerArr.current.forEach((marker) => marker.setMap(null));
+            newMarkerArr.current.forEach((marker) => marker.setMap(map));
+            markerArr.current = newMarkerArr.current;
+
+            // 인포윈도우 생성 함수
+            function addInfowindow(marker, title) {
+                return () => {
+                    infowindow.setContent(`<div style="padding:5px;">${title}</div>`);
+                    infowindow.open(map, marker);
+                };
+            }
+            function removeInfowindow() {
+                return () => {
+                    infowindow.close();
+                };
             }
         }
-    }, [kakao.maps.LatLng, kakao.maps.Polyline, kakao.maps.Marker, kakao.maps.MarkerImage, kakao.maps.Size, map, plans]);
+    };
+
+    const showDateRouteMarker = useCallback(() => {
+        if (map && plans) {
+            let infowindow = new kakao.maps.InfoWindow({ removable: true });
+            let linePath = [];
+            let markerPosition;
+            let imageSize;
+            let markerImage;
+            let marker;
+            let polyline;
+
+            newMarkerArr.current = [];
+
+            let foundPlan;
+            for (let i = 0; i < plans.length; i++) {
+                foundPlan = plans.find((plan) => plan.planId === plannerData.planId);
+            }
+            if (foundPlan) {
+                for (let j = 0; j < foundPlan.planLocations.length; j++) {
+                    const { locationMapx, locationMapy, locationName } = foundPlan.planLocations[j];
+
+                    // 마커가 표시될 위치입니다
+                    markerPosition = new kakao.maps.LatLng(locationMapy, locationMapx);
+                    imageSize = new kakao.maps.Size(10, 10);
+
+                    // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+                    markerImage = new kakao.maps.MarkerImage(circleImg, imageSize);
+
+                    // 마커를 생성합니다
+                    marker = new kakao.maps.Marker({
+                        position: markerPosition,
+                        clickable: true,
+                        image: markerImage,
+                    });
+                    newMarkerArr.current.push(marker);
+
+                    // 마커에 인포윈도우 생성 및 켜기 이벤트 등록
+                    kakao.maps.event.addListener(marker, 'click', addInfowindow(marker, locationName));
+
+                    // 맵에 인포윈도우 끄기 이벤트 등록
+                    kakao.maps.event.addListener(map, 'click', removeInfowindow());
+
+                    // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+                    linePath = [...linePath, new kakao.maps.LatLng(locationMapy, locationMapx)];
+                }
+            }
+
+            // 지도에 표시할 선을 생성합니다
+            polyline = new kakao.maps.Polyline({
+                path: linePath, // 선을 구성하는 좌표배열 입니다
+                strokeWeight: 3, // 선의 두께 입니다
+                strokeColor: 'gray', // 선의 색깔입니다
+                strokeOpacity: 0.5, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeStyle: 'solid', // 선의 스타일입니다
+            });
+
+            // 기존 라인을 지우고 새로 라인 긋기.
+            if (line.current) {
+                line.current.setMap(null);
+            }
+
+            line.current = polyline;
+            // 지도에 선을 표시합니다
+            polyline.setMap(map);
+
+            // 기존 마커를 지우고 새로 마커를 표시.
+            markerArr.current.forEach((marker) => marker.setMap(null));
+            newMarkerArr.current.forEach((marker) => marker.setMap(map));
+            markerArr.current = newMarkerArr.current;
+
+            // 인포윈도우 생성 함수
+            function addInfowindow(marker, title) {
+                return () => {
+                    infowindow.setContent(`<div style="padding:5px;">${title}</div>`);
+                    infowindow.open(map, marker);
+                };
+            }
+            function removeInfowindow() {
+                return () => {
+                    infowindow.close();
+                };
+            }
+        }
+    }, [kakao.maps.LatLng, kakao.maps.Polyline, kakao.maps.InfoWindow, kakao.maps.event, kakao.maps.Marker, kakao.maps.MarkerImage, kakao.maps.Size, map, plans, plannerData.planId]);
 
     useEffect(() => {
-        showRouteMarker();
-    }, [showRouteMarker]);
+        showDateRouteMarker();
+    }, [showDateRouteMarker]);
 
     return (
         <PlannerInfo
@@ -163,6 +283,8 @@ const PlannerInfoContainer = () => {
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onChangeCurPlanId={onChangeCurPlanId}
             onToggleLikePlanner={onToggleLikePlanner}
+            showAllRouteMarker={showAllRouteMarker}
+            showDateRouteMarker={showDateRouteMarker}
         />
     );
 };

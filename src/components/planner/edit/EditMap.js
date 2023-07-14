@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const EditMapBlock = styled.div`
     width: calc(100% - 392px);
@@ -44,9 +44,25 @@ const Button = styled.button`
         height: 100%;
         line-height: 3rem;
     }
+    ${(props) =>
+        props.isClicked &&
+        css`
+            background-color: #ebdede;
+        `}
 `;
 
-const EditMap = ({ mapRef, onResetSpotData }) => {
+const EditMap = ({ mapRef, onResetSpotData, showDateRouteMarker, showAllRouteMarker }) => {
+    const [isClicked, setIsClicked] = useState(false);
+    const onClickSchedule = () => {
+        if (isClicked) {
+            showDateRouteMarker();
+            setIsClicked(false);
+        } else {
+            setIsClicked(true);
+            showAllRouteMarker();
+        }
+    };
+
     if (!mapRef) {
         return <div>Loading...</div>;
     }
@@ -55,6 +71,9 @@ const EditMap = ({ mapRef, onResetSpotData }) => {
             <Map ref={mapRef} />
             <ButtonBox>
                 <Button>사용 방법</Button>
+                <Button isClicked={isClicked} onClick={onClickSchedule}>
+                    모든 일정 보기
+                </Button>
                 <Button onClick={onResetSpotData}>
                     <Link to="/PlannerInfo">일정 저장</Link>
                 </Button>

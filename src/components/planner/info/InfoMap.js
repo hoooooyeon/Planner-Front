@@ -1,8 +1,8 @@
-import { useRef } from 'react';
-import { useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
 
 const MapBlock = styled.div`
     width: 60%;
@@ -31,6 +31,7 @@ const IconBox = styled.div`
     left: 10px;
     z-index: 1;
     padding: 5px;
+    cursor: pointer;
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
@@ -39,8 +40,64 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     margin-right: 0.5rem;
 `;
 
-const InfoMap = ({ planner, mapRef, onToggleLikePlanner }) => {
+const AllSchedule = styled.div`
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+`;
+
+const ScheduleIcon = styled(FontAwesomeIcon)`
+    width: 1rem;
+    height: 1rem;
+    padding: 0.5rem;
+    background-color: white;
+    border-radius: 1rem;
+    ${(props) =>
+        props.isClicked &&
+        css`
+            background-color: #ebdede;
+        `}
+`;
+
+const IconName = styled.div`
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    position: absolute;
+    top: 45px;
+    right: 10px;
+    z-index: 1;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    padding: 0.5rem;
+`;
+
+const InfoMap = ({ planner, mapRef, onToggleLikePlanner, showAllRouteMarker, showDateRouteMarker }) => {
     const { likeState, likeCount } = { ...planner };
+
+    const [isHovered, setIsHovered] = useState(false);
+
+    const onOpenName = () => {
+        setIsHovered(true);
+    };
+
+    const onCloseName = () => {
+        setIsHovered(false);
+    };
+
+    const [isClicked, setIsClicked] = useState(false);
+    const onClickSchedule = () => {
+        if (isClicked) {
+            showDateRouteMarker();
+            setIsClicked(false);
+        } else {
+            setIsClicked(true);
+            showAllRouteMarker();
+        }
+    };
 
     if (!mapRef) {
         return <div>Loading...</div>;
@@ -52,6 +109,10 @@ const InfoMap = ({ planner, mapRef, onToggleLikePlanner }) => {
                 <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
                 <div>{likeCount}</div>
             </IconBox>
+            <AllSchedule onClick={onClickSchedule} onMouseEnter={onOpenName} onMouseLeave={onCloseName}>
+                <ScheduleIcon isClicked={isClicked} icon={faCalendarDays} />
+            </AllSchedule>
+            {isHovered && <IconName>모든 일정 보기</IconName>}
         </MapBlock>
     );
 };

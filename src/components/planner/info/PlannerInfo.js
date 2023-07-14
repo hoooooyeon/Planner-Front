@@ -32,7 +32,6 @@ const InfoHeader = styled.div`
     display: flex;
     align-items: center;
     h3 {
-        white-space: nowrap;
         margin: 0;
     }
 `;
@@ -116,7 +115,7 @@ const FlexBox = styled.div`
     }
 `;
 
-const PlannerInfo = ({ account, planner, mapRef, plannerData, transList, drag, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal, onChangeCurPlanId, onToggleLikePlanner }) => {
+const PlannerInfo = ({ account, planner, mapRef, plannerData, transList, drag, onDeletePlanner, onToggleMemberModal, onTogglePlannerInfoModal, onChangeCurPlanId, onToggleLikePlanner, showAllRouteMarker, showDateRouteMarker }) => {
     const { nickname } = { ...account };
     const { creator } = { ...planner };
     const menuRef = useRef();
@@ -177,7 +176,7 @@ const PlannerInfo = ({ account, planner, mapRef, plannerData, transList, drag, o
                     )}
                 </InfoHeader>
                 <FlexBox>
-                    <InfoMap planner={planner} mapRef={mapRef} onToggleLikePlanner={onToggleLikePlanner} />
+                    <InfoMap planner={planner} mapRef={mapRef} onToggleLikePlanner={onToggleLikePlanner} showAllRouteMarker={showAllRouteMarker} showDateRouteMarker={showDateRouteMarker} />
                     <InfoRoute planner={planner} plannerData={plannerData} transList={transList} drag={drag} onChangeCurPlanId={onChangeCurPlanId} />
                 </FlexBox>
             </Container>
