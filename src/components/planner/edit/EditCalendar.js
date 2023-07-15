@@ -137,7 +137,7 @@ const EditCalendar = ({
     onDeleteElement,
     onChangeStyle,
     setUpdatePlans,
-    onClickDateRoute,
+    onClickDateSchedule,
 }) => {
     const { planDateEnd, plans: items } = { ...planner };
 
@@ -151,24 +151,7 @@ const EditCalendar = ({
         onSubDate(planDateEnd);
     };
     const containerRef = useRef();
-    const itemsRef = useRef([]);
-
-    const itemsArr = useRef();
-    const dragItem = useRef();
-    const overItem = useRef();
-    const dragItemIndex = useRef();
-    const overItemIndex = useRef();
-
-    const dragTarget = useRef();
-    const overTarget = useRef();
-
-    let posY = useRef(0);
-
-    const [overTargetArr, setOverTargetArr] = useState([]);
-    const [isDrag, setIsDrag] = useState(false);
-
     const scrollTop = useRef();
-    const initialScrollTop = useRef(0);
 
     const handleScroll = () => {
         scrollTop.current = containerRef.current.scrollTop;
@@ -183,10 +166,8 @@ const EditCalendar = ({
         };
     });
 
-    const itemHeight = useRef();
-
     const onUpdateSortIndex = (index) => {
-        onUpdatePlan();
+        onUpdatePlan(index);
         setUpdatePlans(index);
     };
 
@@ -207,7 +188,7 @@ const EditCalendar = ({
             >
                 <CalIcon icon={faCalendarPlus} />
             </AddCal>
-            <EditCalendarBlock ref={containerRef} onDrop={(e) => common.onDrop({ e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, items, sortIndex, onUpdateSortIndex })} onDragOver={(e) => common.onDragOver(e)}>
+            <EditCalendarBlock ref={containerRef} onDrop={(e) => common.onDrop({ e, items, onUpdateSortIndex })} onDragOver={(e) => common.onDragOver(e)}>
                 {/* 혹시 plans가 null이되는 버그가 발생할수도? */}
                 {/* {console.log(plans)} */}
                 {items &&
@@ -217,36 +198,26 @@ const EditCalendar = ({
                             key={item.planId}
                             draggable
                             onDragStart={(e) => {
-                                common.onDragStart({ e, item, setIsDrag, dragTarget, posY, dragItem, dragItemIndex, itemsArr, items, scrollTop, initialScrollTop, onChangeCurItem, onCloneElement, itemHeight, onChangeStyle });
+                                common.onDragStart({ e, item, items, scrollTop, onChangeCurItem, onCloneElement, onChangeStyle });
                             }}
                             onDrag={(e) => {
-                                common.onDragMove({ e, isDrag, posY, containerRef, dragItemIndex, dragTarget, scrollTop, initialScrollTop, itemHeight });
+                                common.onDragMove({ e, containerRef, scrollTop });
                             }}
                             onDragEnd={() => {
-                                common.onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr, onDeleteElement });
+                                common.onDragEnd({ onDeleteElement });
                             }}
                             onDragEnter={(e) => {
                                 common.onDragEnter({
                                     e,
                                     item,
-                                    isDrag,
-                                    overItem,
-                                    overItemIndex,
-                                    overTarget,
-                                    dragTarget,
-                                    overTargetArr,
-                                    setOverTargetArr,
-                                    dragItemIndex,
-                                    itemsArr,
                                     items,
-                                    itemHeight,
                                 });
                             }}
                         >
                             <Calendar
                                 onClick={() => {
                                     onChangeCurPlanId(item.planId);
-                                    onClickDateRoute();
+                                    onClickDateSchedule();
                                 }}
                             >
                                 {letsFormat(item.planDate)}
@@ -260,17 +231,7 @@ const EditCalendar = ({
                             </DeleteButton>
                         </ItemBox>
                     ))}
-                {cloneElement && (
-                    <CloneItem
-                        cloneElStyle={cloneElStyle}
-                        onDragEnter={() => {
-                            common.onCloneEnter({
-                                overItemIndex,
-                                dragItemIndex,
-                            });
-                        }}
-                    />
-                )}
+                {cloneElement && <CloneItem cloneElStyle={cloneElStyle} onDragEnter={common.onCloneEnter} />}
             </EditCalendarBlock>
         </FlexDiv>
     );

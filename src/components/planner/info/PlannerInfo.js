@@ -119,7 +119,7 @@ const PlannerInfo = ({
     account,
     planner,
     mapRef,
-    allRoute,
+    allSchedule,
     plannerData,
     transList,
     drag,
@@ -128,8 +128,8 @@ const PlannerInfo = ({
     onTogglePlannerInfoModal,
     onChangeCurPlanId,
     onToggleLikePlanner,
-    showAllRouteMarker,
-    showDateRouteMarker,
+    onClickAllSchedule,
+    onClickDateSchedule,
     onClickAllRoute,
     onClickDateRoute,
 }) => {
@@ -193,16 +193,8 @@ const PlannerInfo = ({
                     )}
                 </InfoHeader>
                 <FlexBox>
-                    <InfoMap
-                        planner={planner}
-                        allRoute={allRoute}
-                        mapRef={mapRef}
-                        onToggleLikePlanner={onToggleLikePlanner}
-                        showAllRouteMarker={showAllRouteMarker}
-                        showDateRouteMarker={showDateRouteMarker}
-                        onClickAllRoute={onClickAllRoute}
-                    />
-                    <InfoRoute planner={planner} plannerData={plannerData} transList={transList} drag={drag} onChangeCurPlanId={onChangeCurPlanId} onClickDateRoute={onClickDateRoute} />
+                    <InfoMap planner={planner} allSchedule={allSchedule} mapRef={mapRef} onToggleLikePlanner={onToggleLikePlanner} onClickAllSchedule={onClickAllSchedule} onClickAllRoute={onClickAllRoute} />
+                    <InfoRoute planner={planner} plannerData={plannerData} transList={transList} drag={drag} onChangeCurPlanId={onChangeCurPlanId} onClickDateSchedule={onClickDateSchedule} />
                 </FlexBox>
             </Container>
             <InfoMenu planner={planner} />

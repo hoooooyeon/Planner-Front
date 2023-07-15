@@ -18,7 +18,7 @@ const App = () => {
             <Route path="/Profile" component={ProfilePage} />
             <Route path="/PlannerInfo" component={PlannerInfoPage} />
             <Route path="/PlannerList" component={PlannerListPage} />
-            <PrivateRoute path="/PlannerEdit" component={PlannerEditPage} />
+            <PrivateRoute path="/PlannerEdit" component={PlannerEditPage} redirect="/login" />
         </>
     );
 };

@@ -224,7 +224,7 @@ const EditRoute = ({
     onDeleteElement,
     onChangeStyle,
     setUpdatePlans,
-    onClickDateRoute,
+    onClickDateSchedule,
 }) => {
     const { title, creator, updateDate } = { ...planner };
 
@@ -307,7 +307,7 @@ const EditRoute = ({
                     onDeleteElement={onDeleteElement}
                     onChangeStyle={onChangeStyle}
                     setUpdatePlans={setUpdatePlans}
-                    onClickDateRoute={onClickDateRoute}
+                    onClickDateSchedule={onClickDateSchedule}
                 />
                 <EditRouteList
                     planner={planner}

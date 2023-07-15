@@ -46,19 +46,22 @@ const AllSchedule = styled.div`
     top: 10px;
     right: 10px;
     z-index: 1;
-`;
-
-const ScheduleIcon = styled(FontAwesomeIcon)`
+    background-color: white;
     width: 1rem;
     height: 1rem;
     padding: 0.5rem;
-    background-color: white;
     border-radius: 1rem;
+    line-height: 1rem;
+    text-align: center;
     ${(props) =>
-        props.allRoute &&
+        props.allSchedule &&
         css`
             background-color: #ebdede;
         `}
+`;
+
+const ScheduleIcon = styled(FontAwesomeIcon)`
+    border-radius: 1rem;
 `;
 
 const IconName = styled.div`
@@ -75,7 +78,7 @@ const IconName = styled.div`
     padding: 0.5rem;
 `;
 
-const InfoMap = ({ planner, mapRef, allRoute, onToggleLikePlanner, onClickAllRoute }) => {
+const InfoMap = ({ planner, mapRef, allSchedule, onToggleLikePlanner, onClickAllSchedule }) => {
     const { likeState, likeCount } = { ...planner };
 
     const [isHovered, setIsHovered] = useState(false);
@@ -98,8 +101,8 @@ const InfoMap = ({ planner, mapRef, allRoute, onToggleLikePlanner, onClickAllRou
                 <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
                 <div>{likeCount}</div>
             </IconBox>
-            <AllSchedule onClick={onClickAllRoute} onMouseEnter={onOpenName} onMouseLeave={onCloseName}>
-                <ScheduleIcon allRoute={allRoute} icon={faCalendarDays} />
+            <AllSchedule allSchedule={allSchedule} onClick={onClickAllSchedule} onMouseEnter={onOpenName} onMouseLeave={onCloseName}>
+                <ScheduleIcon icon={faCalendarDays} />
             </AllSchedule>
             {isHovered && <IconName>모든 일정 보기</IconName>}
         </MapBlock>

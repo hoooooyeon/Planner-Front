@@ -83,7 +83,7 @@ const CHANGE_PAGE_NUM_TYPE = 'planner/CHANGE_PAGE_NUM';
 const CHANGE_KEYWORD_TYPE = 'planner/CHANGE_KEYWORD';
 const CHANGE_RESULT_KEYWORD_TYPE = 'planner/CHANGE_RESULT_KEYWORD';
 
-const CHANGE_ALL_ROUTE_TYPE = 'planner/CHANGE_ALL_ROUTE';
+const CHANGE_ALL_SCHEDULE_TYPE = 'planner/CHANGE_ALL_SCHEDULE';
 
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
@@ -145,7 +145,7 @@ export const changeCurPlannerIdAction = (plannerId) => ({ type: CHANGE_CUR_PLANN
 export const changePageNumAction = (pageNum) => ({ type: CHANGE_PAGE_NUM_TYPE, pageNum });
 export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, keyword });
 export const changeResultKeywordAction = (keyword) => ({ type: CHANGE_RESULT_KEYWORD_TYPE, keyword });
-export const changeAllRouteAction = (bool) => ({ type: CHANGE_ALL_ROUTE_TYPE, bool });
+export const changeAllScheduleAction = (bool) => ({ type: CHANGE_ALL_SCHEDULE_TYPE, bool });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -204,7 +204,7 @@ const initialState = {
         curKeyword: '',
         resultKeyword: '',
     },
-    allRoute: false,
+    allSchedule: false,
     transList: [
         { label: '비행기', value: 1 },
         { label: '기차', value: 2 },
@@ -428,10 +428,10 @@ function plannerReducer(state = initialState, action) {
                     resultKeyword: action.keyword,
                 },
             };
-        case CHANGE_ALL_ROUTE_TYPE:
+        case CHANGE_ALL_SCHEDULE_TYPE:
             return {
                 ...state,
-                allRoute: action.bool,
+                allSchedule: action.bool,
             };
         default:
             return state;

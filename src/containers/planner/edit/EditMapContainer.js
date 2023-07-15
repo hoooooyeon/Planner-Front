@@ -2,14 +2,14 @@ import { useCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditMap from '../../../components/planner/edit/EditMap';
-import { changeAllRouteAction } from '../../../modules/plannerModule';
+import { changeAllScheduleAction } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import locationImg from '../../../lib/images/location.png';
 import { loadSpotsAction, resetSpotDataAction, changeAreaIndexAction } from '../../../modules/spotModule';
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, plannerData, spots, spotData, allRoute } = useSelector(({ plannerReducer, spotReducer }) => ({
+    const { planner, plannerError, plannerData, spots, spotData, allSchedule } = useSelector(({ plannerReducer, spotReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         spots: spotReducer.spots,
@@ -18,7 +18,7 @@ const EditMapContainer = () => {
         keyword: spotReducer.keyword,
         contentTypeList: spotReducer.contentTypeList,
         plannerData: plannerReducer.plannerData,
-        allRoute: plannerReducer.allRoute,
+        allSchedule: plannerReducer.allSchedule,
     }));
 
     const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
@@ -28,12 +28,15 @@ const EditMapContainer = () => {
     const { kakao } = window;
     // 지도 생성
     useEffect(() => {
-        const options = {
-            center: new kakao.maps.LatLng(37.5665, 126.978),
-            level: 10,
-        };
-        const map = new kakao.maps.Map(mapRef.current, options);
-        setMap(map);
+        if (mapRef.current) {
+            const options = {
+                center: new kakao.maps.LatLng(37.5665, 126.978),
+                level: 10,
+            };
+            const map = new kakao.maps.Map(mapRef.current, options);
+            setMap(map);
+            dispatch(changeAllScheduleAction(false));
+        }
     }, [mapRef.current]);
 
     // 지도의 좌표 전부 보이게 시점 변경
@@ -478,17 +481,17 @@ const EditMapContainer = () => {
         dispatch(resetSpotDataAction());
     };
 
-    const onClickAllRoute = () => {
-        if (allRoute) {
+    const onClickAllSchedule = () => {
+        if (allSchedule) {
             showDateRouteMarker();
-            dispatch(changeAllRouteAction(false));
+            dispatch(changeAllScheduleAction(false));
         } else {
             showAllRouteMarker();
-            dispatch(changeAllRouteAction(true));
+            dispatch(changeAllScheduleAction(true));
         }
     };
 
-    return <EditMap mapRef={mapRef} allRoute={allRoute} onClickAllRoute={onClickAllRoute} showDateRouteMarker={showDateRouteMarker} showAllRouteMarker={showAllRouteMarker} onResetSpotData={onResetSpotData} />;
+    return <EditMap mapRef={mapRef} allSchedule={allSchedule} onClickAllSchedule={onClickAllSchedule} onResetSpotData={onResetSpotData} />;
 };
 
 export default EditMapContainer;

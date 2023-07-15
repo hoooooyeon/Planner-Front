@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfo from '../../../components/planner/info/PlannerInfo';
-import { changeAllRouteAction, changeCurPlanIdAction, deletePlannerAction, loadPlanAction, loadPlannerAction, toggleLikePlannerAction, toggleMemberModalAction, togglePlannerInfoModalAction } from '../../../modules/plannerModule';
+import { changeAllScheduleAction, changeCurPlanIdAction, deletePlannerAction, loadPlannerAction, toggleLikePlannerAction, toggleMemberModalAction, togglePlannerInfoModalAction } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import { useHistory } from 'react-router';
 
@@ -9,13 +9,13 @@ const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { planner, plannerError, plannerData, allRoute, transList, account } = useSelector(({ plannerReducer, authReducer }) => ({
+    const { planner, plannerError, plannerData, allSchedule, transList, account } = useSelector(({ plannerReducer, authReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         plannerData: plannerReducer.plannerData,
         transList: plannerReducer.transList,
         account: authReducer.account,
-        allRoute: plannerReducer.allRoute,
+        allSchedule: plannerReducer.allSchedule,
     }));
 
     const { plannerId, plans } = { ...planner };
@@ -78,6 +78,7 @@ const PlannerInfoContainer = () => {
             };
             const map = new kakao.maps.Map(mapRef.current, options);
             setMap(map);
+            dispatch(changeAllScheduleAction(false));
         }
     }, [mapRef.current]);
 
@@ -271,18 +272,18 @@ const PlannerInfoContainer = () => {
         showDateRouteMarker();
     }, [showDateRouteMarker]);
 
-    const onClickAllRoute = () => {
-        if (allRoute) {
+    const onClickAllSchedule = () => {
+        if (allSchedule) {
             showDateRouteMarker();
-            dispatch(changeAllRouteAction(false));
+            dispatch(changeAllScheduleAction(false));
         } else {
             showAllRouteMarker();
-            dispatch(changeAllRouteAction(true));
+            dispatch(changeAllScheduleAction(true));
         }
     };
 
-    const onClickDateRoute = () => {
-        dispatch(changeAllRouteAction(false));
+    const onClickDateSchedule = () => {
+        dispatch(changeAllScheduleAction(false));
     };
 
     return (
@@ -293,10 +294,10 @@ const PlannerInfoContainer = () => {
             transList={transList}
             mapRef={mapRef}
             drag={drag}
-            allRoute={allRoute}
-            onClickAllRoute={onClickAllRoute}
+            allSchedule={allSchedule}
+            onClickAllSchedule={onClickAllSchedule}
+            onClickDateSchedule={onClickDateSchedule}
             onDeletePlanner={onDeletePlanner}
-            onClickDateRoute={onClickDateRoute}
             onToggleMemberModal={onToggleMemberModal}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onChangeCurPlanId={onChangeCurPlanId}

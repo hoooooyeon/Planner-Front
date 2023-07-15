@@ -45,13 +45,13 @@ const Button = styled.button`
         line-height: 3rem;
     }
     ${(props) =>
-        props.allRoute &&
+        props.allSchedule &&
         css`
             background-color: #ebdede;
         `}
 `;
 
-const EditMap = ({ mapRef, allRoute, onClickAllRoute, onResetSpotData, showDateRouteMarker, showAllRouteMarker }) => {
+const EditMap = ({ mapRef, allSchedule, onClickAllSchedule, onResetSpotData }) => {
     if (!mapRef) {
         return <div>Loading...</div>;
     }
@@ -60,7 +60,7 @@ const EditMap = ({ mapRef, allRoute, onClickAllRoute, onResetSpotData, showDateR
             <Map ref={mapRef} />
             <ButtonBox>
                 <Button>사용 방법</Button>
-                <Button allRoute={allRoute} onClick={onClickAllRoute}>
+                <Button allSchedule={allSchedule} onClick={onClickAllSchedule}>
                     모든 일정 보기
                 </Button>
                 <Button onClick={onResetSpotData}>

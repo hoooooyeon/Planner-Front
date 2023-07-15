@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import EditRoute from '../../../components/planner/edit/EditRoute';
 import {
-    changeAllRouteAction,
+    changeAllScheduleAction,
     changeCurPlanIdAction,
     createPlanAction,
     deleteLocationAction,
@@ -18,7 +19,7 @@ import {
 
 const EditRouteContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, plan, plannerData, loading, transList } = useSelector(({ plannerReducer, loadingReducer }) => ({
+    const { planner, plannerError, plan, plannerData, loading, transList, account } = useSelector(({ authReducer, plannerReducer, loadingReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         plan: plannerReducer.plan,
@@ -26,11 +27,22 @@ const EditRouteContainer = () => {
         loading: loadingReducer.loading,
         location: plannerReducer.location,
         transList: plannerReducer.transList,
+        account: authReducer.account,
     }));
+    const history = useHistory();
 
-    const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
+    const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId, creator } = { ...planner };
     const { planId } = { ...plannerData };
-    const sortIndex = useRef();
+    const { nickname } = { ...account };
+    // const sortIndex = useRef();
+
+    useEffect(() => {
+        if (nickname !== creator) {
+            alert('호스트만 접근할 수 있습니다.');
+
+            history.push('/PlannerInfo');
+        }
+    }, []);
 
     const letsFormat = (d) => {
         const date = new Date(d);
@@ -99,10 +111,10 @@ const EditRouteContainer = () => {
 
     // 날짜 순서 수정
     const [curPlan, setCurPlan] = useState();
-    const onUpdatePlan = () => {
+    const onUpdatePlan = (index) => {
         const planDate = curPlan.planDate;
         const planId = curPlan.planId;
-        const index = sortIndex.current;
+        // const index = sortIndex.current;
 
         dispatch(updatePlanAction({ plannerId, planId, planDate, index }));
     };
@@ -128,9 +140,9 @@ const EditRouteContainer = () => {
 
     // 로케이션 순서 수정
     const [curLocation, setCurLocation] = useState();
-    const onUpdateLocation = () => {
+    const onUpdateLocation = (index) => {
         const { locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation } = curLocation;
-        const index = sortIndex.current;
+        // const index = sortIndex.current;
         dispatch(updateLocationAction({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId, index }));
     };
     const onDeleteLocation = (locationId) => {
@@ -195,8 +207,8 @@ const EditRouteContainer = () => {
         }
     }, [dispatch, plans]);
 
-    const onClickDateRoute = () => {
-        dispatch(changeAllRouteAction(false));
+    const onClickDateSchedule = () => {
+        dispatch(changeAllScheduleAction(false));
     };
 
     return (
@@ -208,7 +220,7 @@ const EditRouteContainer = () => {
             transList={transList}
             startDate={startDate}
             endDate={endDate}
-            sortIndex={sortIndex}
+            // sortIndex={sortIndex}
             curPlan={curPlan}
             curLocation={curLocation}
             cloneElement={cloneElement}
@@ -233,7 +245,7 @@ const EditRouteContainer = () => {
             onUpdatePlan={onUpdatePlan}
             onUpdateLocation={onUpdateLocation}
             setUpdatePlans={setUpdatePlans}
-            onClickDateRoute={onClickDateRoute}
+            onClickDateSchedule={onClickDateSchedule}
         />
     );
 };
