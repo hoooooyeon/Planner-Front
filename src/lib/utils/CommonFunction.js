@@ -105,16 +105,15 @@ export function onDragEnter({ e, item, items }) {
         // 타겟 요소
         overTarget = e.currentTarget;
 
-        // 타겟 요소의 벌어지는 모션
-        // 드래그 요소와 타겟 요소가 다른지 확인
+        // 오버 요소의 벌어지는 모션
+        // (오버요소를 배열에 넣고, 다른 오버요소가 배열에 들어가면 이전 오버요소를 배열에서 제거함으로써 벌어졌던 모션을 되돌림.)
         if (dragTarget !== overTarget) {
             // 타겟 요소 배열에 중복값 제거
             if (!overTargetArr.find((item) => item === e.currentTarget)) {
-                overTargetArr = [...overTargetArr, e.currentTarget];
+                overTargetArr = overTargetArr.concat(e.currentTarget);
             }
             // 드래그 요소와 타겟 요소의 위치에 따른 위/아래 모션 결정
             if (dragItemIndex < overItemIndex) {
-                // e.currentTarget.style.transform = `translateY(-${itemHeight}px)`;
                 e.currentTarget.style.transform = `translateY(-${itemHeight}px)`;
             } else {
                 e.currentTarget.style.transform = `translateY(${itemHeight}px)`;
