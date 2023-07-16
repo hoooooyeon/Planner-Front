@@ -112,9 +112,9 @@ export function onDragEnter({ e, item, items }) {
             if (!overTargetArr.find((item) => item === e.currentTarget)) {
                 overTargetArr = [...overTargetArr, e.currentTarget];
             }
-            console.log(overTarget);
             // 드래그 요소와 타겟 요소의 위치에 따른 위/아래 모션 결정
             if (dragItemIndex < overItemIndex) {
+                // e.currentTarget.style.transform = `translateY(-${itemHeight}px)`;
                 e.currentTarget.style.transform = `translateY(-${itemHeight}px)`;
             } else {
                 e.currentTarget.style.transform = `translateY(${itemHeight}px)`;

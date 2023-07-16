@@ -189,8 +189,6 @@ const EditCalendar = ({
                 <CalIcon icon={faCalendarPlus} />
             </AddCal>
             <EditCalendarBlock ref={containerRef} onDrop={(e) => common.onDrop({ e, items, onUpdateSortIndex })} onDragOver={(e) => common.onDragOver(e)}>
-                {/* 혹시 plans가 null이되는 버그가 발생할수도? */}
-                {/* {console.log(plans)} */}
                 {items &&
                     items.map((item, i) => (
                         <ItemBox
