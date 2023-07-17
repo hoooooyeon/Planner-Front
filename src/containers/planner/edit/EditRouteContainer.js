@@ -35,13 +35,13 @@ const EditRouteContainer = () => {
     const { planId } = { ...plannerData };
     const { nickname, accountId } = { ...account };
 
-    // useEffect(() => {
-    //     if (nickname !== creator) {
-    //         alert('호스트만 접근할 수 있습니다.');
+    useEffect(() => {
+        if (nickname !== creator) {
+            alert('호스트만 접근할 수 있습니다.');
 
-    //         history.push('/PlannerList');
-    //     }
-    // }, []);
+            history.push('/PlannerList');
+        }
+    }, []);
 
     const letsFormat = (d) => {
         const date = new Date(d);
@@ -208,7 +208,7 @@ const EditRouteContainer = () => {
         dispatch(changeAllScheduleAction(false));
     };
 
-    if (!accountId && nickname !== creator) {
+    if (nickname !== creator) {
         return null;
     }
     return (

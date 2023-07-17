@@ -205,9 +205,9 @@ const EditListContainer = () => {
         dispatch(changePageNumAction(page));
     }, [page, dispatch]);
 
-    // if (!accountId && nickname !== creator) {
-    //     return null;
-    // }
+    if (nickname !== creator) {
+        return null;
+    }
     return (
         <EditList
             spots={spots}

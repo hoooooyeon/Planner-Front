@@ -492,9 +492,9 @@ const EditMapContainer = () => {
             dispatch(changeAllScheduleAction(true));
         }
     };
-    // if (!accountId && nickname !== creator) {
-    //     return null;
-    // }
+    if (nickname !== creator) {
+        return null;
+    }
     return <EditMap mapRef={mapRef} allSchedule={allSchedule} onClickAllSchedule={onClickAllSchedule} onResetSpotData={onResetSpotData} />;
 };
 

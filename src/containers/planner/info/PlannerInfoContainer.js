@@ -22,6 +22,14 @@ const PlannerInfoContainer = () => {
     const { planId } = { ...plannerData };
     const { accountId } = { ...account };
 
+    useEffect(() => {
+        if (!plannerData.plannerId) {
+            alert('잘못된 접근입니다.');
+
+            history.push('/PlannerList');
+        }
+    }, [plannerData]);
+
     const onDeletePlanner = () => {
         dispatch(deletePlannerAction(plannerId));
     };
@@ -286,6 +294,9 @@ const PlannerInfoContainer = () => {
         dispatch(changeAllScheduleAction(false));
     };
 
+    if (!planner) {
+        return null;
+    }
     return (
         <PlannerInfo
             account={account}

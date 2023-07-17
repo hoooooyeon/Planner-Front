@@ -1,5 +1,5 @@
 import './App.css';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/account/LoginPage';
 import RegisterPage from './pages/account/RegisterPage';
@@ -11,16 +11,15 @@ import PrivateRoute from './components/common/PrivateRoute';
 
 const App = () => {
     return (
-        <>
+        <Switch>
             <Route path="/" render={HomePage} exact />
             <Route path="/Login" render={LoginPage} />
             <Route path="/Register" render={RegisterPage} />
             <Route path="/Profile" render={ProfilePage} />
             <Route path="/PlannerInfo" render={PlannerInfoPage} />
             <Route path="/PlannerList" render={PlannerListPage} />
-            <Route path="/PlannerEdit" render={PlannerEditPage} />
-            {/* <Route path="/PlannerEdit" render={() => <PrivateRoute compo={PlannerEditPage} path="/PlannerEdit" redirect="/login" />} /> */}
-        </>
+            <PrivateRoute path="/PlannerEdit" render={PlannerEditPage} redirect="/login" />
+        </Switch>
     );
 };
 

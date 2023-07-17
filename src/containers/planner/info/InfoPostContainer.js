@@ -53,6 +53,9 @@ const InfoPostContainer = () => {
         setCurMemo({ memoId: null, title: '', content: '' });
     };
 
+    if (!planner) {
+        return null;
+    }
     return (
         <InfoPostList
             planner={planner}

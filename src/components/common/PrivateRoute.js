@@ -1,9 +1,14 @@
 import { useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 
-const PrivateRoute = ({ Compo, path, redirect }) => {
+const PrivateRoute = ({ render, path, redirect }) => {
     const { account } = useSelector(({ authReducer }) => ({ account: authReducer.account }));
     const { accountId } = { ...account };
-    return accountId ? <Compo path={path} /> : <Redirect to={redirect} />;
+    if (!accountId) {
+        alert('로그인이 필요합니다.');
+        return <Redirect to={redirect} />;
+    }
+    return <Route path={path} render={render} />;
 };
+
 export default PrivateRoute;
