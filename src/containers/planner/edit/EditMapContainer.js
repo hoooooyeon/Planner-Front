@@ -9,7 +9,7 @@ import { loadSpotsAction, resetSpotDataAction, changeAreaIndexAction } from '../
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, plannerData, spots, spotData, allSchedule } = useSelector(({ plannerReducer, spotReducer }) => ({
+    const { planner, plannerError, plannerData, spots, spotData, account, allSchedule } = useSelector(({ plannerReducer, spotReducer, authReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         spots: spotReducer.spots,
@@ -19,9 +19,11 @@ const EditMapContainer = () => {
         contentTypeList: spotReducer.contentTypeList,
         plannerData: plannerReducer.plannerData,
         allSchedule: plannerReducer.allSchedule,
+        account: authReducer.account,
     }));
 
-    const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
+    const { plans, creator } = { ...planner };
+    const { accountId, nickname } = { ...account };
 
     const mapRef = useRef(null);
     const [map, setMap] = useState();
@@ -490,7 +492,9 @@ const EditMapContainer = () => {
             dispatch(changeAllScheduleAction(true));
         }
     };
-
+    // if (!accountId && nickname !== creator) {
+    //     return null;
+    // }
     return <EditMap mapRef={mapRef} allSchedule={allSchedule} onClickAllSchedule={onClickAllSchedule} onResetSpotData={onResetSpotData} />;
 };
 

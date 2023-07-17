@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import * as common from '../../../lib/utils/CommonFunction';
+import { DragFunction } from '../../../lib/utils/CommonFunction';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBus } from '@fortawesome/free-solid-svg-icons'; // 버스
@@ -11,7 +11,6 @@ import { faBicycle } from '@fortawesome/free-solid-svg-icons'; // 자전거 or �
 import { faTrainSubway } from '@fortawesome/free-solid-svg-icons'; // 지하철 or 기차
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
-import { cloneElement } from 'react';
 
 const EditRouteListBlock = styled.div`
     margin-left: 0.2rem;
@@ -238,21 +237,6 @@ const EditRouteList = ({
     const { plans } = { ...planner };
 
     const containerRef = useRef();
-    const itemsRef = useRef([]);
-
-    const itemsArr = useRef();
-    const dragItem = useRef();
-    const overItem = useRef();
-    const dragItemIndex = useRef();
-    const overItemIndex = useRef();
-
-    const dragTarget = useRef();
-    const overTarget = useRef();
-
-    let posY = useRef(0);
-
-    const [overTargetArr, setOverTargetArr] = useState([]);
-    const [isDrag, setIsDrag] = useState(false);
 
     const transIconList = [faPlane, faTrainSubway, faBus, faTaxi, faBicycle, faPersonWalking];
 
@@ -280,7 +264,6 @@ const EditRouteList = ({
     });
 
     const scrollTop = useRef();
-    const initialScrollTop = useRef(0);
 
     const handleScroll = () => {
         scrollTop.current = containerRef.current.scrollTop;
@@ -295,16 +278,15 @@ const EditRouteList = ({
         };
     });
 
-    const itemHeight = useRef();
-
     const onUpdateSortIndex = (index) => {
-        onUpdateLocation();
+        onUpdateLocation(index);
         setUpdatePlans(index);
     };
 
     const onChangeCurItem = (item) => {
         setCurLocation(item);
     };
+    const dragFunction = new DragFunction();
 
     if (!planner) {
         return <div>Loading...</div>;
@@ -316,12 +298,7 @@ const EditRouteList = ({
                 plans.map((p, j) => {
                     const items = p.planLocations;
                     return (
-                        <RouteList
-                            onDrop={(e) => common.onDrop({ e, isDrag, itemsArr, dragItemIndex, overItemIndex, dragItem, sortIndex, items, onUpdateSortIndex })}
-                            onDragOver={(e) => common.onDragOver(e)}
-                            aria-current={p.planId === plannerData.planId ? 'cur' : null}
-                            key={p.planId}
-                        >
+                        <RouteList onDrop={(e) => dragFunction.onDrop({ e, items, onUpdateSortIndex })} onDragOver={(e) => dragFunction.onDragOver(e)} aria-current={p.planId === plannerData.planId ? 'cur' : null} key={p.planId}>
                             {items &&
                                 items.map((item, i) => {
                                     const { locationId, locationName, locationAddr, locationImage, locationTransportation } = item;
@@ -331,45 +308,27 @@ const EditRouteList = ({
                                             key={i}
                                             draggable
                                             onDragStart={(e) => {
-                                                common.onDragStart({
+                                                dragFunction.onDragStart({
                                                     e,
                                                     item,
-                                                    setIsDrag,
-                                                    dragTarget,
-                                                    posY,
-                                                    dragItem,
-                                                    dragItemIndex,
-                                                    itemsArr,
                                                     items,
                                                     scrollTop,
-                                                    initialScrollTop,
                                                     onChangeCurItem,
                                                     onCloneElement,
-                                                    itemHeight,
                                                     onChangeStyle,
                                                 });
                                             }}
                                             onDrag={(e) => {
-                                                common.onDragMove({ e, isDrag, posY, containerRef, dragItemIndex, dragTarget, scrollTop, initialScrollTop, itemHeight });
+                                                dragFunction.onDragMove({ e, containerRef, scrollTop });
                                             }}
                                             onDragEnd={(e) => {
-                                                common.onDragEnd({ setIsDrag, overTargetArr, dragTarget, itemsArr, dragItem, dragItemIndex, overItem, overItemIndex, setOverTargetArr, onDeleteElement });
+                                                dragFunction.onDragEnd({ onDeleteElement });
                                             }}
                                             onDragEnter={(e) => {
-                                                common.onDragEnter({
+                                                dragFunction.onDragEnter({
                                                     e,
                                                     item,
-                                                    isDrag,
-                                                    overItem,
-                                                    overItemIndex,
-                                                    overTarget,
-                                                    dragTarget,
-                                                    overTargetArr,
-                                                    setOverTargetArr,
-                                                    dragItemIndex,
-                                                    itemsArr,
                                                     items,
-                                                    itemHeight,
                                                 });
                                             }}
                                         >
@@ -416,17 +375,7 @@ const EditRouteList = ({
                                         </RouteItem>
                                     );
                                 })}
-                            {cloneElement && (
-                                <CloneItem
-                                    cloneElStyle={cloneElStyle}
-                                    onDragEnter={() => {
-                                        common.onCloneEnter({
-                                            overItemIndex,
-                                            dragItemIndex,
-                                        });
-                                    }}
-                                />
-                            )}
+                            {cloneElement && <CloneItem cloneElStyle={cloneElStyle} onDragEnter={dragFunction.onCloneEnter} />}
                         </RouteList>
                     );
                 })}

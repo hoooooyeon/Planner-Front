@@ -12,13 +12,14 @@ import PrivateRoute from './components/common/PrivateRoute';
 const App = () => {
     return (
         <>
-            <Route path="/" component={HomePage} exact />
-            <Route path="/Login" component={LoginPage} />
-            <Route path="/Register" component={RegisterPage} />
-            <Route path="/Profile" component={ProfilePage} />
-            <Route path="/PlannerInfo" component={PlannerInfoPage} />
-            <Route path="/PlannerList" component={PlannerListPage} />
-            <PrivateRoute path="/PlannerEdit" component={PlannerEditPage} redirect="/login" />
+            <Route path="/" render={HomePage} exact />
+            <Route path="/Login" render={LoginPage} />
+            <Route path="/Register" render={RegisterPage} />
+            <Route path="/Profile" render={ProfilePage} />
+            <Route path="/PlannerInfo" render={PlannerInfoPage} />
+            <Route path="/PlannerList" render={PlannerListPage} />
+            <Route path="/PlannerEdit" render={PlannerEditPage} />
+            {/* <Route path="/PlannerEdit" render={() => <PrivateRoute compo={PlannerEditPage} path="/PlannerEdit" redirect="/login" />} /> */}
         </>
     );
 };

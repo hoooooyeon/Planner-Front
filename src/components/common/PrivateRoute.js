@@ -1,11 +1,9 @@
 import { useSelector } from 'react-redux';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
-const PrivateRoute = ({ component, path, redirect }) => {
-    const { account, planner } = useSelector(({ plannerReducer, authReducer }) => ({ account: authReducer.account, planner: plannerReducer.planner }));
+const PrivateRoute = ({ Compo, path, redirect }) => {
+    const { account } = useSelector(({ authReducer }) => ({ account: authReducer.account }));
     const { accountId } = { ...account };
-    const { creator } = { ...planner };
-    // return accountId ? <Route path={path} component={component} /> : <Route path={path} component={component} />;
-    return accountId ? <Route path={path} component={component} /> : <Redirect to={redirect} />;
+    return accountId ? <Compo path={path} /> : <Redirect to={redirect} />;
 };
 export default PrivateRoute;

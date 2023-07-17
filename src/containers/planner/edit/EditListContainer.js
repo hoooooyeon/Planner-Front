@@ -33,6 +33,7 @@ const EditListContainer = () => {
     }));
 
     const { plannerId, planId, pageNum } = { ...plannerData };
+    const { creator } = { ...planner };
 
     const onCreateLocation = (spot) => {
         const { title, contentId, firstImage, firstImage2, addr1, mapx, mapy } = spot;
@@ -48,7 +49,7 @@ const EditListContainer = () => {
     };
 
     const { areaIndex, contentTypeId } = { ...spotData };
-    const { accountId } = { ...account };
+    const { accountId, nickname } = { ...account };
     const { curKeyword, resultKeyword } = { ...keyword };
 
     // 여행지 불러오기
@@ -204,6 +205,9 @@ const EditListContainer = () => {
         dispatch(changePageNumAction(page));
     }, [page, dispatch]);
 
+    // if (!accountId && nickname !== creator) {
+    //     return null;
+    // }
     return (
         <EditList
             spots={spots}

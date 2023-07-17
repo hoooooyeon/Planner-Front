@@ -33,16 +33,15 @@ const EditRouteContainer = () => {
 
     const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId, creator } = { ...planner };
     const { planId } = { ...plannerData };
-    const { nickname } = { ...account };
-    // const sortIndex = useRef();
+    const { nickname, accountId } = { ...account };
 
-    useEffect(() => {
-        if (nickname !== creator) {
-            alert('호스트만 접근할 수 있습니다.');
+    // useEffect(() => {
+    //     if (nickname !== creator) {
+    //         alert('호스트만 접근할 수 있습니다.');
 
-            history.push('/PlannerInfo');
-        }
-    }, []);
+    //         history.push('/PlannerList');
+    //     }
+    // }, []);
 
     const letsFormat = (d) => {
         const date = new Date(d);
@@ -114,7 +113,6 @@ const EditRouteContainer = () => {
     const onUpdatePlan = (index) => {
         const planDate = curPlan.planDate;
         const planId = curPlan.planId;
-        // const index = sortIndex.current;
 
         dispatch(updatePlanAction({ plannerId, planId, planDate, index }));
     };
@@ -130,7 +128,7 @@ const EditRouteContainer = () => {
                 const planId = plans[i].planId;
                 const index = 1024 * (i + 1);
 
-                if (i >= 1) {
+                if (i > 0) {
                     planDate = letsFormat(date.setDate(date.getDate() + 1));
                 }
                 dispatch(updatePlanAction({ plannerId, planId, planDate, index }));
@@ -142,7 +140,6 @@ const EditRouteContainer = () => {
     const [curLocation, setCurLocation] = useState();
     const onUpdateLocation = (index) => {
         const { locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation } = curLocation;
-        // const index = sortIndex.current;
         dispatch(updateLocationAction({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId, index }));
     };
     const onDeleteLocation = (locationId) => {
@@ -211,6 +208,9 @@ const EditRouteContainer = () => {
         dispatch(changeAllScheduleAction(false));
     };
 
+    if (!accountId && nickname !== creator) {
+        return null;
+    }
     return (
         <EditRoute
             planner={planner}
@@ -220,7 +220,6 @@ const EditRouteContainer = () => {
             transList={transList}
             startDate={startDate}
             endDate={endDate}
-            // sortIndex={sortIndex}
             curPlan={curPlan}
             curLocation={curLocation}
             cloneElement={cloneElement}

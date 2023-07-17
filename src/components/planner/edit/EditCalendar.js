@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import * as common from '../../../lib/utils/CommonFunction';
+import { DragFunction } from '../../../lib/utils/CommonFunction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import { faCalendarPlus } from '@fortawesome/free-regular-svg-icons';
@@ -168,13 +168,13 @@ const EditCalendar = ({
 
     const onUpdateSortIndex = (index) => {
         onUpdatePlan(index);
-        setUpdatePlans(index);
+        setUpdatePlans({ index: index });
     };
 
     const onChangeCurItem = (plan) => {
         setCurPlan(plan);
     };
-
+    const dragFunction = new DragFunction();
     if (!planner) {
         return <div>Loading...</div>;
     }
@@ -188,7 +188,7 @@ const EditCalendar = ({
             >
                 <CalIcon icon={faCalendarPlus} />
             </AddCal>
-            <EditCalendarBlock ref={containerRef} onDrop={(e) => common.onDrop({ e, items, onUpdateSortIndex })} onDragOver={(e) => common.onDragOver(e)}>
+            <EditCalendarBlock ref={containerRef} onDrop={(e) => dragFunction.onDrop({ e, items, onUpdateSortIndex })} onDragOver={(e) => dragFunction.onDragOver(e)}>
                 {items &&
                     items.map((item, i) => (
                         <ItemBox
@@ -196,16 +196,16 @@ const EditCalendar = ({
                             key={item.planId}
                             draggable
                             onDragStart={(e) => {
-                                common.onDragStart({ e, item, items, scrollTop, onChangeCurItem, onCloneElement, onChangeStyle });
+                                dragFunction.onDragStart({ e, item, items, scrollTop, onChangeCurItem, onCloneElement, onChangeStyle });
                             }}
                             onDrag={(e) => {
-                                common.onDragMove({ e, containerRef, scrollTop });
+                                dragFunction.onDragMove({ e, containerRef, scrollTop });
                             }}
                             onDragEnd={() => {
-                                common.onDragEnd({ onDeleteElement });
+                                dragFunction.onDragEnd({ onDeleteElement });
                             }}
                             onDragEnter={(e) => {
-                                common.onDragEnter({
+                                dragFunction.onDragEnter({
                                     e,
                                     item,
                                     items,
@@ -229,7 +229,7 @@ const EditCalendar = ({
                             </DeleteButton>
                         </ItemBox>
                     ))}
-                {cloneElement && <CloneItem cloneElStyle={cloneElStyle} onDragEnter={common.onCloneEnter} />}
+                {cloneElement && <CloneItem cloneElStyle={cloneElStyle} onDragEnter={dragFunction.onCloneEnter} />}
             </EditCalendarBlock>
         </FlexDiv>
     );

@@ -290,6 +290,9 @@ function plannerReducer(state = initialState, action) {
         case TOGGLE_LIKE_PLANNER_SUCCESS_TYPE:
             return {
                 ...state,
+                plannerData: {
+                    ...state.plannerData,
+                },
             };
         case CREATE_MEMO_SUCCESS_TYPE:
             return {
