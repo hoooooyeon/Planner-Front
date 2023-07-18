@@ -126,7 +126,7 @@ const Map = styled.div`
     left: 0;
 `;
 
-const MyPlannerList = ({ plannerError, myPlanners, onCreatePlanner, onChangeCurPlannerId, onPreviousPage, onNextPage }) => {
+const MyPlannerList = ({ plannerError, myPlanners, onCreatePlanner, onChangeCurPlannerId, onPreviousPage, onNextPage, drag }) => {
     // const areaArr = [
     //     {
     //         title: '서울',
@@ -350,7 +350,6 @@ const MyPlannerList = ({ plannerError, myPlanners, onCreatePlanner, onChangeCurP
 
     const itemRef = useRef();
     const history = useHistory();
-    const drag = useRef(false);
     const allowTransition = () => {
         if (!drag.current) {
             history.push('/PlannerInfo');

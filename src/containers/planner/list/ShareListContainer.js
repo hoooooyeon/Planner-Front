@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurPlannerIdAction, changeKeywordAction, changeResultKeywordAction, loadPlannerAction, loadSharePlannerListAction } from '../../../modules/plannerModule';
 import ShareList from '../../../components/planner/list/ShareList';
@@ -18,6 +18,7 @@ const ShareListContainer = () => {
     const { pageNum } = { ...plannerData };
     const { curKeyword, resultKeyword } = { ...keyword };
     const [sortCriteria, setSortCriteria] = useState(2);
+    const drag = useRef(false);
 
     const onChangeSort = (num) => {
         setSortCriteria(num);
@@ -37,7 +38,9 @@ const ShareListContainer = () => {
     };
 
     const onChangeCurPlannerId = (plannerId) => {
-        dispatch(changeCurPlannerIdAction(plannerId));
+        if (!drag.current) {
+            dispatch(changeCurPlannerIdAction(plannerId));
+        }
     };
 
     const onChangeKeyword = (keyword) => {
@@ -60,6 +63,7 @@ const ShareListContainer = () => {
             plannerError={plannerError}
             keyword={keyword}
             sortCriteria={sortCriteria}
+            drag={drag}
             onLoadPlanner={onLoadPlanner}
             onChangeCurPlannerId={onChangeCurPlannerId}
             onChangeKeyword={onChangeKeyword}

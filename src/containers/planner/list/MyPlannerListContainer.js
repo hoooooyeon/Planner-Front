@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurPlannerIdAction, createPlannerAction, loadPlannerAction, resetPlannerDataAction } from '../../../modules/plannerModule';
 import MyPlannerList from '../../../components/planner/list/MyPlannerList';
@@ -20,6 +20,7 @@ const MyPlannerListContainer = () => {
 
     const { pageLastIndex } = { ...myPlanners };
     const { accountId, nickname } = { ...account };
+    const drag = useRef(false);
 
     useEffect(() => {
         dispatch(resetPlannerDataAction());
@@ -48,13 +49,10 @@ const MyPlannerListContainer = () => {
         }
     }, [dispatch, accountId, pageNum]);
 
-    // 플래너 정보 가져오기
-    const onLoadPlanner = (plannerId) => {
-        dispatch(loadPlannerAction(plannerId));
-    };
-
     const onChangeCurPlannerId = (plannerId) => {
-        dispatch(changeCurPlannerIdAction(plannerId));
+        if (!drag.current) {
+            dispatch(changeCurPlannerIdAction(plannerId));
+        }
     };
 
     // 마지막 페이지
@@ -81,9 +79,9 @@ const MyPlannerListContainer = () => {
         <MyPlannerList
             myPlanners={myPlanners}
             planner={planner}
+            drag={drag}
             plannerError={plannerError}
             onCreatePlanner={onCreatePlanner}
-            onLoadPlanner={onLoadPlanner}
             onChangeCurPlannerId={onChangeCurPlannerId}
             onPreviousPage={onPreviousPage}
             onNextPage={onNextPage}
