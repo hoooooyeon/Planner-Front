@@ -100,7 +100,7 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
 
     // 슬라이드 마우스 업
     const sliderEnd = (e) => {
-        if (itemRef) {
+        if (itemRef.current) {
             const computedStyle = getComputedStyle(itemRef.current);
             const itemWidth = itemRef.current.getBoundingClientRect().height + parseInt(computedStyle.marginTop);
 

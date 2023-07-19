@@ -136,6 +136,7 @@ const PlannerInfo = ({
     const { nickname } = { ...account };
     const { creator } = { ...planner };
     const menuRef = useRef();
+    const containerRef = useRef();
     const [isDropDown, setIsDropDown] = useState(false);
 
     const onOpenDropDown = () => {
@@ -148,10 +149,18 @@ const PlannerInfo = ({
         }
     };
 
+    const onResizeDropDown = () => {
+        if (window.innerWidth > 1023) {
+            setIsDropDown(false);
+        }
+    };
+
     useEffect(() => {
         window.addEventListener('click', onCloseDropDown);
+        window.addEventListener('resize', onResizeDropDown);
         return () => {
             window.removeEventListener('click', onCloseDropDown);
+            window.removeEventListener('resize', onResizeDropDown);
         };
     });
 
@@ -159,7 +168,7 @@ const PlannerInfo = ({
         return <div>Loading...</div>;
     }
     return (
-        <PlannerInfoBlock>
+        <PlannerInfoBlock ref={containerRef}>
             <Container>
                 <InfoHeader>
                     <h3>따수베어님의 플래너</h3>
@@ -171,7 +180,9 @@ const PlannerInfo = ({
                                     <Link to="/PlannerEdit">플래너 루트 수정</Link>
                                 </MenuItem>
                                 <MenuItem onClick={onToggleMemberModal}>멤버 관리</MenuItem>
-                                <MenuItem onClick={onDeletePlanner}>플래너 삭제</MenuItem>
+                                <MenuItem onClick={onDeletePlanner}>
+                                    <Link to="/PlannerList">플래너 삭제</Link>
+                                </MenuItem>
                             </MenuList>
                             <Menu onClick={onOpenDropDown}>
                                 <FontAwesomeIcon icon={faGear} />

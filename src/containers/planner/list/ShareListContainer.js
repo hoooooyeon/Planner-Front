@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeCurPlannerIdAction, changeKeywordAction, changeResultKeywordAction, loadPlannerAction, loadSharePlannerListAction } from '../../../modules/plannerModule';
+import { changeCurPlannerIdAction, changeKeywordAction, changeResultKeywordAction, loadPlannerAction, loadSharePlannerListAction, resetSharePlannerListAction } from '../../../modules/plannerModule';
 import ShareList from '../../../components/planner/list/ShareList';
 import { useState } from 'react';
 
@@ -23,13 +23,15 @@ const ShareListContainer = () => {
     const onChangeSort = (num) => {
         setSortCriteria(num);
     };
-
+    const { accountId } = { ...account };
     // 공유 플래너리스트 가져오기
     useEffect(() => {
-        const itemCount = 12;
-        const keyword = resultKeyword;
+        if (accountId) {
+            const itemCount = 12;
+            const keyword = resultKeyword;
 
-        dispatch(loadSharePlannerListAction({ itemCount, sortCriteria, pageNum, keyword }));
+            dispatch(loadSharePlannerListAction({ itemCount, sortCriteria, pageNum, keyword }));
+        }
     }, [dispatch, pageNum, resultKeyword, sortCriteria]);
 
     // 플래너 정보 가져오기
@@ -54,6 +56,10 @@ const ShareListContainer = () => {
     useEffect(() => {
         dispatch(changeKeywordAction(''));
         dispatch(changeResultKeywordAction(''));
+
+        return () => {
+            dispatch(resetSharePlannerListAction());
+        };
     }, [dispatch]);
 
     return (

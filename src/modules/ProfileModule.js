@@ -26,6 +26,7 @@ const LOAD_LIKE_LIST_SUCCESS_TYPE = 'profile/LOAD_LIKE_LIST_SUCCESS';
 const LOAD_LIKE_LIST_FAILURE_TYPE = 'profile/LOAD_LIKE_LIST_FAILURE';
 
 const RESET_LIKE_LIST_TYPE = 'profile/RESET_LIKE_LIST';
+const RESET_MY_PLANNER_LIST_TYPE = 'profile/RESET_MY_PLANNER_LIST';
 
 // 액션 함수
 export const initializeAction = () => ({
@@ -65,6 +66,8 @@ export const loadMyPlannerListAction = ({ accountId, pageNum, itemCount, sortCri
 export const loadLikeListAction = ({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }) => ({ type: LOAD_LIKE_LIST_TYPE, accountId, itemCount, sortCriteria, keyword, postType, pageNum });
 
 export const resetLikeListAction = () => ({ type: RESET_LIKE_LIST_TYPE });
+
+export const resetMyPlannerListAction = () => ({ type: RESET_MY_PLANNER_LIST_TYPE });
 
 const profileLoad = createSaga(profileLoadType, profileAPI.profileLoad);
 const profileUpdate = createSaga(profileUpdateType, profileAPI.profileUpdate);
@@ -150,7 +153,11 @@ function profileReducer(state = initialState, action) {
                 ...state,
                 likeList: null,
             };
-
+        case RESET_MY_PLANNER_LIST_TYPE:
+            return {
+                ...state,
+                myPlanners: null,
+            };
         default: {
             return state;
         }

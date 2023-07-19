@@ -36,7 +36,7 @@ const EditRouteContainer = () => {
     const { nickname, accountId } = { ...account };
 
     useEffect(() => {
-        if (nickname !== creator) {
+        if (accountId && planner && nickname !== creator) {
             alert('호스트만 접근할 수 있습니다.');
 
             history.push('/PlannerList');

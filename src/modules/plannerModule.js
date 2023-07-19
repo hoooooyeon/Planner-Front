@@ -84,6 +84,7 @@ const CHANGE_KEYWORD_TYPE = 'planner/CHANGE_KEYWORD';
 const CHANGE_RESULT_KEYWORD_TYPE = 'planner/CHANGE_RESULT_KEYWORD';
 
 const CHANGE_ALL_SCHEDULE_TYPE = 'planner/CHANGE_ALL_SCHEDULE';
+const RESET_SHARE_PLANNER_LIST_TYPE = 'planner/RESET_SHARE_PLANNER_LIST';
 
 export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
     type: CREATE_PLANNER_TYPE,
@@ -146,6 +147,7 @@ export const changePageNumAction = (pageNum) => ({ type: CHANGE_PAGE_NUM_TYPE, p
 export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, keyword });
 export const changeResultKeywordAction = (keyword) => ({ type: CHANGE_RESULT_KEYWORD_TYPE, keyword });
 export const changeAllScheduleAction = (bool) => ({ type: CHANGE_ALL_SCHEDULE_TYPE, bool });
+export const resetSharePlannerListAction = () => ({ type: RESET_SHARE_PLANNER_LIST_TYPE });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -435,6 +437,11 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
                 allSchedule: action.bool,
+            };
+        case RESET_SHARE_PLANNER_LIST_TYPE:
+            return {
+                ...state,
+                sharePlanners: null,
             };
         default:
             return state;

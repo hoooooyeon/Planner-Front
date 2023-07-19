@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeCurPlannerIdAction, createPlannerAction, loadPlannerAction, resetPlannerDataAction } from '../../../modules/plannerModule';
+import { changeCurPlannerIdAction, createPlannerAction, resetPlannerDataAction } from '../../../modules/plannerModule';
 import MyPlannerList from '../../../components/planner/list/MyPlannerList';
-import { loadMyPlannerListAction } from '../../../modules/ProfileModule';
+import { loadMyPlannerListAction, resetMyPlannerListAction } from '../../../modules/ProfileModule';
 
 const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
@@ -24,6 +24,10 @@ const MyPlannerListContainer = () => {
 
     useEffect(() => {
         dispatch(resetPlannerDataAction());
+
+        return () => {
+            dispatch(resetMyPlannerListAction());
+        };
     }, [dispatch]);
 
     const onCreatePlanner = () => {
