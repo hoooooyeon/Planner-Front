@@ -38,8 +38,6 @@ const SEARCH_SPOT_FAILURE_TYPE = 'spot/SEARCH_SPOT_FAILURE';
 
 const CHANGE_CONTENT_TYPE_ID_TYPE = 'spot/CHANGE_CONTENT_TYPE_ID';
 
-const TOGGLE_SPOT_DETAIL_MODAL_TYPE = 'spot/TOGGLE_SPOT_DETAIL_MODAL';
-
 export const loadAreasAction = () => ({ type: LOAD_AREAS_TYPE });
 export const loadSpotsAction = ({ areaCode, contentTypeId, pageNo, numOfRows }) => ({
     type: LOAD_SPOTS_TYPE,
@@ -72,7 +70,6 @@ export const searchSpotAction = ({ areaCode, contentTypeId, curKeyword, numOfRow
     numOfRows,
 });
 export const changeContentTypeIdAction = (contentTypeId) => ({ type: CHANGE_CONTENT_TYPE_ID_TYPE, contentTypeId });
-export const toggleSpotDetailModalAction = () => ({ type: TOGGLE_SPOT_DETAIL_MODAL_TYPE });
 
 const loadAreasSaga = createSaga(LOAD_AREAS_TYPE, spotAPI.loadAreas);
 const loadSpotsSaga = createSaga(LOAD_SPOTS_TYPE, spotAPI.loadSpots);
@@ -238,11 +235,6 @@ function spotReducer(state = initialState, action) {
                     contentTypeId: action.contentTypeId,
                     pageNo: 1,
                 },
-            };
-        case TOGGLE_SPOT_DETAIL_MODAL_TYPE:
-            return {
-                ...state,
-                spotModal: !state.spotModal,
             };
         default:
             return state;

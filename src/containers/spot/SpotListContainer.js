@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router';
 import SpotList from '../../components/spot/SpotList';
 import {
     addSpotLikeAction,
@@ -14,7 +13,6 @@ import {
     changeAreaIndexAction,
     changeDetailSpotAction,
     changePageIndexAction,
-    toggleSpotDetailModalAction,
     changeContentIdAction,
     searchSpotAction,
     changeContentTypeIdAction,
@@ -24,7 +22,6 @@ const SpotListContainer = ({
     areas,
     spots,
     spotError,
-    detail,
     spotModal,
     spotData,
     contentTypeList,
@@ -33,15 +30,12 @@ const SpotListContainer = ({
     loadDetailSpot,
     changeAreaIndex,
     changePageIndex,
-    addSpotLike,
-    removeSpotLike,
     resetSpots,
     resetSpotData,
     changeDetailSpot,
     searchSpot,
     changeContentTypeId,
     changeContentId,
-    toggleSpotDetailModal,
 }) => {
     const { areaCode, pageNo, contentTypeId, contentId } = { ...spotData };
 
@@ -67,7 +61,6 @@ const SpotListContainer = ({
         }
         changeDetailSpot(spot);
         changeContentId(spot.contentId);
-        toggleSpotDetailModal();
     };
     useEffect(() => {
         if (contentId) {
@@ -173,8 +166,6 @@ const SpotListContainer = ({
 const mapStateToProps = (state) => ({
     areas: state.spotReducer.areas,
     spots: state.spotReducer.spots,
-    detail: state.spotReducer.detail,
-    account: state.authReducer.account,
     spotError: state.spotReducer.spotError,
     spotData: state.spotReducer.spotData,
     likeList: state.spotReducer.likeList,
@@ -221,9 +212,6 @@ const mapDispatchToProps = (dispatch) => ({
     },
     changeContentTypeId: (contentTypeId) => {
         dispatch(changeContentTypeIdAction(contentTypeId));
-    },
-    toggleSpotDetailModal: () => {
-        dispatch(toggleSpotDetailModalAction());
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);

@@ -27,7 +27,7 @@ const Form = styled.form`
     @media all and (max-width: 1023px) {
         flex-direction: column;
         justify-content: center;
-        /* align-items: flex-start; */
+        align-items: flex-start;
     }
 `;
 
@@ -195,7 +195,7 @@ const SpotSearchForm = ({
                                 onChangeCurKeyword(e.target.value);
                             }}
                         />
-                        <InvisibleInput type="text" />{' '}
+                        <InvisibleInput type="text" />
                         <IconBox>
                             {curKeyword.length > 0 ? (
                                 <FontAwesomeIcon

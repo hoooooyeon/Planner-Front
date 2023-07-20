@@ -1,31 +1,20 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import SpotDetailModal from '../../components/spot/SpotDetailModal';
-import {
-    addSpotLikeAction,
-    removeSpotLikeAction,
-    resetDetailSpotAction,
-    toggleDetailLikeAction,
-    toggleSpotDetailModalAction,
-} from '../../modules/spotModule';
+import { addSpotLikeAction, removeSpotLikeAction, resetDetailSpotAction } from '../../modules/spotModule';
 
 const SpotDetailModalContainer = () => {
     const dispatch = useDispatch();
-    const { detail, plannerError, spotModal, account } = useSelector(({ spotReducer, authReducer }) => ({
+    const { detail, plannerError, spotData, account } = useSelector(({ spotReducer, authReducer }) => ({
         detail: spotReducer.detail,
         spotError: spotReducer.spotError,
-        spotModal: spotReducer.spotModal,
+        spotData: spotReducer.spotData,
         account: authReducer.account,
     }));
     const history = useHistory();
 
     const { likeState, title, image, contentId } = { ...detail };
     const { accountId } = { ...account };
-
-    const onToggleSpotDetailModal = () => {
-        dispatch(toggleSpotDetailModalAction());
-    };
 
     const onToggleDetailLike = () => {
         if (accountId) {
@@ -46,10 +35,9 @@ const SpotDetailModalContainer = () => {
 
     return (
         <SpotDetailModal
-            spotModal={spotModal}
+            spotData={spotData}
             detail={detail}
             onResetDetailSpot={onResetDetailSpot}
-            onToggleSpotDetailModal={onToggleSpotDetailModal}
             onToggleDetailLike={onToggleDetailLike}
         />
     );

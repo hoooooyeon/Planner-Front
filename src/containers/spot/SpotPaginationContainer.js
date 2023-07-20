@@ -12,7 +12,7 @@ const SpotPaginationContainer = ({ spots, spotData, changePageIndexAction }) => 
     // 페이지의 10단위
     const [block, setBlock] = useState(0);
     // 보여질 페이지네이션의 개수
-    const limitIndex = 10;
+    const limitIndex = 5;
     // 마지막 페이지
     const maxPage = Math.ceil(totalCount / limitIndex);
     // 현재 페이지
