@@ -26,12 +26,17 @@ const PlannerInfoContainer = () => {
         if (!plannerData.plannerId) {
             alert('잘못된 접근입니다.');
 
-            history.push('/PlannerList');
+            history.push('/Planners');
         }
     }, [plannerData]);
 
     const onDeletePlanner = () => {
         dispatch(deletePlannerAction(plannerId));
+        history.push('/Planners');
+    };
+
+    const onClickEditPlanner = () => {
+        history.push(`/Planners/edit/${plannerId}`);
     };
 
     const onToggleMemberModal = () => {
@@ -70,7 +75,7 @@ const PlannerInfoContainer = () => {
         } else {
             alert('로그인이 필요합니다.');
 
-            history.push('/login');
+            history.push('/Login');
         }
     };
 
@@ -315,6 +320,7 @@ const PlannerInfoContainer = () => {
             onToggleLikePlanner={onToggleLikePlanner}
             showAllRouteMarker={showAllRouteMarker}
             showDateRouteMarker={showDateRouteMarker}
+            onClickEditPlanner={onClickEditPlanner}
         />
     );
 };

@@ -112,7 +112,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: ${(props) => (props.like ? 'yellow' : 'black')};
 `;
 
-const ShareList = ({ sharePlanners, plannerError, keyword, sortCriteria, resultKeyword, onChangeCurPlannerId, onChangeKeyword, onChangeResultKeyword, onChangeSort,drag }) => {
+const ShareList = ({ sharePlanners, plannerError, keyword, sortCriteria, resultKeyword, onClickPlanner, onChangeKeyword, onChangeResultKeyword, onChangeSort, drag }) => {
     // const areaArr = [
     //     {
     //         title: '서울',
@@ -335,13 +335,6 @@ const ShareList = ({ sharePlanners, plannerError, keyword, sortCriteria, resultK
     // }, [showRouteMarker]);
 
     const itemRef = useRef();
-    // 드래그시 페이지 전환 막기
-    const history = useHistory();
-    const allowTransition = () => {
-        if (!drag.current) {
-            history.push('/PlannerInfo');
-        }
-    };
 
     if (plannerError) {
         return <div>Loading...</div>;
@@ -361,8 +354,7 @@ const ShareList = ({ sharePlanners, plannerError, keyword, sortCriteria, resultK
                                         key={p.plannerId}
                                         ref={itemRef}
                                         onClick={() => {
-                                            onChangeCurPlannerId(p.plannerId);
-                                            allowTransition();
+                                            onClickPlanner(p.plannerId);
                                         }}
                                     >
                                         <MapBox>

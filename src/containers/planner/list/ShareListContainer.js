@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeCurPlannerIdAction, changeKeywordAction, changeResultKeywordAction, loadPlannerAction, loadSharePlannerListAction, resetSharePlannerListAction } from '../../../modules/plannerModule';
 import ShareList from '../../../components/planner/list/ShareList';
 import { useState } from 'react';
+import { useHistory } from 'react-router';
 
 const ShareListContainer = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const { sharePlanners, plannerError, planner, account, plannerData, keyword } = useSelector(({ plannerReducer, authReducer }) => ({
         sharePlanners: plannerReducer.sharePlanners,
         plannerError: plannerReducer.plannerError,
@@ -39,9 +41,10 @@ const ShareListContainer = () => {
         dispatch(loadPlannerAction(plannerId));
     };
 
-    const onChangeCurPlannerId = (plannerId) => {
+    const onClickPlanner = (plannerId) => {
         if (!drag.current) {
             dispatch(changeCurPlannerIdAction(plannerId));
+            history.push(`/Planners/${plannerId}`);
         }
     };
 
@@ -71,7 +74,7 @@ const ShareListContainer = () => {
             sortCriteria={sortCriteria}
             drag={drag}
             onLoadPlanner={onLoadPlanner}
-            onChangeCurPlannerId={onChangeCurPlannerId}
+            onClickPlanner={onClickPlanner}
             onChangeKeyword={onChangeKeyword}
             onChangeResultKeyword={onChangeResultKeyword}
             onChangeSort={onChangeSort}

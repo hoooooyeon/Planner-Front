@@ -115,7 +115,7 @@ const Header = ({ account }) => {
             </h1>
             <MenuList>
                 <li>
-                    <Link to="/PlannerList">플래너</Link>
+                    <Link to="/Planners">플래너</Link>
                 </li>
                 <li>
                     <Link to="/ReviewList">커뮤니티</Link>

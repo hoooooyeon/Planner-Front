@@ -58,9 +58,7 @@ const MenuItem = styled.li`
     white-space: nowrap;
     background-color: white;
     cursor: pointer;
-    a {
-        color: black;
-    }
+    color: black;
     &:hover {
         background-color: rgba(0, 0, 0, 0.01);
     }
@@ -96,12 +94,9 @@ const DropDownMenu = styled.ul`
     li {
         cursor: pointer;
         padding: 5px 10px;
+        color: black;
         &:hover {
             font-weight: bold;
-        }
-        a {
-            display: block;
-            color: black;
         }
     }
 `;
@@ -132,6 +127,7 @@ const PlannerInfo = ({
     onClickDateSchedule,
     onClickAllRoute,
     onClickDateRoute,
+    onClickEditPlanner,
 }) => {
     const { nickname } = { ...account };
     const { creator } = { ...planner };
@@ -176,13 +172,9 @@ const PlannerInfo = ({
                         <MenuBox>
                             <MenuList>
                                 <MenuItem onClick={onTogglePlannerInfoModal}>플래너 정보 수정</MenuItem>
-                                <MenuItem>
-                                    <Link to="/PlannerEdit">플래너 루트 수정</Link>
-                                </MenuItem>
+                                <MenuItem onClick={onClickEditPlanner}>플래너 루트 수정</MenuItem>
                                 <MenuItem onClick={onToggleMemberModal}>멤버 관리</MenuItem>
-                                <MenuItem onClick={onDeletePlanner}>
-                                    <Link to="/PlannerList">플래너 삭제</Link>
-                                </MenuItem>
+                                <MenuItem onClick={onDeletePlanner}>플래너 삭제</MenuItem>
                             </MenuList>
                             <Menu onClick={onOpenDropDown}>
                                 <FontAwesomeIcon icon={faGear} />
@@ -191,13 +183,9 @@ const PlannerInfo = ({
                             {isDropDown && (
                                 <DropDownMenu isDropDown={isDropDown} ref={menuRef}>
                                     <li onClick={onTogglePlannerInfoModal}>플래너 정보 수정</li>
-                                    <li>
-                                        <Link to="/PlannerEdit">플래너 루트 수정</Link>
-                                    </li>
+                                    <li onClick={onClickEditPlanner}>플래너 루트 수정</li>
                                     <li onClick={onToggleMemberModal}>멤버 관리</li>
-                                    <li onClick={onDeletePlanner}>
-                                        <Link to="/PlannerList">플래너 삭제</Link>
-                                    </li>
+                                    <li onClick={onDeletePlanner}>플래너 삭제</li>
                                 </DropDownMenu>
                             )}
                         </MenuBox>

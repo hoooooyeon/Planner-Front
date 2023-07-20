@@ -126,7 +126,7 @@ const Map = styled.div`
     left: 0;
 `;
 
-const MyPlannerList = ({ plannerError, myPlanners, onCreatePlanner, onChangeCurPlannerId, onPreviousPage, onNextPage, drag }) => {
+const MyPlannerList = ({ plannerError, myPlanners, onCreatePlanner, onClickPlanner, onPreviousPage, onNextPage, drag }) => {
     // const areaArr = [
     //     {
     //         title: '서울',
@@ -349,12 +349,7 @@ const MyPlannerList = ({ plannerError, myPlanners, onCreatePlanner, onChangeCurP
     // }, [showRouteMarker]);
 
     const itemRef = useRef();
-    const history = useHistory();
-    const allowTransition = () => {
-        if (!drag.current) {
-            history.push('/PlannerInfo');
-        }
-    };
+
     if (plannerError) {
         return <div>Loading...</div>;
     }
@@ -379,8 +374,7 @@ const MyPlannerList = ({ plannerError, myPlanners, onCreatePlanner, onChangeCurP
                                         key={p.plannerId}
                                         ref={itemRef}
                                         onClick={() => {
-                                            onChangeCurPlannerId(p.plannerId);
-                                            allowTransition();
+                                            onClickPlanner(p.plannerId);
                                         }}
                                     >
                                         <MapBox>{/* <Map id="map1" /> */}</MapBox>

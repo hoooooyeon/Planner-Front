@@ -16,9 +16,9 @@ const App = () => {
             <Route path="/Login" render={LoginPage} />
             <Route path="/Register" render={RegisterPage} />
             <Route path="/Profile" render={ProfilePage} />
-            <Route path="/PlannerInfo" render={PlannerInfoPage} />
-            <Route path="/PlannerList" render={PlannerListPage} />
-            <PrivateRoute path="/PlannerEdit" render={PlannerEditPage} redirect="/login" />
+            <PrivateRoute path="/Planners/edit/:plannerId" render={PlannerEditPage} redirect="/Login" />
+            <Route path="/Planners/:plannerId" render={PlannerInfoPage} />
+            <Route path="/Planners" render={PlannerListPage} />
         </Switch>
     );
 };

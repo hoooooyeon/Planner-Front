@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeCurPlannerIdAction, createPlannerAction, resetPlannerDataAction } from '../../../modules/plannerModule';
 import MyPlannerList from '../../../components/planner/list/MyPlannerList';
 import { loadMyPlannerListAction, resetMyPlannerListAction } from '../../../modules/ProfileModule';
+import { useHistory } from 'react-router';
 
 const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
+
     const { myPlanners, plannerError, planner, account } = useSelector(({ plannerReducer, authReducer, profileReducer }) => ({
         account: authReducer.account,
         myPlanners: profileReducer.myPlanners,
@@ -53,9 +56,10 @@ const MyPlannerListContainer = () => {
         }
     }, [dispatch, accountId, pageNum]);
 
-    const onChangeCurPlannerId = (plannerId) => {
+    const onClickPlanner = (plannerId) => {
         if (!drag.current) {
             dispatch(changeCurPlannerIdAction(plannerId));
+            history.push(`/Planners/${plannerId}`);
         }
     };
 
@@ -79,18 +83,7 @@ const MyPlannerListContainer = () => {
         setPageNum(page);
     }, [page]);
 
-    return (
-        <MyPlannerList
-            myPlanners={myPlanners}
-            planner={planner}
-            drag={drag}
-            plannerError={plannerError}
-            onCreatePlanner={onCreatePlanner}
-            onChangeCurPlannerId={onChangeCurPlannerId}
-            onPreviousPage={onPreviousPage}
-            onNextPage={onNextPage}
-        />
-    );
+    return <MyPlannerList myPlanners={myPlanners} planner={planner} drag={drag} plannerError={plannerError} onCreatePlanner={onCreatePlanner} onClickPlanner={onClickPlanner} onPreviousPage={onPreviousPage} onNextPage={onNextPage} />;
 };
 
 export default MyPlannerListContainer;
