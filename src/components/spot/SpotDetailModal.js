@@ -1,8 +1,6 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { useEffect } from 'react';
 import Modal from '../common/Modal';
 
 const DetailModalBlock = styled.div`
@@ -92,42 +90,27 @@ const LikeBox = styled.div`
     top: 9px;
     right: 8px;
     cursor: pointer;
-
     div {
         margin-left: 5px;
     }
 `;
+
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: ${(props) => (props.like ? 'yellow' : 'lightgray')};
 `;
 
-const SpotDetailModal = ({ spotModal, detail, onResetDetailSpot, onToggleSpotDetailModal, onToggleDetailLike }) => {
+const SpotDetailModal = ({ spotData, detail, onResetDetailSpot, onToggleDetailLike }) => {
     const { title, image, overview, addr1, likeCount, likeState } = { ...detail };
-
-    // 모달 외부 스크롤 고정
-    // useEffect(() => {
-    //     document.body.style.cssText = `
-    //     position: fixed;
-    //     top: -${window.scrollY}px;
-    //     overflow-y: scroll;
-    //     width: 100%;`;
-    //     return () => {
-    //         const scrollY = document.body.style.top;
-    //         document.body.style.cssText = '';
-    //         window.scrollTo(0, parseInt(scrollY) * -1);
-    //     };
-    // }, []);
+    const { contentId } = { ...spotData };
 
     return (
         <Modal
-            modalVisible={spotModal}
+            modalVisible={contentId}
             title="여행지 상세정보"
             onModalClose={() => {
-                onToggleSpotDetailModal();
                 onResetDetailSpot();
             }}
             onModalConfirm={() => {
-                onToggleSpotDetailModal();
                 onResetDetailSpot();
             }}
         >

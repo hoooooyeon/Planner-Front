@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
 const FormDiv = styled.div`
@@ -26,7 +27,7 @@ const Form = styled.form`
     @media all and (max-width: 1023px) {
         flex-direction: column;
         justify-content: center;
-        /* align-items: flex-start; */
+        align-items: flex-start;
     }
 `;
 
@@ -128,8 +129,23 @@ const Label = styled.label`
         white-space: nowrap;
     }
 `;
-
-const SpotSearchForm = ({ areas, resultKeyword, curKeyword, spotData, contentTypeList, onClickArea, onChangeContentTypeId, onSearchSpot, onChangeKeyword }) => {
+const IconBox = styled.div`
+    background-color: white;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    padding: 0 0.5rem;
+`;
+const SpotSearchForm = ({
+    areas,
+    resultKeyword,
+    curKeyword,
+    spotData,
+    contentTypeList,
+    onClickArea,
+    onChangeContentTypeId,
+    onChangeCurKeyword,
+    onChangeResultKeyword,
+}) => {
     return (
         <>
             <FormDiv>
@@ -139,7 +155,7 @@ const SpotSearchForm = ({ areas, resultKeyword, curKeyword, spotData, contentTyp
                             <Label>지역</Label>
                             <Select
                                 required
-                                value={spotData.areaIndex}
+                                value={spotData.areaCode}
                                 onChange={(e) => {
                                     onClickArea(e.target.value);
                                 }}
@@ -176,11 +192,21 @@ const SpotSearchForm = ({ areas, resultKeyword, curKeyword, spotData, contentTyp
                             type="text"
                             value={curKeyword}
                             onChange={(e) => {
-                                onChangeKeyword(e.target.value);
+                                onChangeCurKeyword(e.target.value);
                             }}
                         />
                         <InvisibleInput type="text" />
-                        <SearchButton type="button" onClick={onSearchSpot}>
+                        <IconBox>
+                            {curKeyword.length > 0 ? (
+                                <FontAwesomeIcon
+                                    onClick={() => {
+                                        onChangeCurKeyword('');
+                                    }}
+                                    icon={faXmark}
+                                />
+                            ) : null}
+                        </IconBox>
+                        <SearchButton type="button" onClick={onChangeResultKeyword}>
                             <FontAwesomeIcon icon={faMagnifyingGlass} />
                         </SearchButton>
                     </SearchBox>
