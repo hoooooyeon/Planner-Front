@@ -26,8 +26,8 @@ const rootReducer = combineReducers({
     loadingReducer,
     authReducer,
     profileReducer,
-    // plannerReducer,
-    plannerReducer: persistReducer(plannerPersistConfig, plannerReducer),
+    plannerReducer,
+    // plannerReducer: persistReducer(plannerPersistConfig, plannerReducer),
     spotReducer,
 });
 
@@ -35,5 +35,5 @@ export function* rootSaga() {
     yield all([authSaga(), profileSaga(), plannerSaga(), spotSaga()]);
 }
 
-// export default rootReducer;
-export default persistReducer(rootPersistConfig, rootReducer);
+export default rootReducer;
+// export default persistReducer(rootPersistConfig, rootReducer);

@@ -6,9 +6,11 @@ import { changeAllScheduleAction } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import locationImg from '../../../lib/images/location.png';
 import { loadSpotsAction, resetSpotDataAction, changeAreaIndexAction } from '../../../modules/spotModule';
+import { useHistory } from 'react-router';
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const { planner, plannerError, plannerData, spots, spotData, account, allSchedule } = useSelector(({ plannerReducer, spotReducer, authReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
@@ -22,6 +24,7 @@ const EditMapContainer = () => {
         account: authReducer.account,
     }));
 
+    const { plannerId } = { ...plannerData };
     const { plans, creator } = { ...planner };
     const { accountId, nickname } = { ...account };
 
@@ -479,10 +482,6 @@ const EditMapContainer = () => {
         dispatch(loadSpotsAction({ areaIndex, contentTypeId, pageIndex }));
     }, [dispatch, areaIndex, contentTypeId, pageIndex]);
 
-    const onResetSpotData = () => {
-        dispatch(resetSpotDataAction());
-    };
-
     const onClickAllSchedule = () => {
         if (allSchedule) {
             showDateRouteMarker();
@@ -492,10 +491,14 @@ const EditMapContainer = () => {
             dispatch(changeAllScheduleAction(true));
         }
     };
+
+    const onSavePlanner = () => {
+        history.push(`/Planners/${plannerId}`);
+    };
     if (nickname !== creator) {
         return null;
     }
-    return <EditMap mapRef={mapRef} allSchedule={allSchedule} onClickAllSchedule={onClickAllSchedule} onResetSpotData={onResetSpotData} />;
+    return <EditMap mapRef={mapRef} allSchedule={allSchedule} onClickAllSchedule={onClickAllSchedule} onSavePlanner={onSavePlanner} />;
 };
 
 export default EditMapContainer;

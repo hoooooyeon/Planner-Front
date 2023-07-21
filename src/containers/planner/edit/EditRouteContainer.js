@@ -39,9 +39,9 @@ const EditRouteContainer = () => {
         if (accountId && planner && nickname !== creator) {
             alert('호스트만 접근할 수 있습니다.');
 
-            history.push('/PlannerList');
+            history.push('/Planners');
         }
-    }, []);
+    }, [accountId, planner, nickname, creator, history]);
 
     const letsFormat = (d) => {
         const date = new Date(d);

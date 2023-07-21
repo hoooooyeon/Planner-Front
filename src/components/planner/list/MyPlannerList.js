@@ -359,7 +359,7 @@ const MyPlannerList = ({ plannerError, myPlanners, onCreatePlanner, onClickPlann
                 <Header>
                     <HeaderTitle>나의 플래너</HeaderTitle>
                     <Button>
-                        <Link to="/PlannerEdit" onClick={onCreatePlanner}>
+                        <Link to="/Planners/edit" onClick={onCreatePlanner}>
                             플래너 생성
                         </Link>
                     </Button>

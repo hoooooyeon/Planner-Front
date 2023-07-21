@@ -50,8 +50,7 @@ const Button = styled.button`
             background-color: #ebdede;
         `}
 `;
-
-const EditMap = ({ mapRef, allSchedule, onClickAllSchedule, onResetSpotData }) => {
+const EditMap = ({ mapRef, allSchedule, onClickAllSchedule, onSavePlanner }) => {
     if (!mapRef) {
         return <div>Loading...</div>;
     }
@@ -63,9 +62,7 @@ const EditMap = ({ mapRef, allSchedule, onClickAllSchedule, onResetSpotData }) =
                 <Button allSchedule={allSchedule} onClick={onClickAllSchedule}>
                     모든 일정 보기
                 </Button>
-                <Button onClick={onResetSpotData}>
-                    <Link to="/PlannerInfo">일정 저장</Link>
-                </Button>
+                <Button onClick={onSavePlanner}>일정 저장</Button>
             </ButtonBox>
         </EditMapBlock>
     );

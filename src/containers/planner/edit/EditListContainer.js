@@ -127,10 +127,13 @@ const EditListContainer = () => {
 
     // 검색 키워드 초기화
     useEffect(() => {
-        dispatch(changeKeywordAction(''));
-        dispatch(changeResultKeywordAction(''));
-        dispatch(resetSpotDataAction());
-        dispatch(resetSpotsAction());
+        return () => {
+            dispatch(changeKeywordAction(''));
+            dispatch(changeResultKeywordAction(''));
+            dispatch(resetSpotDataAction());
+            dispatch(resetSpotsAction());
+            console.log(1);
+        };
     }, [dispatch]);
 
     // 뿌려줄 페이지 배열

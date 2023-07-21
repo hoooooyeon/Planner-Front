@@ -25,15 +25,12 @@ const ShareListContainer = () => {
     const onChangeSort = (num) => {
         setSortCriteria(num);
     };
-    const { accountId } = { ...account };
     // 공유 플래너리스트 가져오기
     useEffect(() => {
-        if (accountId) {
-            const itemCount = 12;
-            const keyword = resultKeyword;
+        const itemCount = 12;
+        const keyword = resultKeyword;
 
-            dispatch(loadSharePlannerListAction({ itemCount, sortCriteria, pageNum, keyword }));
-        }
+        dispatch(loadSharePlannerListAction({ itemCount, sortCriteria, pageNum, keyword }));
     }, [dispatch, pageNum, resultKeyword, sortCriteria]);
 
     // 플래너 정보 가져오기

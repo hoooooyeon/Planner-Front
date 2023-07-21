@@ -18,17 +18,17 @@ const PlannerInfoContainer = () => {
         allSchedule: plannerReducer.allSchedule,
     }));
 
-    const { plannerId, plans } = { ...planner };
-    const { planId } = { ...plannerData };
+    const { plans } = { ...planner };
+    const { plannerId, planId } = { ...plannerData };
     const { accountId } = { ...account };
 
     useEffect(() => {
-        if (!plannerData.plannerId) {
+        if (!plannerId) {
             alert('잘못된 접근입니다.');
 
             history.push('/Planners');
         }
-    }, [plannerData]);
+    }, []);
 
     const onDeletePlanner = () => {
         dispatch(deletePlannerAction(plannerId));
@@ -56,7 +56,6 @@ const PlannerInfoContainer = () => {
 
     // planner 정보 가져오기
     useEffect(() => {
-        const { plannerId } = plannerData;
         if (plannerId) {
             dispatch(loadPlannerAction(plannerId));
         }

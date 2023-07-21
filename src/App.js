@@ -16,7 +16,8 @@ const App = () => {
             <Route path="/Login" render={LoginPage} />
             <Route path="/Register" render={RegisterPage} />
             <Route path="/Profile" render={ProfilePage} />
-            <PrivateRoute path="/Planners/edit/:plannerId" render={PlannerEditPage} redirect="/Login" />
+            {/* <PrivateRoute path="/Planners/edit/:plannerId" render={PlannerEditPage} redirect="/Login" /> */}
+            <PrivateRoute path={['/Planners/edit', '/Planners/edit/:plannerId']} render={PlannerEditPage} redirect="/Login" />
             <Route path="/Planners/:plannerId" render={PlannerInfoPage} />
             <Route path="/Planners" render={PlannerListPage} />
         </Switch>
