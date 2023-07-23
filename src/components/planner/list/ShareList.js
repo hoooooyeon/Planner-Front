@@ -103,6 +103,11 @@ const Map = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
+
+    img {
+        width: 100px;
+        height: 100px;
+    }
 `;
 
 const IconBox = styled.div`
@@ -118,46 +123,55 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 const ShareList = ({ sharePlanners, plannerError, keyword, sortCriteria, resultKeyword, onClickPlanner, onChangeKeyword, onChangeResultKeyword, onChangeSort, drag }) => {
     const itemRef = useRef();
 
-    // const mapsRef = useRef(sharePlanners ? new Array(sharePlanners.list.length) : null);
     const mapsRef = useRef();
+    // const mapsRef = useRef();
     const [maps, setMaps] = useState();
     const { kakao } = window;
+    const points = [new kakao.maps.LatLng(35.87451110951265, 125.06741596995614), new kakao.maps.LatLng(36.660750122542744, 130.77375208412371)];
+    const bounds = new kakao.maps.LatLngBounds();
 
     // 지도 생성
     useEffect(() => {
-        if (sharePlanners && sharePlanners.list.length > 0) {
-            // mapsRef.current = new Array(sharePlanners.list.length);
-            // console.log(mapsRef.current[0]);
-            // sharePlanners.list.forEach((m, i) => {
-            // let container = document.getElementById(maps[i]);
+        // if (sharePlanners && sharePlanners.list.length > 0) {
+        //     sharePlanners.list.forEach((m, i) => {
+        if (sharePlanners) {
+            mapsRef.current = new Array(sharePlanners.list.length);
+            if (mapsRef.current) {
+                mapsRef.current.forEach((m, i) => {
+                    // let container = document.getElementById(maps[i]);
 
-            //지도를 담을 영역의 DOM 레퍼런스
-            const options = {
-                //지도를 생성할 때 필요한 기본 옵션
-                center: new kakao.maps.LatLng(36.5, 127.5), //지도의 중심좌표.
-                level: 15, //지도의 레벨(확대, 축소 정도)
-            };
-            // console.log(mapsRef.current[i]);
-            const newMap = new kakao.maps.Map(mapsRef.current, options); //지도 생성 및 객체 리턴
+                    const options = {
+                        center: new kakao.maps.LatLng(36.5, 127.8),
+                        level: 14,
+                    };
 
-            // const newMap = new kakao.maps.StaticMap(mapsRef.current, options);
-            // setMaps((maps) => [...maps, newMap]);
-            setMaps(newMap);
-            // });
+                    // const newMap = new kakao.maps.StaticMap(mapsRef.current, options);
+
+                    const newMap = new kakao.maps.Map(mapsRef.current[i], options); //지도 생성 및 객체 리턴
+                    setMaps((maps) => [...maps, newMap]);
+                    // setMaps(newMap);
+                });
+            }
         }
-    }, [kakao.maps.LatLng, kakao.maps.Map, sharePlanners, kakao.maps.StaticMap]);
+    }, [sharePlanners, mapsRef.current]);
 
     const mapBoxRef = useRef();
     const resizeMaps = () => {
-        if (mapsRef.current) {
+        if (mapsRef.current && maps) {
             const width = mapBoxRef.current.offsetWidth;
             const height = mapBoxRef.current.offsetHeight;
 
             // mapsRef.current.style.width = `${width}px`;
             // mapsRef.current.style.height = `${height}px`;
-            mapsRef.current.style.width = `${100}%`;
-            mapsRef.current.style.height = `${100}%`;
+            // mapsRef.current.style.width = `${100}%`;
+            // mapsRef.current.style.height = `${100}%`;
             // mapsRef.current.relayout();
+            maps.forEach((map) => map.setCenter(new kakao.maps.LatLng(36.5, 127.8)));
+
+            // for (let i = 0; i < points.length; i++) {
+            //     bounds.extend(points[i]);
+            // }
+            // maps.setBounds(bounds);
         }
     };
     useEffect(() => {
@@ -191,8 +205,8 @@ const ShareList = ({ sharePlanners, plannerError, keyword, sortCriteria, resultK
                                     >
                                         <MapBox ref={mapBoxRef}>
                                             <Map
-                                                //  ref={(el) => (mapsRef.current[i] = el)}
-                                                ref={mapsRef}
+                                                ref={(el) => (mapsRef.current[i] = el)}
+                                                // ref={mapsRef}
                                             />
                                             <IconBox>
                                                 <StyledFontAwesomeIcon icon={faStar} like={p.likeState ? p.likeState.toString() : undefined} />
