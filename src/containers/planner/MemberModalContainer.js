@@ -5,21 +5,27 @@ import { deleteMemberAction, inviteMemberAction, toggleMemberModalAction } from 
 
 const MemberModalContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, modal } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, modal, account } = useSelector(({ plannerReducer, authReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         modal: plannerReducer.modal,
+        account: authReducer.account,
     }));
 
-    const { plannerId } = { ...planner };
+    const { plannerId, creator } = { ...planner };
+    const { accountId, nickname } = { ...account };
 
     const [members, setMembers] = useState([]);
 
     const onInviteMember = () => {
-        dispatch(inviteMemberAction({ plannerId, members }));
+        if (accountId && creator === nickname) {
+            dispatch(inviteMemberAction({ plannerId, members }));
+        }
     };
     const onDeleteMember = (nickName) => {
-        dispatch(deleteMemberAction({ plannerId, nickName }));
+        if (accountId && creator === nickname) {
+            dispatch(deleteMemberAction({ plannerId, nickName }));
+        }
     };
 
     const onChangeMember = (members) => {

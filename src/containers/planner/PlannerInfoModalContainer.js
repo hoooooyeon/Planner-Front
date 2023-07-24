@@ -6,13 +6,15 @@ import { togglePlannerInfoModalAction, updatePlannerAction } from '../../modules
 
 const PlannerInfoModalContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, modal } = useSelector(({ plannerReducer }) => ({
+    const { planner, plannerError, modal, account } = useSelector(({ plannerReducer, authReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         modal: plannerReducer.modal,
+        account: authReducer.account,
     }));
 
-    const { plannerId, planDateStart, planDateEnd, title, expense, memberCount, memberTypeId } = { ...planner };
+    const { accountId, nickname } = { ...account };
+    const { plannerId, planDateStart, planDateEnd, title, expense, memberCount, memberTypeId, creator } = { ...planner };
     const [curTitle, setCurTitle] = useState(title);
     const [curExpense, setCurExpense] = useState(expense);
     const [curMemberCount, setCurMemberCount] = useState(memberCount);
@@ -26,11 +28,13 @@ const PlannerInfoModalContainer = () => {
     }, [title, expense, memberCount, memberTypeId, modal]);
 
     const onUpdatePlanner = () => {
-        const title = curTitle;
-        const expense = curExpense;
-        const memberCount = curMemberCount;
-        const memberTypeId = curMemberTypeId;
-        dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
+        if (accountId && creator === nickname) {
+            const title = curTitle;
+            const expense = curExpense;
+            const memberCount = curMemberCount;
+            const memberTypeId = curMemberTypeId;
+            dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
+        }
     };
 
     const onTogglePlannerInfoModal = () => {

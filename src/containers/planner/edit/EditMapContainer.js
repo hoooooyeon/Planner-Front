@@ -479,7 +479,9 @@ const EditMapContainer = () => {
     const { areaIndex, pageIndex, contentTypeId } = { ...spotData };
     // 여행지 리스트 로드
     useEffect(() => {
-        dispatch(loadSpotsAction({ areaIndex, contentTypeId, pageIndex }));
+        if (contentTypeId !== 0) {
+            dispatch(loadSpotsAction({ areaIndex, contentTypeId, pageIndex }));
+        }
     }, [dispatch, areaIndex, contentTypeId, pageIndex]);
 
     const onClickAllSchedule = () => {

@@ -19,8 +19,8 @@ const PlannerInfoContainer = () => {
     }));
 
     const { plans } = { ...planner };
-    const { plannerId, planId } = { ...plannerData };
-    const { accountId } = { ...account };
+    const { plannerId, planId, creator } = { ...plannerData };
+    const { accountId, nickname } = { ...account };
 
     useEffect(() => {
         if (!plannerId) {
@@ -31,8 +31,10 @@ const PlannerInfoContainer = () => {
     }, []);
 
     const onDeletePlanner = () => {
-        dispatch(deletePlannerAction(plannerId));
-        history.push('/Planners');
+        if (accountId && creator === nickname) {
+            dispatch(deletePlannerAction(plannerId));
+            history.push('/Planners');
+        }
     };
 
     const onClickEditPlanner = () => {
@@ -73,8 +75,6 @@ const PlannerInfoContainer = () => {
             dispatch(toggleLikePlannerAction(plannerId));
         } else {
             alert('로그인이 필요합니다.');
-
-            history.push('/Login');
         }
     };
 
@@ -85,8 +85,8 @@ const PlannerInfoContainer = () => {
     useEffect(() => {
         if (mapRef.current) {
             const options = {
-                center: new kakao.maps.LatLng(33.450701, 126.570667),
-                level: 7,
+                center: new kakao.maps.LatLng(36.5, 127.8),
+                level: 14,
             };
             const map = new kakao.maps.Map(mapRef.current, options);
             setMap(map);
@@ -94,8 +94,10 @@ const PlannerInfoContainer = () => {
         }
     }, [mapRef.current]);
 
-    useEffect(() => {
-        if (map && plans) {
+    const setBoundsMap = () => {
+        if (map && plans.length === 0) {
+            map.setCenter(new kakao.maps.LatLng(36.5, 127.8));
+        } else if (map && plans.length > 0) {
             let bounds = new kakao.maps.LatLngBounds();
             for (let i = 0; i < plans.length; i++) {
                 const { planLocations } = plans[i];
@@ -110,6 +112,14 @@ const PlannerInfoContainer = () => {
                 // 지도에 루트에 포함된 마커들이 보이도록 범위 재설정
                 map.setBounds(bounds);
             }
+        }
+    };
+
+    useEffect(() => {
+        if (mapRef.current) {
+            window.addEventListener('resize', setBoundsMap);
+            setBoundsMap();
+            return () => window.removeEventListener('resize', setBoundsMap);
         }
     }, [map]);
 

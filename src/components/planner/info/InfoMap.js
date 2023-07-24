@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const MapBlock = styled.div`
     width: 60%;
@@ -11,14 +11,27 @@ const MapBlock = styled.div`
         width: 100%;
         height: 80vw;
     }
+    background-color: lightgray;
+    /* margin: 0;
+    overflow: hidden;
+    position: relative;
+    padding-top: 60%;
+    width: 100%;
+    border-radius: 0.5rem 0.5rem 0 0;
+    @media all and (max-width: 767px) {
+        padding-top: 75%;
+    } */
 `;
 
 const Map = styled.div`
     border-radius: 0.5rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     width: 100%;
     height: 100%;
     pointer-events: none;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 0;
+    left: 0;
 `;
 
 const IconBox = styled.div`

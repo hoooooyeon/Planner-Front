@@ -34,16 +34,18 @@ const MyPlannerListContainer = () => {
     }, [dispatch]);
 
     const onCreatePlanner = () => {
-        let title = `${nickname}의 여행 플래너`;
-        let planDateStart = letsFormat(new Date());
-        let planDateEnd = letsFormat(new Date());
-        let planMembers = [];
-        let expense = 0;
-        let memberCount = 1;
-        let memberTypeId = 1;
-        const creator = nickname;
+        if (accountId) {
+            let title = `${nickname}의 여행 플래너`;
+            let planDateStart = letsFormat(new Date());
+            let planDateEnd = letsFormat(new Date());
+            let planMembers = [];
+            let expense = 0;
+            let memberCount = 1;
+            let memberTypeId = 1;
+            const creator = nickname;
 
-        dispatch(createPlannerAction({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }));
+            dispatch(createPlannerAction({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }));
+        }
     };
 
     const [pageNum, setPageNum] = useState(1);

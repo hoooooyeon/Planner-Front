@@ -34,22 +34,24 @@ const EditListContainer = () => {
 
     const { plannerId, planId, pageNum } = { ...plannerData };
     const { creator } = { ...planner };
+    const { accountId, nickname } = { ...account };
 
     const onCreateLocation = (spot) => {
-        const { title, contentId, firstImage, firstImage2, addr1, mapx, mapy } = spot;
-        const locationContentId = contentId;
-        const locationImage = firstImage !== '' ? firstImage : firstImage2;
-        const locationTransportation = 1;
-        const locationName = title;
-        const locationAddr = addr1;
-        const locationMapx = mapx;
-        const locationMapy = mapy;
+        if (accountId && creator === nickname) {
+            const { title, contentId, firstImage, firstImage2, addr1, mapx, mapy } = spot;
+            const locationContentId = contentId;
+            const locationImage = firstImage !== '' ? firstImage : firstImage2;
+            const locationTransportation = 1;
+            const locationName = title;
+            const locationAddr = addr1;
+            const locationMapx = mapx;
+            const locationMapy = mapy;
 
-        dispatch(createLocationAction({ plannerId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId }));
+            dispatch(createLocationAction({ plannerId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId }));
+        }
     };
 
     const { areaIndex, contentTypeId } = { ...spotData };
-    const { accountId, nickname } = { ...account };
     const { curKeyword, resultKeyword } = { ...keyword };
 
     // 여행지 불러오기
@@ -118,7 +120,7 @@ const EditListContainer = () => {
     const sortCriteria = 2;
     const postType = 2;
     useEffect(() => {
-        if (likeKeyword.length !== 0 || contentTypeId === 0) {
+        if ((accountId && likeKeyword.length !== 0) || contentTypeId === 0) {
             const keyword = likeKeyword;
             dispatch(resetSpotsAction());
             dispatch(loadLikeListAction({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }));
@@ -132,7 +134,6 @@ const EditListContainer = () => {
             dispatch(changeResultKeywordAction(''));
             dispatch(resetSpotDataAction());
             dispatch(resetSpotsAction());
-            console.log(1);
         };
     }, [dispatch]);
 
@@ -141,7 +142,7 @@ const EditListContainer = () => {
     // 페이지의 10단위
     const [block, setBlock] = useState(0);
     // 보여질 페이지네이션의 개수
-    const limitIndex = 10;
+    const limitIndex = 5;
     // 마지막 페이지
     const maxPage = useRef();
     // const { totalCount } = { ...spots };

@@ -50,33 +50,39 @@ const EditRouteContainer = () => {
 
     // 시작 날짜 선택 함수
     const onUpdatePlannerDate = (date) => {
-        let planDateStart = letsFormat(date);
-        let planDateEnd = letsFormat(date);
+        if (accountId && creator === nickname) {
+            let planDateStart = letsFormat(date);
+            let planDateEnd = letsFormat(date);
 
-        if (plans.length !== 0) {
-            planDateEnd = letsFormat(new Date(planDateEnd).setDate(new Date(planDateEnd).getDate() + plans.length - 1));
+            if (plans.length !== 0) {
+                planDateEnd = letsFormat(new Date(planDateEnd).setDate(new Date(planDateEnd).getDate() + plans.length - 1));
+            }
+            dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
         }
-        dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
     };
 
     // plan 추가시 날짜 하루 생성
     const onAddDate = (date) => {
-        if (plans.length === 0) {
-            return;
+        if (accountId && creator === nickname) {
+            if (plans.length === 0) {
+                return;
+            }
+
+            let curDate = new Date(date);
+            let planDateEnd = letsFormat(curDate.setDate(curDate.getDate() + 1));
+
+            dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
         }
-
-        let curDate = new Date(date);
-        let planDateEnd = letsFormat(curDate.setDate(curDate.getDate() + 1));
-
-        dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
     };
 
     // plan 삭제시 날짜 하루 제거
     const onSubDate = (date) => {
-        let curDate = new Date(date);
-        let planDateEnd = letsFormat(curDate.setDate(curDate.getDate() - 1));
+        if (accountId && creator === nickname) {
+            let curDate = new Date(date);
+            let planDateEnd = letsFormat(curDate.setDate(curDate.getDate() - 1));
 
-        dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
+            dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
+        }
     };
     const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : null);
     const [endDate, setEndDate] = useState(planDateEnd ? new Date(planDateEnd) : null);
@@ -97,41 +103,46 @@ const EditRouteContainer = () => {
     }, [planDateStart, planDateEnd]);
 
     const onCreatePlan = () => {
-        const planDate = letsFormat(new Date(planDateEnd));
+        if (accountId && creator === nickname) {
+            const planDate = letsFormat(new Date(planDateEnd));
 
-        dispatch(createPlanAction({ plannerId, planDate }));
+            dispatch(createPlanAction({ plannerId, planDate }));
+        }
     };
     const onDeletePlan = (planId) => {
-        dispatch(deletePlanAction({ plannerId, planId }));
-        if (planner && plans.length > 0 && planId === plannerData.planId) {
-            // dispatch(changeCurPlanIdAction(plans[0].planId));
+        if (accountId && creator === nickname) {
+            dispatch(deletePlanAction({ plannerId, planId }));
         }
     };
 
     // 날짜 순서 수정
     const [curPlan, setCurPlan] = useState();
     const onUpdatePlan = (index) => {
-        const planDate = curPlan.planDate;
-        const planId = curPlan.planId;
+        if (accountId && creator === nickname) {
+            const planDate = curPlan.planDate;
+            const planId = curPlan.planId;
 
-        dispatch(updatePlanAction({ plannerId, planId, planDate, index }));
+            dispatch(updatePlanAction({ plannerId, planId, planDate, index }));
+        }
     };
 
     const [updatePlans, setUpdatePlans] = useState();
     // 일정 날짜 최신화
     useEffect(() => {
-        let date = new Date(planDateStart);
-        let planDate = letsFormat(date);
+        if (accountId && creator === nickname) {
+            let date = new Date(planDateStart);
+            let planDate = letsFormat(date);
 
-        if (plans) {
-            for (let i = 0; i < plans.length; i++) {
-                const planId = plans[i].planId;
-                const index = 1024 * (i + 1);
+            if (plans) {
+                for (let i = 0; i < plans.length; i++) {
+                    const planId = plans[i].planId;
+                    const index = 1024 * (i + 1);
 
-                if (i > 0) {
-                    planDate = letsFormat(date.setDate(date.getDate() + 1));
+                    if (i > 0) {
+                        planDate = letsFormat(date.setDate(date.getDate() + 1));
+                    }
+                    dispatch(updatePlanAction({ plannerId, planId, planDate, index }));
                 }
-                dispatch(updatePlanAction({ plannerId, planId, planDate, index }));
             }
         }
     }, [dispatch, planDateStart, planDateEnd, plannerId, updatePlans]);
@@ -139,17 +150,21 @@ const EditRouteContainer = () => {
     // 로케이션 순서 수정
     const [curLocation, setCurLocation] = useState();
     const onUpdateLocation = (index) => {
-        const { locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation } = curLocation;
-        dispatch(updateLocationAction({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId, index }));
+        if (accountId && creator === nickname) {
+            const { locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation } = curLocation;
+            dispatch(updateLocationAction({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId, index }));
+        }
     };
     const onDeleteLocation = (locationId) => {
-        dispatch(deleteLocationAction({ plannerId, locationId, planId }));
+        if (accountId && creator === nickname) {
+            dispatch(deleteLocationAction({ plannerId, locationId, planId }));
+        }
     };
 
     // planner 정보 가져오기
     useEffect(() => {
         const { plannerId } = plannerData;
-        if (plannerId) {
+        if (plannerId && accountId && creator === nickname) {
             dispatch(loadPlannerAction(plannerId));
         }
     }, [dispatch, plannerData]);
@@ -159,7 +174,7 @@ const EditRouteContainer = () => {
     };
 
     const onUpdateTrans = (trans, locationData) => {
-        if (planner) {
+        if (planner && accountId && creator === nickname) {
             const { locationId, locationName, locationImage, locationContentId, locationAddr, locationMapx, locationMapy } = locationData;
             let locationTransportation = trans;
             dispatch(updateLocationAction({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId }));
