@@ -18,8 +18,8 @@ const PlannerInfoContainer = () => {
         allSchedule: plannerReducer.allSchedule,
     }));
 
-    const { plans } = { ...planner };
-    const { plannerId, planId, creator } = { ...plannerData };
+    const { plans, creator } = { ...planner };
+    const { plannerId, planId } = { ...plannerData };
     const { accountId, nickname } = { ...account };
 
     useEffect(() => {

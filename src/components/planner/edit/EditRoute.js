@@ -244,9 +244,6 @@ const EditRoute = ({
         return () => window.removeEventListener('click', onCloseDropDown);
     });
 
-    if (!planner) {
-        return <div>Loading...</div>;
-    }
     return (
         <EditRouteBlock>
             <InfoDiv>

@@ -9,11 +9,10 @@ const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { myPlanners, plannerError, planner, account } = useSelector(({ plannerReducer, authReducer, profileReducer }) => ({
+    const { myPlanners, plannerError, account } = useSelector(({ plannerReducer, authReducer, profileReducer }) => ({
         account: authReducer.account,
         myPlanners: profileReducer.myPlanners,
         plannerError: plannerReducer.plannerError,
-        planner: plannerReducer.planner,
     }));
 
     const letsFormat = (d) => {
@@ -27,7 +26,6 @@ const MyPlannerListContainer = () => {
 
     useEffect(() => {
         dispatch(resetPlannerDataAction());
-
         return () => {
             dispatch(resetMyPlannerListAction());
         };
@@ -85,7 +83,7 @@ const MyPlannerListContainer = () => {
         setPageNum(page);
     }, [page]);
 
-    return <MyPlannerList myPlanners={myPlanners} planner={planner} drag={drag} plannerError={plannerError} onCreatePlanner={onCreatePlanner} onClickPlanner={onClickPlanner} onPreviousPage={onPreviousPage} onNextPage={onNextPage} />;
+    return <MyPlannerList myPlanners={myPlanners} drag={drag} plannerError={plannerError} onCreatePlanner={onCreatePlanner} onClickPlanner={onClickPlanner} onPreviousPage={onPreviousPage} onNextPage={onNextPage} />;
 };
 
 export default MyPlannerListContainer;

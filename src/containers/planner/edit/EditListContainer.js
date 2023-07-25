@@ -79,6 +79,7 @@ const EditListContainer = () => {
         dispatch(changeContentTypeIdAction(id));
         dispatch(changeKeywordAction(''));
         dispatch(changeResultKeywordAction(''));
+        setLikeKeyword('');
     };
 
     // 지역 리스트 로드
@@ -209,9 +210,9 @@ const EditListContainer = () => {
         dispatch(changePageNumAction(page));
     }, [page, dispatch]);
 
-    if (nickname !== creator) {
-        return null;
-    }
+    // if (nickname !== creator) {
+    //     return null;
+    // }
     return (
         <EditList
             spots={spots}

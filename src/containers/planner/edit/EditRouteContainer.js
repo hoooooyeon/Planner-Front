@@ -19,6 +19,8 @@ import {
 
 const EditRouteContainer = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
+
     const { planner, plannerError, plan, plannerData, loading, transList, account } = useSelector(({ authReducer, plannerReducer, loadingReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
@@ -29,86 +31,77 @@ const EditRouteContainer = () => {
         transList: plannerReducer.transList,
         account: authReducer.account,
     }));
-    const history = useHistory();
 
     const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId, creator } = { ...planner };
     const { planId } = { ...plannerData };
     const { nickname, accountId } = { ...account };
-
-    useEffect(() => {
-        if (accountId && planner && nickname !== creator) {
-            alert('호스트만 접근할 수 있습니다.');
-
-            history.push('/Planners');
-        }
-    }, [accountId, planner, nickname, creator, history]);
+    const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : new Date());
+    const [endDate, setEndDate] = useState(planDateEnd ? new Date(planDateEnd) : new Date());
 
     const letsFormat = (d) => {
         const date = new Date(d);
         return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
     };
 
-    // 시작 날짜 선택 함수
+    useEffect(() => {
+        if (accountId && plannerId && nickname !== creator) {
+            alert('호스트만 접근할 수 있습니다.');
+
+            history.push('/Planners');
+        }
+    }, [accountId, plannerId, nickname, creator, history]);
+
+    // 출발 날짜 선택
     const onUpdatePlannerDate = (date) => {
         if (accountId && creator === nickname) {
-            let planDateStart = letsFormat(date);
-            let planDateEnd = letsFormat(date);
-
-            if (plans.length !== 0) {
-                planDateEnd = letsFormat(new Date(planDateEnd).setDate(new Date(planDateEnd).getDate() + plans.length - 1));
+            setStartDate(date);
+            if (plans.length > 0) {
+                setEndDate(new Date(date).setDate(new Date(date).getDate() + plans.length - 1));
+                console.log(endDate);
+            } else {
+                setEndDate(date);
+                console.log(endDate);
             }
-            dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
         }
     };
 
     // plan 추가시 날짜 하루 생성
     const onAddDate = (date) => {
-        if (accountId && creator === nickname) {
-            if (plans.length === 0) {
-                return;
-            }
-
-            let curDate = new Date(date);
-            let planDateEnd = letsFormat(curDate.setDate(curDate.getDate() + 1));
-
-            dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
+        if (accountId && creator === nickname && plans.length > 0) {
+            setEndDate(new Date(date).setDate(new Date(date).getDate() + 1));
+            console.log(endDate);
         }
     };
 
     // plan 삭제시 날짜 하루 제거
     const onSubDate = (date) => {
         if (accountId && creator === nickname) {
-            let curDate = new Date(date);
-            let planDateEnd = letsFormat(curDate.setDate(curDate.getDate() - 1));
-
-            dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
+            setEndDate(new Date(date).setDate(new Date(date).getDate() - 1));
+            console.log(endDate);
         }
     };
-    const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : null);
-    const [endDate, setEndDate] = useState(planDateEnd ? new Date(planDateEnd) : null);
 
-    const onChangePlannerDateStart = (date) => {
-        setStartDate(date);
-    };
-
-    const onChangePlannerDateEnd = (date) => {
-        setEndDate(date);
-    };
-
+    // 출발일, 종료일 업데이트
     useEffect(() => {
         if (planDateStart && planDateEnd) {
-            onChangePlannerDateStart(new Date(planDateStart));
-            onChangePlannerDateEnd(new Date(planDateEnd));
+            const planDateStart = letsFormat(startDate);
+            const planDateEnd = letsFormat(endDate);
+            dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
         }
-    }, [planDateStart, planDateEnd]);
+    }, [startDate, endDate]);
 
     const onCreatePlan = () => {
         if (accountId && creator === nickname) {
-            const planDate = letsFormat(new Date(planDateEnd));
-
+            let planDate;
+            if (plans.length > 0) {
+                planDate = letsFormat(new Date(endDate).setDate(new Date(endDate).getDate() + 1));
+            } else {
+                planDate = letsFormat(endDate);
+            }
             dispatch(createPlanAction({ plannerId, planDate }));
         }
     };
+
     const onDeletePlan = (planId) => {
         if (accountId && creator === nickname) {
             dispatch(deletePlanAction({ plannerId, planId }));
@@ -164,7 +157,7 @@ const EditRouteContainer = () => {
     // planner 정보 가져오기
     useEffect(() => {
         const { plannerId } = plannerData;
-        if (plannerId && accountId && creator === nickname) {
+        if (plannerId && accountId) {
             dispatch(loadPlannerAction(plannerId));
         }
     }, [dispatch, plannerData]);
@@ -223,7 +216,7 @@ const EditRouteContainer = () => {
         dispatch(changeAllScheduleAction(false));
     };
 
-    if (nickname !== creator) {
+    if (!planner || nickname !== creator) {
         return null;
     }
     return (
@@ -244,8 +237,6 @@ const EditRouteContainer = () => {
             onChangeStyle={onChangeStyle}
             setCurPlan={setCurPlan}
             setCurLocation={setCurLocation}
-            onChangePlannerDateStart={onChangePlannerDateStart}
-            onChangePlannerDateEnd={onChangePlannerDateEnd}
             onCreatePlan={onCreatePlan}
             onDeletePlan={onDeletePlan}
             onDeleteLocation={onDeleteLocation}

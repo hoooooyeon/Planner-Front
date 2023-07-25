@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeCurPlannerIdAction, changeKeywordAction, changeResultKeywordAction, loadPlannerAction, loadSharePlannerListAction, resetSharePlannerListAction } from '../../../modules/plannerModule';
+import { changeCurPlannerIdAction, changeKeywordAction, changeResultKeywordAction, loadSharePlannerListAction, resetSharePlannerListAction } from '../../../modules/plannerModule';
 import ShareList from '../../../components/planner/list/ShareList';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
@@ -8,11 +8,10 @@ import { useHistory } from 'react-router';
 const ShareListContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { sharePlanners, plannerError, planner, account, plannerData, keyword } = useSelector(({ plannerReducer, authReducer }) => ({
+    const { sharePlanners, plannerError, plannerData, keyword } = useSelector(({ plannerReducer }) => ({
         sharePlanners: plannerReducer.sharePlanners,
         plannerError: plannerReducer.plannerError,
         planner: plannerReducer.planner,
-        account: authReducer.account,
         plannerData: plannerReducer.plannerData,
         keyword: plannerReducer.keyword,
     }));
@@ -33,11 +32,6 @@ const ShareListContainer = () => {
         dispatch(loadSharePlannerListAction({ itemCount, sortCriteria, pageNum, keyword }));
     }, [dispatch, pageNum, resultKeyword, sortCriteria]);
 
-    // 플래너 정보 가져오기
-    const onLoadPlanner = (plannerId) => {
-        dispatch(loadPlannerAction(plannerId));
-    };
-
     const onClickPlanner = (plannerId) => {
         if (!drag.current) {
             dispatch(changeCurPlannerIdAction(plannerId));
@@ -54,10 +48,9 @@ const ShareListContainer = () => {
 
     // 검색 키워드 초기화
     useEffect(() => {
-        dispatch(changeKeywordAction(''));
-        dispatch(changeResultKeywordAction(''));
-
         return () => {
+            dispatch(changeKeywordAction(''));
+            dispatch(changeResultKeywordAction(''));
             dispatch(resetSharePlannerListAction());
         };
     }, [dispatch]);
@@ -65,12 +58,10 @@ const ShareListContainer = () => {
     return (
         <ShareList
             sharePlanners={sharePlanners}
-            planner={planner}
             plannerError={plannerError}
             keyword={keyword}
             sortCriteria={sortCriteria}
             drag={drag}
-            onLoadPlanner={onLoadPlanner}
             onClickPlanner={onClickPlanner}
             onChangeKeyword={onChangeKeyword}
             onChangeResultKeyword={onChangeResultKeyword}

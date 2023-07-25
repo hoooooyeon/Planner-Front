@@ -74,9 +74,6 @@ const Text = styled.input`
     &:focus {
         outline: none;
     }
-    @media all and (min-width: 1024px) {
-        /* margin-left: 1rem; */
-    }
 `;
 const Button = styled.button`
     border: none;
@@ -104,7 +101,6 @@ const Label = styled.label`
     }
 `;
 const ResultBox = styled.div`
-    /* height: 1.5rem; */
     margin: 1rem 0;
     h3 {
         margin: 0;

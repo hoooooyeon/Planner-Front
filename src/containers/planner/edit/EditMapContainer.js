@@ -497,9 +497,9 @@ const EditMapContainer = () => {
     const onSavePlanner = () => {
         history.push(`/Planners/${plannerId}`);
     };
-    if (nickname !== creator) {
-        return null;
-    }
+    // if (nickname !== creator) {
+    //     return null;
+    // }
     return <EditMap mapRef={mapRef} allSchedule={allSchedule} onClickAllSchedule={onClickAllSchedule} onSavePlanner={onSavePlanner} />;
 };
 
