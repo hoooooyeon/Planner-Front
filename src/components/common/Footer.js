@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import footerImg from '../../lib/images/footerImg.jpg';
 
+// const ClearDiv = styled.div`
+//     clear: both;
+// `;
 const FooterBlock = styled.div`
   width: 100%;
   height: 500px;

@@ -10,7 +10,7 @@ import {
     updateCommentAction,
     writeCommentAction,
 } from '../../modules/reviewModule';
-import { loadPlannerAction, resetPlannerAction } from '../../modules/plannerModule';
+import { loadPlannerAction, resetPlannerDataAction } from '../../modules/plannerModule';
 
 const ReviewViewerContainer = ({ match, history }) => {
     const { reviewId } = match.params;
@@ -97,7 +97,7 @@ const ReviewViewerContainer = ({ match, history }) => {
 
     useEffect(() => {
         return () => {
-            dispatch(resetPlannerAction());
+            dispatch(resetPlannerDataAction());
         };
     }, []);
 

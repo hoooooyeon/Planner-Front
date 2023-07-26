@@ -56,8 +56,6 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
     const moveX = useRef(0);
     const sliderX = useRef(0);
 
-    const TOTAL_SLIDE = 4;
-
     const scrollBoxRef = useRef();
     const scrollRef = useRef();
     let scrollMoveX = 0;
@@ -102,13 +100,11 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
 
     // 슬라이드 마우스 업
     const sliderEnd = (e) => {
-        if (itemRef) {
+        if (itemRef.current) {
             const computedStyle = getComputedStyle(itemRef.current);
             const itemWidth = itemRef.current.getBoundingClientRect().height + parseInt(computedStyle.marginTop);
 
             sliderX.current = Math.round(moveX.current / itemWidth) * itemWidth;
-            // let itemSize = listRef.current.scrollWidth / TOTAL_SLIDE;
-            // sliderX.current = Math.round(moveX.current / itemSize) * itemSize;
 
             if (sliderX.current > 0) {
                 sliderX.current = 0;
@@ -117,9 +113,6 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
                 }
             } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth) {
                 sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth;
-
-                // } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.clientWidth) {
-                //     sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.clientWidth;
                 if (page) {
                     nextPage();
                 }
@@ -140,7 +133,7 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
     const sliderResize = () => {
         if (sliderX.current > 0) {
             sliderX.current = 0;
-        } else if (sliderX.current < listRef.current.clientWidth - listRef.current.scrollWidth) {
+        } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth) {
             sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth;
         }
         listRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
@@ -151,15 +144,16 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
         if (list) {
             let refValue = hiddenBoxRef.current;
             refValue.addEventListener('mousedown', sliderStart);
-            refValue.addEventListener('mousemove', sliderMove);
-            refValue.addEventListener('mouseup', sliderEnd);
-            refValue.addEventListener('resize', sliderResize);
+            window.addEventListener('mousemove', sliderMove);
+            window.addEventListener('mouseup', sliderEnd);
+            window.addEventListener('resize', sliderResize);
+            sliderResize();
 
             return () => {
                 refValue.removeEventListener('mousedown', sliderStart);
-                refValue.removeEventListener('mousemove', sliderMove);
-                refValue.removeEventListener('mouseup', sliderEnd);
-                refValue.removeEventListener('resize', sliderResize);
+                window.removeEventListener('mousemove', sliderMove);
+                window.removeEventListener('mouseup', sliderEnd);
+                window.removeEventListener('resize', sliderResize);
             };
         }
     });

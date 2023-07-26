@@ -4,17 +4,22 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import { faBackward } from '@fortawesome/free-solid-svg-icons';
 import { faForward } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
 
 const PaginationBlock = styled.div`
     width: 100%;
+    height: 100%;
     margin: 0 auto;
     display: flex;
-    background-color: white;
+    justify-content: center;
 `;
 
-const PaginationBox = styled.div`
+const Container = styled.div`
     display: flex;
     margin: 0 auto;
+    @media all and (min-width: 768px) {
+        padding: 0rem 9rem;
+    }
 `;
 
 const PageButton = styled.div`
@@ -22,9 +27,6 @@ const PageButton = styled.div`
     padding: 8px;
     margin: 0;
     font-size: 0.9rem;
-    @media all and (max-width: 319px) {
-        padding: 2px;
-    }
     &:hover {
         background: lightblue;
         cursor: pointer;
@@ -46,12 +48,9 @@ const PageButton = styled.div`
 `;
 
 const Pagination = ({ pageArr, onIndexPage, onNextPage, onPreviousPage, onFirstPage, onLastPage }) => {
-    if (pageArr.length === 0) {
-        return <div />;
-    }
     return (
         <PaginationBlock>
-            <PaginationBox>
+            <Container>
                 <PageButton onClick={onFirstPage}>
                     <FontAwesomeIcon icon={faBackward} />
                 </PageButton>
@@ -71,7 +70,7 @@ const Pagination = ({ pageArr, onIndexPage, onNextPage, onPreviousPage, onFirstP
                 <PageButton onClick={onLastPage}>
                     <FontAwesomeIcon icon={faForward} />
                 </PageButton>
-            </PaginationBox>
+            </Container>
         </PaginationBlock>
     );
 };
