@@ -5,7 +5,7 @@ import EditMap from '../../../components/planner/edit/EditMap';
 import { changeAllScheduleAction } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import locationImg from '../../../lib/images/location.png';
-import { loadSpotsAction, resetSpotDataAction, changeAreaIndexAction } from '../../../modules/spotModule';
+import { loadSpotsAction, changeAreaIndexAction } from '../../../modules/spotModule';
 import { useHistory } from 'react-router';
 
 const EditMapContainer = () => {
@@ -27,10 +27,12 @@ const EditMapContainer = () => {
     const { plannerId } = { ...plannerData };
     const { plans, creator } = { ...planner };
     const { accountId, nickname } = { ...account };
+    const { areaIndex, pageIndex, contentTypeId } = { ...spotData };
 
     const mapRef = useRef(null);
     const [map, setMap] = useState();
     const { kakao } = window;
+
     // 지도 생성
     useEffect(() => {
         if (mapRef.current) {
@@ -476,7 +478,6 @@ const EditMapContainer = () => {
         }
     }, [centerCoord, dispatch, kakao.maps.LatLng, kakao.maps.Polyline, map]);
 
-    const { areaIndex, pageIndex, contentTypeId } = { ...spotData };
     // 여행지 리스트 로드
     useEffect(() => {
         if (contentTypeId !== 0) {
@@ -497,9 +498,10 @@ const EditMapContainer = () => {
     const onSavePlanner = () => {
         history.push(`/Planners/${plannerId}`);
     };
-    // if (nickname !== creator) {
-    //     return null;
-    // }
+
+    if (!mapRef || nickname !== creator) {
+        return null;
+    }
     return <EditMap mapRef={mapRef} allSchedule={allSchedule} onClickAllSchedule={onClickAllSchedule} onSavePlanner={onSavePlanner} />;
 };
 

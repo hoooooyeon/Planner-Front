@@ -85,7 +85,7 @@ const Category = styled.select`
     }
 `;
 
-const PlannerInfoModal = ({ planner, modal, onUpdatePlanner, onTogglePlannerInfoModal, curTitle, curExpense, curMemberCount, curMemberTypeId, setCurTitle, setCurExpense, setCurMemberCount, setCurMemberTypeId }) => {
+const PlannerInfoModal = ({ modal, onUpdatePlanner, onTogglePlannerInfoModal, curTitle, curExpense, curMemberCount, curMemberTypeId, setCurTitle, setCurExpense, setCurMemberCount, setCurMemberTypeId }) => {
     const categoryList = [
         { label: '혼자', value: 1 },
         { label: '연인', value: 2 },
@@ -93,9 +93,6 @@ const PlannerInfoModal = ({ planner, modal, onUpdatePlanner, onTogglePlannerInfo
         { label: '가족', value: 4 },
     ];
 
-    if (!planner) {
-        return <div>Loading...</div>;
-    }
     return (
         <Modal
             modalVisible={modal.plannerInfo}

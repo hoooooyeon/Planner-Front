@@ -121,16 +121,13 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 const EditCalendar = ({
     planner,
     plannerData,
-    sortIndex,
     onCreatePlan,
     onDeletePlan,
     onChangeCurPlanId,
     onAddDate,
     onSubDate,
-    onUpdateSubPlan,
     onUpdatePlan,
     setCurPlan,
-    curPlan,
     cloneElement,
     cloneElStyle,
     onCloneElement,
@@ -140,6 +137,8 @@ const EditCalendar = ({
     onClickDateSchedule,
 }) => {
     const { planDateEnd, plans: items } = { ...planner };
+    const containerRef = useRef();
+    const scrollTop = useRef();
 
     const letsFormat = (d) => {
         const date = new Date(d);
@@ -150,8 +149,6 @@ const EditCalendar = ({
         onDeletePlan(planId);
         onSubDate(planDateEnd);
     };
-    const containerRef = useRef();
-    const scrollTop = useRef();
 
     const handleScroll = () => {
         scrollTop.current = containerRef.current.scrollTop;
@@ -174,10 +171,9 @@ const EditCalendar = ({
     const onChangeCurItem = (plan) => {
         setCurPlan(plan);
     };
+
     const dragFunction = new DragFunction();
-    if (!planner) {
-        return <div>Loading...</div>;
-    }
+
     return (
         <FlexDiv>
             <AddCal

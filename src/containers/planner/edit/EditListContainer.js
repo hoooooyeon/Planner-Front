@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditList from '../../../components/planner/edit/EditList';
-import { changeKeywordAction, changePageNumAction, changePlanLocationAction, changeResultKeywordAction, createLocationAction } from '../../../modules/plannerModule';
+import { changeKeywordAction, changePageNumAction, changeResultKeywordAction, createLocationAction } from '../../../modules/plannerModule';
 import {
     loadDetailSpotAction,
     loadSpotsAction,
@@ -35,6 +35,8 @@ const EditListContainer = () => {
     const { plannerId, planId, pageNum } = { ...plannerData };
     const { creator } = { ...planner };
     const { accountId, nickname } = { ...account };
+    const { areaIndex, contentTypeId } = { ...spotData };
+    const { curKeyword, resultKeyword } = { ...keyword };
 
     const onCreateLocation = (spot) => {
         if (accountId && creator === nickname) {
@@ -50,9 +52,6 @@ const EditListContainer = () => {
             dispatch(createLocationAction({ plannerId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId }));
         }
     };
-
-    const { areaIndex, contentTypeId } = { ...spotData };
-    const { curKeyword, resultKeyword } = { ...keyword };
 
     // 여행지 불러오기
     useEffect(() => {
@@ -210,9 +209,9 @@ const EditListContainer = () => {
         dispatch(changePageNumAction(page));
     }, [page, dispatch]);
 
-    // if (nickname !== creator) {
-    //     return null;
-    // }
+    if (nickname !== creator) {
+        return null;
+    }
     return (
         <EditList
             spots={spots}

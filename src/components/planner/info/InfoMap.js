@@ -2,25 +2,16 @@ import styled, { css } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const MapBlock = styled.div`
     width: 60%;
     position: relative;
+    background-color: lightgray;
     @media all and (max-width: 767px) {
         width: 100%;
         height: 80vw;
     }
-    background-color: lightgray;
-    /* margin: 0;
-    overflow: hidden;
-    position: relative;
-    padding-top: 60%;
-    width: 100%;
-    border-radius: 0.5rem 0.5rem 0 0;
-    @media all and (max-width: 767px) {
-        padding-top: 75%;
-    } */
 `;
 
 const Map = styled.div`
@@ -93,7 +84,6 @@ const IconName = styled.div`
 
 const InfoMap = ({ planner, mapRef, allSchedule, onToggleLikePlanner, onClickAllSchedule }) => {
     const { likeState, likeCount } = { ...planner };
-
     const [isHovered, setIsHovered] = useState(false);
 
     const onOpenName = () => {

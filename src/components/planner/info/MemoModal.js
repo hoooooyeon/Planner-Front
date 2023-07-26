@@ -61,8 +61,8 @@ const MemoModal = ({ nickname, creator, curMemo, onChangeMemoTitle, onChangeMemo
     };
 
     const { title, content } = { ...curMemo };
-
     const [hosted, setHosted] = useState(false);
+
     useEffect(() => {
         if (nickname === creator) {
             setHosted(true);

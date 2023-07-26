@@ -182,7 +182,8 @@ const IconBox = styled.div`
 
 const EditListSearchForm = ({ keyword, spotData, areas, contentTypeList, likeKeyword, onChangeAreaIndex, onChangeContentTypeId, onChangeResultKeyword, onChangeLikeKeyword, onChangeCurKeyword, onIndexPage }) => {
     const iconList = [faLandmarkFlag, faHotel, faRankingStar, faTrophy, faBed, faBagShopping, faUtensils];
-
+    const { curKeyword, resultKeyword } = { ...keyword };
+    const { contentTypeId } = { ...spotData };
     const [hoveredItemId, setHoveredItemId] = useState(null);
 
     const onOpenName = (itemId) => {
@@ -192,9 +193,6 @@ const EditListSearchForm = ({ keyword, spotData, areas, contentTypeList, likeKey
     const onCloseName = () => {
         setHoveredItemId(null);
     };
-
-    const { curKeyword, resultKeyword } = { ...keyword };
-    const { contentTypeId } = { ...spotData };
 
     return (
         <FormDiv>

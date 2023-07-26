@@ -12,6 +12,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
+import ScrollTop from './components/common/ScrollTop';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -23,6 +24,7 @@ sagaMiddleware.run(rootSaga);
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
+            <ScrollTop />
             {/* <PersistGate loading={null} persistor={persistor}> */}
             <App />
             {/* </PersistGate> */}

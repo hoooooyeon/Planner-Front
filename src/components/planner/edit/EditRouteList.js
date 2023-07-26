@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { DragFunction } from '../../../lib/utils/CommonFunction';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBus } from '@fortawesome/free-solid-svg-icons'; // 버스
 import { faTaxi } from '@fortawesome/free-solid-svg-icons'; // 택시
@@ -158,7 +157,9 @@ const Img = styled.img`
     width: 3.5rem;
     height: 3.5rem;
     font-size: 0.7rem;
-    color: gray;
+    color: lightgray;
+    padding: 0.5rem;
+    box-sizing: border-box;
 `;
 
 const TextInfo = styled.div`
@@ -213,35 +214,22 @@ const MoveIcon = styled(FontAwesomeIcon)`
     left: 9px;
     color: lightgray;
 `;
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    /* margin-right: 0.5rem; */
-`;
-const EditRouteList = ({
-    planner,
-    plan,
-    plannerData,
-    transList,
-    onUpdatePlan,
-    onDeleteLocation,
-    onUpdateTrans,
-    onUpdateLocation,
-    sortIndex,
-    setCurLocation,
-    cloneElement,
-    cloneElStyle,
-    onCloneElement,
-    onDeleteElement,
-    onChangeStyle,
-    setUpdatePlans,
-}) => {
-    const { plans } = { ...planner };
 
-    const containerRef = useRef();
-
+const EditRouteList = ({ planner, plannerData, onDeleteLocation, onUpdateTrans, onUpdateLocation, setCurLocation, cloneElement, cloneElStyle, onCloneElement, onDeleteElement, onChangeStyle, setUpdatePlans }) => {
     const transIconList = [faPlane, faTrainSubway, faBus, faTaxi, faBicycle, faPersonWalking];
-
+    const transList = [
+        { label: '비행기', value: 1 },
+        { label: '기차', value: 2 },
+        { label: '버스', value: 3 },
+        { label: '택시', value: 4 },
+        { label: '오토바이', value: 5 },
+        { label: '도보', value: 6 },
+    ];
+    const { plans } = { ...planner };
     const [dropDownItemId, setDropDownItemId] = useState(null);
     const [hoveredNameId, setHoveredNameId] = useState(null);
+    const containerRef = useRef();
+    const scrollTop = useRef();
 
     const handleOpen = (setItemId, id) => {
         setItemId(id);
@@ -252,6 +240,7 @@ const EditRouteList = ({
             setDropDownItemId(null);
         }
     };
+
     const onCloseName = () => {
         setHoveredNameId(null);
     };
@@ -262,8 +251,6 @@ const EditRouteList = ({
             window.removeEventListener('click', onCloseDropDown);
         };
     });
-
-    const scrollTop = useRef();
 
     const handleScroll = () => {
         scrollTop.current = containerRef.current.scrollTop;
@@ -286,11 +273,8 @@ const EditRouteList = ({
     const onChangeCurItem = (item) => {
         setCurLocation(item);
     };
-    const dragFunction = new DragFunction();
 
-    if (!planner) {
-        return <div>Loading...</div>;
-    }
+    const dragFunction = new DragFunction();
 
     return (
         <EditRouteListBlock ref={containerRef}>
@@ -334,7 +318,7 @@ const EditRouteList = ({
                                         >
                                             <MoveIcon icon={faEllipsisVertical} />
                                             <TransItem onClick={() => handleOpen(setDropDownItemId, i)}>
-                                                <StyledFontAwesomeIcon icon={transIconList[locationTransportation - 1]} />
+                                                <FontAwesomeIcon icon={transIconList[locationTransportation - 1]} />
                                             </TransItem>
                                             {dropDownItemId === i && (
                                                 <DropDown>

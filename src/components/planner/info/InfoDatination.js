@@ -57,23 +57,19 @@ const RouteLine = styled.div`
 
 const InfoDatination = ({ planner, plannerData, drag, onChangeCurPlanId, onClickDateSchedule }) => {
     const { plans } = { ...planner };
+    const itemRef = useRef();
 
     const letsFormat = (d) => {
         const date = new Date(d);
         return ('0' + (date.getMonth() + 1)).slice(-2) + ' / ' + ('0' + date.getDate()).slice(-2);
     };
 
-    const itemRef = useRef();
-
-    if (!plans) {
-        return <div>Loading...</div>;
-    }
     return (
         <InfoDatinationBlock>
-            <Slider list={plans} drag={drag} itemRef={itemRef}>
-                <DateList>
-                    {plans &&
-                        plans.map((p, i) => (
+            {plans && plans.length > 0 && (
+                <Slider list={plans} drag={drag} itemRef={itemRef}>
+                    <DateList>
+                        {plans.map((p, i) => (
                             <DateBox
                                 ref={itemRef}
                                 key={p.planId}
@@ -87,8 +83,9 @@ const InfoDatination = ({ planner, plannerData, drag, onChangeCurPlanId, onClick
                                 {i !== 0 && <RouteLine />}
                             </DateBox>
                         ))}
-                </DateList>
-            </Slider>
+                    </DateList>
+                </Slider>
+            )}
         </InfoDatinationBlock>
     );
 };

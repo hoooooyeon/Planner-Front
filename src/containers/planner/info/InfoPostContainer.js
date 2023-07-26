@@ -53,14 +53,16 @@ const InfoPostContainer = () => {
             content: content,
         });
     };
+
     const onLoadMemo = (memo) => {
         setCurMemo({ memoId: memo.memoId, title: memo.title, content: memo.content });
     };
+
     const onResetMemo = () => {
         setCurMemo({ memoId: null, title: '', content: '' });
     };
 
-    if (!planner) {
+    if (!planner || !accountId) {
         return null;
     }
     return (

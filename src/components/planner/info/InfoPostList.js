@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import styled, { css } from 'styled-components';
-import Modal from '../../common/Modal';
+import styled from 'styled-components';
 import MemoModal from './MemoModal';
 import InfoPostItem from './InfoPostItem';
 import ad1 from '../../../lib/images/ad1.jpg';
-import ad2 from '../../../lib/images/ad2.jpg';
 
 const InfoPostListBlock = styled.div`
     background-color: #f5f5f5;
@@ -104,9 +102,10 @@ const Img = styled.img`
     border-radius: 1rem;
     object-fit: cover;
 `;
+
 const InfoPostList = ({ planner, curMemo, account, onCreateMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent, onLoadMemo, onResetMemo }) => {
     const { planMemos, creator } = { ...planner };
-    const { accountId, nickname } = { ...account };
+    const { nickname } = { ...account };
 
     const [isChanged, setIsChanged] = useState(false);
     const adRef = useRef();
@@ -134,7 +133,7 @@ const InfoPostList = ({ planner, curMemo, account, onCreateMemo, onUpdateMemo, o
     const onCreatePostMd = () => {
         setIsCreate(false);
         onResetMemo();
-        if (nickname === creator) {
+        if (curMemo.title.length > 0) {
             onCreateMemo();
         }
     };
@@ -142,9 +141,7 @@ const InfoPostList = ({ planner, curMemo, account, onCreateMemo, onUpdateMemo, o
     const onEditPostMd = () => {
         setIsEdit(false);
         onResetMemo();
-        if (nickname === creator) {
-            onUpdateMemo(curMemo.memoId);
-        }
+        onUpdateMemo(curMemo.memoId);
     };
 
     const onCancelPostMd = () => {
@@ -153,11 +150,6 @@ const InfoPostList = ({ planner, curMemo, account, onCreateMemo, onUpdateMemo, o
         onResetMemo();
     };
 
-    if (!planner) {
-        return <div>Loading...</div>;
-    } else if (!accountId) {
-        return null;
-    }
     return (
         <InfoPostListBlock>
             <Container>

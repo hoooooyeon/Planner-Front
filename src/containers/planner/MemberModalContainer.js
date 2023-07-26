@@ -40,6 +40,9 @@ const MemberModalContainer = () => {
         dispatch(toggleMemberModalAction());
     };
 
+    if (!planner) {
+        return null;
+    }
     return (
         <MemberModal
             planner={planner}

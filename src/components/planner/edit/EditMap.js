@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 const EditMapBlock = styled.div`
@@ -50,10 +48,8 @@ const Button = styled.button`
             background-color: #ebdede;
         `}
 `;
+
 const EditMap = ({ mapRef, allSchedule, onClickAllSchedule, onSavePlanner }) => {
-    if (!mapRef) {
-        return <div>Loading...</div>;
-    }
     return (
         <EditMapBlock>
             <Map ref={mapRef} />

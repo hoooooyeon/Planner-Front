@@ -9,11 +9,10 @@ const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { planner, plannerError, plannerData, allSchedule, transList, account } = useSelector(({ plannerReducer, authReducer }) => ({
+    const { planner, plannerError, plannerData, allSchedule, account } = useSelector(({ plannerReducer, authReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         plannerData: plannerReducer.plannerData,
-        transList: plannerReducer.transList,
         account: authReducer.account,
         allSchedule: plannerReducer.allSchedule,
     }));
@@ -32,8 +31,10 @@ const PlannerInfoContainer = () => {
 
     const onDeletePlanner = () => {
         if (accountId && creator === nickname) {
-            dispatch(deletePlannerAction(plannerId));
-            history.push('/Planners');
+            if (window.confirm('정말로 삭제하시겠습니까?')) {
+                dispatch(deletePlannerAction(plannerId));
+                history.push('/Planners');
+            }
         }
     };
 
@@ -42,16 +43,20 @@ const PlannerInfoContainer = () => {
     };
 
     const onToggleMemberModal = () => {
-        dispatch(toggleMemberModalAction());
+        if (creator === nickname) {
+            dispatch(toggleMemberModalAction());
+        }
     };
 
     const onTogglePlannerInfoModal = () => {
-        dispatch(togglePlannerInfoModalAction());
+        if (creator === nickname) {
+            dispatch(togglePlannerInfoModalAction());
+        }
     };
 
     // 수정페이지 도달시 맨처음 plannerData planId 설정.
     useEffect(() => {
-        if (!planId && plans && plans.length !== 0) {
+        if (!planId && plans && plans.length > 0) {
             dispatch(changeCurPlanIdAction(plans[0].planId));
         }
     }, [dispatch, plans, planId]);
@@ -316,7 +321,6 @@ const PlannerInfoContainer = () => {
             account={account}
             planner={planner}
             plannerData={plannerData}
-            transList={transList}
             mapRef={mapRef}
             drag={drag}
             allSchedule={allSchedule}
@@ -327,8 +331,6 @@ const PlannerInfoContainer = () => {
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onChangeCurPlanId={onChangeCurPlanId}
             onToggleLikePlanner={onToggleLikePlanner}
-            showAllRouteMarker={showAllRouteMarker}
-            showDateRouteMarker={showDateRouteMarker}
             onClickEditPlanner={onClickEditPlanner}
         />
     );

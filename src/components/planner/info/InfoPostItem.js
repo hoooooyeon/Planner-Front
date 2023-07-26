@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons'; // 버스
-import { faPen } from '@fortawesome/free-solid-svg-icons'; // 버스
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 const PostItem = styled.li`
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -14,8 +13,6 @@ const PostItem = styled.li`
 `;
 
 const PostHeader = styled.div`
-    /* position: relative; */
-    /* width: 40%; */
     display: flex;
     align-items: center;
 `;
@@ -30,9 +27,6 @@ const Number = styled.div`
 
 const Title = styled.div`
     font-weight: bold;
-    /* margin: 0 0 0.5rem 1.5rem; */
-    /* width: 100%; */
-    /* height: 1rem; */
     width: 10rem;
     font-size: 0.9rem;
     margin-left: 1.5rem;
@@ -41,41 +35,9 @@ const Title = styled.div`
     text-overflow: ellipsis;
 `;
 
-const Date = styled.div`
-    color: lightgray;
-    font-size: 0.5rem;
-    /* width: 100%;
-    height: 1rem; */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
-
-const PostContent = styled.div`
-    width: 55%;
-    margin-left: 1rem;
-`;
-
-const Text = styled.div`
-    font-size: 0.8rem;
-    height: 4rem;
-    overflow: hidden;
-    word-wrap: break-word;
-    display: -webkit-box;
-    &::-webkit-scrollbar {
-        display: none;
-    }
-    p {
-        margin: 0;
-    }
-`;
-
 const ButtonBox = styled.div`
     display: flex;
     align-items: center;
-    /* position: absolute;
-    right: -16px;
-    top: -14px; */
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`

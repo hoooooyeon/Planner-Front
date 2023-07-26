@@ -1,15 +1,11 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
-
 import InfoMap from './InfoMap';
 import { useEffect, useRef } from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import InfoRoute from './InfoRoute';
 import InfoMenu from './InfoMenu';
-import Modal from '../../common/Modal';
-import MemberModal from '../MemberModal';
 
 const PlannerInfoBlock = styled.div`
     width: 100%;
@@ -116,7 +112,6 @@ const PlannerInfo = ({
     mapRef,
     allSchedule,
     plannerData,
-    transList,
     drag,
     onDeletePlanner,
     onToggleMemberModal,
@@ -125,8 +120,6 @@ const PlannerInfo = ({
     onToggleLikePlanner,
     onClickAllSchedule,
     onClickDateSchedule,
-    onClickAllRoute,
-    onClickDateRoute,
     onClickEditPlanner,
 }) => {
     const { nickname } = { ...account };
@@ -160,9 +153,6 @@ const PlannerInfo = ({
         };
     });
 
-    if (!planner) {
-        return <div>Loading...</div>;
-    }
     return (
         <PlannerInfoBlock ref={containerRef}>
             <Container>
@@ -192,8 +182,8 @@ const PlannerInfo = ({
                     )}
                 </InfoHeader>
                 <FlexBox>
-                    <InfoMap planner={planner} allSchedule={allSchedule} mapRef={mapRef} onToggleLikePlanner={onToggleLikePlanner} onClickAllSchedule={onClickAllSchedule} onClickAllRoute={onClickAllRoute} />
-                    <InfoRoute planner={planner} plannerData={plannerData} transList={transList} drag={drag} onChangeCurPlanId={onChangeCurPlanId} onClickDateSchedule={onClickDateSchedule} />
+                    <InfoMap planner={planner} allSchedule={allSchedule} mapRef={mapRef} onToggleLikePlanner={onToggleLikePlanner} onClickAllSchedule={onClickAllSchedule} />
+                    <InfoRoute planner={planner} plannerData={plannerData} drag={drag} onChangeCurPlanId={onChangeCurPlanId} onClickDateSchedule={onClickDateSchedule} />
                 </FlexBox>
             </Container>
             <InfoMenu planner={planner} />

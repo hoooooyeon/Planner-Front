@@ -41,9 +41,11 @@ const PlannerInfoModalContainer = () => {
         dispatch(togglePlannerInfoModalAction());
     };
 
+    if (!planner) {
+        return null;
+    }
     return (
         <PlannerInfoModal
-            planner={planner}
             modal={modal}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onUpdatePlanner={onUpdatePlanner}

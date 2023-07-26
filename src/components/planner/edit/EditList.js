@@ -58,7 +58,9 @@ const Img = styled.img`
     width: 5rem;
     height: 5rem;
     font-size: 0.7rem;
-    color: gray;
+    color: lightgray;
+    padding: 0.5rem;
+    box-sizing: border-box;
 `;
 const TextInfo = styled.div`
     height: 100%;
@@ -156,7 +158,6 @@ const EditList = ({
     onChangeResultKeyword,
     onChangeLikeKeyword,
     onChangeCurKeyword,
-    onLoadLikeList,
 }) => {
     const navRef = useRef();
     const [navOpen, setNavOpen] = useState(true);
@@ -199,7 +200,6 @@ const EditList = ({
                     onChangeResultKeyword={onChangeResultKeyword}
                     onChangeLikeKeyword={onChangeLikeKeyword}
                     onChangeCurKeyword={onChangeCurKeyword}
-                    onLoadLikeList={onLoadLikeList}
                     onIndexPage={onIndexPage}
                 />
                 <List>
@@ -247,7 +247,6 @@ const EditList = ({
                                     />
                                     <TextInfo>
                                         <Name>{title}</Name>
-                                        {/* <Address>{addr1.split(' ')[0]}</Address> */}
                                     </TextInfo>
                                     <Icons>
                                         <StyledFontAwesomeIcon

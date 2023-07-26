@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import InfoDatination from './InfoDatination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBus } from '@fortawesome/free-solid-svg-icons'; // 버스
-import { faTaxi } from '@fortawesome/free-solid-svg-icons'; // 택시
-import { faPlane } from '@fortawesome/free-solid-svg-icons'; // 비행기
-import { faPersonWalking } from '@fortawesome/free-solid-svg-icons'; // 도보
-import { faBicycle } from '@fortawesome/free-solid-svg-icons'; // 자전거 or 오토바이
-import { faTrainSubway } from '@fortawesome/free-solid-svg-icons'; // 지하철 or 기차
+import { faBus } from '@fortawesome/free-solid-svg-icons';
+import { faTaxi } from '@fortawesome/free-solid-svg-icons';
+import { faPlane } from '@fortawesome/free-solid-svg-icons';
+import { faPersonWalking } from '@fortawesome/free-solid-svg-icons';
+import { faBicycle } from '@fortawesome/free-solid-svg-icons';
+import { faTrainSubway } from '@fortawesome/free-solid-svg-icons';
 import { useRef } from 'react';
 import Slider from '../../common/Slider';
 
@@ -20,6 +20,7 @@ const InfoRouteBlock = styled.div`
     width: 35%;
     height: 40vw;
     margin-left: 1rem;
+    position: relative;
     @media all and (max-width: 767px) {
         width: calc(100% - 2rem);
         height: auto;
@@ -36,6 +37,7 @@ const WidthDiv = styled.div`
     }
     @media all and (max-width: 767px) {
         width: 100%;
+        min-height: 4rem;
     }
 `;
 
@@ -86,6 +88,8 @@ const Img = styled.img`
     border-radius: 4rem;
     font-size: 0.5rem;
     color: lightgray;
+    padding: 0.5rem;
+    box-sizing: border-box;
 `;
 
 const RouteSpotName = styled.div`
@@ -136,23 +140,28 @@ const RouteLine = styled.div`
     }
 `;
 
-const InfoRoute = ({ planner, plannerData, transList, drag, onChangeCurPlanId, onClickDateSchedule }) => {
+const ErrorDiv = styled.div`
+    color: lightgray;
+    font-weight: bold;
+    min-width: 8rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+`;
+
+const InfoRoute = ({ planner, plannerData, drag, onChangeCurPlanId, onClickDateSchedule }) => {
     const { plans } = { ...planner };
-
     const transIconList = [faPlane, faTrainSubway, faBus, faTaxi, faBicycle, faPersonWalking];
-
     const itemRef = useRef();
 
-    if (!planner) {
-        return <div>Loading...</div>;
-    }
     return (
         <InfoRouteBlock>
             {plans && <InfoDatination planner={planner} plannerData={plannerData} drag={drag} onChangeCurPlanId={onChangeCurPlanId} onClickDateSchedule={onClickDateSchedule} />}
             <WidthDiv>
-                {plans && (
+                {plans && plans.length > 0 ? (
                     <Slider list={plans} itemRef={itemRef}>
-                        {plans.map((p, i) => (
+                        {plans.map((p) => (
                             <RouteList aria-current={p.planId === plannerData.planId ? 'plan' : null} key={p.planId}>
                                 {p.planLocations.map((pl, i) => {
                                     const { locationId, locationName, locationTransportation, locationImage } = pl;
@@ -170,6 +179,8 @@ const InfoRoute = ({ planner, plannerData, transList, drag, onChangeCurPlanId, o
                             </RouteList>
                         ))}
                     </Slider>
+                ) : (
+                    <ErrorDiv>일정이 없습니다.</ErrorDiv>
                 )}
             </WidthDiv>
         </InfoRouteBlock>

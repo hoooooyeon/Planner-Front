@@ -8,10 +8,12 @@ const MemberBox = styled.div`
     background-color: white;
     border-radius: 0.5rem;
 `;
+
 const InviteBox = styled.div`
     display: flex;
     justify-content: space-between;
 `;
+
 const Text = styled.input`
     width: 80%;
     height: 2rem;
@@ -66,9 +68,6 @@ const MemberModal = ({ planner, members, modal, onChangeMember, onDeleteMember, 
         onInviteMember();
     };
 
-    if (!planner) {
-        return <div>Loading...</div>;
-    }
     return (
         <Modal
             modalVisible={modal.member}

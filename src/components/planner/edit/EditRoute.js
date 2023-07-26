@@ -7,6 +7,7 @@ import EditRouteList from './EditRouteList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
+
 const EditRouteBlock = styled.div`
     background-color: white;
     height: 100vh;
@@ -25,14 +26,6 @@ const InfoBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-`;
-
-const Logo = styled.div`
-    background-color: #f5f5f5;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-    padding: 0.5rem 0 0;
 `;
 
 const Title = styled.div`
@@ -195,12 +188,9 @@ const DropDownMenu = styled.ul`
 
 const EditRoute = ({
     planner,
-    plan,
     plannerData,
-    transList,
     startDate,
     endDate,
-    sortIndex,
     onCreatePlan,
     onDeletePlan,
     onDeleteLocation,
@@ -208,14 +198,11 @@ const EditRoute = ({
     onChangeCurPlanId,
     onAddDate,
     onSubDate,
-    onUpdateSubPlan,
     onUpdateTrans,
     onToggleMemberModal,
     onTogglePlannerInfoModal,
     onUpdatePlan,
     onUpdateLocation,
-    curPlan,
-    curLocation,
     setCurPlan,
     setCurLocation,
     cloneElement,
@@ -227,12 +214,12 @@ const EditRoute = ({
     onClickDateSchedule,
 }) => {
     const { title, creator, updateDate } = { ...planner };
-
     const [dropDown, setDropDown] = useState(false);
 
     const onClickDropDown = () => {
         setDropDown(!dropDown);
     };
+
     const onCloseDropDown = () => {
         if (dropDown) {
             setDropDown(false);
@@ -247,7 +234,6 @@ const EditRoute = ({
     return (
         <EditRouteBlock>
             <InfoDiv>
-                {/* <Logo>한국다봄</Logo> */}
                 <InfoBox>
                     <MenuIcon icon={faEllipsis} onClick={onClickDropDown} />
                     <DropDown dropDown={dropDown}>
@@ -287,15 +273,12 @@ const EditRoute = ({
             <RouteBox>
                 <EditCalendar
                     planner={planner}
-                    plan={plan}
                     plannerData={plannerData}
-                    sortIndex={sortIndex}
                     onCreatePlan={onCreatePlan}
                     onDeletePlan={onDeletePlan}
                     onChangeCurPlanId={onChangeCurPlanId}
                     onAddDate={onAddDate}
                     onSubDate={onSubDate}
-                    onUpdateSubPlan={onUpdateSubPlan}
                     onUpdatePlan={onUpdatePlan}
                     setCurPlan={setCurPlan}
                     cloneElement={cloneElement}
@@ -308,11 +291,7 @@ const EditRoute = ({
                 />
                 <EditRouteList
                     planner={planner}
-                    plan={plan}
                     plannerData={plannerData}
-                    sortIndex={sortIndex}
-                    transList={transList}
-                    onUpdatePlan={onUpdatePlan}
                     onDeleteLocation={onDeleteLocation}
                     onUpdateTrans={onUpdateTrans}
                     onUpdateLocation={onUpdateLocation}

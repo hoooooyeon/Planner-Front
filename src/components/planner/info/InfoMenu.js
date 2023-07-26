@@ -59,12 +59,8 @@ const Text = styled.div`
 
 const InfoMenu = ({ planner }) => {
     const { title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
-
     const memberTypeList = ['혼자', '연인', '친구', '가족'];
 
-    if (!planner) {
-        return <div>Loading...</div>;
-    }
     return (
         <InfoMenuBlock>
             <Container>
