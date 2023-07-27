@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
-import EditListDetailModal from './EditListDetailModal';
 import { useState } from 'react';
 import Pagination from '../../common/Pagination';
 import { faExclamation } from '@fortawesome/free-solid-svg-icons';
@@ -59,8 +58,6 @@ const Img = styled.img`
     height: 5rem;
     font-size: 0.7rem;
     color: lightgray;
-    padding: 0.5rem;
-    box-sizing: border-box;
 `;
 const TextInfo = styled.div`
     height: 100%;
@@ -140,7 +137,6 @@ const EditList = ({
     detail,
     onCreateLocation,
     onOpenDetail,
-    onCloseDetail,
     likeList,
     pageArr,
     onIndexPage,
@@ -188,7 +184,11 @@ const EditList = ({
     return (
         <>
             <EditListBlock ref={navRef} navOpen={navOpen}>
-                {navOpen ? <NavArrowIcon onClick={onToggleNav} icon={faCaretRight} /> : <NavArrowIcon onClick={onToggleNav} icon={faCaretLeft} />}
+                {navOpen ? (
+                    <NavArrowIcon onClick={onToggleNav} icon={faCaretRight} />
+                ) : (
+                    <NavArrowIcon onClick={onToggleNav} icon={faCaretLeft} />
+                )}
                 <EditListSearchForm
                     keyword={keyword}
                     spotData={spotData}
@@ -205,11 +205,12 @@ const EditList = ({
                 <List>
                     {spots &&
                         spots.list.map((s, i) => {
-                            const { firstimage, firstimage2, title, addr1 } = s;
+                            const { firstImage, firstImage2, title, addr1 } = s;
+
                             return (
                                 <ListItem key={i}>
                                     <Img
-                                        src={firstimage || firstimage2}
+                                        src={firstImage || firstImage2}
                                         alt={title}
                                         // onError={onChangeErrorImg}
                                     />
@@ -268,10 +269,16 @@ const EditList = ({
                         })}
                 </List>
                 <PageBox>
-                    <Pagination pageArr={pageArr} onIndexPage={onIndexPage} onPreviousPage={onPreviousPage} onNextPage={onNextPage} onFirstPage={onFirstPage} onLastPage={onLastPage} />
+                    <Pagination
+                        pageArr={pageArr}
+                        onIndexPage={onIndexPage}
+                        onPreviousPage={onPreviousPage}
+                        onNextPage={onNextPage}
+                        onFirstPage={onFirstPage}
+                        onLastPage={onLastPage}
+                    />
                 </PageBox>
             </EditListBlock>
-            {detail && <EditListDetailModal detail={detail} onCloseDetail={onCloseDetail} />}
         </>
     );
 };

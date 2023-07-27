@@ -18,6 +18,7 @@ import {
     searchSpotAction,
     resetSpotsAction,
     resetSpotDataAction,
+    changeContentIdAction,
 } from '../../../modules/spotModule';
 import { profileLikePlannerLoadAction, resetLikeListAction } from '../../../modules/profileModule';
 
@@ -52,11 +53,17 @@ const EditListContainer = () => {
     const { plannerId, planId, pageNum } = { ...plannerData };
     const { creator } = { ...planner };
     const { accountId, nickname } = { ...account };
-    const { areaIndex, contentTypeId } = { ...spotData };
+    const { areaCode, contentTypeId, pageNo, contentId } = { ...spotData };
     const { curKeyword, resultKeyword } = { ...keyword };
+    const numOfRows = 12;
 
     const onCreateLocation = (spot) => {
         if (accountId && creator === nickname) {
+            if (!planId) {
+                alert('일정을 선택하세요.');
+                return;
+            }
+
             const { title, contentId, firstImage, firstImage2, addr1, mapx, mapy } = spot;
             const locationContentId = contentId;
             const locationImage = firstImage !== '' ? firstImage : firstImage2;
@@ -84,23 +91,23 @@ const EditListContainer = () => {
 
     // 여행지 불러오기
     useEffect(() => {
-        if (contentTypeId !== 0) {
-            const pageIndex = pageNum;
+        if (contentTypeId !== 0 && areas) {
             dispatch(resetLikeListAction());
-            dispatch(loadSpotsAction({ areaIndex, contentTypeId, pageIndex }));
+            dispatch(loadSpotsAction({ areaCode, contentTypeId, pageNo, numOfRows }));
         }
-    }, [dispatch, areaIndex, pageNum, contentTypeId]);
+    }, [dispatch, areaCode, pageNo, contentTypeId, areas]);
 
     // 여행지 상세정보 불러오기
     const onOpenDetail = (spot) => {
-        dispatch(loadDetailSpotAction(spot.contentid));
         dispatch(changeDetailSpotAction(spot));
+        dispatch(changeContentIdAction(spot.contentId));
     };
 
-    // 여행지 상세정보 모달 닫기
-    const onCloseDetail = () => {
-        dispatch(resetDetailSpotAction());
-    };
+    useEffect(() => {
+        if (contentId) {
+            dispatch(loadDetailSpotAction({ contentId }));
+        }
+    }, [dispatch, contentId, spotData]);
 
     // 여행지 타입 변경
     const onChangeContentTypeId = (id) => {
@@ -135,7 +142,7 @@ const EditListContainer = () => {
         if (resultKeyword.length !== 0) {
             const pageIndex = pageNum;
             const keyword = resultKeyword;
-            dispatch(searchSpotAction({ areaIndex, contentTypeId, keyword, pageIndex }));
+            dispatch(searchSpotAction({ areaCode, contentTypeId, keyword, pageIndex }));
         }
     }, [dispatch, resultKeyword]);
 
@@ -156,13 +163,14 @@ const EditListContainer = () => {
         }
     }, [dispatch, likeKeyword, contentTypeId, pageNum]);
 
-    // 검색 키워드 초기화
+    // 여행 정보 및 검색 키워드 초기화
     useEffect(() => {
         return () => {
             dispatch(changeKeywordAction(''));
             dispatch(changeResultKeywordAction(''));
             dispatch(resetSpotDataAction());
             dispatch(resetSpotsAction());
+            dispatch(resetDetailSpotAction());
         };
     }, [dispatch]);
 
@@ -254,7 +262,6 @@ const EditListContainer = () => {
             likeKeyword={likeKeyword}
             onCreateLocation={onCreateLocation}
             onOpenDetail={onOpenDetail}
-            onCloseDetail={onCloseDetail}
             onChangeContentTypeId={onChangeContentTypeId}
             onIndexPage={onIndexPage}
             onPreviousPage={onPreviousPage}

@@ -101,7 +101,7 @@ const Modal = ({
             document.body.style.cssText = '';
             window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
         };
-    }, [modalVisible]);
+    }, []);
 
     if (!modalVisible) return null;
     return (

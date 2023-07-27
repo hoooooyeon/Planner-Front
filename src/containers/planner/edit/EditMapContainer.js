@@ -5,29 +5,31 @@ import EditMap from '../../../components/planner/edit/EditMap';
 import { changeAllScheduleAction } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import locationImg from '../../../lib/images/location.png';
-import { loadSpotsAction, changeAreaIndexAction } from '../../../modules/spotModule';
+import { changeAreaIndexAction } from '../../../modules/spotModule';
 import { useHistory } from 'react-router';
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { planner, plannerError, plannerData, spots, spotData, account, allSchedule } = useSelector(({ plannerReducer, spotReducer, authReducer }) => ({
-        planner: plannerReducer.planner,
-        plannerError: plannerReducer.plannerError,
-        spots: spotReducer.spots,
-        areas: spotReducer.areas,
-        spotData: spotReducer.spotData,
-        keyword: spotReducer.keyword,
-        contentTypeList: spotReducer.contentTypeList,
-        plannerData: plannerReducer.plannerData,
-        allSchedule: plannerReducer.allSchedule,
-        account: authReducer.account,
-    }));
+    const { planner, plannerError, plannerData, spots, spotData, account, allSchedule, areas } = useSelector(
+        ({ plannerReducer, spotReducer, authReducer }) => ({
+            planner: plannerReducer.planner,
+            plannerError: plannerReducer.plannerError,
+            spots: spotReducer.spots,
+            areas: spotReducer.areas,
+            spotData: spotReducer.spotData,
+            keyword: spotReducer.keyword,
+            contentTypeList: spotReducer.contentTypeList,
+            plannerData: plannerReducer.plannerData,
+            allSchedule: plannerReducer.allSchedule,
+            account: authReducer.account,
+        }),
+    );
 
     const { plannerId } = { ...plannerData };
     const { plans, creator } = { ...planner };
     const { accountId, nickname } = { ...account };
-    const { areaIndex, pageIndex, contentTypeId } = { ...spotData };
+    const { areaCode, pageNo, contentTypeId } = { ...spotData };
 
     const mapRef = useRef(null);
     const [map, setMap] = useState();
@@ -123,7 +125,16 @@ const EditMapContainer = () => {
                 };
             }
         }
-    }, [kakao.maps.InfoWindow, kakao.maps.LatLng, kakao.maps.Marker, kakao.maps.event, kakao.maps.Size, kakao.maps.MarkerImage, map, spots]);
+    }, [
+        kakao.maps.InfoWindow,
+        kakao.maps.LatLng,
+        kakao.maps.Marker,
+        kakao.maps.event,
+        kakao.maps.Size,
+        kakao.maps.MarkerImage,
+        map,
+        spots,
+    ]);
 
     const newMarkerArr = useRef([]);
     const markerArr = useRef([]);
@@ -290,7 +301,18 @@ const EditMapContainer = () => {
                 };
             }
         }
-    }, [kakao.maps.LatLng, kakao.maps.Polyline, kakao.maps.InfoWindow, kakao.maps.event, kakao.maps.Marker, kakao.maps.MarkerImage, kakao.maps.Size, map, plans, plannerData.planId]);
+    }, [
+        kakao.maps.LatLng,
+        kakao.maps.Polyline,
+        kakao.maps.InfoWindow,
+        kakao.maps.event,
+        kakao.maps.Marker,
+        kakao.maps.MarkerImage,
+        kakao.maps.Size,
+        map,
+        plans,
+        plannerData.planId,
+    ]);
 
     useEffect(() => {
         showSpotMarker();
@@ -463,7 +485,10 @@ const EditMapContainer = () => {
             let num;
             if (centerCoord) {
                 areaArr.map((a) => {
-                    arr = [new kakao.maps.LatLng(centerCoord.Lat, centerCoord.Lng), new kakao.maps.LatLng(a.coord.Lat, a.coord.Lng)];
+                    arr = [
+                        new kakao.maps.LatLng(centerCoord.Lat, centerCoord.Lng),
+                        new kakao.maps.LatLng(a.coord.Lat, a.coord.Lng),
+                    ];
                     polyline = new kakao.maps.Polyline({
                         path: arr, // 선을 구성하는 좌표배열 입니다
                     });
@@ -477,13 +502,6 @@ const EditMapContainer = () => {
             }
         }
     }, [centerCoord, dispatch, kakao.maps.LatLng, kakao.maps.Polyline, map]);
-
-    // 여행지 리스트 로드
-    useEffect(() => {
-        if (contentTypeId !== 0) {
-            dispatch(loadSpotsAction({ areaIndex, contentTypeId, pageIndex }));
-        }
-    }, [dispatch, areaIndex, contentTypeId, pageIndex]);
 
     const onClickAllSchedule = () => {
         if (allSchedule) {
@@ -502,7 +520,14 @@ const EditMapContainer = () => {
     if (!mapRef || nickname !== creator) {
         return null;
     }
-    return <EditMap mapRef={mapRef} allSchedule={allSchedule} onClickAllSchedule={onClickAllSchedule} onSavePlanner={onSavePlanner} />;
+    return (
+        <EditMap
+            mapRef={mapRef}
+            allSchedule={allSchedule}
+            onClickAllSchedule={onClickAllSchedule}
+            onSavePlanner={onSavePlanner}
+        />
+    );
 };
 
 export default EditMapContainer;

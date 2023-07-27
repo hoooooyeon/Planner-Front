@@ -21,17 +21,21 @@ const EditRouteContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { planner, plannerError, plan, plannerData, loading, account } = useSelector(({ authReducer, plannerReducer, loadingReducer }) => ({
-        planner: plannerReducer.planner,
-        plannerError: plannerReducer.plannerError,
-        plan: plannerReducer.plan,
-        plannerData: plannerReducer.plannerData,
-        loading: loadingReducer.loading,
-        location: plannerReducer.location,
-        account: authReducer.account,
-    }));
+    const { planner, plannerError, plan, plannerData, loading, account } = useSelector(
+        ({ authReducer, plannerReducer, loadingReducer }) => ({
+            planner: plannerReducer.planner,
+            plannerError: plannerReducer.plannerError,
+            plan: plannerReducer.plan,
+            plannerData: plannerReducer.plannerData,
+            loading: loadingReducer.loading,
+            location: plannerReducer.location,
+            account: authReducer.account,
+        }),
+    );
 
-    const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId, creator } = { ...planner };
+    const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId, creator } = {
+        ...planner,
+    };
     const { planId } = { ...plannerData };
     const { nickname, accountId } = { ...account };
     const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : new Date());
@@ -39,7 +43,9 @@ const EditRouteContainer = () => {
 
     const letsFormat = (d) => {
         const date = new Date(d);
-        return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+        return (
+            date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2)
+        );
     };
 
     useEffect(() => {
@@ -85,7 +91,17 @@ const EditRouteContainer = () => {
         if (planDateStart && planDateEnd) {
             const planDateStart = letsFormat(startDate);
             const planDateEnd = letsFormat(endDate);
-            dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
+            dispatch(
+                updatePlannerAction({
+                    plannerId,
+                    title,
+                    planDateStart,
+                    planDateEnd,
+                    expense,
+                    memberCount,
+                    memberTypeId,
+                }),
+            );
         }
     }, [startDate, endDate]);
 
@@ -94,7 +110,9 @@ const EditRouteContainer = () => {
         if (planDateStart && planDateEnd) {
             setStartDate(new Date(planDateStart));
             if (plans.length > 0) {
-                setEndDate(new Date(new Date(planDateStart).setDate(new Date(planDateStart).getDate() + plans.length - 1)));
+                setEndDate(
+                    new Date(new Date(planDateStart).setDate(new Date(planDateStart).getDate() + plans.length - 1)),
+                );
             } else {
                 setEndDate(new Date(planDateStart));
             }
@@ -155,8 +173,31 @@ const EditRouteContainer = () => {
     const [curLocation, setCurLocation] = useState();
     const onUpdateLocation = (index) => {
         if (accountId && creator === nickname) {
-            const { locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation } = curLocation;
-            dispatch(updateLocationAction({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId, index }));
+            const {
+                locationId,
+                locationName,
+                locationContentId,
+                locationImage,
+                locationAddr,
+                locationMapx,
+                locationMapy,
+                locationTransportation,
+            } = curLocation;
+            dispatch(
+                updateLocationAction({
+                    plannerId,
+                    locationId,
+                    locationName,
+                    locationContentId,
+                    locationImage,
+                    locationAddr,
+                    locationMapx,
+                    locationMapy,
+                    locationTransportation,
+                    planId,
+                    index,
+                }),
+            );
         }
     };
     const onDeleteLocation = (locationId) => {
@@ -179,9 +220,30 @@ const EditRouteContainer = () => {
 
     const onUpdateTrans = (trans, locationData) => {
         if (plannerId && accountId && creator === nickname) {
-            const { locationId, locationName, locationImage, locationContentId, locationAddr, locationMapx, locationMapy } = locationData;
+            const {
+                locationId,
+                locationName,
+                locationImage,
+                locationContentId,
+                locationAddr,
+                locationMapx,
+                locationMapy,
+            } = locationData;
             let locationTransportation = trans;
-            dispatch(updateLocationAction({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId }));
+            dispatch(
+                updateLocationAction({
+                    plannerId,
+                    locationId,
+                    locationName,
+                    locationContentId,
+                    locationImage,
+                    locationAddr,
+                    locationMapx,
+                    locationMapy,
+                    locationTransportation,
+                    planId,
+                }),
+            );
         }
     };
 
@@ -221,6 +283,10 @@ const EditRouteContainer = () => {
             });
             if (isPlanId === 0) {
                 dispatch(changeCurPlanIdAction(plans[0].planId));
+            }
+        } else {
+            if (planId !== null) {
+                dispatch(changeCurPlanIdAction(null));
             }
         }
     }, [dispatch, plans]);

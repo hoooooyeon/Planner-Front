@@ -10,6 +10,7 @@ const ShareListBlock = styled.div`
     height: 100%;
     margin-top: 1rem;
     margin-bottom: 1rem;
+    background-color: white;
 `;
 
 const Container = styled.div`
@@ -118,7 +119,17 @@ const ErrorDiv = styled.div`
     margin-top: 2rem;
 `;
 
-const ShareList = ({ sharePlanners, plannerError, keyword, sortCriteria, onClickPlanner, onChangeKeyword, onChangeResultKeyword, onChangeSort, drag }) => {
+const ShareList = ({
+    sharePlanners,
+    plannerError,
+    keyword,
+    sortCriteria,
+    onClickPlanner,
+    onChangeKeyword,
+    onChangeResultKeyword,
+    onChangeSort,
+    drag,
+}) => {
     const itemRef = useRef();
 
     if (plannerError) {
@@ -128,7 +139,13 @@ const ShareList = ({ sharePlanners, plannerError, keyword, sortCriteria, onClick
         <ShareListBlock>
             <Container>
                 <HeaderTitle>다른 이용자들의 플래너</HeaderTitle>
-                <ShareListSearchForm keyword={keyword} sortCriteria={sortCriteria} onChangeKeyword={onChangeKeyword} onChangeResultKeyword={onChangeResultKeyword} onChangeSort={onChangeSort} />
+                <ShareListSearchForm
+                    keyword={keyword}
+                    sortCriteria={sortCriteria}
+                    onChangeKeyword={onChangeKeyword}
+                    onChangeResultKeyword={onChangeResultKeyword}
+                    onChangeSort={onChangeSort}
+                />
                 {sharePlanners && sharePlanners.list && sharePlanners.list.length > 0 ? (
                     <Slider list={sharePlanners.list} itemRef={itemRef} scroll={true} drag={drag}>
                         <Shares>
@@ -147,7 +164,10 @@ const ShareList = ({ sharePlanners, plannerError, keyword, sortCriteria, onClick
                                         // ref={mapsRef}
                                         />
                                         <IconBox>
-                                            <StyledFontAwesomeIcon icon={faStar} like={p.likeState ? p.likeState.toString() : undefined} />
+                                            <StyledFontAwesomeIcon
+                                                icon={faStar}
+                                                like={p.likeState ? p.likeState.toString() : undefined}
+                                            />
                                         </IconBox>
                                     </MapBox>
                                     <InfoBox>

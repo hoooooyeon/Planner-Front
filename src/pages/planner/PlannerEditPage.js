@@ -3,8 +3,7 @@ import EditMapContainer from '../../containers/planner/edit/EditMapContainer';
 import EditListContainer from '../../containers/planner/edit/EditListContainer';
 import MemberModalContainer from '../../containers/planner/MemberModalContainer';
 import PlannerInfoModalContainer from '../../containers/planner/PlannerInfoModalContainer';
-import EditListDetailModal from '../../components/planner/edit/EditListDetailModal';
-
+import SpotDetailModalContainer from '../../containers/spot/SpotDetailModalContainer';
 const PlannerEditPage = () => {
     return (
         <>
@@ -13,6 +12,7 @@ const PlannerEditPage = () => {
             <EditListContainer />
             <MemberModalContainer />
             <PlannerInfoModalContainer />
+            <SpotDetailModalContainer />
         </>
     );
 };

@@ -104,7 +104,12 @@ const InfoMap = ({ planner, mapRef, allSchedule, onToggleLikePlanner, onClickAll
                 <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
                 <div>{likeCount}</div>
             </IconBox>
-            <AllSchedule allSchedule={allSchedule} onClick={onClickAllSchedule} onMouseEnter={onOpenName} onMouseLeave={onCloseName}>
+            <AllSchedule
+                allSchedule={allSchedule}
+                onClick={onClickAllSchedule}
+                onMouseEnter={onOpenName}
+                onMouseLeave={onCloseName}
+            >
                 <ScheduleIcon icon={faCalendarDays} />
             </AllSchedule>
             {isHovered && <IconName>모든 일정 보기</IconName>}

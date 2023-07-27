@@ -158,8 +158,6 @@ const Img = styled.img`
     height: 3.5rem;
     font-size: 0.7rem;
     color: lightgray;
-    padding: 0.5rem;
-    box-sizing: border-box;
 `;
 
 const TextInfo = styled.div`
@@ -215,7 +213,20 @@ const MoveIcon = styled(FontAwesomeIcon)`
     color: lightgray;
 `;
 
-const EditRouteList = ({ planner, plannerData, onDeleteLocation, onUpdateTrans, onUpdateLocation, setCurLocation, cloneElement, cloneElStyle, onCloneElement, onDeleteElement, onChangeStyle, setUpdatePlans }) => {
+const EditRouteList = ({
+    planner,
+    plannerData,
+    onDeleteLocation,
+    onUpdateTrans,
+    onUpdateLocation,
+    setCurLocation,
+    cloneElement,
+    cloneElStyle,
+    onCloneElement,
+    onDeleteElement,
+    onChangeStyle,
+    setUpdatePlans,
+}) => {
     const transIconList = [faPlane, faTrainSubway, faBus, faTaxi, faBicycle, faPersonWalking];
     const transList = [
         { label: '비행기', value: 1 },
@@ -282,10 +293,21 @@ const EditRouteList = ({ planner, plannerData, onDeleteLocation, onUpdateTrans, 
                 plans.map((p, j) => {
                     const items = p.planLocations;
                     return (
-                        <RouteList onDrop={(e) => dragFunction.onDrop({ e, items, onUpdateSortIndex })} onDragOver={(e) => dragFunction.onDragOver(e)} aria-current={p.planId === plannerData.planId ? 'cur' : null} key={p.planId}>
+                        <RouteList
+                            onDrop={(e) => dragFunction.onDrop({ e, items, onUpdateSortIndex })}
+                            onDragOver={(e) => dragFunction.onDragOver(e)}
+                            aria-current={p.planId === plannerData.planId ? 'cur' : null}
+                            key={p.planId}
+                        >
                             {items &&
                                 items.map((item, i) => {
-                                    const { locationId, locationName, locationAddr, locationImage, locationTransportation } = item;
+                                    const {
+                                        locationId,
+                                        locationName,
+                                        locationAddr,
+                                        locationImage,
+                                        locationTransportation,
+                                    } = item;
                                     return (
                                         <RouteItem
                                             aria-current={p.planId === plannerData.planId ? 'cur' : null}
@@ -332,7 +354,9 @@ const EditRouteList = ({ planner, plannerData, onDeleteLocation, onUpdateTrans, 
                                                                 onMouseLeave={onCloseName}
                                                             >
                                                                 <TransIcon icon={transIconList[i]} />
-                                                                {hoveredNameId === i && <TransName>{t.label}</TransName>}
+                                                                {hoveredNameId === i && (
+                                                                    <TransName>{t.label}</TransName>
+                                                                )}
                                                             </li>
                                                         ))}
                                                     </DropDownMenu>
@@ -359,7 +383,9 @@ const EditRouteList = ({ planner, plannerData, onDeleteLocation, onUpdateTrans, 
                                         </RouteItem>
                                     );
                                 })}
-                            {cloneElement && <CloneItem cloneElStyle={cloneElStyle} onDragEnter={dragFunction.onCloneEnter} />}
+                            {cloneElement && (
+                                <CloneItem cloneElStyle={cloneElStyle} onDragEnter={dragFunction.onCloneEnter} />
+                            )}
                         </RouteList>
                     );
                 })}

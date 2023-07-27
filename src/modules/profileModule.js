@@ -58,14 +58,22 @@ export const profileImageUpdateAction = ({ accountId, formData }) => ({
     formData,
 });
 
-export const profileMyPlannerLoadAction = (accountId) => ({
+export const profileMyPlannerLoadAction = ({ accountId, pageNum, itemCount, sortCriteria }) => ({
     type: PROFILE_MY_PLANNER_LOAD_TYPE,
     accountId,
+    pageNum,
+    itemCount,
+    sortCriteria,
 });
 
-export const profileLikePlannerLoadAction = (accountId) => ({
+export const profileLikePlannerLoadAction = ({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }) => ({
     type: PROFILE_LIKE_PLANNER_LOAD_TYPE,
     accountId,
+    itemCount,
+    sortCriteria,
+    keyword,
+    postType,
+    pageNum,
 });
 export const resetLikeListAction = () => ({ type: RESET_LIKE_LIST_TYPE });
 
@@ -91,10 +99,9 @@ const initialState = {
         phone: '',
     },
     profile: null,
-    plannerList: {
-        myPlanner: null,
-        likePlanner: null,
-    },
+    myPlanners: null,
+    likeList: null,
+    likeSpots: null,
     profileUpdate: false,
     profileError: null,
 };
@@ -128,10 +135,10 @@ function profileReducer(state = initialState, action) {
             return { ...state, profileUpdate: true };
         }
         case PROFILE_MY_PLANNER_LOAD_SUCCESS_TYPE: {
-            return { ...state, plannerList: { ...state.plannerList, myPlanner: action.payload.data } };
+            return { ...state, myPlanners: action.payload.data };
         }
         case PROFILE_LIKE_PLANNER_LOAD_SUECCESS_TYPE: {
-            return { ...state, plannerList: { ...state.plannerList, likePlanner: action.payload.data } };
+            return { ...state, likeList: action.payload.data };
         }
         case PROFILE_LOAD_FAILURE_TYPE: {
             return { ...state, profileError: action.payload.data };
