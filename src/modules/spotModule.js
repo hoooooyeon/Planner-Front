@@ -164,7 +164,6 @@ function spotReducer(state = initialState, action) {
                 },
             };
         case LOAD_DETAIL_SPOT_SUCCESS_TYPE:
-            console.log(action.payload.data);
             return {
                 ...state,
                 detail: {

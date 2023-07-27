@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { useEffect } from 'react';
 
 const Modalbackground = styled.div`
     position: fixed;
@@ -86,6 +87,22 @@ const Modal = ({
     onModalClose,
     onModalConfirm,
 }) => {
+    // 모달 외부 스크롤 고정
+    useEffect(() => {
+        if (modalVisible) {
+            document.body.style.cssText = `
+            position: fixed; 
+            top: -${window.scrollY}px;
+            overflow-y: scroll;
+            width: 100%;`;
+        }
+        return () => {
+            const scrollY = document.body.style.top;
+            document.body.style.cssText = '';
+            window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+        };
+    }, [modalVisible]);
+
     if (!modalVisible) return null;
     return (
         <Modalbackground>

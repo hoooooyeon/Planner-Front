@@ -12,6 +12,7 @@ const PaginationBlock = styled.div`
     margin: 0 auto;
     display: flex;
     justify-content: center;
+    background-color: white;
 `;
 
 const Container = styled.div`

@@ -6,12 +6,13 @@ import styled from 'styled-components';
 const FormDiv = styled.div`
     margin: 1rem 0;
     background: rgba(0, 0, 0, 0.1);
-    padding: 0.5rem 3rem;
     display: flex;
     align-items: center;
-    @media all and (max-width: 1023px) {
-        border-radius: 1rem;
-        height: 10rem;
+    border-radius: 1rem;
+    height: 10rem;
+    padding: 0.5rem;
+    @media all and (min-width: 320px) {
+        padding: 0.5rem 3rem;
     }
     @media all and (min-width: 1024px) {
         height: 4rem;
