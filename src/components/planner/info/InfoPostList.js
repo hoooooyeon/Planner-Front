@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import MemoModal from './MemoModal';
 import InfoPostItem from './InfoPostItem';
 import ad1 from '../../../lib/images/ad1.jpg';
+import ad2 from '../../../lib/images/serviceImg1.jpg';
 
 const InfoPostListBlock = styled.div`
     background-color: #f5f5f5;
@@ -103,7 +104,18 @@ const Img = styled.img`
     object-fit: cover;
 `;
 
-const InfoPostList = ({ planner, curMemo, account, onCreateMemo, onUpdateMemo, onDeleteMemo, onChangeMemoTitle, onChangeMemoContent, onLoadMemo, onResetMemo }) => {
+const InfoPostList = ({
+    planner,
+    curMemo,
+    account,
+    onCreateMemo,
+    onUpdateMemo,
+    onDeleteMemo,
+    onChangeMemoTitle,
+    onChangeMemoContent,
+    onLoadMemo,
+    onResetMemo,
+}) => {
     const { planMemos, creator } = { ...planner };
     const { nickname } = { ...account };
 
@@ -170,7 +182,17 @@ const InfoPostList = ({ planner, curMemo, account, onCreateMemo, onUpdateMemo, o
                     <PostList>
                         {planMemos &&
                             planMemos.map((memo) => {
-                                return <InfoPostItem key={memo.memoId} memo={memo} onDeleteMemo={onDeleteMemo} onLoadMemo={onLoadMemo} setIsEdit={setIsEdit} account={account} planner={planner} />;
+                                return (
+                                    <InfoPostItem
+                                        key={memo.memoId}
+                                        memo={memo}
+                                        onDeleteMemo={onDeleteMemo}
+                                        onLoadMemo={onLoadMemo}
+                                        setIsEdit={setIsEdit}
+                                        account={account}
+                                        planner={planner}
+                                    />
+                                );
                             })}
                     </PostList>
                     {/* 메모 생성 모달 */}
@@ -207,7 +229,7 @@ const InfoPostList = ({ planner, curMemo, account, onCreateMemo, onUpdateMemo, o
                         </>
                     ) : (
                         <>
-                            <Img src={ad1} alt="ad2" />
+                            <Img src={ad2} alt="ad2" />
                             <div>한국다봄을 앱에서도 곧 만나 보실 수 있어요.</div>
                         </>
                     )}

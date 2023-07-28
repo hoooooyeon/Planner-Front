@@ -4,6 +4,8 @@ import Slider from '../../common/Slider';
 import ShareListSearchForm from './ShareListSearchForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import errorImg from '../../../lib/images/plannerErrorImg.png';
+import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 
 const ShareListBlock = styled.div`
     width: 100%;
@@ -16,7 +18,7 @@ const ShareListBlock = styled.div`
 const Container = styled.div`
     margin: 0 auto;
     padding: 1rem;
-    min-height: 13rem;
+    min-height: 40rem;
     @media all and (min-width: 768px) {
         padding: 1rem 9rem;
     }
@@ -80,7 +82,7 @@ const Date = styled.div`
     overflow: hidden;
 `;
 
-const MapBox = styled.div`
+const ImgBox = styled.div`
     background-color: lightgray;
     margin: 0;
     overflow: hidden;
@@ -92,14 +94,18 @@ const MapBox = styled.div`
         padding-top: 75%;
     }
 `;
-
-const Map = styled.div`
+const Img = styled.img`
     width: 100%;
     height: 100%;
-    pointer-events: none;
     position: absolute;
-    top: 0;
+    top: -15px;
     left: 0;
+    border: none;
+    border-radius: 0.5rem 0.5rem 0 0;
+    margin: 0;
+    display: block;
+    -webkit-user-drag: none;
+    object-fit: cover;
 `;
 
 const IconBox = styled.div`
@@ -132,9 +138,6 @@ const ShareList = ({
 }) => {
     const itemRef = useRef();
 
-    if (plannerError) {
-        return <div>Loading...</div>;
-    }
     return (
         <ShareListBlock>
             <Container>
@@ -158,10 +161,13 @@ const ShareList = ({
                                         onClickPlanner(p.plannerId);
                                     }}
                                 >
-                                    <MapBox>
-                                        <Map
-                                        // ref={mapsRef.current[i]}
-                                        // ref={mapsRef}
+                                    <ImgBox>
+                                        <Img
+                                            src={p.thumbnail}
+                                            alt={p.title}
+                                            onError={(e) => {
+                                                handleErrorImg({ e, errorImg });
+                                            }}
                                         />
                                         <IconBox>
                                             <StyledFontAwesomeIcon
@@ -169,7 +175,7 @@ const ShareList = ({
                                                 like={p.likeState ? p.likeState.toString() : undefined}
                                             />
                                         </IconBox>
-                                    </MapBox>
+                                    </ImgBox>
                                     <InfoBox>
                                         <Title>{p.title}</Title>
                                         <Date>

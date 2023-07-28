@@ -2,6 +2,8 @@ import { useRef } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Slider from '../../common/Slider';
+import { handleErrorImg } from '../../../lib/utils/CommonFunction';
+import errorImg from '../../../lib/images/plannerErrorImg.png';
 
 const MyPlannerListBlock = styled.div`
     width: 100%;
@@ -106,7 +108,8 @@ const Date = styled.div`
     margin-top: 0.2rem;
     overflow: hidden;
 `;
-const MapBox = styled.div`
+
+const ImgBox = styled.div`
     background-color: lightgray;
     margin: 0;
     overflow: hidden;
@@ -118,12 +121,18 @@ const MapBox = styled.div`
         padding-top: 55%;
     }
 `;
-const Map = styled.div`
+const Img = styled.img`
     width: 100%;
     height: 100%;
     position: absolute;
-    top: 0;
+    top: -15px;
     left: 0;
+    border: none;
+    border-radius: 0.5rem 0.5rem 0 0;
+    margin: 0;
+    display: block;
+    -webkit-user-drag: none;
+    object-fit: cover;
 `;
 
 const ErrorDiv = styled.div`
@@ -133,7 +142,15 @@ const ErrorDiv = styled.div`
     margin-top: 2rem;
 `;
 
-const MyPlannerList = ({ plannerError, myPlanners, onCreatePlanner, onClickPlanner, onPreviousPage, onNextPage, drag }) => {
+const MyPlannerList = ({
+    plannerError,
+    myPlanners,
+    onCreatePlanner,
+    onClickPlanner,
+    onPreviousPage,
+    onNextPage,
+    drag,
+}) => {
     const itemRef = useRef();
 
     if (plannerError) {
@@ -152,7 +169,14 @@ const MyPlannerList = ({ plannerError, myPlanners, onCreatePlanner, onClickPlann
                 </Header>
 
                 {myPlanners && myPlanners.list && myPlanners.list.length > 0 ? (
-                    <Slider list={myPlanners.list} itemRef={itemRef} drag={drag} page={true} prevPage={onPreviousPage} nextPage={onNextPage}>
+                    <Slider
+                        list={myPlanners.list}
+                        itemRef={itemRef}
+                        drag={drag}
+                        page={true}
+                        prevPage={onPreviousPage}
+                        nextPage={onNextPage}
+                    >
                         <PlannerList>
                             {myPlanners.list.map((p) => (
                                 <PlannerItem
@@ -162,7 +186,15 @@ const MyPlannerList = ({ plannerError, myPlanners, onCreatePlanner, onClickPlann
                                         onClickPlanner(p.plannerId);
                                     }}
                                 >
-                                    <MapBox>{/* <Map id="map1" /> */}</MapBox>
+                                    <ImgBox>
+                                        <Img
+                                            src={p.thumbnail}
+                                            alt={p.title}
+                                            onError={(e) => {
+                                                handleErrorImg({ e, errorImg });
+                                            }}
+                                        />
+                                    </ImgBox>
                                     <InfoBox>
                                         <Title>{p.title}</Title>
                                         <Creator>{p.creator}</Creator>

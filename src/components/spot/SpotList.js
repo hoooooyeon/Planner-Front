@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import defaultImg from '../../lib/images/defaultImg.jpg';
 import Slider from '../common/Slider';
 import SpotSlider from './SpotSlider';
 import SpotSearchForm from './SpotSearchForm';
@@ -114,11 +113,6 @@ const SpotList = ({
     onChangeContentTypeId,
     onChangeResultKeyword,
 }) => {
-    // 대체 이미지 넣기
-    const onChangeErrorImg = (e) => {
-        e.target.src = defaultImg;
-    };
-
     const itemRef = useRef();
 
     if (spotError) {
@@ -154,7 +148,7 @@ const SpotList = ({
                                         key={contentId}
                                     >
                                         <ImgBox>
-                                            <Img src={firstImage} alt={title} onError={onChangeErrorImg} />
+                                            <Img src={firstImage} alt={title} />
                                             <IconBox>
                                                 <StyledFontAwesomeIcon
                                                     icon={faStar}

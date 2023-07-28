@@ -52,25 +52,29 @@ const Pagination = ({ pageArr, onIndexPage, onNextPage, onPreviousPage, onFirstP
     return (
         <PaginationBlock>
             <Container>
-                <PageButton onClick={onFirstPage}>
-                    <FontAwesomeIcon icon={faBackward} />
-                </PageButton>
-                <PageButton onClick={onPreviousPage}>
-                    <FontAwesomeIcon icon={faCaretLeft} />
-                </PageButton>
-                {pageArr.map((i) => {
-                    return (
-                        <PageButton key={i} onClick={() => onIndexPage(i)}>
-                            {i}
+                {pageArr && pageArr.length > 0 && (
+                    <>
+                        <PageButton onClick={onFirstPage}>
+                            <FontAwesomeIcon icon={faBackward} />
                         </PageButton>
-                    );
-                })}
-                <PageButton onClick={onNextPage}>
-                    <FontAwesomeIcon icon={faCaretRight} />
-                </PageButton>
-                <PageButton onClick={onLastPage}>
-                    <FontAwesomeIcon icon={faForward} />
-                </PageButton>
+                        <PageButton onClick={onPreviousPage}>
+                            <FontAwesomeIcon icon={faCaretLeft} />
+                        </PageButton>
+                        {pageArr.map((i) => {
+                            return (
+                                <PageButton key={i} onClick={() => onIndexPage(i)}>
+                                    {i}
+                                </PageButton>
+                            );
+                        })}
+                        <PageButton onClick={onNextPage}>
+                            <FontAwesomeIcon icon={faCaretRight} />
+                        </PageButton>
+                        <PageButton onClick={onLastPage}>
+                            <FontAwesomeIcon icon={faForward} />
+                        </PageButton>
+                    </>
+                )}
             </Container>
         </PaginationBlock>
     );

@@ -262,3 +262,8 @@ export function lastPage(onChangePageIndex, pageLastIndex, setBlock, count) {
 //     onChangePageIndex(pageLastIndex);
 //     setBlock(Math.ceil(pageLastIndex / count - 1));
 // }
+
+// 에러 이미지 대체
+export function handleErrorImg({ e, errorImg }) {
+    e.target.src = errorImg;
+}

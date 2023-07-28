@@ -2,7 +2,10 @@ import client from './client';
 
 // 다른 사용자들의 플래너리스트 조회
 export const loadSharePlannerList = ({ itemCount, sortCriteria, keyword, pageNum }) => {
-    return client.get(`api/planners?itemCount=${itemCount}&sortCriteria=${sortCriteria}&keyword=${keyword}&pageNum=${pageNum}`, { itemCount, sortCriteria, keyword, pageNum });
+    return client.get(
+        `api/planners?itemCount=${itemCount}&sortCriteria=${sortCriteria}&keyword=${keyword}&pageNum=${pageNum}`,
+        { itemCount, sortCriteria, keyword, pageNum },
+    );
 };
 
 // 플래너정보 조회
@@ -11,8 +14,28 @@ export const loadPlanner = ({ plannerId }) => {
 };
 
 // 플래너 생성
-export const createPlanner = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => {
-    return client.post('/api/planners', { accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId });
+export const createPlanner = ({
+    accountId,
+    creator,
+    title,
+    planDateStart,
+    planDateEnd,
+    planMembers,
+    expense,
+    memberCount,
+    memberTypeId,
+}) => {
+    return client.post('/api/planners', {
+        accountId,
+        creator,
+        title,
+        planDateStart,
+        planDateEnd,
+        planMembers,
+        expense,
+        memberCount,
+        memberTypeId,
+    });
 };
 
 // 플래너 삭제
@@ -22,7 +45,15 @@ export const deletePlanner = ({ plannerId }) => {
 
 // 플래너 수정
 export const updatePlanner = ({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }) => {
-    return client.patch(`/api/planners/${plannerId}`, { plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
+    return client.patch(`/api/planners/${plannerId}`, {
+        plannerId,
+        title,
+        planDateStart,
+        planDateEnd,
+        expense,
+        memberCount,
+        memberTypeId,
+    });
 };
 
 // 플래너 좋아요
@@ -71,12 +102,44 @@ export const deleteMember = ({ plannerId, nickName }) => {
 };
 
 // 여행지 생성
-export const createLocation = ({ plannerId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId }) => {
-    return client.post(`/api/planners/${plannerId}/plans/${planId}/plan-locations`, { plannerId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId });
+export const createLocation = ({
+    plannerId,
+    locationName,
+    locationContentId,
+    locationImage,
+    locationAddr,
+    locationMapx,
+    locationMapy,
+    locationTransportation,
+    planId,
+}) => {
+    return client.post(`/api/planners/${plannerId}/plans/${planId}/plan-locations`, {
+        plannerId,
+        locationName,
+        locationContentId,
+        locationImage,
+        locationAddr,
+        locationMapx,
+        locationMapy,
+        locationTransportation,
+        planId,
+    });
 };
 
 // 여행지 수정
-export const updateLocation = ({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId, index }) => {
+export const updateLocation = ({
+    plannerId,
+    locationId,
+    locationName,
+    locationContentId,
+    locationImage,
+    locationAddr,
+    locationMapx,
+    locationMapy,
+    locationTransportation,
+    planId,
+    index,
+}) => {
     return client.patch(`/api/planners/${plannerId}/plans/${planId}/plan-locations/${locationId}`, {
         plannerId,
         locationId,
@@ -94,5 +157,9 @@ export const updateLocation = ({ plannerId, locationId, locationName, locationCo
 
 // 여행지 삭제
 export const deleteLocation = ({ plannerId, locationId, planId }) => {
-    return client.delete(`/api/planners/${plannerId}/plans/${planId}/plan-locations/${locationId}`, { plannerId, locationId, planId });
+    return client.delete(`/api/planners/${plannerId}/plans/${planId}/plan-locations/${locationId}`, {
+        plannerId,
+        locationId,
+        planId,
+    });
 };
