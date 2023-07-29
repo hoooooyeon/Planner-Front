@@ -1,17 +1,19 @@
-import styled from 'styled-components';
-import Intro from './Intro';
+import Main from '../home/Main';
+import HomePlannerList from '../home/HomePlannerList';
+import HomeReviewList from '../home/HomeReviewList';
+import HomeSpotList from '../home/HomeSpotList';
+import HomeServices from '../home/HomeServices';
 
-const HomeBlock = styled.div`
-    margin: 100px auto;
-    width: 80%;
-`;
-
-const Home = () => {
-  return (
-    <HomeBlock>
-      <Intro />
-    </HomeBlock>
-  );
+const Home = ({ sharePlanners }) => {
+    return (
+        <>
+            <Main />
+            <HomeServices />
+            <HomePlannerList sharePlanners={sharePlanners} />
+            <HomeReviewList />
+            <HomeSpotList />
+        </>
+    );
 };
 
 export default Home;

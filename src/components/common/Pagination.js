@@ -46,6 +46,9 @@ const PageButton = styled.div`
         cursor: revert;
         transform: revert;
     }
+    @media all and (max-width: 319px) {
+        padding: 2px;
+    }
 `;
 
 const Pagination = ({ pageArr, onIndexPage, onNextPage, onPreviousPage, onFirstPage, onLastPage }) => {
