@@ -21,6 +21,9 @@ const PROFILE_MY_PLANNER_LOAD_FAILURE_TYPE = 'profile/PROFILE_MY_PLANNER_LOAD_FA
 const PROFILE_LIKE_PLANNER_LOAD_TYPE = 'profile/PROFILE_LIKE_PLANNER_LOAD';
 const PROFILE_LIKE_PLANNER_LOAD_SUECCESS_TYPE = 'profile/PROFILE_LIKE_PLANNER_LOAD_SUCCESS';
 const PROFILE_LIKE_PLANNER_LOAD_FAILURE_TYPE = 'profile/PROFILE_LIKE_PLANNER_LOAD_FAILURE';
+const PROFILE_LIKE_SPOT_LOAD_TYPE = 'profile/PROFILE_LIKE_SPOT_LOAD';
+const PROFILE_LIKE_SPOT_LOAD_SUECCESS_TYPE = 'profile/PROFILE_LIKE_SPOT_LOAD_SUCCESS';
+const PROFILE_LIKE_SPOT_LOAD_FAILURE_TYPE = 'profile/PROFILE_LIKE_SPOT_LOAD_FAILURE';
 
 const RESET_LIKE_LIST_TYPE = 'profile/RESET_LIKE_LIST';
 const RESET_MY_PLANNER_LIST_TYPE = 'profile/RESET_MY_PLANNER_LIST';
@@ -75,6 +78,15 @@ export const profileLikePlannerLoadAction = ({ accountId, itemCount, sortCriteri
     postType,
     pageNum,
 });
+export const profileLikeSPOTLoadAction = ({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }) => ({
+    type: PROFILE_LIKE_SPOT_LOAD_TYPE,
+    accountId,
+    itemCount,
+    sortCriteria,
+    keyword,
+    postType,
+    pageNum,
+});
 export const resetLikeListAction = () => ({ type: RESET_LIKE_LIST_TYPE });
 
 export const resetMyPlannerListAction = () => ({ type: RESET_MY_PLANNER_LIST_TYPE });
@@ -83,7 +95,8 @@ const profileLoad = createSaga(PROFILE_LOAD_TYPE, profileAPI.profileLoad);
 const profileUpdate = createSaga(PROFILE_UPDATE_TYPE, profileAPI.profileUpdate);
 const profileImageUpdate = createSaga(PROFILE_IMAGE_UPDATE_TYPE, profileAPI.profileImageUpdate);
 const profileMyPlannerLoad = createSaga(PROFILE_MY_PLANNER_LOAD_TYPE, profileAPI.profileMyPlannerLoad);
-const profileLikePlannerLoad = createSaga(PROFILE_LIKE_PLANNER_LOAD_TYPE, profileAPI.profileLikePlannerLoad);
+const profileLikePlannerLoad = createSaga(PROFILE_LIKE_PLANNER_LOAD_TYPE, profileAPI.profileLikeListLoad);
+const profileLikeSpotLoad = createSaga(PROFILE_LIKE_SPOT_LOAD_TYPE, profileAPI.profileLikeListLoad);
 
 export function* profileSaga() {
     yield takeLatest(PROFILE_LOAD_TYPE, profileLoad);
@@ -91,6 +104,7 @@ export function* profileSaga() {
     yield takeLatest(PROFILE_IMAGE_UPDATE_TYPE, profileImageUpdate);
     yield takeLatest(PROFILE_MY_PLANNER_LOAD_TYPE, profileMyPlannerLoad);
     yield takeLatest(PROFILE_LIKE_PLANNER_LOAD_TYPE, profileLikePlannerLoad);
+    yield takeLatest(PROFILE_LIKE_SPOT_LOAD_TYPE, profileLikeSpotLoad);
 }
 
 const initialState = {
@@ -99,8 +113,10 @@ const initialState = {
         phone: '',
     },
     profile: null,
-    myPlanners: null,
-    likeList: null,
+    plannerList: {
+        myPlanners: null,
+        likePlanners: null,
+    },
     likeSpots: null,
     profileUpdate: false,
     profileError: null,
@@ -135,10 +151,19 @@ function profileReducer(state = initialState, action) {
             return { ...state, profileUpdate: true };
         }
         case PROFILE_MY_PLANNER_LOAD_SUCCESS_TYPE: {
-            return { ...state, myPlanners: action.payload.data };
+            return { ...state, plannerList: { ...state.plannerList, myPlanners: action.payload.data } };
         }
         case PROFILE_LIKE_PLANNER_LOAD_SUECCESS_TYPE: {
-            return { ...state, likeList: action.payload.data };
+            return {
+                ...state,
+                plannerList: {
+                    ...state.plannerList,
+                    likePlanners: action.payload.data,
+                },
+            };
+        }
+        case PROFILE_LIKE_SPOT_LOAD_SUECCESS_TYPE: {
+            return { ...state, likeSpots: action.payload.data };
         }
         case PROFILE_LOAD_FAILURE_TYPE: {
             return { ...state, profileError: action.payload.data };
@@ -146,7 +171,8 @@ function profileReducer(state = initialState, action) {
         case PROFILE_UPDATE_FAILURE_TYPE:
         case PROFILE_IMAGE_UPDATE_FAILURE_TYPE:
         case PROFILE_MY_PLANNER_LOAD_FAILURE_TYPE:
-        case PROFILE_LIKE_PLANNER_LOAD_FAILURE_TYPE: {
+        case PROFILE_LIKE_PLANNER_LOAD_FAILURE_TYPE:
+        case PROFILE_LIKE_SPOT_LOAD_FAILURE_TYPE: {
             return { ...state, profileUpdate: false, profileError: action.payload.message };
         }
 

@@ -137,7 +137,7 @@ const EditList = ({
     detail,
     onCreateLocation,
     onOpenDetail,
-    likeList,
+    likeSpots,
     pageArr,
     onIndexPage,
     onPreviousPage,
@@ -236,8 +236,8 @@ const EditList = ({
                                 </ListItem>
                             );
                         })}
-                    {likeList &&
-                        likeList.list.map((s, i) => {
+                    {likeSpots &&
+                        likeSpots.list.map((s, i) => {
                             const { firstimage, firstimage2, title } = s;
                             return (
                                 <ListItem key={i}>

@@ -139,7 +139,7 @@ const PlannerInfo = ({
     };
 
     const onResizeDropDown = () => {
-        if (window.innerWidth > 1023) {
+        if (window.innerWidth > 1023 || window.innerWidth < 400) {
             setIsDropDown(false);
         }
     };
@@ -182,8 +182,20 @@ const PlannerInfo = ({
                     )}
                 </InfoHeader>
                 <FlexBox>
-                    <InfoMap planner={planner} allSchedule={allSchedule} mapRef={mapRef} onToggleLikePlanner={onToggleLikePlanner} onClickAllSchedule={onClickAllSchedule} />
-                    <InfoRoute planner={planner} plannerData={plannerData} drag={drag} onChangeCurPlanId={onChangeCurPlanId} onClickDateSchedule={onClickDateSchedule} />
+                    <InfoMap
+                        planner={planner}
+                        allSchedule={allSchedule}
+                        mapRef={mapRef}
+                        onToggleLikePlanner={onToggleLikePlanner}
+                        onClickAllSchedule={onClickAllSchedule}
+                    />
+                    <InfoRoute
+                        planner={planner}
+                        plannerData={plannerData}
+                        drag={drag}
+                        onChangeCurPlanId={onChangeCurPlanId}
+                        onClickDateSchedule={onClickDateSchedule}
+                    />
                 </FlexBox>
             </Container>
             <InfoMenu planner={planner} />

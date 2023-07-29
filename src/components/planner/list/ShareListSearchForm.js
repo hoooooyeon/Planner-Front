@@ -44,9 +44,9 @@ const SortBox = styled.div`
 const SortButton = styled.div`
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
     border-radius: 2rem;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: bold;
-    padding: 0.5rem;
+    padding: 0.4rem;
     text-align: center;
     cursor: pointer;
     &[aria-current] {

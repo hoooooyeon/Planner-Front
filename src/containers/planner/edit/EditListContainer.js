@@ -20,7 +20,11 @@ import {
     resetSpotDataAction,
     changeContentIdAction,
 } from '../../../modules/spotModule';
-import { profileLikePlannerLoadAction, resetLikeListAction } from '../../../modules/profileModule';
+import {
+    profileLikePlannerLoadAction,
+    profileLikeSPOTLoadAction,
+    resetLikeListAction,
+} from '../../../modules/profileModule';
 
 const EditListContainer = () => {
     const dispatch = useDispatch();
@@ -35,7 +39,7 @@ const EditListContainer = () => {
         plannerData,
         detail,
         contentTypeList,
-        likeList,
+        likeSpots,
     } = useSelector(({ plannerReducer, spotReducer, profileReducer, authReducer }) => ({
         account: authReducer.account,
         planner: plannerReducer.planner,
@@ -47,7 +51,7 @@ const EditListContainer = () => {
         detail: spotReducer.detail,
         plannerData: plannerReducer.plannerData,
         contentTypeList: spotReducer.contentTypeList,
-        likeList: profileReducer.likeList,
+        likeSpots: profileReducer.likeSpots,
     }));
 
     const { plannerId, planId, pageNum } = { ...plannerData };
@@ -159,7 +163,7 @@ const EditListContainer = () => {
         if ((accountId && likeKeyword.length !== 0) || contentTypeId === 0) {
             const keyword = likeKeyword;
             dispatch(resetSpotsAction());
-            dispatch(profileLikePlannerLoadAction({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }));
+            dispatch(profileLikeSPOTLoadAction({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }));
         }
     }, [dispatch, likeKeyword, contentTypeId, pageNum]);
 
@@ -193,11 +197,11 @@ const EditListContainer = () => {
             const { totalCount } = { ...spots };
             maxPage.current = Math.ceil(totalCount / limitIndex);
         }
-        if (likeList) {
-            const { totalCount } = { ...likeList };
+        if (likeSpots) {
+            const { totalCount } = { ...likeSpots };
             maxPage.current = Math.ceil(totalCount / limitIndex);
         }
-    }, [likeList, spots]);
+    }, [likeSpots, spots]);
 
     // 페이지네이션 배열 생성 함수
     useEffect(() => {
@@ -258,7 +262,7 @@ const EditListContainer = () => {
             spotData={spotData}
             contentTypeList={contentTypeList}
             pageArr={pageArr}
-            likeList={likeList}
+            likeSpots={likeSpots}
             likeKeyword={likeKeyword}
             onCreateLocation={onCreateLocation}
             onOpenDetail={onOpenDetail}

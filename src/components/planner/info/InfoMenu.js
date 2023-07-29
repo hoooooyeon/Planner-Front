@@ -11,8 +11,11 @@ const Container = styled.div`
     height: 100%;
     display: flex;
     justify-content: center;
-    padding: 0.1rem 1rem;
     flex-direction: column;
+    padding: 0.1rem 0.5rem;
+    @media all and (min-width: 400px) {
+        padding: 0.1rem 1rem;
+    }
     @media all and (min-width: 768px) {
         padding: 0 9rem;
     }
@@ -23,22 +26,30 @@ const Container = styled.div`
 `;
 
 const InfoBox = styled.div`
-    padding: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0.5rem;
+    @media all and (min-width: 400px) {
+        padding: 1rem;
+    }
 `;
 
 const FlexDiv = styled.div`
     display: flex;
     align-items: center;
+    overflow: hidden;
 `;
 
 const Ask = styled.div`
-    font-size: 0.8rem;
     color: gray;
-    margin-right: 1rem;
+    margin-right: 0.5rem;
     font-weight: bold;
+    font-size: 0.6rem;
+    @media all and (min-width: 400px) {
+        margin-right: 1rem;
+        font-size: 0.8rem;
+    }
     @media all and (min-width: 1024px) {
         white-space: nowrap;
         overflow: hidden;
@@ -47,9 +58,12 @@ const Ask = styled.div`
 `;
 
 const Text = styled.div`
-    font-size: 0.9rem;
     font-weight: bold;
-    font-weight: bold;
+    font-size: 0.7rem;
+
+    @media all and (min-width: 400px) {
+        font-size: 0.9rem;
+    }
     @media all and (min-width: 1024px) {
         white-space: nowrap;
         overflow: hidden;

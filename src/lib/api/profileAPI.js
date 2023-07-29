@@ -20,7 +20,7 @@ export const profileMyPlannerLoad = ({ accountId, pageNum, itemCount, sortCriter
     );
 };
 
-export const profileLikePlannerLoad = ({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }) => {
+export const profileLikeListLoad = ({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }) => {
     return client.get(
         `/api/users/${accountId}/likes?itemCount=${itemCount}&sortCriteria=${sortCriteria}&keyword=${keyword}&postType=${postType}&pageNum=${pageNum}`,
     );

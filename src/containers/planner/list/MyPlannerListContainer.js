@@ -9,9 +9,9 @@ const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { myPlanners, plannerError, account } = useSelector(({ plannerReducer, authReducer, profileReducer }) => ({
+    const { plannerError, account, plannerList } = useSelector(({ plannerReducer, authReducer, profileReducer }) => ({
         account: authReducer.account,
-        myPlanners: profileReducer.myPlanners,
+        plannerList: profileReducer.plannerList,
         plannerError: plannerReducer.plannerError,
     }));
 
@@ -22,6 +22,7 @@ const MyPlannerListContainer = () => {
         );
     };
 
+    const { myPlanners } = { ...plannerList };
     const { pageLastIndex } = { ...myPlanners };
     const { accountId, nickname } = { ...account };
     const drag = useRef(false);

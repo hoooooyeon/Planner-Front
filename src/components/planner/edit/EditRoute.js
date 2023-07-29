@@ -263,7 +263,12 @@ const EditRoute = ({
                         <ShadowDiv>
                             <DateBox>
                                 <p>End Date</p>
-                                <StyledDatePicker readOnly selected={endDate} minDate={new Date()} dateFormat=" yyyy. MM. dd " />
+                                <StyledDatePicker
+                                    readOnly
+                                    selected={endDate}
+                                    minDate={new Date()}
+                                    dateFormat=" yyyy. MM. dd "
+                                />
                             </DateBox>
                         </ShadowDiv>
                     </Dates>
