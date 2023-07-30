@@ -18,6 +18,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
 const persistor = persistStore(store);
+// persistor.purge();
 
 sagaMiddleware.run(rootSaga);
 
@@ -25,9 +26,9 @@ ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
             <ScrollTop />
-            {/* <PersistGate loading={null} persistor={persistor}> */}
-            <App />
-            {/* </PersistGate> */}
+            <PersistGate loading={null} persistor={persistor}>
+                <App />
+            </PersistGate>
         </BrowserRouter>
     </Provider>,
     document.getElementById('root'),
