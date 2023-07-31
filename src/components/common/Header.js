@@ -91,7 +91,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     font-size: 1.5rem;
 `;
 
-const Header = ({ account }) => {
+const Header = ({ account, handlePurge }) => {
     const headerRef = useRef();
     const [styled, setStyled] = useState(false);
 
@@ -131,6 +131,7 @@ const Header = ({ account }) => {
                 <Account>
                     {/* <img className="user-img" src="logo192.png"></img> */}
                     <Link to="/Profile">{account.nickname}</Link>
+                    <div onClick={handlePurge}>로그아웃?</div>
                 </Account>
             ) : (
                 <AccountList>

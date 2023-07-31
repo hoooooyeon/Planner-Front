@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import createSagaMiddleware from 'redux-saga';
 import { applyMiddleware, createStore } from 'redux';
-import rootReducer, { rootSaga } from './modules';
+import persistedReducer, { rootSaga } from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
@@ -16,8 +16,8 @@ import ScrollTop from './components/common/ScrollTop';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
-const persistor = persistStore(store);
+const store = createStore(persistedReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
+export const persistor = persistStore(store);
 // persistor.purge();
 
 sagaMiddleware.run(rootSaga);

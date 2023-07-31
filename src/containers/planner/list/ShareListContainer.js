@@ -14,13 +14,16 @@ import { useHistory } from 'react-router';
 const ShareListContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { sharePlanners, plannerError, plannerData, keyword } = useSelector(({ plannerReducer }) => ({
-        sharePlanners: plannerReducer.sharePlanners,
-        plannerError: plannerReducer.plannerError,
-        planner: plannerReducer.planner,
-        plannerData: plannerReducer.plannerData,
-        keyword: plannerReducer.keyword,
-    }));
+    const { sharePlanners, plannerError, plannerData, keyword, account } = useSelector(
+        ({ plannerReducer, authReducer }) => ({
+            sharePlanners: plannerReducer.sharePlanners,
+            plannerError: plannerReducer.plannerError,
+            planner: plannerReducer.planner,
+            account: authReducer.account,
+            plannerData: plannerReducer.plannerData,
+            keyword: plannerReducer.keyword,
+        }),
+    );
 
     const { pageNum } = { ...plannerData };
     const { curKeyword, resultKeyword } = { ...keyword };
@@ -34,9 +37,10 @@ const ShareListContainer = () => {
     useEffect(() => {
         const itemCount = 12;
         const keyword = resultKeyword;
-
-        dispatch(loadSharePlannerListAction({ itemCount, sortCriteria, pageNum, keyword }));
-    }, [dispatch, pageNum, resultKeyword, sortCriteria]);
+        if (account) {
+            dispatch(loadSharePlannerListAction({ itemCount, sortCriteria, pageNum, keyword }));
+        }
+    }, [dispatch, pageNum, resultKeyword, sortCriteria, account]);
 
     const onClickPlanner = (plannerId) => {
         if (!drag.current) {

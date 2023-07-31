@@ -1,13 +1,13 @@
 import Footer from '../../components/common/Footer';
-import Header from '../../components/common/Header';
 import MyPlannerListContainer from '../../containers/planner/list/MyPlannerListContainer';
 import ShareListContainer from '../../containers/planner/list/ShareListContainer';
 import ShareListPaginationContainer from '../../containers/planner/list/ShareListPaginationContainer';
+import HeaderContainer from '../../containers/common/HeaderContainer';
 
 const PlannerListPage = () => {
     return (
         <>
-            <Header />
+            <HeaderContainer />
             <MyPlannerListContainer />
             <ShareListContainer />
             <ShareListPaginationContainer />
