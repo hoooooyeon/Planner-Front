@@ -88,7 +88,17 @@ const RESET_SHARE_PLANNER_LIST_TYPE = 'planner/RESET_SHARE_PLANNER_LIST';
 
 const ADD_MAP_REF_TYPE = 'planner/ADD_MAP_REF';
 
-export const createPlannerAction = ({ accountId, creator, title, planDateStart, planDateEnd, planMembers, expense, memberCount, memberTypeId }) => ({
+export const createPlannerAction = ({
+    accountId,
+    creator,
+    title,
+    planDateStart,
+    planDateEnd,
+    planMembers,
+    expense,
+    memberCount,
+    memberTypeId,
+}) => ({
     type: CREATE_PLANNER_TYPE,
     accountId,
     creator,
@@ -100,23 +110,64 @@ export const createPlannerAction = ({ accountId, creator, title, planDateStart, 
     memberCount,
     memberTypeId,
 });
-export const updatePlannerAction = ({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }) => ({ type: UPDATE_PLANNER_TYPE, plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
-export const loadSharePlannerListAction = ({ itemCount, sortCriteria, keyword, pageNum }) => ({ type: LOAD_SHARE_PLANNER_LIST_TYPE, itemCount, sortCriteria, keyword, pageNum });
+export const updatePlannerAction = ({
+    plannerId,
+    title,
+    planDateStart,
+    planDateEnd,
+    expense,
+    memberCount,
+    memberTypeId,
+}) => ({ type: UPDATE_PLANNER_TYPE, plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
+export const loadSharePlannerListAction = ({ itemCount, sortCriteria, keyword, pageNum }) => ({
+    type: LOAD_SHARE_PLANNER_LIST_TYPE,
+    itemCount,
+    sortCriteria,
+    keyword,
+    pageNum,
+});
 export const loadPlannerAction = (plannerId) => ({ type: LOAD_PLANNER_TYPE, plannerId });
 export const resetPlannerDataAction = () => ({ type: RESET_PLANNER_DATA_TYPE });
 export const deletePlannerAction = (plannerId) => ({ type: DELETE_PLANNER_TYPE, plannerId });
 export const toggleLikePlannerAction = (plannerId) => ({ type: TOGGLE_LIKE_PLANNER_TYPE, plannerId });
-export const createMemoAction = ({ plannerId, title, content }) => ({ type: CREATE_MEMO_TYPE, plannerId, title, content });
-export const updateMemoAction = ({ plannerId, memoId, title, content }) => ({ type: UPDATE_MEMO_TYPE, plannerId, memoId, title, content });
+export const createMemoAction = ({ plannerId, title, content }) => ({
+    type: CREATE_MEMO_TYPE,
+    plannerId,
+    title,
+    content,
+});
+export const updateMemoAction = ({ plannerId, memoId, title, content }) => ({
+    type: UPDATE_MEMO_TYPE,
+    plannerId,
+    memoId,
+    title,
+    content,
+});
 export const deleteMemoAction = ({ plannerId, memoId }) => ({ type: DELETE_MEMO_TYPE, plannerId, memoId });
 export const createPlanAction = ({ plannerId, planDate }) => ({ type: CREATE_PLAN_TYPE, plannerId, planDate });
-export const updatePlanAction = ({ planId, plannerId, planDate, index }) => ({ type: UPDATE_PLAN_TYPE, plannerId, planDate, planId, index });
+export const updatePlanAction = ({ planId, plannerId, planDate, index }) => ({
+    type: UPDATE_PLAN_TYPE,
+    plannerId,
+    planDate,
+    planId,
+    index,
+});
 export const deletePlanAction = ({ plannerId, planId }) => ({ type: DELETE_PLAN_TYPE, plannerId, planId });
 export const inviteMemberAction = ({ plannerId, members }) => ({ type: INVITE_MEMBER_TYPE, plannerId, members });
 export const deleteMemberAction = ({ plannerId, nickName }) => ({ type: DELETE_MEMBER_TYPE, plannerId, nickName });
 export const toggleMemberModalAction = () => ({ type: TOGGLE_MEMBER_MODAL_TYPE });
 export const togglePlannerInfoModalAction = () => ({ type: TOGGLE_PLANNER_INFO_MODAL_TYPE });
-export const createLocationAction = ({ plannerId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId }) => ({
+export const createLocationAction = ({
+    plannerId,
+    locationName,
+    locationContentId,
+    locationImage,
+    locationAddr,
+    locationMapx,
+    locationMapy,
+    locationTransportation,
+    planId,
+}) => ({
     type: CREATE_LOCATION_TYPE,
     plannerId,
     locationName,
@@ -128,7 +179,19 @@ export const createLocationAction = ({ plannerId, locationName, locationContentI
     locationTransportation,
     planId,
 });
-export const updateLocationAction = ({ plannerId, locationId, locationName, locationContentId, locationImage, locationAddr, locationMapx, locationMapy, locationTransportation, planId, index }) => ({
+export const updateLocationAction = ({
+    plannerId,
+    locationId,
+    locationName,
+    locationContentId,
+    locationImage,
+    locationAddr,
+    locationMapx,
+    locationMapy,
+    locationTransportation,
+    planId,
+    index,
+}) => ({
     type: UPDATE_LOCATION_TYPE,
     plannerId,
     locationId,
@@ -142,7 +205,12 @@ export const updateLocationAction = ({ plannerId, locationId, locationName, loca
     planId,
     index,
 });
-export const deleteLocationAction = ({ plannerId, locationId, planId }) => ({ type: DELETE_LOCATION_TYPE, plannerId, locationId, planId });
+export const deleteLocationAction = ({ plannerId, locationId, planId }) => ({
+    type: DELETE_LOCATION_TYPE,
+    plannerId,
+    locationId,
+    planId,
+});
 export const changeCurPlanIdAction = (planId) => ({ type: CHANGE_CUR_PLAN_ID_TYPE, planId });
 export const changeCurPlannerIdAction = (plannerId) => ({ type: CHANGE_CUR_PLANNER_ID_TYPE, plannerId });
 export const changePageNumAction = (pageNum) => ({ type: CHANGE_PAGE_NUM_TYPE, pageNum });
@@ -201,9 +269,9 @@ const initialState = {
     plannerData: {
         plannerId: null,
         planId: null,
-        locaId: null,
         memoId: null,
         pageNum: 1,
+        pType: null,
     },
     keyword: {
         curKeyword: '',
@@ -256,6 +324,7 @@ function plannerReducer(state = initialState, action) {
                 plannerData: {
                     ...state.plannerData,
                     plannerId: action.payload.data,
+                    pType: 'edit',
                 },
             };
         case UPDATE_PLANNER_SUCCESS_TYPE:
@@ -269,11 +338,11 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
                 plannerData: {
-                    myPageIndex: 1,
-                    sharePageIndex: 1,
+                    pageNum: 1,
                     plannerId: null,
                     planId: null,
-                    locaId: null,
+                    memoId: null,
+                    pType: null,
                 },
                 planner: null,
             };
@@ -370,7 +439,6 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 plannerData: {
                     ...state.plannerData,
-                    locaId: action.payload.data,
                 },
             };
         case UPDATE_LOCATION_SUCCESS_TYPE:

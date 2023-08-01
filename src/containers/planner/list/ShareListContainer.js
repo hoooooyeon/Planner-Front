@@ -25,7 +25,7 @@ const ShareListContainer = () => {
         }),
     );
 
-    const { pageNum } = { ...plannerData };
+    const { pageNum, plannerId, pType } = { ...plannerData };
     const { curKeyword, resultKeyword } = { ...keyword };
     const [sortCriteria, setSortCriteria] = useState(2);
     const drag = useRef(false);
@@ -45,7 +45,7 @@ const ShareListContainer = () => {
     const onClickPlanner = (plannerId) => {
         if (!drag.current) {
             dispatch(changeCurPlannerIdAction(plannerId));
-            history.push(`/Planners/${plannerId}`);
+            // history.push(`/Planners/${plannerId}`);
         }
     };
 

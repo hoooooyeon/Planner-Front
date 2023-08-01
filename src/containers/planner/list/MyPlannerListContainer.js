@@ -9,11 +9,14 @@ const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { myPlanners, plannerError, account } = useSelector(({ plannerReducer, authReducer, profileReducer }) => ({
-        account: authReducer.account,
-        myPlanners: profileReducer.myPlanners,
-        plannerError: plannerReducer.plannerError,
-    }));
+    const { myPlanners, plannerError, plannerData, account } = useSelector(
+        ({ plannerReducer, authReducer, profileReducer }) => ({
+            account: authReducer.account,
+            myPlanners: profileReducer.myPlanners,
+            plannerError: plannerReducer.plannerError,
+            plannerData: plannerReducer.plannerData,
+        }),
+    );
 
     const letsFormat = (d) => {
         const date = new Date(d);
@@ -22,6 +25,7 @@ const MyPlannerListContainer = () => {
         );
     };
 
+    const { pType, plannerId } = { ...plannerData };
     const { pageLastIndex } = { ...myPlanners };
     const { accountId, nickname } = { ...account };
     const drag = useRef(false);
@@ -57,10 +61,21 @@ const MyPlannerListContainer = () => {
                     memberTypeId,
                 }),
             );
+            // history.push(`/Planners/edit`);
+
+            // console.log(pType);
         } else {
             alert('로그인이 필요합니다.');
         }
     };
+
+    useEffect(() => {
+        if (plannerId && pType === 'edit') {
+            history.push(`/Planners/edit/${plannerId}`);
+        } else if (plannerId && pType === null) {
+            history.push(`/Planners/${plannerId}`);
+        }
+    }, [history, pType, plannerId]);
 
     const [pageNum, setPageNum] = useState(1);
     // 나의 플래너리스트 가져오기

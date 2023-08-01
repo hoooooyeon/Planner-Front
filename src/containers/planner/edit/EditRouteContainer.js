@@ -17,7 +17,7 @@ import {
     updatePlannerAction,
 } from '../../../modules/plannerModule';
 
-const EditRouteContainer = () => {
+const EditRouteContainer = ({ location }) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -49,14 +49,18 @@ const EditRouteContainer = () => {
     };
 
     useEffect(() => {
+        const { plannerId } = { ...plannerData };
         if (!accountId) {
             alert('로그인이 필요합니다.');
             history.push('/Planners');
+        } else if (!plannerId) {
+            alert('잘못된 접근입니다.');
+            history.push(`/Planners`);
         } else if (planner && nickname !== creator) {
             alert('호스트만 접근할 수 있습니다.');
             history.push('/Planners');
         }
-    }, [accountId, nickname, creator, history]);
+    }, [accountId, nickname, creator, history, plannerData, planner]);
 
     // 출발 날짜 선택
     const onUpdatePlannerDate = (date) => {

@@ -517,7 +517,7 @@ const EditMapContainer = () => {
         history.push(`/Planners/${plannerId}`);
     };
 
-    if (!mapRef || nickname !== creator) {
+    if (!mapRef || nickname !== creator || !planner) {
         return null;
     }
     return (

@@ -14,7 +14,7 @@ const rootPersistConfig = {
     key: 'root',
     storage,
     // blacklist: ['loadingReducer', 'profileReducer', 'plannerReducer', 'spotReducer'],
-    whitelist: ['plannerReducer', 'authReducer'],
+    whitelist: ['authReducer'],
 };
 
 const plannerPersistConfig = {
@@ -36,7 +36,7 @@ const rootReducer = combineReducers({
 export function* rootSaga() {
     yield all([authSaga(), profileSaga(), plannerSaga(), reviewSaga(), spotSaga()]);
 }
-const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
+// const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
+// export default persistedReducer;
 
-export default persistedReducer;
-// export default rootReducer;
+export default rootReducer;
