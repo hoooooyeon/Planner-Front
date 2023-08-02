@@ -9,11 +9,12 @@ const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { myPlanners, plannerError, plannerData, account } = useSelector(
+    const { myPlanners, plannerError, planner, plannerData, account } = useSelector(
         ({ plannerReducer, authReducer, profileReducer }) => ({
             account: authReducer.account,
             myPlanners: profileReducer.myPlanners,
             plannerError: plannerReducer.plannerError,
+            planner: plannerReducer.planner,
             plannerData: plannerReducer.plannerData,
         }),
     );
@@ -61,21 +62,19 @@ const MyPlannerListContainer = () => {
                     memberTypeId,
                 }),
             );
-            // history.push(`/Planners/edit`);
-
-            // console.log(pType);
         } else {
             alert('로그인이 필요합니다.');
         }
     };
 
+    // 주소 이동
     useEffect(() => {
-        if (plannerId && pType === 'edit') {
+        if (!planner && plannerId && pType === 'edit') {
             history.push(`/Planners/edit/${plannerId}`);
-        } else if (plannerId && pType === null) {
+        } else if (!planner && plannerId && pType === null) {
             history.push(`/Planners/${plannerId}`);
         }
-    }, [history, pType, plannerId]);
+    }, [history, plannerId]);
 
     const [pageNum, setPageNum] = useState(1);
     // 나의 플래너리스트 가져오기
@@ -90,7 +89,7 @@ const MyPlannerListContainer = () => {
     const onClickPlanner = (plannerId) => {
         if (!drag.current) {
             dispatch(changeCurPlannerIdAction(plannerId));
-            history.push(`/Planners/${plannerId}`);
+            // history.push(`/Planners/${plannerId}`);
         }
     };
 

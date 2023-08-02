@@ -27,9 +27,9 @@ ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
             <ScrollTop />
-            {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
-            <App />
-            {/* </PersistGate> */}
+            <PersistGate loading={<Loading />} persistor={persistor}>
+                <App />
+            </PersistGate>
         </BrowserRouter>
     </Provider>,
     document.getElementById('root'),
