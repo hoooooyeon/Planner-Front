@@ -76,14 +76,14 @@ const MyPlannerListContainer = () => {
         }
     }, [history, plannerId]);
 
-    const [pageNum, setPageNum] = useState(1);
     // 나의 플래너리스트 가져오기
+    const [pageNum, setPageNum] = useState(1);
     useEffect(() => {
-        if (accountId) {
-            const itemCount = 10;
-            const sortCriteria = 2;
-            dispatch(profileMyPlannerLoadAction({ accountId, pageNum, itemCount, sortCriteria }));
-        }
+        // if (accountId) {
+        const itemCount = 10;
+        const sortCriteria = 2;
+        dispatch(profileMyPlannerLoadAction({ accountId, pageNum, itemCount, sortCriteria }));
+        // }
     }, [dispatch, accountId, pageNum]);
 
     const onClickPlanner = (plannerId) => {

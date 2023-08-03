@@ -45,7 +45,7 @@ const FooterBox = styled.div`
 
 const Img = styled.img`
     width: 100%;
-    height: 700px;
+    height: 460px;
     position: fixed;
     left: 0;
     right: 0;
