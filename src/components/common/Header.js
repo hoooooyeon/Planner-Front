@@ -22,7 +22,6 @@ const HeaderBlock = styled.div`
     margin: 0;
     a {
         text-decoration: none;
-        font-weight: bold;
         white-space: nowrap;
     }
     h1 {
@@ -50,6 +49,7 @@ const Logo = styled.h1`
     white-space: nowrap;
     a {
         color: white;
+        font-weight: bold;
     }
     ${(props) =>
         props.styled &&
@@ -65,6 +65,7 @@ const MenuList = styled.ul`
     display: none;
     a {
         color: white;
+        font-weight: bold;
     }
     @media all and (min-width: 768px) {
         display: flex;
@@ -97,6 +98,7 @@ const AccountList = styled.ul`
         margin: 0 8px;
         a {
             color: white;
+            font-weight: bold;
         }
         ${(props) =>
             props.styled &&
@@ -112,28 +114,63 @@ const AccountList = styled.ul`
 const Account = styled.div`
     display: flex;
     align-items: center;
+    position: relative;
     .user-img {
         border-radius: 10px;
         margin-right: 10px;
         width: 40px;
         height: 40px;
+        cursor: pointer;
     }
+    color: white;
+    font-weight: bold;
+
     a {
-            color: white;
-        }
-        ${(props) =>
-            props.styled &&
-            css`
-                a {
-                    color: black;
-                }
-            `}
+        color: white;
     }
+    ${(props) =>
+        props.styled &&
+        css`
+            color: black;
+            a {
+                color: black;
+            }
+        `}
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     margin-right: 10px;
     font-size: 1.5rem;
+`;
+
+const DropDown = styled.div`
+    z-index: 99;
+    position: absolute;
+    top: 54px;
+    right: 144px;
+`;
+
+const DropDownMenu = styled.ul`
+    line-height: 25px;
+    width: 4.4rem;
+    z-index: 1000;
+    border-radius: 0.5rem;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border: none;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    text-align: center;
+    li {
+        cursor: pointer;
+        font-size: 0.8rem;
+        a {
+            color: black;
+        }
+        &:hover {
+            font-weight: bold;
+        }
+    }
 `;
 
 const Header = ({ account }) => {
@@ -156,6 +193,23 @@ const Header = ({ account }) => {
         };
     }, []);
 
+    const [dropDown, setDropDown] = useState(false);
+
+    const onClickDropDown = () => {
+        setDropDown(!dropDown);
+    };
+
+    const onCloseDropDown = () => {
+        if (dropDown) {
+            setDropDown(false);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('click', onCloseDropDown);
+        return () => window.removeEventListener('click', onCloseDropDown);
+    });
+
     return (
         <HeaderBlock ref={headerRef} styled={styled}>
             <Logo styled={styled}>
@@ -173,10 +227,22 @@ const Header = ({ account }) => {
                 </li>
             </MenuList>
             {account ? (
-                <Account styled={styled}>
-                    {/* <img className="user-img" src="logo192.png"></img> */}
-                    <Link to="/Profile">{account.nickname}</Link>
-                </Account>
+                <>
+                    <Account styled={styled} onClick={onClickDropDown}>
+                        {/* <img className="user-img" src="logo192.png"></img> */}
+                        {account.nickname}
+                    </Account>
+                    {dropDown && (
+                        <DropDown>
+                            <DropDownMenu>
+                                <li>
+                                    <Link to="/Profile">마이페이지</Link>
+                                </li>
+                                <li>로그아웃</li>
+                            </DropDownMenu>
+                        </DropDown>
+                    )}
+                </>
             ) : (
                 <AccountList styled={styled}>
                     <li>

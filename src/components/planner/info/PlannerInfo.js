@@ -84,7 +84,7 @@ const DropDownMenu = styled.ul`
     background-color: white;
     border-radius: 0.5rem;
     top: 24px;
-    left: 10px;
+    left: 17px;
     font-size: 0.7rem;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
     li {
@@ -182,8 +182,20 @@ const PlannerInfo = ({
                     )}
                 </InfoHeader>
                 <FlexBox>
-                    <InfoMap planner={planner} allSchedule={allSchedule} mapRef={mapRef} onToggleLikePlanner={onToggleLikePlanner} onClickAllSchedule={onClickAllSchedule} />
-                    <InfoRoute planner={planner} plannerData={plannerData} drag={drag} onChangeCurPlanId={onChangeCurPlanId} onClickDateSchedule={onClickDateSchedule} />
+                    <InfoMap
+                        planner={planner}
+                        allSchedule={allSchedule}
+                        mapRef={mapRef}
+                        onToggleLikePlanner={onToggleLikePlanner}
+                        onClickAllSchedule={onClickAllSchedule}
+                    />
+                    <InfoRoute
+                        planner={planner}
+                        plannerData={plannerData}
+                        drag={drag}
+                        onChangeCurPlanId={onChangeCurPlanId}
+                        onClickDateSchedule={onClickDateSchedule}
+                    />
                 </FlexBox>
             </Container>
             <InfoMenu planner={planner} />

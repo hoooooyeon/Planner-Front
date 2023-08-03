@@ -50,13 +50,23 @@ const NavList = styled.ul`
         border-radius: 5px;
         &:hover {
             background-color: white;
+            color: blue;
             cursor: pointer;
+            a {
+                color: blue;
+            }
         }
         a {
             color: black;
         }
     }
 `;
+
+const AccountList = styled(NavList)`
+    border-top: 1px solid lightgray;
+    padding: 1rem 0;
+`;
+
 const IconBox = styled.div`
     display: inline-block;
     border-radius: 50px;
@@ -159,6 +169,12 @@ const SideNav = ({ styled }) => {
                     <Link to="/Spot">여행지</Link>
                 </li>
             </NavList>
+            <AccountList>
+                <li>
+                    <Link>마이페이지</Link>
+                </li>
+                <li>로그아웃</li>
+            </AccountList>
         </SideNavContainer>
     );
 };
