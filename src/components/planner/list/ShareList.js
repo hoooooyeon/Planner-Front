@@ -10,8 +10,9 @@ import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 const ShareListBlock = styled.div`
     width: 100%;
     height: 100%;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    /* margin-top: 1rem; */
+    /* margin-bottom: 1rem; */
+    padding: 1rem 0;
     background-color: white;
 `;
 

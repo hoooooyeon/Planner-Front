@@ -12,16 +12,16 @@ const HeaderBlock = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     right: 0;
-    background-color: none;
+    background-color: white;
     z-index: 999;
     padding: 0;
     margin: 0;
     a {
-        color: white;
+        color: black;
         text-decoration: none;
         font-weight: bold;
         white-space: nowrap;

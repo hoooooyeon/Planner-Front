@@ -9,7 +9,6 @@ const MyPlannerListBlock = styled.div`
     width: 100%;
     height: 100%;
     background-color: #f5f5f5;
-    margin-top: 70px;
 `;
 
 const Container = styled.div`
@@ -33,6 +32,7 @@ const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 1rem;
 `;
 
 const HeaderTitle = styled.p`

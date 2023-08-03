@@ -1,7 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfo from '../../../components/planner/info/PlannerInfo';
-import { changeAllScheduleAction, changeCurPlanIdAction, deletePlannerAction, loadPlannerAction, toggleLikePlannerAction, toggleMemberModalAction, togglePlannerInfoModalAction } from '../../../modules/plannerModule';
+import {
+    changeAllScheduleAction,
+    changeCurPlanIdAction,
+    deletePlannerAction,
+    loadPlannerAction,
+    toggleLikePlannerAction,
+    toggleMemberModalAction,
+    togglePlannerInfoModalAction,
+} from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import { useHistory } from 'react-router';
 
@@ -9,13 +17,15 @@ const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { planner, plannerError, plannerData, allSchedule, account } = useSelector(({ plannerReducer, authReducer }) => ({
-        planner: plannerReducer.planner,
-        plannerError: plannerReducer.plannerError,
-        plannerData: plannerReducer.plannerData,
-        account: authReducer.account,
-        allSchedule: plannerReducer.allSchedule,
-    }));
+    const { planner, plannerError, plannerData, allSchedule, account } = useSelector(
+        ({ plannerReducer, authReducer }) => ({
+            planner: plannerReducer.planner,
+            plannerError: plannerReducer.plannerError,
+            plannerData: plannerReducer.plannerData,
+            account: authReducer.account,
+            allSchedule: plannerReducer.allSchedule,
+        }),
+    );
 
     const { plans, creator } = { ...planner };
     const { plannerId, planId } = { ...plannerData };
@@ -293,7 +303,18 @@ const PlannerInfoContainer = () => {
                 };
             }
         }
-    }, [kakao.maps.LatLng, kakao.maps.Polyline, kakao.maps.InfoWindow, kakao.maps.event, kakao.maps.Marker, kakao.maps.MarkerImage, kakao.maps.Size, map, plans, plannerData.planId]);
+    }, [
+        kakao.maps.LatLng,
+        kakao.maps.Polyline,
+        kakao.maps.InfoWindow,
+        kakao.maps.event,
+        kakao.maps.Marker,
+        kakao.maps.MarkerImage,
+        kakao.maps.Size,
+        map,
+        plans,
+        plannerData.planId,
+    ]);
 
     useEffect(() => {
         showDateRouteMarker();

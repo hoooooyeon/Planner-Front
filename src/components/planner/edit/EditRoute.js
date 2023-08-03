@@ -30,7 +30,7 @@ const InfoBox = styled.div`
 
 const Title = styled.div`
     font-weight: bold;
-    margin: 2rem 0 0.3rem;
+    margin: 1.5rem 0 0.3rem;
     font-size: 1.3rem;
     width: 21rem;
     white-space: nowrap;
@@ -119,7 +119,7 @@ const SetIcon = styled(FontAwesomeIcon)`
 const UpdatedDate = styled.div`
     font-size: 0.7rem;
     color: lightgray;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
 `;
 
 const RouteBox = styled.div`

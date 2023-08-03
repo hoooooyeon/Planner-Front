@@ -11,7 +11,6 @@ const PlannerInfoBlock = styled.div`
     width: 100%;
     height: 100%;
     background-color: #f5f5f5;
-    padding-top: 70px;
 `;
 
 const Container = styled.div`
@@ -27,6 +26,7 @@ const Container = styled.div`
 const InfoHeader = styled.div`
     display: flex;
     align-items: center;
+    margin-top: 1rem;
     h3 {
         margin: 0;
     }
@@ -40,6 +40,7 @@ const MenuBox = styled.div`
 const MenuList = styled.ul`
     display: none;
     padding: 0;
+    margin: 0;
     @media all and (min-width: 1024px) {
         display: flex;
     }

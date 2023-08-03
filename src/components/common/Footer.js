@@ -45,7 +45,7 @@ const FooterBox = styled.div`
 
 const Img = styled.img`
     width: 100%;
-    height: 700px;
+    height: 430px;
     position: fixed;
     left: 0;
     right: 0;
@@ -94,17 +94,17 @@ const Writing = styled.div`
 `;
 
 const Logo = styled.div`
-    height: 150px;
+    height: 75px;
     background-color: rgb(216, 206, 192);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     div:first-child {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
     div:last-child {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         font-weight: bold;
     }
 `;
