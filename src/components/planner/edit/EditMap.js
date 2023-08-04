@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import EditTutorialModal from './EditTutorialModal';
 
 const EditMapBlock = styled.div`
     width: calc(100% - 392px);
@@ -49,18 +50,21 @@ const Button = styled.button`
         `}
 `;
 
-const EditMap = ({ mapRef, allSchedule, onClickAllSchedule, onSavePlanner }) => {
+const EditMap = ({ mapRef, allSchedule, onClickAllSchedule, onSavePlanner, tutorialVisible, onClickTutorialModal }) => {
     return (
-        <EditMapBlock>
-            <Map ref={mapRef} />
-            <ButtonBox>
-                <Button>사용 방법</Button>
-                <Button allSchedule={allSchedule} onClick={onClickAllSchedule}>
-                    모든 일정 보기
-                </Button>
-                <Button onClick={onSavePlanner}>일정 저장</Button>
-            </ButtonBox>
-        </EditMapBlock>
+        <>
+            <EditMapBlock>
+                <Map ref={mapRef} />
+                <ButtonBox>
+                    <Button onClick={onClickTutorialModal}>사용 방법</Button>
+                    <Button allSchedule={allSchedule} onClick={onClickAllSchedule}>
+                        모든 일정 보기
+                    </Button>
+                    <Button onClick={onSavePlanner}>일정 저장</Button>
+                </ButtonBox>
+            </EditMapBlock>
+            {tutorialVisible && <EditTutorialModal onClickTutorialModal={onClickTutorialModal} />}
+        </>
     );
 };
 
