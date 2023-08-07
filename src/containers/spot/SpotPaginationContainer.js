@@ -5,7 +5,7 @@ import { changePageIndexAction } from '../../modules/spotModule';
 
 const SpotPaginationContainer = ({ spots, spotData, changePageIndexAction }) => {
     const { totalCount } = { ...spots };
-    const { pageNo } = { ...spotData };
+    const { pageNo, areaCode, contentTypeId } = { ...spotData };
 
     // 현재 페이지
     const [page, setPage] = useState(1);
@@ -30,15 +30,13 @@ const SpotPaginationContainer = ({ spots, spotData, changePageIndexAction }) => 
         setPage(maxPage);
     };
 
-    // else if (page % limitIndex === 0) {
-    //     setBlock((block) => block + 1);
-    // } else if (page % limitIndex === 1) {
-    //     setBlock((block) => block - 1);
-    // }
-
     useEffect(() => {
         changePageIndexAction(page);
     }, [page, changePageIndexAction]);
+
+    useEffect(() => {
+        setPage(1);
+    }, [areaCode, contentTypeId]);
 
     return (
         <Pagination
@@ -49,6 +47,7 @@ const SpotPaginationContainer = ({ spots, spotData, changePageIndexAction }) => 
             onLastPage={onLastPage}
             page={page}
             totalCount={totalCount}
+            itemIndex={12}
         />
     );
 };

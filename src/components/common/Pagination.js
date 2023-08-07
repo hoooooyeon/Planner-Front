@@ -51,7 +51,16 @@ const PageButton = styled.div`
     }
 `;
 
-const Pagination = ({ page, totalCount, onIndexPage, onNextPage, onPreviousPage, onFirstPage, onLastPage }) => {
+const Pagination = ({
+    page,
+    totalCount,
+    itemIndex,
+    onIndexPage,
+    onNextPage,
+    onPreviousPage,
+    onFirstPage,
+    onLastPage,
+}) => {
     // 뿌려줄 페이지 배열
     const [pageArr, setPageArr] = useState([]);
     // 페이지의 10단위
@@ -59,7 +68,21 @@ const Pagination = ({ page, totalCount, onIndexPage, onNextPage, onPreviousPage,
     // 보여질 페이지네이션의 개수
     const limitIndex = 5;
     // 마지막 페이지
-    const maxPage = Math.ceil(totalCount / limitIndex);
+    const maxPage = Math.ceil(totalCount / itemIndex);
+
+    const onClickNextPage = () => {
+        onNextPage(maxPage);
+        if (page % limitIndex === 0) {
+            setBlock((block) => block + 1);
+        }
+    };
+
+    const onClickPrevPage = () => {
+        onPreviousPage();
+        if (page % limitIndex === 1) {
+            setBlock((block) => block - 1);
+        }
+    };
 
     // 페이지네이션 배열 생성
     useEffect(() => {
@@ -85,7 +108,7 @@ const Pagination = ({ page, totalCount, onIndexPage, onNextPage, onPreviousPage,
                         <PageButton onClick={onFirstPage}>
                             <FontAwesomeIcon icon={faBackward} />
                         </PageButton>
-                        <PageButton onClick={onPreviousPage}>
+                        <PageButton onClick={onClickPrevPage}>
                             <FontAwesomeIcon icon={faCaretLeft} />
                         </PageButton>
                         {pageArr.map((i) => {
@@ -99,11 +122,7 @@ const Pagination = ({ page, totalCount, onIndexPage, onNextPage, onPreviousPage,
                                 </PageButton>
                             );
                         })}
-                        <PageButton
-                            onClick={() => {
-                                onNextPage(maxPage);
-                            }}
-                        >
+                        <PageButton onClick={onClickNextPage}>
                             <FontAwesomeIcon icon={faCaretRight} />
                         </PageButton>
                         <PageButton onClick={() => onLastPage(maxPage)}>
