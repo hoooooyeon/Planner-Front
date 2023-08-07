@@ -67,7 +67,7 @@ const Img = styled.img`
     width: 100%;
     height: 100%;
     position: absolute;
-    top: -15px;
+    top: 0;
     left: 0;
     border: none;
     border-radius: 0.5rem 0.5rem 0 0;
