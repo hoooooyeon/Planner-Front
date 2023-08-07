@@ -23,6 +23,8 @@ const HeaderBlock = styled.div`
     a {
         text-decoration: none;
         white-space: nowrap;
+        color: black;
+        font-weight: bold;
     }
     h1 {
         font-size: 1.2rem;
@@ -47,26 +49,12 @@ const Logo = styled.h1`
     font-size: 1.2rem;
     font-weight: bold;
     white-space: nowrap;
-    a {
-        color: white;
-        font-weight: bold;
-    }
-    ${(props) =>
-        props.styled &&
-        css`
-            a {
-                color: black;
-            }
-        `}
 `;
 
 const MenuList = styled.ul`
     list-style: none;
     display: none;
-    a {
-        color: white;
-        font-weight: bold;
-    }
+
     @media all and (min-width: 768px) {
         display: flex;
     }
@@ -74,13 +62,6 @@ const MenuList = styled.ul`
         font-size: 0.9rem;
         margin: 0 30px;
     }
-    ${(props) =>
-        props.styled &&
-        css`
-            a {
-                color: black;
-            }
-        `}
 `;
 
 const AccountList = styled.ul`
@@ -96,23 +77,12 @@ const AccountList = styled.ul`
         align-items: center;
         font-size: 0.8rem;
         margin: 0 8px;
-        a {
-            color: white;
-            font-weight: bold;
-        }
-        ${(props) =>
-            props.styled &&
-            css`
-                color: black;
-                a {
-                    color: black;
-                }
-            `}
+        color: black;
     }
 `;
 
 const Account = styled.div`
-    display: flex;
+    display: none;
     align-items: center;
     position: relative;
     .user-img {
@@ -122,20 +92,12 @@ const Account = styled.div`
         height: 40px;
         cursor: pointer;
     }
-    color: white;
-    font-weight: bold;
 
-    a {
-        color: white;
+    color: black;
+    font-weight: bold;
+    @media all and (min-width: 768px) {
+        display: flex;
     }
-    ${(props) =>
-        props.styled &&
-        css`
-            color: black;
-            a {
-                color: black;
-            }
-        `}
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
@@ -164,9 +126,6 @@ const DropDownMenu = styled.ul`
     li {
         cursor: pointer;
         font-size: 0.8rem;
-        a {
-            color: black;
-        }
         &:hover {
             font-weight: bold;
         }
@@ -249,9 +208,6 @@ const Header = ({ account }) => {
                         <StyledFontAwesomeIcon icon={faCircleUser} />
                         <Link to="/Login">로그인</Link>
                     </li>
-                    {/* <li>
-            <Link to="/Register">회원가입</Link>
-          </li> */}
                 </AccountList>
             )}
             <SideNav styled={styled} />

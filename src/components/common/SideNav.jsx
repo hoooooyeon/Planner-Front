@@ -71,31 +71,16 @@ const IconBox = styled.div`
     display: inline-block;
     border-radius: 50px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-    padding: 5px 7px;
     position: relative;
     left: -50px;
-    background-color: rgba(0, 0, 0, 0.4);
-    color: white;
     z-index: 99;
-    &:hover {
-        cursor: pointer;
-        background-color: rgba(0, 0, 0, 0.4);
-        color: white;
-    }
-    ${(props) =>
-        props.styled &&
-        css`
-            background-color: white;
-            color: black;
-        `}
-`;
-
-const CloseIconBox = styled(IconBox)`
-    padding: 5px 11px;
-`;
-
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    font-size: 20px;
+    cursor: pointer;
+    width: 1rem;
+    height: 1rem;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 const SideNav = ({ styled }) => {
@@ -142,12 +127,12 @@ const SideNav = ({ styled }) => {
         <SideNavContainer ref={navRef} navOpen={navOpen}>
             <div>
                 {navOpen ? (
-                    <CloseIconBox styled={styled} onClick={onToggleNav}>
-                        <StyledFontAwesomeIcon icon={faCaretRight} />
-                    </CloseIconBox>
+                    <IconBox styled={styled} onClick={onToggleNav}>
+                        <FontAwesomeIcon icon={faCaretRight} />
+                    </IconBox>
                 ) : (
                     <IconBox styled={styled} onClick={onToggleNav}>
-                        <StyledFontAwesomeIcon icon={faBars} />
+                        <FontAwesomeIcon icon={faBars} />
                     </IconBox>
                 )}
             </div>
