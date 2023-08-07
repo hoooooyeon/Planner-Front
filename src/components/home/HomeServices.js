@@ -1,11 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import styled from 'styled-components';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { faCircleChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { faCircleChevronLeft } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
 import Slider from '../common/Slider';
 import serviceImg1 from '../../lib/images/serviceImg1.jpg';
 import serviceImg2 from '../../lib/images/serviceImg2.jpg';
@@ -75,9 +72,6 @@ const Img = styled.img`
     border: none;
     object-fit: cover;
     -webkit-user-drag: none;
-    &:hover {
-        cursor: pointer;
-    }
     width: 250px;
     height: 300px;
     @media all and (min-width: 1024px) {
@@ -88,50 +82,12 @@ const Img = styled.img`
         width: 390px;
         height: 450px;
     }
-`;
-
-const ImgOveray = styled.div`
-    background-color: rgba(255, 255, 255, 0.6);
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: black;
-    z-index: 1;
-    p:first-child {
-        font-size: 1.2rem;
-        font-weight: bold;
-    }
-    p {
-        font-size: 1rem;
-    }
-    a {
-        color: black;
-        text-decoration: none;
-        z-index: 999;
-    }
-    width: 250px;
-    height: 300px;
-    @media all and (min-width: 1024px) {
-        width: 350px;
-        height: 400px;
-    }
-    @media all and (min-width: 1200px) {
-        width: 390px;
-        height: 450px;
-    }
-`;
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    margin-left: 10px;
 `;
 
 const LeftIcon = styled(FontAwesomeIcon)`
     position: absolute;
-    top: 39%;
-    left: 60px;
+    top: 37%;
+    left: 7%;
     z-index: 1;
     font-size: 2rem;
     color: lightgoldenrodyellow;
@@ -144,8 +100,8 @@ const LeftIcon = styled(FontAwesomeIcon)`
 
 const RightIcon = styled(FontAwesomeIcon)`
     position: absolute;
-    top: 39%;
-    right: 25px;
+    top: 37%;
+    right: 7%;
     z-index: 1;
     font-size: 2rem;
     color: lightgoldenrodyellow;
@@ -154,6 +110,14 @@ const RightIcon = styled(FontAwesomeIcon)`
     @media all and (max-width: 767px) {
         display: inline-block;
     }
+`;
+
+const Title = styled.div`
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    margin-top: 0.5rem;
 `;
 
 const HomeServices = () => {
@@ -179,10 +143,6 @@ const HomeServices = () => {
         },
     ];
     const itemRef = useRef();
-    const [isOveray, setIsOveray] = useState();
-    const onUpdateOveray = (e, index) => {
-        setIsOveray(index);
-    };
 
     return (
         <HomeServicesBlock>
@@ -195,25 +155,12 @@ const HomeServices = () => {
                     <ServiceList>
                         {serviceArr &&
                             serviceArr.map((s, i) => (
-                                <ServiceItem ref={itemRef}>
-                                    <ImgBox
-                                        onMouseEnter={(e) => onUpdateOveray(e, i)}
-                                        onMouseLeave={(e) => onUpdateOveray(e, null)}
-                                    >
+                                <ServiceItem key={i} ref={itemRef}>
+                                    <ImgBox>
                                         <Img alt={s.title} src={s.firstimage} />
-                                        {isOveray === i && (
-                                            <ImgOveray>
-                                                <p>{s.title}</p>
-                                                <Link to={s.link}>
-                                                    <p>
-                                                        learn more
-                                                        <StyledFontAwesomeIcon icon={faChevronRight} />
-                                                    </p>
-                                                </Link>
-                                            </ImgOveray>
-                                        )}
                                     </ImgBox>
                                     <OverviewBox>
+                                        <Title>{s.title}</Title>
                                         <p>{s.overview1}</p>
                                         <p>{s.overview2}</p>
                                     </OverviewBox>

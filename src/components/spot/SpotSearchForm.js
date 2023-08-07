@@ -89,13 +89,14 @@ const SelectBox = styled.div`
     display: flex;
     align-items: center;
     height: 2.5rem;
-    padding-right: 1rem;
     border-right: 0.1rem solid lightgray;
+    padding-right: 0.9rem;
     & + & {
-        padding-left: 1rem;
+        padding-left: 0.9rem;
     }
     @media all and (max-width: 1023px) {
         & + & {
+            padding-right: 0;
             border-right: none;
         }
     }

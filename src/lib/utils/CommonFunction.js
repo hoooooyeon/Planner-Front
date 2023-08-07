@@ -227,41 +227,6 @@ export function lastPage(onChangePageIndex, pageLastIndex, setBlock, count) {
     onChangePageIndex(pageLastIndex);
     setBlock(Math.ceil(pageLastIndex / count - 1));
 }
-// /** 페이지네이션 */
-// // 페이지네이션 배열 생성 함수
-// export function creaetPageArr(pageLastIndex, setPageArr, count, block) {
-//     const arr = Array.from({ length: pageLastIndex }, (_, i) => i + 1);
-
-//     setPageArr(arr.slice(count * block, count * (block + 1)));
-// }
-// // 이전 페이지로
-// export function prevPage(pageIndex, onChangePageIndex, setBlock, count) {
-//     if (!(pageIndex === 1)) {
-//         onChangePageIndex(pageIndex - 1);
-//         if (pageIndex % count === 1) {
-//             setBlock((block) => block - 1);
-//         }
-//     }
-// }
-// // 다음 페이지로
-// export function nextPage(pageIndex, pageLastIndex, onChangePageIndex, count, setBlock) {
-//     if (!(pageIndex === pageLastIndex)) {
-//         onChangePageIndex(pageIndex + 1);
-//         if (pageIndex % count === 0) {
-//             setBlock((block) => block + 1);
-//         }
-//     }
-// }
-// // 첫번째 페이지로
-// export function firstPage(onChangePageIndex, setBlock) {
-//     onChangePageIndex(1);
-//     setBlock(0);
-// }
-// // 마지막 페이지로
-// export function lastPage(onChangePageIndex, pageLastIndex, setBlock, count) {
-//     onChangePageIndex(pageLastIndex);
-//     setBlock(Math.ceil(pageLastIndex / count - 1));
-// }
 
 // 에러 이미지 대체
 export function handleErrorImg({ e, errorImg }) {

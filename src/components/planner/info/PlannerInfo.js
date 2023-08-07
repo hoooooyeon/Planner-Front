@@ -85,7 +85,7 @@ const DropDownMenu = styled.ul`
     background-color: white;
     border-radius: 0.5rem;
     top: 24px;
-    left: 10px;
+    left: 17px;
     font-size: 0.7rem;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
     li {

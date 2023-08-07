@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import footerImg from '../../lib/images/footerImg.jpg';
+import musicImg from '../../lib/images/musicImg.jpg';
 
 const FooterBlock = styled.div`
     width: 100%;
-    /* height: 450px; */
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -21,15 +21,25 @@ const FooterBox = styled.div`
     color: white;
     padding: 2rem 1rem;
     flex-direction: column;
-    p {
-        margin: 0.3rem 0;
-    }
     h3 {
         margin: 0.5rem 0;
         white-space: nowrap;
+        font-size: 1.2rem;
+    }
+    p {
+        margin: 0.3rem 0;
+        font-size: 0.9rem;
     }
     div + div {
         margin-top: 0.5rem;
+    }
+    @media all and (max-width: 399px) {
+        h3 {
+            font-size: 0.85rem;
+        }
+        p {
+            font-size: 0.7rem;
+        }
     }
     @media all and (min-width: 768px) {
         flex-direction: row;
@@ -56,12 +66,6 @@ const Img = styled.img`
 const Music = styled.div`
     display: flex;
     flex-direction: column;
-    h3 {
-        font-size: 1.2rem;
-    }
-    p {
-        font-size: 0.9rem;
-    }
 
     @media all and (max-width: 767px) {
         align-items: center;
@@ -82,12 +86,7 @@ const Writing = styled.div`
     justify-content: space-around;
     flex-direction: column;
     margin-left: 1rem;
-    h3 {
-        font-size: 1.2rem;
-    }
-    p {
-        font-size: 0.9rem;
-    }
+
     @media all and (max-width: 767px) {
         align-items: center;
     }
@@ -114,12 +113,8 @@ const Info = styled.div`
     flex-direction: column;
     justify-content: center;
     margin-left: 1rem;
-    p {
-        font-size: 0.9rem;
-    }
 
     @media all and (max-width: 767px) {
-        /* margin-left: 0; */
         align-items: center;
     }
 `;
@@ -127,6 +122,10 @@ const Info = styled.div`
 const FlexDiv = styled.div`
     display: flex;
     justify-content: flex-end;
+    @media all and (max-width: 399px) {
+        flex-direction: column;
+        align-items: center;
+    }
 `;
 
 const ColumnDiv = styled.div`
@@ -140,6 +139,10 @@ const ColumnDiv = styled.div`
     p + p {
         margin: 0;
     }
+    @media all and (max-width: 399px) {
+        align-items: flex-start;
+        margin: 0;
+    }
 `;
 
 const Footer = () => {
@@ -150,7 +153,7 @@ const Footer = () => {
                 <FooterBox>
                     <Music>
                         <h3>Currently vibing to:</h3>
-                        <MusicImg />
+                        <MusicImg src={musicImg} alt="musicImg" />
                         <p>The Weekend (Funk Wav Remix)</p>
                         <p>By SZA, Calvin Harris, Funk Wav</p>
                     </Music>
