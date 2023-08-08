@@ -161,10 +161,10 @@ const MyPlannerList = ({
             <Container>
                 <Header>
                     <HeaderTitle>나의 플래너</HeaderTitle>
-                    <Button>
-                        <Link to="/Planners/edit" onClick={onCreatePlanner}>
-                            플래너 생성
-                        </Link>
+                    <Button onClick={onCreatePlanner}>
+                        {/* <Link to="/Planners/edit" onClick={onCreatePlanner}> */}
+                        플래너 생성
+                        {/* </Link> */}
                     </Button>
                 </Header>
 

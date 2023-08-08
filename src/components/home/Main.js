@@ -71,11 +71,6 @@ const Main = () => {
 
     return (
         <MainBlock>
-            {/* 
-       video와 source 태그 사용이 안됨. 왜??.
-      <video  autoPlay muted loop>
-        <source src="/videos/intro_city_night.mp4" type="videos/mp4" />
-      </video> */}
             <ReactPlayer playing muted loop url={isVideo} width="100%" height="100%" />
 
             <MainBox>
@@ -83,7 +78,7 @@ const Main = () => {
                     <p>모든 것이 봄 자체 한국 여행의 모든 것을 담았다.</p>
                 </Text>
                 <Title>여행 계획 플래너</Title>
-                <StyledLink to="/PlannerList">
+                <StyledLink to="/Planners">
                     플래너 생성하러 가기
                     <StyledFontAwesomeIcon icon={faChevronRight} />
                 </StyledLink>

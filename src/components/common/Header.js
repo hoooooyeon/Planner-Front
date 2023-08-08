@@ -132,7 +132,7 @@ const DropDownMenu = styled.ul`
     }
 `;
 
-const Header = ({ account }) => {
+const Header = ({ account, handlePurge }) => {
     const headerRef = useRef();
     const [styled, setStyled] = useState(false);
 
@@ -190,6 +190,7 @@ const Header = ({ account }) => {
                     <Account styled={styled} onClick={onClickDropDown}>
                         {/* <img className="user-img" src="logo192.png"></img> */}
                         {account.nickname}
+                        <div onClick={handlePurge}>로그아웃?</div>
                     </Account>
                     {dropDown && (
                         <DropDown>

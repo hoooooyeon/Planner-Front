@@ -25,12 +25,7 @@ const App = () => {
             <Route exact path="/reviews" component={ReviewPage} />
             <Route exact path={['/reviews/write', '/reviews/edit']} component={ReviewPostPage} />
             <Route exact path="/reviews/:reviewId" component={ReviewPostViewerPage} />
-            {/* <PrivateRoute path="/Planners/edit/:plannerId" render={PlannerEditPage} redirect="/Login" /> */}
-            <PrivateRoute
-                path={['/Planners/edit', '/Planners/edit/:plannerId']}
-                render={PlannerEditPage}
-                redirect="/Login"
-            />
+            <PrivateRoute path="/Planners/edit/:plannerId" render={PlannerEditPage} redirect="/Login" />
             <Route path="/Planners/:plannerId" render={PlannerInfoPage} />
             <Route path="/Planners" render={PlannerListPage} />
         </Switch>

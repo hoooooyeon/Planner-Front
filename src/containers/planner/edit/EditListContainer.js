@@ -250,7 +250,7 @@ const EditListContainer = () => {
         dispatch(changePageNumAction(page));
     }, [page, dispatch]);
 
-    if (nickname !== creator) {
+    if (!planner || nickname !== creator) {
         return null;
     }
     return (

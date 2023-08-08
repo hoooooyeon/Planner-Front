@@ -13,21 +13,26 @@ import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import ScrollTop from './components/common/ScrollTop';
+import Loading from './components/common/Loading';
+import { tokenUse } from './lib/api/client';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
-const persistor = persistStore(store);
+export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
+export const persistor = persistStore(store);
+// persistor.purge();
 
 sagaMiddleware.run(rootSaga);
+
+tokenUse();
 
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
             <ScrollTop />
-            {/* <PersistGate loading={null} persistor={persistor}> */}
-            <App />
-            {/* </PersistGate> */}
+            <PersistGate loading={<Loading />} persistor={persistor}>
+                <App />
+            </PersistGate>
         </BrowserRouter>
     </Provider>,
     document.getElementById('root'),

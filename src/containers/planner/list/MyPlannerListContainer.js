@@ -9,11 +9,15 @@ const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { plannerError, account, plannerList } = useSelector(({ plannerReducer, authReducer, profileReducer }) => ({
-        account: authReducer.account,
-        plannerList: profileReducer.plannerList,
-        plannerError: plannerReducer.plannerError,
-    }));
+    const { myPlanners, plannerError, planner, plannerData, account } = useSelector(
+        ({ plannerReducer, authReducer, profileReducer }) => ({
+            account: authReducer.account,
+            myPlanners: profileReducer.myPlanners,
+            plannerError: plannerReducer.plannerError,
+            planner: plannerReducer.planner,
+            plannerData: plannerReducer.plannerData,
+        }),
+    );
 
     const letsFormat = (d) => {
         const date = new Date(d);
@@ -22,7 +26,7 @@ const MyPlannerListContainer = () => {
         );
     };
 
-    const { myPlanners } = { ...plannerList };
+    const { pType, plannerId } = { ...plannerData };
     const { pageLastIndex } = { ...myPlanners };
     const { accountId, nickname } = { ...account };
     const drag = useRef(false);
@@ -63,20 +67,29 @@ const MyPlannerListContainer = () => {
         }
     };
 
-    const [pageNum, setPageNum] = useState(1);
-    // 나의 플래너리스트 가져오기
+    // 주소 이동
     useEffect(() => {
-        if (accountId) {
-            const itemCount = 10;
-            const sortCriteria = 2;
-            dispatch(profileMyPlannerLoadAction({ accountId, pageNum, itemCount, sortCriteria }));
+        if (!planner && plannerId && pType === 'edit') {
+            history.push(`/Planners/edit/${plannerId}`);
+        } else if (!planner && plannerId && pType === null) {
+            history.push(`/Planners/${plannerId}`);
         }
+    }, [history, plannerId]);
+
+    // 나의 플래너리스트 가져오기
+    const [pageNum, setPageNum] = useState(1);
+    useEffect(() => {
+        // if (accountId) {
+        const itemCount = 10;
+        const sortCriteria = 2;
+        dispatch(profileMyPlannerLoadAction({ accountId, pageNum, itemCount, sortCriteria }));
+        // }
     }, [dispatch, accountId, pageNum]);
 
     const onClickPlanner = (plannerId) => {
         if (!drag.current) {
             dispatch(changeCurPlannerIdAction(plannerId));
-            history.push(`/Planners/${plannerId}`);
+            // history.push(`/Planners/${plannerId}`);
         }
     };
 

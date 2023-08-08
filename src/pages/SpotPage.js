@@ -1,4 +1,4 @@
-import Header from '../components/common/Header';
+import HeaderContainer from '../containers/common/HeaderContainer';
 import Footer from '../components/common/Footer';
 import SpotListContainer from '../containers/spot/SpotListContainer';
 import SpotPaginationContainer from '../containers/spot/SpotPaginationContainer';
@@ -7,7 +7,7 @@ import SpotDetailModalContainer from '../containers/spot/SpotDetailModalContaine
 const SpotPage = () => {
     return (
         <>
-            <Header />
+            <HeaderContainer />
             <SpotListContainer />
             <SpotPaginationContainer />
             <SpotDetailModalContainer />
