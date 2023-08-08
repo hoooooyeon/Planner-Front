@@ -83,7 +83,7 @@ const IconBox = styled.div`
     align-items: center;
 `;
 
-const SideNav = ({ styled }) => {
+const SideNav = ({ styled, handlePurge }) => {
     const navRef = useRef();
     const [navOpen, setNavOpen] = useState(false);
 
@@ -156,9 +156,9 @@ const SideNav = ({ styled }) => {
             </NavList>
             <AccountList>
                 <li>
-                    <Link>마이페이지</Link>
+                    <Link to="/Profile">마이페이지</Link>
                 </li>
-                <li>로그아웃</li>
+                <li onClick={handlePurge}>로그아웃</li>
             </AccountList>
         </SideNavContainer>
     );

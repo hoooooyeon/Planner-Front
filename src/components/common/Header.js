@@ -85,12 +85,12 @@ const Account = styled.div`
     display: none;
     align-items: center;
     position: relative;
+    cursor: pointer;
     .user-img {
         border-radius: 10px;
         margin-right: 10px;
         width: 40px;
         height: 40px;
-        cursor: pointer;
     }
 
     color: black;
@@ -190,7 +190,6 @@ const Header = ({ account, handlePurge }) => {
                     <Account styled={styled} onClick={onClickDropDown}>
                         {/* <img className="user-img" src="logo192.png"></img> */}
                         {account.nickname}
-                        <div onClick={handlePurge}>로그아웃?</div>
                     </Account>
                     {dropDown && (
                         <DropDown>
@@ -198,7 +197,7 @@ const Header = ({ account, handlePurge }) => {
                                 <li>
                                     <Link to="/Profile">마이페이지</Link>
                                 </li>
-                                <li>로그아웃</li>
+                                <li onClick={handlePurge}>로그아웃</li>
                             </DropDownMenu>
                         </DropDown>
                     )}
@@ -211,7 +210,7 @@ const Header = ({ account, handlePurge }) => {
                     </li>
                 </AccountList>
             )}
-            <SideNav styled={styled} />
+            <SideNav styled={styled} handlePurge={handlePurge} />
         </HeaderBlock>
     );
 };

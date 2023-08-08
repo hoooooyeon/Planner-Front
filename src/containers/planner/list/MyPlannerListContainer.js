@@ -9,10 +9,10 @@ const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { myPlanners, plannerError, planner, plannerData, account } = useSelector(
+    const { plannerList, plannerError, planner, plannerData, account } = useSelector(
         ({ plannerReducer, authReducer, profileReducer }) => ({
             account: authReducer.account,
-            myPlanners: profileReducer.myPlanners,
+            plannerList: profileReducer.plannerList,
             plannerError: plannerReducer.plannerError,
             planner: plannerReducer.planner,
             plannerData: plannerReducer.plannerData,
@@ -27,6 +27,7 @@ const MyPlannerListContainer = () => {
     };
 
     const { pType, plannerId } = { ...plannerData };
+    const { myPlanners } = { ...plannerList };
     const { pageLastIndex } = { ...myPlanners };
     const { accountId, nickname } = { ...account };
     const drag = useRef(false);
@@ -79,11 +80,11 @@ const MyPlannerListContainer = () => {
     // 나의 플래너리스트 가져오기
     const [pageNum, setPageNum] = useState(1);
     useEffect(() => {
-        // if (accountId) {
-        const itemCount = 10;
-        const sortCriteria = 2;
-        dispatch(profileMyPlannerLoadAction({ accountId, pageNum, itemCount, sortCriteria }));
-        // }
+        if (accountId) {
+            const itemCount = 10;
+            const sortCriteria = 2;
+            dispatch(profileMyPlannerLoadAction({ accountId, pageNum, itemCount, sortCriteria }));
+        }
     }, [dispatch, accountId, pageNum]);
 
     const onClickPlanner = (plannerId) => {
