@@ -13,8 +13,7 @@ import reviewReducer, { reviewSaga } from './reviewModule';
 const rootPersistConfig = {
     key: 'root',
     storage,
-    // blacklist: ['loadingReducer', 'profileReducer', 'plannerReducer', 'spotReducer'],
-    whitelist: ['authReducer'],
+    blacklist: ['loadingReducer', 'profileReducer', 'plannerReducer', 'spotReducer', 'reviewReducer'],
 };
 
 const plannerPersistConfig = {
@@ -27,8 +26,7 @@ const rootReducer = combineReducers({
     loadingReducer,
     authReducer,
     profileReducer,
-    plannerReducer,
-    // plannerReducer: persistReducer(plannerPersistConfig, plannerReducer),
+    plannerReducer: persistReducer(plannerPersistConfig, plannerReducer),
     spotReducer,
     reviewReducer,
 });
@@ -38,5 +36,3 @@ export function* rootSaga() {
 }
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
 export default persistedReducer;
-
-// export default rootReducer;

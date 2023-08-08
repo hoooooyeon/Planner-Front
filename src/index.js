@@ -14,6 +14,7 @@ import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import ScrollTop from './components/common/ScrollTop';
 import Loading from './components/common/Loading';
+import { tokenUse } from './lib/api/client';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -22,6 +23,8 @@ export const persistor = persistStore(store);
 // persistor.purge();
 
 sagaMiddleware.run(rootSaga);
+
+tokenUse();
 
 ReactDOM.render(
     <Provider store={store}>
