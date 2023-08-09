@@ -41,6 +41,9 @@ const SpotListContainer = ({
 }) => {
     const { areaCode, pageNo, contentTypeId, contentId } = { ...spotData };
 
+    const [curKeyword, setCurKeyword] = useState('');
+    const [resultKeyword, setResultKeyword] = useState('');
+
     // 지역 가져오기
     useEffect(() => {
         loadAreas();
@@ -49,10 +52,10 @@ const SpotListContainer = ({
     const numOfRows = 12;
     // 여행지 가져오기
     useEffect(() => {
-        if (areas) {
+        if (areas && resultKeyword.length === 0) {
             loadSpots({ areaCode, contentTypeId, pageNo, numOfRows });
         }
-    }, [loadSpots, areaCode, pageNo, areas, contentTypeId, spotData]);
+    }, [loadSpots, areaCode, resultKeyword, pageNo, areas, contentTypeId, spotData]);
 
     // 여행지 상세정보 모달 열기
     const drag = useRef(false);
@@ -77,10 +80,6 @@ const SpotListContainer = ({
             return;
         }
         changeAreaIndex(areaIndex);
-        changePageIndex(1);
-
-        setCurKeyword('');
-        setResultKeyword('');
     };
 
     // 여행지 페이지에서 벗어날 때 정보 초기화
@@ -92,30 +91,35 @@ const SpotListContainer = ({
         };
     }, [resetSpotData, resetSpots, resetDetailSpot]);
 
-    const [curKeyword, setCurKeyword] = useState('');
-    const [resultKeyword, setResultKeyword] = useState('');
     // 여행지 키워드로 검색
     const onChangeCurKeyword = (keyword) => {
         setCurKeyword(keyword);
     };
     const onChangeResultKeyword = () => {
-        if (curKeyword.lenght !== 0) {
+        if (curKeyword.length !== 0) {
             setResultKeyword(curKeyword);
         }
     };
 
     useEffect(() => {
         if (resultKeyword.length !== 0) {
-            const pageNo = 1;
             searchSpot({ areaCode, contentTypeId, curKeyword, pageNo, numOfRows });
         }
-    }, [resultKeyword]);
+    }, [resultKeyword, pageNo]);
 
     const onChangeContentTypeId = (contentTypeId) => {
         changeContentTypeId(contentTypeId);
+    };
+
+    useEffect(() => {
         setCurKeyword('');
         setResultKeyword('');
-    };
+    }, [areaCode, contentTypeId]);
+
+    useEffect(() => {
+        changePageIndexAction(1);
+        console.log(resultKeyword);
+    }, [areaCode, contentTypeId, resultKeyword]);
 
     const sliderSpots = [
         {

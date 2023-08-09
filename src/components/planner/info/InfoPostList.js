@@ -52,6 +52,7 @@ const PostList = styled.ul`
     display: flex;
     flex-direction: column;
     overflow: auto;
+    position: relative;
     &::-webkit-scrollbar {
         display: none;
     }
@@ -102,6 +103,16 @@ const Img = styled.img`
     height: 100%;
     border-radius: 1rem;
     object-fit: cover;
+`;
+
+const ErrorList = styled.div`
+    color: lightgray;
+    font-weight: bold;
+    font-size: 1rem;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
 `;
 
 const InfoPostList = ({
@@ -180,7 +191,7 @@ const InfoPostList = ({
                         )}
                     </PostListHeader>
                     <PostList>
-                        {planMemos &&
+                        {planMemos && planMemos.length > 0 ? (
                             planMemos.map((memo) => {
                                 return (
                                     <InfoPostItem
@@ -193,7 +204,10 @@ const InfoPostList = ({
                                         planner={planner}
                                     />
                                 );
-                            })}
+                            })
+                        ) : (
+                            <ErrorList>리스트가 없습니다.</ErrorList>
+                        )}
                     </PostList>
                     {/* 메모 생성 모달 */}
                     <MemoModal

@@ -9,6 +9,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import EditListSearchForm from './EditListSearchForm';
+import { handleErrorImg } from '../../../lib/utils/CommonFunction';
+import errorImg from '../../../lib/images/spotErrorImg.jpg';
 
 const EditListBlock = styled.div`
     position: fixed;
@@ -34,6 +36,7 @@ const List = styled.div`
     z-index: 200;
     background-color: #f5f5f5;
     box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
+    position: relative;
     &::-webkit-scrollbar {
         display: none;
     }
@@ -64,7 +67,6 @@ const TextInfo = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-
     margin: 0 0.8rem;
 `;
 
@@ -132,13 +134,25 @@ const PageBox = styled.div`
     box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
 `;
 
+const ErrorList = styled.div`
+    color: lightgray;
+    font-weight: bold;
+    font-size: 1.2rem;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+`;
+
 const EditList = ({
     spots,
     detail,
     onCreateLocation,
     onOpenDetail,
     likeSpots,
-    pageArr,
+    totalCount,
+    page,
+    itemIndex,
     onIndexPage,
     onPreviousPage,
     onNextPage,
@@ -212,7 +226,9 @@ const EditList = ({
                                     <Img
                                         src={firstImage || firstImage2}
                                         alt={title}
-                                        // onError={onChangeErrorImg}
+                                        onError={(e) => {
+                                            handleErrorImg({ e, errorImg });
+                                        }}
                                     />
                                     <TextInfo>
                                         <Name>{title}</Name>
@@ -237,6 +253,8 @@ const EditList = ({
                             );
                         })}
                     {likeSpots &&
+                        likeSpots.list &&
+                        likeSpots.list.length > 0 &&
                         likeSpots.list.map((s, i) => {
                             const { firstimage, firstimage2, title } = s;
                             return (
@@ -244,7 +262,9 @@ const EditList = ({
                                     <Img
                                         src={firstimage || firstimage2}
                                         alt={title}
-                                        // onError={onChangeErrorImg}
+                                        onError={(e) => {
+                                            handleErrorImg({ e, errorImg });
+                                        }}
                                     />
                                     <TextInfo>
                                         <Name>{title}</Name>
@@ -267,10 +287,16 @@ const EditList = ({
                                 </ListItem>
                             );
                         })}
+                    {(!likeSpots && (!spots || !spots.list || spots.list.length < 1)) ||
+                    (!spots && (!likeSpots || !likeSpots.list || likeSpots.list.length < 1)) ? (
+                        <ErrorList>리스트가 없습니다.</ErrorList>
+                    ) : null}
                 </List>
                 <PageBox>
                     <Pagination
-                        pageArr={pageArr}
+                        totalCount={totalCount}
+                        itemIndex={itemIndex}
+                        page={page}
                         onIndexPage={onIndexPage}
                         onPreviousPage={onPreviousPage}
                         onNextPage={onNextPage}

@@ -20,11 +20,7 @@ import {
     resetSpotDataAction,
     changeContentIdAction,
 } from '../../../modules/spotModule';
-import {
-    profileLikePlannerLoadAction,
-    profileLikeSPOTLoadAction,
-    resetLikeListAction,
-} from '../../../modules/profileModule';
+import { profileLikeSpotLoadAction, resetLikeListAction } from '../../../modules/profileModule';
 
 const EditListContainer = () => {
     const dispatch = useDispatch();
@@ -57,7 +53,7 @@ const EditListContainer = () => {
     const { plannerId, planId, pageNum } = { ...plannerData };
     const { creator } = { ...planner };
     const { accountId, nickname } = { ...account };
-    const { areaCode, contentTypeId, pageNo, contentId } = { ...spotData };
+    const { areaCode, contentTypeId, contentId } = { ...spotData };
     const { curKeyword, resultKeyword } = { ...keyword };
     const numOfRows = 12;
 
@@ -95,11 +91,12 @@ const EditListContainer = () => {
 
     // 여행지 불러오기
     useEffect(() => {
-        if (contentTypeId !== 0 && areas) {
+        if (contentTypeId !== 0 && areas && resultKeyword.length === 0) {
+            const pageNo = pageNum;
             dispatch(resetLikeListAction());
             dispatch(loadSpotsAction({ areaCode, contentTypeId, pageNo, numOfRows }));
         }
-    }, [dispatch, areaCode, pageNo, contentTypeId, areas]);
+    }, [dispatch, areaCode, pageNum, contentTypeId, resultKeyword, areas]);
 
     // 여행지 상세정보 불러오기
     const onOpenDetail = (spot) => {
@@ -116,9 +113,6 @@ const EditListContainer = () => {
     // 여행지 타입 변경
     const onChangeContentTypeId = (id) => {
         dispatch(changeContentTypeIdAction(id));
-        dispatch(changeKeywordAction(''));
-        dispatch(changeResultKeywordAction(''));
-        setLikeKeyword('');
     };
 
     // 지역 리스트 로드
@@ -138,17 +132,19 @@ const EditListContainer = () => {
 
     // 여행지 검색
     const onChangeResultKeyword = () => {
-        dispatch(changeResultKeywordAction(curKeyword));
+        if (curKeyword.length !== 0) {
+            dispatch(changeResultKeywordAction(curKeyword));
+        }
     };
 
     // 여행지 키워드로 조회
     useEffect(() => {
         if (resultKeyword.length !== 0) {
-            const pageIndex = pageNum;
-            const keyword = resultKeyword;
-            dispatch(searchSpotAction({ areaCode, contentTypeId, keyword, pageIndex }));
+            const curKeyword = resultKeyword;
+            const pageNo = pageNum;
+            dispatch(searchSpotAction({ areaCode, contentTypeId, curKeyword, pageNo, numOfRows }));
         }
-    }, [dispatch, resultKeyword]);
+    }, [dispatch, resultKeyword, pageNum]);
 
     // 좋아요여행지리스트
     const [likeKeyword, setLikeKeyword] = useState('');
@@ -156,14 +152,14 @@ const EditListContainer = () => {
         setLikeKeyword(curKeyword);
     };
 
-    const itemCount = 10;
+    const itemCount = 12;
     const sortCriteria = 2;
     const postType = 2;
     useEffect(() => {
         if ((accountId && likeKeyword.length !== 0) || contentTypeId === 0) {
             const keyword = likeKeyword;
             dispatch(resetSpotsAction());
-            dispatch(profileLikeSPOTLoadAction({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }));
+            dispatch(profileLikeSpotLoadAction({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }));
         }
     }, [dispatch, likeKeyword, contentTypeId, pageNum]);
 
@@ -178,77 +174,53 @@ const EditListContainer = () => {
         };
     }, [dispatch]);
 
-    // 뿌려줄 페이지 배열
-    const [pageArr, setPageArr] = useState([]);
-    // 페이지의 10단위
-    const [block, setBlock] = useState(0);
-    // 보여질 페이지네이션의 개수
-    const limitIndex = 5;
-    // 마지막 페이지
-    const maxPage = useRef();
-    // const { totalCount } = { ...spots };
-    // maxPage.current = Math.ceil(totalCount / limitIndex);
-
     // 현재 페이지
     const [page, setPage] = useState(1);
+    const totalCount = useRef();
 
     useEffect(() => {
         if (spots) {
-            const { totalCount } = { ...spots };
-            maxPage.current = Math.ceil(totalCount / limitIndex);
+            totalCount.current = spots.totalCount;
         }
         if (likeSpots) {
-            const { totalCount } = { ...likeSpots };
-            maxPage.current = Math.ceil(totalCount / limitIndex);
+            totalCount.current = likeSpots.totalCount;
         }
     }, [likeSpots, spots]);
-
-    // 페이지네이션 배열 생성 함수
-    useEffect(() => {
-        if (maxPage.current) {
-            const arr = Array.from({ length: maxPage.current }, (_, i) => i + 1);
-
-            setPageArr(arr.slice(limitIndex * block, limitIndex * (block + 1)));
-        }
-    }, [block, maxPage.current]);
-
-    useEffect(() => {
-        if (pageNum === 1) {
-            setBlock(0);
-        } else if (pageNum === maxPage.current) {
-            setBlock(Math.ceil(maxPage.current / limitIndex - 1));
-        }
-    }, [pageNum, maxPage]);
 
     const onIndexPage = (index) => {
         setPage(index);
     };
-    const onNextPage = () => {
-        if (!(page === maxPage.current)) {
+    const onNextPage = (maxPage) => {
+        if (page < maxPage) {
             setPage((index) => index + 1);
-            if (pageNum % limitIndex === 0) {
-                setBlock((block) => block + 1);
-            }
         }
     };
     const onPreviousPage = () => {
-        if (!(page === 1)) {
+        if (page > 1) {
             setPage((index) => index - 1);
-            if (page % limitIndex === 1) {
-                setBlock((block) => block - 1);
-            }
         }
     };
     const onFirstPage = () => {
         setPage(1);
     };
-    const onLastPage = () => {
-        setPage(maxPage.current);
+    const onLastPage = (maxPage) => {
+        setPage(maxPage);
     };
 
     useEffect(() => {
         dispatch(changePageNumAction(page));
     }, [page, dispatch]);
+
+    useEffect(() => {
+        setPage(1);
+        dispatch(changeKeywordAction(''));
+        dispatch(changeResultKeywordAction(''));
+        setLikeKeyword('');
+    }, [areaCode, contentTypeId]);
+
+    useEffect(() => {
+        setPage(1);
+    }, [resultKeyword, likeKeyword]);
 
     if (!planner || nickname !== creator) {
         return null;
@@ -261,9 +233,11 @@ const EditListContainer = () => {
             detail={detail}
             spotData={spotData}
             contentTypeList={contentTypeList}
-            pageArr={pageArr}
             likeSpots={likeSpots}
             likeKeyword={likeKeyword}
+            totalCount={totalCount.current}
+            page={page}
+            itemIndex={numOfRows}
             onCreateLocation={onCreateLocation}
             onOpenDetail={onOpenDetail}
             onChangeContentTypeId={onChangeContentTypeId}

@@ -10,6 +10,8 @@ import { faBicycle } from '@fortawesome/free-solid-svg-icons'; // 자전거 or �
 import { faTrainSubway } from '@fortawesome/free-solid-svg-icons'; // 지하철 or 기차
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+import { handleErrorImg } from '../../../lib/utils/CommonFunction';
+import errorImg from '../../../lib/images/spotErrorImg.jpg';
 
 const EditRouteListBlock = styled.div`
     margin-left: 0.2rem;
@@ -366,7 +368,9 @@ const EditRouteList = ({
                                                 <Img
                                                     src={locationImage}
                                                     alt={locationId}
-                                                    // onError={onChangeErrorImg}
+                                                    onError={(e) => {
+                                                        handleErrorImg({ e, errorImg });
+                                                    }}
                                                 />
                                                 <TextInfo>
                                                     <Name>{locationName}</Name>

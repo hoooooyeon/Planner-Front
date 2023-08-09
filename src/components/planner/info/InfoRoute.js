@@ -9,6 +9,8 @@ import { faBicycle } from '@fortawesome/free-solid-svg-icons';
 import { faTrainSubway } from '@fortawesome/free-solid-svg-icons';
 import { useRef } from 'react';
 import Slider from '../../common/Slider';
+import { handleErrorImg } from '../../../lib/utils/CommonFunction';
+import errorImg from '../../../lib/images/spotErrorImg.jpg';
 
 const InfoRouteBlock = styled.div`
     background-color: white;
@@ -157,7 +159,15 @@ const InfoRoute = ({ planner, plannerData, drag, onChangeCurPlanId, onClickDateS
 
     return (
         <InfoRouteBlock>
-            {plans && <InfoDatination planner={planner} plannerData={plannerData} drag={drag} onChangeCurPlanId={onChangeCurPlanId} onClickDateSchedule={onClickDateSchedule} />}
+            {plans && (
+                <InfoDatination
+                    planner={planner}
+                    plannerData={plannerData}
+                    drag={drag}
+                    onChangeCurPlanId={onChangeCurPlanId}
+                    onClickDateSchedule={onClickDateSchedule}
+                />
+            )}
             <WidthDiv>
                 {plans && plans.length > 0 ? (
                     <Slider list={plans} itemRef={itemRef}>
@@ -170,7 +180,13 @@ const InfoRoute = ({ planner, plannerData, drag, onChangeCurPlanId, onClickDateS
                                             {i !== 0 && <RouteLine />}
                                             <StyledFontAwesomeIcon icon={transIconList[locationTransportation - 1]} />
                                             <SpotItem>
-                                                <Img alt={locationName} src={locationImage} />
+                                                <Img
+                                                    alt={locationName}
+                                                    src={locationImage}
+                                                    onError={(e) => {
+                                                        handleErrorImg({ e, errorImg });
+                                                    }}
+                                                />
                                                 <RouteSpotName>{locationName}</RouteSpotName>
                                             </SpotItem>
                                         </RouteItem>

@@ -78,7 +78,7 @@ export const profileLikePlannerLoadAction = ({ accountId, itemCount, sortCriteri
     postType,
     pageNum,
 });
-export const profileLikeSPOTLoadAction = ({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }) => ({
+export const profileLikeSpotLoadAction = ({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }) => ({
     type: PROFILE_LIKE_SPOT_LOAD_TYPE,
     accountId,
     itemCount,
@@ -179,12 +179,12 @@ function profileReducer(state = initialState, action) {
         case RESET_LIKE_LIST_TYPE:
             return {
                 ...state,
-                likeList: null,
+                likeSpots: null,
             };
         case RESET_MY_PLANNER_LIST_TYPE:
             return {
                 ...state,
-                myPlanners: null,
+                plannerList: null,
             };
         default: {
             return state;

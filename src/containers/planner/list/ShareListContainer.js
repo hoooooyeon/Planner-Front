@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     changeCurPlannerIdAction,
     changeKeywordAction,
+    changePageNumAction,
     changeResultKeywordAction,
     loadSharePlannerListAction,
     resetSharePlannerListAction,
@@ -25,7 +26,7 @@ const ShareListContainer = () => {
         }),
     );
 
-    const { pageNum, plannerId, pType } = { ...plannerData };
+    const { pageNum } = { ...plannerData };
     const { curKeyword, resultKeyword } = { ...keyword };
     const [sortCriteria, setSortCriteria] = useState(2);
     const drag = useRef(false);
@@ -45,7 +46,6 @@ const ShareListContainer = () => {
     const onClickPlanner = (plannerId) => {
         if (!drag.current) {
             dispatch(changeCurPlannerIdAction(plannerId));
-            // history.push(`/Planners/${plannerId}`);
         }
     };
 
@@ -55,6 +55,15 @@ const ShareListContainer = () => {
     const onChangeResultKeyword = () => {
         dispatch(changeResultKeywordAction(curKeyword));
     };
+
+    useEffect(() => {
+        dispatch(changePageNumAction(1));
+    }, [sortCriteria, resultKeyword]);
+
+    useEffect(() => {
+        dispatch(changeKeywordAction(''));
+        dispatch(changeResultKeywordAction(''));
+    }, [sortCriteria]);
 
     // 검색 키워드 초기화
     useEffect(() => {

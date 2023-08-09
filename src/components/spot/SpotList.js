@@ -5,6 +5,8 @@ import SpotSearchForm from './SpotSearchForm';
 import { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { handleErrorImg } from '../../lib/utils/CommonFunction';
+import errorImg from '../../lib/images/spotErrorImg.jpg';
 
 const SpotListBlock = styled.div`
     width: 100%;
@@ -70,6 +72,8 @@ const Img = styled.img`
     display: block;
     -webkit-user-drag: none;
     object-fit: cover;
+    font-size: 0.7rem;
+    color: gray;
 `;
 
 const Name = styled.div`
@@ -148,7 +152,13 @@ const SpotList = ({
                                         key={contentId}
                                     >
                                         <ImgBox>
-                                            <Img src={firstImage} alt={title} />
+                                            <Img
+                                                src={firstImage}
+                                                alt={title}
+                                                onError={(e) => {
+                                                    handleErrorImg({ e, errorImg });
+                                                }}
+                                            />
                                             <IconBox>
                                                 <StyledFontAwesomeIcon
                                                     icon={faStar}
