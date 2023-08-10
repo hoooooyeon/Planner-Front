@@ -1,6 +1,13 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import footerImg from '../../lib/images/footerImg.jpg';
 import musicImg from '../../lib/images/musicImg.jpg';
+import musicAudio from '../../lib/audio/Jane & The Boy - Electric.mp3';
+import { useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCirclePlay } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePause } from '@fortawesome/free-solid-svg-icons';
+import { faCircleStop } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
 
 const FooterBlock = styled.div`
     width: 100%;
@@ -66,19 +73,24 @@ const Img = styled.img`
 const Music = styled.div`
     display: flex;
     flex-direction: column;
-
     @media all and (max-width: 767px) {
         align-items: center;
     }
 `;
 
-const MusicImg = styled.img`
-    background-color: black;
+const MusicBox = styled.div`
     width: 120px;
     height: 120px;
     @media all and (max-width: 767px) {
         display: none;
     }
+    position: relative;
+`;
+
+const MusicImg = styled.img`
+    background-color: black;
+    width: 100%;
+    height: 100%;
 `;
 
 const Writing = styled.div`
@@ -144,8 +156,51 @@ const ColumnDiv = styled.div`
         margin: 0;
     }
 `;
+const PlayButton = styled(FontAwesomeIcon)`
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    display: block;
+    color: black;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    ${(props) =>
+        props.playing &&
+        css`
+            display: none;
+        `}
+`;
+
+const StopButton = styled(FontAwesomeIcon)`
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    display: none;
+    color: black;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    ${(props) =>
+        props.playing &&
+        css`
+            display: block;
+        `}
+`;
 
 const Footer = () => {
+    const [playing, setPlaying] = useState(false);
+    const audioRef = useRef();
+    const onPlayAudio = () => {
+        audioRef.current.play();
+        setPlaying(true);
+    };
+    const onStopAudio = () => {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        setPlaying(false);
+    };
+
     return (
         <FooterBlock>
             <RelativeDiv>
@@ -153,9 +208,22 @@ const Footer = () => {
                 <FooterBox>
                     <Music>
                         <h3>Currently vibing to:</h3>
-                        <MusicImg src={musicImg} alt="musicImg" />
-                        <p>The Weekend (Funk Wav Remix)</p>
-                        <p>By SZA, Calvin Harris, Funk Wav</p>
+                        <MusicBox>
+                            <MusicImg src={musicImg} alt="musicImg" />
+                            <PlayButton
+                                playing={playing ? playing.toString() : undefined}
+                                onClick={onPlayAudio}
+                                icon={faCirclePlay}
+                            />
+                            <StopButton
+                                playing={playing ? playing.toString() : undefined}
+                                onClick={onStopAudio}
+                                icon={faCircleStop}
+                            />
+                        </MusicBox>
+                        <audio ref={audioRef} src={musicAudio} loop />
+                        <p>Erectric</p>
+                        <p>By Jane & The Boy</p>
                     </Music>
                     <Writing>
                         <h3>Travel Quotes:</h3>

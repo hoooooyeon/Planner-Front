@@ -54,7 +54,7 @@ const Logo = styled.h1`
 const MenuList = styled.ul`
     list-style: none;
     display: none;
-
+    padding: 0;
     @media all and (min-width: 768px) {
         display: flex;
     }
@@ -69,6 +69,7 @@ const AccountList = styled.ul`
     list-style: none;
     display: none;
     color: white;
+    padding: 0;
     @media all and (min-width: 768px) {
         display: flex;
     }
@@ -85,6 +86,9 @@ const Account = styled.div`
     display: none;
     align-items: center;
     position: relative;
+    width: 76px;
+    color: black;
+    font-weight: bold;
     cursor: pointer;
     .user-img {
         border-radius: 10px;
@@ -92,9 +96,6 @@ const Account = styled.div`
         width: 40px;
         height: 40px;
     }
-
-    color: black;
-    font-weight: bold;
     @media all and (min-width: 768px) {
         display: flex;
     }
@@ -109,7 +110,7 @@ const DropDown = styled.div`
     z-index: 99;
     position: absolute;
     top: 54px;
-    right: 144px;
+    right: 188px;
 `;
 
 const DropDownMenu = styled.ul`
