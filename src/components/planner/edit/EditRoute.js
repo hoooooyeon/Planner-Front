@@ -9,14 +9,14 @@ import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 
 const EditRouteBlock = styled.div`
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
     height: 100vh;
     float: left;
 `;
 
 const InfoDiv = styled.div`
-    background-color: #f5f5f5;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-surface-variant);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     margin-bottom: 1rem;
 `;
 
@@ -40,7 +40,7 @@ const Title = styled.div`
 
 const Creator = styled.div`
     font-size: 0.9rem;
-    color: gray;
+    color: var(--md-sys-color-secondary);
     margin-bottom: 2rem;
     width: 21rem;
     white-space: nowrap;
@@ -56,7 +56,7 @@ const Dates = styled.div`
 `;
 
 const ShadowDiv = styled.div`
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     border-radius: 0.2rem 0.5rem 0.5rem 0.2rem;
     &:last-child {
         margin-left: 2rem;
@@ -65,7 +65,7 @@ const ShadowDiv = styled.div`
 
 const DateBox = styled.div`
     box-shadow: -8px 0 0 black;
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
     border-radius: 0.2rem 0.5rem 0.5rem 0.2rem;
     width: 10rem;
     height: 3rem;
@@ -76,7 +76,7 @@ const DateBox = styled.div`
     line-height: 10%;
     position: relative;
     p {
-        color: lightgray;
+        color: var(--md-sys-color-secondary);
         font-size: 0.7rem;
         width: 4rem;
         text-align: center;
@@ -118,7 +118,7 @@ const SetIcon = styled(FontAwesomeIcon)`
 
 const UpdatedDate = styled.div`
     font-size: 0.7rem;
-    color: lightgray;
+    color: var(--md-sys-color-secondary);
     margin-top: 1rem;
 `;
 
@@ -126,9 +126,9 @@ const RouteBox = styled.div`
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     padding: 0.5rem 0.5rem 0.5rem 1rem;
-    background-color: #f5f5f5;
+    background-color: var(--md-sys-color-surface-variant);
 `;
 
 const MenuIcon = styled(FontAwesomeIcon)`
@@ -153,27 +153,15 @@ const DropDown = styled.div`
         `}
 `;
 
-const DropDownArrow = styled.div`
-    transform: rotate(45deg);
-    position: absolute;
-    top: 20px;
-    left: 342px;
-    width: 1rem;
-    height: 1rem;
-    z-index: 1001;
-    background-color: white;
-`;
-
 const DropDownMenu = styled.ul`
     position: absolute;
     line-height: 25px;
-    top: 11px;
-    left: 270px;
+    left: 257px;
     width: 4.4rem;
     z-index: 1000;
     border-radius: 0.5rem;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: var(--md-sys-color-surface);
+    box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
     border: none;
     padding: 0.5rem 1rem;
     text-align: center;
@@ -237,7 +225,6 @@ const EditRoute = ({
                 <InfoBox>
                     <MenuIcon icon={faEllipsis} onClick={onClickDropDown} />
                     <DropDown dropDown={dropDown}>
-                        <DropDownArrow />
                         <DropDownMenu>
                             <li onClick={onTogglePlannerInfoModal}>정보 수정</li>
                             <li onClick={onToggleMemberModal}>멤버 관리</li>

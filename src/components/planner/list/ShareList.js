@@ -10,10 +10,8 @@ import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 const ShareListBlock = styled.div`
     width: 100%;
     height: 100%;
-    /* margin-top: 1rem; */
-    /* margin-bottom: 1rem; */
     padding: 1rem 0;
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
 `;
 
 const Container = styled.div`
@@ -45,7 +43,7 @@ const ShareItem = styled.li`
     width: 200px;
     height: 200px;
     float: left;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     border-radius: 0.5rem;
     margin: 0.5%;
     position: relative;
@@ -55,17 +53,17 @@ const ShareItem = styled.li`
         height: auto;
     }
     &:hover {
-        box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
     }
     a {
-        color: black;
+        color: var(--md-sys-color-on-background);
     }
 `;
 const InfoBox = styled.div`
     height: 2.5rem;
     margin: 0;
     padding: 0.5rem;
-    box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -78,13 +76,12 @@ const Title = styled.div`
 `;
 const Date = styled.div`
     font-size: 0.4rem;
-    color: lightgray;
+    color: var(--md-sys-color-on-primary-container);
     margin-top: 0.6rem;
     overflow: hidden;
 `;
 
 const ImgBox = styled.div`
-    background-color: lightgray;
     margin: 0;
     overflow: hidden;
     position: relative;
@@ -116,11 +113,11 @@ const IconBox = styled.div`
     padding: 5px;
 `;
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: ${(props) => (props.like ? 'yellow' : 'black')};
+    color: ${(props) => (props.like ? `var(--md-sys-color-primary-container);` : 'rgba(0,0,0,0)')};
 `;
 
 const ErrorDiv = styled.div`
-    color: lightgray;
+    color: var(--md-sys-color-tertiary);
     font-weight: bold;
     text-align: center;
     margin-top: 2rem;

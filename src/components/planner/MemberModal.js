@@ -5,7 +5,7 @@ const MemberBox = styled.div`
     width: 25rem;
     height: 15rem;
     flex-direction: column;
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
     border-radius: 0.5rem;
 `;
 
@@ -20,12 +20,13 @@ const Text = styled.input`
     border: none;
     border-radius: 0.3rem;
     padding: 0 0.5rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-    &:placeholder {
-        color: lightgray;
+    background-color: var(--md-sys-color-surface);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    &::placeholder {
+        color: var(--md-sys-color-primary);
     }
     &:focus {
-        background-color: rgba(0, 0, 0, 0.1);
+        color: var(--md-sys-color-primary);
         outline: none;
     }
 `;
@@ -35,12 +36,13 @@ const Button = styled.button`
     height: 2rem;
     border-radius: 0.5rem;
     border: none;
-    background-color: white;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-surface);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     font-weight: bold;
     cursor: pointer;
     &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        color: var(--md-sys-color-on-primary-container);
+        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
     }
 `;
 
@@ -57,7 +59,16 @@ const Member = styled.li`
     align-items: center;
 `;
 
-const MemberModal = ({ planner, members, modal, onChangeMember, onDeleteMember, onInviteMember, onResetMember, onToggleMemberModal }) => {
+const MemberModal = ({
+    planner,
+    members,
+    modal,
+    onChangeMember,
+    onDeleteMember,
+    onInviteMember,
+    onResetMember,
+    onToggleMemberModal,
+}) => {
     const { planMembers, creator } = { ...planner };
 
     const onInviteMemberMd = () => {

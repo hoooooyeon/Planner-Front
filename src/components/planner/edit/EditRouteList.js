@@ -39,7 +39,8 @@ const RouteItem = styled.div`
     flex-direction: column;
     align-items: center;
     position: relative;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-surface);
+    box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
     border-radius: 1rem;
     cursor: pointer;
     padding: 2rem 1.4rem 0.5rem 1.4rem;
@@ -47,9 +48,6 @@ const RouteItem = styled.div`
     margin-bottom: 1rem;
     &[aria-current] {
         display: flex;
-    }
-    &:hover {
-        background-color: rgb(240, 240, 240);
     }
 `;
 
@@ -73,8 +71,8 @@ const TransItem = styled.div`
     width: 2.5rem;
     height: 2.5rem;
     z-index: 100;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    background-color: white;
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: var(--md-sys-color-surface);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -98,8 +96,8 @@ const DropDownMenu = styled.ul`
     overflow: hidden;
     border-radius: 1rem;
     padding: 0.7rem 0.5rem;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-    background-color: white;
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: var(--md-sys-color-surface-variant);
     align-items: center;
     justify-content: space-around;
     @keyframes fade-in {
@@ -131,10 +129,9 @@ const TransName = styled.div`
     font-size: 0.1rem;
     padding: 0.2rem 0.4rem;
     font-weight: bold;
-    color: gray;
     white-space: nowrap;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    background-color: white;
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: var(--md-sys-color-surface);
     border-radius: 1rem;
     position: absolute;
     top: 20px;
@@ -144,22 +141,20 @@ const SpotItem = styled.div`
     border-radius: 1rem;
     display: flex;
     align-items: center;
-
     padding: 0.5rem;
     width: 13rem;
     height: 3.5rem;
-    background-color: white;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-surface);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     z-index: 99;
 `;
 
 const Img = styled.img`
     border-radius: 0.5rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     width: 3.5rem;
     height: 3.5rem;
     font-size: 0.7rem;
-    color: lightgray;
 `;
 
 const TextInfo = styled.div`
@@ -186,7 +181,7 @@ const Address = styled.div`
     overflow: hidden;
     white-space: wrap;
     font-size: 0.1rem;
-    color: lightgray;
+    color: var(--md-sys-color-secondary);
     text-overflow: ellipsis;
 `;
 
@@ -202,9 +197,10 @@ const DeleteButton = styled.div`
 
 const DeleteIcon = styled(FontAwesomeIcon)`
     font-size: 1.2rem;
-    background-color: white;
+    color: var(--md-sys-color-surface-variant);
+    background-color: var(--md-sys-color-surface);
     border-radius: 2rem;
-    color: rgb(150, 150, 150);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
 `;
 
 const MoveIcon = styled(FontAwesomeIcon)`
@@ -212,7 +208,7 @@ const MoveIcon = styled(FontAwesomeIcon)`
     position: absolute;
     top: 49px;
     left: 9px;
-    color: lightgray;
+    color: var(--md-sys-color-surface-variant);
 `;
 
 const EditRouteList = ({

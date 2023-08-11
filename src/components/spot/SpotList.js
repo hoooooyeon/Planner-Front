@@ -11,7 +11,7 @@ import errorImg from '../../lib/images/spotErrorImg.jpg';
 const SpotListBlock = styled.div`
     width: 100%;
     height: 100%;
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
 `;
 
 const Container = styled.div`
@@ -38,7 +38,7 @@ const SpotItem = styled.li`
     width: 200px;
     float: left;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     border: none;
     margin: 0.5%;
     position: relative;
@@ -51,7 +51,6 @@ const SpotItem = styled.li`
 `;
 
 const ImgBox = styled.div`
-    background-color: lightgray;
     margin: 0;
     overflow: hidden;
     position: relative;
@@ -73,7 +72,7 @@ const Img = styled.img`
     -webkit-user-drag: none;
     object-fit: cover;
     font-size: 0.7rem;
-    color: gray;
+    color: var(--md-sys-color-surface-variant);
 `;
 
 const Name = styled.div`
@@ -86,7 +85,7 @@ const Name = styled.div`
     text-overflow: ellipsis;
     font-size: 0.8rem;
     font-weight: bold;
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
     border-top: 0;
     border-radius: 0 0 0.5rem 0.5rem;
 `;
@@ -98,7 +97,7 @@ const IconBox = styled.div`
     padding: 5px;
 `;
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: ${(props) => (props.like ? 'yellow' : 'lightgray')};
+    color: ${(props) => (props.like ? 'var(--md-sys-color-primary-container)' : 'transparent')};
 `;
 
 const SpotList = ({

@@ -7,7 +7,6 @@ import { useState } from 'react';
 const MapBlock = styled.div`
     width: 60%;
     position: relative;
-    background-color: lightgray;
     @media all and (max-width: 767px) {
         width: 100%;
         height: 80vw;
@@ -16,7 +15,7 @@ const MapBlock = styled.div`
 
 const Map = styled.div`
     border-radius: 0.5rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     width: 100%;
     height: 100%;
     pointer-events: none;
@@ -26,8 +25,7 @@ const Map = styled.div`
 `;
 
 const IconBox = styled.div`
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-    background-color: white;
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     border-radius: 0.3rem;
     display: flex;
     position: absolute;
@@ -36,10 +34,17 @@ const IconBox = styled.div`
     z-index: 1;
     padding: 5px;
     cursor: pointer;
+    background-color: ${(props) => (props.like ? `var(--md-sys-color-primary)` : `var(--md-sys-color-background)`)};
+    color: ${(props) =>
+        props.like ? `var(--md-sys-color-primary-container)` : `var(--md-sys-color-on-primary-container)`};
+    &:hover {
+        box-shadow: 0px 1px 6px -2px var(--md-sys-color-shadow);
+    }
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: ${(props) => (props.like ? 'yellow' : 'black')};
+    color: ${(props) =>
+        props.like ? `var(--md-sys-color-primary-container)` : `var(--md-sys-color-on-primary-container)`};
     font-size: 1rem;
     margin-right: 0.5rem;
 `;
@@ -50,17 +55,21 @@ const AllSchedule = styled.div`
     top: 10px;
     right: 10px;
     z-index: 1;
-    background-color: white;
+    background-color: var(--md-sys-color-background);
     width: 1rem;
     height: 1rem;
     padding: 0.5rem;
     border-radius: 1rem;
     line-height: 1rem;
     text-align: center;
+    &:hover {
+        box-shadow: 0px 1px 6px -2px var(--md-sys-color-shadow);
+    }
     ${(props) =>
         props.allSchedule &&
         css`
-            background-color: #ebdede;
+            background-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
         `}
 `;
 
@@ -69,8 +78,8 @@ const ScheduleIcon = styled(FontAwesomeIcon)`
 `;
 
 const IconName = styled.div`
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-    background-color: white;
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: var(--md-sys-color-background);
     border-radius: 0.3rem;
     cursor: pointer;
     position: absolute;
@@ -100,7 +109,7 @@ const InfoMap = ({ planner, mapRef, allSchedule, onToggleLikePlanner, onClickAll
     return (
         <MapBlock>
             <Map ref={mapRef} />
-            <IconBox onClick={onToggleLikePlanner}>
+            <IconBox onClick={onToggleLikePlanner} like={likeState ? likeState.toString() : undefined}>
                 <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
                 <div>{likeCount}</div>
             </IconBox>

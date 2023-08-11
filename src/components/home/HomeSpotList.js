@@ -6,7 +6,7 @@ const HomeSpotListBlock = styled.div`
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: white;
+    background-color: var(--md-sys-color-background);
 `;
 
 const Container = styled.div`
@@ -20,6 +20,9 @@ const Header = styled.div`
     margin-bottom: 3rem;
     h3 {
         margin: 0 0 1rem 0;
+    }
+    p {
+        color: var(--md-sys-color-on-primary-container);
     }
 `;
 
@@ -51,7 +54,7 @@ const ImgOveray = styled.div`
     pointer-events: none;
     p {
         position: absolute;
-        top: 50%;
+        top: 45%;
         left: 50%;
         transform: translate(-50%, -50%);
         font-weight: bold;
@@ -68,7 +71,7 @@ const Img = styled.img`
 
 const Text = styled.div`
     font-size: 0.9rem;
-    color: gray;
+    color: var(--md-sys-color-on-primary-container);
     & + & {
         margin-top: 0.5rem;
     }

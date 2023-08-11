@@ -6,23 +6,22 @@ import Modal from '../common/Modal';
 const DetailModalBlock = styled.div`
     width: 50rem;
     height: 20rem;
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
     border-radius: 0.5rem;
     display: flex;
     position: relative;
     padding: 2rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
 `;
 
 const ImgBox = styled.div`
     border-radius: 0.5rem;
-    background-color: lightgray;
     margin: 0;
     overflow: hidden;
     position: relative;
     padding-top: 41%;
     width: 40%;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
 `;
 
 const Img = styled.img`
@@ -50,11 +49,10 @@ const FlexDiv = styled.div`
 const Label = styled.div`
     height: 2rem;
     line-height: 1.3rem;
-
-    color: gray;
     margin-right: 1rem;
     font-size: 0.8rem;
     white-space: nowrap;
+    color: var(--md-sys-color-secondary);
 `;
 const Title = styled.div`
     width: 100%;
@@ -80,7 +78,7 @@ const Overview = styled.div`
 `;
 
 const LikeBox = styled.div`
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     border-radius: 5px;
     padding: 10px;
     display: flex;
@@ -93,10 +91,17 @@ const LikeBox = styled.div`
     div {
         margin-left: 5px;
     }
+    background-color: ${(props) => (props.like ? `var(--md-sys-color-primary)` : `var(--md-sys-color-background)`)};
+    color: ${(props) =>
+        props.like ? `var(--md-sys-color-primary-container)` : `var(--md-sys-color-on-primary-container)`};
+    &:hover {
+        box-shadow: 0px 1px 6px -2px var(--md-sys-color-shadow);
+    }
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: ${(props) => (props.like ? 'yellow' : 'lightgray')};
+    color: ${(props) =>
+        props.like ? `var(--md-sys-color-primary-container)` : `var(--md-sys-color-on-primary-container)`};
 `;
 
 const SpotDetailModal = ({ spotData, detail, onResetDetailSpot, onToggleDetailLike }) => {
@@ -119,7 +124,7 @@ const SpotDetailModal = ({ spotData, detail, onResetDetailSpot, onToggleDetailLi
                     <Img src={image} alt={title} />
                 </ImgBox>
                 <InfoBox>
-                    <LikeBox onClick={onToggleDetailLike}>
+                    <LikeBox onClick={onToggleDetailLike} like={likeState ? likeState.toString() : undefined}>
                         <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
                         <div>{likeCount}</div>
                     </LikeBox>

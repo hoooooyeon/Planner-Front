@@ -5,7 +5,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const ShareListSearchFormBlock = styled.div`
     margin: 1rem 0;
-    background: rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-primary-container);
     padding: 0.5rem 5rem;
     display: flex;
     @media all and (max-width: 1023px) {
@@ -42,15 +42,17 @@ const SortBox = styled.div`
 `;
 
 const SortButton = styled.div`
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     border-radius: 2rem;
+    background-color: var(--md-sys-color-on-primary);
     font-size: 0.7rem;
     font-weight: bold;
     padding: 0.4rem;
     text-align: center;
     cursor: pointer;
     &[aria-current] {
-        background-color: rgb(120, 220, 220);
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
     }
     @media all and (min-width: 480px) {
         white-space: nowrap;
@@ -59,7 +61,8 @@ const SortButton = styled.div`
         margin-left: 0.5rem;
     }
     &:hover {
-        background-color: white;
+        background-color: var(--md-sys-color-tertiary-container);
+        color: var(--md-sys-color-primary);
     }
 `;
 
@@ -71,7 +74,12 @@ const Text = styled.input`
     font-size: 1rem;
     font-weight: bold;
     border-radius: 0.5rem 0 0 0.5rem;
+    background-color: var(--md-sys-color-surface);
+    &::placeholder {
+        color: var(--md-sys-color-surface-variant);
+    }
     &:focus {
+        color: var(--md-sys-color-primary-container);
         outline: none;
     }
 `;
@@ -80,8 +88,8 @@ const Button = styled.button`
     border-radius: 0 0.5rem 0.5rem 0;
     min-width: 5rem;
     height: 2.5rem;
-    background-color: rgba(0, 0, 0, 0.1);
-    color: white;
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
     font-size: 1rem;
     font-weight: bold;
     white-space: nowrap;
@@ -95,13 +103,15 @@ const Button = styled.button`
 const Label = styled.label`
     margin-right: 0.5rem;
     font-size: 0.9rem;
-    color: gray;
+    color: var(--md-sys-color-secondary);
     @media all and (min-width: 480px) {
         white-space: nowrap;
     }
 `;
 const ResultBox = styled.div`
     margin: 1rem 0;
+    color: var(--md-sys-color-secondary);
+
     h3 {
         margin: 0;
     }
@@ -111,11 +121,19 @@ const InvisibleInput = styled.input`
 `;
 
 const IconBox = styled.div`
-    background-color: white;
     height: 2.5rem;
     line-height: 2.5rem;
     padding: 0 0.5rem;
+    background-color: var(--md-sys-color-background);
 `;
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+    color: var(--md-sys-color-on-background);
+    &:hover {
+        color: var(--md-sys-color-secondary);
+    }
+`;
+
 const ShareListSearchForm = ({ keyword, sortCriteria, onChangeKeyword, onChangeSort, onChangeResultKeyword }) => {
     const { curKeyword, resultKeyword } = { ...keyword };
     return (
@@ -143,7 +161,7 @@ const ShareListSearchForm = ({ keyword, sortCriteria, onChangeKeyword, onChangeS
                     <InvisibleInput type="text" />
                     <IconBox>
                         {curKeyword.length > 0 ? (
-                            <FontAwesomeIcon
+                            <StyledFontAwesomeIcon
                                 onClick={() => {
                                     onChangeKeyword('');
                                 }}

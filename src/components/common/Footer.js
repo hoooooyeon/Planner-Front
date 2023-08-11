@@ -5,7 +5,6 @@ import musicAudio from '../../lib/audio/Jane & The Boy - Electric.mp3';
 import { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay } from '@fortawesome/free-solid-svg-icons';
-import { faCirclePause } from '@fortawesome/free-solid-svg-icons';
 import { faCircleStop } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
@@ -25,7 +24,7 @@ const FooterBox = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: white;
+    color: var(--md-sys-color-on-secondary);
     padding: 2rem 1rem;
     flex-direction: column;
     h3 {
@@ -88,7 +87,7 @@ const MusicBox = styled.div`
 `;
 
 const MusicImg = styled.img`
-    background-color: black;
+    background-color: var(--md-sys-color-secondary);
     width: 100%;
     height: 100%;
 `;
@@ -106,11 +105,12 @@ const Writing = styled.div`
 
 const Logo = styled.div`
     height: 75px;
-    background-color: rgb(216, 206, 192);
+    background-color: var(--md-sys-color-secondary);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: var(--md-sys-color-on-secondary);
     div:first-child {
         font-size: 0.8rem;
     }
@@ -161,10 +161,11 @@ const PlayButton = styled(FontAwesomeIcon)`
     width: 2rem;
     height: 2rem;
     display: block;
-    color: black;
+    color: var(--md-sys-color-on-secondary);
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
+    cursor: pointer;
     ${(props) =>
         props.playing &&
         css`
@@ -177,10 +178,11 @@ const StopButton = styled(FontAwesomeIcon)`
     width: 2rem;
     height: 2rem;
     display: none;
-    color: black;
+    color: var(--md-sys-color-on-secondary);
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
+    cursor: pointer;
     ${(props) =>
         props.playing &&
         css`

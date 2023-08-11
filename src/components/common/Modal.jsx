@@ -19,10 +19,10 @@ const Modalbackground = styled.div`
 const ModalBox = styled.div`
     position: absolute;
     z-index: 1;
-    background-color: white;
+    background-color: var(--md-sys-color-background);
     border-radius: 0.5rem;
     padding: 0.5rem 0.5rem 1rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
 `;
 
 const ModalHeader = styled.div`
@@ -41,7 +41,7 @@ const ModalTitle = styled.div`
 const ModalClose = styled(FontAwesomeIcon)`
     cursor: pointer;
     &:hover {
-        color: lightgray;
+        color: var(--md-sys-color-secondary);
     }
 `;
 
@@ -60,9 +60,9 @@ const ModalFooter = styled.div`
 `;
 
 const ModalButton = styled.button`
-    background-color: white;
-    color: black;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-on-background);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     font-weight: bold;
     width: 80px;
     height: 40px;
@@ -70,8 +70,8 @@ const ModalButton = styled.button`
     border-radius: 0.5rem;
     cursor: pointer;
     &:hover {
-        color: white;
-        background-color: #ececec;
+        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        color: var(--md-sys-color-secondary);
     }
     & + & {
         margin-left: 1rem;

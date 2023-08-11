@@ -6,7 +6,7 @@ import ad1 from '../../../lib/images/ad1.jpg';
 import ad2 from '../../../lib/images/serviceImg1.jpg';
 
 const InfoPostListBlock = styled.div`
-    background-color: #f5f5f5;
+    background-color: var(--md-sys-color-surface-variant);
     padding-top: 1rem;
     width: 100%;
     height: 100%;
@@ -23,9 +23,9 @@ const Container = styled.div`
 `;
 
 const PostListBlock = styled.div`
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     border-radius: 0.5rem;
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
     padding: 1rem;
     width: calc(100% - 2rem);
     height: 20rem;
@@ -45,8 +45,8 @@ const PostListHeader = styled.div`
 `;
 
 const PostList = styled.ul`
-    border-top: 1px solid navy;
-    border-bottom: 1px solid navy;
+    border-top: 1px solid var(--md-sys-color-outline);
+    border-bottom: 1px solid var(--md-sys-color-outline);
     padding: 0;
     height: calc(100% - 4rem);
     display: flex;
@@ -61,13 +61,16 @@ const PostList = styled.ul`
 const Button = styled.button`
     border-radius: 0.5rem;
     border: none;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    color: var(--md-sys-color-on-surface-variant);
+    background-color: var(--md-sys-color-surface-variant);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     width: 5rem;
     height: 2rem;
     font-weight: bold;
     cursor: pointer;
     &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        color: var(--md-sys-color-secondary);
+        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
     }
 `;
 
@@ -76,7 +79,7 @@ const Ad = styled.div`
     height: 40vw;
     margin-left: 1rem;
     display: none;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     transition: all 0.3s;
     position: relative;
     border-radius: 0.5rem;
@@ -86,7 +89,7 @@ const Ad = styled.div`
     div {
         width: calc(100% - 2rem);
         padding: 1rem;
-        color: white;
+        color: var(--md-sys-color-background);
         font-weight: bold;
         position: absolute;
         left: 50%;
@@ -106,7 +109,7 @@ const Img = styled.img`
 `;
 
 const ErrorList = styled.div`
-    color: lightgray;
+    color: var(--md-sys-color-tertiary-container);
     font-weight: bold;
     font-size: 1rem;
     position: absolute;

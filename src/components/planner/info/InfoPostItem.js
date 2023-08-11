@@ -4,7 +4,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 const PostItem = styled.li`
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
     padding: 0.5rem 1rem;
     display: flex;
     align-items: center;
@@ -19,10 +19,10 @@ const PostHeader = styled.div`
 
 const Number = styled.div`
     font-size: 0.7rem;
-    color: gray;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: var(--md-sys-color-secondary);
 `;
 
 const Title = styled.div`
@@ -42,14 +42,18 @@ const ButtonBox = styled.div`
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     border-radius: 2rem;
-    background-color: white;
+    color: var(--md-sys-color-on-secondary-container);
+    background-color: var(--md-sys-color-secondary-container);
     padding: 0.3rem;
     width: 0.7rem;
     height: 0.7rem;
     cursor: pointer;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     & + & {
         margin-left: 0.5rem;
+    }
+    &:hover {
+        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
     }
 `;
 

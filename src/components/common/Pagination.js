@@ -12,7 +12,7 @@ const PaginationBlock = styled.div`
     margin: 0 auto;
     display: flex;
     justify-content: center;
-    background-color: white;
+    background-color: var(--md-sys-color-background);
 `;
 
 const Container = styled.div`
@@ -29,19 +29,20 @@ const PageButton = styled.div`
     margin: 0;
     font-size: 0.9rem;
     &:hover {
-        background: lightblue;
+        background-color: var(--md-sys-color-secondary-container);
         cursor: pointer;
         transform: translateY(-2px);
     }
 
     &[disabled] {
-        background: grey;
+        background-color: var(--md-sys-color-shadow);
         cursor: revert;
         transform: revert;
     }
 
     &[aria-current] {
-        background: lightblue;
+        background-color: var(--md-sys-color-secondary);
+        color: var(--md-sys-color-on-secondary);
         font-weight: bold;
         cursor: revert;
         transform: revert;

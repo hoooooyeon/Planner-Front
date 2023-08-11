@@ -10,8 +10,8 @@ const FlexDiv = styled.div`
     flex-direction: column;
     align-items: center;
     border-radius: 1rem;
-    background-color: rgb(240, 240, 240);
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    background-color: var(--md-sys-color-surface);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     padding: 0.5rem;
     width: 4rem;
     height: 29.5rem;
@@ -24,8 +24,8 @@ const EditCalendarBlock = styled.div`
     z-index: 1;
     position: relative;
     padding: 0.5rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    background-color: rgb(235, 235, 235);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: var(--md-sys-color-surface);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,16 +43,11 @@ const ItemBox = styled.div`
     border-radius: 1rem;
     cursor: pointer;
     border: none;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     margin-bottom: 0.5rem;
     z-index: 1;
     &:hover {
-        /* transition: transform 0.3s;
-        transform: scale(1.05); */
-    }
-    &[aria-current] {
-        box-shadow: 0 0 10px rgb(150, 150, 150);
-        background-color: rgb(220, 220, 220);
+        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
     }
 `;
 
@@ -73,11 +68,15 @@ const Calendar = styled.div`
     height: 100%;
     text-align: center;
     line-height: 3rem;
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
     border-radius: 1rem;
     font-size: 0.7rem;
     font-weight: bold;
     letter-spacing: 1px;
+    &[aria-current] {
+        color: var(--md-sys-color-on-primary);
+        background-color: var(--md-sys-color-primary);
+    }
 `;
 
 const AddCal = styled(ItemBox)`
@@ -89,15 +88,17 @@ const AddCal = styled(ItemBox)`
     justify-content: center;
     border: none;
     width: auto;
-    box-shadow: 0 1px 4px rgb(100, 100, 100);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: var(--md-sys-color-primary-container);
     &:hover {
+        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
         transition: transform 0.3s ease;
         transform: scale(1.05);
     }
 `;
 
 const CalIcon = styled(FontAwesomeIcon)`
-    color: rgb(110, 110, 110);
+    color: var(--md-sys-color-on-primary-container);
     font-size: 1.7rem;
     border-radius: 1rem;
     padding: 0.4rem;
@@ -106,16 +107,16 @@ const CalIcon = styled(FontAwesomeIcon)`
 const DeleteButton = styled.div`
     position: absolute;
     top: -2px;
-    left: 35px;
+    left: 35px;s
     border-radius: 2rem;
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     font-size: 1rem;
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
     border-radius: 2rem;
-    color: rgb(150, 150, 150);
-}
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    color: var(--md-sys-color-surface-variant);
 `;
 
 const EditCalendar = ({
@@ -184,15 +185,26 @@ const EditCalendar = ({
             >
                 <CalIcon icon={faCalendarPlus} />
             </AddCal>
-            <EditCalendarBlock ref={containerRef} onDrop={(e) => dragFunction.onDrop({ e, items, onUpdateSortIndex })} onDragOver={(e) => dragFunction.onDragOver(e)}>
+            <EditCalendarBlock
+                ref={containerRef}
+                onDrop={(e) => dragFunction.onDrop({ e, items, onUpdateSortIndex })}
+                onDragOver={(e) => dragFunction.onDragOver(e)}
+            >
                 {items &&
                     items.map((item, i) => (
                         <ItemBox
-                            aria-current={item.planId === plannerData.planId ? 'date' : null}
                             key={item.planId}
                             draggable
                             onDragStart={(e) => {
-                                dragFunction.onDragStart({ e, item, items, scrollTop, onChangeCurItem, onCloneElement, onChangeStyle });
+                                dragFunction.onDragStart({
+                                    e,
+                                    item,
+                                    items,
+                                    scrollTop,
+                                    onChangeCurItem,
+                                    onCloneElement,
+                                    onChangeStyle,
+                                });
                             }}
                             onDrag={(e) => {
                                 dragFunction.onDragMove({ e, containerRef, scrollTop });
@@ -209,6 +221,7 @@ const EditCalendar = ({
                             }}
                         >
                             <Calendar
+                                aria-current={item.planId === plannerData.planId ? 'date' : null}
                                 onClick={() => {
                                     onChangeCurPlanId(item.planId);
                                     onClickDateSchedule();

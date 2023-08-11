@@ -13,12 +13,12 @@ import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/spotErrorImg.jpg';
 
 const InfoRouteBlock = styled.div`
-    background-color: white;
+    background-color: var(--md-sys-color-background);
     border-radius: 0.5rem;
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     width: 35%;
     height: 40vw;
     margin-left: 1rem;
@@ -78,8 +78,8 @@ const SpotItem = styled.div`
     display: flex;
     border-radius: 4rem;
     padding: 0.5rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-    background-color: white;
+    box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+    background-color: var(--md-sys-color-background);
     z-index: 2;
 `;
 
@@ -89,7 +89,6 @@ const Img = styled.img`
     object-fit: cover;
     border-radius: 4rem;
     font-size: 0.5rem;
-    color: lightgray;
     padding: 0.5rem;
     box-sizing: border-box;
 `;
@@ -102,13 +101,13 @@ const RouteSpotName = styled.div`
     text-overflow: ellipsis;
     position: absolute;
     top: 61px;
-    background-color: white;
+    background-color: var(--md-sys-color-background);
     padding: 0.2rem 0.3rem;
     border-radius: 1rem;
     left: 50%;
     top: 95%;
     transform: translate(-50%, -50%);
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
@@ -116,16 +115,16 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     padding: 0.5rem;
     width: 1rem;
     height: 1rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
     border-radius: 2rem;
-    background-color: white;
+    background-color: var(--md-sys-color-background);
     top: -4px;
     left: 53px;
     z-index: 3;
 `;
 
 const RouteLine = styled.div`
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-tertiary-container);
     z-index: 1;
     width: 0.2rem;
     height: 2rem;
@@ -143,7 +142,7 @@ const RouteLine = styled.div`
 `;
 
 const ErrorDiv = styled.div`
-    color: lightgray;
+    color: var(--md-sys-color-tertiary-container);
     font-weight: bold;
     min-width: 8rem;
     position: absolute;

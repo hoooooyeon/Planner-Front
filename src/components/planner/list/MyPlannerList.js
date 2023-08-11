@@ -8,7 +8,7 @@ import errorImg from '../../../lib/images/plannerErrorImg.png';
 const MyPlannerListBlock = styled.div`
     width: 100%;
     height: 100%;
-    background-color: #f5f5f5;
+    background-color: var(--md-sys-color-surface-variant);
 `;
 
 const Container = styled.div`
@@ -44,23 +44,24 @@ const HeaderTitle = styled.p`
 const Button = styled.button`
     width: 7rem;
     height: 3rem;
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
     border: none;
     border-radius: 0.5rem;
     font-weight: bold;
     font-size: 0.9rem;
     text-align: center;
     line-height: 3rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     overflow: auto;
     &::-webkit-scrollbar {
         display: none;
     }
     &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        color: var(--md-sys-color-primary);
+        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
     }
     a {
-        color: black;
+        color: var(--md-sys-color-on-background);
         text-decoration: none;
         display: block;
     }
@@ -71,13 +72,13 @@ const PlannerItem = styled.li`
     position: relative;
     flex-shrink: 0;
     margin-left: 0.5%;
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
     border-radius: 0.5rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     cursor: pointer;
     overflow: hidden;
     &:hover {
-        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
         transition: transform 0.3s ease;
         transform: translate(0, -5px);
     }
@@ -86,7 +87,7 @@ const InfoBox = styled.div`
     height: 4rem;
     margin: 0;
     padding: 0.5rem;
-    box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -98,19 +99,18 @@ const Title = styled.div`
 `;
 const Creator = styled.div`
     font-size: 0.7rem;
-    color: gray;
+    color: var(--md-sys-color-on-primary-container);
     overflow: hidden;
     margin-top: 0.2rem;
 `;
 const Date = styled.div`
     font-size: 0.4rem;
-    color: lightgray;
+    color: var(--md-sys-color-on-primary-container);
     margin-top: 0.2rem;
     overflow: hidden;
 `;
 
 const ImgBox = styled.div`
-    background-color: lightgray;
     margin: 0;
     overflow: hidden;
     position: relative;
@@ -136,7 +136,7 @@ const Img = styled.img`
 `;
 
 const ErrorDiv = styled.div`
-    color: lightgray;
+    color: var(--md-sys-color-on-tertiary);
     font-weight: bold;
     text-align: center;
     margin-top: 2rem;

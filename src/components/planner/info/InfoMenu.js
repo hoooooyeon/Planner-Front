@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
 const InfoMenuBlock = styled.div`
-    background-color: white;
+    background-color: var(--md-sys-color-background);
     padding: 0.5rem 0;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 `;
 
 const Container = styled.div`
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
     height: 100%;
     display: flex;
     justify-content: center;
@@ -42,7 +42,7 @@ const FlexDiv = styled.div`
 `;
 
 const Ask = styled.div`
-    color: gray;
+    color: var(--md-sys-color-secondary);
     margin-right: 0.5rem;
     font-weight: bold;
     font-size: 0.6rem;

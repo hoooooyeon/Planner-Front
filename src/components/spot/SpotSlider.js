@@ -29,14 +29,14 @@ const SliderItem = styled.li`
     justify-content: center;
     position: relative;
     h2 {
-        color: white;
+        color: var(--md-sys-color-on-primary);
         position: absolute;
         top: 80%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
     h3 {
-        color: white;
+        color: var(--md-sys-color-on-primary);
         position: absolute;
         top: 87%;
         left: 50%;

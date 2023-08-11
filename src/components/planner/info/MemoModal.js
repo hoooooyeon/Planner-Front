@@ -7,13 +7,14 @@ import Modal from '../../common/Modal';
 
 const MemoModalBlock = styled.div`
     border-radius: 0.5rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--md-sys-color-outline-variant);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     width: 35rem;
     max-height: 20rem;
     padding: 0.5rem;
+    background-color: var(--md-sys-color-surface);
 `;
 const MemoModalHeader = styled.div`
     display: flex;
@@ -30,7 +31,7 @@ const StyledInput = styled.input`
     border: none;
     outline: none;
     border-radius: 0.3rem;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-surface-variant);
     width: 100%;
     height: 2rem;
     padding: 0 0.5rem;
@@ -40,10 +41,11 @@ const StyledInput = styled.input`
             pointer-events: none;
         `}
     &::placeholder {
-        color: #beb9b9;
+        color: var(--md-sys-color-on-primary);
     }
     &:focus {
-        color: lightblue;
+        color: var(--md-sys-color-on-primary);
+        outline: none;
     }
 `;
 
@@ -55,9 +57,25 @@ const StyledReactQuill = styled(ReactQuill)`
         `}
 `;
 
-const MemoModal = ({ nickname, creator, curMemo, onChangeMemoTitle, onChangeMemoContent, isState, onModalClose, onModalConfirm }) => {
+const MemoModal = ({
+    nickname,
+    creator,
+    curMemo,
+    onChangeMemoTitle,
+    onChangeMemoContent,
+    isState,
+    onModalClose,
+    onModalConfirm,
+}) => {
     const modules = {
-        toolbar: [[{ header: [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], [{ color: [] }, { background: [] }], ['clean']],
+        toolbar: [
+            [{ header: [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link'],
+            [{ color: [] }, { background: [] }],
+            ['clean'],
+        ],
     };
 
     const { title, content } = { ...curMemo };

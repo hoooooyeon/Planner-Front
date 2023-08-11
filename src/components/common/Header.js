@@ -16,20 +16,26 @@ const HeaderBlock = styled.div`
     top: 0;
     left: 0;
     right: 0;
-    background-color: white;
+    background-color: var(--md-sys-color-on-secondary);
     z-index: 999;
     padding: 0;
     margin: 0;
     a {
         text-decoration: none;
         white-space: nowrap;
-        color: black;
-        font-weight: bold;
+        color: var(--md-sys-color-on-background);
+        &:hover {
+            color: var(--md-sys-color-secondary);
+        }
     }
     h1 {
         font-size: 1.2rem;
         font-weight: bold;
         white-space: nowrap;
+        color: var(--md-sys-color-on-background);
+        &:hover {
+            color: var(--md-sys-color-primary);
+        }
     }
     ${(props) =>
         props.styled &&
@@ -61,6 +67,7 @@ const MenuList = styled.ul`
     li {
         font-size: 0.9rem;
         margin: 0 30px;
+        font-weight: bold;
     }
 `;
 
@@ -68,17 +75,19 @@ const AccountList = styled.ul`
     align-items: center;
     list-style: none;
     display: none;
-    color: white;
     padding: 0;
     @media all and (min-width: 768px) {
         display: flex;
     }
-    li {
+    a {
         display: flex;
         align-items: center;
         font-size: 0.8rem;
-        margin: 0 8px;
-        color: black;
+        font-weight: bold;
+        color: var(--md-sys-color-on-background);
+        &:hover {
+            color: var(--md-sys-color-secondary);
+        }
     }
 `;
 
@@ -87,9 +96,12 @@ const Account = styled.div`
     align-items: center;
     position: relative;
     width: 76px;
-    color: black;
+    color: var(--md-sys-color-on-background);
     font-weight: bold;
     cursor: pointer;
+    &:hover {
+        color: var(--md-sys-color-secondary);
+    }
     .user-img {
         border-radius: 10px;
         margin-right: 10px;
@@ -118,8 +130,8 @@ const DropDownMenu = styled.ul`
     width: 4.4rem;
     z-index: 1000;
     border-radius: 0.5rem;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: var(--md-sys-color-background);
+    box-shadow: 0px 0px 3px -2px var(--md-sys-color-shadow);
     border: none;
     padding: 0.5rem 1rem;
     margin: 0;
@@ -127,6 +139,16 @@ const DropDownMenu = styled.ul`
     li {
         cursor: pointer;
         font-size: 0.8rem;
+        color: var(--md-sys-color-on-background);
+        &:hover {
+            color: var(--md-sys-color-secondary);
+        }
+        a {
+            color: var(--md-sys-color-on-background);
+            &:hover {
+                color: var(--md-sys-color-secondary);
+            }
+        }
         &:hover {
             font-weight: bold;
         }
@@ -206,8 +228,10 @@ const Header = ({ account, handlePurge }) => {
             ) : (
                 <AccountList styled={styled}>
                     <li>
-                        <StyledFontAwesomeIcon icon={faCircleUser} />
-                        <Link to="/Login">로그인</Link>
+                        <Link to="/Login">
+                            <StyledFontAwesomeIcon icon={faCircleUser} />
+                            <p>로그인</p>
+                        </Link>
                     </li>
                 </AccountList>
             )}

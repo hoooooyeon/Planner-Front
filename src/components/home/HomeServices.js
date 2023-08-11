@@ -11,7 +11,7 @@ import serviceImg3 from '../../lib/images/serviceImg3.jpg';
 const HomeServicesBlock = styled.div`
     width: 100%;
     height: 100%;
-    background-color: rgb(250, 244, 235);
+    background-color: var(--md-sys-color-surface-variant);
 `;
 
 const Container = styled.div`
@@ -49,7 +49,7 @@ const ServiceItem = styled.li`
 const OverviewBox = styled.div`
     width: 250px;
     font-weight: bold;
-    color: gray;
+    color: var(--md-sys-color-on-primary-container);
     p {
         font-size: 0.8rem;
     }
@@ -90,7 +90,7 @@ const LeftIcon = styled(FontAwesomeIcon)`
     left: 7%;
     z-index: 1;
     font-size: 2rem;
-    color: lightgoldenrodyellow;
+    color: var(--md-sys-color-on-primary);
     opacity: 0.7;
     display: none;
     @media all and (max-width: 767px) {
@@ -104,7 +104,7 @@ const RightIcon = styled(FontAwesomeIcon)`
     right: 7%;
     z-index: 1;
     font-size: 2rem;
-    color: lightgoldenrodyellow;
+    color: var(--md-sys-color-on-primary);
     opacity: 0.7;
     display: none;
     @media all and (max-width: 767px) {
@@ -115,7 +115,7 @@ const RightIcon = styled(FontAwesomeIcon)`
 const Title = styled.div`
     font-size: 1.1rem;
     font-weight: bold;
-    color: black;
+    color: var(--md-sys-color-on-background);
     text-align: center;
     margin-top: 0.5rem;
 `;

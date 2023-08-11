@@ -14,7 +14,7 @@ const SideNavContainer = styled.div`
     padding: 20px 0;
     z-index: 999;
     background-color: rgba(255, 255, 255, 0.7);
-    border-left: 2px solid gray;
+    border-left: 2px solid var(--md-sys-color-outline);
     position: fixed;
     right: 0;
     top: 0;
@@ -49,28 +49,29 @@ const NavList = styled.ul`
         padding: 1rem;
         border-radius: 5px;
         &:hover {
-            background-color: white;
-            color: blue;
+            background-color: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
             cursor: pointer;
             a {
-                color: blue;
+                color: var(--md-sys-color-on-secondary-container);
             }
         }
         a {
-            color: black;
+            color: var(--md-sys-color-on-background);
         }
     }
 `;
 
 const AccountList = styled(NavList)`
-    border-top: 1px solid lightgray;
+    border-top: 1px solid var(--md-sys-color-outline);
     padding: 1rem 0;
 `;
 
 const IconBox = styled.div`
     display: inline-block;
     border-radius: 50px;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    background-color: var(--md-sys-color-background);
+    box-shadow: 0px 0px 2px var(--md-sys-color-shadow);
     position: relative;
     left: -50px;
     z-index: 99;

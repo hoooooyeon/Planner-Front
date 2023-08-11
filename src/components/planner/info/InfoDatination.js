@@ -22,7 +22,7 @@ const DateBox = styled.li`
         margin-left: 0.5rem;
     }
     &[aria-current] {
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
     }
 `;
 
@@ -34,18 +34,21 @@ const DateButton = styled.div`
     white-space: nowrap;
     font-size: 0.7rem;
     padding: 0.5rem;
-    background-color: white;
+    background-color: var(--md-sys-color-on-primary);
     border-radius: 2rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     text-align: center;
     &:hover {
-        transition: transform 0.3s ease;
-        transform: scale(1.1);
+        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+    }
+    &[aria-current] {
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
     }
 `;
 
 const RouteLine = styled.div`
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-tertiary-container);
     width: 2rem;
     height: 0.2rem;
     position: absolute;
@@ -79,7 +82,9 @@ const InfoDatination = ({ planner, plannerData, drag, onChangeCurPlanId, onClick
                                     onClickDateSchedule();
                                 }}
                             >
-                                <DateButton>{letsFormat(p.planDate)}</DateButton>
+                                <DateButton aria-current={p.planId === plannerData.planId ? 'date' : null}>
+                                    {letsFormat(p.planDate)}
+                                </DateButton>
                                 {i !== 0 && <RouteLine />}
                             </DateBox>
                         ))}

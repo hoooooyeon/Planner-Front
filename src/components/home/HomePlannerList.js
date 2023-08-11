@@ -1,6 +1,5 @@
 import { useRef } from 'react';
 import styled from 'styled-components';
-import Slider from '../common/Slider';
 import errorImg from '../../lib/images/plannerErrorImg.png';
 import { handleErrorImg } from '../../lib/utils/CommonFunction';
 
@@ -9,7 +8,7 @@ const HomePlannerListBlock = styled.div`
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: white;
+    background-color: var(--md-sys-color-background);
 `;
 
 const Container = styled.div`
@@ -29,6 +28,9 @@ const Header = styled.div`
     h3 {
         margin: 0;
     }
+    p {
+        color: var(--md-sys-color-on-primary-container);
+    }
 `;
 
 const PlannerList = styled.ul`
@@ -41,20 +43,19 @@ const PlannerList = styled.ul`
 
 const PlannerItem = styled.li`
     width: 24%;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     border-radius: 0.5rem;
-    background-color: white;
+    background-color: var(--md-sys-color-background);
     cursor: pointer;
     & + & {
         margin-left: 1rem;
     }
     &:hover {
-        box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
     }
 `;
 
 const ImgBox = styled.div`
-    background-color: lightgray;
     margin: 0;
     overflow: hidden;
     position: relative;
@@ -93,7 +94,7 @@ const Title = styled.div`
 `;
 const Date = styled.div`
     font-size: 0.4rem;
-    color: lightgray;
+    color: var(--md-sys-color-tertiary);
     margin-top: 0.5rem;
     overflow: hidden;
 `;

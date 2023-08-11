@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const FormDiv = styled.div`
     margin: 1rem 0;
-    background: rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-primary-container);
     display: flex;
     align-items: center;
     border-radius: 1rem;
@@ -48,7 +48,12 @@ const SearchInput = styled.input`
     font-size: 1rem;
     font-weight: bold;
     border-radius: 0.5rem 0 0 0.5rem;
+    background-color: var(--md-sys-color-surface);
+    &::placeholder {
+        color: var(--md-sys-color-surface-variant);
+    }
     &:focus {
+        color: var(--md-sys-color-primary-container);
         outline: none;
     }
     @media all and (min-width: 1024px) {
@@ -61,8 +66,8 @@ const SearchButton = styled.button`
     border-radius: 0 0.5rem 0.5rem 0;
     min-width: 5rem;
     height: 2.5rem;
-    background-color: rgba(0, 0, 0, 0.1);
-    color: white;
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
     font-size: 1rem;
     font-weight: bold;
     white-space: nowrap;
@@ -79,6 +84,7 @@ const InvisibleInput = styled.input`
 
 const SearchResult = styled.h3`
     margin: 1rem 0;
+    color: var(--md-sys-color-secondary);
 `;
 
 const SelectDiv = styled.div`
@@ -109,9 +115,6 @@ const Select = styled.select`
     min-width: 6rem;
     height: 2.5rem;
     text-align-last: center;
-    &:invalid {
-        color: lightgray;
-    }
     &:focus {
         outline: none;
     }
@@ -126,17 +129,25 @@ const Select = styled.select`
 const Label = styled.label`
     margin-right: 0.5rem;
     font-size: 0.9rem;
-    color: gray;
+    color: var(--md-sys-color-secondary);
     @media all and (min-width: 480px) {
         white-space: nowrap;
     }
 `;
 const IconBox = styled.div`
-    background-color: white;
+    background-color: var(--md-sys-color-background);
     height: 2.5rem;
     line-height: 2.5rem;
     padding: 0 0.5rem;
 `;
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+    color: var(--md-sys-color-on-background);
+    &:hover {
+        color: var(--md-sys-color-secondary);
+    }
+`;
+
 const SpotSearchForm = ({
     areas,
     resultKeyword,
@@ -200,7 +211,7 @@ const SpotSearchForm = ({
                         <InvisibleInput type="text" />
                         <IconBox>
                             {curKeyword.length > 0 ? (
-                                <FontAwesomeIcon
+                                <StyledFontAwesomeIcon
                                     onClick={() => {
                                         onChangeCurKeyword('');
                                     }}

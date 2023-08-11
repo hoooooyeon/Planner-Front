@@ -5,23 +5,16 @@ const InfoForm = styled.form`
     width: 25rem;
     height: 10rem;
     display: flex;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     flex-direction: column;
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
     padding: 0.5rem;
     border-radius: 0.5rem;
     justify-content: center;
-    input::placeholder {
-        color: lightgray;
-    }
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
         -webkit-appearance: none;
         margin: 0;
-    }
-    input:focus {
-        background-color: rgba(0, 0, 0, 0.1);
-        outline: none;
     }
 `;
 const FlexDiv = styled.div`
@@ -34,7 +27,6 @@ const FlexDiv = styled.div`
 const Label = styled.div`
     height: 2rem;
     line-height: 2rem;
-    color: gray;
     margin-right: 1rem;
     font-size: 0.8rem;
     white-space: nowrap;
@@ -46,7 +38,16 @@ const Title = styled.input`
     border: none;
     border-radius: 0.3rem;
     padding: 0 0.5rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-surface);
+
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    &::placeholder {
+        color: var(--md-sys-color-primary);
+    }
+    &:focus {
+        color: var(--md-sys-color-primary);
+        outline: none;
+    }
 `;
 
 const Funds = styled.input`
@@ -55,7 +56,16 @@ const Funds = styled.input`
     border: none;
     border-radius: 0.3rem;
     padding: 0 0.5rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-surface);
+
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    &::placeholder {
+        color: var(--md-sys-color-primary);
+    }
+    &:focus {
+        color: var(--md-sys-color-primary);
+        outline: none;
+    }
 `;
 
 const People = styled.input`
@@ -64,7 +74,16 @@ const People = styled.input`
     border: none;
     border-radius: 0.3rem;
     padding: 0 0.5rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-surface);
+
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    &::placeholder {
+        color: var(--md-sys-color-primary);
+    }
+    &:focus {
+        color: var(--md-sys-color-primary);
+        outline: none;
+    }
 `;
 
 const Category = styled.select`
@@ -73,10 +92,7 @@ const Category = styled.select`
     border: none;
     border-radius: 0.3rem;
     text-align: center;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-    &:invalid {
-        color: lightgray;
-    }
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     &:focus {
         outline: none;
     }
@@ -85,7 +101,19 @@ const Category = styled.select`
     }
 `;
 
-const PlannerInfoModal = ({ modal, onUpdatePlanner, onTogglePlannerInfoModal, curTitle, curExpense, curMemberCount, curMemberTypeId, setCurTitle, setCurExpense, setCurMemberCount, setCurMemberTypeId }) => {
+const PlannerInfoModal = ({
+    modal,
+    onUpdatePlanner,
+    onTogglePlannerInfoModal,
+    curTitle,
+    curExpense,
+    curMemberCount,
+    curMemberTypeId,
+    setCurTitle,
+    setCurExpense,
+    setCurMemberCount,
+    setCurMemberTypeId,
+}) => {
     const categoryList = [
         { label: '혼자', value: 1 },
         { label: '연인', value: 2 },

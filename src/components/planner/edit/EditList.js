@@ -19,7 +19,7 @@ const EditListBlock = styled.div`
     bottom: 0;
     width: 350px;
     height: 100vh;
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
     float: left;
     z-index: 200;
     transform: ${(props) => (props.navOpen ? 'translateX(0px)' : 'translateX(350px)')};
@@ -27,15 +27,15 @@ const EditListBlock = styled.div`
 `;
 
 const List = styled.div`
-    height: 29rem;
+    height: 28rem;
     padding: 0.5rem 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow: auto;
     z-index: 200;
-    background-color: #f5f5f5;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-surface-variant);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     position: relative;
     &::-webkit-scrollbar {
         display: none;
@@ -50,17 +50,16 @@ const ListItem = styled.div`
     z-index: 99;
     padding: 0.5rem;
     &:hover {
-        background-color: #ffcbc14f;
+        background-color: var(--md-sys-color-surface);
     }
 `;
 
 const Img = styled.img`
     border-radius: 0.5rem;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     width: 5rem;
     height: 5rem;
     font-size: 0.7rem;
-    color: lightgray;
 `;
 const TextInfo = styled.div`
     height: 100%;
@@ -86,7 +85,7 @@ const Address = styled.div`
     overflow: hidden;
     white-space: wrap;
     font-size: 0.6rem;
-    color: lightgray;
+    color: var(--md-sys-color-secondary);
     text-overflow: ellipsis;
 `;
 
@@ -100,14 +99,14 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     padding: 0.5rem;
     height: 1rem;
     width: 1rem;
-    background-color: rgb(230, 230, 230);
+    background-color: var(--md-sys-color-surface);
     cursor: pointer;
     & + & {
         margin-left: 0.5rem;
     }
     &:hover {
-        transition: transform 0.3s ease;
-        transform: scale(1.1);
+        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        color: var(--md-sys-color-primary);
     }
 `;
 
@@ -119,23 +118,24 @@ const NavArrowIcon = styled(FontAwesomeIcon)`
     height: 1.5rem;
     border-radius: 2rem;
     padding: 0.3rem;
-    background: white;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-surface);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     cursor: pointer;
 
     &:hover {
-        transition: transform 0.3s ease;
-        transform: scale(1.1);
+        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        color: var(--md-sys-color-primary);
     }
 `;
 
 const PageBox = styled.div`
     width: 100%;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
+    padding: 5px 0;
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
 `;
 
 const ErrorList = styled.div`
-    color: lightgray;
+    color: var(--md-sys-color-on-primary);
     font-weight: bold;
     font-size: 1.2rem;
     position: absolute;

@@ -36,15 +36,15 @@ const MenuItem = styled.div`
 
 const MenuIcon = styled(FontAwesomeIcon)`
     border-radius: 2rem;
-
     width: 1rem;
     height: 1rem;
     padding: 0.6rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    background-color: white;
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: var(--md-sys-color-surface);
     margin-bottom: 0.2rem;
     &[aria-current] {
-        background-color: lightblue;
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
     }
 `;
 
@@ -52,10 +52,10 @@ const IconName = styled.div`
     font-size: 0.1rem;
     padding: 0.2rem 0.4rem;
     font-weight: bold;
-    color: gray;
+    color: var(--md-sys-color-primary);
     white-space: nowrap;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    background-color: white;
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: var(--md-sys-color-surface);
     border-radius: 1rem;
     position: absolute;
     top: 35px;
@@ -67,8 +67,8 @@ const FormDiv = styled.div`
     flex-direction: column;
     padding: 0.9rem 1rem 0;
     margin-bottom: 1rem;
-    background-color: #f5f5f5;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    background-color: var(--md-sys-color-surface-variant);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
 `;
 
 const Form = styled.form`
@@ -93,7 +93,12 @@ const SearchInput = styled.input`
     font-size: 0.8rem;
     font-weight: bold;
     border-radius: 0.5rem 0 0 0.5rem;
+    background-color: var(--md-sys-color-surface);
+    &::placeholder {
+        color: var(--md-sys-color-surface-variant);
+    }
     &:focus {
+        color: var(--md-sys-color-primary-container);
         outline: none;
     }
 `;
@@ -103,8 +108,8 @@ const SearchButton = styled.button`
     border-radius: 0 0.5rem 0.5rem 0;
     min-width: 3rem;
     height: 2.5rem;
-    background-color: rgba(0, 0, 0, 0.1);
-    color: white;
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
     font-size: 1rem;
     font-weight: bold;
     white-space: nowrap;
@@ -119,7 +124,6 @@ const ResultBox = styled.div`
     width: 20rem;
     height: 2rem;
     padding: 0.8rem 0;
-    color: gray;
     font-size: 0.9rem;
 `;
 
@@ -129,6 +133,7 @@ const SearchResult = styled.div`
     white-space: wrap;
     text-overflow: ellipsis;
     max-width: 50%;
+    color: var(--md-sys-color-secondary);
 `;
 
 const SelectDiv = styled.div`
@@ -153,11 +158,8 @@ const Select = styled.select`
     min-width: 6rem;
     height: 2.5rem;
     text-align-last: center;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     cursor: pointer;
-    &:invalid {
-        color: lightgray;
-    }
     &:focus {
         outline: none;
     }
@@ -169,18 +171,36 @@ const Select = styled.select`
 const Label = styled.label`
     margin-right: 0.5rem;
     font-size: 0.9rem;
-    color: gray;
     white-space: nowrap;
 `;
 
 const IconBox = styled.div`
-    background-color: white;
+    background-color: var(--md-sys-color-surface);
     height: 2.5rem;
     line-height: 2.5rem;
     padding: 0 0.5rem;
 `;
 
-const EditListSearchForm = ({ keyword, spotData, areas, contentTypeList, likeKeyword, onChangeAreaIndex, onChangeContentTypeId, onChangeResultKeyword, onChangeLikeKeyword, onChangeCurKeyword, onIndexPage }) => {
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+    color: var(--md-sys-color-on-background);
+    &:hover {
+        color: var(--md-sys-color-primary);
+    }
+`;
+
+const EditListSearchForm = ({
+    keyword,
+    spotData,
+    areas,
+    contentTypeList,
+    likeKeyword,
+    onChangeAreaIndex,
+    onChangeContentTypeId,
+    onChangeResultKeyword,
+    onChangeLikeKeyword,
+    onChangeCurKeyword,
+    onIndexPage,
+}) => {
     const iconList = [faLandmarkFlag, faHotel, faRankingStar, faTrophy, faBed, faBagShopping, faUtensils];
     const { curKeyword, resultKeyword } = { ...keyword };
     const { contentTypeId } = { ...spotData };
@@ -292,7 +312,7 @@ const EditListSearchForm = ({ keyword, spotData, areas, contentTypeList, likeKey
                         <InvisibleInput type="text" />
                         <IconBox>
                             {curKeyword.length > 0 ? (
-                                <FontAwesomeIcon
+                                <StyledFontAwesomeIcon
                                     onClick={() => {
                                         onChangeCurKeyword('');
                                     }}
