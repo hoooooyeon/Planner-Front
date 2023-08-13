@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadSharePlannerListAction } from '../modules/plannerModule';
+import { loadSharePlannerListAction, resetPlannerDataAction } from '../modules/plannerModule';
 import Home from '../components/home/Home';
 
 const HomeContainer = () => {
@@ -16,6 +16,10 @@ const HomeContainer = () => {
         const sortCriteria = 1;
         const keyword = '';
         dispatch(loadSharePlannerListAction({ keyword, itemCount, sortCriteria, pageNum }));
+    }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(resetPlannerDataAction());
     }, [dispatch]);
 
     return <Home sharePlanners={sharePlanners} />;

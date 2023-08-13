@@ -117,7 +117,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 `;
 
 const ErrorDiv = styled.div`
-    color: var(--md-sys-color-tertiary);
+    color: var(--md-sys-color-tertiary-container);
     font-weight: bold;
     text-align: center;
     margin-top: 2rem;

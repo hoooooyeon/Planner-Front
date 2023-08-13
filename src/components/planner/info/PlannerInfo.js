@@ -58,6 +58,8 @@ const MenuItem = styled.li`
     color: var(--md-sys-color-on-background);
     &:hover {
         box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        font-weight: bold;
+        color: var(--md-sys-color-secondary);
     }
 `;
 

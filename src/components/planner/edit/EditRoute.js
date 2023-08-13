@@ -84,6 +84,7 @@ const DateBox = styled.div`
 `;
 
 const StartDateBox = styled(DateBox)`
+    z-index: 99;
     &:hover {
         transition: transform 0.3s ease;
         transform: scale(1.03);

@@ -6,6 +6,7 @@ import {
     changeCurPlanIdAction,
     deletePlannerAction,
     loadPlannerAction,
+    resetPlannerDataAction,
     toggleLikePlannerAction,
     toggleMemberModalAction,
     togglePlannerInfoModalAction,

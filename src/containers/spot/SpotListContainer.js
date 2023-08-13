@@ -118,7 +118,6 @@ const SpotListContainer = ({
 
     useEffect(() => {
         changePageIndexAction(1);
-        console.log(resultKeyword);
     }, [areaCode, contentTypeId, resultKeyword]);
 
     const sliderSpots = [

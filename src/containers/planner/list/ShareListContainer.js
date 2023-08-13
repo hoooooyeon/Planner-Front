@@ -38,9 +38,8 @@ const ShareListContainer = () => {
     useEffect(() => {
         const itemCount = 12;
         const keyword = resultKeyword;
-        if (account) {
-            dispatch(loadSharePlannerListAction({ itemCount, sortCriteria, pageNum, keyword }));
-        }
+
+        dispatch(loadSharePlannerListAction({ itemCount, sortCriteria, pageNum, keyword }));
     }, [dispatch, pageNum, resultKeyword, sortCriteria, account]);
 
     const onClickPlanner = (plannerId) => {
