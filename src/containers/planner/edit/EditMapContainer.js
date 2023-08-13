@@ -517,6 +517,11 @@ const EditMapContainer = () => {
         history.push(`/Planners/${plannerId}`);
     };
 
+    const [tutorialVisible, setTutorialVisible] = useState(true);
+    const onClickTutorialModal = () => {
+        setTutorialVisible(!tutorialVisible);
+    };
+
     if (!mapRef || nickname !== creator || !planner) {
         return null;
     }
@@ -526,6 +531,8 @@ const EditMapContainer = () => {
             allSchedule={allSchedule}
             onClickAllSchedule={onClickAllSchedule}
             onSavePlanner={onSavePlanner}
+            tutorialVisible={tutorialVisible}
+            onClickTutorialModal={onClickTutorialModal}
         />
     );
 };
