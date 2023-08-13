@@ -271,12 +271,12 @@ const initialState = {
         planId: null,
         memoId: null,
         pageNum: 1,
-        pType: null,
     },
     keyword: {
         curKeyword: '',
         resultKeyword: '',
     },
+    pType: null,
     allSchedule: false,
 };
 
@@ -324,8 +324,8 @@ function plannerReducer(state = initialState, action) {
                 plannerData: {
                     ...state.plannerData,
                     plannerId: action.payload.data,
-                    pType: 'edit',
                 },
+                pType: 2,
             };
         case UPDATE_PLANNER_SUCCESS_TYPE:
             return {
@@ -342,8 +342,8 @@ function plannerReducer(state = initialState, action) {
                     plannerId: null,
                     planId: null,
                     memoId: null,
-                    pType: null,
                 },
+                pType: null,
                 planner: null,
             };
         case DELETE_PLANNER_SUCCESS_TYPE:
@@ -470,6 +470,7 @@ function plannerReducer(state = initialState, action) {
                     ...state.plannerData,
                     plannerId: action.plannerId,
                 },
+                pType: 1,
             };
 
         case CHANGE_PAGE_NUM_TYPE:

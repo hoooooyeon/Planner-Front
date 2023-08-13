@@ -9,13 +9,14 @@ const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { plannerList, plannerError, planner, plannerData, account } = useSelector(
+    const { plannerList, plannerError, planner, pType, plannerData, account } = useSelector(
         ({ plannerReducer, authReducer, profileReducer }) => ({
             account: authReducer.account,
             plannerList: profileReducer.plannerList,
             plannerError: plannerReducer.plannerError,
             planner: plannerReducer.planner,
             plannerData: plannerReducer.plannerData,
+            pType: plannerReducer.pType,
         }),
     );
 
@@ -26,7 +27,7 @@ const MyPlannerListContainer = () => {
         );
     };
 
-    const { pType, plannerId } = { ...plannerData };
+    const { plannerId } = { ...plannerData };
     const { myPlanners } = { ...plannerList };
     const { pageLastIndex } = { ...myPlanners };
     const { accountId, nickname } = { ...account };
@@ -70,9 +71,9 @@ const MyPlannerListContainer = () => {
 
     // 주소 이동
     useEffect(() => {
-        if (!planner && plannerId && pType === 'edit') {
+        if (!planner && plannerId && pType === 2) {
             history.push(`/Planners/edit/${plannerId}`);
-        } else if (!planner && plannerId && pType === null) {
+        } else if (!planner && plannerId && pType === 1) {
             history.push(`/Planners/${plannerId}`);
         }
     }, [history, plannerId]);
@@ -90,7 +91,6 @@ const MyPlannerListContainer = () => {
     const onClickPlanner = (plannerId) => {
         if (!drag.current) {
             dispatch(changeCurPlannerIdAction(plannerId));
-            // history.push(`/Planners/${plannerId}`);
         }
     };
 

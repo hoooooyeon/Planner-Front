@@ -99,7 +99,7 @@ const Date = styled.div`
     overflow: hidden;
 `;
 
-const HomePlannerList = ({ sharePlanners }) => {
+const HomePlannerList = ({ sharePlanners, onClickPlanner }) => {
     const itemRef = useRef();
 
     return (
@@ -112,7 +112,7 @@ const HomePlannerList = ({ sharePlanners }) => {
                 {sharePlanners && sharePlanners.list && sharePlanners.list.length > 0 ? (
                     <PlannerList>
                         {sharePlanners.list.map((p) => (
-                            <PlannerItem ref={itemRef} key={p.plannerId}>
+                            <PlannerItem ref={itemRef} key={p.plannerId} onClick={() => onClickPlanner(p.plannerId)}>
                                 <ImgBox>
                                     <Img
                                         src={p.thumbnail}

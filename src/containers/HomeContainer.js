@@ -1,13 +1,25 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadSharePlannerListAction, resetPlannerDataAction } from '../modules/plannerModule';
+import { changeCurPlannerIdAction, loadSharePlannerListAction, resetPlannerDataAction } from '../modules/plannerModule';
 import Home from '../components/home/Home';
+import { useHistory } from 'react-router';
 
 const HomeContainer = () => {
     const dispatch = useDispatch();
-    const { sharePlanners } = useSelector(({ plannerReducer }) => ({
+    const history = useHistory();
+
+    const { sharePlanners, planner, plannerData, pType } = useSelector(({ plannerReducer }) => ({
         sharePlanners: plannerReducer.sharePlanners,
+        planner: plannerReducer.planner,
+        plannerData: plannerReducer.plannerData,
+        pType: plannerReducer.pType,
     }));
+
+    const { plannerId } = { ...plannerData };
+
+    const onClickPlanner = (plannerId) => {
+        dispatch(changeCurPlannerIdAction(plannerId));
+    };
 
     // 공유 플래너리스트 가져오기
     useEffect(() => {
@@ -22,7 +34,13 @@ const HomeContainer = () => {
         dispatch(resetPlannerDataAction());
     }, [dispatch]);
 
-    return <Home sharePlanners={sharePlanners} />;
+    useEffect(() => {
+        if (!planner && plannerId && pType === 1) {
+            history.push(`/Planners/${plannerId}`);
+        }
+    }, [plannerId]);
+
+    return <Home sharePlanners={sharePlanners} onClickPlanner={onClickPlanner} />;
 };
 
 export default HomeContainer;
