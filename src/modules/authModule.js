@@ -79,7 +79,7 @@ const initialState = {
         nickname: '',
         phone: ''
     },
-    account: null,
+    account: undefined,
     token: '',
     authError: {},
     state: {

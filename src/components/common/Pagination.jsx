@@ -5,18 +5,23 @@ import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import { faBackward } from '@fortawesome/free-solid-svg-icons';
 import { faForward } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
 
 const PaginationBlock = styled.div`
     width: 100%;
-    margin: 50px auto;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: var(--md-sys-color-background);
 `;
 
 const PaginationBox = styled.div`
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    @media all and (min-width: 768px) {
+        padding: 0rem 9rem;
+    }
 `;
 
 const PageButton = styled.div`
@@ -25,36 +30,51 @@ const PageButton = styled.div`
     margin: 0;
     font-size: 1rem;
     &:hover {
-        background: lightblue;
+        background-color: var(--md-sys-color-secondary-container);
         cursor: pointer;
         transform: translateY(-2px);
     }
 
     &[disabled] {
-        background: grey;
+        background-color: var(--md-sys-color-shadow);
         cursor: revert;
         transform: revert;
     }
 
     &[aria-current] {
-        background: lightblue;
+        background-color: var(--md-sys-color-secondary);
+        color: var(--md-sys-color-on-secondary);
         font-weight: bold;
         cursor: revert;
         transform: revert;
     }
+    @media all and (max-width: 319px) {
+        padding: 2px;
+    }
 `;
 
-const Pagination = ({ page, totalCount, limitIndex, onIndexPage, onNextPage, onPreviousPage, onFirstPage, onLastPage }) => {
-    const isStartEndPage = page % limitIndex;
-    const maxPage = totalCount / limitIndex;
+const Pagination = ({
+    page,
+    totalCount,
+    pageSize,
+    onPageChange,
+    onNextPage,
+    onPreviousPage,
+    onFirstPage,
+    onLastPage,
+}) => {
+    const maxPage = Math.ceil(totalCount / pageSize);
+    const isMaxPageGroup = maxPage > 10 ? (maxPage - page < maxPage - pageSize ? true : false) : true;
+    const endPageNum = isMaxPageGroup ? maxPage : Math.ceil(page / pageSize) * pageSize;
+    const startPageNum = isMaxPageGroup ? Math.floor(page / pageSize) * 10 + 1 : endPageNum - (pageSize - 1);
+
     const [pageArr, setPageArr] = useState([]);
 
     useEffect(() => {
-        if (isStartEndPage === 0 || isStartEndPage === 1) {
-            const pageNum = Array.from({ length: limitIndex }, (_, i) => i + page - 1 + 1);
-            setPageArr(pageNum);
-        }
-    }, [page]);
+        const length = isMaxPageGroup ? endPageNum - (startPageNum - 1) : pageSize;
+        const pageNum = Array.from({ length: length }, (_, i) => i + startPageNum);
+        setPageArr(pageNum);
+    }, [startPageNum]);
 
     return (
         <PaginationBlock>
@@ -67,7 +87,7 @@ const Pagination = ({ page, totalCount, limitIndex, onIndexPage, onNextPage, onP
                 </PageButton>
                 {pageArr.map((i) => {
                     return (
-                        <PageButton key={i} onClick={() => onIndexPage(i)}>
+                        <PageButton key={i} aria-current={page === i ? 'cur' : null} onClick={() => onPageChange(i)}>
                             {i}
                         </PageButton>
                     );
@@ -75,7 +95,7 @@ const Pagination = ({ page, totalCount, limitIndex, onIndexPage, onNextPage, onP
                 <PageButton onClick={onNextPage}>
                     <FontAwesomeIcon icon={faCaretRight} />
                 </PageButton>
-                <PageButton onClick={() => onLastPage(maxPage)}>
+                <PageButton onClick={onLastPage}>
                     <FontAwesomeIcon icon={faForward} />
                 </PageButton>
             </PaginationBox>

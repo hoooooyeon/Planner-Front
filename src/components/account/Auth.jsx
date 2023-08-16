@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import TextBox from '../common/TextBox';
+import LabelTextBox from '../common/LabelTextBox';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom';
 import Modal from '../common/Modal';
 
@@ -85,7 +85,7 @@ const Auth = ({ type, form, onChange, onSubmit, authError }) => {
             <ContentBox>
                 <LogoText>한국다봄</LogoText>
                 <FormBox>
-                    <TextBox
+                    <LabelTextBox
                         type="email"
                         name="email"
                         placeholder="이메일"
@@ -94,7 +94,7 @@ const Auth = ({ type, form, onChange, onSubmit, authError }) => {
                         value={form.email}
                         error={authError}
                     />
-                    <TextBox
+                    <LabelTextBox
                         type="password"
                         name="password"
                         placeholder="비밀번호"
@@ -105,7 +105,7 @@ const Auth = ({ type, form, onChange, onSubmit, authError }) => {
                     />
                     {isRegister && (
                         <>
-                            <TextBox
+                            <LabelTextBox
                                 type="password"
                                 name="passwordConfirm"
                                 placeholder="비밀번호 확인"
@@ -114,7 +114,7 @@ const Auth = ({ type, form, onChange, onSubmit, authError }) => {
                                 value={form.passwordConfirm}
                                 error={authError}
                             />
-                            <TextBox
+                            <LabelTextBox
                                 type="text"
                                 name="username"
                                 placeholder="이름"
@@ -123,7 +123,7 @@ const Auth = ({ type, form, onChange, onSubmit, authError }) => {
                                 value={form.username}
                                 error={authError}
                             />
-                            <TextBox
+                            <LabelTextBox
                                 type="text"
                                 name="nickname"
                                 placeholder="닉네임"
@@ -132,7 +132,7 @@ const Auth = ({ type, form, onChange, onSubmit, authError }) => {
                                 value={form.nickname}
                                 error={authError}
                             />
-                            <TextBox
+                            <LabelTextBox
                                 type="text"
                                 name="phone"
                                 placeholder="전화번호"

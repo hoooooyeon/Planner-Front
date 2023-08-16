@@ -3,20 +3,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { default as styled } from 'styled-components';
 
-const SelectBox = styled.div`
+export const SelectBox = styled.div`
     position: relative;
     background-color: white;
     border-radius: 6px;
     user-select: none;
     margin: 0px 5px;
+    border: solid 1px silver;
 
     &:hover {
-        background-color: silver;
+        box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
     }
 `;
 
-const SelectMain = styled.div`
-    width: 140px;
+export const SelectMain = styled.div`
+    width: 122px;
     height: 32px;
     text-align: center;
     line-height: 32px;
@@ -34,6 +35,7 @@ const SelectOption = styled.div`
     border-radius: 6px;
     animation: fadein 0.3s;
     z-index: 3;
+    box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
 
     @keyframes fadein {
         from {
@@ -49,7 +51,7 @@ const SelectOptionItem = styled.div`
     background-color: white;
     //width: 70px;
     height: 20px;
-    margin: 5px 0px;
+    margin: 5px 10px;
     border-radius: 6px;
     text-align: center;
     line-height: 20px;
@@ -59,9 +61,9 @@ const SelectOptionItem = styled.div`
     }
 `;
 
-const Select = ({ value, options, onChange }) => {
+const Select = ({ className, value, options, onChange }) => {
     const [selecting, setSelecting] = useState(false);
-    console.log(value);
+
     const onClick = () => {
         if (!selecting) {
             setSelecting(true);
@@ -78,7 +80,7 @@ const Select = ({ value, options, onChange }) => {
     };
 
     return (
-        <SelectBox>
+        <SelectBox className={className}>
             <SelectMain onClick={onClick}>
                 {value.id ? value.value : '선택'}
                 <FontAwesomeIcon icon={faAngleDown} />

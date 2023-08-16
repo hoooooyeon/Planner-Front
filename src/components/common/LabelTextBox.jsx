@@ -32,14 +32,22 @@ const Error = styled.b`
     margin: 3px 0px;
 `;
 
-const TextBox = ({ name, placeholder, type, label, onChange, value, error }) => {
+const LabelTextBox = ({ className, name, placeholder, type, label, onChange, defaultValue, value, error, ...rest }) => {
     return (
-        <Box>
-            <label for="name">{label}</label>
-            <Input type={type} name={name} placeholder={placeholder} onChange={onChange} value={value} />
+        <Box className={className}>
+            <label for={name}>{label}</label>
+            <Input
+                type={type}
+                name={name}
+                placeholder={placeholder}
+                onChange={onChange}
+                value={value}
+                defaultValue={defaultValue}
+                {...rest}
+            />
             {error && <Error>{error[name]}</Error>}
         </Box>
     );
 };
 
-export default TextBox;
+export default LabelTextBox;
