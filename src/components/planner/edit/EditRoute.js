@@ -9,14 +9,14 @@ import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 
 const EditRouteBlock = styled.div`
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     height: 100vh;
     float: left;
 `;
 
 const InfoDiv = styled.div`
-    background-color: var(--md-sys-color-surface-variant);
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     margin-bottom: 1rem;
 `;
 
@@ -40,7 +40,7 @@ const Title = styled.div`
 
 const Creator = styled.div`
     font-size: 0.9rem;
-    color: var(--md-sys-color-secondary);
+    color: ${(props) => props.theme.tertiaryColor};
     margin-bottom: 2rem;
     width: 21rem;
     white-space: nowrap;
@@ -56,7 +56,7 @@ const Dates = styled.div`
 `;
 
 const ShadowDiv = styled.div`
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     border-radius: 0.2rem 0.5rem 0.5rem 0.2rem;
     &:last-child {
         margin-left: 2rem;
@@ -64,8 +64,8 @@ const ShadowDiv = styled.div`
 `;
 
 const DateBox = styled.div`
-    box-shadow: -8px 0 0 black;
-    background-color: var(--md-sys-color-surface);
+    box-shadow: -8px 0 0 ${(props) => props.theme.secondaryColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 0.2rem 0.5rem 0.5rem 0.2rem;
     width: 10rem;
     height: 3rem;
@@ -76,7 +76,7 @@ const DateBox = styled.div`
     line-height: 10%;
     position: relative;
     p {
-        color: var(--md-sys-color-secondary);
+        color: ${(props) => props.theme.secondaryColor};
         font-size: 0.7rem;
         width: 4rem;
         text-align: center;
@@ -119,7 +119,7 @@ const SetIcon = styled(FontAwesomeIcon)`
 
 const UpdatedDate = styled.div`
     font-size: 0.7rem;
-    color: var(--md-sys-color-secondary);
+    color: ${(props) => props.theme.tertiaryColor};
     margin-top: 1rem;
 `;
 
@@ -127,9 +127,9 @@ const RouteBox = styled.div`
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     padding: 0.5rem 0.5rem 0.5rem 1rem;
-    background-color: var(--md-sys-color-surface-variant);
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
 `;
 
 const MenuIcon = styled(FontAwesomeIcon)`
@@ -161,8 +161,8 @@ const DropDownMenu = styled.ul`
     width: 4.4rem;
     z-index: 1000;
     border-radius: 0.5rem;
-    background-color: var(--md-sys-color-surface);
-    box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     border: none;
     padding: 0.5rem 1rem;
     text-align: center;

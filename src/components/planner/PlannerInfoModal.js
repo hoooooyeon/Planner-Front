@@ -5,9 +5,9 @@ const InfoForm = styled.form`
     width: 25rem;
     height: 10rem;
     display: flex;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     flex-direction: column;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     padding: 0.5rem;
     border-radius: 0.5rem;
     justify-content: center;
@@ -38,14 +38,13 @@ const Title = styled.input`
     border: none;
     border-radius: 0.3rem;
     padding: 0 0.5rem;
-    background-color: var(--md-sys-color-surface);
-
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     &::placeholder {
-        color: var(--md-sys-color-primary);
+        color: ${(props) => props.theme.tertiaryColor};
     }
     &:focus {
-        color: var(--md-sys-color-primary);
+        color: ${(props) => props.theme.tertiaryColor};
         outline: none;
     }
 `;
@@ -56,14 +55,13 @@ const Funds = styled.input`
     border: none;
     border-radius: 0.3rem;
     padding: 0 0.5rem;
-    background-color: var(--md-sys-color-surface);
-
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     &::placeholder {
-        color: var(--md-sys-color-primary);
+        color: ${(props) => props.theme.tertiaryColor};
     }
     &:focus {
-        color: var(--md-sys-color-primary);
+        color: ${(props) => props.theme.tertiaryColor};
         outline: none;
     }
 `;
@@ -74,14 +72,13 @@ const People = styled.input`
     border: none;
     border-radius: 0.3rem;
     padding: 0 0.5rem;
-    background-color: var(--md-sys-color-surface);
-
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     &::placeholder {
-        color: var(--md-sys-color-primary);
+        color: ${(props) => props.theme.tertiaryColor};
     }
     &:focus {
-        color: var(--md-sys-color-primary);
+        color: ${(props) => props.theme.tertiaryColor};
         outline: none;
     }
 `;
@@ -92,7 +89,7 @@ const Category = styled.select`
     border: none;
     border-radius: 0.3rem;
     text-align: center;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     &:focus {
         outline: none;
     }

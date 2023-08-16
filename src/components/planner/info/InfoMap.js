@@ -15,7 +15,7 @@ const MapBlock = styled.div`
 
 const Map = styled.div`
     border-radius: 0.5rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     width: 100%;
     height: 100%;
     pointer-events: none;
@@ -25,7 +25,7 @@ const Map = styled.div`
 `;
 
 const IconBox = styled.div`
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     border-radius: 0.3rem;
     display: flex;
     position: absolute;
@@ -34,17 +34,21 @@ const IconBox = styled.div`
     z-index: 1;
     padding: 5px;
     cursor: pointer;
-    background-color: ${(props) => (props.like ? `var(--md-sys-color-primary)` : `var(--md-sys-color-background)`)};
-    color: ${(props) =>
-        props.like ? `var(--md-sys-color-primary-container)` : `var(--md-sys-color-on-primary-container)`};
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
+    color: ${(props) => props.theme.secondaryColor};
+    ${(props) =>
+        props.like &&
+        css`
+            background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
+            color: ${(props) => props.theme.likeButtonColor};
+        `}
     &:hover {
-        box-shadow: 0px 1px 6px -2px var(--md-sys-color-shadow);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColors};
     }
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: ${(props) =>
-        props.like ? `var(--md-sys-color-primary-container)` : `var(--md-sys-color-on-primary-container)`};
+    color: ${(props) => (props.like ? `${props.theme.likeButtonColor}` : `${props.theme.secondaryColor}`)};
     font-size: 1rem;
     margin-right: 0.5rem;
 `;
@@ -55,7 +59,7 @@ const AllSchedule = styled.div`
     top: 10px;
     right: 10px;
     z-index: 1;
-    background-color: var(--md-sys-color-background);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     width: 1rem;
     height: 1rem;
     padding: 0.5rem;
@@ -63,13 +67,13 @@ const AllSchedule = styled.div`
     line-height: 1rem;
     text-align: center;
     &:hover {
-        box-shadow: 0px 1px 6px -2px var(--md-sys-color-shadow);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
     ${(props) =>
         props.allSchedule &&
         css`
-            background-color: var(--md-sys-color-primary);
-            color: var(--md-sys-color-on-primary);
+            background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
+            color: ${(props) => props.theme.primaryColor};
         `}
 `;
 
@@ -78,8 +82,8 @@ const ScheduleIcon = styled(FontAwesomeIcon)`
 `;
 
 const IconName = styled.div`
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
-    background-color: var(--md-sys-color-background);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 0.3rem;
     cursor: pointer;
     position: absolute;

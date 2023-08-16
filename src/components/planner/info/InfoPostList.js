@@ -6,7 +6,7 @@ import ad1 from '../../../lib/images/ad1.jpg';
 import ad2 from '../../../lib/images/serviceImg1.jpg';
 
 const InfoPostListBlock = styled.div`
-    background-color: var(--md-sys-color-surface-variant);
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
     padding-top: 1rem;
     width: 100%;
     height: 100%;
@@ -23,9 +23,9 @@ const Container = styled.div`
 `;
 
 const PostListBlock = styled.div`
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     border-radius: 0.5rem;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     padding: 1rem;
     width: calc(100% - 2rem);
     height: 20rem;
@@ -45,8 +45,8 @@ const PostListHeader = styled.div`
 `;
 
 const PostList = styled.ul`
-    border-top: 1px solid var(--md-sys-color-outline);
-    border-bottom: 1px solid var(--md-sys-color-outline);
+    border-top: 1px solid ${(props) => props.theme.outlineColor};
+    border-bottom: 1px solid ${(props) => props.theme.outlineColor};
     padding: 0;
     height: calc(100% - 4rem);
     display: flex;
@@ -61,16 +61,15 @@ const PostList = styled.ul`
 const Button = styled.button`
     border-radius: 0.5rem;
     border: none;
-    color: var(--md-sys-color-on-surface-variant);
-    background-color: var(--md-sys-color-surface-variant);
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     width: 5rem;
     height: 2rem;
     font-weight: bold;
     cursor: pointer;
     &:hover {
-        color: var(--md-sys-color-secondary);
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        color: ${(props) => props.theme.hoverColor};
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
 `;
 
@@ -79,7 +78,7 @@ const Ad = styled.div`
     height: 40vw;
     margin-left: 1rem;
     display: none;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     transition: all 0.3s;
     position: relative;
     border-radius: 0.5rem;
@@ -89,7 +88,7 @@ const Ad = styled.div`
     div {
         width: calc(100% - 2rem);
         padding: 1rem;
-        color: var(--md-sys-color-background);
+        color: ${(props) => props.theme.primaryColor};
         font-weight: bold;
         position: absolute;
         left: 50%;
@@ -109,7 +108,7 @@ const Img = styled.img`
 `;
 
 const ErrorList = styled.div`
-    color: var(--md-sys-color-tertiary-container);
+    color: ${(props) => props.theme.tertiaryColor};
     font-weight: bold;
     font-size: 1rem;
     position: absolute;

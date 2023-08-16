@@ -4,12 +4,15 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 const PostItem = styled.li`
-    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    border-bottom: 1px solid ${(props) => props.theme.outlineColor};
     padding: 0.5rem 1rem;
     display: flex;
     align-items: center;
     position: relative;
     justify-content: space-between;
+    &:hover {
+        background-color: ${(props) => props.theme.secondaryBackgroundColor};
+    }
 `;
 
 const PostHeader = styled.div`
@@ -22,7 +25,7 @@ const Number = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--md-sys-color-secondary);
+    color: ${(props) => props.theme.tertiaryColor};
 `;
 
 const Title = styled.div`
@@ -42,18 +45,18 @@ const ButtonBox = styled.div`
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     border-radius: 2rem;
-    color: var(--md-sys-color-on-secondary-container);
-    background-color: var(--md-sys-color-secondary-container);
+    color: ${(props) => props.theme.secondaryColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     padding: 0.3rem;
     width: 0.7rem;
     height: 0.7rem;
     cursor: pointer;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
     & + & {
         margin-left: 0.5rem;
     }
     &:hover {
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        color: ${(props) => props.theme.hoverColor};
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
 `;
 

@@ -5,12 +5,13 @@ import styled from 'styled-components';
 
 const FormDiv = styled.div`
     margin: 1rem 0;
-    background-color: var(--md-sys-color-primary-container);
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
     display: flex;
     align-items: center;
     border-radius: 1rem;
     height: 10rem;
     padding: 0.5rem;
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     @media all and (min-width: 320px) {
         padding: 0.5rem 3rem;
     }
@@ -34,9 +35,12 @@ const Form = styled.form`
 
 const SearchBox = styled.div`
     display: flex;
+    align-items: center;
     width: 100%;
+    padding-left: 0.9rem;
     @media all and (max-width: 1023px) {
         margin: 1rem 0 0 0;
+        padding-left: 0;
     }
 `;
 
@@ -48,12 +52,13 @@ const SearchInput = styled.input`
     font-size: 1rem;
     font-weight: bold;
     border-radius: 0.5rem 0 0 0.5rem;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    border: none;
     &::placeholder {
-        color: var(--md-sys-color-surface-variant);
+        color: ${(props) => props.theme.tertiaryColor};
     }
     &:focus {
-        color: var(--md-sys-color-primary-container);
+        color: ${(props) => props.theme.tertiaryColor};
         outline: none;
     }
     @media all and (min-width: 1024px) {
@@ -66,8 +71,8 @@ const SearchButton = styled.button`
     border-radius: 0 0.5rem 0.5rem 0;
     min-width: 5rem;
     height: 2.5rem;
-    background-color: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
+    background-color: ${(props) => props.theme.inputButtonBackgroundColor};
+    color: ${(props) => props.theme.primaryColor};
     font-size: 1rem;
     font-weight: bold;
     white-space: nowrap;
@@ -84,7 +89,7 @@ const InvisibleInput = styled.input`
 
 const SearchResult = styled.h3`
     margin: 1rem 0;
-    color: var(--md-sys-color-secondary);
+    color: ${(props) => props.theme.tertiaryColor};
 `;
 
 const SelectDiv = styled.div`
@@ -95,7 +100,7 @@ const SelectBox = styled.div`
     display: flex;
     align-items: center;
     height: 2.5rem;
-    border-right: 0.1rem solid lightgray;
+    border-right: 0.1rem solid ${(props) => props.theme.outlineColor};
     padding-right: 0.9rem;
     & + & {
         padding-left: 0.9rem;
@@ -129,22 +134,24 @@ const Select = styled.select`
 const Label = styled.label`
     margin-right: 0.5rem;
     font-size: 0.9rem;
-    color: var(--md-sys-color-secondary);
     @media all and (min-width: 480px) {
         white-space: nowrap;
     }
 `;
 const IconBox = styled.div`
-    background-color: var(--md-sys-color-background);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     height: 2.5rem;
     line-height: 2.5rem;
     padding: 0 0.5rem;
+    border: 1px solid ${(props) => props.theme.outlineColor};
+    border-left: none;
+    border-right: none;
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: var(--md-sys-color-on-background);
+    color: ${(props) => props.theme.secondaryColor};
     &:hover {
-        color: var(--md-sys-color-secondary);
+        color: ${(props) => props.theme.hoverColor};
     }
 `;
 
@@ -200,6 +207,7 @@ const SpotSearchForm = ({
                         </SelectBox>
                     </SelectDiv>
                     <SearchBox>
+                        <Label>여행지 검색</Label>
                         <SearchInput
                             placeholder="키워드 검색"
                             type="text"

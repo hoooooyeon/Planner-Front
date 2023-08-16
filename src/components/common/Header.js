@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
-import palette from '../../lib/styles/palette';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import SideNav from './SideNav.jsx';
@@ -16,25 +15,25 @@ const HeaderBlock = styled.div`
     top: 0;
     left: 0;
     right: 0;
-    background-color: var(--md-sys-color-on-secondary);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     z-index: 999;
     padding: 0;
     margin: 0;
     a {
         text-decoration: none;
         white-space: nowrap;
-        color: var(--md-sys-color-on-background);
+        color: ${(props) => props.theme.secondaryColor};
         &:hover {
-            color: var(--md-sys-color-secondary);
+            color: ${(props) => props.theme.mainColor};
         }
     }
     h1 {
         font-size: 1.2rem;
         font-weight: bold;
         white-space: nowrap;
-        color: var(--md-sys-color-on-background);
+        color: ${(props) => props.theme.secondaryColor};
         &:hover {
-            color: var(--md-sys-color-primary);
+            color: ${(props) => props.theme.mainColor};
         }
     }
     ${(props) =>
@@ -84,9 +83,9 @@ const AccountList = styled.ul`
         align-items: center;
         font-size: 0.8rem;
         font-weight: bold;
-        color: var(--md-sys-color-on-background);
+        color: ${(props) => props.theme.secondaryColor};
         &:hover {
-            color: var(--md-sys-color-secondary);
+            color: ${(props) => props.theme.mainColor};
         }
     }
 `;
@@ -96,11 +95,11 @@ const Account = styled.div`
     align-items: center;
     position: relative;
     width: 76px;
-    color: var(--md-sys-color-on-background);
     font-weight: bold;
     cursor: pointer;
+    color: ${(props) => props.theme.secondaryColor};
     &:hover {
-        color: var(--md-sys-color-secondary);
+        color: ${(props) => props.theme.mainColor};
     }
     .user-img {
         border-radius: 10px;
@@ -130,8 +129,8 @@ const DropDownMenu = styled.ul`
     width: 4.4rem;
     z-index: 1000;
     border-radius: 0.5rem;
-    background-color: var(--md-sys-color-background);
-    box-shadow: 0px 0px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 0px 3px ${(props) => props.theme.shadowColor};
     border: none;
     padding: 0.5rem 1rem;
     margin: 0;
@@ -139,14 +138,14 @@ const DropDownMenu = styled.ul`
     li {
         cursor: pointer;
         font-size: 0.8rem;
-        color: var(--md-sys-color-on-background);
+        color: ${(props) => props.theme.secondaryColor};
         &:hover {
-            color: var(--md-sys-color-secondary);
+            color: ${(props) => props.theme.mainColor};
         }
         a {
-            color: var(--md-sys-color-on-background);
+            color: ${(props) => props.theme.secondaryColor};
             &:hover {
-                color: var(--md-sys-color-secondary);
+                color: ${(props) => props.theme.mainColor};
             }
         }
         &:hover {

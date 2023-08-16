@@ -24,7 +24,7 @@ const FooterBox = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: var(--md-sys-color-on-secondary);
+    color: ${(props) => props.theme.primaryColor};
     padding: 2rem 1rem;
     flex-direction: column;
     h3 {
@@ -87,7 +87,6 @@ const MusicBox = styled.div`
 `;
 
 const MusicImg = styled.img`
-    background-color: var(--md-sys-color-secondary);
     width: 100%;
     height: 100%;
 `;
@@ -97,7 +96,6 @@ const Writing = styled.div`
     justify-content: space-around;
     flex-direction: column;
     margin-left: 1rem;
-
     @media all and (max-width: 767px) {
         align-items: center;
     }
@@ -105,12 +103,12 @@ const Writing = styled.div`
 
 const Logo = styled.div`
     height: 75px;
-    background-color: var(--md-sys-color-secondary);
+    background-color: ${(props) => props.theme.mainColor};
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: var(--md-sys-color-on-secondary);
+    color: ${(props) => props.theme.primaryColor};
     div:first-child {
         font-size: 0.8rem;
     }
@@ -125,7 +123,6 @@ const Info = styled.div`
     flex-direction: column;
     justify-content: center;
     margin-left: 1rem;
-
     @media all and (max-width: 767px) {
         align-items: center;
     }
@@ -161,7 +158,7 @@ const PlayButton = styled(FontAwesomeIcon)`
     width: 2rem;
     height: 2rem;
     display: block;
-    color: var(--md-sys-color-on-secondary);
+    color: ${(props) => props.theme.primaryColor};
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
@@ -178,7 +175,7 @@ const StopButton = styled(FontAwesomeIcon)`
     width: 2rem;
     height: 2rem;
     display: none;
-    color: var(--md-sys-color-on-secondary);
+    color: ${(props) => props.theme.primaryColor};
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;

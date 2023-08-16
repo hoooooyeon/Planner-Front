@@ -19,7 +19,7 @@ const EditListBlock = styled.div`
     bottom: 0;
     width: 350px;
     height: 100vh;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     float: left;
     z-index: 200;
     transform: ${(props) => (props.navOpen ? 'translateX(0px)' : 'translateX(350px)')};
@@ -34,8 +34,8 @@ const List = styled.div`
     align-items: center;
     overflow: auto;
     z-index: 200;
-    background-color: var(--md-sys-color-surface-variant);
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     position: relative;
     &::-webkit-scrollbar {
         display: none;
@@ -50,13 +50,13 @@ const ListItem = styled.div`
     z-index: 99;
     padding: 0.5rem;
     &:hover {
-        background-color: var(--md-sys-color-surface);
+        background-color: ${(props) => props.theme.primaryBackgroundColor};
     }
 `;
 
 const Img = styled.img`
     border-radius: 0.5rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     width: 5rem;
     height: 5rem;
     font-size: 0.7rem;
@@ -85,7 +85,7 @@ const Address = styled.div`
     overflow: hidden;
     white-space: wrap;
     font-size: 0.6rem;
-    color: var(--md-sys-color-secondary);
+    color: ${(props) => props.theme.tertiaryColor};
     text-overflow: ellipsis;
 `;
 
@@ -99,14 +99,14 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     padding: 0.5rem;
     height: 1rem;
     width: 1rem;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
     cursor: pointer;
     & + & {
         margin-left: 0.5rem;
     }
     &:hover {
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
-        color: var(--md-sys-color-primary);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
+        color: ${(props) => props.theme.hoverColor};
     }
 `;
 
@@ -118,24 +118,23 @@ const NavArrowIcon = styled(FontAwesomeIcon)`
     height: 1.5rem;
     border-radius: 2rem;
     padding: 0.3rem;
-    background-color: var(--md-sys-color-surface);
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     cursor: pointer;
-
     &:hover {
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
-        color: var(--md-sys-color-primary);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
+        color: ${(props) => props.theme.hoverColor};
     }
 `;
 
 const PageBox = styled.div`
     width: 100%;
     padding: 5px 0;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
 `;
 
 const ErrorList = styled.div`
-    color: var(--md-sys-color-on-primary);
+    color: ${(props) => props.theme.tertiaryColor};
     font-weight: bold;
     font-size: 1.2rem;
     position: absolute;
@@ -168,6 +167,7 @@ const EditList = ({
     onChangeResultKeyword,
     onChangeLikeKeyword,
     onChangeCurKeyword,
+    onClickDateSchedule,
 }) => {
     const navRef = useRef();
     const [navOpen, setNavOpen] = useState(true);
@@ -245,6 +245,7 @@ const EditList = ({
                                         <StyledFontAwesomeIcon
                                             onClick={() => {
                                                 onCreateLocation(s);
+                                                onClickDateSchedule();
                                             }}
                                             icon={faPlus}
                                         />

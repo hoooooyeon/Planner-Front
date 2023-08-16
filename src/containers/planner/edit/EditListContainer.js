@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditList from '../../../components/planner/edit/EditList';
 import {
+    changeAllScheduleAction,
     changeKeywordAction,
     changePageNumAction,
     changeResultKeywordAction,
@@ -222,6 +223,10 @@ const EditListContainer = () => {
         setPage(1);
     }, [resultKeyword, likeKeyword]);
 
+    const onClickDateSchedule = () => {
+        dispatch(changeAllScheduleAction(false));
+    };
+
     if (!planner || nickname !== creator) {
         return null;
     }
@@ -250,6 +255,7 @@ const EditListContainer = () => {
             onChangeCurKeyword={onChangeCurKeyword}
             onChangeResultKeyword={onChangeResultKeyword}
             onChangeLikeKeyword={onChangeLikeKeyword}
+            onClickDateSchedule={onClickDateSchedule}
         />
     );
 };

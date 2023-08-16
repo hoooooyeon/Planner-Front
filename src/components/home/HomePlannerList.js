@@ -8,7 +8,7 @@ const HomePlannerListBlock = styled.div`
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: var(--md-sys-color-background);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
 `;
 
 const Container = styled.div`
@@ -29,7 +29,7 @@ const Header = styled.div`
         margin: 0;
     }
     p {
-        color: var(--md-sys-color-on-primary-container);
+        color: ${(props) => props.theme.secondaryColor};
     }
 `;
 
@@ -43,15 +43,15 @@ const PlannerList = styled.ul`
 
 const PlannerItem = styled.li`
     width: 24%;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     border-radius: 0.5rem;
-    background-color: var(--md-sys-color-background);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     cursor: pointer;
     & + & {
         margin-left: 1rem;
     }
     &:hover {
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
 `;
 
@@ -81,7 +81,7 @@ const InfoBox = styled.div`
     height: 2.5rem;
     margin: 0;
     padding: 0.5rem;
-    box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -1px 1px ${(props) => props.theme.shadowColor};
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -94,7 +94,7 @@ const Title = styled.div`
 `;
 const Date = styled.div`
     font-size: 0.4rem;
-    color: var(--md-sys-color-tertiary);
+    color: ${(props) => props.theme.tertiaryColor};
     margin-top: 0.5rem;
     overflow: hidden;
 `;

@@ -39,8 +39,8 @@ const RouteItem = styled.div`
     flex-direction: column;
     align-items: center;
     position: relative;
-    background-color: var(--md-sys-color-surface);
-    box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     border-radius: 1rem;
     cursor: pointer;
     padding: 2rem 1.4rem 0.5rem 1.4rem;
@@ -71,8 +71,8 @@ const TransItem = styled.div`
     width: 2.5rem;
     height: 2.5rem;
     z-index: 100;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
-    background-color: var(--md-sys-color-surface);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -96,8 +96,8 @@ const DropDownMenu = styled.ul`
     overflow: hidden;
     border-radius: 1rem;
     padding: 0.7rem 0.5rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
-    background-color: var(--md-sys-color-surface-variant);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
     align-items: center;
     justify-content: space-around;
     @keyframes fade-in {
@@ -130,8 +130,8 @@ const TransName = styled.div`
     padding: 0.2rem 0.4rem;
     font-weight: bold;
     white-space: nowrap;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
-    background-color: var(--md-sys-color-surface);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 1rem;
     position: absolute;
     top: 20px;
@@ -144,14 +144,14 @@ const SpotItem = styled.div`
     padding: 0.5rem;
     width: 13rem;
     height: 3.5rem;
-    background-color: var(--md-sys-color-surface);
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     z-index: 99;
 `;
 
 const Img = styled.img`
     border-radius: 0.5rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     width: 3.5rem;
     height: 3.5rem;
     font-size: 0.7rem;
@@ -181,7 +181,7 @@ const Address = styled.div`
     overflow: hidden;
     white-space: wrap;
     font-size: 0.1rem;
-    color: var(--md-sys-color-secondary);
+    color: ${(props) => props.theme.tertiaryColor};
     text-overflow: ellipsis;
 `;
 
@@ -197,10 +197,10 @@ const DeleteButton = styled.div`
 
 const DeleteIcon = styled(FontAwesomeIcon)`
     font-size: 1.2rem;
-    color: var(--md-sys-color-surface-variant);
-    background-color: var(--md-sys-color-surface);
+    color: ${(props) => props.theme.tertiaryColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 2rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
 `;
 
 const MoveIcon = styled(FontAwesomeIcon)`
@@ -208,7 +208,7 @@ const MoveIcon = styled(FontAwesomeIcon)`
     position: absolute;
     top: 49px;
     left: 9px;
-    color: var(--md-sys-color-surface-variant);
+    color: ${(props) => props.theme.tertiaryColor};
 `;
 
 const EditRouteList = ({

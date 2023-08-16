@@ -11,7 +11,7 @@ import serviceImg3 from '../../lib/images/serviceImg3.jpg';
 const HomeServicesBlock = styled.div`
     width: 100%;
     height: 100%;
-    background-color: var(--md-sys-color-surface-variant);
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
 `;
 
 const Container = styled.div`
@@ -49,7 +49,7 @@ const ServiceItem = styled.li`
 const OverviewBox = styled.div`
     width: 250px;
     font-weight: bold;
-    color: var(--md-sys-color-on-primary-container);
+    color: ${(props) => props.theme.secondaryColor};
     p {
         font-size: 0.8rem;
     }
@@ -90,7 +90,7 @@ const LeftIcon = styled(FontAwesomeIcon)`
     left: 7%;
     z-index: 1;
     font-size: 2rem;
-    color: var(--md-sys-color-on-primary);
+    color: ${(props) => props.theme.tertiaryColor};
     opacity: 0.7;
     display: none;
     @media all and (max-width: 767px) {
@@ -104,7 +104,7 @@ const RightIcon = styled(FontAwesomeIcon)`
     right: 7%;
     z-index: 1;
     font-size: 2rem;
-    color: var(--md-sys-color-on-primary);
+    color: ${(props) => props.theme.tertiaryColor};
     opacity: 0.7;
     display: none;
     @media all and (max-width: 767px) {
@@ -115,7 +115,7 @@ const RightIcon = styled(FontAwesomeIcon)`
 const Title = styled.div`
     font-size: 1.1rem;
     font-weight: bold;
-    color: var(--md-sys-color-on-background);
+    color: ${(props) => props.theme.secondaryColor};
     text-align: center;
     margin-top: 0.5rem;
 `;

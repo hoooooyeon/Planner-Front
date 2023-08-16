@@ -5,7 +5,7 @@ const MemberBox = styled.div`
     width: 25rem;
     height: 15rem;
     flex-direction: column;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 0.5rem;
 `;
 
@@ -20,13 +20,13 @@ const Text = styled.input`
     border: none;
     border-radius: 0.3rem;
     padding: 0 0.5rem;
-    background-color: var(--md-sys-color-surface);
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     &::placeholder {
-        color: var(--md-sys-color-primary);
+        color: ${(props) => props.theme.tertiaryColor};
     }
     &:focus {
-        color: var(--md-sys-color-primary);
+        color: ${(props) => props.theme.tertiaryColor};
         outline: none;
     }
 `;
@@ -36,18 +36,18 @@ const Button = styled.button`
     height: 2rem;
     border-radius: 0.5rem;
     border: none;
-    background-color: var(--md-sys-color-surface);
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     font-weight: bold;
     cursor: pointer;
     &:hover {
-        color: var(--md-sys-color-on-primary-container);
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        color: ${(props) => props.theme.hoverColor};
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
 `;
 
 const MemberList = styled.ul`
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 2px ${(props) => props.theme.shadowColor};
     padding: 0.5rem;
     overflow: auto;
     height: 8rem;

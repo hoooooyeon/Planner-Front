@@ -19,10 +19,10 @@ const Modalbackground = styled.div`
 const ModalBox = styled.div`
     position: absolute;
     z-index: 1;
-    background-color: var(--md-sys-color-background);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 0.5rem;
     padding: 0.5rem 0.5rem 1rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
 `;
 
 const ModalHeader = styled.div`
@@ -60,9 +60,8 @@ const ModalFooter = styled.div`
 `;
 
 const ModalButton = styled.button`
-    background-color: var(--md-sys-color-surface-variant);
-    color: var(--md-sys-color-on-background);
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     font-weight: bold;
     width: 80px;
     height: 40px;
@@ -70,8 +69,8 @@ const ModalButton = styled.button`
     border-radius: 0.5rem;
     cursor: pointer;
     &:hover {
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
-        color: var(--md-sys-color-secondary);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
+        color: ${(props) => props.theme.mainColor};
     }
     & + & {
         margin-left: 1rem;

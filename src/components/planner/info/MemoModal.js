@@ -7,14 +7,14 @@ import Modal from '../../common/Modal';
 
 const MemoModalBlock = styled.div`
     border-radius: 0.5rem;
-    border: 1px solid var(--md-sys-color-outline-variant);
+    border: 1px solid ${(props) => props.theme.outlineColor};
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     width: 35rem;
     max-height: 20rem;
     padding: 0.5rem;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
 `;
 const MemoModalHeader = styled.div`
     display: flex;
@@ -31,7 +31,7 @@ const StyledInput = styled.input`
     border: none;
     outline: none;
     border-radius: 0.3rem;
-    background-color: var(--md-sys-color-surface-variant);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     width: 100%;
     height: 2rem;
     padding: 0 0.5rem;
@@ -41,10 +41,10 @@ const StyledInput = styled.input`
             pointer-events: none;
         `}
     &::placeholder {
-        color: var(--md-sys-color-on-primary);
+        color: ${(props) => props.theme.tertiaryColor};
     }
     &:focus {
-        color: var(--md-sys-color-on-primary);
+        color: ${(props) => props.theme.tertiaryColor};
         outline: none;
     }
 `;

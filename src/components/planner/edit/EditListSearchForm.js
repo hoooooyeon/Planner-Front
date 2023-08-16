@@ -39,12 +39,12 @@ const MenuIcon = styled(FontAwesomeIcon)`
     width: 1rem;
     height: 1rem;
     padding: 0.6rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
-    background-color: var(--md-sys-color-surface);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     margin-bottom: 0.2rem;
     &[aria-current] {
-        background-color: var(--md-sys-color-primary);
-        color: var(--md-sys-color-on-primary);
+        background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
+        color: ${(props) => props.theme.primaryColor};
     }
 `;
 
@@ -52,10 +52,10 @@ const IconName = styled.div`
     font-size: 0.1rem;
     padding: 0.2rem 0.4rem;
     font-weight: bold;
-    color: var(--md-sys-color-primary);
+    color: ${(props) => props.theme.secondaryColor};
     white-space: nowrap;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
-    background-color: var(--md-sys-color-surface);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 1rem;
     position: absolute;
     top: 35px;
@@ -67,8 +67,8 @@ const FormDiv = styled.div`
     flex-direction: column;
     padding: 0.9rem 1rem 0;
     margin-bottom: 1rem;
-    background-color: var(--md-sys-color-surface-variant);
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
 `;
 
 const Form = styled.form`
@@ -93,12 +93,12 @@ const SearchInput = styled.input`
     font-size: 0.8rem;
     font-weight: bold;
     border-radius: 0.5rem 0 0 0.5rem;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     &::placeholder {
-        color: var(--md-sys-color-surface-variant);
+        color: ${(props) => props.theme.tertiaryColor};
     }
     &:focus {
-        color: var(--md-sys-color-primary-container);
+        color: ${(props) => props.theme.tertiaryColor};
         outline: none;
     }
 `;
@@ -108,8 +108,8 @@ const SearchButton = styled.button`
     border-radius: 0 0.5rem 0.5rem 0;
     min-width: 3rem;
     height: 2.5rem;
-    background-color: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
+    background-color: ${(props) => props.theme.inputButtonBackgroundColor};
+    color: ${(props) => props.theme.primaryColor};
     font-size: 1rem;
     font-weight: bold;
     white-space: nowrap;
@@ -125,6 +125,7 @@ const ResultBox = styled.div`
     height: 2rem;
     padding: 0.8rem 0;
     font-size: 0.9rem;
+    color: ${(props) => props.theme.secondaryColor};
 `;
 
 const SearchResult = styled.div`
@@ -133,7 +134,7 @@ const SearchResult = styled.div`
     white-space: wrap;
     text-overflow: ellipsis;
     max-width: 50%;
-    color: var(--md-sys-color-secondary);
+    color: ${(props) => props.theme.secondaryColor};
 `;
 
 const SelectDiv = styled.div`
@@ -158,7 +159,7 @@ const Select = styled.select`
     min-width: 6rem;
     height: 2.5rem;
     text-align-last: center;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     cursor: pointer;
     &:focus {
         outline: none;
@@ -175,16 +176,16 @@ const Label = styled.label`
 `;
 
 const IconBox = styled.div`
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     height: 2.5rem;
     line-height: 2.5rem;
     padding: 0 0.5rem;
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: var(--md-sys-color-on-background);
+    color: ${(props) => props.theme.secondaryColor};
     &:hover {
-        color: var(--md-sys-color-primary);
+        color: ${(props) => props.theme.hoverColor};
     }
 `;
 
@@ -277,7 +278,7 @@ const EditListSearchForm = ({
                         <InvisibleInput type="text" />
                         <IconBox>
                             {curKeyword.length > 0 ? (
-                                <FontAwesomeIcon
+                                <StyledFontAwesomeIcon
                                     onClick={() => {
                                         onChangeCurKeyword('');
                                     }}

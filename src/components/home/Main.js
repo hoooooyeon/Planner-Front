@@ -11,7 +11,7 @@ const MainBlock = styled.div`
     margin: 0;
     padding: 0;
     position: relative;
-    background-color: var(--md-sys-color-surface-variant);
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
 `;
 
 const MainBox = styled.div`
@@ -31,8 +31,7 @@ const MainBox = styled.div`
 
 const Title = styled.div`
     font-size: 1.3rem;
-    color: var(--md-sys-color-on-primary);
-
+    color: ${(props) => props.theme.primaryColor};
     @media all and (max-width: 479px) {
         display: none;
     }
@@ -42,7 +41,7 @@ const Text = styled.div`
     display: flex;
     flex-direction: column;
     font-size: 1rem;
-    color: var(--md-sys-color-surface);
+    color: ${(props) => props.theme.primaryColor};
     @media all and (max-width: 479px) {
         display: none;
     }
@@ -51,7 +50,7 @@ const Text = styled.div`
 const StyledLink = styled(Link)`
     text-decoration: none;
     margin-top: 60px;
-    color: var(--md-sys-color-on-primary);
+    color: ${(props) => props.theme.primaryColor};
     &:hover {
         cursor: pointer;
     }

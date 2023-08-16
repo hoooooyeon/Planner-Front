@@ -12,7 +12,7 @@ const PaginationBlock = styled.div`
     margin: 0 auto;
     display: flex;
     justify-content: center;
-    background-color: var(--md-sys-color-background);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
 `;
 
 const Container = styled.div`
@@ -29,20 +29,20 @@ const PageButton = styled.div`
     margin: 0;
     font-size: 0.9rem;
     &:hover {
-        background-color: var(--md-sys-color-secondary-container);
+        background-color: ${(props) => props.theme.hoverBackgroundColor};
         cursor: pointer;
         transform: translateY(-2px);
     }
 
     &[disabled] {
-        background-color: var(--md-sys-color-shadow);
+        background-color: ${(props) => props.theme.shadowColor};
         cursor: revert;
         transform: revert;
     }
 
     &[aria-current] {
-        background-color: var(--md-sys-color-secondary);
-        color: var(--md-sys-color-on-secondary);
+        background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
+        color: ${(props) => props.theme.primaryColor};
         font-weight: bold;
         cursor: revert;
         transform: revert;

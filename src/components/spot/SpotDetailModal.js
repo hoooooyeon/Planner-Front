@@ -6,12 +6,12 @@ import Modal from '../common/Modal';
 const DetailModalBlock = styled.div`
     width: 50rem;
     height: 20rem;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 0.5rem;
     display: flex;
     position: relative;
     padding: 2rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
 `;
 
 const ImgBox = styled.div`
@@ -21,7 +21,7 @@ const ImgBox = styled.div`
     position: relative;
     padding-top: 41%;
     width: 40%;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
 `;
 
 const Img = styled.img`
@@ -52,7 +52,7 @@ const Label = styled.div`
     margin-right: 1rem;
     font-size: 0.8rem;
     white-space: nowrap;
-    color: var(--md-sys-color-secondary);
+    color: ${(props) => props.theme.tertiaryColor};
 `;
 const Title = styled.div`
     width: 100%;
@@ -78,7 +78,7 @@ const Overview = styled.div`
 `;
 
 const LikeBox = styled.div`
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     border-radius: 5px;
     padding: 10px;
     display: flex;
@@ -91,17 +91,16 @@ const LikeBox = styled.div`
     div {
         margin-left: 5px;
     }
-    background-color: ${(props) => (props.like ? `var(--md-sys-color-primary)` : `var(--md-sys-color-background)`)};
-    color: ${(props) =>
-        props.like ? `var(--md-sys-color-primary-container)` : `var(--md-sys-color-on-primary-container)`};
+    background-color: ${(props) =>
+        props.like ? `${props.theme.clickedButtonBackgroundColor}` : `${props.theme.secondaryBackgroundColor}`};
+    color: ${(props) => (props.like ? `${props.theme.likeButtonColor}` : `${props.theme.secondaryColor}`)};
     &:hover {
-        box-shadow: 0px 1px 6px -2px var(--md-sys-color-shadow);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: ${(props) =>
-        props.like ? `var(--md-sys-color-primary-container)` : `var(--md-sys-color-on-primary-container)`};
+    color: ${(props) => (props.like ? `${props.theme.likeButtonColor}` : `${props.theme.secondaryColor}`)};
 `;
 
 const SpotDetailModal = ({ spotData, detail, onResetDetailSpot, onToggleDetailLike }) => {

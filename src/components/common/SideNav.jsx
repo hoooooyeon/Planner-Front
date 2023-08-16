@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -49,29 +49,30 @@ const NavList = styled.ul`
         padding: 1rem;
         border-radius: 5px;
         &:hover {
-            background-color: var(--md-sys-color-secondary-container);
-            color: var(--md-sys-color-on-secondary-container);
+            background-color:  ${(props) => props.theme.hoverBackgroundColor};
+            color: ${(props) => props.theme.hoverColor};
             cursor: pointer;
             a {
-                color: var(--md-sys-color-on-secondary-container);
+                color:             color: ${(props) => props.theme.hoverColor};
+
             }
         }
         a {
-            color: var(--md-sys-color-on-background);
+            color:  ${(props) => props.theme.secondaryColor};
         }
     }
 `;
 
 const AccountList = styled(NavList)`
-    border-top: 1px solid var(--md-sys-color-outline);
+    border-top: 1px solid ${(props) => props.theme.outlineColor};
     padding: 1rem 0;
 `;
 
 const IconBox = styled.div`
     display: inline-block;
     border-radius: 50px;
-    background-color: var(--md-sys-color-background);
-    box-shadow: 0px 0px 2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryColor};
+    box-shadow: 0px 0px 2px ${(props) => props.theme.shadowColor};
     position: relative;
     left: -50px;
     z-index: 99;
@@ -82,6 +83,9 @@ const IconBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    &:hover {
+        box-shadow: 0px 0px 4px ${(props) => props.theme.shadowColor};
+    }
 `;
 
 const SideNav = ({ styled, handlePurge }) => {

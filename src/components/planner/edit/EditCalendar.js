@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { DragFunction } from '../../../lib/utils/CommonFunction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,8 +10,8 @@ const FlexDiv = styled.div`
     flex-direction: column;
     align-items: center;
     border-radius: 1rem;
-    background-color: var(--md-sys-color-surface);
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     padding: 0.5rem;
     width: 4rem;
     height: 29.5rem;
@@ -24,8 +24,8 @@ const EditCalendarBlock = styled.div`
     z-index: 1;
     position: relative;
     padding: 0.5rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
-    background-color: var(--md-sys-color-surface);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,11 +43,11 @@ const ItemBox = styled.div`
     border-radius: 1rem;
     cursor: pointer;
     border: none;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     margin-bottom: 0.5rem;
     z-index: 1;
     &:hover {
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
 `;
 
@@ -68,14 +68,17 @@ const Calendar = styled.div`
     height: 100%;
     text-align: center;
     line-height: 3rem;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 1rem;
     font-size: 0.7rem;
     font-weight: bold;
     letter-spacing: 1px;
     &[aria-current] {
-        color: var(--md-sys-color-on-primary);
-        background-color: var(--md-sys-color-primary);
+        color: ${(props) => props.theme.primaryColor};
+        background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
+    }
+    &:hover {
+        background-color: ${(props) => props.theme.hoverBackgroundColor};
     }
 `;
 
@@ -88,20 +91,24 @@ const AddCal = styled(ItemBox)`
     justify-content: center;
     border: none;
     width: auto;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
-    background-color: var(--md-sys-color-primary-container);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     &:hover {
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
         transition: transform 0.3s ease;
         transform: scale(1.05);
+        background-color: ${(props) => props.theme.hoverBackgroundColor};
     }
 `;
 
 const CalIcon = styled(FontAwesomeIcon)`
-    color: var(--md-sys-color-on-primary-container);
+    color: ${(props) => props.theme.secondaryColor};
     font-size: 1.7rem;
     border-radius: 1rem;
     padding: 0.4rem;
+    &:hover {
+        color: ${(props) => props.theme.hoverColor};
+    }
 `;
 
 const DeleteButton = styled.div`
@@ -113,10 +120,10 @@ const DeleteButton = styled.div`
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     font-size: 1rem;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 2rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
-    color: var(--md-sys-color-surface-variant);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    color: ${(props) => props.theme.tertiaryColor};
 `;
 
 const EditCalendar = ({

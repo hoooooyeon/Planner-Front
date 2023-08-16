@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
 const InfoMenuBlock = styled.div`
-    background-color: var(--md-sys-color-background);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     padding: 0.5rem 0;
 `;
 
 const Container = styled.div`
-    border-top: 1px solid var(--md-sys-color-outline-variant);
-    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    border-top: 1px solid ${(props) => props.theme.outlineColor};
+    border-bottom: 1px solid ${(props) => props.theme.outlineColor};
     height: 100%;
     display: flex;
     justify-content: center;
@@ -42,7 +42,7 @@ const FlexDiv = styled.div`
 `;
 
 const Ask = styled.div`
-    color: var(--md-sys-color-secondary);
+    color: ${(props) => props.theme.tertiaryColor};
     margin-right: 0.5rem;
     font-weight: bold;
     font-size: 0.6rem;
@@ -60,7 +60,6 @@ const Ask = styled.div`
 const Text = styled.div`
     font-weight: bold;
     font-size: 0.7rem;
-
     @media all and (min-width: 400px) {
         font-size: 0.9rem;
     }

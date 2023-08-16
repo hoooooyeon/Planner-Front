@@ -27,31 +27,33 @@ const Button = styled.button`
     border-radius: 2rem;
     width: 8rem;
     height: 3rem;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     margin-bottom: 10px;
-    color: var(--md-sys-color-on-background);
-
+    color: ${(props) => props.theme.secondaryColor};
     &:hover {
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
-        color: var(--md-sys-color-primary);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
+        color: ${(props) => props.theme.hoverColor};
     }
     a {
         display: block;
-        color: var(--md-sys-color-on-background);
+        color: ${(props) => props.theme.secondaryColor};
         height: 100%;
         line-height: 3rem;
         &:hover {
-            color: var(--md-sys-color-primary);
+            color: ${(props) => props.theme.hoverColor};
         }
     }
     ${(props) =>
         props.allSchedule &&
         css`
-            color: var(--md-sys-color-on-primary-container);
-            background-color: var(--md-sys-color-primary-container);
+            color: ${(props) => props.theme.primaryColor};
+            background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
+            &:hover {
+                color: ${(props) => props.theme.primaryColor};
+            }
         `}
 `;
 
@@ -61,10 +63,10 @@ const EditMap = ({ mapRef, allSchedule, onClickAllSchedule, onSavePlanner, tutor
             <EditMapBlock>
                 <Map ref={mapRef} />
                 <ButtonBox>
-                    <Button onClick={onClickTutorialModal}>사용 방법</Button>
                     <Button allSchedule={allSchedule} onClick={onClickAllSchedule}>
                         모든 일정 보기
                     </Button>
+                    <Button onClick={onClickTutorialModal}>사용 방법</Button>
                     <Button onClick={onSavePlanner}>일정 저장</Button>
                 </ButtonBox>
             </EditMapBlock>

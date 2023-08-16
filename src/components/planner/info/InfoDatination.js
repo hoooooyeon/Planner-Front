@@ -22,7 +22,7 @@ const DateBox = styled.li`
         margin-left: 0.5rem;
     }
     &[aria-current] {
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
 `;
 
@@ -34,21 +34,23 @@ const DateButton = styled.div`
     white-space: nowrap;
     font-size: 0.7rem;
     padding: 0.5rem;
-    background-color: var(--md-sys-color-on-primary);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 2rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     text-align: center;
     &:hover {
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
+        background-color: ${(props) => props.theme.hoverBackgroundColor};
+        color: ${(props) => props.theme.hoverColor};
     }
     &[aria-current] {
-        background-color: var(--md-sys-color-primary);
-        color: var(--md-sys-color-on-primary);
+        background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
+        color: ${(props) => props.theme.primaryColor};
     }
 `;
 
 const RouteLine = styled.div`
-    background-color: var(--md-sys-color-tertiary-container);
+    background-color: ${(props) => props.theme.tertiaryColor};
     width: 2rem;
     height: 0.2rem;
     position: absolute;

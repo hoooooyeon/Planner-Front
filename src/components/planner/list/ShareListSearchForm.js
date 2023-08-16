@@ -5,9 +5,10 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const ShareListSearchFormBlock = styled.div`
     margin: 1rem 0;
-    background-color: var(--md-sys-color-primary-container);
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
     padding: 0.5rem 5rem;
     display: flex;
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     @media all and (max-width: 1023px) {
         border-radius: 1rem;
         height: 6rem;
@@ -42,17 +43,17 @@ const SortBox = styled.div`
 `;
 
 const SortButton = styled.div`
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     border-radius: 2rem;
-    background-color: var(--md-sys-color-on-primary);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     font-size: 0.7rem;
     font-weight: bold;
     padding: 0.4rem;
     text-align: center;
     cursor: pointer;
     &[aria-current] {
-        background-color: var(--md-sys-color-primary);
-        color: var(--md-sys-color-on-primary);
+        background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
+        color: ${(props) => props.theme.primaryColor};
     }
     @media all and (min-width: 480px) {
         white-space: nowrap;
@@ -61,8 +62,7 @@ const SortButton = styled.div`
         margin-left: 0.5rem;
     }
     &:hover {
-        background-color: var(--md-sys-color-tertiary-container);
-        color: var(--md-sys-color-primary);
+        background-color: ${(props) => props.theme.hoverBackgroundColor};
     }
 `;
 
@@ -74,22 +74,23 @@ const Text = styled.input`
     font-size: 1rem;
     font-weight: bold;
     border-radius: 0.5rem 0 0 0.5rem;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     &::placeholder {
-        color: var(--md-sys-color-surface-variant);
+        color: ${(props) => props.theme.tertiaryColor};
     }
     &:focus {
-        color: var(--md-sys-color-primary-container);
+        color: ${(props) => props.theme.tertiaryColor};
         outline: none;
     }
 `;
+
 const Button = styled.button`
     border: none;
     border-radius: 0 0.5rem 0.5rem 0;
     min-width: 5rem;
     height: 2.5rem;
-    background-color: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
+    background-color: ${(props) => props.theme.inputButtonBackgroundColor};
+    color: ${(props) => props.theme.primaryColor};
     font-size: 1rem;
     font-weight: bold;
     white-space: nowrap;
@@ -103,15 +104,13 @@ const Button = styled.button`
 const Label = styled.label`
     margin-right: 0.5rem;
     font-size: 0.9rem;
-    color: var(--md-sys-color-secondary);
     @media all and (min-width: 480px) {
         white-space: nowrap;
     }
 `;
 const ResultBox = styled.div`
     margin: 1rem 0;
-    color: var(--md-sys-color-secondary);
-
+    color: ${(props) => props.theme.tertiaryColor};
     h3 {
         margin: 0;
     }
@@ -124,13 +123,16 @@ const IconBox = styled.div`
     height: 2.5rem;
     line-height: 2.5rem;
     padding: 0 0.5rem;
-    background-color: var(--md-sys-color-background);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    border: 1px solid ${(props) => props.theme.outlineColor};
+    border-left: none;
+    border-right: none;
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: var(--md-sys-color-on-background);
+    color: ${(props) => props.theme.secondaryColor};
     &:hover {
-        color: var(--md-sys-color-secondary);
+        color: ${(props) => props.theme.hoverColor};
     }
 `;
 

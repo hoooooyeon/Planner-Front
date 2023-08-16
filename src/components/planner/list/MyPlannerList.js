@@ -1,6 +1,5 @@
 import { useRef } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import Slider from '../../common/Slider';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/plannerErrorImg.png';
@@ -8,7 +7,7 @@ import errorImg from '../../../lib/images/plannerErrorImg.png';
 const MyPlannerListBlock = styled.div`
     width: 100%;
     height: 100%;
-    background-color: var(--md-sys-color-surface-variant);
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
 `;
 
 const Container = styled.div`
@@ -44,24 +43,24 @@ const HeaderTitle = styled.p`
 const Button = styled.button`
     width: 7rem;
     height: 3rem;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.PrimaryButtonBackgroundColor};
     border: none;
     border-radius: 0.5rem;
     font-weight: bold;
     font-size: 0.9rem;
     text-align: center;
     line-height: 3rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     overflow: auto;
     &::-webkit-scrollbar {
         display: none;
     }
     &:hover {
-        color: var(--md-sys-color-primary);
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        color: ${(props) => props.theme.hoverColor};
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
     a {
-        color: var(--md-sys-color-on-background);
+        color: ${(props) => props.theme.secondaryColor};
         text-decoration: none;
         display: block;
     }
@@ -72,13 +71,13 @@ const PlannerItem = styled.li`
     position: relative;
     flex-shrink: 0;
     margin-left: 0.5%;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 0.5rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     cursor: pointer;
     overflow: hidden;
     &:hover {
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
         transition: transform 0.3s ease;
         transform: translate(0, -5px);
     }
@@ -87,7 +86,7 @@ const InfoBox = styled.div`
     height: 4rem;
     margin: 0;
     padding: 0.5rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -99,13 +98,13 @@ const Title = styled.div`
 `;
 const Creator = styled.div`
     font-size: 0.7rem;
-    color: var(--md-sys-color-on-primary-container);
+    color: ${(props) => props.theme.tertiaryColor};
     overflow: hidden;
     margin-top: 0.2rem;
 `;
 const Date = styled.div`
     font-size: 0.4rem;
-    color: var(--md-sys-color-on-primary-container);
+    color: ${(props) => props.theme.tertiaryColor};
     margin-top: 0.2rem;
     overflow: hidden;
 `;
@@ -136,7 +135,7 @@ const Img = styled.img`
 `;
 
 const ErrorDiv = styled.div`
-    color: var(--md-sys-color-on-tertiary);
+    color: ${(props) => props.theme.tertiaryColor};
     font-weight: bold;
     text-align: center;
     margin-top: 2rem;

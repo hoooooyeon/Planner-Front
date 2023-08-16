@@ -10,7 +10,7 @@ import InfoMenu from './InfoMenu';
 const PlannerInfoBlock = styled.div`
     width: 100%;
     height: 100%;
-    background-color: var(--md-sys-color-surface-variant);
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
 `;
 
 const Container = styled.div`
@@ -50,16 +50,16 @@ const MenuItem = styled.li`
     border-radius: 0.5rem;
     padding: 0.5rem;
     margin-left: 0.5rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     font-size: 0.8rem;
     white-space: nowrap;
-    background-color: var(--md-sys-color-background);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     cursor: pointer;
-    color: var(--md-sys-color-on-background);
+    color: ${(props) => props.theme.secondaryColor};
     &:hover {
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
         font-weight: bold;
-        color: var(--md-sys-color-secondary);
+        color: ${(props) => props.theme.hoverColor};
     }
 `;
 
@@ -69,13 +69,13 @@ const Menu = styled.div`
     align-items: center;
     border-radius: 0.5rem;
     justify-content: space-evenly;
-    background-color: var(--md-sys-color-background);
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     cursor: pointer;
     display: none;
     &:hover {
-        color: var(--md-sys-color-secondary);
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        color: ${(props) => props.theme.hoverColor};
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
     @media all and (max-width: 1023px) {
         display: flex;
@@ -88,19 +88,19 @@ const DropDownMenu = styled.ul`
     width: 7rem;
     flex-direction: column;
     padding: 0;
-    background-color: var(--md-sys-color-background);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 0.5rem;
     top: 24px;
     left: 17px;
     font-size: 0.7rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     li {
         cursor: pointer;
         padding: 5px 10px;
-        color: var(--md-sys-color-on-background);
+        color: ${(props) => props.theme.secondaryColor};
         &:hover {
             font-weight: bold;
-            color: var(--md-sys-color-secondary);
+            color: ${(props) => props.theme.hoverColor};
         }
     }
 `;

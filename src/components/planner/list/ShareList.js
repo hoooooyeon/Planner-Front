@@ -11,7 +11,7 @@ const ShareListBlock = styled.div`
     width: 100%;
     height: 100%;
     padding: 1rem 0;
-    background-color: var(--md-sys-color-surface);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
 `;
 
 const Container = styled.div`
@@ -43,7 +43,7 @@ const ShareItem = styled.li`
     width: 200px;
     height: 200px;
     float: left;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     border-radius: 0.5rem;
     margin: 0.5%;
     position: relative;
@@ -53,17 +53,18 @@ const ShareItem = styled.li`
         height: auto;
     }
     &:hover {
-        box-shadow: 0px 1px 6px -3px var(--md-sys-color-shadow);
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
     a {
-        color: var(--md-sys-color-on-background);
+        color: ${(props) => props.theme.secondaryColor};
     }
 `;
+
 const InfoBox = styled.div`
     height: 2.5rem;
     margin: 0;
     padding: 0.5rem;
-    box-shadow: 0px 1px 3px -2px var(--md-sys-color-shadow);
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -76,7 +77,7 @@ const Title = styled.div`
 `;
 const Date = styled.div`
     font-size: 0.4rem;
-    color: var(--md-sys-color-on-primary-container);
+    color: ${(props) => props.theme.tertiaryColor};
     margin-top: 0.6rem;
     overflow: hidden;
 `;
@@ -113,11 +114,11 @@ const IconBox = styled.div`
     padding: 5px;
 `;
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: ${(props) => (props.like ? `var(--md-sys-color-primary-container);` : 'rgba(0,0,0,0)')};
+    color: ${(props) => (props.like ? ` ${props.theme.likeButtonColor}` : 'rgba(0,0,0,0)')};
 `;
 
 const ErrorDiv = styled.div`
-    color: var(--md-sys-color-tertiary-container);
+    color: ${(props) => props.theme.tertiaryColor};
     font-weight: bold;
     text-align: center;
     margin-top: 2rem;
