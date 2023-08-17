@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faStar, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const AccountBlock = styled.div`
+    min-width: 768px;
+    box-sizing: border-box;
     padding: 20px 40px;
 `;
 

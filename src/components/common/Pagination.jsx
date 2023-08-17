@@ -19,9 +19,6 @@ const PaginationBox = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
-    @media all and (min-width: 768px) {
-        padding: 0rem 9rem;
-    }
 `;
 
 const PageButton = styled.div`
