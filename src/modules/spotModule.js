@@ -177,7 +177,7 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 detail: {
                     ...state.detail,
-                    image: action.spotInfo.firstImage,
+                    image: action.spotInfo.firstImage || action.spotInfo.image,
                     contentId: action.spotInfo.contentId,
                 },
             };

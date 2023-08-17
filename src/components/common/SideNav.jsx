@@ -5,7 +5,6 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef } from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 const SideNavContainer = styled.div`
     width: 300px;
@@ -57,9 +56,6 @@ const NavList = styled.ul`
 
             }
         }
-        a {
-            color:  ${(props) => props.theme.secondaryColor};
-        }
     }
 `;
 
@@ -88,9 +84,10 @@ const IconBox = styled.div`
     }
 `;
 
-const SideNav = ({ styled, handlePurge }) => {
+const SideNav = ({ styled, handlePurge, onChangePage, account }) => {
     const navRef = useRef();
     const [navOpen, setNavOpen] = useState(false);
+    const { nickname } = { ...account };
 
     // nav 토글 함수
     const onToggleNav = () => {
@@ -143,27 +140,24 @@ const SideNav = ({ styled, handlePurge }) => {
             </div>
             <AccountBox>
                 <AccountIcon icon={faCircleUser} />
-                <p>블루베어</p>
+                <p>{nickname}</p>
             </AccountBox>
             <NavList>
-                <li>
-                    <Link to="/">홈</Link>
-                </li>
-                <li>
-                    <Link to="/Planners">플래너</Link>
-                </li>
-                <li>
-                    <Link to="/ReviewList">커뮤니티</Link>
-                </li>
-                <li>
-                    <Link to="/Spot">여행지</Link>
-                </li>
+                <li onClick={() => onChangePage('')}>홈</li>
+                <li onClick={() => onChangePage('Planners')}>플래너</li>
+                <li onClick={() => onChangePage('Reviews')}>커뮤니티</li>
+                <li onClick={() => onChangePage('Spot')}>여행지</li>
             </NavList>
+
             <AccountList>
-                <li>
-                    <Link to="/Profile">마이페이지</Link>
-                </li>
-                <li onClick={handlePurge}>로그아웃</li>
+                {account ? (
+                    <>
+                        <li onClick={() => onChangePage('Profile')}>마이페이지</li>
+                        <li onClick={handlePurge}>로그아웃</li>
+                    </>
+                ) : (
+                    <li onClick={() => onChangePage('Login')}>로그인</li>
+                )}
             </AccountList>
         </SideNavContainer>
     );

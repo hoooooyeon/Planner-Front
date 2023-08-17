@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import EditRoute from '../../../components/planner/edit/EditRoute';
 import {
     changeAllScheduleAction,
     changeCurPlanIdAction,
+    changeCurPlannerIdAction,
     createPlanAction,
     deleteLocationAction,
     deletePlanAction,
@@ -20,6 +21,7 @@ import {
 const EditRouteContainer = ({ location }) => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const params = useParams();
 
     const { planner, plannerError, plan, plannerData, loading, account } = useSelector(
         ({ authReducer, plannerReducer, loadingReducer }) => ({
@@ -53,14 +55,19 @@ const EditRouteContainer = ({ location }) => {
         if (!accountId) {
             alert('로그인이 필요합니다.');
             history.push('/Planners');
-        } else if (!plannerId) {
+        } else if (planner === false) {
             alert('잘못된 접근입니다.');
             history.push(`/Planners`);
         } else if (planner && nickname !== creator) {
             alert('호스트만 접근할 수 있습니다.');
             history.push('/Planners');
         }
-    }, []);
+    }, [history, accountId, creator, nickname, planner]);
+
+    useEffect(() => {
+        console.log(params.plannerId);
+        dispatch(changeCurPlannerIdAction(params.plannerId));
+    }, [dispatch]);
 
     // 출발 날짜 선택
     const onUpdatePlannerDate = (date) => {

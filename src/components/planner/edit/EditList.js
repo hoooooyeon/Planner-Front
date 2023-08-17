@@ -257,11 +257,11 @@ const EditList = ({
                         likeSpots.list &&
                         likeSpots.list.length > 0 &&
                         likeSpots.list.map((s, i) => {
-                            const { firstimage, firstimage2, title } = s;
+                            const { image, title } = s;
                             return (
                                 <ListItem key={i}>
                                     <Img
-                                        src={firstimage || firstimage2}
+                                        src={image}
                                         alt={title}
                                         onError={(e) => {
                                             handleErrorImg({ e, errorImg });

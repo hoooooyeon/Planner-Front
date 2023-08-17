@@ -294,6 +294,11 @@ function plannerReducer(state = initialState, action) {
                 plannerError: action.payload.error,
             };
         case LOAD_PLANNER_FAILURE_TYPE:
+            return {
+                ...state,
+                plannerError: action.payload.error,
+                planner: false,
+            };
         case CREATE_PLANNER_FAILURE_TYPE:
         case UPDATE_PLANNER_FAILURE_TYPE:
         case DELETE_PLANNER_FAILURE_TYPE:

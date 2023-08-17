@@ -154,7 +154,7 @@ const DropDownMenu = styled.ul`
     }
 `;
 
-const Header = ({ account, handlePurge }) => {
+const Header = ({ account, handlePurge, onChangePage }) => {
     const headerRef = useRef();
     const [styled, setStyled] = useState(false);
 
@@ -234,7 +234,7 @@ const Header = ({ account, handlePurge }) => {
                     </li>
                 </AccountList>
             )}
-            <SideNav styled={styled} handlePurge={handlePurge} />
+            <SideNav styled={styled} account={account} handlePurge={handlePurge} onChangePage={onChangePage} />
         </HeaderBlock>
     );
 };

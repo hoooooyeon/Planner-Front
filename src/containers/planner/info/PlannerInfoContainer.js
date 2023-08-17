@@ -4,6 +4,7 @@ import PlannerInfo from '../../../components/planner/info/PlannerInfo';
 import {
     changeAllScheduleAction,
     changeCurPlanIdAction,
+    changeCurPlannerIdAction,
     deletePlannerAction,
     loadPlannerAction,
     resetPlannerDataAction,
@@ -12,11 +13,12 @@ import {
     togglePlannerInfoModalAction,
 } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 
 const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const params = useParams();
 
     const { planner, plannerError, plannerData, allSchedule, account } = useSelector(
         ({ plannerReducer, authReducer }) => ({
@@ -33,11 +35,15 @@ const PlannerInfoContainer = () => {
     const { accountId, nickname } = { ...account };
 
     useEffect(() => {
-        if (!plannerId) {
+        if (planner === false) {
             alert('잘못된 접근입니다.');
             history.push('/Planners');
         }
-    }, []);
+    }, [history, planner]);
+
+    useEffect(() => {
+        dispatch(changeCurPlannerIdAction(params.plannerId));
+    }, [dispatch, params]);
 
     const onDeletePlanner = () => {
         if (accountId && creator === nickname) {
