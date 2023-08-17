@@ -1,172 +1,177 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import EditProfile from './EditProfile';
 import Button from '../common/Button';
 import { useRef, useState } from 'react';
 import ImageSelectModal from './ImageSelectModal';
-import { forwardRef } from 'react';
+import LabelTextBox from '../common/LabelTextBox';
+import tempImage from '../../images/temp.jpg';
+import { useEffect } from 'react';
 
 const ProfileBlock = styled.div`
-    margin: 100px auto 0px;
-    width: 80%;
-    height: auto;
-    min-height: 100%;
-    padding-bottom: 210px;
-`;
-const MyMenu = styled.div`
-    a {
-        text-decoration: none;
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: black;
-    }
-    a + a {
-        margin-left: 30px;
-        color: lightgray;
-    }
-`;
-
-const StyledButton = styled(Button)`
-    color: lightblue;
-    background-color: white;
-    margin-top: 30px;
-    float: right;
-`;
-
-const EditProfileBlock = styled.div`
-    margin-top: 50px;
+    /* background-color: silver; */
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 40px;
+`;
+
+const ProfileFormBlock = styled.form`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+    padding: 3rem 0px;
+`;
+
+const ProfileInfoBlock = styled.div`
+    display: flex;
+    flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-
-    .nick {
-        text-align: center;
-    }
-
-    ul {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        border: 2px solid silver;
-        border-radius: 6px;
-        padding: 20px;
-        width: 350px;
-
-        li {
-            /* display: flex;
-      flex-direction: row;
-      justify-content: space-between; */
-            font-size: 1rem;
-            margin: 20px 0px;
-        }
-
-        li label {
-            display: block;
-            margin-bottom: 10px;
-        }
-    }
-
-    input {
-        width: 100%;
-        border: none;
-        outline: none;
-        border-bottom: 2px solid silver;
-
-        &:read-only {
-            border-bottom: 2px solid #f38181;
-        }
-    }
-`;
-
-const ButtonBlock = styled.div`
-    text-align: right;
+    width: 100%;
 `;
 
 const ProfileImageBlock = styled.div`
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+`;
 
-    img {
-        width: 120px;
-        height: 120px;
-        border: none;
+const ProfileImage = styled.img`
+    background-color: black;
+    border-radius: 32px;
+    width: 128px;
+    height: 128px;
+`;
+
+const ImageModifyBtn = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    height: 28px;
+    border-radius: 6px;
+    border: solid 1px silver;
+    color: var(--md-sys-color-primary);
+    background-color: var(--md-sys-color-surface);
+
+    &:hover {
         border-radius: 6px;
+        box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
     }
 `;
 
-const ProfileImageButton = styled(Button)`
-    margin-top: 10px;
+const ProfileTextBoxBlock = styled.div`
+    display: flex;
+    flex-grow: 0.3;
+    flex-direction: column;
 `;
 
-// const ImageSelectModal = forwardRef((ref, modalVisible, onModalClose, onModalConfirm) => {
-//     return <ImageSelectModal ref={ref} modalVisible={modalVisible} onModalClose={onModalClose} onModalConfirm={onModalConfirm} />;
-// });
+const StyledLabelTextBox = styled(LabelTextBox)`
+    margin-top: 20px;
 
-const Profile = ({ loading, profile, profileError, onChange, onSubmit, onImageSubmit }) => {
+    input {
+        border: solid 1px silver;
+    }
+`;
+
+const ActionBlock = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 20px;
+`;
+
+const SaveButton = styled.button`
+    width: 82px;
+    height: 42px;
+    border-radius: 6px;
+    border: solid 1px silver;
+    color: var(--md-sys-color-primary);
+    background-color: var(--md-sys-color-surface);
+
+    &:hover {
+        box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
+    }
+`;
+
+const Profile = ({
+    loading,
+    account,
+    accountField,
+    onProfileLoad,
+    onProfileChange,
+    onProfileUpdate,
+    onProfileImageUpdate,
+}) => {
+    const { username, nickname, phone } = account || {};
+    const { nickname: nicknameFeild, phone: phoneFeild } = accountField;
+
     const inputRef = useRef(null);
     const [modalVisible, setModalVisible] = useState(false);
-    const onModalShow = () => {
+    const handleModalShow = () => {
         setModalVisible(true);
     };
-    const onModalClose = () => {
+    const handleModalClose = () => {
         setModalVisible(false);
     };
-    const onModalConfirm = () => {
-        // 할 일
+    const handleModalConfirm = () => {
+        // // 할 일
         const data = inputRef.current.files[0];
         const formData = new FormData();
         formData.append('image', data);
-        onImageSubmit(formData);
+        onProfileImageUpdate(formData);
         setModalVisible(false);
     };
 
-    if (!loading && profileError) {
-        alert(profileError);
-    }
+    // if (!loading && profileError) {
+    //     alert(profileError);
+    // }
+
+    const handleImageLoadError = (e) => {
+        e.target.src = tempImage;
+    };
+
+    useEffect(() => {
+        onProfileLoad();
+    }, []);
+
     return (
-        <>
-            <ProfileBlock>
-                <MyMenu>
-                    <Link to="/Profile">프로필</Link>
-                    <Link to="/MyLike">좋아요</Link>
-                    <hr />
-                </MyMenu>
-                {profile && (
-                    <EditProfileBlock>
-                        <ProfileImageBlock>
-                            <img src={`images/${profile.image}` || 'logo192.jpg'} alt="프로필 이미지" />
-                            <div>{profile.nickname}</div>
-                            <ProfileImageButton onClick={onModalShow}>변경</ProfileImageButton>
-                        </ProfileImageBlock>
-                        <form onSubmit={onSubmit}>
-                            <ul>
-                                <li>
-                                    <label htmlFor="email">이메일</label>
-                                    <input id="email" name="email" type="email" defaultValue={profile.email} readOnly />
-                                </li>
-                                <li>
-                                    <label htmlFor="username">이름</label>
-                                    <input id="username" name="username" type="text" defaultValue={profile.username} readOnly />
-                                </li>
-                                <li>
-                                    <label htmlFor="nickname">별명</label>
-                                    <input id="nickname" name="nickname" type="text" defaultValue={profile.nickname} onChange={onChange} />
-                                </li>
-                                <li>
-                                    <label htmlFor="phone">전화번호</label>
-                                    <input id="phone" name="phone" type="text" defaultValue={profile.phone} onChange={onChange} />
-                                </li>
-                            </ul>
-                            <ButtonBlock>
-                                <Button big>저장</Button>
-                            </ButtonBlock>
-                        </form>
-                    </EditProfileBlock>
-                )}
-                {/* <EditProfile /> */}
-                {/* <StyledButton big>회원 탈퇴</StyledButton> */}
-            </ProfileBlock>
-            <ImageSelectModal ref={inputRef} modalVisible={modalVisible} onModalClose={onModalClose} onModalConfirm={onModalConfirm} />
-        </>
+        <ProfileBlock>
+            <ProfileFormBlock>
+                <ProfileInfoBlock>
+                    <ProfileImageBlock>
+                        <ProfileImage
+                            src={account && `${process.env.PUBLIC_URL}/${account.image}`}
+                            onError={handleImageLoadError}
+                        ></ProfileImage>
+                        <ImageModifyBtn onClick={handleModalShow}>변경</ImageModifyBtn>
+                    </ProfileImageBlock>
+                    <ProfileTextBoxBlock>
+                        <StyledLabelTextBox name={'username'} label={'이름'} defaultValue={username} readOnly />
+                        <StyledLabelTextBox
+                            name={'nickname'}
+                            label={'닉네임'}
+                            value={nicknameFeild || nickname}
+                            onChange={onProfileChange}
+                        />
+                        <StyledLabelTextBox
+                            name={'phone'}
+                            label={'휴대폰 번호'}
+                            value={phoneFeild || phone}
+                            onChange={onProfileChange}
+                        />
+                        <ActionBlock>
+                            <SaveButton onClick={onProfileUpdate}>저장</SaveButton>
+                        </ActionBlock>
+                    </ProfileTextBoxBlock>
+                </ProfileInfoBlock>
+            </ProfileFormBlock>
+            <ImageSelectModal
+                ref={inputRef}
+                modalVisible={modalVisible}
+                onModalClose={handleModalClose}
+                onModalConfirm={handleModalConfirm}
+            />
+        </ProfileBlock>
     );
 };
 

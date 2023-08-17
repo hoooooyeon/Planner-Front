@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Profile from '../../components/account/Profile';
 import { changeFieldAction, initializeAction, initializeErrorAction, profileImageUpdateAction, profileLoadAction, profileUpdateAction } from '../../modules/profileModule';
+import MyAccount from '../../components/account/MyAccount';
 
 const ProfileContainer = () => {
     const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const ProfileContainer = () => {
         dispatch(profileLoadAction(accountId));
     }, [dispatch, accountId, profileUpdate]);
 
-    return <Profile loading={loading} profile={profile} profileError={profileError} onChange={onChange} onSubmit={onSubmit} onImageSubmit={onImageSubmit} />;
+    return <MyAccount loading={loading} profile={profile} profileError={profileError} onChange={onChange} onSubmit={onSubmit} onImageSubmit={onImageSubmit} />;
 };
 
 export default ProfileContainer;
