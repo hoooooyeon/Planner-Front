@@ -10,8 +10,8 @@ const InfoPostContainer = () => {
         plannerError: plannerReducer.plannerError,
         account: authReducer.account,
     }));
-    const { plannerId, creator } = { ...planner };
-    const { accountId, nickname } = { ...account };
+    const { plannerId } = { ...planner };
+    const { accountId } = { ...account };
 
     const [curMemo, setCurMemo] = useState({
         memoId: null,
@@ -23,19 +23,19 @@ const InfoPostContainer = () => {
     const content = curMemo.content;
 
     const onCreateMemo = () => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             dispatch(createMemoAction({ plannerId, title, content }));
         }
     };
 
     const onUpdateMemo = (memoId) => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             dispatch(updateMemoAction({ plannerId, memoId, title, content }));
         }
     };
 
     const onDeleteMemo = (memoId) => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             dispatch(deleteMemoAction({ plannerId, memoId }));
         }
     };

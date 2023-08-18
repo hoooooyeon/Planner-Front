@@ -12,18 +12,18 @@ const MemberModalContainer = () => {
         account: authReducer.account,
     }));
 
-    const { plannerId, creator } = { ...planner };
-    const { accountId, nickname } = { ...account };
+    const { plannerId } = { ...planner };
+    const { accountId } = { ...account };
 
     const [members, setMembers] = useState([]);
 
     const onInviteMember = () => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             dispatch(inviteMemberAction({ plannerId, members }));
         }
     };
     const onDeleteMember = (nickName) => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             dispatch(deleteMemberAction({ plannerId, nickName }));
         }
     };

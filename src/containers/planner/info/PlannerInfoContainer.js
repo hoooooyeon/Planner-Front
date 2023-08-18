@@ -30,9 +30,9 @@ const PlannerInfoContainer = () => {
         }),
     );
 
-    const { plans, creator } = { ...planner };
+    const { plans } = { ...planner };
     const { plannerId, planId } = { ...plannerData };
-    const { accountId, nickname } = { ...account };
+    const { accountId } = { ...account };
 
     useEffect(() => {
         if (planner === false) {
@@ -46,7 +46,7 @@ const PlannerInfoContainer = () => {
     }, [dispatch, params]);
 
     const onDeletePlanner = () => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             if (window.confirm('정말로 삭제하시겠습니까?')) {
                 dispatch(deletePlannerAction(plannerId));
                 history.push('/Planners');
@@ -59,13 +59,13 @@ const PlannerInfoContainer = () => {
     };
 
     const onToggleMemberModal = () => {
-        if (creator === nickname) {
+        if (account.accountId === planner.accountId) {
             dispatch(toggleMemberModalAction());
         }
     };
 
     const onTogglePlannerInfoModal = () => {
-        if (creator === nickname) {
+        if (account.accountId === planner.accountId) {
             dispatch(togglePlannerInfoModalAction());
         }
     };

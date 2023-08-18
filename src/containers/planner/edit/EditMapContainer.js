@@ -27,9 +27,7 @@ const EditMapContainer = () => {
     );
 
     const { plannerId } = { ...plannerData };
-    const { plans, creator } = { ...planner };
-    const { accountId, nickname } = { ...account };
-    const { areaCode, pageNo, contentTypeId } = { ...spotData };
+    const { plans } = { ...planner };
 
     const mapRef = useRef(null);
     const [map, setMap] = useState();
@@ -522,7 +520,8 @@ const EditMapContainer = () => {
         setTutorialVisible(!tutorialVisible);
     };
 
-    if (!mapRef || nickname !== creator || !planner) {
+    // if (!mapRef || account.accountId !== planner.accountId || !planner) {
+    if (!mapRef || (account && planner && account.accountId !== planner.accountId)) {
         return null;
     }
     return (

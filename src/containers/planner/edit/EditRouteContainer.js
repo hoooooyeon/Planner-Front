@@ -39,7 +39,7 @@ const EditRouteContainer = ({ location }) => {
         ...planner,
     };
     const { planId } = { ...plannerData };
-    const { nickname, accountId } = { ...account };
+    const { accountId } = { ...account };
     const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : new Date());
     const [endDate, setEndDate] = useState(planDateEnd ? new Date(planDateEnd) : new Date());
 
@@ -51,27 +51,25 @@ const EditRouteContainer = ({ location }) => {
     };
 
     useEffect(() => {
-        const { plannerId } = { ...plannerData };
         if (!accountId) {
             alert('로그인이 필요합니다.');
             history.push('/Planners');
         } else if (planner === false) {
             alert('잘못된 접근입니다.');
             history.push(`/Planners`);
-        } else if (planner && nickname !== creator) {
+        } else if (planner && account.accountId !== planner.accountId) {
             alert('호스트만 접근할 수 있습니다.');
             history.push('/Planners');
         }
-    }, [history, accountId, creator, nickname, planner]);
+    }, [history, accountId, planner, account.accountId]);
 
     useEffect(() => {
-        console.log(params.plannerId);
         dispatch(changeCurPlannerIdAction(params.plannerId));
     }, [dispatch]);
 
     // 출발 날짜 선택
     const onUpdatePlannerDate = (date) => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             setStartDate(date);
             if (plans.length > 0) {
                 setEndDate(new Date(new Date(date).setDate(new Date(date).getDate() + plans.length - 1)));
@@ -83,14 +81,14 @@ const EditRouteContainer = ({ location }) => {
 
     // plan 추가시 날짜 하루 생성
     const onAddDate = (date) => {
-        if (accountId && creator === nickname && plans.length > 0) {
+        if (accountId && account.accountId === planner.accountId && plans.length > 0) {
             setEndDate(new Date(new Date(date).setDate(new Date(date).getDate() + 1)));
         }
     };
 
     // plan 삭제시 날짜 하루 제거
     const onSubDate = (date) => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             if (plans.length > 1) {
                 setEndDate(new Date(new Date(date).setDate(new Date(date).getDate() - 1)));
             }
@@ -131,7 +129,7 @@ const EditRouteContainer = ({ location }) => {
     }, [planDateStart, planDateEnd]);
 
     const onCreatePlan = () => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             let planDate;
             if (plans.length > 0) {
                 planDate = letsFormat(endDate.setDate(endDate.getDate() + 1));
@@ -143,7 +141,7 @@ const EditRouteContainer = ({ location }) => {
     };
 
     const onDeletePlan = (planId) => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             dispatch(deletePlanAction({ plannerId, planId }));
         }
     };
@@ -151,18 +149,22 @@ const EditRouteContainer = ({ location }) => {
     // 날짜 순서 수정
     const [curPlan, setCurPlan] = useState();
     const onUpdatePlan = (index) => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             const planDate = curPlan.planDate;
             const planId = curPlan.planId;
 
             dispatch(updatePlanAction({ plannerId, planId, planDate, index }));
         }
     };
-
+    useEffect(() => {
+        const aaa = null;
+        console.log(aaa.account);
+    });
     // 일정 날짜 최신화
     const [updatePlans, setUpdatePlans] = useState();
     useEffect(() => {
-        if (accountId && creator === nickname) {
+        // if (accountId && account.accountId === planner.accountId) {
+        if (account && planner && account.accountId !== planner.accountId) {
             let date = new Date(planDateStart);
             let planDate = letsFormat(date);
 
@@ -183,7 +185,7 @@ const EditRouteContainer = ({ location }) => {
     // 로케이션 순서 수정
     const [curLocation, setCurLocation] = useState();
     const onUpdateLocation = (index) => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             const {
                 locationId,
                 locationName,
@@ -212,7 +214,7 @@ const EditRouteContainer = ({ location }) => {
         }
     };
     const onDeleteLocation = (locationId) => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             dispatch(deleteLocationAction({ plannerId, locationId, planId }));
         }
     };
@@ -230,7 +232,7 @@ const EditRouteContainer = ({ location }) => {
     };
 
     const onUpdateTrans = (trans, locationData) => {
-        if (plannerId && accountId && creator === nickname) {
+        if (plannerId && accountId && account.accountId === planner.accountId) {
             const {
                 locationId,
                 locationName,
@@ -306,7 +308,7 @@ const EditRouteContainer = ({ location }) => {
         dispatch(changeAllScheduleAction(false));
     };
 
-    if (!planner || nickname !== creator) {
+    if (!planner || account.accountId !== planner.accountId) {
         return null;
     }
     return (

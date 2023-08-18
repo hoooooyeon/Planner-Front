@@ -52,14 +52,13 @@ const EditListContainer = () => {
     }));
 
     const { plannerId, planId, pageNum } = { ...plannerData };
-    const { creator } = { ...planner };
-    const { accountId, nickname } = { ...account };
+    const { accountId } = { ...account };
     const { areaCode, contentTypeId, contentId } = { ...spotData };
     const { curKeyword, resultKeyword } = { ...keyword };
     const numOfRows = 12;
 
     const onCreateLocation = (spot) => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             if (!planId) {
                 alert('일정을 선택하세요.');
                 return;
@@ -227,7 +226,7 @@ const EditListContainer = () => {
         dispatch(changeAllScheduleAction(false));
     };
 
-    if (!planner || nickname !== creator) {
+    if (!planner || account.accountId !== planner.accountId) {
         return null;
     }
     return (

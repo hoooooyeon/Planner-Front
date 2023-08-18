@@ -14,7 +14,9 @@ const PlannerInfoModalContainer = () => {
     }));
 
     const { accountId, nickname } = { ...account };
-    const { plannerId, planDateStart, planDateEnd, title, expense, memberCount, memberTypeId, creator } = { ...planner };
+    const { plannerId, planDateStart, planDateEnd, title, expense, memberCount, memberTypeId, creator } = {
+        ...planner,
+    };
     const [curTitle, setCurTitle] = useState(title);
     const [curExpense, setCurExpense] = useState(expense);
     const [curMemberCount, setCurMemberCount] = useState(memberCount);
@@ -28,12 +30,22 @@ const PlannerInfoModalContainer = () => {
     }, [title, expense, memberCount, memberTypeId, modal]);
 
     const onUpdatePlanner = () => {
-        if (accountId && creator === nickname) {
+        if (accountId && account.accountId === planner.accountId) {
             const title = curTitle;
             const expense = curExpense;
             const memberCount = curMemberCount;
             const memberTypeId = curMemberTypeId;
-            dispatch(updatePlannerAction({ plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId }));
+            dispatch(
+                updatePlannerAction({
+                    plannerId,
+                    title,
+                    planDateStart,
+                    planDateEnd,
+                    expense,
+                    memberCount,
+                    memberTypeId,
+                }),
+            );
         }
     };
 
