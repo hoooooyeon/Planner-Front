@@ -46,7 +46,7 @@ const PlannerInfoContainer = () => {
     }, [dispatch, params]);
 
     const onDeletePlanner = () => {
-        if (accountId && account.accountId === planner.accountId) {
+        if (account && account.accountId === planner.accountId) {
             if (window.confirm('정말로 삭제하시겠습니까?')) {
                 dispatch(deletePlannerAction(plannerId));
                 history.push('/Planners');
@@ -59,27 +59,27 @@ const PlannerInfoContainer = () => {
     };
 
     const onToggleMemberModal = () => {
-        if (account.accountId === planner.accountId) {
+        if (account && account.accountId === planner.accountId) {
             dispatch(toggleMemberModalAction());
         }
     };
 
     const onTogglePlannerInfoModal = () => {
-        if (account.accountId === planner.accountId) {
+        if (account && account.accountId === planner.accountId) {
             dispatch(togglePlannerInfoModalAction());
         }
     };
 
     // 수정페이지 도달시 맨처음 plannerData planId 설정.
     useEffect(() => {
-        if (!planId && plans && plans.length > 0) {
+        if (planId !== '' && plans && plans.length > 0) {
             dispatch(changeCurPlanIdAction(plans[0].planId));
         }
     }, [dispatch, plans, planId]);
 
     // planner 정보 가져오기
     useEffect(() => {
-        if (plannerId) {
+        if (plannerId !== '') {
             dispatch(loadPlannerAction(plannerId));
         }
     }, [dispatch, plannerData]);
@@ -116,9 +116,9 @@ const PlannerInfoContainer = () => {
     }, [mapRef.current]);
 
     const setBoundsMap = () => {
-        if (map && plans.length === 0) {
+        if (map && Object.keys(planner).length > 0 && plans.length === 0) {
             map.setCenter(new kakao.maps.LatLng(36.5, 127.8));
-        } else if (map && plans.length > 0) {
+        } else if (map && Object.keys(planner).length > 0 && plans.length > 0) {
             let bounds = new kakao.maps.LatLngBounds();
             for (let i = 0; i < plans.length; i++) {
                 const { planLocations } = plans[i];
@@ -340,7 +340,7 @@ const PlannerInfoContainer = () => {
         dispatch(changeAllScheduleAction(false));
     };
 
-    if (!planner) {
+    if (planner === '') {
         return null;
     }
     return (

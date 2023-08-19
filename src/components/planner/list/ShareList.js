@@ -148,7 +148,7 @@ const ShareList = ({
                     onChangeResultKeyword={onChangeResultKeyword}
                     onChangeSort={onChangeSort}
                 />
-                {sharePlanners && sharePlanners.list && sharePlanners.list.length > 0 ? (
+                {Object.keys(sharePlanners).length > 0 ? (
                     <Slider list={sharePlanners.list} itemRef={itemRef} scroll={true} drag={drag}>
                         <Shares>
                             {sharePlanners.list.map((p, i) => (

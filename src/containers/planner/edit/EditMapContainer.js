@@ -11,12 +11,11 @@ import { useHistory } from 'react-router';
 const EditMapContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { planner, plannerError, plannerData, spots, spotData, account, allSchedule, areas } = useSelector(
+    const { planner, plannerError, plannerData, spots, spotData, account, allSchedule } = useSelector(
         ({ plannerReducer, spotReducer, authReducer }) => ({
             planner: plannerReducer.planner,
             plannerError: plannerReducer.plannerError,
             spots: spotReducer.spots,
-            areas: spotReducer.areas,
             spotData: spotReducer.spotData,
             keyword: spotReducer.keyword,
             contentTypeList: spotReducer.contentTypeList,
@@ -71,7 +70,7 @@ const EditMapContainer = () => {
     const spotArr = useRef([]);
     // 지도에 여행지 마커로 표시 + 인포윈도우 표시
     const showSpotMarker = useCallback(() => {
-        if (map && spots) {
+        if (map && Object.keys(spots).length > 0) {
             let infowindow = new kakao.maps.InfoWindow({ removable: true });
             let marker;
             let markerPosition;
@@ -520,8 +519,11 @@ const EditMapContainer = () => {
         setTutorialVisible(!tutorialVisible);
     };
 
-    // if (!mapRef || account.accountId !== planner.accountId || !planner) {
-    if (!mapRef || (account && planner && account.accountId !== planner.accountId)) {
+    if (
+        !mapRef ||
+        (account && Object.keys(planner).length > 0 && account.accountId !== planner.accountId) ||
+        Object.keys(planner).length <= 0
+    ) {
         return null;
     }
     return (

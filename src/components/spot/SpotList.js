@@ -137,7 +137,7 @@ const SpotList = ({
                     onChangeCurKeyword={onChangeCurKeyword}
                     onChangeResultKeyword={onChangeResultKeyword}
                 />
-                {spots && (
+                {Object.keys(spots).length > 0 && (
                     <Slider list={spots.list} scroll={true} drag={drag} itemRef={itemRef}>
                         <List>
                             {spots.list.map((spot) => {

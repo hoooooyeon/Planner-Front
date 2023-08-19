@@ -71,9 +71,9 @@ const MyPlannerListContainer = () => {
 
     // 주소 이동
     useEffect(() => {
-        if (planner !== false && !planner && plannerId && pType === 2) {
+        if (planner !== false && Object.keys(planner).length <= 0 && plannerId && pType === 2) {
             history.push(`/Planners/edit/${plannerId}`);
-        } else if (planner !== false && !planner && plannerId && pType === 1) {
+        } else if (planner !== false && Object.keys(planner).length <= 0 && plannerId && pType === 1) {
             history.push(`/Planners/${plannerId}`);
         }
     }, [history, plannerId]);

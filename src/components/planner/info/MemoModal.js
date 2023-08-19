@@ -82,7 +82,7 @@ const MemoModal = ({
     const [hosted, setHosted] = useState(false);
 
     useEffect(() => {
-        if (account.accountId === planner.accountId) {
+        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
             setHosted(true);
         } else {
             setHosted(false);

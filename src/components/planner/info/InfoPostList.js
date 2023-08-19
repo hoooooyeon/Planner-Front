@@ -181,7 +181,7 @@ const InfoPostList = ({
                 <PostListBlock>
                     <PostListHeader>
                         <h3>Memo</h3>
-                        {account.accountId === planner.accountId && (
+                        {account && Object.keys(planner).length > 0 && account.accountId === planner.accountId && (
                             <Button
                                 onClick={() => {
                                     onResetMemo();

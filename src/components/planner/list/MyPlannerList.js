@@ -163,7 +163,7 @@ const MyPlannerList = ({
                     <Button onClick={onCreatePlanner}>플래너 생성</Button>
                 </Header>
 
-                {myPlanners && myPlanners.list && myPlanners.list.length > 0 ? (
+                {Object.keys(myPlanners).length > 0 ? (
                     <Slider
                         list={myPlanners.list}
                         itemRef={itemRef}

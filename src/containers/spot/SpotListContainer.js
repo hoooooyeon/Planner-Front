@@ -17,6 +17,7 @@ import {
     searchSpotAction,
     changeContentTypeIdAction,
     resetDetailSpotAction,
+    resetAreasAction,
 } from '../../modules/spotModule';
 
 const SpotListContainer = ({
@@ -30,7 +31,7 @@ const SpotListContainer = ({
     loadSpots,
     loadDetailSpot,
     changeAreaIndex,
-    changePageIndex,
+    resetAreas,
     resetSpots,
     resetSpotData,
     changeDetailSpot,
@@ -52,7 +53,7 @@ const SpotListContainer = ({
     const numOfRows = 12;
     // 여행지 가져오기
     useEffect(() => {
-        if (areas && resultKeyword.length === 0) {
+        if (areas.length > 0 && resultKeyword.length === 0) {
             loadSpots({ areaCode, contentTypeId, pageNo, numOfRows });
         }
     }, [loadSpots, areaCode, resultKeyword, pageNo, areas, contentTypeId, spotData]);
@@ -68,7 +69,7 @@ const SpotListContainer = ({
         changeContentId(spot.contentId);
     };
     useEffect(() => {
-        if (contentId) {
+        if (contentId !== '') {
             loadDetailSpot({ contentId });
         }
     }, [loadDetailSpot, contentId, spotData]);
@@ -85,11 +86,12 @@ const SpotListContainer = ({
     // 여행지 페이지에서 벗어날 때 정보 초기화
     useEffect(() => {
         return () => {
+            resetAreas();
             resetSpots();
             resetSpotData();
             resetDetailSpot();
         };
-    }, [resetSpotData, resetSpots, resetDetailSpot]);
+    }, [resetSpotData, resetSpots, resetDetailSpot, resetAreas]);
 
     // 여행지 키워드로 검색
     const onChangeCurKeyword = (keyword) => {
@@ -189,9 +191,6 @@ const mapDispatchToProps = (dispatch) => ({
     changeAreaIndex: (index) => {
         dispatch(changeAreaIndexAction(index));
     },
-    changePageIndex: (index) => {
-        dispatch(changePageIndexAction(index));
-    },
     changeContentId: (id) => {
         dispatch(changeContentIdAction(id));
     },
@@ -206,6 +205,9 @@ const mapDispatchToProps = (dispatch) => ({
     },
     removeSpotLike: (spotId) => {
         dispatch(removeSpotLikeAction(spotId));
+    },
+    resetAreas: () => {
+        dispatch(resetAreasAction());
     },
     resetSpots: () => {
         dispatch(resetSpotsAction());

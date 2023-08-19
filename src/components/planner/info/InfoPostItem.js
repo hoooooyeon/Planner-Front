@@ -81,7 +81,7 @@ const InfoPostItem = ({ account, planner, memo, onDeleteMemo, onLoadMemo, setIsE
                         onLoadMemo(memo);
                     }}
                 />
-                {account.accountId === planner.accountId && (
+                {account && Object.keys(planner).length > 0 && account.accountId === planner.accountId && (
                     <StyledFontAwesomeIcon icon={faXmark} onClick={onDeletePostMd} />
                 )}
             </ButtonBox>

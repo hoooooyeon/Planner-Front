@@ -180,7 +180,7 @@ const SpotSearchForm = ({
                                     onClickArea(e.target.value);
                                 }}
                             >
-                                {areas &&
+                                {areas.length > 0 &&
                                     areas.map((area) => (
                                         <option value={area.code} key={area.code}>
                                             {area.name}

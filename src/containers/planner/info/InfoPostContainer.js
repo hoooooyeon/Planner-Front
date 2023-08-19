@@ -23,19 +23,19 @@ const InfoPostContainer = () => {
     const content = curMemo.content;
 
     const onCreateMemo = () => {
-        if (accountId && account.accountId === planner.accountId) {
+        if (account && account.accountId === planner.accountId) {
             dispatch(createMemoAction({ plannerId, title, content }));
         }
     };
 
     const onUpdateMemo = (memoId) => {
-        if (accountId && account.accountId === planner.accountId) {
+        if (account && account.accountId === planner.accountId) {
             dispatch(updateMemoAction({ plannerId, memoId, title, content }));
         }
     };
 
     const onDeleteMemo = (memoId) => {
-        if (accountId && account.accountId === planner.accountId) {
+        if (account && account.accountId === planner.accountId) {
             dispatch(deleteMemoAction({ plannerId, memoId }));
         }
     };
@@ -62,7 +62,7 @@ const InfoPostContainer = () => {
         setCurMemo({ memoId: null, title: '', content: '' });
     };
 
-    if (!planner || !accountId) {
+    if (planner === '' || !accountId) {
         return null;
     }
     return (

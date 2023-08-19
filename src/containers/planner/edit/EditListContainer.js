@@ -58,7 +58,7 @@ const EditListContainer = () => {
     const numOfRows = 12;
 
     const onCreateLocation = (spot) => {
-        if (accountId && account.accountId === planner.accountId) {
+        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
             if (!planId) {
                 alert('일정을 선택하세요.');
                 return;
@@ -91,7 +91,7 @@ const EditListContainer = () => {
 
     // 여행지 불러오기
     useEffect(() => {
-        if (contentTypeId !== 0 && areas && resultKeyword.length === 0) {
+        if (contentTypeId !== 0 && areas.length > 0 && resultKeyword.length === 0) {
             const pageNo = pageNum;
             dispatch(resetLikeListAction());
             dispatch(loadSpotsAction({ areaCode, contentTypeId, pageNo, numOfRows }));
@@ -105,7 +105,7 @@ const EditListContainer = () => {
     };
 
     useEffect(() => {
-        if (contentId) {
+        if (contentId !== '') {
             dispatch(loadDetailSpotAction({ contentId }));
         }
     }, [dispatch, contentId, spotData]);
@@ -179,13 +179,13 @@ const EditListContainer = () => {
     const totalCount = useRef();
 
     useEffect(() => {
-        if (spots) {
+        if (Object.keys(spots).length > 0) {
             totalCount.current = spots.totalCount;
         }
-        if (likeSpots) {
+        if (Object.keys(likeSpots).length > 0) {
             totalCount.current = likeSpots.totalCount;
         }
-    }, [likeSpots, spots]);
+    }, [likeSpots, spots, detail.likeState]);
 
     const onIndexPage = (index) => {
         setPage(index);
@@ -226,7 +226,10 @@ const EditListContainer = () => {
         dispatch(changeAllScheduleAction(false));
     };
 
-    if (!planner || account.accountId !== planner.accountId) {
+    if (
+        Object.keys(planner).length <= 0 ||
+        (account && Object.keys(planner).length > 0 && account.accountId !== planner.accountId)
+    ) {
         return null;
     }
     return (
