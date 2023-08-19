@@ -217,7 +217,7 @@ const EditList = ({
                     onIndexPage={onIndexPage}
                 />
                 <List>
-                    {spots &&
+                    {Object.keys(spots).length > 0 &&
                         spots.list.map((s, i) => {
                             const { firstImage, firstImage2, title, addr1 } = s;
 
@@ -253,15 +253,13 @@ const EditList = ({
                                 </ListItem>
                             );
                         })}
-                    {likeSpots &&
-                        likeSpots.list &&
-                        likeSpots.list.length > 0 &&
+                    {Object.keys(likeSpots).length > 0 &&
                         likeSpots.list.map((s, i) => {
-                            const { firstimage, firstimage2, title } = s;
+                            const { image, title } = s;
                             return (
                                 <ListItem key={i}>
                                     <Img
-                                        src={firstimage || firstimage2}
+                                        src={image}
                                         alt={title}
                                         onError={(e) => {
                                             handleErrorImg({ e, errorImg });
@@ -288,8 +286,9 @@ const EditList = ({
                                 </ListItem>
                             );
                         })}
-                    {(!likeSpots && (!spots || !spots.list || spots.list.length < 1)) ||
-                    (!spots && (!likeSpots || !likeSpots.list || likeSpots.list.length < 1)) ? (
+                    {(Object.keys(likeSpots).length <= 0 && Object.keys(spots).length <= 0) ||
+                    (Object.keys(spots).length <= 0 &&
+                        (Object.keys(likeSpots).length <= 0 || likeSpots.list.length <= 0)) ? (
                         <ErrorList>리스트가 없습니다.</ErrorList>
                     ) : null}
                 </List>

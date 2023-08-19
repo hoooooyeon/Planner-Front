@@ -10,11 +10,9 @@ import {
 } from '../../../modules/plannerModule';
 import ShareList from '../../../components/planner/list/ShareList';
 import { useState } from 'react';
-import { useHistory } from 'react-router';
 
 const ShareListContainer = () => {
     const dispatch = useDispatch();
-    const history = useHistory();
     const { sharePlanners, plannerError, plannerData, keyword, account } = useSelector(
         ({ plannerReducer, authReducer }) => ({
             sharePlanners: plannerReducer.sharePlanners,

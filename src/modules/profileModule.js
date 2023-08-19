@@ -114,10 +114,10 @@ const initialState = {
     },
     profile: null,
     plannerList: {
-        myPlanners: null,
-        likePlanners: null,
+        myPlanners: {},
+        likePlanners: {},
     },
-    likeSpots: null,
+    likeSpots: {},
     profileUpdate: false,
     profileError: null,
 };
@@ -179,12 +179,15 @@ function profileReducer(state = initialState, action) {
         case RESET_LIKE_LIST_TYPE:
             return {
                 ...state,
-                likeSpots: null,
+                likeSpots: {},
             };
         case RESET_MY_PLANNER_LIST_TYPE:
             return {
                 ...state,
-                plannerList: null,
+                plannerList: {
+                    ...state.plannerList,
+                    myPlanners: {},
+                },
             };
         default: {
             return state;

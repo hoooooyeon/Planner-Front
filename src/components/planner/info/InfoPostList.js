@@ -181,7 +181,7 @@ const InfoPostList = ({
                 <PostListBlock>
                     <PostListHeader>
                         <h3>Memo</h3>
-                        {nickname === creator && (
+                        {account && Object.keys(planner).length > 0 && account.accountId === planner.accountId && (
                             <Button
                                 onClick={() => {
                                     onResetMemo();
@@ -213,8 +213,8 @@ const InfoPostList = ({
                     </PostList>
                     {/* 메모 생성 모달 */}
                     <MemoModal
-                        nickname={nickname}
-                        creator={creator}
+                        account={account}
+                        planner={planner}
                         curMemo={curMemo}
                         onChangeMemoTitle={onChangeMemoTitle}
                         onChangeMemoContent={onChangeMemoContent}
@@ -224,8 +224,8 @@ const InfoPostList = ({
                     />
                     {/* 메모 수정 모달 */}
                     <MemoModal
-                        nickname={nickname}
-                        creator={creator}
+                        account={account}
+                        planner={planner}
                         curMemo={curMemo}
                         onChangeMemoTitle={onChangeMemoTitle}
                         onChangeMemoContent={onChangeMemoContent}

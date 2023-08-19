@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../common/Modal';
+import { handleErrorImg } from '../../lib/utils/CommonFunction';
+import errorImg from '../../lib/images/spotErrorImg.jpg';
 
 const DetailModalBlock = styled.div`
     width: 50rem;
@@ -120,7 +122,13 @@ const SpotDetailModal = ({ spotData, detail, onResetDetailSpot, onToggleDetailLi
         >
             <DetailModalBlock>
                 <ImgBox>
-                    <Img src={image} alt={title} />
+                    <Img
+                        src={image}
+                        alt={title}
+                        onError={(e) => {
+                            handleErrorImg({ e, errorImg });
+                        }}
+                    />
                 </ImgBox>
                 <InfoBox>
                     <LikeBox onClick={onToggleDetailLike} like={likeState ? likeState.toString() : undefined}>

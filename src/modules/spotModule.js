@@ -29,6 +29,7 @@ const REMOVE_SPOT_LIKE_TYPE = 'spot/REMOVE_SPOT_LIKE';
 const REMOVE_SPOT_LIKE_SUCCESS_TYPE = 'spot/REMOVE_SPOT_LIKE_SUCCESS';
 const REMOVE_SPOT_LIKE_FAILURE_TYPE = 'spot/REMOVE_SPOT_LIKE_FAILURE';
 
+const RESET_AREAS_TYPE = 'spot/RESET_AREAS';
 const RESET_SPOTS_TYPE = 'spot/RESET_SPOTS';
 const RESET_SPOT_DATA_TYPE = 'spot/RESET_SPOT_DATA';
 
@@ -59,6 +60,7 @@ export const addSpotLikeAction = ({ contentId, title, image }) => ({
     image,
 });
 export const removeSpotLikeAction = ({ contentId }) => ({ type: REMOVE_SPOT_LIKE_TYPE, contentId });
+export const resetAreasAction = () => ({ type: RESET_AREAS_TYPE });
 export const resetSpotsAction = () => ({ type: RESET_SPOTS_TYPE });
 export const resetSpotDataAction = () => ({ type: RESET_SPOT_DATA_TYPE });
 export const searchSpotAction = ({ areaCode, contentTypeId, curKeyword, numOfRows, pageNo }) => ({
@@ -88,16 +90,15 @@ export function* spotSaga() {
 }
 
 const initialState = {
-    areas: null,
-    sliderSpots: null,
-    spots: null,
-    detail: null,
+    areas: [],
+    spots: {},
+    detail: {},
     spotError: null,
     spotData: {
         areaCode: 1,
         pageNo: 1,
         contentTypeId: 12,
-        contentId: null,
+        contentId: '',
     },
     spotModal: false,
     contentTypeList: [
@@ -177,17 +178,17 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 detail: {
                     ...state.detail,
-                    image: action.spotInfo.firstImage,
+                    image: action.spotInfo.firstImage || action.spotInfo.image,
                     contentId: action.spotInfo.contentId,
                 },
             };
         case RESET_DETAIL_SPOT_TYPE:
             return {
                 ...state,
-                detail: null,
+                detail: {},
                 spotData: {
                     ...state.spotData,
-                    contentId: null,
+                    contentId: '',
                 },
             };
         case ADD_SPOT_LIKE_SUCCESS_TYPE:
@@ -205,8 +206,10 @@ function spotReducer(state = initialState, action) {
                 },
             };
 
+        case RESET_AREAS_TYPE:
+            return { ...state, areas: [] };
         case RESET_SPOTS_TYPE:
-            return { ...state, spots: null };
+            return { ...state, spots: {} };
 
         case RESET_SPOT_DATA_TYPE:
             return {
@@ -215,7 +218,7 @@ function spotReducer(state = initialState, action) {
                     areaCode: 1,
                     pageNo: 1,
                     contentTypeId: 12,
-                    contentId: null,
+                    contentId: '',
                 },
             };
         case SEARCH_SPOT_SUCCESS_TYPE:

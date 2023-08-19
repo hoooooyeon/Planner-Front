@@ -58,8 +58,8 @@ const StyledReactQuill = styled(ReactQuill)`
 `;
 
 const MemoModal = ({
-    nickname,
-    creator,
+    account,
+    planner,
     curMemo,
     onChangeMemoTitle,
     onChangeMemoContent,
@@ -82,12 +82,12 @@ const MemoModal = ({
     const [hosted, setHosted] = useState(false);
 
     useEffect(() => {
-        if (nickname === creator) {
+        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
             setHosted(true);
         } else {
             setHosted(false);
         }
-    }, [nickname, creator]);
+    }, [account.accountId, planner.accountId]);
 
     return (
         <Modal modalVisible={isState} title="메모 수정" onModalClose={onModalClose} onModalConfirm={onModalConfirm}>

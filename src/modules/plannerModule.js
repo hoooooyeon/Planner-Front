@@ -259,24 +259,24 @@ export function* plannerSaga() {
 }
 
 const initialState = {
-    sharePlanners: null,
-    planner: null,
+    sharePlanners: {},
+    planner: {},
     plannerError: null,
     modal: {
         member: false,
         plannerInfo: false,
     },
     plannerData: {
-        plannerId: null,
-        planId: null,
-        memoId: null,
+        plannerId: '',
+        planId: '',
+        memoId: '',
         pageNum: 1,
     },
     keyword: {
         curKeyword: '',
         resultKeyword: '',
     },
-    pType: null,
+    pType: '',
     allSchedule: false,
 };
 
@@ -294,6 +294,11 @@ function plannerReducer(state = initialState, action) {
                 plannerError: action.payload.error,
             };
         case LOAD_PLANNER_FAILURE_TYPE:
+            return {
+                ...state,
+                plannerError: action.payload.error,
+                planner: false,
+            };
         case CREATE_PLANNER_FAILURE_TYPE:
         case UPDATE_PLANNER_FAILURE_TYPE:
         case DELETE_PLANNER_FAILURE_TYPE:
@@ -339,12 +344,12 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 plannerData: {
                     pageNum: 1,
-                    plannerId: null,
-                    planId: null,
-                    memoId: null,
+                    plannerId: '',
+                    planId: '',
+                    memoId: '',
                 },
-                pType: null,
-                planner: null,
+                pType: '',
+                planner: {},
             };
         case DELETE_PLANNER_SUCCESS_TYPE:
             return {
@@ -505,7 +510,7 @@ function plannerReducer(state = initialState, action) {
         case RESET_SHARE_PLANNER_LIST_TYPE:
             return {
                 ...state,
-                sharePlanners: null,
+                sharePlanners: {},
             };
         case ADD_MAP_REF_TYPE:
             return {

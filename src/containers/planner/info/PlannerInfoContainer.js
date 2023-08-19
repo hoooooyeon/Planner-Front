@@ -4,6 +4,7 @@ import PlannerInfo from '../../../components/planner/info/PlannerInfo';
 import {
     changeAllScheduleAction,
     changeCurPlanIdAction,
+    changeCurPlannerIdAction,
     deletePlannerAction,
     loadPlannerAction,
     resetPlannerDataAction,
@@ -12,11 +13,12 @@ import {
     togglePlannerInfoModalAction,
 } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 
 const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const params = useParams();
 
     const { planner, plannerError, plannerData, allSchedule, account } = useSelector(
         ({ plannerReducer, authReducer }) => ({
@@ -28,19 +30,23 @@ const PlannerInfoContainer = () => {
         }),
     );
 
-    const { plans, creator } = { ...planner };
+    const { plans } = { ...planner };
     const { plannerId, planId } = { ...plannerData };
-    const { accountId, nickname } = { ...account };
+    const { accountId } = { ...account };
 
     useEffect(() => {
-        if (!plannerId) {
+        if (planner === false) {
             alert('잘못된 접근입니다.');
             history.push('/Planners');
         }
-    }, []);
+    }, [history, planner]);
+
+    useEffect(() => {
+        dispatch(changeCurPlannerIdAction(params.plannerId));
+    }, [dispatch, params]);
 
     const onDeletePlanner = () => {
-        if (accountId && creator === nickname) {
+        if (account && account.accountId === planner.accountId) {
             if (window.confirm('정말로 삭제하시겠습니까?')) {
                 dispatch(deletePlannerAction(plannerId));
                 history.push('/Planners');
@@ -53,27 +59,27 @@ const PlannerInfoContainer = () => {
     };
 
     const onToggleMemberModal = () => {
-        if (creator === nickname) {
+        if (account && account.accountId === planner.accountId) {
             dispatch(toggleMemberModalAction());
         }
     };
 
     const onTogglePlannerInfoModal = () => {
-        if (creator === nickname) {
+        if (account && account.accountId === planner.accountId) {
             dispatch(togglePlannerInfoModalAction());
         }
     };
 
     // 수정페이지 도달시 맨처음 plannerData planId 설정.
     useEffect(() => {
-        if (!planId && plans && plans.length > 0) {
+        if (planId !== '' && plans && plans.length > 0) {
             dispatch(changeCurPlanIdAction(plans[0].planId));
         }
     }, [dispatch, plans, planId]);
 
     // planner 정보 가져오기
     useEffect(() => {
-        if (plannerId) {
+        if (plannerId !== '') {
             dispatch(loadPlannerAction(plannerId));
         }
     }, [dispatch, plannerData]);
@@ -110,9 +116,9 @@ const PlannerInfoContainer = () => {
     }, [mapRef.current]);
 
     const setBoundsMap = () => {
-        if (map && plans.length === 0) {
+        if (map && Object.keys(planner).length > 0 && plans.length === 0) {
             map.setCenter(new kakao.maps.LatLng(36.5, 127.8));
-        } else if (map && plans.length > 0) {
+        } else if (map && Object.keys(planner).length > 0 && plans.length > 0) {
             let bounds = new kakao.maps.LatLngBounds();
             for (let i = 0; i < plans.length; i++) {
                 const { planLocations } = plans[i];
@@ -334,7 +340,7 @@ const PlannerInfoContainer = () => {
         dispatch(changeAllScheduleAction(false));
     };
 
-    if (!planner) {
+    if (planner === '') {
         return null;
     }
     return (
