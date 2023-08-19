@@ -2,17 +2,17 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeCurPlannerIdAction, createPlannerAction, resetPlannerDataAction } from '../../../modules/plannerModule';
 import MyPlannerList from '../../../components/planner/list/MyPlannerList';
-import { profileMyPlannerLoadAction, resetMyPlannerListAction } from '../../../modules/profileModule';
 import { useHistory } from 'react-router';
+import { accountMyPlannerListLoadAction, resetMyPlannerListAction } from '../../../modules/accountModule';
 
 const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { plannerList, plannerError, planner, pType, plannerData, account } = useSelector(
-        ({ plannerReducer, authReducer, profileReducer }) => ({
+    const { myPlanners, plannerError, planner, pType, plannerData, account } = useSelector(
+        ({ plannerReducer, authReducer, accountReducer }) => ({
             account: authReducer.account,
-            plannerList: profileReducer.plannerList,
+            myPlanners: accountReducer.myPlanners,
             plannerError: plannerReducer.plannerError,
             planner: plannerReducer.planner,
             plannerData: plannerReducer.plannerData,
@@ -28,7 +28,6 @@ const MyPlannerListContainer = () => {
     };
 
     const { plannerId } = { ...plannerData };
-    const { myPlanners } = { ...plannerList };
     const { pageLastIndex } = { ...myPlanners };
     const { accountId, nickname } = { ...account };
     const drag = useRef(false);
@@ -84,7 +83,7 @@ const MyPlannerListContainer = () => {
         if (accountId) {
             const itemCount = 10;
             const sortCriteria = 2;
-            dispatch(profileMyPlannerLoadAction({ accountId, pageNum, itemCount, sortCriteria }));
+            dispatch(accountMyPlannerListLoadAction({ accountId, pageNum, itemCount, sortCriteria }));
         }
     }, [dispatch, accountId, pageNum]);
 

@@ -2,10 +2,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import MyAccount from '../../components/account/MyAccount';
 import {
     accountImageUpdateAction,
-    accountLikePlannerLoadAction,
-    accountLikeSpotLoadAction,
+    accountLikePlannerListLoadAction,
+    accountLikeSpotListLoadAction,
     accountLoadAction,
-    accountMyPlannerLoadAction,
+    accountMyPlannerListLoadAction,
     accountUpdateAction,
     changeFieldAction,
 } from '../../modules/accountModule';
@@ -39,9 +39,9 @@ const MyAccountContainer = () => {
             };
 
             if (data.postType === 1) {
-                dispatch(accountLikePlannerLoadAction(queryString));
+                dispatch(accountLikePlannerListLoadAction(queryString));
             } else if (data.postType === 2) {
-                dispatch(accountLikeSpotLoadAction(queryString));
+                dispatch(accountLikeSpotListLoadAction(queryString));
             }
         }
     };

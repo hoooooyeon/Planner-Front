@@ -45,7 +45,7 @@ const SortBox = styled.div`
 const SortButton = styled.div`
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     border-radius: 2rem;
-    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
     font-size: 0.7rem;
     font-weight: bold;
     padding: 0.4rem;
@@ -89,7 +89,7 @@ const Button = styled.button`
     border-radius: 0 0.5rem 0.5rem 0;
     min-width: 5rem;
     height: 2.5rem;
-    background-color: ${(props) => props.theme.inputButtonBackgroundColor};
+    background-color: ${(props) => props.theme.secondaryButtonBackgroundColor};
     color: ${(props) => props.theme.primaryColor};
     font-size: 1rem;
     font-weight: bold;

@@ -60,7 +60,7 @@ const ModalFooter = styled.div`
 `;
 
 const ModalButton = styled.button`
-    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     font-weight: bold;
     width: 80px;

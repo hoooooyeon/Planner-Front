@@ -220,7 +220,11 @@ const Footer = () => {
                                 icon={faCircleStop}
                             />
                         </MusicBox>
-                        <audio ref={audioRef} src={musicAudio} loop />
+                        <audio
+                            ref={audioRef}
+                            //  src={musicAudio}
+                            loop
+                        />
                         <p>Erectric</p>
                         <p>By Jane & The Boy</p>
                     </Music>

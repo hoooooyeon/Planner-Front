@@ -34,7 +34,7 @@ const DateButton = styled.div`
     white-space: nowrap;
     font-size: 0.7rem;
     padding: 0.5rem;
-    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
     border-radius: 2rem;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     text-align: center;

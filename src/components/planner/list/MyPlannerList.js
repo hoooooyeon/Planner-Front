@@ -43,7 +43,7 @@ const HeaderTitle = styled.p`
 const Button = styled.button`
     width: 7rem;
     height: 3rem;
-    background-color: ${(props) => props.theme.PrimaryButtonBackgroundColor};
+    background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
     border: none;
     border-radius: 0.5rem;
     font-weight: bold;
@@ -162,7 +162,6 @@ const MyPlannerList = ({
                     <HeaderTitle>나의 플래너</HeaderTitle>
                     <Button onClick={onCreatePlanner}>플래너 생성</Button>
                 </Header>
-
                 {Object.keys(myPlanners).length > 0 ? (
                     <Slider
                         list={myPlanners.list}

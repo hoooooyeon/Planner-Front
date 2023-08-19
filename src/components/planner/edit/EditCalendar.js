@@ -120,7 +120,7 @@ const DeleteButton = styled.div`
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     font-size: 1rem;
-    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
     border-radius: 2rem;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     color: ${(props) => props.theme.tertiaryColor};

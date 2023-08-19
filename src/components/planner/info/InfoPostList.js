@@ -61,7 +61,7 @@ const PostList = styled.ul`
 const Button = styled.button`
     border-radius: 0.5rem;
     border: none;
-    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     width: 5rem;
     height: 2rem;

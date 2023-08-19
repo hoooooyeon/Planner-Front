@@ -71,7 +71,7 @@ const SearchButton = styled.button`
     border-radius: 0 0.5rem 0.5rem 0;
     min-width: 5rem;
     height: 2.5rem;
-    background-color: ${(props) => props.theme.inputButtonBackgroundColor};
+    background-color: ${(props) => props.theme.secondaryButtonBackgroundColor};
     color: ${(props) => props.theme.primaryColor};
     font-size: 1rem;
     font-weight: bold;

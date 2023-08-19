@@ -36,7 +36,7 @@ const Button = styled.button`
     height: 2rem;
     border-radius: 0.5rem;
     border: none;
-    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     font-weight: bold;
     cursor: pointer;

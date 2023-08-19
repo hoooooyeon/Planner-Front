@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditList from '../../../components/planner/edit/EditList';
+import { accountLikeSpotListLoadAction, resetLikeSpotListAction } from '../../../modules/accountModule';
 import {
     changeAllScheduleAction,
     changeKeywordAction,
@@ -21,7 +22,6 @@ import {
     resetSpotDataAction,
     changeContentIdAction,
 } from '../../../modules/spotModule';
-import { profileLikeSpotLoadAction, resetLikeListAction } from '../../../modules/profileModule';
 
 const EditListContainer = () => {
     const dispatch = useDispatch();
@@ -36,25 +36,26 @@ const EditListContainer = () => {
         plannerData,
         detail,
         contentTypeList,
-        likeSpots,
-    } = useSelector(({ plannerReducer, spotReducer, profileReducer, authReducer }) => ({
+        likeList,
+    } = useSelector(({ plannerReducer, spotReducer, accountReducer, authReducer }) => ({
         account: authReducer.account,
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
+        plannerData: plannerReducer.plannerData,
+        keyword: plannerReducer.keyword,
         spots: spotReducer.spots,
         areas: spotReducer.areas,
-        keyword: plannerReducer.keyword,
         spotData: spotReducer.spotData,
         detail: spotReducer.detail,
-        plannerData: plannerReducer.plannerData,
         contentTypeList: spotReducer.contentTypeList,
-        likeSpots: profileReducer.likeSpots,
+        likeList: accountReducer.likeList,
     }));
 
     const { plannerId, planId, pageNum } = { ...plannerData };
     const { accountId } = { ...account };
     const { areaCode, contentTypeId, contentId } = { ...spotData };
     const { curKeyword, resultKeyword } = { ...keyword };
+    const { likeSpots } = { ...likeList };
     const numOfRows = 12;
 
     const onCreateLocation = (spot) => {
@@ -93,7 +94,7 @@ const EditListContainer = () => {
     useEffect(() => {
         if (contentTypeId !== 0 && areas.length > 0 && resultKeyword.length === 0) {
             const pageNo = pageNum;
-            dispatch(resetLikeListAction());
+            dispatch(resetLikeSpotListAction());
             dispatch(loadSpotsAction({ areaCode, contentTypeId, pageNo, numOfRows }));
         }
     }, [dispatch, areaCode, pageNum, contentTypeId, resultKeyword, areas]);
@@ -159,7 +160,7 @@ const EditListContainer = () => {
         if ((accountId && likeKeyword.length !== 0) || contentTypeId === 0) {
             const keyword = likeKeyword;
             dispatch(resetSpotsAction());
-            dispatch(profileLikeSpotLoadAction({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }));
+            dispatch(accountLikeSpotListLoadAction({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }));
         }
     }, [dispatch, likeKeyword, contentTypeId, pageNum]);
 

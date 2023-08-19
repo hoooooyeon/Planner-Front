@@ -286,9 +286,13 @@ const EditList = ({
                                 </ListItem>
                             );
                         })}
+                    {/* 1. likeSpots와 spots가 없을 때
+                        2. spots가 없고, likeSpots가 있지만 list는 비었을 때
+                    */}
                     {(Object.keys(likeSpots).length <= 0 && Object.keys(spots).length <= 0) ||
-                    (Object.keys(spots).length <= 0 &&
-                        (Object.keys(likeSpots).length <= 0 || likeSpots.list.length <= 0)) ? (
+                    (Object.keys(likeSpots).length > 0 &&
+                        likeSpots.list.length <= 0 &&
+                        Object.keys(spots).length <= 0) ? (
                         <ErrorList>리스트가 없습니다.</ErrorList>
                     ) : null}
                 </List>

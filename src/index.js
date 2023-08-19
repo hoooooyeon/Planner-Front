@@ -34,8 +34,8 @@ const theme = {
     primaryColor: '#fcfcff', // 메인 글자색(흰)
     secondaryColor: '#191c1e', // 서브 글자색(검)
     tertiaryColor: '#c9c5d0', // 세번째 글자색(회)
-    PrimaryButtonBackgroundColor: '#fcfcff', // 기본 버튼색
-    inputButtonBackgroundColor: '#54507b', // input 검색 버튼색
+    primaryButtonBackgroundColor: '#fcfcff', // 기본 버튼색
+    secondaryButtonBackgroundColor: '#54507b', // input 검색 버튼색
     likeButtonColor: '#f7e467', // 좋아요 버튼색
     clickedButtonBackgroundColor: '#54507b', // 선택된 버튼색
     hoverColor: '#54507b', // 호버색

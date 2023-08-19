@@ -88,7 +88,6 @@ export const profileLikeSpotLoadAction = ({ accountId, itemCount, sortCriteria, 
     pageNum,
 });
 export const resetLikeListAction = () => ({ type: RESET_LIKE_LIST_TYPE });
-
 export const resetMyPlannerListAction = () => ({ type: RESET_MY_PLANNER_LIST_TYPE });
 
 const profileLoad = createSaga(PROFILE_LOAD_TYPE, profileAPI.profileLoad);
