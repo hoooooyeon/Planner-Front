@@ -31,21 +31,16 @@ const PlannerInfoModalContainer = () => {
 
     const onUpdatePlanner = () => {
         if (accountId && account.accountId === planner.accountId) {
-            const title = curTitle;
-            const expense = curExpense;
-            const memberCount = curMemberCount;
-            const memberTypeId = curMemberTypeId;
-            dispatch(
-                updatePlannerAction({
-                    plannerId,
-                    title,
-                    planDateStart,
-                    planDateEnd,
-                    expense,
-                    memberCount,
-                    memberTypeId,
-                }),
-            );
+            const queryString = {
+                plannerId,
+                title: curTitle,
+                planDateStart,
+                planDateEnd,
+                expense: curExpense,
+                memberCount: curMemberCount,
+                memberTypeId: curMemberTypeId,
+            };
+            dispatch(updatePlannerAction(queryString));
         }
     };
 

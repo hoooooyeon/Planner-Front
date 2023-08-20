@@ -98,19 +98,16 @@ const EditRouteContainer = ({ location }) => {
     // 출발일, 종료일 업데이트
     useEffect(() => {
         if (planDateStart && planDateEnd) {
-            const planDateStart = letsFormat(startDate);
-            const planDateEnd = letsFormat(endDate);
-            dispatch(
-                updatePlannerAction({
-                    plannerId,
-                    title,
-                    planDateStart,
-                    planDateEnd,
-                    expense,
-                    memberCount,
-                    memberTypeId,
-                }),
-            );
+            const queryString = {
+                plannerId,
+                title,
+                planDateStart: letsFormat(startDate),
+                planDateEnd: letsFormat(endDate),
+                expense,
+                memberCount,
+                memberTypeId,
+            };
+            dispatch(updatePlannerAction(queryString));
         }
     }, [startDate, endDate]);
 
@@ -150,10 +147,8 @@ const EditRouteContainer = ({ location }) => {
     const [curPlan, setCurPlan] = useState();
     const onUpdatePlan = (index) => {
         if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
-            const planDate = curPlan.planDate;
-            const planId = curPlan.planId;
-
-            dispatch(updatePlanAction({ plannerId, planId, planDate, index }));
+            const queryString = { plannerId, planId: curPlan.planId, planDate: curPlan.planDate, index };
+            dispatch(updatePlanAction(queryString));
         }
     };
 
@@ -166,13 +161,14 @@ const EditRouteContainer = ({ location }) => {
 
             if (plans) {
                 for (let i = 0; i < plans.length; i++) {
-                    const planId = plans[i].planId;
-                    const index = 1024 * (i + 1);
+                    // const planId = plans[i].planId;
+                    // const index = 1024 * (i + 1);
 
                     if (i > 0) {
                         planDate = letsFormat(date.setDate(date.getDate() + 1));
                     }
-                    dispatch(updatePlanAction({ plannerId, planId, planDate, index }));
+                    const queryString = { plannerId, planId: plans[i].planId, planDate, index: 1024 * (i + 1) };
+                    dispatch(updatePlanAction(queryString));
                 }
             }
         }
@@ -192,21 +188,20 @@ const EditRouteContainer = ({ location }) => {
                 locationMapy,
                 locationTransportation,
             } = curLocation;
-            dispatch(
-                updateLocationAction({
-                    plannerId,
-                    locationId,
-                    locationName,
-                    locationContentId,
-                    locationImage,
-                    locationAddr,
-                    locationMapx,
-                    locationMapy,
-                    locationTransportation,
-                    planId,
-                    index,
-                }),
-            );
+            const queryString = {
+                plannerId,
+                locationId,
+                locationName,
+                locationContentId,
+                locationImage,
+                locationAddr,
+                locationMapx,
+                locationMapy,
+                locationTransportation,
+                planId,
+                index,
+            };
+            dispatch(updateLocationAction(queryString));
         }
     };
     const onDeleteLocation = (locationId) => {
@@ -237,22 +232,22 @@ const EditRouteContainer = ({ location }) => {
                 locationAddr,
                 locationMapx,
                 locationMapy,
+                index,
             } = locationData;
-            let locationTransportation = trans;
-            dispatch(
-                updateLocationAction({
-                    plannerId,
-                    locationId,
-                    locationName,
-                    locationContentId,
-                    locationImage,
-                    locationAddr,
-                    locationMapx,
-                    locationMapy,
-                    locationTransportation,
-                    planId,
-                }),
-            );
+            const queryString = {
+                plannerId,
+                locationId,
+                locationName,
+                locationContentId,
+                locationImage,
+                locationAddr,
+                locationMapx,
+                locationMapy,
+                locationTransportation: trans,
+                planId,
+                index,
+            };
+            dispatch(updateLocationAction(queryString));
         }
     };
 

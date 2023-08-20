@@ -30,7 +30,8 @@ const InfoPostContainer = () => {
 
     const onUpdateMemo = (memoId) => {
         if (account && account.accountId === planner.accountId) {
-            dispatch(updateMemoAction({ plannerId, memoId, title, content }));
+            const queryString = { plannerId, memoId, title, content };
+            dispatch(updateMemoAction(queryString));
         }
     };
 

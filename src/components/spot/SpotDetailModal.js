@@ -131,10 +131,12 @@ const SpotDetailModal = ({ spotData, detail, onResetDetailSpot, onToggleDetailLi
                     />
                 </ImgBox>
                 <InfoBox>
-                    <LikeBox onClick={onToggleDetailLike} like={likeState ? likeState.toString() : undefined}>
-                        <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
-                        <div>{likeCount}</div>
-                    </LikeBox>
+                    {likeCount >= 0 && (
+                        <LikeBox onClick={onToggleDetailLike} like={likeState ? likeState.toString() : undefined}>
+                            <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
+                            <div>{likeCount}</div>
+                        </LikeBox>
+                    )}
                     <FlexDiv>
                         <Label>이름</Label>
                         <Title>{title}</Title>

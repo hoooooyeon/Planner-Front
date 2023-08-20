@@ -63,11 +63,11 @@ export const removeSpotLikeAction = ({ contentId }) => ({ type: REMOVE_SPOT_LIKE
 export const resetAreasAction = () => ({ type: RESET_AREAS_TYPE });
 export const resetSpotsAction = () => ({ type: RESET_SPOTS_TYPE });
 export const resetSpotDataAction = () => ({ type: RESET_SPOT_DATA_TYPE });
-export const searchSpotAction = ({ areaCode, contentTypeId, curKeyword, numOfRows, pageNo }) => ({
+export const searchSpotAction = ({ areaCode, contentTypeId, keyword, numOfRows, pageNo }) => ({
     type: SEARCH_SPOT_TYPE,
     areaCode,
     contentTypeId,
-    curKeyword,
+    keyword,
     pageNo,
     numOfRows,
 });
@@ -178,7 +178,7 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 detail: {
                     ...state.detail,
-                    image: action.spotInfo.firstImage || action.spotInfo.image,
+                    image: action.spotInfo.firstImage || action.spotInfo.image || '',
                     contentId: action.spotInfo.contentId,
                 },
             };

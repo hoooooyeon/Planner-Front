@@ -41,28 +41,19 @@ const MyPlannerListContainer = () => {
 
     const onCreatePlanner = () => {
         if (accountId) {
-            let title = `${nickname}의 여행 플래너`;
-            let planDateStart = letsFormat(new Date());
-            let planDateEnd = letsFormat(new Date());
-            let planMembers = [];
-            let expense = 0;
-            let memberCount = 1;
-            let memberTypeId = 1;
-            const creator = nickname;
+            const queryString = {
+                accountId,
+                creator: nickname,
+                title: `${nickname}의 여행 플래너`,
+                planDateStart: letsFormat(new Date()),
+                planDateEnd: letsFormat(new Date()),
+                planMembers: [],
+                expense: 0,
+                memberCount: 1,
+                memberTypeId: 1,
+            };
 
-            dispatch(
-                createPlannerAction({
-                    accountId,
-                    creator,
-                    title,
-                    planDateStart,
-                    planDateEnd,
-                    planMembers,
-                    expense,
-                    memberCount,
-                    memberTypeId,
-                }),
-            );
+            dispatch(createPlannerAction(queryString));
         } else {
             alert('로그인이 필요합니다.');
         }
@@ -81,9 +72,9 @@ const MyPlannerListContainer = () => {
     const [pageNum, setPageNum] = useState(1);
     useEffect(() => {
         if (accountId) {
-            const itemCount = 10;
-            const sortCriteria = 2;
-            dispatch(accountMyPlannerListLoadAction({ accountId, pageNum, itemCount, sortCriteria }));
+            const queryString = { accountId, pageNum, itemCount: 10, sortCriteria: 2 };
+
+            dispatch(accountMyPlannerListLoadAction(queryString));
         }
     }, [dispatch, accountId, pageNum]);
 

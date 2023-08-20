@@ -143,9 +143,7 @@ const IconBox = styled.div`
     height: 2.5rem;
     line-height: 2.5rem;
     padding: 0 0.5rem;
-    border: 1px solid ${(props) => props.theme.outlineColor};
-    border-left: none;
-    border-right: none;
+    border: none;
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`

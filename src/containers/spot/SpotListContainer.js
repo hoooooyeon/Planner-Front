@@ -54,19 +54,25 @@ const SpotListContainer = ({
     // 여행지 가져오기
     useEffect(() => {
         if (areas.length > 0 && resultKeyword.length === 0) {
-            loadSpots({ areaCode, contentTypeId, pageNo, numOfRows });
+            const queryString = {
+                areaCode,
+                contentTypeId,
+                pageNo,
+                numOfRows,
+            };
+            loadSpots(queryString);
         }
     }, [loadSpots, areaCode, resultKeyword, pageNo, areas, contentTypeId, spotData]);
 
     // 여행지 상세정보 모달 열기
     const drag = useRef(false);
-    const onOpenDetail = (spot) => {
+    const onOpenDetail = (spotInfo) => {
         if (drag.current) {
             drag.current = true;
             return;
         }
-        changeDetailSpot(spot);
-        changeContentId(spot.contentId);
+        changeDetailSpot(spotInfo);
+        changeContentId(spotInfo.contentId);
     };
     useEffect(() => {
         if (contentId !== '') {
@@ -105,7 +111,14 @@ const SpotListContainer = ({
 
     useEffect(() => {
         if (resultKeyword.length !== 0) {
-            searchSpot({ areaCode, contentTypeId, curKeyword, pageNo, numOfRows });
+            const queryString = {
+                areaCode,
+                contentTypeId,
+                keyword: resultKeyword,
+                pageNo,
+                numOfRows,
+            };
+            searchSpot(queryString);
         }
     }, [resultKeyword, pageNo]);
 
@@ -215,8 +228,8 @@ const mapDispatchToProps = (dispatch) => ({
     resetSpotData: () => {
         dispatch(resetSpotDataAction());
     },
-    searchSpot: ({ areaCode, contentTypeId, curKeyword, pageNo, numOfRows }) => {
-        dispatch(searchSpotAction({ areaCode, contentTypeId, curKeyword, pageNo, numOfRows }));
+    searchSpot: ({ areaCode, contentTypeId, keyword, pageNo, numOfRows }) => {
+        dispatch(searchSpotAction({ areaCode, contentTypeId, keyword, pageNo, numOfRows }));
     },
     changeContentTypeId: (contentTypeId) => {
         dispatch(changeContentTypeIdAction(contentTypeId));
