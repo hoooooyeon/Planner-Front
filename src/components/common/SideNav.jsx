@@ -52,7 +52,7 @@ const NavList = styled.ul`
             color: ${(props) => props.theme.hoverColor};
             cursor: pointer;
             a {
-                color:             color: ${(props) => props.theme.hoverColor};
+                color: color: ${(props) => props.theme.hoverColor};
 
             }
         }

@@ -19,23 +19,6 @@ const HeaderBlock = styled.div`
     z-index: 999;
     padding: 0;
     margin: 0;
-    a {
-        text-decoration: none;
-        white-space: nowrap;
-        color: ${(props) => props.theme.secondaryColor};
-        &:hover {
-            color: ${(props) => props.theme.mainColor};
-        }
-    }
-    h1 {
-        font-size: 1.2rem;
-        font-weight: bold;
-        white-space: nowrap;
-        color: ${(props) => props.theme.secondaryColor};
-        &:hover {
-            color: ${(props) => props.theme.mainColor};
-        }
-    }
     ${(props) =>
         props.styled &&
         css`
@@ -51,9 +34,14 @@ const HeaderBlock = styled.div`
 `;
 
 const Logo = styled.h1`
+    cursor: pointer;
     font-size: 1.2rem;
     font-weight: bold;
     white-space: nowrap;
+    color: ${(props) => props.theme.secondaryColor};
+    &:hover {
+        color: ${(props) => props.theme.mainColor};
+    }
 `;
 
 const MenuList = styled.ul`
@@ -67,6 +55,14 @@ const MenuList = styled.ul`
         font-size: 0.9rem;
         margin: 0 30px;
         font-weight: bold;
+        text-decoration: none;
+        white-space: nowrap;
+        cursor: pointer;
+        color: ${(props) => props.theme.secondaryColor};
+        &:hover {
+            color: ${(props) => props.theme.mainColor};
+        }
+    }
     }
 `;
 
@@ -75,10 +71,8 @@ const AccountList = styled.ul`
     list-style: none;
     display: none;
     padding: 0;
-    @media all and (min-width: 768px) {
-        display: flex;
-    }
-    a {
+    li {
+        cursor: pointer;
         display: flex;
         align-items: center;
         font-size: 0.8rem;
@@ -87,6 +81,9 @@ const AccountList = styled.ul`
         &:hover {
             color: ${(props) => props.theme.mainColor};
         }
+    }
+    @media all and (min-width: 768px) {
+        display: flex;
     }
 `;
 
@@ -140,15 +137,7 @@ const DropDownMenu = styled.ul`
         font-size: 0.8rem;
         color: ${(props) => props.theme.secondaryColor};
         &:hover {
-            color: ${(props) => props.theme.mainColor};
-        }
-        a {
-            color: ${(props) => props.theme.secondaryColor};
-            &:hover {
-                color: ${(props) => props.theme.mainColor};
-            }
-        }
-        &:hover {
+            color: ${(props) => props.theme.hoverColor};
             font-weight: bold;
         }
     }
@@ -193,32 +182,25 @@ const Header = ({ account, handlePurge, onChangePage }) => {
 
     return (
         <HeaderBlock ref={headerRef} styled={styled}>
-            <Logo styled={styled}>
-                <Link to="/">한국다봄</Link>
+            <Logo styled={styled} onClick={() => onChangePage('')}>
+                한국다봄
             </Logo>
             <MenuList styled={styled}>
-                <li>
-                    <Link to="/Planners">플래너</Link>
-                </li>
-                <li>
-                    <Link to="/ReviewList">커뮤니티</Link>
-                </li>
-                <li>
-                    <Link to="/Spot">여행지</Link>
-                </li>
+                <li onClick={() => onChangePage('Planners')}>플래너</li>
+                <li onClick={() => onChangePage('Reviews')}>커뮤니티</li>
+                <li onClick={() => onChangePage('Spot')}>여행지</li>
             </MenuList>
             {account ? (
                 <>
                     <Account styled={styled} onClick={onClickDropDown}>
                         {/* <img className="user-img" src="logo192.png"></img> */}
+                        <StyledFontAwesomeIcon icon={faCircleUser} />
                         {account.nickname}
                     </Account>
                     {dropDown && (
                         <DropDown>
                             <DropDownMenu>
-                                <li>
-                                    <Link to="/Profile">마이페이지</Link>
-                                </li>
+                                <li onClick={() => onChangePage('Profile')}>마이페이지</li>
                                 <li onClick={handlePurge}>로그아웃</li>
                             </DropDownMenu>
                         </DropDown>
@@ -226,11 +208,9 @@ const Header = ({ account, handlePurge, onChangePage }) => {
                 </>
             ) : (
                 <AccountList styled={styled}>
-                    <li>
-                        <Link to="/Login">
-                            <StyledFontAwesomeIcon icon={faCircleUser} />
-                            <p>로그인</p>
-                        </Link>
+                    <li onClick={() => onChangePage('Login')}>
+                        <StyledFontAwesomeIcon icon={faCircleUser} />
+                        <p>로그인</p>
                     </li>
                 </AccountList>
             )}

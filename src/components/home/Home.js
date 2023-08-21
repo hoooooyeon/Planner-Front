@@ -4,13 +4,13 @@ import HomeReviewList from '../home/HomeReviewList';
 import HomeSpotList from '../home/HomeSpotList';
 import HomeServices from '../home/HomeServices';
 
-const Home = ({ sharePlanners, onClickPlanner }) => {
+const Home = ({ sharePlanners, loading, onClickPlanner }) => {
     return (
         <>
             <Main />
             <HomeServices />
-            <HomePlannerList sharePlanners={sharePlanners} onClickPlanner={onClickPlanner} />
-            <HomeReviewList />
+            <HomePlannerList sharePlanners={sharePlanners} loading={loading} onClickPlanner={onClickPlanner} />
+            <HomeReviewList loading={loading} />
             <HomeSpotList />
         </>
     );

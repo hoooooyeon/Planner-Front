@@ -8,7 +8,6 @@ import ProfilePage from './pages/account/ProfilePage';
 import PlannerInfoPage from './pages/planner/PlannerInfoPage';
 import PlannerEditPage from './pages/planner/PlannerEditPage';
 import PlannerListPage from './pages/planner/PlannerListPage';
-import PrivateRoute from './components/common/PrivateRoute';
 import ReviewPage from './pages/review/ReviewPage';
 import ReviewPostPage from './pages/review/ReviewPostPage';
 import ReviewPostViewerPage from './pages/review/ReviewPostViewerPage';
@@ -25,7 +24,7 @@ const App = () => {
             <Route exact path="/reviews" component={ReviewPage} />
             <Route exact path={['/reviews/write', '/reviews/edit']} component={ReviewPostPage} />
             <Route exact path="/reviews/:reviewId" component={ReviewPostViewerPage} />
-            <PrivateRoute path="/Planners/edit/:plannerId" render={PlannerEditPage} redirect="/Login" />
+            <Route path="/Planners/edit/:plannerId" render={PlannerEditPage} />
             <Route path="/Planners/:plannerId" render={PlannerInfoPage} />
             <Route path="/Planners" render={PlannerListPage} />
         </Switch>

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Slider from '../../common/Slider';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/plannerErrorImg.png';
+import ErrorBox from '../../common/ErrorBox';
 
 const MyPlannerListBlock = styled.div`
     width: 100%;
@@ -43,6 +44,7 @@ const HeaderTitle = styled.p`
 const Button = styled.button`
     width: 7rem;
     height: 3rem;
+    cursor: pointer;
     background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
     border: none;
     border-radius: 0.5rem;
@@ -58,11 +60,6 @@ const Button = styled.button`
     &:hover {
         color: ${(props) => props.theme.hoverColor};
         box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
-    }
-    a {
-        color: ${(props) => props.theme.secondaryColor};
-        text-decoration: none;
-        display: block;
     }
 `;
 const PlannerItem = styled.li`
@@ -141,20 +138,9 @@ const ErrorDiv = styled.div`
     margin-top: 2rem;
 `;
 
-const MyPlannerList = ({
-    plannerError,
-    myPlanners,
-    onCreatePlanner,
-    onClickPlanner,
-    onPreviousPage,
-    onNextPage,
-    drag,
-}) => {
+const MyPlannerList = ({ myPlanners, loading, onCreatePlanner, onClickPlanner, onPreviousPage, onNextPage, drag }) => {
     const itemRef = useRef();
 
-    if (plannerError) {
-        return <div>Loading...</div>;
-    }
     return (
         <MyPlannerListBlock>
             <Container>
@@ -162,7 +148,9 @@ const MyPlannerList = ({
                     <HeaderTitle>나의 플래너</HeaderTitle>
                     <Button onClick={onCreatePlanner}>플래너 생성</Button>
                 </Header>
-                {Object.keys(myPlanners).length > 0 ? (
+                {loading && Object.keys(myPlanners).length <= 0 ? (
+                    <ErrorBox isLoading={true} />
+                ) : Object.keys(myPlanners).length > 0 && myPlanners.list.length > 0 ? (
                     <Slider
                         list={myPlanners.list}
                         itemRef={itemRef}
@@ -201,7 +189,7 @@ const MyPlannerList = ({
                         </PlannerList>
                     </Slider>
                 ) : (
-                    <ErrorDiv>플래너가 없습니다.</ErrorDiv>
+                    <ErrorBox />
                 )}
             </Container>
         </MyPlannerListBlock>

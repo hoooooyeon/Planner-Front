@@ -8,15 +8,19 @@ const HomeContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { sharePlanners, planner, plannerData, pType } = useSelector(({ plannerReducer }) => ({
-        sharePlanners: plannerReducer.sharePlanners,
-        planner: plannerReducer.planner,
-        plannerData: plannerReducer.plannerData,
-        pType: plannerReducer.pType,
-    }));
+    const { sharePlanners, planner, plannerData, pType, loading } = useSelector(
+        ({ plannerReducer, loadingReducer }) => ({
+            sharePlanners: plannerReducer.sharePlanners,
+            planner: plannerReducer.planner,
+            plannerData: plannerReducer.plannerData,
+            pType: plannerReducer.pType,
+            loading: loadingReducer.loading,
+        }),
+    );
 
     const { plannerId } = { ...plannerData };
 
+    // 플래너 선택
     const onClickPlanner = (plannerId) => {
         dispatch(changeCurPlannerIdAction(plannerId));
     };
@@ -30,17 +34,19 @@ const HomeContainer = () => {
         dispatch(loadSharePlannerListAction({ keyword, itemCount, sortCriteria, pageNum }));
     }, [dispatch]);
 
+    // 주소 이동
     useEffect(() => {
-        dispatch(resetPlannerDataAction());
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (!planner && plannerId && pType === 1) {
+        if (planner !== false && Object.keys(planner).length <= 0 && plannerId && pType === 1) {
             history.push(`/Planners/${plannerId}`);
         }
     }, [plannerId]);
 
-    return <Home sharePlanners={sharePlanners} onClickPlanner={onClickPlanner} />;
+    // plannerData 리셋
+    useEffect(() => {
+        dispatch(resetPlannerDataAction());
+    }, [dispatch]);
+
+    return <Home sharePlanners={sharePlanners} loading={loading} onClickPlanner={onClickPlanner} />;
 };
 
 export default HomeContainer;

@@ -27,6 +27,7 @@ const SpotListContainer = ({
     spotModal,
     spotData,
     contentTypeList,
+    loading,
     loadAreas,
     loadSpots,
     loadDetailSpot,
@@ -41,7 +42,6 @@ const SpotListContainer = ({
     resetDetailSpot,
 }) => {
     const { areaCode, pageNo, contentTypeId, contentId } = { ...spotData };
-
     const [curKeyword, setCurKeyword] = useState('');
     const [resultKeyword, setResultKeyword] = useState('');
 
@@ -50,15 +50,14 @@ const SpotListContainer = ({
         loadAreas();
     }, [loadAreas]);
 
-    const numOfRows = 12;
-    // 여행지 가져오기
+    // 여행지리스트 가져오기
     useEffect(() => {
-        if (areas.length > 0 && resultKeyword.length === 0) {
+        if (areas.length > 0 && resultKeyword === '') {
             const queryString = {
                 areaCode,
                 contentTypeId,
                 pageNo,
-                numOfRows,
+                numOfRows: 12,
             };
             loadSpots(queryString);
         }
@@ -74,6 +73,8 @@ const SpotListContainer = ({
         changeDetailSpot(spotInfo);
         changeContentId(spotInfo.contentId);
     };
+
+    // 여행지 상세정보 로드
     useEffect(() => {
         if (contentId !== '') {
             loadDetailSpot({ contentId });
@@ -82,10 +83,6 @@ const SpotListContainer = ({
 
     // 지역  선택
     const onClickArea = (areaIndex) => {
-        if (drag.current) {
-            drag.current = false;
-            return;
-        }
         changeAreaIndex(areaIndex);
     };
 
@@ -99,42 +96,49 @@ const SpotListContainer = ({
         };
     }, [resetSpotData, resetSpots, resetDetailSpot, resetAreas]);
 
-    // 여행지 키워드로 검색
+    // 여행지 키워드 타이핑
     const onChangeCurKeyword = (keyword) => {
         setCurKeyword(keyword);
     };
+
+    // 실제적으로 검색될 키워드 저장
     const onChangeResultKeyword = () => {
-        if (curKeyword.length !== 0) {
+        if (curKeyword !== '') {
             setResultKeyword(curKeyword);
         }
     };
 
+    // 여행지리스트 키워드로 검색
     useEffect(() => {
-        if (resultKeyword.length !== 0) {
+        if (resultKeyword !== '') {
             const queryString = {
                 areaCode,
                 contentTypeId,
                 keyword: resultKeyword,
                 pageNo,
-                numOfRows,
+                numOfRows: 12,
             };
             searchSpot(queryString);
         }
     }, [resultKeyword, pageNo]);
 
-    const onChangeContentTypeId = (contentTypeId) => {
-        changeContentTypeId(contentTypeId);
-    };
-
+    // 키워드 리셋.
     useEffect(() => {
         setCurKeyword('');
         setResultKeyword('');
     }, [areaCode, contentTypeId]);
 
+    // 여행지리스트 컨텐츠타입 변경.
+    const onChangeContentTypeId = (contentTypeId) => {
+        changeContentTypeId(contentTypeId);
+    };
+
+    // 지역, 컨텐츠타입, 키워드 변경시 페이지 리셋.
     useEffect(() => {
         changePageIndexAction(1);
     }, [areaCode, contentTypeId, resultKeyword]);
 
+    // 여행지 슬라이더 배열.
     const sliderSpots = [
         {
             title: '광안리해수욕장',
@@ -167,12 +171,12 @@ const SpotListContainer = ({
         <SpotList
             areas={areas}
             spots={spots}
-            spotError={spotError}
             spotModal={spotModal}
             spotData={spotData}
             sliderSpots={sliderSpots}
             drag={drag}
             curKeyword={curKeyword}
+            loading={loading}
             resultKeyword={resultKeyword}
             contentTypeList={contentTypeList}
             onClickArea={onClickArea}
@@ -189,10 +193,9 @@ const mapStateToProps = (state) => ({
     spots: state.spotReducer.spots,
     spotError: state.spotReducer.spotError,
     spotData: state.spotReducer.spotData,
-    likeList: state.spotReducer.likeList,
-    keyword: state.spotReducer.keyword,
     contentTypeList: state.spotReducer.contentTypeList,
     spotModal: state.spotReducer.spotModal,
+    loading: state.loadingReducer.loading,
 });
 const mapDispatchToProps = (dispatch) => ({
     loadAreas: () => {

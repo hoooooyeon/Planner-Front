@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import errorImg from '../../../lib/images/plannerErrorImg.png';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
+import ErrorBox from '../../common/ErrorBox';
 
 const ShareListBlock = styled.div`
     width: 100%;
@@ -126,7 +127,7 @@ const ErrorDiv = styled.div`
 
 const ShareList = ({
     sharePlanners,
-    plannerError,
+    loading,
     keyword,
     sortCriteria,
     onClickPlanner,
@@ -148,10 +149,12 @@ const ShareList = ({
                     onChangeResultKeyword={onChangeResultKeyword}
                     onChangeSort={onChangeSort}
                 />
-                {Object.keys(sharePlanners).length > 0 ? (
+                {/* {sharePlanners && loading && Object.keys(sharePlanners).length <= 0 ? (
+                    <ErrorBox isLoading={true} />
+                ) : sharePlanners && Object.keys(sharePlanners).length > 0 && sharePlanners.list.length > 0 ? (
                     <Slider list={sharePlanners.list} itemRef={itemRef} scroll={true} drag={drag}>
                         <Shares>
-                            {sharePlanners.list.map((p, i) => (
+                            {sharePlanners.list.map((p) => (
                                 <ShareItem
                                     key={p.plannerId}
                                     ref={itemRef}
@@ -186,8 +189,8 @@ const ShareList = ({
                         </Shares>
                     </Slider>
                 ) : (
-                    <ErrorDiv>플래너가 없습니다.</ErrorDiv>
-                )}
+                    <ErrorBox />
+                )} */}
             </Container>
         </ShareListBlock>
     );

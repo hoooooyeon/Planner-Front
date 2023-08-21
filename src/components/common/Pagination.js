@@ -25,7 +25,7 @@ const Container = styled.div`
 
 const PageButton = styled.div`
     border-radius: 8px;
-    padding: 8px;
+    padding: 4px 8px;
     margin: 0;
     font-size: 0.9rem;
     &:hover {

@@ -61,7 +61,7 @@ const EditRouteContainer = ({ location }) => {
             alert('호스트만 접근할 수 있습니다.');
             history.push('/Planners');
         }
-    }, [history, accountId, planner, account.accountId]);
+    }, [history, accountId, account, planner]);
 
     useEffect(() => {
         dispatch(changeCurPlannerIdAction(params.plannerId));

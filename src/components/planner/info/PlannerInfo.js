@@ -130,6 +130,7 @@ const PlannerInfo = ({
     onClickDateSchedule,
     onClickEditPlanner,
 }) => {
+    const { creator, accountId } = { ...planner };
     const menuRef = useRef();
     const containerRef = useRef();
     const [isDropDown, setIsDropDown] = useState(false);
@@ -163,8 +164,8 @@ const PlannerInfo = ({
         <PlannerInfoBlock ref={containerRef}>
             <Container>
                 <InfoHeader>
-                    <h3>따수베어님의 플래너</h3>
-                    {account.accountId === planner.accountId && (
+                    <h3>{creator}의 플래너</h3>
+                    {account && account.accountId === planner.accountId && (
                         <MenuBox>
                             <MenuList>
                                 <MenuItem onClick={onTogglePlannerInfoModal}>플래너 정보 수정</MenuItem>

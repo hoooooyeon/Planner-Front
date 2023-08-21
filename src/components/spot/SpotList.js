@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { handleErrorImg } from '../../lib/utils/CommonFunction';
 import errorImg from '../../lib/images/spotErrorImg.jpg';
+import ErrorBox from '../common/ErrorBox';
 
 const SpotListBlock = styled.div`
     width: 100%;
@@ -96,20 +97,35 @@ const IconBox = styled.div`
     bottom: 0;
     padding: 5px;
 `;
+
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: ${(props) => (props.like ? `${props.theme.likeButtonColor}` : 'transparent')};
+`;
+
+const ErrorDiv = styled.div`
+    color: ${(props) => props.theme.tertiaryColor};
+    font-weight: bold;
+    text-align: center;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+`;
+
+const ErrorIcon = styled(FontAwesomeIcon)`
+    font-size: 2rem;
+    margin-bottom: 1rem;
 `;
 
 const SpotList = ({
     areas,
     spots,
-    spotError,
     spotData,
     curKeyword,
     resultKeyword,
     sliderSpots,
     contentTypeList,
     drag,
+    loading,
     onClickArea,
     onOpenDetail,
     onChangeCurKeyword,
@@ -118,9 +134,6 @@ const SpotList = ({
 }) => {
     const itemRef = useRef();
 
-    if (spotError) {
-        return <div>Loading...</div>;
-    }
     return (
         <SpotListBlock>
             <SpotSlider sliderSpots={sliderSpots} />
@@ -137,40 +150,46 @@ const SpotList = ({
                     onChangeCurKeyword={onChangeCurKeyword}
                     onChangeResultKeyword={onChangeResultKeyword}
                 />
-                {Object.keys(spots).length > 0 && (
-                    <Slider list={spots.list} scroll={true} drag={drag} itemRef={itemRef}>
-                        <List>
-                            {spots.list.map((spot) => {
-                                const { title, firstImage, likeState, contentId } = spot;
-                                return (
-                                    <SpotItem
-                                        ref={itemRef}
-                                        onClick={() => {
-                                            onOpenDetail(spot);
-                                        }}
-                                        key={contentId}
-                                    >
-                                        <ImgBox>
-                                            <Img
-                                                src={firstImage}
-                                                alt={title}
-                                                onError={(e) => {
-                                                    handleErrorImg({ e, errorImg });
-                                                }}
-                                            />
-                                            <IconBox>
-                                                <StyledFontAwesomeIcon
-                                                    icon={faStar}
-                                                    like={likeState ? likeState.toString() : undefined}
+                {!loading ? (
+                    Object.keys(spots).length > 0 && spots.list.length > 0 ? (
+                        <Slider list={spots.list} scroll={true} drag={drag} itemRef={itemRef}>
+                            <List>
+                                {spots.list.map((spot) => {
+                                    const { title, firstImage, likeState, contentId } = spot;
+                                    return (
+                                        <SpotItem
+                                            ref={itemRef}
+                                            onClick={() => {
+                                                onOpenDetail(spot);
+                                            }}
+                                            key={contentId}
+                                        >
+                                            <ImgBox>
+                                                <Img
+                                                    src={firstImage}
+                                                    alt={title}
+                                                    onError={(e) => {
+                                                        handleErrorImg({ e, errorImg });
+                                                    }}
                                                 />
-                                            </IconBox>
-                                        </ImgBox>
-                                        <Name>{title}</Name>
-                                    </SpotItem>
-                                );
-                            })}
-                        </List>
-                    </Slider>
+                                                <IconBox>
+                                                    <StyledFontAwesomeIcon
+                                                        icon={faStar}
+                                                        like={likeState ? likeState.toString() : undefined}
+                                                    />
+                                                </IconBox>
+                                            </ImgBox>
+                                            <Name>{title}</Name>
+                                        </SpotItem>
+                                    );
+                                })}
+                            </List>
+                        </Slider>
+                    ) : (
+                        <ErrorBox />
+                    )
+                ) : (
+                    <ErrorBox isLoading={true} />
                 )}
             </Container>
         </SpotListBlock>

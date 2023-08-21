@@ -97,7 +97,7 @@ const Date = styled.div`
     overflow: hidden;
 `;
 
-const HomeReviewList = () => {
+const HomeReviewList = ({ loading }) => {
     return (
         <HomeReviewListBlock>
             <Container>

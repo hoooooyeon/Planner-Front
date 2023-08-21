@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import styled from 'styled-components';
 import errorImg from '../../lib/images/plannerErrorImg.png';
 import { handleErrorImg } from '../../lib/utils/CommonFunction';
+import ErrorBox from '../common/ErrorBox';
 
 const HomePlannerListBlock = styled.div`
     width: 100%;
@@ -99,7 +100,7 @@ const Date = styled.div`
     overflow: hidden;
 `;
 
-const HomePlannerList = ({ sharePlanners, onClickPlanner }) => {
+const HomePlannerList = ({ sharePlanners, loading, onClickPlanner }) => {
     const itemRef = useRef();
 
     return (
@@ -109,27 +110,37 @@ const HomePlannerList = ({ sharePlanners, onClickPlanner }) => {
                     <h3>다른 여행객들의 플래너</h3>
                     <p>먼저 여행을 끝마친 여행객들의 플래너를 구경 해보세요.</p>
                 </Header>
-                {sharePlanners && sharePlanners.list && sharePlanners.list.length > 0 ? (
-                    <PlannerList>
-                        {sharePlanners.list.map((p) => (
-                            <PlannerItem ref={itemRef} key={p.plannerId} onClick={() => onClickPlanner(p.plannerId)}>
-                                <ImgBox>
-                                    <Img
-                                        src={p.thumbnail}
-                                        alt={p.title}
-                                        onError={(e) => {
-                                            handleErrorImg({ e, errorImg });
-                                        }}
-                                    />
-                                </ImgBox>
-                                <InfoBox>
-                                    <Title>너어디에있었어여기 서울에 널찾아 헤맸어 그게 내 행복이야</Title>
-                                    <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                                </InfoBox>
-                            </PlannerItem>
-                        ))}
-                    </PlannerList>
-                ) : null}
+                {!loading ? (
+                    Object.keys(sharePlanners).length > 0 && sharePlanners.list.length > 0 ? (
+                        <PlannerList>
+                            {sharePlanners.list.map((p) => (
+                                <PlannerItem
+                                    ref={itemRef}
+                                    key={p.plannerId}
+                                    onClick={() => onClickPlanner(p.plannerId)}
+                                >
+                                    <ImgBox>
+                                        <Img
+                                            src={p.thumbnail}
+                                            alt={p.title}
+                                            onError={(e) => {
+                                                handleErrorImg({ e, errorImg });
+                                            }}
+                                        />
+                                    </ImgBox>
+                                    <InfoBox>
+                                        <Title>너어디에있었어여기 서울에 널찾아 헤맸어 그게 내 행복이야</Title>
+                                        <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
+                                    </InfoBox>
+                                </PlannerItem>
+                            ))}
+                        </PlannerList>
+                    ) : (
+                        <ErrorBox />
+                    )
+                ) : (
+                    <ErrorBox isLoading={true} />
+                )}
             </Container>
         </HomePlannerListBlock>
     );
