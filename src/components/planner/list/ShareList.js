@@ -149,7 +149,7 @@ const ShareList = ({
                     onChangeResultKeyword={onChangeResultKeyword}
                     onChangeSort={onChangeSort}
                 />
-                {/* {sharePlanners && loading && Object.keys(sharePlanners).length <= 0 ? (
+                {sharePlanners && loading && Object.keys(sharePlanners).length <= 0 ? (
                     <ErrorBox isLoading={true} />
                 ) : sharePlanners && Object.keys(sharePlanners).length > 0 && sharePlanners.list.length > 0 ? (
                     <Slider list={sharePlanners.list} itemRef={itemRef} scroll={true} drag={drag}>
@@ -189,8 +189,8 @@ const ShareList = ({
                         </Shares>
                     </Slider>
                 ) : (
-                    <ErrorBox />
-                )} */}
+                    <ErrorBox text="플래너" />
+                )}
             </Container>
         </ShareListBlock>
     );

@@ -141,7 +141,7 @@ const PlannerInfoModal = ({
                     />
                 </FlexDiv>
                 <FlexDiv>
-                    <Label>여행 비용</Label>{' '}
+                    <Label>여행 비용</Label>
                     <Funds
                         placeholder="비용"
                         type="number"
@@ -163,7 +163,7 @@ const PlannerInfoModal = ({
                     ></People>
                 </FlexDiv>
                 <FlexDiv>
-                    <Label>여행 멤버 유형</Label>{' '}
+                    <Label>여행 멤버 유형</Label>
                     <Category
                         required
                         value={curMemberTypeId}

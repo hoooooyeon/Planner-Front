@@ -13,7 +13,7 @@ const PlannerInfoModalContainer = () => {
         account: authReducer.account,
     }));
 
-    const { accountId, nickname } = { ...account };
+    const { accountId } = { ...account };
     const { plannerId, planDateStart, planDateEnd, title, expense, memberCount, memberTypeId, creator } = {
         ...planner,
     };
@@ -29,6 +29,7 @@ const PlannerInfoModalContainer = () => {
         setCurMemberTypeId(memberTypeId);
     }, [title, expense, memberCount, memberTypeId, modal]);
 
+    // 플래너 수정
     const onUpdatePlanner = () => {
         if (accountId && account.accountId === planner.accountId) {
             const queryString = {
@@ -44,11 +45,12 @@ const PlannerInfoModalContainer = () => {
         }
     };
 
+    // 플래너정보수정모달 토글
     const onTogglePlannerInfoModal = () => {
         dispatch(togglePlannerInfoModalAction());
     };
 
-    if (!planner) {
+    if (planner === {}) {
         return null;
     }
     return (

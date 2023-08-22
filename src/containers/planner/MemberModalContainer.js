@@ -17,30 +17,36 @@ const MemberModalContainer = () => {
 
     const [members, setMembers] = useState([]);
 
+    // 멤버 초대
     const onInviteMember = () => {
-        if (accountId && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             dispatch(inviteMemberAction({ plannerId, members }));
         }
     };
+
+    // 멤버 삭제
     const onDeleteMember = (nickName) => {
-        if (accountId && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             dispatch(deleteMemberAction({ plannerId, nickName }));
         }
     };
 
+    // 멤버 타이핑
     const onChangeMember = (members) => {
         setMembers([members]);
     };
 
+    // 멤버 타이핑 리셋
     const onResetMember = () => {
         setMembers([]);
     };
 
+    // 멤버 모달 토글
     const onToggleMemberModal = () => {
         dispatch(toggleMemberModalAction());
     };
 
-    if (!planner) {
+    if (planner === {}) {
         return null;
     }
     return (

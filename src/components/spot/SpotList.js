@@ -102,20 +102,6 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: ${(props) => (props.like ? `${props.theme.likeButtonColor}` : 'transparent')};
 `;
 
-const ErrorDiv = styled.div`
-    color: ${(props) => props.theme.tertiaryColor};
-    font-weight: bold;
-    text-align: center;
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-`;
-
-const ErrorIcon = styled(FontAwesomeIcon)`
-    font-size: 2rem;
-    margin-bottom: 1rem;
-`;
-
 const SpotList = ({
     areas,
     spots,
@@ -186,7 +172,7 @@ const SpotList = ({
                             </List>
                         </Slider>
                     ) : (
-                        <ErrorBox />
+                        <ErrorBox text="여행지" />
                     )
                 ) : (
                     <ErrorBox isLoading={true} />

@@ -4,6 +4,7 @@ import MemoModal from './MemoModal';
 import InfoPostItem from './InfoPostItem';
 import ad1 from '../../../lib/images/ad1.jpg';
 import ad2 from '../../../lib/images/serviceImg1.jpg';
+import ErrorBox from '../../common/ErrorBox';
 
 const InfoPostListBlock = styled.div`
     background-color: ${(props) => props.theme.secondaryBackgroundColor};
@@ -107,16 +108,6 @@ const Img = styled.img`
     object-fit: cover;
 `;
 
-const ErrorList = styled.div`
-    color: ${(props) => props.theme.tertiaryColor};
-    font-weight: bold;
-    font-size: 1rem;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-`;
-
 const InfoPostList = ({
     planner,
     curMemo,
@@ -129,8 +120,8 @@ const InfoPostList = ({
     onLoadMemo,
     onResetMemo,
 }) => {
-    const { planMemos, creator } = { ...planner };
-    const { nickname } = { ...account };
+    const { planMemos, planMembers } = { ...planner };
+    const { accountId, nickname } = { ...account };
 
     const [isChanged, setIsChanged] = useState(false);
     const adRef = useRef();
@@ -155,6 +146,7 @@ const InfoPostList = ({
     const [isCreate, setIsCreate] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
 
+    // 메모 생성 모달 열기
     const onCreatePostMd = () => {
         setIsCreate(false);
         onResetMemo();
@@ -163,12 +155,14 @@ const InfoPostList = ({
         }
     };
 
+    // 메모 수정 모달 열기
     const onEditPostMd = () => {
         setIsEdit(false);
         onResetMemo();
         onUpdateMemo(curMemo.memoId);
     };
 
+    // 메모 모달 종료
     const onCancelPostMd = () => {
         setIsEdit(false);
         setIsCreate(false);
@@ -181,7 +175,7 @@ const InfoPostList = ({
                 <PostListBlock>
                     <PostListHeader>
                         <h3>Memo</h3>
-                        {account && Object.keys(planner).length > 0 && account.accountId === planner.accountId && (
+                        {accountId === planner.accountId && (
                             <Button
                                 onClick={() => {
                                     onResetMemo();
@@ -193,7 +187,7 @@ const InfoPostList = ({
                         )}
                     </PostListHeader>
                     <PostList>
-                        {planMemos && planMemos.length > 0 ? (
+                        {planMemos && planMembers.find((member) => member === nickname) !== undefined ? (
                             planMemos.map((memo) => {
                                 return (
                                     <InfoPostItem
@@ -208,13 +202,11 @@ const InfoPostList = ({
                                 );
                             })
                         ) : (
-                            <ErrorList>리스트가 없습니다.</ErrorList>
+                            <ErrorBox text="메모" />
                         )}
                     </PostList>
                     {/* 메모 생성 모달 */}
                     <MemoModal
-                        account={account}
-                        planner={planner}
                         curMemo={curMemo}
                         onChangeMemoTitle={onChangeMemoTitle}
                         onChangeMemoContent={onChangeMemoContent}
@@ -224,8 +216,6 @@ const InfoPostList = ({
                     />
                     {/* 메모 수정 모달 */}
                     <MemoModal
-                        account={account}
-                        planner={planner}
                         curMemo={curMemo}
                         onChangeMemoTitle={onChangeMemoTitle}
                         onChangeMemoContent={onChangeMemoContent}

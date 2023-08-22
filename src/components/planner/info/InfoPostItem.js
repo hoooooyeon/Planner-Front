@@ -62,10 +62,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 
 const InfoPostItem = ({ account, planner, memo, onDeleteMemo, onLoadMemo, setIsEdit }) => {
     const { memoId, title } = memo;
-
-    const onDeletePostMd = () => {
-        onDeleteMemo(memoId);
-    };
+    const { accountId } = { ...account };
 
     return (
         <PostItem>
@@ -81,8 +78,13 @@ const InfoPostItem = ({ account, planner, memo, onDeleteMemo, onLoadMemo, setIsE
                         onLoadMemo(memo);
                     }}
                 />
-                {account && Object.keys(planner).length > 0 && account.accountId === planner.accountId && (
-                    <StyledFontAwesomeIcon icon={faXmark} onClick={onDeletePostMd} />
+                {accountId === planner.accountId && (
+                    <StyledFontAwesomeIcon
+                        icon={faXmark}
+                        onClick={() => {
+                            onDeleteMemo(memoId);
+                        }}
+                    />
                 )}
             </ButtonBox>
         </PostItem>

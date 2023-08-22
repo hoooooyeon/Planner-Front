@@ -49,24 +49,7 @@ const StyledInput = styled.input`
     }
 `;
 
-const StyledReactQuill = styled(ReactQuill)`
-    ${(props) =>
-        props.hosted === false &&
-        css`
-            pointer-events: none;
-        `}
-`;
-
-const MemoModal = ({
-    account,
-    planner,
-    curMemo,
-    onChangeMemoTitle,
-    onChangeMemoContent,
-    isState,
-    onModalClose,
-    onModalConfirm,
-}) => {
+const MemoModal = ({ curMemo, onChangeMemoTitle, onChangeMemoContent, isState, onModalClose, onModalConfirm }) => {
     const modules = {
         toolbar: [
             [{ header: [1, 2, 3, false] }],
@@ -79,22 +62,12 @@ const MemoModal = ({
     };
 
     const { title, content } = { ...curMemo };
-    const [hosted, setHosted] = useState(false);
-
-    useEffect(() => {
-        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
-            setHosted(true);
-        } else {
-            setHosted(false);
-        }
-    }, [account.accountId, planner.accountId]);
 
     return (
         <Modal modalVisible={isState} title="메모 수정" onModalClose={onModalClose} onModalConfirm={onModalConfirm}>
             <MemoModalBlock>
                 <MemoModalHeader>
                     <StyledInput
-                        hosted={hosted}
                         name="title"
                         placeholder="Title"
                         type="text"
@@ -105,8 +78,7 @@ const MemoModal = ({
                     />
                 </MemoModalHeader>
                 <MemoModalBody>
-                    <StyledReactQuill
-                        hosted={hosted}
+                    <ReactQuill
                         placeholder="내용을 입력해주세요."
                         theme="snow"
                         modules={modules}

@@ -17,7 +17,7 @@ const ErrorIcon = styled(FontAwesomeIcon)`
     margin-bottom: 1rem;
 `;
 
-const ErrorBox = ({ isLoading }) => {
+const ErrorBox = ({ isLoading, text }) => {
     return (
         <>
             {isLoading ? (
@@ -28,7 +28,7 @@ const ErrorBox = ({ isLoading }) => {
             ) : (
                 <ErrorDiv>
                     <ErrorIcon icon={faMagnifyingGlass} />
-                    리스트가 없습니다.
+                    {text} 이(가) 없습니다.
                 </ErrorDiv>
             )}
         </>

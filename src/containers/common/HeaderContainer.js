@@ -1,6 +1,6 @@
 import Header from '../../components/common/Header';
 import { useSelector } from 'react-redux';
-// import { persistor } from '../../index';
+import { persistor } from '../../index';
 import { useHistory } from 'react-router';
 
 const HeaderContainer = () => {
@@ -10,7 +10,8 @@ const HeaderContainer = () => {
     }));
 
     const handlePurge = () => {
-        // persistor.purge();
+        persistor.purge();
+        window.localStorage.clear();
     };
 
     const onChangePage = (page) => {

@@ -11,6 +11,7 @@ import { useRef } from 'react';
 import Slider from '../../common/Slider';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/spotErrorImg.jpg';
+import ErrorBox from '../../common/ErrorBox';
 
 const InfoRouteBlock = styled.div`
     background-color: ${(props) => props.theme.primaryBackgroundColor};
@@ -160,15 +161,13 @@ const InfoRoute = ({ planner, plannerData, drag, onChangeCurPlanId, onClickDateS
 
     return (
         <InfoRouteBlock>
-            {plans && (
-                <InfoDatination
-                    planner={planner}
-                    plannerData={plannerData}
-                    drag={drag}
-                    onChangeCurPlanId={onChangeCurPlanId}
-                    onClickDateSchedule={onClickDateSchedule}
-                />
-            )}
+            <InfoDatination
+                planner={planner}
+                plannerData={plannerData}
+                drag={drag}
+                onChangeCurPlanId={onChangeCurPlanId}
+                onClickDateSchedule={onClickDateSchedule}
+            />
             <WidthDiv>
                 {plans && plans.length > 0 ? (
                     <Slider list={plans} itemRef={itemRef}>
@@ -197,7 +196,7 @@ const InfoRoute = ({ planner, plannerData, drag, onChangeCurPlanId, onClickDateS
                         ))}
                     </Slider>
                 ) : (
-                    <ErrorDiv>일정이 없습니다.</ErrorDiv>
+                    <ErrorBox text="일정" />
                 )}
             </WidthDiv>
         </InfoRouteBlock>

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InfoPostList from '../../../components/planner/info/InfoPostList';
@@ -10,8 +11,8 @@ const InfoPostContainer = () => {
         plannerError: plannerReducer.plannerError,
         account: authReducer.account,
     }));
-    const { plannerId } = { ...planner };
-    const { accountId } = { ...account };
+    const { plannerId, planMembers } = { ...planner };
+    const { accountId, nickname } = { ...account };
 
     const [curMemo, setCurMemo] = useState({
         memoId: null,
@@ -19,28 +20,31 @@ const InfoPostContainer = () => {
         content: '',
     });
 
-    const title = curMemo.title;
-    const content = curMemo.content;
-
+    // 메모 생성
     const onCreateMemo = () => {
-        if (account && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
+            const title = curMemo.title;
+            const content = curMemo.content;
             dispatch(createMemoAction({ plannerId, title, content }));
         }
     };
 
+    // 메모 수정
     const onUpdateMemo = (memoId) => {
-        if (account && account.accountId === planner.accountId) {
-            const queryString = { plannerId, memoId, title, content };
+        if (accountId === planner.accountId) {
+            const queryString = { plannerId, memoId, title: curMemo.title, content: curMemo.content };
             dispatch(updateMemoAction(queryString));
         }
     };
 
+    // 메모 삭제
     const onDeleteMemo = (memoId) => {
-        if (account && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             dispatch(deleteMemoAction({ plannerId, memoId }));
         }
     };
 
+    // 메모 제목 변경
     const onChangeMemoTitle = (title) => {
         setCurMemo({
             ...curMemo,
@@ -48,6 +52,7 @@ const InfoPostContainer = () => {
         });
     };
 
+    // 메모 내용 변경
     const onChangeMemoContent = (content) => {
         setCurMemo({
             ...curMemo,
@@ -55,15 +60,17 @@ const InfoPostContainer = () => {
         });
     };
 
+    // 현재 메모 로드
     const onLoadMemo = (memo) => {
         setCurMemo({ memoId: memo.memoId, title: memo.title, content: memo.content });
     };
 
+    // 현제 메모 리셋
     const onResetMemo = () => {
         setCurMemo({ memoId: null, title: '', content: '' });
     };
 
-    if (planner === '' || !accountId) {
+    if (planner === {}) {
         return null;
     }
     return (

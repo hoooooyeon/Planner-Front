@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import createSagaMiddleware from 'redux-saga';
 import { applyMiddleware, createStore } from 'redux';
-import rootReducer, { rootSaga } from './modules';
+import persistedReducer, { rootSaga } from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
@@ -18,8 +18,8 @@ import { ThemeProvider } from 'styled-components';
 
 const sagaMiddleware = createSagaMiddleware();
 
-export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
-// export const persistor = persistStore(store);
+export const store = createStore(persistedReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
+export const persistor = persistStore(store);
 // persistor.purge();
 
 sagaMiddleware.run(rootSaga);
@@ -49,9 +49,9 @@ ReactDOM.render(
         <BrowserRouter>
             <ScrollTop />
             <ThemeProvider theme={theme}>
-                {/* <PersistGate persistor={persistor}> */}
-                <App />
-                {/* </PersistGate> */}
+                <PersistGate persistor={persistor}>
+                    <App />
+                </PersistGate>
             </ThemeProvider>
         </BrowserRouter>
     </Provider>,

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import ErrorBox from '../../common/ErrorBox';
 
 const MapBlock = styled.div`
     width: 60%;
@@ -18,7 +19,6 @@ const Map = styled.div`
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     width: 100%;
     height: 100%;
-    pointer-events: none;
     position: absolute;
     top: 0;
     left: 0;
@@ -107,25 +107,28 @@ const InfoMap = ({ planner, mapRef, allSchedule, onToggleLikePlanner, onClickAll
         setIsHovered(false);
     };
 
-    if (!mapRef) {
-        return <div>Loading...</div>;
-    }
     return (
         <MapBlock>
-            <Map ref={mapRef} />
-            <IconBox onClick={onToggleLikePlanner} like={likeState ? likeState.toString() : undefined}>
-                <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
-                <div>{likeCount}</div>
-            </IconBox>
-            <AllSchedule
-                allSchedule={allSchedule}
-                onClick={onClickAllSchedule}
-                onMouseEnter={onOpenName}
-                onMouseLeave={onCloseName}
-            >
-                <ScheduleIcon icon={faCalendarDays} />
-            </AllSchedule>
-            {isHovered && <IconName>모든 일정 보기</IconName>}
+            {mapRef ? (
+                <>
+                    <Map ref={mapRef} />
+                    <IconBox onClick={onToggleLikePlanner} like={likeState ? likeState.toString() : undefined}>
+                        <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
+                        <div>{likeCount}</div>
+                    </IconBox>
+                    <AllSchedule
+                        allSchedule={allSchedule}
+                        onClick={onClickAllSchedule}
+                        onMouseEnter={onOpenName}
+                        onMouseLeave={onCloseName}
+                    >
+                        <ScheduleIcon icon={faCalendarDays} />
+                    </AllSchedule>
+                    {isHovered && <IconName>모든 일정 보기</IconName>}
+                </>
+            ) : (
+                <ErrorBox text="지도" />
+            )}
         </MapBlock>
     );
 };

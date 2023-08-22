@@ -136,7 +136,7 @@ const HomePlannerList = ({ sharePlanners, loading, onClickPlanner }) => {
                             ))}
                         </PlannerList>
                     ) : (
-                        <ErrorBox />
+                        <ErrorBox text="플래너" />
                     )
                 ) : (
                     <ErrorBox isLoading={true} />

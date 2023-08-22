@@ -131,13 +131,6 @@ const Img = styled.img`
     object-fit: cover;
 `;
 
-const ErrorDiv = styled.div`
-    color: ${(props) => props.theme.tertiaryColor};
-    font-weight: bold;
-    text-align: center;
-    margin-top: 2rem;
-`;
-
 const MyPlannerList = ({ myPlanners, loading, onCreatePlanner, onClickPlanner, onPreviousPage, onNextPage, drag }) => {
     const itemRef = useRef();
 
@@ -189,7 +182,7 @@ const MyPlannerList = ({ myPlanners, loading, onCreatePlanner, onClickPlanner, o
                         </PlannerList>
                     </Slider>
                 ) : (
-                    <ErrorBox />
+                    <ErrorBox text="플래너" />
                 )}
             </Container>
         </MyPlannerListBlock>

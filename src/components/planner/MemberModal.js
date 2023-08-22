@@ -72,7 +72,7 @@ const MemberModal = ({
     const { planMembers, creator } = { ...planner };
 
     const onInviteMemberMd = () => {
-        if (planner.creator === members[0]) {
+        if (creator === members[0]) {
             alert('생성자는 초대할 수 없습니다.');
             return;
         }
