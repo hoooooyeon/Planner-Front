@@ -261,7 +261,7 @@ export function* plannerSaga() {
 const initialState = {
     sharePlanners: {},
     planner: {},
-    plannerError: null,
+    plannerError: {},
     modal: {
         member: false,
         plannerInfo: false,
@@ -287,18 +287,13 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 sharePlanners: action.payload.data,
             };
-        case LOAD_SHARE_PLANNER_LIST_FAILURE_TYPE:
-            return {
-                ...state,
-                sharePlanners: null,
-                plannerError: action.payload.error,
-            };
         case LOAD_PLANNER_FAILURE_TYPE:
             return {
                 ...state,
                 plannerError: action.payload.error,
                 planner: false,
             };
+        case LOAD_SHARE_PLANNER_LIST_FAILURE_TYPE:
         case CREATE_PLANNER_FAILURE_TYPE:
         case UPDATE_PLANNER_FAILURE_TYPE:
         case DELETE_PLANNER_FAILURE_TYPE:
@@ -316,6 +311,7 @@ function plannerReducer(state = initialState, action) {
         case TOGGLE_LIKE_PLANNER_FAILURE_TYPE:
             return {
                 ...state,
+                // plannerError: { state: action.payload.state, message: action.payload.message },
                 plannerError: action.payload.error,
             };
         case LOAD_PLANNER_SUCCESS_TYPE:

@@ -63,7 +63,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 const Main = () => {
     const [isVideo, setIsVideo] = useState();
     useEffect(() => {
-        const videoArr = ['/videos/intro_city.mp4', '/videos/intro_train.mp4', '/videos/intro_waterfall.mp4'];
+        const videoArr = ['/videos/Main1.mp4', '/videos/Main2.mp4', '/videos/Main3.mp4'];
         const num = Math.round(Math.random() * (videoArr.length - 1));
 
         setIsVideo(videoArr[num]);

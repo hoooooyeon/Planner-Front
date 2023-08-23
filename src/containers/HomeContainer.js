@@ -1,6 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeCurPlannerIdAction, loadSharePlannerListAction, resetPlannerDataAction } from '../modules/plannerModule';
+import {
+    changeCurPlannerIdAction,
+    loadSharePlannerListAction,
+    resetPlannerDataAction,
+    resetSharePlannerListAction,
+} from '../modules/plannerModule';
 import Home from '../components/home/Home';
 import { useHistory } from 'react-router';
 
@@ -27,11 +32,8 @@ const HomeContainer = () => {
 
     // 공유 플래너리스트 가져오기
     useEffect(() => {
-        const itemCount = 4;
-        const pageNum = 1;
-        const sortCriteria = 1;
-        const keyword = '';
-        dispatch(loadSharePlannerListAction({ keyword, itemCount, sortCriteria, pageNum }));
+        const queryString = { itemCount: 4, sortCriteria: 1, pageNum: 1 };
+        dispatch(loadSharePlannerListAction(queryString));
     }, [dispatch]);
 
     // 주소 이동
@@ -41,9 +43,12 @@ const HomeContainer = () => {
         }
     }, [plannerId]);
 
-    // plannerData 리셋
+    // plannerData, sharePlanners 리셋
     useEffect(() => {
         dispatch(resetPlannerDataAction());
+        return () => {
+            dispatch(resetSharePlannerListAction());
+        };
     }, [dispatch]);
 
     return <Home sharePlanners={sharePlanners} loading={loading} onClickPlanner={onClickPlanner} />;

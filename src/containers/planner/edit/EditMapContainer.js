@@ -11,12 +11,11 @@ import { useHistory } from 'react-router';
 const EditMapContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { planner, plannerError, plannerData, spots, spotData, account, allSchedule } = useSelector(
+    const { planner, plannerError, plannerData, spots, account, allSchedule } = useSelector(
         ({ plannerReducer, spotReducer, authReducer }) => ({
             planner: plannerReducer.planner,
             plannerError: plannerReducer.plannerError,
             spots: spotReducer.spots,
-            spotData: spotReducer.spotData,
             keyword: spotReducer.keyword,
             contentTypeList: spotReducer.contentTypeList,
             plannerData: plannerReducer.plannerData,
@@ -27,11 +26,11 @@ const EditMapContainer = () => {
 
     const { plannerId } = { ...plannerData };
     const { plans } = { ...planner };
+    const { accountId } = { ...account };
 
     const mapRef = useRef(null);
     const [map, setMap] = useState();
     const { kakao } = window;
-
     // 지도 생성
     useEffect(() => {
         if (mapRef.current) {
@@ -64,7 +63,7 @@ const EditMapContainer = () => {
                 setView(false);
             }
         }
-    }, [map, view, kakao.maps.LatLng, kakao.maps.LatLngBounds]);
+    }, [map, plans, view, kakao.maps.LatLng, kakao.maps.LatLngBounds]);
 
     const newSpotArr = useRef([]);
     const spotArr = useRef([]);
@@ -82,14 +81,11 @@ const EditMapContainer = () => {
             for (let i = 0; i < spots.list.length; i++) {
                 const { title, mapx, mapy } = spots.list[i];
 
-                // 마커가 표시될 위치입니다
                 markerPosition = new kakao.maps.LatLng(mapy, mapx);
 
-                // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
                 imageSize = new kakao.maps.Size(10, 10);
                 markerImage = new kakao.maps.MarkerImage(circleImg, imageSize);
 
-                // 마커를 생성합니다
                 marker = new kakao.maps.Marker({
                     position: markerPosition,
                     clickable: true,
@@ -98,10 +94,8 @@ const EditMapContainer = () => {
 
                 newSpotArr.current.push(marker);
 
-                // 마커에 인포윈도우 생성 및 켜기 이벤트 등록
                 kakao.maps.event.addListener(marker, 'click', addInfowindow(marker, title));
 
-                // 맵에 인포윈도우 끄기 이벤트 등록
                 kakao.maps.event.addListener(map, 'click', removeInfowindow());
             }
 
@@ -109,7 +103,6 @@ const EditMapContainer = () => {
             newSpotArr.current.forEach((spot) => spot.setMap(map));
             spotArr.current = newSpotArr.current;
 
-            // 인포윈도우 생성 함수
             function addInfowindow(marker, title) {
                 return () => {
                     infowindow.setContent(`<div style="padding:5px;">${title}</div>`);
@@ -236,14 +229,11 @@ const EditMapContainer = () => {
                 for (let j = 0; j < foundPlan.planLocations.length; j++) {
                     const { locationMapx, locationMapy, locationName } = foundPlan.planLocations[j];
 
-                    // 마커가 표시될 위치입니다
                     markerPosition = new kakao.maps.LatLng(locationMapy, locationMapx);
                     imageSize = new kakao.maps.Size(30, 30);
 
-                    // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
                     markerImage = new kakao.maps.MarkerImage(locationImg, imageSize);
 
-                    // 마커를 생성합니다
                     marker = new kakao.maps.Marker({
                         position: markerPosition,
                         clickable: true,
@@ -251,41 +241,33 @@ const EditMapContainer = () => {
                     });
                     newMarkerArr.current.push(marker);
 
-                    // 마커에 인포윈도우 생성 및 켜기 이벤트 등록
                     kakao.maps.event.addListener(marker, 'click', addInfowindow(marker, locationName));
 
-                    // 맵에 인포윈도우 끄기 이벤트 등록
                     kakao.maps.event.addListener(map, 'click', removeInfowindow());
 
-                    // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
                     linePath = [...linePath, new kakao.maps.LatLng(locationMapy, locationMapx)];
                 }
             }
 
-            // 지도에 표시할 선을 생성합니다
             polyline = new kakao.maps.Polyline({
-                path: linePath, // 선을 구성하는 좌표배열 입니다
-                strokeWeight: 3, // 선의 두께 입니다
-                strokeColor: 'gray', // 선의 색깔입니다
-                strokeOpacity: 0.5, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                strokeStyle: 'solid', // 선의 스타일입니다
+                path: linePath,
+                strokeWeight: 3,
+                strokeColor: 'gray',
+                strokeOpacity: 0.5,
+                strokeStyle: 'solid',
             });
 
-            // 기존 라인을 지우고 새로 라인 긋기.
             if (line.current) {
                 line.current.setMap(null);
             }
 
             line.current = polyline;
-            // 지도에 선을 표시합니다
             polyline.setMap(map);
 
-            // 기존 마커를 지우고 새로 마커를 표시.
             markerArr.current.forEach((marker) => marker.setMap(null));
             newMarkerArr.current.forEach((marker) => marker.setMap(map));
             markerArr.current = newMarkerArr.current;
 
-            // 인포윈도우 생성 함수
             function addInfowindow(marker, title) {
                 return () => {
                     infowindow.setContent(`<div style="padding:5px;">${title}</div>`);
@@ -334,7 +316,7 @@ const EditMapContainer = () => {
         }
     }, [dispatch, map, getMapCenter, kakao.maps.event]);
 
-    // 중심 좌표를 통해 현재  지역 구하기
+    // 중심 좌표를 통해 현재 지역 구하기
     useEffect(() => {
         const areaArr = [
             {
@@ -500,6 +482,7 @@ const EditMapContainer = () => {
         }
     }, [centerCoord, dispatch, kakao.maps.LatLng, kakao.maps.Polyline, map]);
 
+    // 모든 일정 루트 보기 토글
     const onClickAllSchedule = () => {
         if (allSchedule) {
             showDateRouteMarker();
@@ -510,20 +493,18 @@ const EditMapContainer = () => {
         }
     };
 
+    // 일정 저장 버튼
     const onSavePlanner = () => {
         history.push(`/Planners/${plannerId}`);
     };
 
+    // 튜토리얼모달 토글
     const [tutorialVisible, setTutorialVisible] = useState(true);
     const onClickTutorialModal = () => {
         setTutorialVisible(!tutorialVisible);
     };
 
-    if (
-        !mapRef ||
-        (account && Object.keys(planner).length > 0 && account.accountId !== planner.accountId) ||
-        Object.keys(planner).length <= 0
-    ) {
+    if (!mapRef || planner === {} || accountId !== planner.accountId) {
         return null;
     }
     return (

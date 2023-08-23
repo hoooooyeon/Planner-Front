@@ -53,6 +53,7 @@ const SpotListContainer = ({
     // 여행지리스트 가져오기
     useEffect(() => {
         if (areas.length > 0 && resultKeyword === '') {
+            resetSpots();
             const queryString = {
                 areaCode,
                 contentTypeId,
@@ -111,6 +112,7 @@ const SpotListContainer = ({
     // 여행지리스트 키워드로 검색
     useEffect(() => {
         if (resultKeyword !== '') {
+            resetSpots();
             const queryString = {
                 areaCode,
                 contentTypeId,

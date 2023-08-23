@@ -41,7 +41,7 @@ const PlannerInfoContainer = () => {
         }
     }, [history, planner]);
 
-    // 주소 입력 접근시 plannerData.plannerId 변경
+    // 주소 입력 접근시 plannerData.plannerId 설정
     useEffect(() => {
         dispatch(changeCurPlannerIdAction(params.plannerId));
     }, [dispatch, params]);

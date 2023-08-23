@@ -28,6 +28,7 @@ export const deletePlanner = ({ plannerId }) => {
 // 플래너 수정
 export const updatePlanner = ({ type, plannerId, ...queryString }) => {
     return client.patch(`${baseUrl}/${plannerId}`, {
+        plannerId,
         ...queryString,
     });
 };
@@ -44,7 +45,7 @@ export const createMemo = ({ plannerId, title, content }) => {
 
 // 메모 수정
 export const updateMemo = ({ type, plannerId, memoId, ...queryString }) => {
-    return client.patch(`${baseUrl}/${plannerId}/memos/${memoId}`, { ...queryString });
+    return client.patch(`${baseUrl}/${plannerId}/memos/${memoId}`, { plannerId, memoId, ...queryString });
 };
 
 // 메모 삭제
@@ -59,7 +60,7 @@ export const createPlan = ({ plannerId, planDate }) => {
 
 // 일정 수정
 export const updatePlan = ({ type, plannerId, planId, ...queryString }) => {
-    return client.patch(`${baseUrl}/${plannerId}/plans/${planId}`, { ...queryString });
+    return client.patch(`${baseUrl}/${plannerId}/plans/${planId}`, { plannerId, planId, ...queryString });
 };
 
 // 일정 삭제
@@ -80,6 +81,8 @@ export const deleteMember = ({ plannerId, nickName }) => {
 // 여행지 생성
 export const createLocation = ({ type, plannerId, planId, ...queryString }) => {
     return client.post(`${baseUrl}/${plannerId}/plans/${planId}/plan-locations`, {
+        plannerId,
+        planId,
         ...queryString,
     });
 };
@@ -87,6 +90,9 @@ export const createLocation = ({ type, plannerId, planId, ...queryString }) => {
 // 여행지 수정
 export const updateLocation = ({ type, plannerId, locationId, planId, ...queryString }) => {
     return client.patch(`${baseUrl}/${plannerId}/plans/${planId}/plan-locations/${locationId}`, {
+        plannerId,
+        planId,
+        locationId,
         ...queryString,
     });
 };

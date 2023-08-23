@@ -162,6 +162,7 @@ const EditCalendar = ({
         scrollTop.current = containerRef.current.scrollTop;
     };
 
+    // 컨테이너의 스크롤위치 구하기
     useEffect(() => {
         const container = containerRef.current;
         container.addEventListener('scroll', handleScroll);

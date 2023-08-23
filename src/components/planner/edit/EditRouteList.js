@@ -12,9 +12,11 @@ import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/spotErrorImg.jpg';
+import ErrorBox from '../../common/ErrorBox';
 
 const EditRouteListBlock = styled.div`
     margin-left: 0.2rem;
+    width: 284px;
     height: 30.5rem;
     overflow: auto;
     border-radius: 1rem;
@@ -265,6 +267,7 @@ const EditRouteList = ({
         scrollTop.current = containerRef.current.scrollTop;
     };
 
+    // 컨테이너 스크롤높이 구하기
     useEffect(() => {
         const container = containerRef.current;
         container.addEventListener('scroll', handleScroll);
@@ -287,8 +290,8 @@ const EditRouteList = ({
 
     return (
         <EditRouteListBlock ref={containerRef}>
-            {plans &&
-                plans.map((p, j) => {
+            {plans.length > 0 ? (
+                plans.map((p) => {
                     const items = p.planLocations;
                     return (
                         <RouteList
@@ -297,7 +300,7 @@ const EditRouteList = ({
                             aria-current={p.planId === plannerData.planId ? 'cur' : null}
                             key={p.planId}
                         >
-                            {items &&
+                            {items.length > 0 ? (
                                 items.map((item, i) => {
                                     const {
                                         locationId,
@@ -382,13 +385,19 @@ const EditRouteList = ({
                                             </DeleteButton>
                                         </RouteItem>
                                     );
-                                })}
+                                })
+                            ) : (
+                                <ErrorBox text="여행지" />
+                            )}
                             {cloneElement && (
                                 <CloneItem cloneElStyle={cloneElStyle} onDragEnter={dragFunction.onCloneEnter} />
                             )}
                         </RouteList>
                     );
-                })}
+                })
+            ) : (
+                <ErrorBox text="일정" />
+            )}
         </EditRouteListBlock>
     );
 };

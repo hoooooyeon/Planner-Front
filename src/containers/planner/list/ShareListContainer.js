@@ -38,6 +38,7 @@ const ShareListContainer = () => {
 
     // 공유 플래너리스트 가져오기
     useEffect(() => {
+        dispatch(resetSharePlannerListAction());
         const queryString = { itemCount: 12, sortCriteria, pageNum, keyword: resultKeyword };
         dispatch(loadSharePlannerListAction(queryString));
     }, [dispatch, pageNum, resultKeyword, sortCriteria]);

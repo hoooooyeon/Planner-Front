@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import footerImg from '../../lib/images/footerImg.jpg';
 import musicImg from '../../lib/images/musicImg.jpg';
-import musicAudio from '../../lib/audio/Jane & The Boy - Electric.mp3';
+import musicAudio from '../../lib/audio/FooterAudio.mp3';
 import { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay } from '@fortawesome/free-solid-svg-icons';
@@ -220,13 +220,9 @@ const Footer = () => {
                                 icon={faCircleStop}
                             />
                         </MusicBox>
-                        <audio
-                            ref={audioRef}
-                            //  src={musicAudio}
-                            loop
-                        />
-                        <p>Erectric</p>
-                        <p>By Jane & The Boy</p>
+                        <audio ref={audioRef} src={musicAudio} loop />
+                        <p>Bring In On</p>
+                        <p>By The North</p>
                     </Music>
                     <Writing>
                         <h3>Travel Quotes:</h3>

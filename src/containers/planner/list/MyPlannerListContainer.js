@@ -83,6 +83,7 @@ const MyPlannerListContainer = () => {
     const [pageNum, setPageNum] = useState(1);
     useEffect(() => {
         if (accountId) {
+            dispatch(resetMyPlannerListAction());
             const queryString = { accountId, pageNum, itemCount: 10, sortCriteria: 2 };
 
             dispatch(accountMyPlannerListLoadAction(queryString));

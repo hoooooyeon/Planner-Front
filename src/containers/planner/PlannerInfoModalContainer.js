@@ -31,7 +31,7 @@ const PlannerInfoModalContainer = () => {
 
     // 플래너 수정
     const onUpdatePlanner = () => {
-        if (accountId && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             const queryString = {
                 plannerId,
                 title: curTitle,

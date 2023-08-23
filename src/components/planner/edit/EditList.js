@@ -11,6 +11,7 @@ import { useRef } from 'react';
 import EditListSearchForm from './EditListSearchForm';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/spotErrorImg.jpg';
+import ErrorBox from '../../common/ErrorBox';
 
 const EditListBlock = styled.div`
     position: fixed;
@@ -145,12 +146,12 @@ const ErrorList = styled.div`
 
 const EditList = ({
     spots,
-    detail,
     onCreateLocation,
     onOpenDetail,
     likeSpots,
     totalCount,
     page,
+    loading,
     itemIndex,
     onIndexPage,
     onPreviousPage,
@@ -217,84 +218,91 @@ const EditList = ({
                     onIndexPage={onIndexPage}
                 />
                 <List>
-                    {Object.keys(spots).length > 0 &&
-                        spots.list.map((s, i) => {
-                            const { firstImage, firstImage2, title, addr1 } = s;
+                    {loading && Object.keys(likeSpots).length <= 0 && Object.keys(spots).length <= 0 ? (
+                        <ErrorBox isLoading={true} />
+                    ) : (
+                        <>
+                            {Object.keys(spots).length > 0 &&
+                                spots.list.map((s, i) => {
+                                    const { firstImage, firstImage2, title, addr1 } = s;
 
-                            return (
-                                <ListItem key={i}>
-                                    <Img
-                                        src={firstImage || firstImage2}
-                                        alt={title}
-                                        onError={(e) => {
-                                            handleErrorImg({ e, errorImg });
-                                        }}
-                                    />
-                                    <TextInfo>
-                                        <Name>{title}</Name>
-                                        <Address>{addr1.split(' ')[0]}</Address>
-                                    </TextInfo>
-                                    <Icons>
-                                        <StyledFontAwesomeIcon
-                                            onClick={() => {
-                                                onOpenDetail(s);
-                                            }}
-                                            icon={faExclamation}
-                                        />
+                                    return (
+                                        <ListItem key={i}>
+                                            <Img
+                                                src={firstImage || firstImage2}
+                                                alt={title}
+                                                onError={(e) => {
+                                                    handleErrorImg({ e, errorImg });
+                                                }}
+                                            />
+                                            <TextInfo>
+                                                <Name>{title}</Name>
+                                                <Address>{addr1.split(' ')[0]}</Address>
+                                            </TextInfo>
+                                            <Icons>
+                                                <StyledFontAwesomeIcon
+                                                    onClick={() => {
+                                                        onOpenDetail(s);
+                                                    }}
+                                                    icon={faExclamation}
+                                                />
 
-                                        <StyledFontAwesomeIcon
-                                            onClick={() => {
-                                                onCreateLocation(s);
-                                                onClickDateSchedule();
-                                            }}
-                                            icon={faPlus}
-                                        />
-                                    </Icons>
-                                </ListItem>
-                            );
-                        })}
-                    {Object.keys(likeSpots).length > 0 &&
-                        likeSpots.list.map((s, i) => {
-                            const { image, title } = s;
-                            return (
-                                <ListItem key={i}>
-                                    <Img
-                                        src={image}
-                                        alt={title}
-                                        onError={(e) => {
-                                            handleErrorImg({ e, errorImg });
-                                        }}
-                                    />
-                                    <TextInfo>
-                                        <Name>{title}</Name>
-                                    </TextInfo>
-                                    <Icons>
-                                        <StyledFontAwesomeIcon
-                                            onClick={() => {
-                                                onOpenDetail(s);
-                                            }}
-                                            icon={faExclamation}
-                                        />
+                                                <StyledFontAwesomeIcon
+                                                    onClick={() => {
+                                                        onCreateLocation(s);
+                                                        onClickDateSchedule();
+                                                    }}
+                                                    icon={faPlus}
+                                                />
+                                            </Icons>
+                                        </ListItem>
+                                    );
+                                })}
+                            {Object.keys(likeSpots).length > 0 &&
+                                likeSpots.list.map((s, i) => {
+                                    const { image, title } = s;
+                                    return (
+                                        <ListItem key={i}>
+                                            <Img
+                                                src={image}
+                                                alt={title}
+                                                onError={(e) => {
+                                                    handleErrorImg({ e, errorImg });
+                                                }}
+                                            />
+                                            <TextInfo>
+                                                <Name>{title}</Name>
+                                            </TextInfo>
+                                            <Icons>
+                                                <StyledFontAwesomeIcon
+                                                    onClick={() => {
+                                                        onOpenDetail(s);
+                                                    }}
+                                                    icon={faExclamation}
+                                                />
 
-                                        <StyledFontAwesomeIcon
-                                            onClick={() => {
-                                                onCreateLocation(s);
-                                            }}
-                                            icon={faPlus}
-                                        />
-                                    </Icons>
-                                </ListItem>
-                            );
-                        })}
-                    {/* 1. likeSpots와 spots가 없을 때
-                        2. spots가 없고, likeSpots가 있지만 list는 비었을 때
+                                                <StyledFontAwesomeIcon
+                                                    onClick={() => {
+                                                        onCreateLocation(s);
+                                                    }}
+                                                    icon={faPlus}
+                                                />
+                                            </Icons>
+                                        </ListItem>
+                                    );
+                                })}
+                            {/* 1. spots와 likeSpots가 없을 떄
+                        2. spots가 비었을 때(likeSpots x)
+                        3. likeSpots가 비었을 때(spots x)
                     */}
-                    {(Object.keys(likeSpots).length <= 0 && Object.keys(spots).length <= 0) ||
-                    (Object.keys(likeSpots).length > 0 &&
-                        likeSpots.list.length <= 0 &&
-                        Object.keys(spots).length <= 0) ? (
-                        <ErrorList>리스트가 없습니다.</ErrorList>
-                    ) : null}
+                            {(Object.keys(likeSpots).length <= 0 && Object.keys(spots).length > 0 && spots.list <= 0) ||
+                            (Object.keys(likeSpots).length > 0 &&
+                                likeSpots.list.length <= 0 &&
+                                Object.keys(spots).length <= 0) ? (
+                                <ErrorBox text="리스트" />
+                            ) : null}
+                        </>
+                    )}
                 </List>
                 <PageBox>
                     <Pagination

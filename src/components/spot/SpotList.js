@@ -136,46 +136,44 @@ const SpotList = ({
                     onChangeCurKeyword={onChangeCurKeyword}
                     onChangeResultKeyword={onChangeResultKeyword}
                 />
-                {!loading ? (
-                    Object.keys(spots).length > 0 && spots.list.length > 0 ? (
-                        <Slider list={spots.list} scroll={true} drag={drag} itemRef={itemRef}>
-                            <List>
-                                {spots.list.map((spot) => {
-                                    const { title, firstImage, likeState, contentId } = spot;
-                                    return (
-                                        <SpotItem
-                                            ref={itemRef}
-                                            onClick={() => {
-                                                onOpenDetail(spot);
-                                            }}
-                                            key={contentId}
-                                        >
-                                            <ImgBox>
-                                                <Img
-                                                    src={firstImage}
-                                                    alt={title}
-                                                    onError={(e) => {
-                                                        handleErrorImg({ e, errorImg });
-                                                    }}
-                                                />
-                                                <IconBox>
-                                                    <StyledFontAwesomeIcon
-                                                        icon={faStar}
-                                                        like={likeState ? likeState.toString() : undefined}
-                                                    />
-                                                </IconBox>
-                                            </ImgBox>
-                                            <Name>{title}</Name>
-                                        </SpotItem>
-                                    );
-                                })}
-                            </List>
-                        </Slider>
-                    ) : (
-                        <ErrorBox text="여행지" />
-                    )
-                ) : (
+                {loading && Object.keys(spots).length <= 0 ? (
                     <ErrorBox isLoading={true} />
+                ) : Object.keys(spots).length > 0 && spots.list.length > 0 ? (
+                    <Slider list={spots.list} scroll={true} drag={drag} itemRef={itemRef}>
+                        <List>
+                            {spots.list.map((spot) => {
+                                const { title, firstImage, likeState, contentId } = spot;
+                                return (
+                                    <SpotItem
+                                        ref={itemRef}
+                                        onClick={() => {
+                                            onOpenDetail(spot);
+                                        }}
+                                        key={contentId}
+                                    >
+                                        <ImgBox>
+                                            <Img
+                                                src={firstImage}
+                                                alt={title}
+                                                onError={(e) => {
+                                                    handleErrorImg({ e, errorImg });
+                                                }}
+                                            />
+                                            <IconBox>
+                                                <StyledFontAwesomeIcon
+                                                    icon={faStar}
+                                                    like={likeState ? likeState.toString() : undefined}
+                                                />
+                                            </IconBox>
+                                        </ImgBox>
+                                        <Name>{title}</Name>
+                                    </SpotItem>
+                                );
+                            })}
+                        </List>
+                    </Slider>
+                ) : (
+                    <ErrorBox text="여행지" />
                 )}
             </Container>
         </SpotListBlock>

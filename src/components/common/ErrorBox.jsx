@@ -8,6 +8,7 @@ const ErrorDiv = styled.div`
     font-weight: bold;
     text-align: center;
     margin-top: 2rem;
+    width: 100%;
     display: flex;
     flex-direction: column;
 `;

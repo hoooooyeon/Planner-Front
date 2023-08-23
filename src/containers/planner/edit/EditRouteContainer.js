@@ -18,22 +18,19 @@ import {
     updatePlannerAction,
 } from '../../../modules/plannerModule';
 
-const EditRouteContainer = ({ location }) => {
+const EditRouteContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const params = useParams();
 
-    const { planner, plannerError, plan, plannerData, loading, account } = useSelector(
-        ({ authReducer, plannerReducer, loadingReducer }) => ({
-            planner: plannerReducer.planner,
-            plannerError: plannerReducer.plannerError,
-            plan: plannerReducer.plan,
-            plannerData: plannerReducer.plannerData,
-            loading: loadingReducer.loading,
-            location: plannerReducer.location,
-            account: authReducer.account,
-        }),
-    );
+    const { planner, plannerError, plan, plannerData, account } = useSelector(({ authReducer, plannerReducer }) => ({
+        planner: plannerReducer.planner,
+        plannerError: plannerReducer.plannerError,
+        plan: plannerReducer.plan,
+        plannerData: plannerReducer.plannerData,
+        location: plannerReducer.location,
+        account: authReducer.account,
+    }));
 
     const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId, creator } = {
         ...planner,
@@ -43,6 +40,7 @@ const EditRouteContainer = ({ location }) => {
     const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : new Date());
     const [endDate, setEndDate] = useState(planDateEnd ? new Date(planDateEnd) : new Date());
 
+    // 여행 날짜 변환
     const letsFormat = (d) => {
         const date = new Date(d);
         return (
@@ -50,6 +48,7 @@ const EditRouteContainer = ({ location }) => {
         );
     };
 
+    // 페이지 접근 제어
     useEffect(() => {
         if (!accountId) {
             alert('로그인이 필요합니다.');
@@ -57,19 +56,20 @@ const EditRouteContainer = ({ location }) => {
         } else if (planner === false) {
             alert('잘못된 접근입니다.');
             history.push(`/Planners`);
-        } else if (Object.keys(planner).length > 0 && account && account.accountId !== planner.accountId) {
+        } else if (Object.keys(planner).length > 0 && accountId !== planner.accountId) {
             alert('호스트만 접근할 수 있습니다.');
             history.push('/Planners');
         }
     }, [history, accountId, account, planner]);
 
+    // 주소 입력 접근시 plannerData.plannerId 설정.
     useEffect(() => {
         dispatch(changeCurPlannerIdAction(params.plannerId));
     }, [dispatch]);
 
     // 출발 날짜 선택
     const onUpdatePlannerDate = (date) => {
-        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             setStartDate(date);
             if (plans.length > 0) {
                 setEndDate(new Date(new Date(date).setDate(new Date(date).getDate() + plans.length - 1)));
@@ -81,14 +81,14 @@ const EditRouteContainer = ({ location }) => {
 
     // plan 추가시 날짜 하루 생성
     const onAddDate = (date) => {
-        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             setEndDate(new Date(new Date(date).setDate(new Date(date).getDate() + 1)));
         }
     };
 
     // plan 삭제시 날짜 하루 제거
     const onSubDate = (date) => {
-        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             if (plans.length > 1) {
                 setEndDate(new Date(new Date(date).setDate(new Date(date).getDate() - 1)));
             }
@@ -125,8 +125,9 @@ const EditRouteContainer = ({ location }) => {
         }
     }, [planDateStart, planDateEnd]);
 
+    // 일정 생성
     const onCreatePlan = () => {
-        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             let planDate;
             if (plans.length > 0) {
                 planDate = letsFormat(endDate.setDate(endDate.getDate() + 1));
@@ -137,8 +138,9 @@ const EditRouteContainer = ({ location }) => {
         }
     };
 
+    // 일정 삭제
     const onDeletePlan = (planId) => {
-        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             dispatch(deletePlanAction({ plannerId, planId }));
         }
     };
@@ -146,7 +148,7 @@ const EditRouteContainer = ({ location }) => {
     // 날짜 순서 수정
     const [curPlan, setCurPlan] = useState();
     const onUpdatePlan = (index) => {
-        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             const queryString = { plannerId, planId: curPlan.planId, planDate: curPlan.planDate, index };
             dispatch(updatePlanAction(queryString));
         }
@@ -155,15 +157,12 @@ const EditRouteContainer = ({ location }) => {
     // 일정 날짜 최신화
     const [updatePlans, setUpdatePlans] = useState();
     useEffect(() => {
-        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             let date = new Date(planDateStart);
             let planDate = letsFormat(date);
 
             if (plans) {
                 for (let i = 0; i < plans.length; i++) {
-                    // const planId = plans[i].planId;
-                    // const index = 1024 * (i + 1);
-
                     if (i > 0) {
                         planDate = letsFormat(date.setDate(date.getDate() + 1));
                     }
@@ -172,12 +171,12 @@ const EditRouteContainer = ({ location }) => {
                 }
             }
         }
-    }, [dispatch, planDateStart, planDateEnd, plannerId, updatePlans]);
+    }, [dispatch, planDateStart, planDateEnd, plannerId, updatePlans, accountId]);
 
     // 로케이션 순서 수정
     const [curLocation, setCurLocation] = useState();
     const onUpdateLocation = (index) => {
-        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             const {
                 locationId,
                 locationName,
@@ -204,13 +203,15 @@ const EditRouteContainer = ({ location }) => {
             dispatch(updateLocationAction(queryString));
         }
     };
+
+    // 로케이션 삭제
     const onDeleteLocation = (locationId) => {
-        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             dispatch(deleteLocationAction({ plannerId, locationId, planId }));
         }
     };
 
-    // planner 정보 가져오기
+    // planner 로드
     useEffect(() => {
         const { plannerId } = plannerData;
         if (plannerId && accountId) {
@@ -218,12 +219,14 @@ const EditRouteContainer = ({ location }) => {
         }
     }, [dispatch, plannerData]);
 
+    // plan 선택
     const onChangeCurPlanId = (planId) => {
         dispatch(changeCurPlanIdAction(planId));
     };
 
+    // 로케이션의 이동수단 선택
     const onUpdateTrans = (trans, locationData) => {
-        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             const {
                 locationId,
                 locationName,
@@ -251,10 +254,12 @@ const EditRouteContainer = ({ location }) => {
         }
     };
 
+    // 멤버모달 토글
     const onToggleMemberModal = () => {
         dispatch(toggleMemberModalAction());
     };
 
+    // 플래너정보수정모달 토글
     const onTogglePlannerInfoModal = () => {
         dispatch(togglePlannerInfoModalAction());
     };
@@ -262,16 +267,16 @@ const EditRouteContainer = ({ location }) => {
     // 드래그시 클론요소 생성 관련 함수
     const [cloneElement, setCloneElement] = useState(false);
     const [cloneElStyle, setCloneElStyle] = useState(0);
-
+    // 클론 생성
     const onCloneElement = () => {
         setCloneElement(true);
     };
-
+    // 클론 삭제
     const onDeleteElement = () => {
         setCloneElement(false);
         setCloneElStyle(0);
     };
-
+    // 클론 요소 위치 설정
     const onChangeStyle = (top) => {
         setCloneElStyle(top);
     };
@@ -289,20 +294,18 @@ const EditRouteContainer = ({ location }) => {
                 dispatch(changeCurPlanIdAction(plans[0].planId));
             }
         } else {
-            if (planId !== null) {
-                dispatch(changeCurPlanIdAction(null));
+            if (planId !== '') {
+                dispatch(changeCurPlanIdAction(''));
             }
         }
     }, [dispatch, plans]);
 
+    // 일정 루트 보기
     const onClickDateSchedule = () => {
         dispatch(changeAllScheduleAction(false));
     };
 
-    if (
-        Object.keys(planner).length <= 0 ||
-        (account && Object.keys(planner).length > 0 && account.accountId !== planner.accountId)
-    ) {
+    if (planner === {} || accountId !== planner.accountId) {
         return null;
     }
     return (
@@ -310,7 +313,6 @@ const EditRouteContainer = ({ location }) => {
             planner={planner}
             plan={plan}
             plannerData={plannerData}
-            loading={loading}
             startDate={startDate}
             endDate={endDate}
             cloneElement={cloneElement}

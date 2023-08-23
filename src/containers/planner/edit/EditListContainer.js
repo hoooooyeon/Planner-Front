@@ -8,7 +8,6 @@ import {
     changePageNumAction,
     changeResultKeywordAction,
     createLocationAction,
-    loadPlannerAction,
 } from '../../../modules/plannerModule';
 import {
     loadDetailSpotAction,
@@ -38,7 +37,8 @@ const EditListContainer = () => {
         detail,
         contentTypeList,
         likeList,
-    } = useSelector(({ plannerReducer, spotReducer, accountReducer, authReducer }) => ({
+        loading,
+    } = useSelector(({ plannerReducer, spotReducer, accountReducer, authReducer, loadingReducer }) => ({
         account: authReducer.account,
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
@@ -50,6 +50,7 @@ const EditListContainer = () => {
         detail: spotReducer.detail,
         contentTypeList: spotReducer.contentTypeList,
         likeList: accountReducer.likeList,
+        loading: loadingReducer.loading,
     }));
 
     const { plannerId, planId, pageNum } = { ...plannerData };
@@ -59,8 +60,9 @@ const EditListContainer = () => {
     const { likeSpots } = { ...likeList };
     const numOfRows = 12;
 
+    // 로케이션 추가
     const onCreateLocation = (spot) => {
-        if (account && Object.keys(planner).length > 0 && account.accountId === planner.accountId) {
+        if (accountId === planner.accountId) {
             if (!planId) {
                 alert('일정을 선택하세요.');
                 return;
@@ -89,16 +91,18 @@ const EditListContainer = () => {
         if (contentTypeId !== 0 && areas.length > 0 && resultKeyword.length === 0) {
             const queryString = { areaCode, contentTypeId, pageNo: pageNum, numOfRows };
             dispatch(resetLikeSpotListAction());
+            dispatch(resetSpotsAction());
             dispatch(loadSpotsAction(queryString));
         }
     }, [dispatch, areaCode, pageNum, contentTypeId, resultKeyword, areas]);
 
-    // 여행지 상세정보 불러오기
+    // 여행지 상세정보 모달 열기
     const onOpenDetail = (spotInfo) => {
         dispatch(changeDetailSpotAction(spotInfo));
         dispatch(changeContentIdAction(spotInfo.contentId));
     };
 
+    // 여행지 상세정보 로드
     useEffect(() => {
         if (contentId !== '') {
             dispatch(loadDetailSpotAction({ contentId }));
@@ -120,12 +124,12 @@ const EditListContainer = () => {
         dispatch(changeAreaIndexAction(num));
     };
 
-    // 여행지 키워드 입력
+    // 키워드 입력
     const onChangeCurKeyword = (keyword) => {
         dispatch(changeKeywordAction(keyword));
     };
 
-    // 여행지 검색
+    // 실제로 검색될 키워드 저장
     const onChangeResultKeyword = () => {
         if (curKeyword.length !== 0) {
             dispatch(changeResultKeywordAction(curKeyword));
@@ -135,19 +139,21 @@ const EditListContainer = () => {
     // 여행지 키워드로 조회
     useEffect(() => {
         if (resultKeyword.length !== 0) {
+            dispatch(resetSpotsAction());
             const queryString = { areaCode, contentTypeId, keyword: resultKeyword, pageNo: pageNum, numOfRows };
             dispatch(searchSpotAction(queryString));
         }
     }, [dispatch, resultKeyword, pageNum]);
 
-    // 좋아요여행지리스트
+    // 여행지 좋아요리스트 검색 키워드 저장
     const [likeKeyword, setLikeKeyword] = useState('');
     const onChangeLikeKeyword = () => {
         setLikeKeyword(curKeyword);
     };
 
+    // 여행지 좋아요리스트 로드
     useEffect(() => {
-        if ((accountId && likeKeyword.length !== 0) || contentTypeId === 0) {
+        if (accountId && contentTypeId === 0) {
             const queryString = {
                 accountId,
                 itemCount: 12,
@@ -157,9 +163,10 @@ const EditListContainer = () => {
                 pageNum,
             };
             dispatch(resetSpotsAction());
+            dispatch(resetLikeSpotListAction());
             dispatch(accountLikeSpotListLoadAction(queryString));
         }
-    }, [dispatch, likeKeyword, contentTypeId, pageNum, detail.likeState]);
+    }, [dispatch, accountId, likeKeyword, contentTypeId, pageNum, detail.likeState]);
 
     // 여행 정보 및 검색 키워드 초기화
     useEffect(() => {
@@ -172,7 +179,6 @@ const EditListContainer = () => {
         };
     }, [dispatch]);
 
-    // 현재 페이지
     const [page, setPage] = useState(1);
     const totalCount = useRef();
 
@@ -209,6 +215,7 @@ const EditListContainer = () => {
         dispatch(changePageNumAction(page));
     }, [page, dispatch]);
 
+    // 지역, 컨텐츠 변경시 키워드 리셋.
     useEffect(() => {
         setPage(1);
         dispatch(changeKeywordAction(''));
@@ -216,18 +223,17 @@ const EditListContainer = () => {
         setLikeKeyword('');
     }, [areaCode, contentTypeId]);
 
+    // 키워드 검색시 페이지 리셋.
     useEffect(() => {
         setPage(1);
     }, [resultKeyword, likeKeyword]);
 
+    // 현재 일정 루트 보기
     const onClickDateSchedule = () => {
         dispatch(changeAllScheduleAction(false));
     };
 
-    if (
-        Object.keys(planner).length <= 0 ||
-        (account && Object.keys(planner).length > 0 && account.accountId !== planner.accountId)
-    ) {
+    if (accountId !== planner.accountId) {
         return null;
     }
     return (
@@ -235,7 +241,7 @@ const EditListContainer = () => {
             spots={spots}
             areas={areas}
             keyword={keyword}
-            detail={detail}
+            loading={loading}
             spotData={spotData}
             contentTypeList={contentTypeList}
             likeSpots={likeSpots}
