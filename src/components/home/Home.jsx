@@ -1,8 +1,8 @@
-import Main from '../home/Main';
-import HomePlannerList from '../home/HomePlannerList';
-import HomeReviewList from '../home/HomeReviewList';
-import HomeSpotList from '../home/HomeSpotList';
-import HomeServices from '../home/HomeServices';
+import Main from './Main';
+import HomePlannerList from './HomePlannerList';
+import HomeReviewList from './HomeReviewList';
+import HomeSpotList from './HomeSpotList';
+import HomeServices from './HomeServices';
 
 const Home = ({ sharePlanners, loading, onClickPlanner }) => {
     return (
