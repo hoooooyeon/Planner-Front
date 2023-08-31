@@ -311,8 +311,8 @@ function plannerReducer(state = initialState, action) {
         case TOGGLE_LIKE_PLANNER_FAILURE_TYPE:
             return {
                 ...state,
-                // plannerError: { state: action.payload.state, message: action.payload.message },
-                plannerError: action.payload.error,
+                plannerError: { state: action.payload.state, message: action.payload.message },
+                // plannerError: action.payload.error,
             };
         case LOAD_PLANNER_SUCCESS_TYPE:
             return {

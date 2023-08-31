@@ -4,7 +4,6 @@ import Modal from '../common/Modal';
 const MemberBox = styled.div`
     width: 25rem;
     height: 15rem;
-    flex-direction: column;
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 0.5rem;
 `;

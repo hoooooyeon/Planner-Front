@@ -3,6 +3,7 @@ import MyPlannerListContainer from '../../containers/planner/list/MyPlannerListC
 import ShareListContainer from '../../containers/planner/list/ShareListContainer';
 import ShareListPaginationContainer from '../../containers/planner/list/ShareListPaginationContainer';
 import HeaderContainer from '../../containers/common/HeaderContainer';
+import ErrorModalContainer from '../../containers/common/ErrorModalContainer';
 
 const PlannerListPage = () => {
     return (
@@ -11,6 +12,7 @@ const PlannerListPage = () => {
             <MyPlannerListContainer />
             <ShareListContainer />
             <ShareListPaginationContainer />
+            <ErrorModalContainer />
             <Footer />
         </>
     );

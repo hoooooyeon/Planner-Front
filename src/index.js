@@ -41,6 +41,7 @@ const theme = {
     hoverBackgroundColor: '#dde3ea', // 호버 배경색
     shadowColor: '#cac4cf', // 그림자색
     outlineColor: '#cac4cf', // 테두리색
+    errorColor: '#9b111e',
 };
 
 //  ${props => props.theme.};

@@ -176,6 +176,7 @@ const SpotList = ({
                     <ErrorBox text="여행지" />
                 )}
             </Container>
+            {}
         </SpotListBlock>
     );
 };
