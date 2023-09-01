@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import ErrorModal from '../../common/ErrorModal';
 import EditTutorialModal from './EditTutorialModal';
 
 const EditMapBlock = styled.div`
@@ -57,7 +58,18 @@ const Button = styled.button`
         `}
 `;
 
-const EditMap = ({ mapRef, allSchedule, onClickAllSchedule, onSavePlanner, tutorialVisible, onClickTutorialModal }) => {
+const EditMap = ({
+    mapRef,
+    spotError,
+    plannerError,
+    allSchedule,
+    onClosePlannerError,
+    onCloseSpotError,
+    onClickAllSchedule,
+    onSavePlanner,
+    tutorialVisible,
+    onClickTutorialModal,
+}) => {
     return (
         <>
             <EditMapBlock>
@@ -71,6 +83,20 @@ const EditMap = ({ mapRef, allSchedule, onClickAllSchedule, onSavePlanner, tutor
                 </ButtonBox>
             </EditMapBlock>
             {tutorialVisible && <EditTutorialModal onClickTutorialModal={onClickTutorialModal} />}
+            {Object.keys(plannerError).length > 0 && (
+                <ErrorModal
+                    errorState={Object.keys(plannerError).length > 0}
+                    errorMessage={plannerError.message}
+                    onCloseError={onClosePlannerError}
+                />
+            )}
+            {Object.keys(spotError).length > 0 && (
+                <ErrorModal
+                    errorState={Object.keys(spotError).length > 0}
+                    errorMessage={spotError.message}
+                    onCloseError={onCloseSpotError}
+                />
+            )}
         </>
     );
 };

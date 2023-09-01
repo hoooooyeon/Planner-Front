@@ -4,6 +4,7 @@ import Slider from '../../common/Slider';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/plannerErrorImg.png';
 import ErrorBox from '../../common/ErrorBox';
+import ErrorModal from '../../common/ErrorModal';
 
 const MyPlannerListBlock = styled.div`
     width: 100%;
@@ -131,9 +132,18 @@ const Img = styled.img`
     object-fit: cover;
 `;
 
-const MyPlannerList = ({ myPlanners, loading, onCreatePlanner, onClickPlanner, onPreviousPage, onNextPage, drag }) => {
+const MyPlannerList = ({
+    myPlanners,
+    accountError,
+    loading,
+    onCloseError,
+    onCreatePlanner,
+    onClickPlanner,
+    onPreviousPage,
+    onNextPage,
+    drag,
+}) => {
     const itemRef = useRef();
-
     return (
         <MyPlannerListBlock>
             <Container>
@@ -185,6 +195,9 @@ const MyPlannerList = ({ myPlanners, loading, onCreatePlanner, onClickPlanner, o
                     <ErrorBox text="플래너" />
                 )}
             </Container>
+            {accountError && (
+                <ErrorModal errorState={accountError} errorMessage={accountError} onCloseError={onCloseError} />
+            )}
         </MyPlannerListBlock>
     );
 };

@@ -25,12 +25,12 @@ const ErrorText = styled.div`
     text-overflow: ellipsis;
 `;
 
-const ErrorModal = ({ isError, onCloseError, plannerError, spotError }) => {
+const ErrorModal = ({ errorState, errorMessage, onCloseError }) => {
     return (
-        <Modal modalVisible={isError} title="에러 발생!" onModalClose={onCloseError} onModalConfirm={onCloseError}>
+        <Modal modalVisible={errorState} title="에러 발생!" onModalClose={onCloseError} onModalConfirm={onCloseError}>
             <ErrorBox>
                 <ErrorIcon icon={faTriangleExclamation} />
-                <ErrorText>에러발생!에러발생!에러발생!에러발생!에러발생!에러발생!에러발생!에러발생!</ErrorText>
+                <ErrorText>{errorMessage}</ErrorText>
             </ErrorBox>
         </Modal>
     );

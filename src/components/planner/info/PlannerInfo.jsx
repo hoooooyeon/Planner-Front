@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import InfoRoute from './InfoRoute';
 import InfoMenu from './InfoMenu';
+import ErrorModal from '../../common/ErrorModal';
 
 const PlannerInfoBlock = styled.div`
     width: 100%;
@@ -121,6 +122,8 @@ const PlannerInfo = ({
     allSchedule,
     plannerData,
     drag,
+    plannerError,
+    onCloseError,
     onDeletePlanner,
     onToggleMemberModal,
     onTogglePlannerInfoModal,
@@ -132,6 +135,7 @@ const PlannerInfo = ({
 }) => {
     const { creator } = { ...planner };
     const { accountId } = { ...account };
+    const { message } = { ...planner };
     const menuRef = useRef();
     const containerRef = useRef();
     const [isDropDown, setIsDropDown] = useState(false);
@@ -207,6 +211,13 @@ const PlannerInfo = ({
                 </FlexBox>
             </Container>
             <InfoMenu planner={planner} />
+            {Object.keys(plannerError).length > 0 && (
+                <ErrorModal
+                    errorState={Object.keys(plannerError).length > 0}
+                    errorMessage={message}
+                    onCloseError={onCloseError}
+                />
+            )}
         </PlannerInfoBlock>
     );
 };

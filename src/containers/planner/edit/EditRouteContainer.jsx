@@ -23,9 +23,8 @@ const EditRouteContainer = () => {
     const history = useHistory();
     const params = useParams();
 
-    const { planner, plannerError, plan, plannerData, account } = useSelector(({ authReducer, plannerReducer }) => ({
+    const { planner, plan, plannerData, account } = useSelector(({ authReducer, plannerReducer }) => ({
         planner: plannerReducer.planner,
-        plannerError: plannerReducer.plannerError,
         plan: plannerReducer.plan,
         plannerData: plannerReducer.plannerData,
         location: plannerReducer.location,

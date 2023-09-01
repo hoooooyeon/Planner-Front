@@ -7,7 +7,6 @@ import EditRouteList from './EditRouteList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
-import ErrorBox from '../../common/ErrorBox';
 
 const EditRouteBlock = styled.div`
     background-color: ${(props) => props.theme.primaryBackgroundColor};
@@ -206,7 +205,7 @@ const EditRoute = ({
     setUpdatePlans,
     onClickDateSchedule,
 }) => {
-    const { title, creator, updateDate, plans } = { ...planner };
+    const { title, creator, updateDate } = { ...planner };
     const [dropDown, setDropDown] = useState(false);
 
     const onClickDropDown = () => {

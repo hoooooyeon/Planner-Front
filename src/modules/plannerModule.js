@@ -86,7 +86,7 @@ const CHANGE_RESULT_KEYWORD_TYPE = 'planner/CHANGE_RESULT_KEYWORD';
 const CHANGE_ALL_SCHEDULE_TYPE = 'planner/CHANGE_ALL_SCHEDULE';
 const RESET_SHARE_PLANNER_LIST_TYPE = 'planner/RESET_SHARE_PLANNER_LIST';
 
-const ADD_MAP_REF_TYPE = 'planner/ADD_MAP_REF';
+const RESET_PLANNER_ERROR_TYPE = 'planner/RESET_PLANNER_ERROR';
 
 export const createPlannerAction = ({
     accountId,
@@ -218,7 +218,7 @@ export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, ke
 export const changeResultKeywordAction = (keyword) => ({ type: CHANGE_RESULT_KEYWORD_TYPE, keyword });
 export const changeAllScheduleAction = (bool) => ({ type: CHANGE_ALL_SCHEDULE_TYPE, bool });
 export const resetSharePlannerListAction = () => ({ type: RESET_SHARE_PLANNER_LIST_TYPE });
-export const addMapRefAction = (map) => ({ type: ADD_MAP_REF_TYPE, map });
+export const resetPlannerErrorAction = () => ({ type: RESET_PLANNER_ERROR_TYPE });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -290,7 +290,7 @@ function plannerReducer(state = initialState, action) {
         case LOAD_PLANNER_FAILURE_TYPE:
             return {
                 ...state,
-                plannerError: action.payload.error,
+                plannerError: { state: action.payload.state, message: action.payload.message },
                 planner: false,
             };
         case LOAD_SHARE_PLANNER_LIST_FAILURE_TYPE:
@@ -312,7 +312,6 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
                 plannerError: { state: action.payload.state, message: action.payload.message },
-                // plannerError: action.payload.error,
             };
         case LOAD_PLANNER_SUCCESS_TYPE:
             return {
@@ -508,10 +507,10 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 sharePlanners: {},
             };
-        case ADD_MAP_REF_TYPE:
+        case RESET_PLANNER_ERROR_TYPE:
             return {
                 ...state,
-                map: [...state.map, action.map],
+                plannerError: {},
             };
         default:
             return state;

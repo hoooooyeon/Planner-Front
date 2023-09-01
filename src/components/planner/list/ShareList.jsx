@@ -7,6 +7,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import errorImg from '../../../lib/images/plannerErrorImg.png';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import ErrorBox from '../../common/ErrorBox';
+import ErrorModal from '../../common/ErrorModal';
 
 const ShareListBlock = styled.div`
     width: 100%;
@@ -129,7 +130,9 @@ const ShareList = ({
     sharePlanners,
     loading,
     keyword,
+    plannerError,
     sortCriteria,
+    onCloseError,
     onClickPlanner,
     onChangeKeyword,
     onChangeResultKeyword,
@@ -137,7 +140,7 @@ const ShareList = ({
     drag,
 }) => {
     const itemRef = useRef();
-
+    const { message } = { ...plannerError };
     return (
         <ShareListBlock>
             <Container>
@@ -192,6 +195,13 @@ const ShareList = ({
                     <ErrorBox text="플래너" />
                 )}
             </Container>
+            {Object.keys(plannerError).length > 0 && (
+                <ErrorModal
+                    errorState={Object.keys(plannerError).length > 0}
+                    errorMessage={message}
+                    onCloseError={onCloseError}
+                />
+            )}
         </ShareListBlock>
     );
 };

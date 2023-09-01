@@ -18,6 +18,7 @@ import {
     changeContentTypeIdAction,
     resetDetailSpotAction,
     resetAreasAction,
+    resetSpotErrorAction,
 } from '../../modules/spotModule';
 
 const SpotListContainer = ({
@@ -40,6 +41,7 @@ const SpotListContainer = ({
     changeContentTypeId,
     changeContentId,
     resetDetailSpot,
+    resetSpotError,
 }) => {
     const { areaCode, pageNo, contentTypeId, contentId } = { ...spotData };
     const [curKeyword, setCurKeyword] = useState('');
@@ -169,12 +171,18 @@ const SpotListContainer = ({
         },
     ];
 
+    // spotError 리셋
+    const onCloseError = () => {
+        resetSpotError();
+    };
+
     return (
         <SpotList
             areas={areas}
             spots={spots}
             spotModal={spotModal}
             spotData={spotData}
+            spotError={spotError}
             sliderSpots={sliderSpots}
             drag={drag}
             curKeyword={curKeyword}
@@ -186,6 +194,7 @@ const SpotListContainer = ({
             onChangeCurKeyword={onChangeCurKeyword}
             onChangeResultKeyword={onChangeResultKeyword}
             onChangeContentTypeId={onChangeContentTypeId}
+            onCloseError={onCloseError}
         />
     );
 };
@@ -241,6 +250,9 @@ const mapDispatchToProps = (dispatch) => ({
     },
     resetDetailSpot: () => {
         dispatch(resetDetailSpotAction());
+    },
+    resetSpotError: () => {
+        dispatch(resetSpotErrorAction());
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);

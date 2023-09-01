@@ -7,6 +7,7 @@ import {
     changeResultKeywordAction,
     loadSharePlannerListAction,
     resetPlannerDataAction,
+    resetPlannerErrorAction,
     resetSharePlannerListAction,
 } from '../../../modules/plannerModule';
 import ShareList from '../../../components/planner/list/ShareList';
@@ -81,6 +82,11 @@ const ShareListContainer = () => {
         };
     }, [dispatch]);
 
+    // plannerError 리셋
+    const onCloseError = () => {
+        dispatch(resetPlannerErrorAction());
+    };
+
     return (
         <ShareList
             sharePlanners={sharePlanners}
@@ -93,6 +99,7 @@ const ShareListContainer = () => {
             onChangeKeyword={onChangeKeyword}
             onChangeResultKeyword={onChangeResultKeyword}
             onChangeSort={onChangeSort}
+            onCloseError={onCloseError}
         />
     );
 };

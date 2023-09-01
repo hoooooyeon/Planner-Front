@@ -27,7 +27,6 @@ const EditListContainer = () => {
     const dispatch = useDispatch();
     const {
         planner,
-        plannerError,
         spots,
         account,
         keyword,
@@ -41,7 +40,6 @@ const EditListContainer = () => {
     } = useSelector(({ plannerReducer, spotReducer, accountReducer, authReducer, loadingReducer }) => ({
         account: authReducer.account,
         planner: plannerReducer.planner,
-        plannerError: plannerReducer.plannerError,
         plannerData: plannerReducer.plannerData,
         keyword: plannerReducer.keyword,
         spots: spotReducer.spots,
