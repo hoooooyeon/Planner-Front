@@ -140,7 +140,6 @@ const ShareList = ({
     drag,
 }) => {
     const itemRef = useRef();
-    const { message } = { ...plannerError };
     return (
         <ShareListBlock>
             <Container>
@@ -195,12 +194,8 @@ const ShareList = ({
                     <ErrorBox text="플래너" />
                 )}
             </Container>
-            {Object.keys(plannerError).length > 0 && (
-                <ErrorModal
-                    errorState={Object.keys(plannerError).length > 0}
-                    errorMessage={message}
-                    onCloseError={onCloseError}
-                />
+            {plannerError && (
+                <ErrorModal errorState={plannerError} errorMessage={plannerError} onCloseError={onCloseError} />
             )}
         </ShareListBlock>
     );

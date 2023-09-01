@@ -41,6 +41,8 @@ const DELETE_MEMO_TYPE = 'planner/DELETE_MEMO';
 const DELETE_MEMO_SUCCESS_TYPE = 'planner/DELETE_MEMO_SUCCESS';
 const DELETE_MEMO_FAILURE_TYPE = 'planner/DELETE_MEMO_FAILURE';
 
+const TOGGLE_MEMO_MODAL_TYPE = 'planner/TOGGLE_MEMO_MODAL';
+
 const CREATE_PLAN_TYPE = 'planner/CREATE_PLAN';
 const CREATE_PLAN_SUCCESS_TYPE = 'planner/CREATE_PLAN_SUCCESS';
 const CREATE_PLAN_FAILURE_TYPE = 'planner/CREATE_PLAN_FAILURE';
@@ -77,6 +79,7 @@ const DELETE_LOCATION_FAILURE_TYPE = 'planner/DELETE_LOCATION_FAILURE';
 
 const CHANGE_CUR_PLAN_ID_TYPE = 'planner/CHANGE_CUR_PLAN_ID';
 const CHANGE_CUR_PLANNER_ID_TYPE = 'planner/CHANGE_CUR_PLANNER_ID';
+const CHANGE_CUR_MEMO_ID_TYPE = 'planner/CHANGE_CUR_MEMO_ID';
 
 const CHANGE_PAGE_NUM_TYPE = 'planner/CHANGE_PAGE_NUM';
 
@@ -213,12 +216,14 @@ export const deleteLocationAction = ({ plannerId, locationId, planId }) => ({
 });
 export const changeCurPlanIdAction = (planId) => ({ type: CHANGE_CUR_PLAN_ID_TYPE, planId });
 export const changeCurPlannerIdAction = (plannerId) => ({ type: CHANGE_CUR_PLANNER_ID_TYPE, plannerId });
+export const changeCurMemoIdAction = (memoId) => ({ type: CHANGE_CUR_MEMO_ID_TYPE, memoId });
 export const changePageNumAction = (pageNum) => ({ type: CHANGE_PAGE_NUM_TYPE, pageNum });
 export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, keyword });
 export const changeResultKeywordAction = (keyword) => ({ type: CHANGE_RESULT_KEYWORD_TYPE, keyword });
 export const changeAllScheduleAction = (bool) => ({ type: CHANGE_ALL_SCHEDULE_TYPE, bool });
 export const resetSharePlannerListAction = () => ({ type: RESET_SHARE_PLANNER_LIST_TYPE });
 export const resetPlannerErrorAction = () => ({ type: RESET_PLANNER_ERROR_TYPE });
+export const toggleMemoModalAction = () => ({ type: TOGGLE_MEMO_MODAL_TYPE });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -261,10 +266,11 @@ export function* plannerSaga() {
 const initialState = {
     sharePlanners: {},
     planner: {},
-    plannerError: {},
+    plannerError: null,
     modal: {
         member: false,
         plannerInfo: false,
+        memo: false,
     },
     plannerData: {
         plannerId: '',
@@ -290,7 +296,7 @@ function plannerReducer(state = initialState, action) {
         case LOAD_PLANNER_FAILURE_TYPE:
             return {
                 ...state,
-                plannerError: { state: action.payload.state, message: action.payload.message },
+                plannerError: action.payload.message,
                 planner: false,
             };
         case LOAD_SHARE_PLANNER_LIST_FAILURE_TYPE:
@@ -311,7 +317,7 @@ function plannerReducer(state = initialState, action) {
         case TOGGLE_LIKE_PLANNER_FAILURE_TYPE:
             return {
                 ...state,
-                plannerError: { state: action.payload.state, message: action.payload.message },
+                plannerError: action.payload.message,
             };
         case LOAD_PLANNER_SUCCESS_TYPE:
             return {
@@ -332,6 +338,10 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 plannerData: {
                     ...state.plannerData,
+                },
+                modal: {
+                    ...state.modal,
+                    plannerInfo: false,
                 },
             };
         case RESET_PLANNER_DATA_TYPE:
@@ -365,6 +375,11 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 plannerData: {
                     ...state.plannerData,
+                    memoId: action.payload.data,
+                },
+                modal: {
+                    ...state.modal,
+                    memo: true,
                 },
             };
         case UPDATE_MEMO_SUCCESS_TYPE:
@@ -372,6 +387,10 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 plannerData: {
                     ...state.plannerData,
+                },
+                modal: {
+                    ...state.modal,
+                    memo: false,
                 },
             };
         case DELETE_MEMO_SUCCESS_TYPE:
@@ -410,6 +429,10 @@ function plannerReducer(state = initialState, action) {
                 plannerData: {
                     ...state.plannerData,
                 },
+                modal: {
+                    ...state.modal,
+                    member: false,
+                },
             };
         case DELETE_MEMBER_SUCCESS_TYPE:
             return {
@@ -434,6 +457,15 @@ function plannerReducer(state = initialState, action) {
                     plannerInfo: !state.modal.plannerInfo,
                 },
             };
+        case TOGGLE_MEMO_MODAL_TYPE:
+            return {
+                ...state,
+                modal: {
+                    ...state.modal,
+                    memo: !state.modal.memo,
+                },
+            };
+
         case CREATE_LOCATION_SUCCESS_TYPE:
             return {
                 ...state,
@@ -472,7 +504,14 @@ function plannerReducer(state = initialState, action) {
                 },
                 pType: 1,
             };
-
+        case CHANGE_CUR_MEMO_ID_TYPE:
+            return {
+                ...state,
+                plannerData: {
+                    ...state.plannerData,
+                    memoId: action.memoId,
+                },
+            };
         case CHANGE_PAGE_NUM_TYPE:
             return {
                 ...state,
@@ -510,7 +549,7 @@ function plannerReducer(state = initialState, action) {
         case RESET_PLANNER_ERROR_TYPE:
             return {
                 ...state,
-                plannerError: {},
+                plannerError: null,
             };
         default:
             return state;

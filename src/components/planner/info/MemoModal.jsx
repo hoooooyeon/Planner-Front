@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import styled, { css } from 'styled-components';
@@ -35,6 +33,7 @@ const StyledInput = styled.input`
     width: 100%;
     height: 2rem;
     padding: 0 0.5rem;
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     ${(props) =>
         props.hosted === false &&
         css`
@@ -49,7 +48,24 @@ const StyledInput = styled.input`
     }
 `;
 
-const MemoModal = ({ curMemo, onChangeMemoTitle, onChangeMemoContent, isState, onModalClose, onModalConfirm }) => {
+const ErrorText = styled.div`
+    color: ${(props) => props.theme.errorColor};
+    font-weight: bold;
+    font-size: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0.5rem 0;
+`;
+
+const MemoModal = ({
+    curMemo,
+    plannerError,
+    onChangeMemoTitle,
+    onChangeMemoContent,
+    modalVisible,
+    onModalClose,
+    onModalConfirm,
+}) => {
     const modules = {
         toolbar: [
             [{ header: [1, 2, 3, false] }],
@@ -64,7 +80,12 @@ const MemoModal = ({ curMemo, onChangeMemoTitle, onChangeMemoContent, isState, o
     const { title, content } = { ...curMemo };
 
     return (
-        <Modal modalVisible={isState} title="메모 수정" onModalClose={onModalClose} onModalConfirm={onModalConfirm}>
+        <Modal
+            modalVisible={modalVisible}
+            title="메모 수정"
+            onModalClose={onModalClose}
+            onModalConfirm={onModalConfirm}
+        >
             <MemoModalBlock>
                 <MemoModalHeader>
                     <StyledInput
@@ -77,6 +98,7 @@ const MemoModal = ({ curMemo, onChangeMemoTitle, onChangeMemoContent, isState, o
                         }}
                     />
                 </MemoModalHeader>
+                {plannerError && plannerError.title && <ErrorText>{plannerError.title}</ErrorText>}
                 <MemoModalBody>
                     <ReactQuill
                         placeholder="내용을 입력해주세요."

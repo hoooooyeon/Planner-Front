@@ -96,7 +96,7 @@ const initialState = {
     areas: [],
     spots: {},
     detail: {},
-    spotError: {},
+    spotError: null,
     spotData: {
         areaCode: 1,
         pageNo: 1,
@@ -130,7 +130,7 @@ function spotReducer(state = initialState, action) {
         case SEARCH_SPOT_FAILURE_TYPE:
             return {
                 ...state,
-                spotError: { state: action.payload.state, message: action.payload.message },
+                spotError: action.payload.message,
             };
         case LOAD_SPOTS_SUCCESS_TYPE:
             return {
@@ -244,7 +244,7 @@ function spotReducer(state = initialState, action) {
         case RESET_SPOT_ERROR_TYPE:
             return {
                 ...state,
-                spotError: {},
+                spotError: null,
             };
         default:
             return state;

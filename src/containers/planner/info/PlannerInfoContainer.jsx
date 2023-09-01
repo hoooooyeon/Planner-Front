@@ -382,7 +382,7 @@ const PlannerInfoContainer = () => {
         dispatch(resetPlannerErrorAction());
     };
 
-    if (planner === {}) {
+    if (Object.keys(planner).length <= 0) {
         return null;
     }
     return (

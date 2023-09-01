@@ -62,11 +62,13 @@ const MemberModal = ({
     planner,
     members,
     modal,
+    plannerError,
     onChangeMember,
     onDeleteMember,
     onInviteMember,
     onResetMember,
     onToggleMemberModal,
+    onCloseError,
 }) => {
     const { planMembers, creator } = { ...planner };
 
@@ -85,10 +87,11 @@ const MemberModal = ({
             onModalClose={() => {
                 onToggleMemberModal();
                 onResetMember();
+                onCloseError();
             }}
             onModalConfirm={() => {
-                onToggleMemberModal();
                 onResetMember();
+                onCloseError();
             }}
         >
             <MemberBox>
@@ -102,6 +105,7 @@ const MemberModal = ({
                     />
                     <Button onClick={onInviteMemberMd}>초대</Button>
                 </InviteBox>
+                {plannerError && plannerError.}
                 <h5>현재 멤버</h5>
                 <MemberList>
                     {planMembers &&

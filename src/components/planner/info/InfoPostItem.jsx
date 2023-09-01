@@ -60,7 +60,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     }
 `;
 
-const InfoPostItem = ({ account, planner, memo, onDeleteMemo, onLoadMemo, setIsEdit }) => {
+const InfoPostItem = ({ account, planner, memo, onDeleteMemo, onLoadMemo }) => {
     const { memoId, title } = memo;
     const { accountId } = { ...account };
 
@@ -74,7 +74,6 @@ const InfoPostItem = ({ account, planner, memo, onDeleteMemo, onLoadMemo, setIsE
                 <StyledFontAwesomeIcon
                     icon={faPen}
                     onClick={() => {
-                        setIsEdit(true);
                         onLoadMemo(memo);
                     }}
                 />

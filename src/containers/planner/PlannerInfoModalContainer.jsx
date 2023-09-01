@@ -2,7 +2,11 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfoModal from '../../components/planner/PlannerInfoModal';
-import { togglePlannerInfoModalAction, updatePlannerAction } from '../../modules/plannerModule';
+import {
+    resetPlannerErrorAction,
+    togglePlannerInfoModalAction,
+    updatePlannerAction,
+} from '../../modules/plannerModule';
 
 const PlannerInfoModalContainer = () => {
     const dispatch = useDispatch();
@@ -50,12 +54,18 @@ const PlannerInfoModalContainer = () => {
         dispatch(togglePlannerInfoModalAction());
     };
 
-    if (planner === {}) {
+    // plannerError 리셋
+    const onCloseError = () => {
+        dispatch(resetPlannerErrorAction());
+    };
+
+    if (Object.keys(planner).length <= 0) {
         return null;
     }
     return (
         <PlannerInfoModal
             modal={modal}
+            plannerError={plannerError}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onUpdatePlanner={onUpdatePlanner}
             curTitle={curTitle}
@@ -66,6 +76,7 @@ const PlannerInfoModalContainer = () => {
             setCurExpense={setCurExpense}
             setCurMemberCount={setCurMemberCount}
             setCurMemberTypeId={setCurMemberTypeId}
+            onCloseError={onCloseError}
         />
     );
 };

@@ -83,19 +83,11 @@ const EditMap = ({
                 </ButtonBox>
             </EditMapBlock>
             {tutorialVisible && <EditTutorialModal onClickTutorialModal={onClickTutorialModal} />}
-            {Object.keys(plannerError).length > 0 && (
-                <ErrorModal
-                    errorState={Object.keys(plannerError).length > 0}
-                    errorMessage={plannerError.message}
-                    onCloseError={onClosePlannerError}
-                />
+            {plannerError && typeof plannerError === 'string' && (
+                <ErrorModal errorState={plannerError} errorMessage={plannerError} onCloseError={onClosePlannerError} />
             )}
-            {Object.keys(spotError).length > 0 && (
-                <ErrorModal
-                    errorState={Object.keys(spotError).length > 0}
-                    errorMessage={spotError.message}
-                    onCloseError={onCloseSpotError}
-                />
+            {spotError && typeof spotError === 'string' && (
+                <ErrorModal errorState={spotError} errorMessage={spotError} onCloseError={onCloseSpotError} />
             )}
         </>
     );

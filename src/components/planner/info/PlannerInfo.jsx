@@ -167,6 +167,9 @@ const PlannerInfo = ({
 
     return (
         <PlannerInfoBlock ref={containerRef}>
+            {plannerError && typeof plannerError === 'string' && (
+                <ErrorModal errorState={plannerError} errorMessage={plannerError} onCloseError={onCloseError} />
+            )}
             <Container>
                 <InfoHeader>
                     <h3>{creator}의 플래너</h3>
@@ -211,13 +214,6 @@ const PlannerInfo = ({
                 </FlexBox>
             </Container>
             <InfoMenu planner={planner} />
-            {Object.keys(plannerError).length > 0 && (
-                <ErrorModal
-                    errorState={Object.keys(plannerError).length > 0}
-                    errorMessage={message}
-                    onCloseError={onCloseError}
-                />
-            )}
         </PlannerInfoBlock>
     );
 };

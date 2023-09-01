@@ -515,7 +515,7 @@ const EditMapContainer = () => {
         dispatch(resetPlannerErrorAction());
     };
 
-    if (!mapRef || planner === {} || accountId !== planner.accountId) {
+    if (!mapRef || Object.keys(planner).length <= 0 || accountId !== planner.accountId) {
         return null;
     }
     return (

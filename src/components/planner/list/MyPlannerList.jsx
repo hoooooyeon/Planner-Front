@@ -195,7 +195,7 @@ const MyPlannerList = ({
                     <ErrorBox text="플래너" />
                 )}
             </Container>
-            {accountError && (
+            {accountError && typeof accountError === 'string' && (
                 <ErrorModal errorState={accountError} errorMessage={accountError} onCloseError={onCloseError} />
             )}
         </MyPlannerListBlock>

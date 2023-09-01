@@ -304,7 +304,7 @@ const EditRouteContainer = () => {
         dispatch(changeAllScheduleAction(false));
     };
 
-    if (planner === {} || accountId !== planner.accountId) {
+    if (Object.keys(planner).length <= 0 || accountId !== planner.accountId) {
         return null;
     }
     return (
