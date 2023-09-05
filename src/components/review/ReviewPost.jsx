@@ -3,18 +3,20 @@ import 'quill/dist/quill.snow.css';
 import { useEffect, useMemo, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import Editor from '../common/Editor';
-import ReviewInfo from './ReviewInfo';
 import { useState } from 'react';
 import Modal from '../common/Modal';
+import PlannerInfo from './PlannerInfo';
+import Loading from '../common/Loading';
 
 const Container = styled.div`
-    width: 800px;
-    //background-color: silver;
-    border-radius: 6px;
-    margin: 100px auto 30px auto;
+    /* width: 800px; */
+    color: ${(props) => props.theme.secondaryColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    padding: 20px;
 `;
 
 const PostMain = styled.div`
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -26,25 +28,23 @@ const BoxAlign = styled.div`
     padding: 0px 20px;
 `;
 const B = styled.b`
-    //color: white;
     margin: 10px 0px;
 `;
 
-const Input = styled.input`
-    //height: 28px;
+const Title = styled.input`
+    margin-top: 20px;
+    margin-bottom: 10px;
     outline: none;
     border: none;
     border-bottom: 1px solid silver;
-    //border-radius: 6px;
-    //padding: 8px;
     font-weight: 600;
-    font-size: xx-large;
+    font-size: larger;
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
 `;
 
 const PostTitleBox = styled(BoxAlign)``;
 
 const PostContentBox = styled.div`
-    background-color: white;
     margin: 10px 0px;
     .ql-editor {
         min-height: 320px;
@@ -62,21 +62,24 @@ const Button = styled.button`
     width: 64px;
     height: 32px;
     font-weight: bold;
-    color: ${(props) => props.textColor || 'black'};
-    background-color: ${(props) => props.color || 'white'};
+    color: ${(props) => props.secondaryColor};
+    background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
     border: none;
     border-radius: 6px;
     margin: 10px 4px;
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
 
     &:hover {
-        background-color: #ebebeb;
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
 `;
 
 const ReviewPost = ({
+    loading,
     reviewData,
-    onChangeText,
+    selectPlanner,
     newFileList,
+    onChangeText,
     onCancel,
     onWritePost,
     onFileUpload,
@@ -84,13 +87,14 @@ const ReviewPost = ({
     isEdit,
     plannerList,
     onPlannerListLoad,
-    onPlannerSelect,
+    onPlannerChange,
 }) => {
     const [plannerConfirmModal, setPlannerConfirmModal] = useState(false);
-    const { plannerId } = reviewData;
 
-    const onWriteClick = () => {
-        if (!plannerId) {
+    const { title, content } = reviewData || {};
+
+    const handleWriteClick = () => {
+        if (!selectPlanner) {
             setPlannerConfirmModal(true);
         } else {
             onWritePost();
@@ -98,11 +102,11 @@ const ReviewPost = ({
         }
     };
 
-    const onModalClose = () => {
+    const handleModalClose = () => {
         setPlannerConfirmModal(false);
     };
 
-    const onModalConfirm = () => {
+    const handleModalConfirm = () => {
         onWritePost();
         setPlannerConfirmModal(false);
     };
@@ -111,18 +115,25 @@ const ReviewPost = ({
         <Container>
             <PostMain>
                 <BoxAlign>
-                    <Input
+                    <Title
                         type="text"
                         name="title"
-                        value={reviewData.title}
+                        value={title}
                         onChange={(e) => onChangeText({ key: 'title', value: e.target.value })}
                         placeholder="제목을 입력하세요."
                     />
                     <B>플래너</B>
-                    <ReviewInfo plannerList={plannerList} onPlannerListLoad={onPlannerListLoad} onPlannerSelect={onPlannerSelect} />
+                    <PlannerInfo
+                        loading={loading}
+                        viewMode={false}
+                        selectPlanner={selectPlanner}
+                        plannerList={plannerList}
+                        onPlannerListLoad={onPlannerListLoad}
+                        onPlannerChange={onPlannerChange}
+                    />
                     <PostContentBox>
                         <Editor
-                            reviewData={reviewData}
+                            content={content}
                             onChangeText={onChangeText}
                             isEdit={isEdit}
                             newFileList={newFileList}
@@ -131,12 +142,18 @@ const ReviewPost = ({
                         />
                     </PostContentBox>
                 </BoxAlign>
+                <PostFooterBox>
+                    <Button onClick={onCancel}>취소</Button>
+                    <Button onClick={handleWriteClick}>{isEdit ? '수정' : '쓰기'}</Button>
+                </PostFooterBox>
             </PostMain>
-            <PostFooterBox>
-                <Button onClick={onCancel}>취소</Button>
-                <Button onClick={onWriteClick}>{isEdit ? '수정' : '쓰기'}</Button>
-            </PostFooterBox>
-            <Modal modalVisible={plannerConfirmModal} title="플래너 확인" onModalClose={onModalClose} onModalConfirm={onModalConfirm} modalConfirmText="확인">
+            <Modal
+                modalVisible={plannerConfirmModal}
+                title="플래너 확인"
+                onModalClose={handleModalClose}
+                onModalConfirm={handleModalConfirm}
+                modalConfirmText="확인"
+            >
                 <b>플래너를 선택하지 않으셨습니다.. 그래도 진행합니까?</b>
             </Modal>
         </Container>

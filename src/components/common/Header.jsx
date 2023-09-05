@@ -63,7 +63,6 @@ const MenuList = styled.ul`
             color: ${(props) => props.theme.mainColor};
         }
     }
-    }
 `;
 
 const AccountList = styled.ul`

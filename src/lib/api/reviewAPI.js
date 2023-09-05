@@ -1,23 +1,26 @@
 import client from "./client";
+import qs from 'qs';
 
-export const writeReview = ({ plannerId, title, content, writer }) => {
-    return client.post(`/api/reviews`, { plannerId, title, content, writer });
+const basePath = '/api/reviews'
+
+export const writeReview = ({ plannerId, title, writerId, content }) => {
+    return client.post(`${basePath}`, { plannerId, title, writerId, content });
 };
 
-export const loadReviewList = ({ pageIndex }) => {
-    return client.get(`/api/reviews?page=${pageIndex}`);
+export const loadReviewList = ({ type, ...queryString }) => {
+    return client.get(`${basePath}${qs.stringify(queryString, { addQueryPrefix: true })}`);
 };
 
 export const loadReview = ({ reviewId }) => {
-    return client.get(`/api/reviews/${reviewId}`);
+    return client.get(`${basePath}/${reviewId}`);
 };
 
 export const updateReview = ({ reviewId, title, content }) => {
-    return client.patch(`/api/reviews/${reviewId}`, { reviewId, title, content });
+    return client.patch(`${basePath}/${reviewId}`, { reviewId, title, content });
 };
 
 export const deleteReview = ({ reviewId }) => {
-    return client.delete(`/api/reviews/${reviewId}`);
+    return client.delete(`${basePath}/${reviewId}`);
 };
 
 export const fileUpload = ({ formData }) => {
@@ -29,13 +32,13 @@ export const fileUpload = ({ formData }) => {
 };
 
 export const writeComment = (comment) => {
-    return client.post(`/api/reviews/${comment.reviewId}/comments`, comment);
+    return client.post(`${basePath}/${comment.reviewId}/comments`, comment);
 };
 
 export const updateComment = ({ reviewId, commentId, content }) => {
-    return client.patch(`/api/reviews/${reviewId}/comments/${commentId}`, { commentId, reviewId, content });
+    return client.patch(`${basePath}/${reviewId}/comments/${commentId}`, { commentId, reviewId, content });
 }
 
 export const deleteComment = ({ reviewId, commentId }) => {
-    return client.delete(`/api/reviews/${reviewId}/comments/${commentId}`);
+    return client.delete(`${basePath}/${reviewId}/comments/${commentId}`);
 };

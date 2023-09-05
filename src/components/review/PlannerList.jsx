@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import tempImage from '../../images/temp.jpg';
 import { useState } from 'react';
+import Loading from '../common/Loading';
 
 const ItemList = styled.ul`
     width: 720px;
@@ -57,37 +58,41 @@ const EmptyItem = styled.div`
     justify-content: center;
 `;
 
-const PlannerList = ({ type, list, onItemClick }) => {
+const PlannerList = ({ loading, type, plannerList, onItemClick }) => {
     const [selectItem, setSelectItem] = useState(null);
 
-    const onPlannerItemClick = (index, plannerId) => {
+    const { list } = plannerList;
+
+    const handlePlannerItemClick = (index, item) => {
         setSelectItem(index);
-        onItemClick(type, plannerId);
+        onItemClick(item);
     };
 
+    if (loading) {
+        return <Loading />;
+    }
+
     return (
-        <>
+        <ItemList>
             {list ? (
-                <ItemList>
-                    {list.map((item, index) => (
-                        <Item
-                            select={index == selectItem}
-                            key={index}
-                            onClick={() => {
-                                onPlannerItemClick(index, item.plannerId);
-                            }}
-                        >
-                            <ItemImg src={tempImage} />
-                            <ItemName>{item.title}</ItemName>
-                        </Item>
-                    ))}
-                </ItemList>
+                list.map((item, index) => (
+                    <Item
+                        key={index}
+                        select={index == selectItem}
+                        onClick={() => {
+                            handlePlannerItemClick(index, item);
+                        }}
+                    >
+                        <ItemImg src={tempImage} />
+                        <ItemName>{item.title}</ItemName>
+                    </Item>
+                ))
             ) : (
                 <EmptyItem>
                     <b>플래너가 없습니다.</b>
                 </EmptyItem>
             )}
-        </>
+        </ItemList>
     );
 };
 

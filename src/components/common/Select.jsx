@@ -5,11 +5,13 @@ import { default as styled } from 'styled-components';
 
 export const SelectBox = styled.div`
     position: relative;
-    background-color: white;
+    color: ${(props) => props.theme.secondaryColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 6px;
     user-select: none;
     margin: 0px 5px;
-    border: solid 1px silver;
+    box-sizing: border-box;
+    box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
 
     &:hover {
         box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
@@ -18,9 +20,9 @@ export const SelectBox = styled.div`
 
 export const SelectMain = styled.div`
     width: 122px;
-    height: 32px;
+    height: 36px;
     text-align: center;
-    line-height: 32px;
+    line-height: 36px;
     svg {
         margin: 0px 10px;
     }
@@ -29,7 +31,8 @@ export const SelectMain = styled.div`
 const SelectOption = styled.div`
     position: absolute;
     width: 100%;
-    background-color: white;
+    color: ${(props) => props.theme.secondaryColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     //padding: 5px;
     margin-top: 5px;
     border-radius: 6px;
@@ -48,7 +51,6 @@ const SelectOption = styled.div`
 `;
 
 const SelectOptionItem = styled.div`
-    background-color: white;
     //width: 70px;
     height: 20px;
     margin: 5px 10px;
@@ -57,7 +59,7 @@ const SelectOptionItem = styled.div`
     line-height: 20px;
 
     &:hover {
-        background-color: silver;
+        background-color: ${(props) => props.theme.hoverBackgroundColor};
     }
 `;
 

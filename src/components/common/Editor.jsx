@@ -1,7 +1,7 @@
 import Quill from 'quill';
 import { useEffect, useRef } from 'react';
 
-const Editor = ({ reviewData, onChangeText, isEdit, newFileList, onFileUpload, fileListUpdate }) => {
+const Editor = ({ content, onChangeText, isEdit, newFileList, onFileUpload, fileListUpdate }) => {
     const quillElement = useRef(null);
     const quillInstance = useRef(null);
 
@@ -47,7 +47,7 @@ const Editor = ({ reviewData, onChangeText, isEdit, newFileList, onFileUpload, f
             input.click();
         });
 
-        quill.root.innerHTML = reviewData.content || '';
+        quill.root.innerHTML = content || '';
         quill.on('text-change', (delta, oldDelta, source) => {
             if (source == 'user') {
                 onChangeText({ key: 'content', value: quill.root.innerHTML });

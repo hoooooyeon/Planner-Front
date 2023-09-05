@@ -8,15 +8,23 @@ import { useRef } from 'react';
 const MenuBox = styled.div`
     position: relative;
     user-select: none;
-`;
+    padding: 5px;
+    box-sizing: border-box;
+    /* border-radius: 6px;
+    border: 1px solid ${(props) => props.theme.outlineColor}; */
 
-const MenuIcon = styled.div`
-    cursor: pointer;
+    color: ${(props) => props.theme.secondaryColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    /* box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor}; */
 
     &:hover {
-        color: skyblue;
+        cursor: pointer;
+        color: ${(props) => props.theme.hoverColor};
+        /* box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor}; */
     }
 `;
+
+const MenuIcon = styled.div``;
 
 const MenuItem = styled.div`
     width: 64px;
@@ -26,19 +34,21 @@ const MenuItem = styled.div`
     border-radius: 6px;
 
     &:hover {
-        background-color: silver;
+        background-color: ${(props) => props.theme.hoverBackgroundColor};
     }
 `;
 
 const MenuList = styled.div`
-    background-color: white;
+    color: ${(props) => props.theme.secondaryColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     position: absolute;
     min-width: 64px;
     min-height: 24px;
     border: 1px solid silver;
     border-radius: 6px;
     right: 0;
-    margin-top: 6px;
+    margin-top: 10px;
 `;
 
 const Menu = ({ list, onItemClick }) => {
@@ -65,13 +75,13 @@ const Menu = ({ list, onItemClick }) => {
     return (
         <MenuBox ref={menuRef}>
             <MenuIcon>
-                <FontAwesomeIcon icon={faBars} />
+                <FontAwesomeIcon icon={faBars} size="2x" />
             </MenuIcon>
             {menu && (
                 <MenuList>
                     {list && list.length > 0
                         ? list.map((v, i) => (
-                              <MenuItem key={v.id} onClick={() => onItemClick(v, i)}>
+                              <MenuItem key={v.id} onClick={() => onItemClick(v, v.id)}>
                                   {v.value}
                               </MenuItem>
                           ))
