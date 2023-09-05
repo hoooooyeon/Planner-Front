@@ -201,7 +201,7 @@ const Header = ({ account, handlePurge, onChangePage }) => {
                     <Link to="/Planners">플래너</Link>
                 </li>
                 <li>
-                    <Link to="/ReviewList">커뮤니티</Link>
+                    <Link to="/reviews">커뮤니티</Link>
                 </li>
                 <li>
                     <Link to="/Spot">여행지</Link>

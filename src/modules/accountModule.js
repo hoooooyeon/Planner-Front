@@ -120,10 +120,10 @@ const initialState = {
         phone: '',
     },
     account: null,
-    myPlanners: {},
+    myPlannerList: {},
     likeList: {
-        likePlanners: {},
-        likeSpots: {},
+        likePlannerList: {},
+        likeSpotList: {},
     },
     accountUpdate: false,
     accountError: null,
@@ -158,13 +158,13 @@ function accountReducer(state = initialState, action) {
             return { ...state, accountUpdate: true };
         }
         case ACCOUNT_MY_PLANNER_LIST_LOAD_SUCCESS_TYPE: {
-            return { ...state, myPlanners: action.payload.data };
+            return { ...state, myPlannerList: action.payload.data };
         }
         case ACCOUNT_LIKE_PLANNER_LIST_LOAD_SUECCESS_TYPE: {
-            return { ...state, likeList: { ...state.likeList, likePlanners: action.payload.data } };
+            return { ...state, likeList: { ...state.likeList, likePlannerList: action.payload.data } };
         }
         case ACCOUNT_LIKE_SPOT_LIST_LOAD_SUECCESS_TYPE: {
-            return { ...state, likeList: { ...state.likeList, likeSpots: action.payload.data } };
+            return { ...state, likeList: { ...state.likeList, likeSpotList: action.payload.data } };
         }
         case ACCOUNT_LOAD_FAILURE_TYPE: {
             return { ...state, accountError: action.payload.data };

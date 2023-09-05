@@ -7,12 +7,11 @@ import { faForward } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 
 const PaginationBlock = styled.div`
-    width: 100%;
-    margin: 30px auto;
+    padding: 20px 0px;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    background-color: var(--md-sys-color-background);
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
 `;
 
 const PaginationBox = styled.div`
@@ -27,20 +26,20 @@ const PageButton = styled.div`
     margin: 0;
     font-size: 1rem;
     &:hover {
-        background-color: var(--md-sys-color-secondary-container);
+        background-color: ${(props) => props.theme.hoverBackgroundColor};
         cursor: pointer;
         transform: translateY(-2px);
     }
 
     &[disabled] {
-        background-color: var(--md-sys-color-shadow);
+        background-color: ${(props) => props.theme.shadowColor};
         cursor: revert;
         transform: revert;
     }
 
     &[aria-current] {
-        background-color: var(--md-sys-color-secondary);
-        color: var(--md-sys-color-on-secondary);
+        background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
+        color: ${(props) => props.theme.primaryColor};
         font-weight: bold;
         cursor: revert;
         transform: revert;
@@ -61,25 +60,47 @@ const Pagination = ({
     onLastPage,
 }) => {
     const maxPage = Math.ceil(totalCount / pageSize);
-    const isMaxPageGroup = maxPage > 10 ? (maxPage - page < maxPage - pageSize ? true : false) : true;
+    const isMaxPageGroup = maxPage > pageSize ? (maxPage - page < maxPage - pageSize ? true : false) : true;
     const endPageNum = isMaxPageGroup ? maxPage : Math.ceil(page / pageSize) * pageSize;
-    const startPageNum = isMaxPageGroup ? Math.floor(page / pageSize) * 10 + 1 : endPageNum - (pageSize - 1);
+    const startPageNum = isMaxPageGroup ? Math.floor(page / pageSize) * pageSize + 1 : endPageNum - (pageSize - 1);
 
     const [pageArr, setPageArr] = useState([]);
+
+    const handleFirstPage = () => {
+        onFirstPage(startPageNum);
+    };
+
+    const handleNextPage = () => {
+        if (page < maxPage) {
+            onNextPage();
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if (page != startPageNum) {
+            onPreviousPage();
+        }
+    };
+
+    const handleLastpage = () => {
+        if (page != maxPage) {
+            onLastPage(maxPage);
+        }
+    };
 
     useEffect(() => {
         const length = isMaxPageGroup ? endPageNum - (startPageNum - 1) : pageSize;
         const pageNum = Array.from({ length: length }, (_, i) => i + startPageNum);
         setPageArr(pageNum);
-    }, [startPageNum]);
+    }, [startPageNum, totalCount]);
 
     return (
         <PaginationBlock>
             <PaginationBox>
-                <PageButton onClick={onFirstPage}>
+                <PageButton onClick={handleFirstPage}>
                     <FontAwesomeIcon icon={faBackward} />
                 </PageButton>
-                <PageButton onClick={onPreviousPage}>
+                <PageButton onClick={handlePreviousPage}>
                     <FontAwesomeIcon icon={faCaretLeft} />
                 </PageButton>
                 {pageArr.map((i) => {
@@ -89,10 +110,10 @@ const Pagination = ({
                         </PageButton>
                     );
                 })}
-                <PageButton onClick={onNextPage}>
+                <PageButton onClick={handleNextPage}>
                     <FontAwesomeIcon icon={faCaretRight} />
                 </PageButton>
-                <PageButton onClick={onLastPage}>
+                <PageButton onClick={handleLastpage}>
                     <FontAwesomeIcon icon={faForward} />
                 </PageButton>
             </PaginationBox>

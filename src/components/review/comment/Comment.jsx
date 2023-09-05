@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import CommentInput from './CommentInput';
 
 const CommentBox = styled.div`
     padding: 20px 0px;
-    margin-left: ${(props) => (props.isReComment ? '20px' : '0px')};
+    margin: 0px 10px;
     border-bottom: 1px solid silver;
+
+    ${(props) =>
+        props.isReComment &&
+        css`
+            margin-left: 30px;
+        `};
 `;
 
 const CommentHeader = styled.div`
@@ -24,7 +30,8 @@ const ReCommentUserName = styled.span`
     margin-right: 5px;
     padding: 3px;
     border-radius: 6px;
-    background-color: skyblue;
+    color: ${(props) => props.theme.primaryColor};
+    background-color: ${(props) => props.theme.mainColor};
 `;
 
 const CommentActions = styled.div`

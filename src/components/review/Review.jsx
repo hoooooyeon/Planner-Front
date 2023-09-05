@@ -1,25 +1,34 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronUp, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import Menu from '../common/Menu';
 import Button from '../common/Button';
 import PlannerInfo from './PlannerInfo';
 import Comment from './comment/Comment';
 import { useState } from 'react';
 import CommentInput from './comment/CommentInput';
+import UpDown from './UpDown/UpDown';
+import Loading from '../common/Loading';
 
 const Container = styled.div`
-    margin-top: 100px;
-    margin-bottom: 20px;
+    padding: 20px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: ${(props) => props.theme.secondaryColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+`;
+
+const PostSideBox = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
+    margin-right: 10px;
 `;
 
 const ReviewPostBox = styled.div`
     display: flex;
     flex-direction: column;
-    width: 800px;
+    flex-grow: 0.5;
 `;
 
 const PostTitleBox = styled.div`
@@ -37,6 +46,7 @@ const FlexBox = styled.div`
 
 const Title = styled.div`
     font-size: x-large;
+    margin: 10px 0px;
 `;
 
 const Info = styled.div`
@@ -57,20 +67,18 @@ const TitleMenus = styled.div`
     }
 `;
 
-const ThumbsUp = styled.div`
-    cursor: pointer;
-    &:hover {
-        color: skyblue;
-    }
-`;
-
 const PlannerInfoBox = styled.div`
     display: flex;
     flex-direction: column;
     padding: 10px;
-    margin: 5px 0px;
+    margin: 5px 10px;
     border: 1px solid silver;
     border-radius: 6px;
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+
+    &:hover {
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
+    }
 `;
 
 const PostContentBox = styled.div`
@@ -100,16 +108,26 @@ const PostTag = styled.a`
 `;
 
 const CommentsBox = styled.div`
-    margin-top: 20px;
+    margin: 20px 0px;
 `;
 
-const ReviewViewer = ({ auth, reviewData, onPostEdit, onPostDelete, onCommentWrite, onCommentDelete, planner }) => {
-    const comments = reviewData.comments;
+const menuList = [
+    { id: 0, value: '수정' },
+    { id: 1, value: '삭제' },
+];
 
-    const menuList = [
-        { id: 1, value: '수정' },
-        { id: 2, value: '삭제' },
-    ];
+const Review = ({
+    loading,
+    auth,
+    reviewData,
+    onPostEdit,
+    onPostDelete,
+    onCommentWrite,
+    onCommentDelete,
+    planner,
+    onUpDownClick,
+}) => {
+    const comments = (reviewData && reviewData.comments) || [];
 
     const onItemClick = (value, index) => {
         if (index == 0) {
@@ -119,8 +137,19 @@ const ReviewViewer = ({ auth, reviewData, onPostEdit, onPostDelete, onCommentWri
         }
     };
 
+    if (!reviewData || (loading && !reviewData)) {
+        return (
+            <Container>
+                <Loading />
+            </Container>
+        );
+    }
+
     return (
         <Container>
+            <PostSideBox>
+                <UpDown onUpDownClick={onUpDownClick} />
+            </PostSideBox>
             <ReviewPostBox>
                 <PostTitleBox>
                     <FlexBox direction="column">
@@ -131,15 +160,12 @@ const ReviewViewer = ({ auth, reviewData, onPostEdit, onPostDelete, onCommentWri
                         </Info>
                     </FlexBox>
                     <TitleMenus>
-                        <ThumbsUp>
-                            <FontAwesomeIcon icon={faThumbsUp} />
-                        </ThumbsUp>
                         {auth.accountId == reviewData.writerId && <Menu list={menuList} onItemClick={onItemClick} />}
                     </TitleMenus>
                 </PostTitleBox>
                 <PlannerInfoBox>
                     <b>플래너 정보</b>
-                    <PlannerInfo planner={planner} viewMode={true}></PlannerInfo>
+                    <PlannerInfo loading={loading} selectPlanner={planner} viewMode={true}></PlannerInfo>
                     {/* {planner ? <PlannerInfo></PlannerInfo> : <div>추가한 플래너가 없습니다.</div>} */}
                 </PlannerInfoBox>
                 <PostContentBox dangerouslySetInnerHTML={{ __html: reviewData.content }}></PostContentBox>
@@ -162,4 +188,4 @@ const ReviewViewer = ({ auth, reviewData, onPostEdit, onPostDelete, onCommentWri
     );
 };
 
-export default ReviewViewer;
+export default Review;

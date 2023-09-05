@@ -1,46 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import Pagination from '../../components/common/Pagination';
+import Pagination from '../../components/common/Pagination.jsx';
 import { useDispatch, useSelector } from 'react-redux';
-import { changePageAction } from '../../modules/reviewModule';
+import { changePageAction, changeUIStateAction } from '../../modules/reviewModule';
 
 const ReviewPaginationContainer = () => {
     const dispatch = useDispatch();
-    const { page, totalCount } = useSelector(({ reviewReducer }) => ({
-        page: reviewReducer.page,
-        totalCount: reviewReducer.totalCount,
+    const { uiState, totalCount } = useSelector(({ reviewReducer }) => ({
+        uiState: reviewReducer.uiState,
+        totalCount: reviewReducer.reviewList.totalCount,
     }));
-    const [pageIndex, setPageIndex] = useState(1);
 
-    const onIndexPage = (index) => {
-        setPageIndex(index);
+    const { pageNum, itemCount } = uiState;
+
+    const handlePageChange = (page) => {
+        dispatch(changeUIStateAction({ property: 'pageNum', value: page }));
     };
-    const onNextPage = () => {
-        setPageIndex((index) => index + 1);
+    const handleNextPage = () => {
+        dispatch(changeUIStateAction({ property: 'pageNum', value: pageNum + 1 }));
     };
-    const onPreviousPage = () => {
-        setPageIndex((index) => index - 1);
+    const handlePreviousPage = () => {
+        dispatch(changeUIStateAction({ property: 'pageNum', value: pageNum - 1 }));
     };
-    const onFirstPage = () => {
-        setPageIndex(1);
+    const handleFirstPage = () => {
+        dispatch(changeUIStateAction({ property: 'pageNum', value: 1 }));
     };
-    const onLastPage = (maxPageIndex) => {
-        setPageIndex(maxPageIndex);
+    const handleLastPage = (maxPage) => {
+        dispatch(changeUIStateAction({ property: 'pageNum', value: maxPage }));
     };
-    useEffect(() => {
-        dispatch(changePageAction(pageIndex));
-    }, [pageIndex]);
 
     return (
         <Pagination
-            page={page}
+            page={pageNum}
             totalCount={totalCount}
-            limitIndex={10}
-            onIndexPage={onIndexPage}
-            onNextPage={onNextPage}
-            onPreviousPage={onPreviousPage}
-            onFirstPage={onFirstPage}
-            onLastPage={onLastPage}
+            pageSize={itemCount}
+            onPageChange={handlePageChange}
+            onNextPage={handleNextPage}
+            onPreviousPage={handlePreviousPage}
+            onFirstPage={handleFirstPage}
+            onLastPage={handleLastPage}
         />
     );
 };

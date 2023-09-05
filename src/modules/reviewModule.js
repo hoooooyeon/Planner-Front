@@ -5,6 +5,7 @@ import * as reviewAPI from '../lib/api/reviewAPI';
 // 액션 타입
 const INITIALIZE_REVIEW_TYPE = 'review/INITAILIZE'
 const INITIALIZE_PROPERTY_TYPE = 'review/INITIALIZE_PORPERTY';
+const CHANGE_UISTATE_TYPE = 'review/CHANGE_STATE';
 const LOAD_REVIEW_LIST_TYPE = 'review/LOAD_REVIEWLIST';
 const LOAD_REVIEW_LIST_SUCCESS_TYPE = 'review/LOAD_REVIEWLIST_SUCCESS';
 const LOAD_REVIEW_LIST_FAILURE_TYPE = 'review/LOAD_REVIEWLIST_FAILURE';
@@ -25,6 +26,7 @@ const DELETE_REVIEW_FAILURE_TYPE = 'review/DELETE_REVIEW_FAILURE';
 const FILE_UPLOAD_TYPE = 'review/FILE_UPLOAD';
 const FILE_UPLOAD_SUCCESS_TYPE = 'review/FILE_UPLOAD_SUCCESS';
 const FILE_UPLOAD_FAILURE_TYPE = 'review/FILE_UPLOAD_FAILURE';
+const CHANGE_PLANNER_INFO_TYPE = 'review/CHANGE_PLANNER_INFO';
 
 const WRITE_COMMENT_TYPE = 'reivew/WRITE_COMMENT';
 const WRITE_COMMENT_SUCCESS_TYPE = 'reivew/WRITE_COMMENT_SUCCESS';
@@ -35,6 +37,14 @@ const UPDATE_COMMENT_FAILURE_TYPE = 'reivew/UPDATE_COMMENT_FAILURE';
 const DELETE_COMMENT_TYPE = 'reivew/DELETE_COMMENT';
 const DELETE_COMMENT_SUCCESS_TYPE = 'reivew/DELETE_COMMENT_SUCCESS';
 const DELETE_COMMENT_FAILURE_TYPE = 'reivew/DELETE_COMMENT_FAILURE';
+
+const RECOMMEND_REVIEW_TYPE = 'review/RECOMMEND_REVIEW';
+const RECOMMEND_REVIEW_SUCCESS_TYPE = 'review/RECOMMEND_REVIEW_SUCCESS';
+const RECOMMEND_REVIEW_FAILURE_TYPE = 'review/RECOMMEND_REVIEW_FAILURE';
+const UNRECOMMEND_REVIEW_TYPE = 'review/UNRECOMMEND_REVIEW';
+const UNRECOMMEND_REVIEW_SUCCESS_TYPE = 'review/UNRECOMMEND_REVIEW_SUCCESS';
+const UNRECOMMEND_REVIEW_FAILURE_TYPE = 'review/UNRECOMMEND_REVIEW_FAILURE';
+
 
 // 액션
 export const initializeReviewAction = () => ({
@@ -47,9 +57,20 @@ export const initializePropertyAction = ({ property, value }) => ({
     value
 });
 
-export const loadReviewListAction = (pageIndex) => ({
+export function changeUIStateAction({ property, value }) {
+    return ({
+        type: CHANGE_UISTATE_TYPE,
+        property,
+        value
+    });
+}
+
+export const loadReviewListAction = ({ itemCount, sortCriteria, keyword, pageNum }) => ({
     type: LOAD_REVIEW_LIST_TYPE,
-    pageIndex
+    itemCount,
+    sortCriteria,
+    keyword,
+    pageNum
 });
 
 export const loadReviewAction = (reviewId) => ({
@@ -68,10 +89,9 @@ export const changePageAction = (page) => ({
     page
 });
 
-export const writeReviewAction = (review, plannerId, nickName) => ({
+export const writeReviewAction = (review) => ({
     type: WRITE_REVIEW_TYPE,
     ...review,
-    writer: nickName
 });
 
 export const updateReviewAction = ({ reviewId, title, content }) => ({
@@ -85,6 +105,11 @@ export const deleteReviewAction = (reviewId) => ({
     type: DELETE_REVIEW_TYPE,
     reviewId
 });
+
+export const changePlannerInfoAction = (selectPlanner) => ({
+    type: CHANGE_PLANNER_INFO_TYPE,
+    selectPlanner
+})
 
 export const fileUploadAction = ({ property, formData }) => ({
     type: FILE_UPLOAD_TYPE,
@@ -114,6 +139,14 @@ export const deleteCommentAction = ({ reviewId, commentId }) => ({
     commentId
 })
 
+// export const recommendReviewAction = () => ({
+//     type: RECOMMEND_REVIEW_TYPE
+// })
+
+// export const unrecommendReviewAction = () => ({
+//     type: UNRECOMMEND_REVIEW_TYPE
+// })
+
 // saga
 const loadReviewListSaga = createSaga(LOAD_REVIEW_LIST_TYPE, reviewAPI.loadReviewList);
 const loadReviewSaga = createSaga(LOAD_REVIEW_TYPE, reviewAPI.loadReview);
@@ -124,6 +157,8 @@ const fileUploadSaga = createSaga(FILE_UPLOAD_TYPE, reviewAPI.fileUpload);
 const writeCommentSaga = createSaga(WRITE_COMMENT_TYPE, reviewAPI.writeComment);
 const updateCommentSaga = createSaga(UPDATE_COMMENT_TYPE, reviewAPI.updateComment);
 const deleteCommentSaga = createSaga(DELETE_COMMENT_TYPE, reviewAPI.deleteComment);
+// const recommendReviewSaga = createSaga(RECOMMEND_REVIEW_TYPE, reviewAPI.recommendReview);
+// const unrecommendReviewSaga = createSaga(UNRECOMMEND_REVIEW_TYPE, reviewAPI.unrecommendReview);
 
 export function* reviewSaga() {
     yield takeLatest(LOAD_REVIEW_LIST_TYPE, loadReviewListSaga);
@@ -135,16 +170,25 @@ export function* reviewSaga() {
     yield takeLatest(WRITE_COMMENT_TYPE, writeCommentSaga);
     yield takeLatest(UPDATE_COMMENT_TYPE, updateCommentSaga);
     yield takeLatest(DELETE_COMMENT_TYPE, deleteCommentSaga);
+    // yield takeLatest(RECOMMEND_REVIEW_TYPE, recommendReviewSaga);
+    // yield takeLatest(UNRECOMMEND_REVIEW_TYPE, unrecommendReviewSaga);
 };
 
 const initialState = {
-    reviewList: [],
-    review: {},
+    reviewList: null,
+    review: null,
+    uiState: {
+        areaCode: 1,
+        itemCount: 10,
+        sortCriteria: 2,
+        keyword: '',
+        pageNum: 1,
+    },
+    selectPlanner: null,
     newFileList: [],
     newReviewId: null,
     newCommentId: null,
     commentUpdate: false,
-    page: 1,
     status: {
         state: null,
         message: ''
@@ -159,8 +203,11 @@ function reviewReducer(state = initialState, action) {
         case INITIALIZE_PROPERTY_TYPE: {
             return { ...state, [action.property]: action.value };
         }
+        case CHANGE_UISTATE_TYPE: {
+            return { ...state, uiState: { ...state.uiState, [action.property]: action.value } }
+        }
         case LOAD_REVIEW_LIST_SUCCESS_TYPE: {
-            return { ...state, reviewList: action.payload.data.list };
+            return { ...state, reviewList: action.payload.data };
         }
         case LOAD_REVIEW_SUCCESS_TYPE: {
             return { ...state, review: action.payload.data };
@@ -180,6 +227,9 @@ function reviewReducer(state = initialState, action) {
         case DELETE_REVIEW_SUCCESS_TYPE: return state;
         case FILE_UPLOAD_SUCCESS_TYPE: {
             return { ...state, newFileList: action.payload.data };
+        }
+        case CHANGE_PLANNER_INFO_TYPE: {
+            return { ...state, selectPlanner: action.selectPlanner }
         }
         case WRITE_COMMENT_SUCCESS_TYPE: {
             return { ...state, newCommentId: action.payload.data };

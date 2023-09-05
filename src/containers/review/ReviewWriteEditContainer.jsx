@@ -2,56 +2,45 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 import ReviewPost from '../../components/review/ReviewPost';
-import { changeContentAction, fileUploadAction, initializeReviewAction, updateReviewAction, writeReviewAction } from '../../modules/reviewModule';
-import { profileLikePlannerLoadAction, profileMyPlannerLoadAction } from '../../modules/profileModule';
+import {
+    changeContentAction,
+    changePlannerInfoAction,
+    fileUploadAction,
+    initializeReviewAction,
+    updateReviewAction,
+    writeReviewAction,
+} from '../../modules/reviewModule';
+import {
+    accountLikePlannerListLoadAction,
+    accountMyPlannerListLoadAction,
+    initializeAction,
+} from '../../modules/accountModule';
+import { loadPlannerAction } from '../../modules/plannerModule';
 
 const ReviewWriteEditContainer = ({ location, history }) => {
     const isEdit = location.pathname == '/reviews/edit' ? true : false;
     const dispatch = useDispatch();
-    const { account, review, newFileList, newReviewId, plannerList } = useSelector(({ authReducer, reviewReducer, profileReducer }) => ({
-        account: authReducer.account,
-        review: reviewReducer.review,
-        newFileList: reviewReducer.newFileList,
-        newReviewId: reviewReducer.newReviewId,
-        plannerList: profileReducer.plannerList,
-    }));
+    const { loading, account, review, selectPlanner, newFileList, newReviewId, plannerList, uiState } = useSelector(
+        ({ loadingReducer, authReducer, reviewReducer, plannerReducer, accountReducer }) => ({
+            loading: loadingReducer.loading,
+            account: authReducer.account,
+            review: reviewReducer.review,
+            selectPlanner: isEdit ? plannerReducer.planner : reviewReducer.selectPlanner,
+            newFileList: reviewReducer.newFileList,
+            newReviewId: reviewReducer.newReviewId,
+            plannerList: {
+                myPlannerList: accountReducer.myPlannerList,
+                likePlannerList: accountReducer.likeList.likePlannerList,
+            },
+            uiState: reviewReducer.uiState,
+        }),
+    );
 
-    // const plannerList = [
-    //     {
-    //         plannerId: 1,
-    //         accountId: 1,
-    //         creator: 'test',
-    //         title: '이렇게 재미있는 천안 여행!',
-    //         planDateStart: '2023-01-29',
-    //         planDateEnd: '2023-01-31',
-    //         expense: 100000,
-    //         memberCount: 3,
-    //         memberTypeId: 3,
-    //         likeCount: 0,
-    //         createDate: '2023-03-05 17:36:59',
-    //         updateDate: '2023-03-15 23:37:46',
-    //     },
-    //     {
-    //         plannerId: 2,
-    //         accountId: 1,
-    //         creator: 'test',
-    //         title: '초보여행',
-    //         planDateStart: '2022-08-10',
-    //         planDateEnd: '2022-08-12',
-    //         expense: 0,
-    //         memberCount: 1,
-    //         memberTypeId: 1,
-    //         likeCount: 0,
-    //         createDate: '2023-03-07 20:54:19',
-    //         updateDate: '2023-03-07 20:54:19',
-    //     },
-    // ];
-
-    const onChangeText = (data) => {
+    const handleChangeText = (data) => {
         dispatch(changeContentAction(data));
     };
 
-    const onCancel = () => {
+    const handleCancel = () => {
         if (isEdit) {
             history.push(`/reviews/${review.reviewId}`);
         } else {
@@ -59,20 +48,26 @@ const ReviewWriteEditContainer = ({ location, history }) => {
         }
     };
 
-    const onWritePost = () => {
+    const handleWritePost = () => {
         const data = {
             ...review,
+            writerId: account.accountId,
         };
-        const reviewId = review.reviewId;
+
+        if (selectPlanner) {
+            data.PlannerId = selectPlanner.plannerId;
+        }
+
         if (isEdit) {
+            const reviewId = review.reviewId;
             dispatch(updateReviewAction(data));
             history.push(`/reviews/${reviewId}`);
         } else {
-            dispatch(writeReviewAction(data, 0, 'test'));
+            dispatch(writeReviewAction(data));
         }
     };
 
-    const onFileUpload = (formData) => {
+    const handleFileUpload = (formData) => {
         dispatch(fileUploadAction({ property: 'review', formData }));
     };
 
@@ -80,22 +75,41 @@ const ReviewWriteEditContainer = ({ location, history }) => {
         dispatch(changeContentAction({ key: 'fileList', value: fileList }));
     };
 
-    const onPlannerListLoad = (type) => {
+    const handlePlannerListLoad = (type) => {
         const { accountId } = account;
-        if (type === 'myPlanner') {
-            dispatch(profileMyPlannerLoadAction(accountId));
+        const { itemCount, sortCriteria, keyword, pageNum } = uiState;
+
+        if (type === 'myPlannerList') {
+            dispatch(accountMyPlannerListLoadAction({ accountId, itemCount, sortCriteria, pageNum }));
         } else {
-            dispatch(profileLikePlannerLoadAction(accountId));
+            dispatch(
+                accountLikePlannerListLoadAction({
+                    accountId,
+                    itemCount,
+                    sortCriteria,
+                    keyword,
+                    postType: 1,
+                    pageNum,
+                }),
+            );
         }
     };
 
-    const onPlannerSelect = (plannerId) => {
-        dispatch(changeContentAction({ key: 'plannerId', value: plannerId }));
+    const handlePlannerChange = (planner) => {
+        dispatch(changePlannerInfoAction(planner));
     };
 
     useEffect(() => {
+        if (isEdit) {
+            const { plannerId } = review;
+            dispatch(loadPlannerAction(plannerId));
+        }
+    }, [dispatch]);
+
+    useEffect(() => {
         return () => {
-            dispatch(initializeReviewAction({ property: 'newReviewId' }));
+            // dispatch(initializeReviewAction({ property: 'newReviewId' }));
+            dispatch(initializeAction());
         };
     }, [dispatch]);
 
@@ -107,17 +121,19 @@ const ReviewWriteEditContainer = ({ location, history }) => {
 
     return (
         <ReviewPost
+            loading={loading}
             reviewData={review}
-            onChangeText={onChangeText}
+            selectPlanner={selectPlanner}
             newFileList={newFileList}
-            onCancel={onCancel}
-            onWritePost={onWritePost}
-            onFileUpload={onFileUpload}
+            onChangeText={handleChangeText}
+            onCancel={handleCancel}
+            onWritePost={handleWritePost}
+            onFileUpload={handleFileUpload}
             fileListUpdate={fileListUpdate}
             isEdit={isEdit}
             plannerList={plannerList}
-            onPlannerListLoad={onPlannerListLoad}
-            onPlannerSelect={onPlannerSelect}
+            onPlannerListLoad={handlePlannerListLoad}
+            onPlannerChange={handlePlannerChange}
         />
     );
 };

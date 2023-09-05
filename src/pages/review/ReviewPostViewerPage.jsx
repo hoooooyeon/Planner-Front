@@ -1,14 +1,12 @@
 import Footer from '../../components/common/Footer';
-import Header from '../../components/common/Header';
-import ReviewViewer from '../../components/review/ReviewViewer';
 import HeaderContainer from '../../containers/common/HeaderContainer';
-import ReviewViewerContainer from '../../containers/review/ReviewViewerContainer';
+import ReviewContainer from '../../containers/review/ReviewContainer';
 
 const ReviewPostViewerPage = () => {
     return (
         <>
             <HeaderContainer />
-            <ReviewViewerContainer />
+            <ReviewContainer />
             <Footer />
         </>
     );

@@ -6,7 +6,8 @@ const CommentInputBox = styled.div`
     border: 1px solid silver;
     border-radius: 6px;
     padding: 12px;
-    margin-top: 20px;
+    margin: 10px;
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
 `;
 
 const Writer = styled.b`
@@ -23,6 +24,7 @@ const InputBox = styled.textarea`
     padding: 0px;
     outline: none;
     resize: none;
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
 `;
 
 const BtnBox = styled.div`
@@ -36,7 +38,8 @@ const ActionButton = styled.button`
     margin: 0px 5px;
     border: 0px;
     border-radius: 6px;
-    background-color: #e1e1e1;
+    color: ${(props) => props.theme.primaryColor};
+    background-color: ${(props) => props.theme.secondaryButtonBackgroundColor};
     //color: white;
 
     &:hover {
