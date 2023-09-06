@@ -131,7 +131,15 @@ const Img = styled.img`
     object-fit: cover;
 `;
 
-const MyPlannerList = ({ myPlanners, loading, onCreatePlanner, onClickPlanner, onPreviousPage, onNextPage, drag }) => {
+const MyPlannerList = ({
+    myPlannerList,
+    loading,
+    onCreatePlanner,
+    onClickPlanner,
+    onPreviousPage,
+    onNextPage,
+    drag,
+}) => {
     const itemRef = useRef();
 
     return (
@@ -141,11 +149,11 @@ const MyPlannerList = ({ myPlanners, loading, onCreatePlanner, onClickPlanner, o
                     <HeaderTitle>나의 플래너</HeaderTitle>
                     <Button onClick={onCreatePlanner}>플래너 생성</Button>
                 </Header>
-                {loading && Object.keys(myPlanners).length <= 0 ? (
+                {loading && Object.keys(myPlannerList).length <= 0 ? (
                     <ErrorBox isLoading={true} />
-                ) : Object.keys(myPlanners).length > 0 && myPlanners.list.length > 0 ? (
+                ) : Object.keys(myPlannerList).length > 0 && myPlannerList.list.length > 0 ? (
                     <Slider
-                        list={myPlanners.list}
+                        list={myPlannerList.list}
                         itemRef={itemRef}
                         drag={drag}
                         page={true}
@@ -153,7 +161,7 @@ const MyPlannerList = ({ myPlanners, loading, onCreatePlanner, onClickPlanner, o
                         nextPage={onNextPage}
                     >
                         <PlannerList>
-                            {myPlanners.list.map((p) => (
+                            {myPlannerList.list.map((p) => (
                                 <PlannerItem
                                     key={p.plannerId}
                                     ref={itemRef}

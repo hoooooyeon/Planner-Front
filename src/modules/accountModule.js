@@ -181,13 +181,13 @@ function accountReducer(state = initialState, action) {
                 ...state,
                 likeList: {
                     ...state.likeList,
-                    likeSpots: {},
+                    likeSpotList: {},
                 },
             };
         case RESET_MY_PLANNER_LIST_TYPE:
             return {
                 ...state,
-                myPlanners: {},
+                myPlannerList: {},
             };
         default: {
             return state;

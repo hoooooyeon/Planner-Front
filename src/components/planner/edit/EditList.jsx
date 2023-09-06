@@ -148,7 +148,7 @@ const EditList = ({
     spots,
     onCreateLocation,
     onOpenDetail,
-    likeSpots,
+    likeSpotList,
     totalCount,
     page,
     loading,
@@ -218,7 +218,7 @@ const EditList = ({
                     onIndexPage={onIndexPage}
                 />
                 <List>
-                    {loading && Object.keys(likeSpots).length <= 0 && Object.keys(spots).length <= 0 ? (
+                    {loading && Object.keys(likeSpotList).length <= 0 && Object.keys(spots).length <= 0 ? (
                         <ErrorBox isLoading={true} />
                     ) : (
                         <>
@@ -258,8 +258,8 @@ const EditList = ({
                                         </ListItem>
                                     );
                                 })}
-                            {Object.keys(likeSpots).length > 0 &&
-                                likeSpots.list.map((s, i) => {
+                            {Object.keys(likeSpotList).length > 0 &&
+                                likeSpotList.list.map((s, i) => {
                                     const { image, title } = s;
                                     return (
                                         <ListItem key={i}>
@@ -291,13 +291,15 @@ const EditList = ({
                                         </ListItem>
                                     );
                                 })}
-                            {/* 1. spots와 likeSpots가 없을 떄
-                        2. spots가 비었을 때(likeSpots x)
-                        3. likeSpots가 비었을 때(spots x)
+                            {/* 1. spots와 likeSpotList가 없을 떄
+                        2. spots가 비었을 때(likeSpotList x)
+                        3. likeSpotList가 비었을 때(spots x)
                     */}
-                            {(Object.keys(likeSpots).length <= 0 && Object.keys(spots).length > 0 && spots.list <= 0) ||
-                            (Object.keys(likeSpots).length > 0 &&
-                                likeSpots.list.length <= 0 &&
+                            {(Object.keys(likeSpotList).length <= 0 &&
+                                Object.keys(spots).length > 0 &&
+                                spots.list <= 0) ||
+                            (Object.keys(likeSpotList).length > 0 &&
+                                likeSpotList.list.length <= 0 &&
                                 Object.keys(spots).length <= 0) ? (
                                 <ErrorBox text="리스트" />
                             ) : null}

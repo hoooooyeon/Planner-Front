@@ -150,7 +150,7 @@ function profileReducer(state = initialState, action) {
             return { ...state, profileUpdate: true };
         }
         case PROFILE_MY_PLANNER_LOAD_SUCCESS_TYPE: {
-            return { ...state, plannerList: { ...state.plannerList, myPlanners: action.payload.data } };
+            return { ...state, plannerList: { ...state.plannerList, myPlannerList: action.payload.data } };
         }
         case PROFILE_LIKE_PLANNER_LOAD_SUECCESS_TYPE: {
             return {

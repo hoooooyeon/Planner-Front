@@ -57,7 +57,7 @@ const EditListContainer = () => {
     const { accountId } = { ...account };
     const { areaCode, contentTypeId, contentId } = { ...spotData };
     const { curKeyword, resultKeyword } = { ...keyword };
-    const { likeSpots } = { ...likeList };
+    const { likeSpotList } = { ...likeList };
     const numOfRows = 12;
 
     // 로케이션 추가
@@ -186,10 +186,10 @@ const EditListContainer = () => {
         if (Object.keys(spots).length > 0) {
             totalCount.current = spots.totalCount;
         }
-        if (Object.keys(likeSpots).length > 0) {
-            totalCount.current = likeSpots.totalCount;
+        if (Object.keys(likeSpotList).length > 0) {
+            totalCount.current = likeSpotList.totalCount;
         }
-    }, [likeSpots, spots, detail.likeState]);
+    }, [likeSpotList, spots, detail.likeState]);
 
     const onIndexPage = (index) => {
         setPage(index);
@@ -244,7 +244,7 @@ const EditListContainer = () => {
             loading={loading}
             spotData={spotData}
             contentTypeList={contentTypeList}
-            likeSpots={likeSpots}
+            likeSpotList={likeSpotList}
             likeKeyword={likeKeyword}
             totalCount={totalCount.current}
             page={page}
