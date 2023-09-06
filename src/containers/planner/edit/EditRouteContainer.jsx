@@ -23,9 +23,8 @@ const EditRouteContainer = () => {
     const history = useHistory();
     const params = useParams();
 
-    const { planner, plannerError, plan, plannerData, account } = useSelector(({ authReducer, plannerReducer }) => ({
+    const { planner, plan, plannerData, account } = useSelector(({ authReducer, plannerReducer }) => ({
         planner: plannerReducer.planner,
-        plannerError: plannerReducer.plannerError,
         plan: plannerReducer.plan,
         plannerData: plannerReducer.plannerData,
         location: plannerReducer.location,
@@ -305,7 +304,7 @@ const EditRouteContainer = () => {
         dispatch(changeAllScheduleAction(false));
     };
 
-    if (planner === {} || accountId !== planner.accountId) {
+    if (Object.keys(planner).length <= 0 || accountId !== planner.accountId) {
         return null;
     }
     return (

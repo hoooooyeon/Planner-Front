@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import InfoRoute from './InfoRoute';
 import InfoMenu from './InfoMenu';
+import ErrorModal from '../../common/ErrorModal';
 
 const PlannerInfoBlock = styled.div`
     width: 100%;
@@ -121,6 +122,8 @@ const PlannerInfo = ({
     allSchedule,
     plannerData,
     drag,
+    plannerError,
+    onCloseError,
     onDeletePlanner,
     onToggleMemberModal,
     onTogglePlannerInfoModal,
@@ -132,6 +135,7 @@ const PlannerInfo = ({
 }) => {
     const { creator } = { ...planner };
     const { accountId } = { ...account };
+    const { message } = { ...planner };
     const menuRef = useRef();
     const containerRef = useRef();
     const [isDropDown, setIsDropDown] = useState(false);
@@ -163,6 +167,9 @@ const PlannerInfo = ({
 
     return (
         <PlannerInfoBlock ref={containerRef}>
+            {plannerError && typeof plannerError === 'string' && (
+                <ErrorModal errorState={plannerError} errorMessage={plannerError} onCloseError={onCloseError} />
+            )}
             <Container>
                 <InfoHeader>
                     <h3>{creator}의 플래너</h3>

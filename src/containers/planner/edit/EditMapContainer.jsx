@@ -2,19 +2,20 @@ import { useCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditMap from '../../../components/planner/edit/EditMap';
-import { changeAllScheduleAction } from '../../../modules/plannerModule';
+import { changeAllScheduleAction, resetPlannerErrorAction } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import locationImg from '../../../lib/images/location.png';
-import { changeAreaIndexAction } from '../../../modules/spotModule';
+import { changeAreaIndexAction, resetSpotErrorAction } from '../../../modules/spotModule';
 import { useHistory } from 'react-router';
 
 const EditMapContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { planner, plannerError, plannerData, spots, account, allSchedule } = useSelector(
+    const { planner, plannerError, spotError, plannerData, spots, account, allSchedule } = useSelector(
         ({ plannerReducer, spotReducer, authReducer }) => ({
             planner: plannerReducer.planner,
             plannerError: plannerReducer.plannerError,
+            spotError: spotReducer.spotError,
             spots: spotReducer.spots,
             keyword: spotReducer.keyword,
             contentTypeList: spotReducer.contentTypeList,
@@ -504,17 +505,31 @@ const EditMapContainer = () => {
         setTutorialVisible(!tutorialVisible);
     };
 
-    if (!mapRef || planner === {} || accountId !== planner.accountId) {
+    // spotError 리셋
+    const onCloseSpotError = () => {
+        dispatch(resetSpotErrorAction());
+    };
+
+    // plannerError 리셋
+    const onClosePlannerError = () => {
+        dispatch(resetPlannerErrorAction());
+    };
+
+    if (!mapRef || Object.keys(planner).length <= 0 || accountId !== planner.accountId) {
         return null;
     }
     return (
         <EditMap
             mapRef={mapRef}
             allSchedule={allSchedule}
+            plannerError={plannerError}
+            spotError={spotError}
             onClickAllSchedule={onClickAllSchedule}
             onSavePlanner={onSavePlanner}
             tutorialVisible={tutorialVisible}
             onClickTutorialModal={onClickTutorialModal}
+            onClosePlannerError={onClosePlannerError}
+            onCloseSpotError={onCloseSpotError}
         />
     );
 };

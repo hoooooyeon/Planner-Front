@@ -26,6 +26,7 @@ const ACCOUNT_LIKE_SPOT_LIST_LOAD_SUECCESS_TYPE = 'account/ACCOUNT_LIKE_SPOT_LIS
 const ACCOUNT_LIKE_SPOT_LIST_LOAD_FAILURE_TYPE = 'account/ACCOUNT_LIKE_SPOT_LIST_LOAD_FAILURE';
 const RESET_LIKE_SPOT_LIST_TYPE = 'account/RESET_LIKE_SPOT_LIST';
 const RESET_MY_PLANNER_LIST_TYPE = 'account/RESET_MY_PLANNER_LIST';
+const RESET_ACCOUNT_ERROR_TYPE = 'account/RESET_ACCOUNT_ERROR';
 
 // 액션 함수
 export const initializeAction = () => ({
@@ -97,6 +98,7 @@ export const accountLikeSpotListLoadAction = ({ accountId, itemCount, sortCriter
 
 export const resetLikeSpotListAction = () => ({ type: RESET_LIKE_SPOT_LIST_TYPE });
 export const resetMyPlannerListAction = () => ({ type: RESET_MY_PLANNER_LIST_TYPE });
+export const resetAccountErrorAction = () => ({ type: RESET_ACCOUNT_ERROR_TYPE });
 
 const accountLoad = createSaga(ACCOUNT_LOAD_TYPE, accountAPI.accountLoad);
 const accountUpdate = createSaga(ACCOUNT_UPDATE_TYPE, accountAPI.accountUpdate);
@@ -188,6 +190,11 @@ function accountReducer(state = initialState, action) {
             return {
                 ...state,
                 myPlannerList: {},
+            };
+        case RESET_ACCOUNT_ERROR_TYPE:
+            return {
+                ...state,
+                accountError: null,
             };
         default: {
             return state;

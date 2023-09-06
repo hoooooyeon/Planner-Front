@@ -39,6 +39,8 @@ const SEARCH_SPOT_FAILURE_TYPE = 'spot/SEARCH_SPOT_FAILURE';
 
 const CHANGE_CONTENT_TYPE_ID_TYPE = 'spot/CHANGE_CONTENT_TYPE_ID';
 
+const RESET_SPOT_ERROR_TYPE = 'spot/RESET_SPOT_ERROR';
+
 export const loadAreasAction = () => ({ type: LOAD_AREAS_TYPE });
 export const loadSpotsAction = ({ areaCode, contentTypeId, pageNo, numOfRows }) => ({
     type: LOAD_SPOTS_TYPE,
@@ -72,6 +74,7 @@ export const searchSpotAction = ({ areaCode, contentTypeId, keyword, numOfRows, 
     numOfRows,
 });
 export const changeContentTypeIdAction = (contentTypeId) => ({ type: CHANGE_CONTENT_TYPE_ID_TYPE, contentTypeId });
+export const resetSpotErrorAction = () => ({ type: RESET_SPOT_ERROR_TYPE });
 
 const loadAreasSaga = createSaga(LOAD_AREAS_TYPE, spotAPI.loadAreas);
 const loadSpotsSaga = createSaga(LOAD_SPOTS_TYPE, spotAPI.loadSpots);
@@ -93,7 +96,7 @@ const initialState = {
     areas: [],
     spots: {},
     detail: {},
-    spotError: {},
+    spotError: null,
     spotData: {
         areaCode: 1,
         pageNo: 1,
@@ -127,8 +130,7 @@ function spotReducer(state = initialState, action) {
         case SEARCH_SPOT_FAILURE_TYPE:
             return {
                 ...state,
-                // spotError: { state: action.payload.state, message: action.payload.message },
-                spotError: action.payload.error,
+                spotError: action.payload.message,
             };
         case LOAD_SPOTS_SUCCESS_TYPE:
             return {
@@ -238,6 +240,11 @@ function spotReducer(state = initialState, action) {
                     contentTypeId: action.contentTypeId,
                     pageNo: 1,
                 },
+            };
+        case RESET_SPOT_ERROR_TYPE:
+            return {
+                ...state,
+                spotError: null,
             };
         default:
             return state;

@@ -7,6 +7,7 @@ import {
     changeCurPlannerIdAction,
     deletePlannerAction,
     loadPlannerAction,
+    resetPlannerErrorAction,
     toggleLikePlannerAction,
     toggleMemberModalAction,
     togglePlannerInfoModalAction,
@@ -376,7 +377,12 @@ const PlannerInfoContainer = () => {
         dispatch(changeAllScheduleAction(false));
     };
 
-    if (planner === {}) {
+    // plannerError 리셋
+    const onCloseError = () => {
+        dispatch(resetPlannerErrorAction());
+    };
+
+    if (Object.keys(planner).length <= 0) {
         return null;
     }
     return (
@@ -386,7 +392,9 @@ const PlannerInfoContainer = () => {
             plannerData={plannerData}
             mapRef={mapRef}
             drag={drag}
+            plannerError={plannerError}
             allSchedule={allSchedule}
+            onCloseError={onCloseError}
             onClickAllSchedule={onClickAllSchedule}
             onClickDateSchedule={onClickDateSchedule}
             onDeletePlanner={onDeletePlanner}

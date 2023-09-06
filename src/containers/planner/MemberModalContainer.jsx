@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MemberModal from '../../components/planner/MemberModal';
-import { deleteMemberAction, inviteMemberAction, toggleMemberModalAction } from '../../modules/plannerModule';
+import {
+    deleteMemberAction,
+    inviteMemberAction,
+    resetPlannerErrorAction,
+    toggleMemberModalAction,
+} from '../../modules/plannerModule';
 
 const MemberModalContainer = () => {
     const dispatch = useDispatch();
@@ -46,7 +51,12 @@ const MemberModalContainer = () => {
         dispatch(toggleMemberModalAction());
     };
 
-    if (planner === {}) {
+    // plannerError 리셋
+    const onCloseError = () => {
+        dispatch(resetPlannerErrorAction());
+    };
+
+    if (Object.keys(planner).length <= 0) {
         return null;
     }
     return (
@@ -54,11 +64,13 @@ const MemberModalContainer = () => {
             planner={planner}
             members={members}
             modal={modal}
+            plannerError={plannerError}
             onChangeMember={onChangeMember}
             onInviteMember={onInviteMember}
             onDeleteMember={onDeleteMember}
             onResetMember={onResetMember}
             onToggleMemberModal={onToggleMemberModal}
+            onCloseError={onCloseError}
         />
     );
 };

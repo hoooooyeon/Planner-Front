@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 const InfoForm = styled.form`
     width: 25rem;
-    height: 10rem;
     display: flex;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     flex-direction: column;
@@ -98,8 +97,18 @@ const Category = styled.select`
     }
 `;
 
+const ErrorText = styled.div`
+    color: ${(props) => props.theme.errorColor};
+    font-weight: bold;
+    font-size: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0.5rem 0;
+`;
+
 const PlannerInfoModal = ({
     modal,
+    plannerError,
     onUpdatePlanner,
     onTogglePlannerInfoModal,
     curTitle,
@@ -110,6 +119,7 @@ const PlannerInfoModal = ({
     setCurExpense,
     setCurMemberCount,
     setCurMemberTypeId,
+    onCloseError,
 }) => {
     const categoryList = [
         { label: '혼자', value: 1 },
@@ -122,10 +132,13 @@ const PlannerInfoModal = ({
         <Modal
             modalVisible={modal.plannerInfo}
             title="플래너 정보"
-            onModalClose={onTogglePlannerInfoModal}
+            onModalClose={() => {
+                onTogglePlannerInfoModal();
+                onCloseError();
+            }}
             onModalConfirm={() => {
                 onUpdatePlanner();
-                onTogglePlannerInfoModal();
+                onCloseError();
             }}
         >
             <InfoForm>
@@ -140,6 +153,7 @@ const PlannerInfoModal = ({
                         value={curTitle}
                     />
                 </FlexDiv>
+                {plannerError && plannerError.title && <ErrorText>{plannerError.title}</ErrorText>}
                 <FlexDiv>
                     <Label>여행 비용</Label>
                     <Funds
@@ -162,6 +176,7 @@ const PlannerInfoModal = ({
                         }}
                     ></People>
                 </FlexDiv>
+                {plannerError && plannerError.memberCount && <ErrorText>{plannerError.memberCount}</ErrorText>}
                 <FlexDiv>
                     <Label>여행 멤버 유형</Label>
                     <Category
@@ -178,6 +193,7 @@ const PlannerInfoModal = ({
                         ))}
                     </Category>
                 </FlexDiv>
+                {plannerError && plannerError.memberTypeId && <ErrorText>{plannerError.memberTypeId}</ErrorText>}
             </InfoForm>
         </Modal>
     );

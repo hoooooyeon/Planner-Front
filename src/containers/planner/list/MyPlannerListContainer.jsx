@@ -3,17 +3,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeCurPlannerIdAction, createPlannerAction, resetPlannerDataAction } from '../../../modules/plannerModule';
 import MyPlannerList from '../../../components/planner/list/MyPlannerList';
 import { useHistory } from 'react-router';
-import { accountMyPlannerListLoadAction, resetMyPlannerListAction } from '../../../modules/accountModule';
+import {
+    accountMyPlannerListLoadAction,
+    resetAccountErrorAction,
+    resetMyPlannerListAction,
+} from '../../../modules/accountModule';
 
 const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { myPlannerList, plannerError, loading, planner, pType, plannerData, account } = useSelector(
+    const { myPlannerList, accountError, loading, planner, pType, plannerData, account } = useSelector(
         ({ plannerReducer, authReducer, accountReducer, loadingReducer }) => ({
             account: authReducer.account,
             myPlannerList: accountReducer.myPlannerList,
-            plannerError: plannerReducer.plannerError,
+            accountError: accountReducer.accountError,
             planner: plannerReducer.planner,
             plannerData: plannerReducer.plannerData,
             pType: plannerReducer.pType,
@@ -90,6 +94,11 @@ const MyPlannerListContainer = () => {
         }
     }, [dispatch, accountId, pageNum]);
 
+    // accountError 리셋
+    const onCloseError = () => {
+        dispatch(resetAccountErrorAction());
+    };
+
     const maxPage = pageLastIndex;
     const [page, setPage] = useState(1);
 
@@ -111,8 +120,10 @@ const MyPlannerListContainer = () => {
     return (
         <MyPlannerList
             myPlannerList={myPlannerList}
+            accountError={accountError}
             drag={drag}
             loading={loading}
+            onCloseError={onCloseError}
             onCreatePlanner={onCreatePlanner}
             onClickPlanner={onClickPlanner}
             onPreviousPage={onPreviousPage}

@@ -8,6 +8,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { handleErrorImg } from '../../lib/utils/CommonFunction';
 import errorImg from '../../lib/images/spotErrorImg.jpg';
 import ErrorBox from '../common/ErrorBox';
+import ErrorModal from '../common/ErrorModal';
 
 const SpotListBlock = styled.div`
     width: 100%;
@@ -106,6 +107,7 @@ const SpotList = ({
     areas,
     spots,
     spotData,
+    spotError,
     curKeyword,
     resultKeyword,
     sliderSpots,
@@ -117,9 +119,10 @@ const SpotList = ({
     onChangeCurKeyword,
     onChangeContentTypeId,
     onChangeResultKeyword,
+    onCloseError,
 }) => {
     const itemRef = useRef();
-
+    const { message } = { ...spotError };
     return (
         <SpotListBlock>
             <SpotSlider sliderSpots={sliderSpots} />
@@ -176,6 +179,13 @@ const SpotList = ({
                     <ErrorBox text="여행지" />
                 )}
             </Container>
+            {Object.keys(spotError).length > 0 && (
+                <ErrorModal
+                    errorState={Object.keys(spotError).length > 0}
+                    errorMessage={message}
+                    onCloseError={onCloseError}
+                />
+            )}
         </SpotListBlock>
     );
 };

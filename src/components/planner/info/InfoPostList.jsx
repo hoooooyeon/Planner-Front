@@ -112,13 +112,15 @@ const InfoPostList = ({
     planner,
     curMemo,
     account,
+    modal,
+    plannerError,
     onCreateMemo,
     onUpdateMemo,
     onDeleteMemo,
     onChangeMemoTitle,
     onChangeMemoContent,
     onLoadMemo,
-    onResetMemo,
+    onCloseModal,
 }) => {
     const { planMemos, planMembers } = { ...planner };
     const { accountId, nickname } = { ...account };
@@ -143,48 +145,13 @@ const InfoPostList = ({
         }
     });
 
-    const [isCreate, setIsCreate] = useState(false);
-    const [isEdit, setIsEdit] = useState(false);
-
-    // 메모 생성 모달 열기
-    const onCreatePostMd = () => {
-        setIsCreate(false);
-        onResetMemo();
-        if (curMemo.title.length > 0) {
-            onCreateMemo();
-        }
-    };
-
-    // 메모 수정 모달 열기
-    const onEditPostMd = () => {
-        setIsEdit(false);
-        onResetMemo();
-        onUpdateMemo(curMemo.memoId);
-    };
-
-    // 메모 모달 종료
-    const onCancelPostMd = () => {
-        setIsEdit(false);
-        setIsCreate(false);
-        onResetMemo();
-    };
-
     return (
         <InfoPostListBlock>
             <Container>
                 <PostListBlock>
                     <PostListHeader>
                         <h3>Memo</h3>
-                        {accountId === planner.accountId && (
-                            <Button
-                                onClick={() => {
-                                    onResetMemo();
-                                    setIsCreate(true);
-                                }}
-                            >
-                                ADD
-                            </Button>
-                        )}
+                        {accountId === planner.accountId && <Button onClick={onCreateMemo}>ADD</Button>}
                     </PostListHeader>
                     <PostList>
                         {planMemos && planMembers.find((member) => member === nickname) !== undefined ? (
@@ -195,7 +162,6 @@ const InfoPostList = ({
                                         memo={memo}
                                         onDeleteMemo={onDeleteMemo}
                                         onLoadMemo={onLoadMemo}
-                                        setIsEdit={setIsEdit}
                                         account={account}
                                         planner={planner}
                                     />
@@ -205,24 +171,17 @@ const InfoPostList = ({
                             <ErrorBox text="메모" />
                         )}
                     </PostList>
-                    {/* 메모 생성 모달 */}
-                    <MemoModal
-                        curMemo={curMemo}
-                        onChangeMemoTitle={onChangeMemoTitle}
-                        onChangeMemoContent={onChangeMemoContent}
-                        isState={isCreate}
-                        onModalClose={onCancelPostMd}
-                        onModalConfirm={onCreatePostMd}
-                    />
-                    {/* 메모 수정 모달 */}
-                    <MemoModal
-                        curMemo={curMemo}
-                        onChangeMemoTitle={onChangeMemoTitle}
-                        onChangeMemoContent={onChangeMemoContent}
-                        isState={isEdit}
-                        onModalClose={onCancelPostMd}
-                        onModalConfirm={onEditPostMd}
-                    />
+                    {Object.keys(modal).length > 0 && modal.memo && (
+                        <MemoModal
+                            plannerError={plannerError}
+                            curMemo={curMemo}
+                            onChangeMemoTitle={onChangeMemoTitle}
+                            onChangeMemoContent={onChangeMemoContent}
+                            modalVisible={modal.memo}
+                            onModalClose={onCloseModal}
+                            onModalConfirm={onUpdateMemo}
+                        />
+                    )}
                 </PostListBlock>
                 <Ad ref={adRef}>
                     {!isChanged ? (
