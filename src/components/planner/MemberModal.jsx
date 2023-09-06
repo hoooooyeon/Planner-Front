@@ -105,7 +105,7 @@ const MemberModal = ({
                     />
                     <Button onClick={onInviteMemberMd}>초대</Button>
                 </InviteBox>
-                {plannerError && plannerError.}
+                {/* {plannerError && plannerError.} */}
                 <h5>현재 멤버</h5>
                 <MemberList>
                     {planMembers &&
