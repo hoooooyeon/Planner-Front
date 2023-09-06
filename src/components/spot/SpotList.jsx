@@ -7,8 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { handleErrorImg } from '../../lib/utils/CommonFunction';
 import errorImg from '../../lib/images/spotErrorImg.jpg';
-import ErrorBox from '../common/ErrorBox';
+import Empty from '../common/Empty';
 import ErrorModal from '../common/ErrorModal';
+import Loading from '../common/Loading';
 
 const SpotListBlock = styled.div`
     width: 100%;
@@ -140,7 +141,7 @@ const SpotList = ({
                     onChangeResultKeyword={onChangeResultKeyword}
                 />
                 {loading && Object.keys(spots).length <= 0 ? (
-                    <ErrorBox isLoading={true} />
+                    <Loading />
                 ) : Object.keys(spots).length > 0 && spots.list.length > 0 ? (
                     <Slider list={spots.list} scroll={true} drag={drag} itemRef={itemRef}>
                         <List>
@@ -176,7 +177,7 @@ const SpotList = ({
                         </List>
                     </Slider>
                 ) : (
-                    <ErrorBox text="여행지" />
+                    <Empty text="여행지" />
                 )}
             </Container>
             {Object.keys(spotError).length > 0 && (

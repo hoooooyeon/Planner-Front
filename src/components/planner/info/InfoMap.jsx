@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import ErrorBox from '../../common/ErrorBox';
+import Empty from '../../common/Empty';
 
 const MapBlock = styled.div`
     width: 60%;
@@ -127,7 +127,7 @@ const InfoMap = ({ planner, mapRef, allSchedule, onToggleLikePlanner, onClickAll
                     {isHovered && <IconName>모든 일정 보기</IconName>}
                 </>
             ) : (
-                <ErrorBox text="지도" />
+                <Empty text="지도" />
             )}
         </MapBlock>
     );

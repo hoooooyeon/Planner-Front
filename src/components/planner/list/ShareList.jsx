@@ -6,8 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import errorImg from '../../../lib/images/plannerErrorImg.png';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
-import ErrorBox from '../../common/ErrorBox';
+import Empty from '../../common/Empty';
 import ErrorModal from '../../common/ErrorModal';
+import Loading from '../../common/Loading';
 
 const ShareListBlock = styled.div`
     width: 100%;
@@ -152,7 +153,7 @@ const ShareList = ({
                     onChangeSort={onChangeSort}
                 />
                 {loading && Object.keys(sharePlanners).length <= 0 ? (
-                    <ErrorBox isLoading={true} />
+                    <Loading />
                 ) : Object.keys(sharePlanners).length > 0 && sharePlanners.list.length > 0 ? (
                     <Slider list={sharePlanners.list} itemRef={itemRef} scroll={true} drag={drag}>
                         <Shares>
@@ -191,7 +192,7 @@ const ShareList = ({
                         </Shares>
                     </Slider>
                 ) : (
-                    <ErrorBox text="플래너" />
+                    <Empty text="플래너" />
                 )}
             </Container>
             {plannerError && (

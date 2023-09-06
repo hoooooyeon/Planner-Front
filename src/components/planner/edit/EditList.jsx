@@ -11,7 +11,8 @@ import { useRef } from 'react';
 import EditListSearchForm from './EditListSearchForm';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/spotErrorImg.jpg';
-import ErrorBox from '../../common/ErrorBox';
+import Empty from '../../common/Empty';
+import Loading from '../../common/Loading';
 
 const EditListBlock = styled.div`
     position: fixed;
@@ -219,7 +220,7 @@ const EditList = ({
                 />
                 <List>
                     {loading && Object.keys(likeSpotList).length <= 0 && Object.keys(spots).length <= 0 ? (
-                        <ErrorBox isLoading={true} />
+                        <Loading />
                     ) : (
                         <>
                             {Object.keys(spots).length > 0 &&
@@ -301,7 +302,7 @@ const EditList = ({
                             (Object.keys(likeSpotList).length > 0 &&
                                 likeSpotList.list.length <= 0 &&
                                 Object.keys(spots).length <= 0) ? (
-                                <ErrorBox text="리스트" />
+                                <Empty text="리스트" />
                             ) : null}
                         </>
                     )}
