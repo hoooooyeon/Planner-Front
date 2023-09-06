@@ -6,7 +6,9 @@ import Modal from '../common/Modal';
 
 const Container = styled.div`
     width: 100%;
-    margin-top: 5rem;
+    /* margin-top: 5rem; */
+    padding: 5rem 0px;
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,10 +19,10 @@ const ContentBox = styled.div`
     flex-direction: column;
     align-items: center;
     width: 320px;
-    background-color: var(--md-sys-color-surface-variant);
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
     border-radius: 6px;
     padding: 20px;
-    box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
+    /* box-shadow: 0px 3px 6px var(--md-sys-color-shadow); */
 `;
 
 const LogoText = styled.b`
@@ -31,12 +33,12 @@ const FormBox = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    color: var(--md-sys-color-on-surface);
+    color: ${(props) => props.theme.secondaryColor};
 `;
 
 const Error = styled.b`
     font-size: 0.8rem;
-    color: var(--md-sys-color-error);
+    color: ${(props) => props.theme.errorColor};
     margin: 3px 0px;
 `;
 
@@ -46,14 +48,12 @@ const Button = styled.button`
     height: 36px;
     border: none;
     border-radius: 6px;
-    background-color: var(--md-sys-color-on-primary);
-    color: var(--md-sys-color-primary);
+    background-color: ${(props) => props.theme.mainColor};
+    color: ${(props) => props.theme.primaryColor};
     transition: box-shadow 0.1s ease-in;
 
     &:hover {
-        background-color: var(--md-sys-color-primary);
-        color: var(--md-sys-color-on-primary);
-        box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
+        box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
     }
 `;
 

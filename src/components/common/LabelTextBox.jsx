@@ -18,11 +18,11 @@ const Input = styled.input`
     transition: box-shadow 0.1s ease-in;
 
     &:hover {
-        box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
+        box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
     }
 
     &:focus {
-        box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
+        box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
     }
 `;
 
