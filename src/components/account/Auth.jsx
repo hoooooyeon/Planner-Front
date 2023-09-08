@@ -149,7 +149,7 @@ const Auth = ({ type, form, onChange, onSubmit, authError }) => {
                 </FormBox>
                 {isRegister || (
                     <LinkBox>
-                        <NavLink to="/findAccount">아이디/비밀번호 찾기</NavLink>
+                        <NavLink to="/findId">아이디/비밀번호 찾기</NavLink>
                         <NavLink to="/register">회원가입</NavLink>
                     </LinkBox>
                 )}

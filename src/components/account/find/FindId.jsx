@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom';
-import styled from 'styled-components';
-import LabelTextBox from '../common/LabelTextBox';
+import styled, { css } from 'styled-components';
+import LabelTextBox from '../../common/LabelTextBox';
 
 const Container = styled.div`
     width: 100%;
@@ -44,13 +45,20 @@ const Button = styled.button`
     height: 36px;
     border: none;
     border-radius: 6px;
-    background-color: ${(props) => props.theme.mainColor};
-    color: ${(props) => props.theme.primaryColor};
+    background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
+    color: ${(props) => props.theme.secondaryColor};
     transition: box-shadow 0.1s ease-in;
 
     &:hover {
         box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
     }
+
+    ${(props) =>
+        props.isCode &&
+        css`
+            background-color: ${(props) => props.theme.secondaryButtonBackgroundColor};
+            color: ${(props) => props.theme.primaryColor};
+        `}
 `;
 
 const LinkBox = styled.div`
@@ -83,44 +91,49 @@ const VerificationButton = styled.button`
     }
 `;
 
-const SuccessBox = styled.div`
-    width: 100%;
-`;
-
-const VerificationCode = styled.div`
-    color: ${(props) => props.theme.secondaryColor};
-`;
-
-const FindAccount = ({ verificationCode }) => {
+const FindId = ({ code, form, verification, authError, onChange, handlePhoneCodeSend }) => {
     return (
         <Container>
             <ContentBox>
                 <LogoText>한국다봄</LogoText>
 
-                {verificationCode && (
-                    <FormBox>
-                        {/* 이름과 전화번호를 입력한 뒤 인증 요청 버튼 클릭 */}
-                        <LabelTextBox type="text" name="username" placeholder="이름" label="이름" />
-                        <LabelTextBox type="text" name="phone" placeholder="전화번호" label="전화번호" />
-                        <VerificationBox>
-                            <VerificationButton>인증 요청</VerificationButton>
-                        </VerificationBox>
-                        {/* 인증 요청 이후에 생성된 input에 인증 코드를 적고 아이디 찾기 클릭 */}
+                <FormBox>
+                    {/* 이름과 전화번호를 입력한 뒤 인증 요청 버튼 클릭 */}
+                    <LabelTextBox
+                        type="text"
+                        name="username"
+                        placeholder="이름"
+                        label="이름"
+                        onChange={onChange}
+                        value={form.name}
+                        error={authError}
+                    />
+                    <LabelTextBox
+                        type="text"
+                        name="phone"
+                        placeholder="전화번호"
+                        label="전화번호"
+                        onChange={onChange}
+                        value={form.phone}
+                        error={authError}
+                    />
+                    <VerificationBox>
+                        <VerificationButton>인증 요청</VerificationButton>
+                    </VerificationBox>
+                    {/* 인증 요청 이후에 생성된 input에 인증 코드를 적고 아이디 찾기 클릭 */}
+                    {verification && (
                         <LabelTextBox type="text" name="VerificationCode" placeholder="인증코드" label="인증코드" />
-                        <Button>아이디 찾기</Button>
-                    </FormBox>
-                )}
-                {/* 인증이 완료되면 아이디 반환 */}
-                {!verificationCode && (
-                    <VerificationCode>회원님의 아이디는 bluebear1234@naver.com 입니다.</VerificationCode>
-                )}
+                    )}
+                    {/* 아이디 찾기 결과 페이지로 이동 */}
+                    <Button isCode={code && code.length > 0}>아이디 찾기</Button>
+                </FormBox>
 
                 <LinkBox>
-                    <NavLink to="">비밀번호 찾기</NavLink>
+                    <NavLink to="findPassword">비밀번호 찾기</NavLink>
                 </LinkBox>
             </ContentBox>
         </Container>
     );
 };
 
-export default FindAccount;
+export default FindId;
