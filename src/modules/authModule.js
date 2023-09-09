@@ -108,12 +108,12 @@ const initialState = {
         nickname: '',
         phone: '',
     },
-    findId: {
+    authentication: {
         username: '',
         phone: '',
-    },
-    findPw: {
         email: '',
+        code: '',
+        state: false,
     },
     account: undefined,
     token: '',
@@ -122,13 +122,18 @@ const initialState = {
         state: false,
         message: '',
     },
-    verification: null,
 };
 
 function authReducer(state = initialState, action) {
     switch (action.type) {
         case initializeType: {
-            return { ...state, login: initialState.login, register: initialState.register, state: initialState.state };
+            return {
+                ...state,
+                login: initialState.login,
+                register: initialState.register,
+                authentication: initialState.authentication,
+                state: initialState.state,
+            };
         }
         case initializeFormType: {
             return { ...state, [action.form]: initialState[action.form] };
@@ -154,16 +159,40 @@ function authReducer(state = initialState, action) {
             return { ...state, authError: { ...action.validState } };
         }
         case emailCodeSendSuccessType: {
-            return { ...state, verification: action.payload.state };
+            return {
+                ...state,
+                authentication: {
+                    ...state.authentication,
+                    state: '',
+                },
+            };
         }
         case phoneCodeSendSuccessType: {
-            return { ...state };
+            return {
+                ...state,
+                authentication: {
+                    ...state.authentication,
+                    state: '',
+                },
+            };
         }
         case emailCodeCheckSuccessType: {
-            return { ...state };
+            return {
+                ...state,
+                authentication: {
+                    ...state.authentication,
+                    state: true,
+                },
+            };
         }
         case phoneCodeCheckSuccessType: {
-            return { ...state };
+            return {
+                ...state,
+                authentication: {
+                    ...state.authentication,
+                    state: true,
+                },
+            };
         }
         case loginFailureType:
         case registerFailureType:

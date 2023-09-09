@@ -1,23 +1,23 @@
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FindId from '../../../components/account/find/FindId';
-import { changeField, phoneCodeSendAction } from '../../../modules/authModule';
+import { changeField, initialize, initializeError, phoneCodeSendAction } from '../../../modules/authModule';
 
-const FindIdContainer = ({ type }) => {
+const FindIdContainer = () => {
     const dispatch = useDispatch();
-    const { authError, verification, form } = useSelector(({ authReducer }) => ({
+    const { authError, authentication } = useSelector(({ authReducer }) => ({
         authError: authReducer.authError,
-        verification: authReducer.verification,
-        form: authReducer.findId,
+        authentication: authReducer.authentication,
     }));
 
-    const [code, setCode] = useState();
+    const { usename, phone, email, code, state } = { ...authentication };
 
     const onChange = (e) => {
         const { name, value } = e.target;
         dispatch(
             changeField({
-                form: type,
+                form: authentication,
                 field: name,
                 value: value,
             }),
@@ -25,15 +25,20 @@ const FindIdContainer = ({ type }) => {
     };
 
     const handlePhoneCodeSend = () => {
-        dispatch(phoneCodeSendAction(form.phone));
+        dispatch(phoneCodeSendAction(phone));
     };
+
+    useEffect(() => {
+        return () => {
+            dispatch(initialize());
+            dispatch(initializeError());
+        };
+    }, [dispatch]);
 
     return (
         <FindId
             authError={authError}
-            code={code}
-            form={form}
-            verification={verification}
+            authentication={authentication}
             onChange={onChange}
             handlePhoneCodeSend={handlePhoneCodeSend}
         />

@@ -6,7 +6,7 @@ const FindIdPage = () => {
     return (
         <>
             <HeaderContainer />
-            <FindIdContainer type="findId" />
+            <FindIdContainer />
             <Footer />
         </>
     );

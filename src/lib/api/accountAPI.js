@@ -24,3 +24,15 @@ export const accountMyPlannerListLoad = ({ type, accountId, ...queryString }) =>
 export const accountLikeListLoad = ({ type, accountId, ...queryString }) => {
     return client.get(baseUrl + accountId + '/likes' + qs.stringify(queryString, { addQueryPrefix: true }));
 };
+
+export const accountIdFind = ({ phone, code }) => {
+    return client.post(baseUrl + 'find-email', { phone, code });
+};
+
+export const accountPasswordFind = ({ email }) => {
+    return client.post(baseUrl + 'find-password', { email });
+};
+
+export const accountPasswordChange = ({ newPassword, confirmPassword, key }) => {
+    return client.post(baseUrl + 'change-password', { newPassword, confirmPassword, key });
+};

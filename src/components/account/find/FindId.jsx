@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom';
 import styled, { css } from 'styled-components';
 import LabelTextBox from '../../common/LabelTextBox';
+import Modal from '../../common/Modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleDot } from '@fortawesome/free-solid-svg-icons';
 
 const Container = styled.div`
     width: 100%;
@@ -90,48 +93,132 @@ const VerificationButton = styled.button`
         color: ${(props) => props.theme.primaryColor};
     }
 `;
+const AuthTypeBox = styled.div`
+    display: inline-flex;
+    align-items: center;
+    margin: 1rem 0;
+    cursor: pointer;
+`;
 
-const FindId = ({ code, form, verification, authError, onChange, handlePhoneCodeSend }) => {
+const AuthTypeButton = styled(FontAwesomeIcon)`
+    color: ${(props) => (props.selected ? props.theme.secondaryColor : props.theme.primaryColor)};
+`;
+
+const AuthTypeText = styled.div`
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+`;
+
+const FindId = ({ code, authentication, authError, onChange, handlePhoneCodeSend }) => {
+    const isNormalError = typeof authError === 'string';
+    const [modal, setModal] = useState(false);
+    const [authType, setAuthType] = useState('email');
+
+    const onToggleAuthType = (value) => {
+        setAuthType(value);
+    };
+
+    const handleModalConfirm = () => {
+        setModal(!modal);
+    };
+
+    useEffect(() => {
+        if (isNormalError) {
+            setModal(true);
+        }
+    }, [isNormalError]);
+
     return (
         <Container>
             <ContentBox>
                 <LogoText>한국다봄</LogoText>
-
                 <FormBox>
-                    {/* 이름과 전화번호를 입력한 뒤 인증 요청 버튼 클릭 */}
-                    <LabelTextBox
-                        type="text"
-                        name="username"
-                        placeholder="이름"
-                        label="이름"
-                        onChange={onChange}
-                        value={form.name}
-                        error={authError}
-                    />
-                    <LabelTextBox
-                        type="text"
-                        name="phone"
-                        placeholder="전화번호"
-                        label="전화번호"
-                        onChange={onChange}
-                        value={form.phone}
-                        error={authError}
-                    />
+                    <div>
+                        <AuthTypeBox
+                            onClick={() => {
+                                onToggleAuthType('email');
+                            }}
+                        >
+                            <AuthTypeButton icon={faCircleDot} selected={authType === 'email'} />
+                            <AuthTypeText>이메일</AuthTypeText>
+                        </AuthTypeBox>
+                    </div>
+                    {authType === 'email' && (
+                        <>
+                            <LabelTextBox
+                                type="text"
+                                name="username"
+                                placeholder="이름"
+                                label="이름"
+                                onChange={onChange}
+                                value={authentication.name}
+                                error={authError}
+                            />
+
+                            <LabelTextBox
+                                type="email"
+                                name="email"
+                                placeholder="이메일"
+                                label="이메일"
+                                onChange={onChange}
+                                value={authentication.email}
+                                error={authError}
+                            />
+                        </>
+                    )}
+                    <div>
+                        <AuthTypeBox
+                            onClick={() => {
+                                onToggleAuthType('phone');
+                            }}
+                        >
+                            <AuthTypeButton icon={faCircleDot} selected={authType === 'phone'} />
+                            <AuthTypeText>휴대전화</AuthTypeText>
+                        </AuthTypeBox>
+                    </div>
+                    {authType === 'phone' && (
+                        <>
+                            <LabelTextBox
+                                type="text"
+                                name="username"
+                                placeholder="이름"
+                                label="이름"
+                                onChange={onChange}
+                                value={authentication.name}
+                                error={authError}
+                            />
+                            <LabelTextBox
+                                type="text"
+                                name="phone"
+                                placeholder="전화번호"
+                                label="전화번호"
+                                onChange={onChange}
+                                value={authentication.phone}
+                                error={authError}
+                            />
+                        </>
+                    )}
                     <VerificationBox>
-                        <VerificationButton>인증 요청</VerificationButton>
+                        <VerificationButton onClick={handlePhoneCodeSend}>인증 요청</VerificationButton>
                     </VerificationBox>
                     {/* 인증 요청 이후에 생성된 input에 인증 코드를 적고 아이디 찾기 클릭 */}
-                    {verification && (
+                    {authentication.state && (
                         <LabelTextBox type="text" name="VerificationCode" placeholder="인증코드" label="인증코드" />
                     )}
+                    {isNormalError && <Error>{authError}</Error>}
+
                     {/* 아이디 찾기 결과 페이지로 이동 */}
                     <Button isCode={code && code.length > 0}>아이디 찾기</Button>
                 </FormBox>
-
                 <LinkBox>
                     <NavLink to="findPassword">비밀번호 찾기</NavLink>
                 </LinkBox>
             </ContentBox>
+            {isNormalError && (
+                <Modal modalVisible={modal} title="알림" onModalConfirm={handleModalConfirm}>
+                    <b>{authError}</b>
+                </Modal>
+            )}
         </Container>
     );
 };

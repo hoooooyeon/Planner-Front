@@ -27,6 +27,15 @@ const ACCOUNT_LIKE_SPOT_LIST_LOAD_FAILURE_TYPE = 'account/ACCOUNT_LIKE_SPOT_LIST
 const RESET_LIKE_SPOT_LIST_TYPE = 'account/RESET_LIKE_SPOT_LIST';
 const RESET_MY_PLANNER_LIST_TYPE = 'account/RESET_MY_PLANNER_LIST';
 const RESET_ACCOUNT_ERROR_TYPE = 'account/RESET_ACCOUNT_ERROR';
+const ACCOUNT_ID_FIND_TYPE = 'account/ACCOUNT_ID_FIND';
+const ACCOUNT_ID_FIND_SUCCESS_TYPE = 'account/ACCOUNT_ID_FIND_SUCCESS';
+const ACCOUNT_ID_FIND_FAILURE_TYPE = 'account/ACCOUNT_ID_FIND_FAILURE';
+const ACCOUNT_PASSWORD_FIND_TYPE = 'account/ACCOUNT_PASSWORD_FIND';
+const ACCOUNT_PASSWORD_FIND_SUCCESS_TYPE = 'account/ACCOUNT_PASSWORD_FIND_SUCCESS';
+const ACCOUNT_PASSWORD_FIND_FAILURE_TYPE = 'account/ACCOUNT_PASSWORD_FIND_FAILURE';
+const ACCOUNT_PASSWORD_CHANGE_TYPE = 'account/ACCOUNT_PASSWORD_CHANGE';
+const ACCOUNT_PASSWORD_CHANGE_SUCCESS_TYPE = 'account/ACCOUNT_PASSWORD_CHANGE_SUCCESS';
+const ACCOUNT_PASSWORD_CHANGE_FAILURE_TYPE = 'account/ACCOUNT_PASSWORD_CHANGE_FAILURE';
 
 // 액션 함수
 export const initializeAction = () => ({
@@ -100,12 +109,30 @@ export const resetLikeSpotListAction = () => ({ type: RESET_LIKE_SPOT_LIST_TYPE 
 export const resetMyPlannerListAction = () => ({ type: RESET_MY_PLANNER_LIST_TYPE });
 export const resetAccountErrorAction = () => ({ type: RESET_ACCOUNT_ERROR_TYPE });
 
+export const accountIdFindAction = ({ phone, code }) => ({
+    type: ACCOUNT_ID_FIND_TYPE,
+    phone,
+    code,
+});
+
+export const accountPasswordFindAction = ({ email }) => ({ type: ACCOUNT_PASSWORD_FIND_TYPE, email });
+
+export const accountPasswordChangeAction = ({ newPassword, confirmPassword, key }) => ({
+    type: ACCOUNT_PASSWORD_CHANGE_TYPE,
+    newPassword,
+    confirmPassword,
+    key,
+});
+
 const accountLoad = createSaga(ACCOUNT_LOAD_TYPE, accountAPI.accountLoad);
 const accountUpdate = createSaga(ACCOUNT_UPDATE_TYPE, accountAPI.accountUpdate);
 const accountImageUpdate = createSaga(ACCOUNT_IMAGE_UPDATE_TYPE, accountAPI.accountImageUpdate);
 const accountMyPlannerListLoad = createSaga(ACCOUNT_MY_PLANNER_LIST_LOAD_TYPE, accountAPI.accountMyPlannerListLoad);
 const accountLikePlannerListLoad = createSaga(ACCOUNT_LIKE_PLANNER_LIST_LOAD_TYPE, accountAPI.accountLikeListLoad);
 const accountLikeSpotListLoad = createSaga(ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE, accountAPI.accountLikeListLoad);
+const accountIdFind = createSaga(ACCOUNT_ID_FIND_TYPE, accountAPI.accountIdFind);
+const accountPasswordFind = createSaga(ACCOUNT_PASSWORD_FIND_TYPE, accountAPI.accountPasswordFind);
+const accountPasswordChange = createSaga(ACCOUNT_PASSWORD_CHANGE_TYPE, accountAPI.accountPasswordChange);
 
 export function* accountSaga() {
     yield takeLatest(ACCOUNT_LOAD_TYPE, accountLoad);
@@ -114,12 +141,24 @@ export function* accountSaga() {
     yield takeLatest(ACCOUNT_MY_PLANNER_LIST_LOAD_TYPE, accountMyPlannerListLoad);
     yield takeLatest(ACCOUNT_LIKE_PLANNER_LIST_LOAD_TYPE, accountLikePlannerListLoad);
     yield takeLatest(ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE, accountLikeSpotListLoad);
+    yield takeLatest(ACCOUNT_ID_FIND_TYPE, accountIdFind);
+    yield takeLatest(ACCOUNT_PASSWORD_FIND_TYPE, accountPasswordFind);
+    yield takeLatest(ACCOUNT_PASSWORD_CHANGE_TYPE, accountPasswordChange);
 }
 
 const initialState = {
     accountField: {
         nickname: '',
         phone: '',
+    },
+    findId: { phone: '', code: '' },
+    findPw: {
+        email: '',
+    },
+    changePw: {
+        newPassword: '',
+        confirmPassword: '',
+        key: '',
     },
     account: null,
     myPlannerList: {},
@@ -175,6 +214,9 @@ function accountReducer(state = initialState, action) {
         case ACCOUNT_IMAGE_UPDATE_FAILURE_TYPE:
         case ACCOUNT_MY_PLANNER_LIST_LOAD_FAILURE_TYPE:
         case ACCOUNT_LIKE_PLANNER_LIST_LOAD_FAILURE_TYPE:
+        case ACCOUNT_ID_FIND_FAILURE_TYPE:
+        case ACCOUNT_PASSWORD_FIND_FAILURE_TYPE:
+        case ACCOUNT_PASSWORD_CHANGE_FAILURE_TYPE:
         case ACCOUNT_LIKE_SPOT_LIST_LOAD_FAILURE_TYPE: {
             return { ...state, accountUpdate: false, accountError: action.payload.message };
         }
@@ -195,6 +237,18 @@ function accountReducer(state = initialState, action) {
             return {
                 ...state,
                 accountError: null,
+            };
+        case ACCOUNT_ID_FIND_SUCCESS_TYPE:
+            return {
+                ...state,
+            };
+        case ACCOUNT_PASSWORD_FIND_SUCCESS_TYPE:
+            return {
+                ...state,
+            };
+        case ACCOUNT_PASSWORD_CHANGE_SUCCESS_TYPE:
+            return {
+                ...state,
             };
         default: {
             return state;
