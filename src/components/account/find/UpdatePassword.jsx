@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import LabelTextBox from '../../common/LabelTextBox';
+import Modal from '../../common/Modal';
 
 const Container = styled.div`
     width: 100%;
@@ -62,30 +64,73 @@ const Button = styled.button`
     }
 `;
 
-const LinkBox = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    font-size: 0.8rem;
+const loadingAnimation = keyframes`
+    form {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 `;
 
-const UpdatePassword = ({ verificationCode }) => {
+const LoadingCircle = styled.div`
+    border-radius: 50%;
+    border: 8px solid ${(props) => props.theme.outlineColor};
+    border-top: 8px solid ${(props) => props.theme.mainColor};
+    width: 16px;
+    height: 16px;
+    animation: ${loadingAnimation} 1s linear infinite;
+    margin: 0px auto;
+`;
+
+const UpdatePassword = ({ form, accountError, loading, onChange, handlePasswordChange }) => {
+    const isNormalError = typeof accountError === 'string';
+    const [modal, setModal] = useState(false);
+
+    const handleModalConfirm = () => {
+        setModal(!modal);
+    };
+
+    useEffect(() => {
+        if (isNormalError) {
+            setModal(true);
+        }
+    }, [isNormalError]);
     return (
         <Container>
             <ContentBox>
                 <LogoText>한국다봄</LogoText>
                 <FormBox>
-                    <LabelTextBox type="password" name="password" placeholder="새 비밀번호" label="새 비밀번호" />
                     <LabelTextBox
                         type="password"
-                        name="passwordConfirm"
+                        name="newPassword"
+                        placeholder="새 비밀번호"
+                        label="새 비밀번호"
+                        onChange={onChange}
+                        value={form.newPassword}
+                        error={accountError}
+                    />
+                    <LabelTextBox
+                        type="password"
+                        name="confirmPassword"
                         placeholder="새 비밀번호 확인"
                         label="새 비밀번호 확인"
+                        onChange={onChange}
+                        value={form.confirmPassword}
+                        error={accountError}
                     />
-                    <Button>비밀번호 변경</Button>
+                    {isNormalError && <Error>{accountError}</Error>}
+
+                    <Button onClick={handlePasswordChange}>
+                        {loading && form.isSend ? <LoadingCircle /> : '비밀번호 변경'}
+                    </Button>
                 </FormBox>
             </ContentBox>
+            {isNormalError && (
+                <Modal modalVisible={modal} title="알림" onModalConfirm={handleModalConfirm}>
+                    <b>{accountError}</b>
+                </Modal>
+            )}
         </Container>
     );
 };

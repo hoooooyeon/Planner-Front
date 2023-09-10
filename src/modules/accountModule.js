@@ -4,6 +4,7 @@ import * as accountAPI from '../lib/api/accountAPI';
 
 // 액션 타입
 const INITIALIZE_TYPE = 'account/INITIALIZE';
+const INITIALIZE_FORM_TYPE = 'auth/INITIALIZE_FORM';
 const INITIALIZE_ERROR_TYPE = 'account/INITIALIZERROR';
 const CHANGE_FIELD_TYPE = 'account/CHANGE_FIELD';
 const ACCOUNT_LOAD_TYPE = 'account/ACCOUNT_LOAD';
@@ -42,12 +43,18 @@ export const initializeAction = () => ({
     type: INITIALIZE_TYPE,
 });
 
+export const initializeFormAction = (form) => ({
+    type: INITIALIZE_FORM_TYPE,
+    form,
+});
+
 export const initializeErrorAction = () => ({
     type: INITIALIZE_ERROR_TYPE,
 });
 
-export const changeFieldAction = ({ name, value }) => ({
+export const changeFieldAction = ({ form, name, value }) => ({
     type: CHANGE_FIELD_TYPE,
+    form,
     name,
     value,
 });
@@ -151,14 +158,15 @@ const initialState = {
         nickname: '',
         phone: '',
     },
-    findId: { phone: '', code: '' },
     findPw: {
         email: '',
+        isSend: false,
     },
     changePw: {
         newPassword: '',
         confirmPassword: '',
         key: '',
+        isChange: false,
     },
     account: null,
     myPlannerList: {},
@@ -175,11 +183,14 @@ function accountReducer(state = initialState, action) {
         case INITIALIZE_TYPE: {
             return { ...initialState };
         }
+        case INITIALIZE_FORM_TYPE: {
+            return { ...state, [action.form]: initialState[action.form] };
+        }
         case INITIALIZE_ERROR_TYPE: {
             return { ...state, accountError: '' };
         }
         case CHANGE_FIELD_TYPE: {
-            return { ...state, accountField: { ...state.accountField, [action.name]: action.value } };
+            return { ...state, [action.form]: { ...state[action.form], [action.name]: action.value } };
         }
         case ACCOUNT_LOAD_SUCCESS_TYPE: {
             return {
@@ -245,10 +256,18 @@ function accountReducer(state = initialState, action) {
         case ACCOUNT_PASSWORD_FIND_SUCCESS_TYPE:
             return {
                 ...state,
+                findPw: {
+                    ...state.findPw,
+                    isSend: true,
+                },
             };
         case ACCOUNT_PASSWORD_CHANGE_SUCCESS_TYPE:
             return {
                 ...state,
+                changePw: {
+                    ...state.changePw,
+                    isChange: true,
+                },
             };
         default: {
             return state;

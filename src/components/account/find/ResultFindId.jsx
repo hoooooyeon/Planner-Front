@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom';
 import styled from 'styled-components';
 import LabelTextBox from '../../common/LabelTextBox';
+import Modal from '../../common/Modal';
 
 const Container = styled.div`
     width: 100%;
@@ -78,18 +80,25 @@ const LinkBox = styled.div`
     font-size: 0.8rem;
 `;
 
-const ResultFindId = ({ verificationCode }) => {
+const ResultFindId = ({ accountError }) => {
     const history = useHistory();
+    const isNormalError = typeof authError === 'string';
+    const [modal, setModal] = useState(false);
+    const handleModalConfirm = () => {
+        setModal(!modal);
+    };
+    useEffect(() => {
+        if (isNormalError) {
+            setModal(true);
+        }
+    }, [isNormalError]);
     return (
         <Container>
             <ContentBox>
                 <LogoText>한국다봄</LogoText>
                 <FormBox>
                     <SuccessText>회원님의 휴대전화로 가입된 아이디가 있습니다.</SuccessText>
-                    <SuccessBox>
-                        bluebear1234@naver.com
-                        {verificationCode}
-                    </SuccessBox>
+                    <SuccessBox>bluebear1234@naver.com</SuccessBox>
                     <Button
                         onClick={() => {
                             history.push('/login');
@@ -102,6 +111,11 @@ const ResultFindId = ({ verificationCode }) => {
                     <NavLink to="findPassword">비밀번호 찾기</NavLink>
                 </LinkBox>
             </ContentBox>
+            {isNormalError && (
+                <Modal modalVisible={modal} title="알림" onModalConfirm={handleModalConfirm}>
+                    <b>{accountError}</b>
+                </Modal>
+            )}
         </Container>
     );
 };

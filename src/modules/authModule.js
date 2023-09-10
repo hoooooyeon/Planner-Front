@@ -17,17 +17,17 @@ const registerType = 'auth/REGISTER';
 const registerSuccessType = 'auth/REGISTER_SUCCESS';
 const registerFailureType = 'auth/REGISTER_FAILURE';
 
-const emailCodeSendType = 'auth/EMAIL_CODE_SEND_TYPE';
-const emailCodeSendSuccessType = 'auth/EMAIL_CODE_SEND_SUCCESS_TYPE';
-const emailCodeSendFailureType = 'auth/EMAIL_CODE_SEND_FAILURE_TYPE';
+// const emailCodeSendType = 'auth/EMAIL_CODE_SEND_TYPE';
+// const emailCodeSendSuccessType = 'auth/EMAIL_CODE_SEND_SUCCESS_TYPE';
+// const emailCodeSendFailureType = 'auth/EMAIL_CODE_SEND_FAILURE_TYPE';
+
+// const emailCodeCheckType = 'auth/EMAIL_CODE_CHECK_TYPE';
+// const emailCodeCheckSuccessType = 'auth/EMAIL_CODE_CHECK_SUCCESS_TYPE';
+// const emailCodeCheckFailureType = 'auth/EMAIL_CODE_CHECK_FAILURE_TYPE';
 
 const phoneCodeSendType = 'auth/PHONE_CODE_SEND_TYPE';
 const phoneCodeSendSuccessType = 'auth/PHONE_CODE_SEND_SUCCESS_TYPE';
 const phoneCodeSendFailureType = 'auth/PHONE_CODE_SEND_FAILURE_TYPE';
-
-const emailCodeCheckType = 'auth/EMAIL_CODE_CHECK_TYPE';
-const emailCodeCheckSuccessType = 'auth/EMAIL_CODE_CHECK_SUCCESS_TYPE';
-const emailCodeCheckFailureType = 'auth/EMAIL_CODE_CHECK_FAILURE_TYPE';
 
 const phoneCodeCheckType = 'auth/PHONE_CODE_CHECK_TYPE';
 const phoneCodeCheckSuccessType = 'auth/PHONE_CODE_CHECK_SUCCESS_TYPE';
@@ -74,24 +74,24 @@ export const registerAction = ({ email, password, username, nickname, phone }) =
     phone,
 });
 
-export const emailCodeSendAction = ({ email }) => ({ type: emailCodeSendType, email });
+// export const emailCodeSendAction = ({ email }) => ({ type: emailCodeSendType, email });
+// export const emailCodeCheckAction = ({ email, code }) => ({ type: emailCodeCheckType, email, code });
 export const phoneCodeSendAction = ({ phone }) => ({ type: phoneCodeSendType, phone });
-export const emailCodeCheckAction = ({ email, code }) => ({ type: emailCodeCheckType, email, code });
 export const phoneCodeCheckAction = ({ phone, code }) => ({ type: phoneCodeCheckType, phone, code });
 
 export const loginSaga = createSaga(loginType, authAPI.login);
 export const registerSaga = createSaga(registerType, authAPI.register);
-export const emailCodeSendSaga = createSaga(emailCodeSendType, authAPI.emailCodeSend);
+// export const emailCodeSendSaga = createSaga(emailCodeSendType, authAPI.emailCodeSend);
+// export const emailCodeCheckSaga = createSaga(emailCodeCheckType, authAPI.emailCodeCheck);
 export const phoneCodeSendSaga = createSaga(phoneCodeSendType, authAPI.phoneCodeSend);
-export const emailCodeCheckSaga = createSaga(emailCodeCheckType, authAPI.emailCodeCheck);
 export const phoneCodeCheckSaga = createSaga(phoneCodeCheckType, authAPI.phoneCodeCheck);
 
 export function* authSaga() {
     yield takeLatest(loginType, loginSaga);
     yield takeLatest(registerType, registerSaga);
-    yield takeLatest(emailCodeSendType, emailCodeSendSaga);
+    // yield takeLatest(emailCodeSendType, emailCodeSendSaga);
+    // yield takeLatest(emailCodeCheckType, emailCodeCheckSaga);
     yield takeLatest(phoneCodeSendType, phoneCodeSendSaga);
-    yield takeLatest(emailCodeCheckType, emailCodeCheckSaga);
     yield takeLatest(phoneCodeCheckType, phoneCodeCheckSaga);
 }
 
@@ -111,9 +111,9 @@ const initialState = {
     authentication: {
         username: '',
         phone: '',
-        email: '',
+        // email: '',
         code: '',
-        state: false,
+        isSend: false,
     },
     account: undefined,
     token: '',
@@ -158,30 +158,30 @@ function authReducer(state = initialState, action) {
         case validateType: {
             return { ...state, authError: { ...action.validState } };
         }
-        case emailCodeSendSuccessType: {
-            return {
-                ...state,
-                authentication: {
-                    ...state.authentication,
-                    state: '',
-                },
-            };
-        }
+        // case emailCodeSendSuccessType: {
+        //     return {
+        //         ...state,
+        //         authentication: {
+        //             ...state.authentication,
+        //             state: '',
+        //         },
+        //     };
+        // }
+        // case emailCodeCheckSuccessType: {
+        //     return {
+        //         ...state,
+        //         authentication: {
+        //             ...state.authentication,
+        //             state: true,
+        //         },
+        //     };
+        // }
         case phoneCodeSendSuccessType: {
             return {
                 ...state,
                 authentication: {
                     ...state.authentication,
-                    state: '',
-                },
-            };
-        }
-        case emailCodeCheckSuccessType: {
-            return {
-                ...state,
-                authentication: {
-                    ...state.authentication,
-                    state: true,
+                    isSend: '',
                 },
             };
         }
@@ -190,15 +190,15 @@ function authReducer(state = initialState, action) {
                 ...state,
                 authentication: {
                     ...state.authentication,
-                    state: true,
+                    isSend: true,
                 },
             };
         }
+        // case emailCodeSendFailureType:
+        // case emailCodeCheckFailureType:
         case loginFailureType:
         case registerFailureType:
-        case emailCodeSendFailureType:
         case phoneCodeSendFailureType:
-        case emailCodeCheckFailureType:
         case phoneCodeCheckFailureType: {
             return { ...state, authError: action.payload.message, state: { ...action.payload } };
         }

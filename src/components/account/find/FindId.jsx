@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import LabelTextBox from '../../common/LabelTextBox';
 import Modal from '../../common/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -109,14 +109,39 @@ const AuthTypeText = styled.div`
     margin-left: 0.5rem;
 `;
 
-const FindId = ({ code, authentication, authError, onChange, handlePhoneCodeSend }) => {
+const loadingAnimation = keyframes`
+    form {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+`;
+
+const LoadingCircle = styled.div`
+    border-radius: 50%;
+    border: 8px solid ${(props) => props.theme.outlineColor};
+    border-top: 8px solid ${(props) => props.theme.mainColor};
+    width: 16px;
+    height: 16px;
+    animation: ${loadingAnimation} 1s linear infinite;
+    margin: 0px auto;
+`;
+
+const FindId = ({
+    code,
+    form,
+    authError,
+    authType,
+    onToggleAuthType,
+    loading,
+    onChange,
+    handleCodeSend,
+    handleCodeCheck,
+    onChangeCode,
+}) => {
     const isNormalError = typeof authError === 'string';
     const [modal, setModal] = useState(false);
-    const [authType, setAuthType] = useState('email');
-
-    const onToggleAuthType = (value) => {
-        setAuthType(value);
-    };
 
     const handleModalConfirm = () => {
         setModal(!modal);
@@ -133,7 +158,7 @@ const FindId = ({ code, authentication, authError, onChange, handlePhoneCodeSend
             <ContentBox>
                 <LogoText>한국다봄</LogoText>
                 <FormBox>
-                    <div>
+                    {/* <div>
                         <AuthTypeBox
                             onClick={() => {
                                 onToggleAuthType('email');
@@ -151,21 +176,20 @@ const FindId = ({ code, authentication, authError, onChange, handlePhoneCodeSend
                                 placeholder="이름"
                                 label="이름"
                                 onChange={onChange}
-                                value={authentication.name}
+                                value={form.usename}
                                 error={authError}
                             />
-
                             <LabelTextBox
                                 type="email"
                                 name="email"
                                 placeholder="이메일"
                                 label="이메일"
                                 onChange={onChange}
-                                value={authentication.email}
+                                value={form.email}
                                 error={authError}
                             />
                         </>
-                    )}
+                    )} */}
                     <div>
                         <AuthTypeBox
                             onClick={() => {
@@ -184,7 +208,7 @@ const FindId = ({ code, authentication, authError, onChange, handlePhoneCodeSend
                                 placeholder="이름"
                                 label="이름"
                                 onChange={onChange}
-                                value={authentication.name}
+                                value={form.usename}
                                 error={authError}
                             />
                             <LabelTextBox
@@ -193,22 +217,32 @@ const FindId = ({ code, authentication, authError, onChange, handlePhoneCodeSend
                                 placeholder="전화번호"
                                 label="전화번호"
                                 onChange={onChange}
-                                value={authentication.phone}
+                                value={form.phone}
                                 error={authError}
                             />
                         </>
                     )}
                     <VerificationBox>
-                        <VerificationButton onClick={handlePhoneCodeSend}>인증 요청</VerificationButton>
+                        <VerificationButton onClick={handleCodeSend}>인증 요청</VerificationButton>
                     </VerificationBox>
                     {/* 인증 요청 이후에 생성된 input에 인증 코드를 적고 아이디 찾기 클릭 */}
-                    {authentication.state && (
-                        <LabelTextBox type="text" name="VerificationCode" placeholder="인증코드" label="인증코드" />
+                    {form.isSend === '' && (
+                        <LabelTextBox
+                            type="text"
+                            name="code"
+                            placeholder="인증코드"
+                            label="인증코드"
+                            onChange={onChangeCode}
+                            value={form.code}
+                            error={authError}
+                        />
                     )}
                     {isNormalError && <Error>{authError}</Error>}
 
                     {/* 아이디 찾기 결과 페이지로 이동 */}
-                    <Button isCode={code && code.length > 0}>아이디 찾기</Button>
+                    <Button isCode={code && code.length > 0} onClick={handleCodeCheck}>
+                        {loading && form.isSend ? <LoadingCircle /> : '아이디 찾기'}
+                    </Button>
                 </FormBox>
                 <LinkBox>
                     <NavLink to="findPassword">비밀번호 찾기</NavLink>
