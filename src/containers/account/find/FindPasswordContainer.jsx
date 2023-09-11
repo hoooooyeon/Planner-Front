@@ -37,6 +37,7 @@ const FindPasswordContainer = () => {
         }
     };
 
+    // 비밀번호 찾기 완료
     useEffect(() => {
         if (isSend) {
             alert('입력하신 이메일을 확인해주세요.');
