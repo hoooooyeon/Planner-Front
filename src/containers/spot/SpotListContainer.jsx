@@ -50,6 +50,7 @@ const SpotListContainer = ({
     // 지역 가져오기
     useEffect(() => {
         loadAreas();
+        console.log(1);
     }, [loadAreas]);
 
     // 여행지리스트 가져오기

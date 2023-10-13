@@ -180,13 +180,7 @@ const SpotList = ({
                     <Empty text="여행지" />
                 )}
             </Container>
-            {Object.keys(spotError).length > 0 && (
-                <ErrorModal
-                    errorState={Object.keys(spotError).length > 0}
-                    errorMessage={message}
-                    onCloseError={onCloseError}
-                />
-            )}
+            {spotError && <ErrorModal errorState={spotError} errorMessage={message} onCloseError={onCloseError} />}
         </SpotListBlock>
     );
 };
