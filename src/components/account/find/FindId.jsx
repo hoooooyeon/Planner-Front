@@ -176,7 +176,7 @@ const FindId = ({
                                 placeholder="이름"
                                 label="이름"
                                 onChange={onChange}
-                                value={form.usename}
+                                value={form.username}
                                 error={authError}
                             />
                             <LabelTextBox
@@ -208,7 +208,7 @@ const FindId = ({
                                 placeholder="이름"
                                 label="이름"
                                 onChange={onChange}
-                                value={form.usename}
+                                value={form.userName}
                                 error={authError}
                             />
                             <LabelTextBox
@@ -226,7 +226,7 @@ const FindId = ({
                         <VerificationButton onClick={handleCodeSend}>인증 요청</VerificationButton>
                     </VerificationBox>
                     {/* 인증 요청 이후에 생성된 input에 인증 코드를 적고 아이디 찾기 클릭 */}
-                    {form.isSend === '' && (
+                    {form.idFinding === '' && (
                         <LabelTextBox
                             type="text"
                             name="code"
@@ -241,7 +241,7 @@ const FindId = ({
 
                     {/* 아이디 찾기 결과 페이지로 이동 */}
                     <Button isCode={code && code.length > 0} onClick={handleCodeCheck}>
-                        {loading && form.isSend ? <LoadingCircle /> : '아이디 찾기'}
+                        {loading && form.idFinding ? <LoadingCircle /> : '아이디 찾기'}
                     </Button>
                 </FormBox>
                 <LinkBox>

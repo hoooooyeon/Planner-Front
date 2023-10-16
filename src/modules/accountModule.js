@@ -160,13 +160,13 @@ const initialState = {
     },
     findPw: {
         email: '',
-        isSend: false,
+        pwFinding: false,
     },
     changePw: {
         newPassword: '',
         confirmPassword: '',
         key: '',
-        isChange: false,
+        pwChanging: false,
     },
     account: null,
     myPlannerList: {},
@@ -258,7 +258,7 @@ function accountReducer(state = initialState, action) {
                 ...state,
                 findPw: {
                     ...state.findPw,
-                    isSend: true,
+                    pwFinding: true,
                 },
             };
         case ACCOUNT_PASSWORD_CHANGE_SUCCESS_TYPE:
@@ -266,7 +266,7 @@ function accountReducer(state = initialState, action) {
                 ...state,
                 changePw: {
                     ...state.changePw,
-                    isChange: true,
+                    pwChanging: true,
                 },
             };
         default: {

@@ -16,7 +16,7 @@ const UpdatePasswordContainer = () => {
         loading: accountReducer.loading,
     }));
 
-    const { newPassword, confirmPassword, isChange } = { ...changePw };
+    const { newPassword, confirmPassword, pwChanging } = { ...changePw };
     const passwordKey = useRef();
 
     // useEffect(() => {
@@ -48,11 +48,11 @@ const UpdatePasswordContainer = () => {
 
     // 비밀번호 변경 완료
     useEffect(() => {
-        if (isChange) {
+        if (pwChanging) {
             alert('변경이 완료 되었습니다. 로그인 페이지로 이동합니다.');
             history.push('/login');
         }
-    }, [isChange]);
+    }, [pwChanging]);
 
     // 키값 가져오기
     useEffect(() => {

@@ -16,7 +16,7 @@ const FindPasswordContainer = () => {
         loading: loadingReducer.loading,
     }));
 
-    const { email, isSend } = { ...findPw };
+    const { email, pwFinding } = { ...findPw };
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -39,10 +39,10 @@ const FindPasswordContainer = () => {
 
     // 비밀번호 찾기 완료
     useEffect(() => {
-        if (isSend) {
+        if (pwFinding) {
             alert('입력하신 이메일을 확인해주세요.');
         }
-    }, [isSend]);
+    }, [pwFinding]);
 
     useEffect(() => {
         return () => {

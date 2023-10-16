@@ -113,7 +113,7 @@ const FindPassword = ({ form, accountError, loading, onChange, handlePasswordFin
                     {isNormalError && <Error>{accountError}</Error>}
 
                     <Button onClick={handlePasswordFind}>
-                        {loading && form.isSend ? <LoadingCircle /> : '비밀번호 찾기'}
+                        {loading && form.pwFinding ? <LoadingCircle /> : '비밀번호 찾기'}
                     </Button>
                 </FormBox>
                 <LinkBox>

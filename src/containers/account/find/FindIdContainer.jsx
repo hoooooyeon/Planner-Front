@@ -9,7 +9,6 @@ import {
     initialize,
     initializeError,
     initializeForm,
-    phoneCodeCheckAction,
     phoneCodeSendAction,
 } from '../../../modules/authModule';
 
@@ -22,7 +21,7 @@ const FindIdContainer = () => {
         loading: loadingReducer.loading,
     }));
 
-    const { usename, phone, email, code, isSend } = { ...authentication };
+    const { userName, phone, email, code, idFinding } = { ...authentication };
     const [authType, setAuthType] = useState('phone');
 
     // email & phone 인증 형식 선택
@@ -60,41 +59,34 @@ const FindIdContainer = () => {
         // } else if (authType === 'phone') {
         // }
         dispatch(initializeError());
-        dispatch(phoneCodeSendAction({ phone }));
+        dispatch(phoneCodeSendAction({ userName, phone }));
     };
 
     useEffect(() => {
-        if (isSend === '') {
+        if (idFinding === '') {
             alert('입력하신 휴대전화로 인증번호를 발송했습니다.');
         }
-    }, [isSend]);
+    }, [idFinding]);
 
-    // 인증코드 확인
+    // 인증코드 확인 및 아이디 찾기
     const handleCodeCheck = () => {
         // if (authType === 'email') {
         //     dispatch(emailCodeCheckAction({ email, code }));
         // } else if (authType === 'phone') {
         // }
-        if (!loading && isSend === '') {
+        if (!loading && idFinding === '') {
             dispatch(initializeError());
-            dispatch(phoneCodeCheckAction({ phone, code }));
+            dispatch(accountIdFindAction({ userName, phone, code }));
         }
     };
 
-    // 계정 찾기
-    // useEffect(() => {
-    //  if (isSend === true) {
-    // dispatch(accountIdFindAction({phone,code}))
-    //     }
-    // }, [isSend]);
-
     // 계정 찾기 결과 페이지로 이동
     // useEffect(() => {
-    //     if(isSend===true &&){
+    //     if(idFinding===true){
 
     //                 history.push('/resultFindId');
     //     }
-    // }, [])
+    // }, [idFinding])
 
     useEffect(() => {
         return () => {
