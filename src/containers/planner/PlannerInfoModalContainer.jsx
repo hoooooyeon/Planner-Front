@@ -28,14 +28,16 @@ const PlannerInfoModalContainer = () => {
 
     const onChangeExpense = (keyword) => {
         const regex = /^[0-9]+$/;
-        if (regex.test(keyword)) {
+
+        if (regex.test(keyword) || keyword === '') {
             setCurExpense(keyword);
         }
     };
 
     const onChangeMemberCount = (keyword) => {
         const regex = /^[0-9]+$/;
-        if (regex.test(keyword)) {
+
+        if (regex.test(keyword) || keyword === '') {
             setCurMemberCount(keyword);
         }
     };
