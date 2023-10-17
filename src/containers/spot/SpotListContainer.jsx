@@ -176,6 +176,26 @@ const SpotListContainer = ({
         resetSpotError();
     };
 
+    const onIndexPage = (index) => {
+        changePageIndexAction(index);
+    };
+    const onNextPage = (maxPage) => {
+        if (pageNo < maxPage) {
+            changePageIndexAction(pageNo + 1);
+        }
+    };
+    const onPreviousPage = () => {
+        if (pageNo > 1) {
+            changePageIndexAction(pageNo - 1);
+        }
+    };
+    const onFirstPage = () => {
+        changePageIndexAction(1);
+    };
+    const onLastPage = (maxPage) => {
+        changePageIndexAction(maxPage);
+    };
+
     return (
         <SpotList
             areas={areas}
@@ -195,6 +215,11 @@ const SpotListContainer = ({
             onChangeResultKeyword={onChangeResultKeyword}
             onChangeContentTypeId={onChangeContentTypeId}
             onCloseError={onCloseError}
+            onIndexPage={onIndexPage}
+            onNextPage={onNextPage}
+            onPreviousPage={onPreviousPage}
+            onFirstPage={onFirstPage}
+            onLastPage={onLastPage}
         />
     );
 };
@@ -253,6 +278,9 @@ const mapDispatchToProps = (dispatch) => ({
     },
     resetSpotError: () => {
         dispatch(resetSpotErrorAction());
+    },
+    changePageIndex: () => {
+        dispatch(changePageIndexAction());
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);

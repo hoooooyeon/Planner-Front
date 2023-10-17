@@ -9,6 +9,7 @@ import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import Empty from '../../common/Empty';
 import ErrorModal from '../../common/ErrorModal';
 import Loading from '../../common/Loading';
+import Pagination from '../../common/Pagination.js';
 
 const ShareListBlock = styled.div`
     width: 100%;
@@ -132,6 +133,7 @@ const ShareList = ({
     loading,
     keyword,
     plannerError,
+    page,
     sortCriteria,
     onCloseError,
     onClickPlanner,
@@ -139,6 +141,11 @@ const ShareList = ({
     onChangeResultKeyword,
     onChangeSort,
     drag,
+    onIndexPage,
+    onNextPage,
+    onPreviousPage,
+    onFirstPage,
+    onLastPage,
 }) => {
     const itemRef = useRef();
     return (
@@ -194,6 +201,16 @@ const ShareList = ({
                 ) : (
                     <Empty text="플래너" />
                 )}
+                <Pagination
+                    totalCount={sharePlanners.totalCount}
+                    page={page}
+                    itemIndex={12}
+                    onIndexPage={onIndexPage}
+                    onNextPage={onNextPage}
+                    onPreviousPage={onPreviousPage}
+                    onFirstPage={onFirstPage}
+                    onLastPage={onLastPage}
+                />
             </Container>
             {plannerError && (
                 <ErrorModal errorState={plannerError} errorMessage={plannerError} onCloseError={onCloseError} />
