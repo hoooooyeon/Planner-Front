@@ -1,22 +1,25 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FindPassword from '../../../components/account/find/FindPassword';
+import validation from '../../../lib/utils/validationCheck';
 import {
     accountPasswordFindAction,
     changeFieldAction,
     initializeAction,
     initializeErrorAction,
+    validateFieldAction,
 } from '../../../modules/accountModule';
 
 const FindPasswordContainer = () => {
     const dispatch = useDispatch();
-    const { findPw, accountError, loading } = useSelector(({ accountReducer, loadingReducer }) => ({
+    const { findPw, accountError, loading, pwFinding } = useSelector(({ accountReducer, loadingReducer }) => ({
         findPw: accountReducer.findPw,
+        pwFinding: accountReducer.pwFinding,
         accountError: accountReducer.accountError,
         loading: loadingReducer.loading,
     }));
 
-    const { email, pwFinding } = { ...findPw };
+    const { email } = { ...findPw };
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -32,8 +35,13 @@ const FindPasswordContainer = () => {
     // 비밀번호 찾기
     const handlePasswordFind = () => {
         if (!loading) {
-            dispatch(initializeErrorAction());
-            dispatch(accountPasswordFindAction({ email }));
+            const validState = validation(findPw);
+            if (Object.keys(validState).length > 0) {
+                dispatch(validateFieldAction(validState));
+            } else {
+                dispatch(initializeErrorAction());
+                dispatch(accountPasswordFindAction({ email }));
+            }
         }
     };
 
@@ -56,6 +64,7 @@ const FindPasswordContainer = () => {
             form={findPw}
             accountError={accountError}
             loading={loading}
+            pwFinding={pwFinding}
             onChange={onChange}
             handlePasswordFind={handlePasswordFind}
         />

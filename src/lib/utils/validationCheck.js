@@ -3,7 +3,8 @@ const validType = {
     PASSWORD: 'password',
     USERNAME: 'username',
     NICKNAME: 'nickname',
-    PHONE: 'phone'
+    PHONE: 'phone',
+    CODE: 'code',
 };
 const regexType = {
     email: /^[\w\.\-]+@[\w\.\-]+\.\w+$/,
@@ -11,6 +12,7 @@ const regexType = {
     username: /^.*[가-힣a-zA-z]$/,
     nickname: /^.*[가-힣a-zA-z\d]$/,
     phone: /^010[\d]{4}[\d]{3}$/,
+    code: /^\d{0,6}$/,
 };
 const notValidMsg = {
     email: '이메일 형식이 아닙니다.',
@@ -18,18 +20,18 @@ const notValidMsg = {
     passwordConfirm: '비밀번호가 동일하지 않습니다.',
     username: '이름은 한글, 숫자만 가능합니다.',
     nickname: '닉네임은 한글, 영어, 숫자만 가능합니다.',
-    phone: '휴대폰 번호는 010으로 시작하고 -는 불필요합니다.'
+    phone: '휴대폰 번호는 010으로 시작하고 -는 불필요합니다.',
+    code: '인증번호는 숫자만 가능합니다.',
 };
 
 const validation = (formValues) => {
     const validState = {};
-    Object.keys(formValues).forEach(element => {
+    Object.keys(formValues).forEach((element) => {
         if (element === 'passwordConfirm') {
             if (formValues.password !== formValues.passwordConfirm) {
                 validState[element] = notValidMsg[element];
             }
-        }
-        else {
+        } else {
             const regex = regexType[element];
             if (!regex.test(formValues[element])) {
                 validState[element] = notValidMsg[element];
@@ -38,6 +40,6 @@ const validation = (formValues) => {
     });
 
     return validState;
-}
+};
 
 export default validation;

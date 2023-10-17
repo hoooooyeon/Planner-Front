@@ -82,7 +82,7 @@ const LoadingCircle = styled.div`
     margin: 0px auto;
 `;
 
-const FindPassword = ({ form, accountError, loading, onChange, handlePasswordFind }) => {
+const FindPassword = ({ form, accountError, pwFinding, loading, onChange, handlePasswordFind }) => {
     const isNormalError = typeof accountError === 'string';
     const [modal, setModal] = useState(false);
 
@@ -113,7 +113,7 @@ const FindPassword = ({ form, accountError, loading, onChange, handlePasswordFin
                     {isNormalError && <Error>{accountError}</Error>}
 
                     <Button onClick={handlePasswordFind}>
-                        {loading && form.pwFinding ? <LoadingCircle /> : '비밀번호 찾기'}
+                        {loading && pwFinding ? <LoadingCircle /> : '비밀번호 찾기'}
                     </Button>
                 </FormBox>
                 <LinkBox>

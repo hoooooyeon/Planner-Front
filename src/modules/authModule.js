@@ -76,7 +76,7 @@ export const registerAction = ({ email, password, username, nickname, phone }) =
 
 // export const emailCodeSendAction = ({ email }) => ({ type: emailCodeSendType, email });
 // export const emailCodeCheckAction = ({ email, code }) => ({ type: emailCodeCheckType, email, code });
-export const phoneCodeSendAction = ({ userName, phone }) => ({ type: phoneCodeSendType, userName, phone });
+export const phoneCodeSendAction = ({ username, phone }) => ({ type: phoneCodeSendType, username, phone });
 // export const phoneCodeCheckAction = ({ userName, phone, code }) => ({
 //     type: phoneCodeCheckType,
 //     userName,
@@ -114,12 +114,12 @@ const initialState = {
         phone: '',
     },
     authentication: {
-        userName: '',
+        username: '',
         phone: '',
         // email: '',
         code: '',
-        idFinding: false,
     },
+    idFinding: false,
     account: undefined,
     token: '',
     authError: {},
@@ -186,8 +186,8 @@ function authReducer(state = initialState, action) {
                 ...state,
                 authentication: {
                     ...state.authentication,
-                    idFinding: '',
                 },
+                idFinding: '',
             };
         }
         // case phoneCodeCheckSuccessType: {

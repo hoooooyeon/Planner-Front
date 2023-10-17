@@ -133,12 +133,12 @@ const FindId = ({
     form,
     authError,
     authType,
+    idFinding,
     onToggleAuthType,
     loading,
     onChange,
     handleCodeSend,
     handleCodeCheck,
-    onChangeCode,
 }) => {
     const isNormalError = typeof authError === 'string';
     const [modal, setModal] = useState(false);
@@ -208,7 +208,7 @@ const FindId = ({
                                 placeholder="이름"
                                 label="이름"
                                 onChange={onChange}
-                                value={form.userName}
+                                value={form.username}
                                 error={authError}
                             />
                             <LabelTextBox
@@ -226,13 +226,13 @@ const FindId = ({
                         <VerificationButton onClick={handleCodeSend}>인증 요청</VerificationButton>
                     </VerificationBox>
                     {/* 인증 요청 이후에 생성된 input에 인증 코드를 적고 아이디 찾기 클릭 */}
-                    {form.idFinding === '' && (
+                    {idFinding === '' && (
                         <LabelTextBox
                             type="text"
                             name="code"
                             placeholder="인증코드"
                             label="인증코드"
-                            onChange={onChangeCode}
+                            onChange={onChange}
                             value={form.code}
                             error={authError}
                         />
@@ -241,7 +241,7 @@ const FindId = ({
 
                     {/* 아이디 찾기 결과 페이지로 이동 */}
                     <Button isCode={code && code.length > 0} onClick={handleCodeCheck}>
-                        {loading && form.idFinding ? <LoadingCircle /> : '아이디 찾기'}
+                        {loading && idFinding ? <LoadingCircle /> : '아이디 찾기'}
                     </Button>
                 </FormBox>
                 <LinkBox>

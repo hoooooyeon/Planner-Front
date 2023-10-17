@@ -37,6 +37,7 @@ const ACCOUNT_PASSWORD_FIND_FAILURE_TYPE = 'account/ACCOUNT_PASSWORD_FIND_FAILUR
 const ACCOUNT_PASSWORD_CHANGE_TYPE = 'account/ACCOUNT_PASSWORD_CHANGE';
 const ACCOUNT_PASSWORD_CHANGE_SUCCESS_TYPE = 'account/ACCOUNT_PASSWORD_CHANGE_SUCCESS';
 const ACCOUNT_PASSWORD_CHANGE_FAILURE_TYPE = 'account/ACCOUNT_PASSWORD_CHANGE_FAILURE';
+const VALIDATE_TYPE = 'auth/VALIDATE';
 
 // 액션 함수
 export const initializeAction = () => ({
@@ -124,11 +125,16 @@ export const accountIdFindAction = ({ phone, code }) => ({
 
 export const accountPasswordFindAction = ({ email }) => ({ type: ACCOUNT_PASSWORD_FIND_TYPE, email });
 
-export const accountPasswordChangeAction = ({ newPassword, confirmPassword, key }) => ({
+export const accountPasswordChangeAction = ({ password, passwordConfirm, key }) => ({
     type: ACCOUNT_PASSWORD_CHANGE_TYPE,
-    newPassword,
-    confirmPassword,
+    password,
+    passwordConfirm,
     key,
+});
+
+export const validateFieldAction = (validState) => ({
+    type: VALIDATE_TYPE,
+    validState,
 });
 
 const accountLoad = createSaga(ACCOUNT_LOAD_TYPE, accountAPI.accountLoad);
@@ -160,14 +166,14 @@ const initialState = {
     },
     findPw: {
         email: '',
-        pwFinding: false,
     },
     changePw: {
-        newPassword: '',
-        confirmPassword: '',
+        password: '',
+        passwordConfirm: '',
         key: '',
-        pwChanging: false,
     },
+    pwFinding: false,
+    pwChanging: false,
     account: null,
     myPlannerList: {},
     likeList: {
@@ -258,17 +264,20 @@ function accountReducer(state = initialState, action) {
                 ...state,
                 findPw: {
                     ...state.findPw,
-                    pwFinding: true,
                 },
+                pwFinding: true,
             };
         case ACCOUNT_PASSWORD_CHANGE_SUCCESS_TYPE:
             return {
                 ...state,
                 changePw: {
                     ...state.changePw,
-                    pwChanging: true,
                 },
+                pwChanging: true,
             };
+        case VALIDATE_TYPE: {
+            return { ...state, accountError: { ...action.validState } };
+        }
         default: {
             return state;
         }

@@ -3,25 +3,27 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import FindId from '../../../components/account/find/FindId';
-import { accountIdFindAction, changeFieldAction, initializeErrorAction } from '../../../modules/accountModule';
+import validation from '../../../lib/utils/validationCheck';
+import { accountIdFindAction, initializeErrorAction } from '../../../modules/accountModule';
 import {
     changeField,
     initialize,
     initializeError,
-    initializeForm,
     phoneCodeSendAction,
+    validateFieldAction,
 } from '../../../modules/authModule';
 
 const FindIdContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { authError, authentication, loading } = useSelector(({ authReducer, loadingReducer }) => ({
+    const { authError, authentication, loading, idFinding } = useSelector(({ authReducer, loadingReducer }) => ({
         authError: authReducer.authError,
+        idFinding: authReducer.idFinding,
         authentication: authReducer.authentication,
         loading: loadingReducer.loading,
     }));
 
-    const { userName, phone, email, code, idFinding } = { ...authentication };
+    const { username, phone, email, code } = { ...authentication };
     const [authType, setAuthType] = useState('phone');
 
     // email & phone 인증 형식 선택
@@ -29,8 +31,13 @@ const FindIdContainer = () => {
         setAuthType(value);
     };
 
+    // const regex = /^[ㄱ-ㅎ가-힣]*$/;
+    // const regex = /^\d{0,11}$/;
+    // const regex = /^\d{0,6}$/;
+
     const onChange = (e) => {
         const { name, value } = e.target;
+        // if (regex.test(value)) {
         dispatch(
             changeField({
                 form: 'authentication',
@@ -38,18 +45,7 @@ const FindIdContainer = () => {
                 value: value,
             }),
         );
-    };
-
-    // 인증코드 입력
-    const onChangeCode = (e) => {
-        const { name, value } = e.target;
-        dispatch(
-            changeFieldAction({
-                form: 'findId',
-                name,
-                value,
-            }),
-        );
+        // }
     };
 
     // 인증코드 요청
@@ -58,8 +54,13 @@ const FindIdContainer = () => {
         //     dispatch(emailCodeSendAction({ email }));
         // } else if (authType === 'phone') {
         // }
-        dispatch(initializeError());
-        dispatch(phoneCodeSendAction({ userName, phone }));
+        const validState = validation(authentication);
+        if (Object.keys(validState).length > 0) {
+            dispatch(validateFieldAction(validState));
+        } else {
+            dispatch(initializeError());
+            dispatch(phoneCodeSendAction({ username, phone }));
+        }
     };
 
     useEffect(() => {
@@ -75,8 +76,13 @@ const FindIdContainer = () => {
         // } else if (authType === 'phone') {
         // }
         if (!loading && idFinding === '') {
-            dispatch(initializeError());
-            dispatch(accountIdFindAction({ userName, phone, code }));
+            const validState = validation(authentication);
+            if (Object.keys(validState).length > 0) {
+                dispatch(validateFieldAction(validState));
+            } else {
+                dispatch(initializeError());
+                dispatch(accountIdFindAction({ username, phone, code }));
+            }
         }
     };
 
@@ -101,12 +107,12 @@ const FindIdContainer = () => {
             authError={authError}
             form={authentication}
             authType={authType}
+            idFinding={idFinding}
             onToggleAuthType={onToggleAuthType}
             loading={loading}
             onChange={onChange}
             handleCodeSend={handleCodeSend}
             handleCodeCheck={handleCodeCheck}
-            onChangeCode={onChangeCode}
         />
     );
 };

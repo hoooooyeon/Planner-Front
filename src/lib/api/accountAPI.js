@@ -33,6 +33,8 @@ export const accountPasswordFind = ({ email }) => {
     return client.post(baseUrl + 'find-password', { email });
 };
 
-export const accountPasswordChange = ({ newPassword, confirmPassword, key }) => {
+export const accountPasswordChange = ({ password, passwordConfirm, key }) => {
+    const newPassword = password;
+    const confirmPassword = passwordConfirm;
     return client.post(baseUrl + 'change-password', { newPassword, confirmPassword, key });
 };
