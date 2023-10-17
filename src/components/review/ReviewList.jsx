@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Loading from '../common/Loading';
-import tempImage from '../../images/temp.jpg';
+import tempImage from '../../lib/images/plannerErrorImg.png';
 
 const ReviewListContainer = styled.ul`
     display: flex;
