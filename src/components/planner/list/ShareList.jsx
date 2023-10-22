@@ -6,8 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import errorImg from '../../../lib/images/plannerErrorImg.png';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
-import ErrorBox from '../../common/ErrorBox';
+import Empty from '../../common/Empty';
 import ErrorModal from '../../common/ErrorModal';
+import Loading from '../../common/Loading';
+import Pagination from '../../common/Pagination.js';
 
 const ShareListBlock = styled.div`
     width: 100%;
@@ -131,6 +133,7 @@ const ShareList = ({
     loading,
     keyword,
     plannerError,
+    page,
     sortCriteria,
     onCloseError,
     onClickPlanner,
@@ -138,6 +141,11 @@ const ShareList = ({
     onChangeResultKeyword,
     onChangeSort,
     drag,
+    onIndexPage,
+    onNextPage,
+    onPreviousPage,
+    onFirstPage,
+    onLastPage,
 }) => {
     const itemRef = useRef();
     return (
@@ -152,7 +160,7 @@ const ShareList = ({
                     onChangeSort={onChangeSort}
                 />
                 {loading && Object.keys(sharePlanners).length <= 0 ? (
-                    <ErrorBox isLoading={true} />
+                    <Loading />
                 ) : Object.keys(sharePlanners).length > 0 && sharePlanners.list.length > 0 ? (
                     <Slider list={sharePlanners.list} itemRef={itemRef} scroll={true} drag={drag}>
                         <Shares>
@@ -191,8 +199,18 @@ const ShareList = ({
                         </Shares>
                     </Slider>
                 ) : (
-                    <ErrorBox text="플래너" />
+                    <Empty text="플래너" />
                 )}
+                <Pagination
+                    totalCount={sharePlanners.totalCount}
+                    page={page}
+                    itemIndex={12}
+                    onIndexPage={onIndexPage}
+                    onNextPage={onNextPage}
+                    onPreviousPage={onPreviousPage}
+                    onFirstPage={onFirstPage}
+                    onLastPage={onLastPage}
+                />
             </Container>
             {plannerError && (
                 <ErrorModal errorState={plannerError} errorMessage={plannerError} onCloseError={onCloseError} />

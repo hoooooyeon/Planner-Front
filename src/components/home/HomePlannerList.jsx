@@ -2,7 +2,8 @@ import { useRef } from 'react';
 import styled from 'styled-components';
 import errorImg from '../../lib/images/plannerErrorImg.png';
 import { handleErrorImg } from '../../lib/utils/CommonFunction';
-import ErrorBox from '../common/ErrorBox';
+import Empty from '../common/Empty';
+import Loading from '../common/Loading';
 
 const HomePlannerListBlock = styled.div`
     width: 100%;
@@ -111,7 +112,7 @@ const HomePlannerList = ({ sharePlanners, loading, onClickPlanner }) => {
                     <p>먼저 여행을 끝마친 여행객들의 플래너를 구경 해보세요.</p>
                 </Header>
                 {loading && Object.keys(sharePlanners).length <= 0 ? (
-                    <ErrorBox isLoading={true} />
+                    <Loading />
                 ) : Object.keys(sharePlanners).length > 0 && sharePlanners.list.length > 0 ? (
                     <PlannerList>
                         {sharePlanners.list.map((p) => (
@@ -133,7 +134,7 @@ const HomePlannerList = ({ sharePlanners, loading, onClickPlanner }) => {
                         ))}
                     </PlannerList>
                 ) : (
-                    <ErrorBox text="플래너" />
+                    <Empty text="플래너" />
                 )}
             </Container>
         </HomePlannerListBlock>

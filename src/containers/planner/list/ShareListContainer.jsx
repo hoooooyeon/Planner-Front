@@ -87,6 +87,26 @@ const ShareListContainer = () => {
         dispatch(resetPlannerErrorAction());
     };
 
+    const onIndexPage = (index) => {
+        dispatch(changePageNumAction(index));
+    };
+    const onNextPage = (maxPage) => {
+        if (pageNum < maxPage) {
+            dispatch(changePageNumAction(pageNum + 1));
+        }
+    };
+    const onPreviousPage = () => {
+        if (pageNum > 1) {
+            dispatch(changePageNumAction(pageNum - 1));
+        }
+    };
+    const onFirstPage = () => {
+        dispatch(changePageNumAction(1));
+    };
+    const onLastPage = (maxPage) => {
+        dispatch(changePageNumAction(maxPage));
+    };
+
     return (
         <ShareList
             sharePlanners={sharePlanners}
@@ -95,11 +115,17 @@ const ShareListContainer = () => {
             sortCriteria={sortCriteria}
             drag={drag}
             loading={loading}
+            page={pageNum}
             onClickPlanner={onClickPlanner}
             onChangeKeyword={onChangeKeyword}
             onChangeResultKeyword={onChangeResultKeyword}
             onChangeSort={onChangeSort}
             onCloseError={onCloseError}
+            onIndexPage={onIndexPage}
+            onNextPage={onNextPage}
+            onPreviousPage={onPreviousPage}
+            onFirstPage={onFirstPage}
+            onLastPage={onLastPage}
         />
     );
 };

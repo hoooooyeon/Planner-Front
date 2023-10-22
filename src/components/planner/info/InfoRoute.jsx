@@ -11,7 +11,7 @@ import { useRef } from 'react';
 import Slider from '../../common/Slider';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/spotErrorImg.jpg';
-import ErrorBox from '../../common/ErrorBox';
+import Empty from '../../common/Empty';
 
 const InfoRouteBlock = styled.div`
     background-color: ${(props) => props.theme.primaryBackgroundColor};
@@ -196,7 +196,7 @@ const InfoRoute = ({ planner, plannerData, drag, onChangeCurPlanId, onClickDateS
                         ))}
                     </Slider>
                 ) : (
-                    <ErrorBox text="일정" />
+                    <Empty text="일정" />
                 )}
             </WidthDiv>
         </InfoRouteBlock>

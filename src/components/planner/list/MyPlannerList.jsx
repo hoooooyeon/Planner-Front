@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import Slider from '../../common/Slider';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/plannerErrorImg.png';
-import ErrorBox from '../../common/ErrorBox';
+import Empty from '../../common/Empty';
 import ErrorModal from '../../common/ErrorModal';
+import Loading from '../../common/Loading';
 
 const MyPlannerListBlock = styled.div`
     width: 100%;
@@ -152,7 +153,7 @@ const MyPlannerList = ({
                     <Button onClick={onCreatePlanner}>플래너 생성</Button>
                 </Header>
                 {loading && Object.keys(myPlannerList).length <= 0 ? (
-                    <ErrorBox isLoading={true} />
+                    <Loading />
                 ) : Object.keys(myPlannerList).length > 0 && myPlannerList.list.length > 0 ? (
                     <Slider
                         list={myPlannerList.list}
@@ -192,7 +193,7 @@ const MyPlannerList = ({
                         </PlannerList>
                     </Slider>
                 ) : (
-                    <ErrorBox text="플래너" />
+                    <Empty text="플래너" />
                 )}
             </Container>
             {accountError && typeof accountError === 'string' && (

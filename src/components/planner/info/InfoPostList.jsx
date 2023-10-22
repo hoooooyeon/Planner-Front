@@ -4,7 +4,7 @@ import MemoModal from './MemoModal';
 import InfoPostItem from './InfoPostItem';
 import ad1 from '../../../lib/images/ad1.jpg';
 import ad2 from '../../../lib/images/serviceImg1.jpg';
-import ErrorBox from '../../common/ErrorBox';
+import Empty from '../../common/Empty';
 
 const InfoPostListBlock = styled.div`
     background-color: ${(props) => props.theme.secondaryBackgroundColor};
@@ -168,7 +168,7 @@ const InfoPostList = ({
                                 );
                             })
                         ) : (
-                            <ErrorBox text="메모" />
+                            <Empty text="메모" />
                         )}
                     </PostList>
                     {Object.keys(modal).length > 0 && modal.memo && (

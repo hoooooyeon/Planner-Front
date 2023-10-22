@@ -12,7 +12,7 @@ import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/spotErrorImg.jpg';
-import ErrorBox from '../../common/ErrorBox';
+import Empty from '../../common/Empty';
 
 const EditRouteListBlock = styled.div`
     margin-left: 0.2rem;
@@ -387,7 +387,7 @@ const EditRouteList = ({
                                     );
                                 })
                             ) : (
-                                <ErrorBox text="여행지" />
+                                <Empty text="여행지" />
                             )}
                             {cloneElement && (
                                 <CloneItem cloneElStyle={cloneElStyle} onDragEnter={dragFunction.onCloneEnter} />
@@ -396,7 +396,7 @@ const EditRouteList = ({
                     );
                 })
             ) : (
-                <ErrorBox text="일정" />
+                <Empty text="일정" />
             )}
         </EditRouteListBlock>
     );
