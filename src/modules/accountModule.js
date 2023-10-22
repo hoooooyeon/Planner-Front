@@ -24,6 +24,9 @@ const ACCOUNT_LIKE_PLANNER_LIST_LOAD_FAILURE_TYPE = 'account/ACCOUNT_LIKE_PLANNE
 const ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE = 'account/ACCOUNT_LIKE_SPOT_LIST_LOAD';
 const ACCOUNT_LIKE_SPOT_LIST_LOAD_SUECCESS_TYPE = 'account/ACCOUNT_LIKE_SPOT_LIST_LOAD_SUCCESS';
 const ACCOUNT_LIKE_SPOT_LIST_LOAD_FAILURE_TYPE = 'account/ACCOUNT_LIKE_SPOT_LIST_LOAD_FAILURE';
+const ACCOUNT_NOTIFICATION_LOAD_TYPE = 'account/ACCOUNT_NOTIFICATION_LOAD';
+const ACCOUNT_NOTIFICATION_LOAD_SUECCESS_TYPE = 'account/ACCOUNT_NOTIFICATION_LOAD_SUCCESS';
+const ACCOUNT_NOTIFICATION_LOAD_FAILURE_TYPE = 'account/ACCOUNT_NOTIFICATION_LOAD_FAILURE';
 const RESET_LIKE_SPOT_LIST_TYPE = 'account/RESET_LIKE_SPOT_LIST';
 const RESET_MY_PLANNER_LIST_TYPE = 'account/RESET_MY_PLANNER_LIST';
 const RESET_ACCOUNT_ERROR_TYPE = 'account/RESET_ACCOUNT_ERROR';
@@ -96,6 +99,11 @@ export const accountLikeSpotListLoadAction = ({ accountId, itemCount, sortCriter
     pageNum,
 });
 
+export const accountNotificationLoadAction = (accountId) => ({
+    type: ACCOUNT_NOTIFICATION_LOAD_TYPE,
+    accountId
+});
+
 export const resetLikeSpotListAction = () => ({ type: RESET_LIKE_SPOT_LIST_TYPE });
 export const resetMyPlannerListAction = () => ({ type: RESET_MY_PLANNER_LIST_TYPE });
 export const resetAccountErrorAction = () => ({ type: RESET_ACCOUNT_ERROR_TYPE });
@@ -106,6 +114,7 @@ const accountImageUpdate = createSaga(ACCOUNT_IMAGE_UPDATE_TYPE, accountAPI.acco
 const accountMyPlannerListLoad = createSaga(ACCOUNT_MY_PLANNER_LIST_LOAD_TYPE, accountAPI.accountMyPlannerListLoad);
 const accountLikePlannerListLoad = createSaga(ACCOUNT_LIKE_PLANNER_LIST_LOAD_TYPE, accountAPI.accountLikeListLoad);
 const accountLikeSpotListLoad = createSaga(ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE, accountAPI.accountLikeListLoad);
+const accountNotificationLoad = createSaga(ACCOUNT_NOTIFICATION_LOAD_TYPE, accountAPI.accountNotificationLoad);
 
 export function* accountSaga() {
     yield takeLatest(ACCOUNT_LOAD_TYPE, accountLoad);
@@ -114,6 +123,7 @@ export function* accountSaga() {
     yield takeLatest(ACCOUNT_MY_PLANNER_LIST_LOAD_TYPE, accountMyPlannerListLoad);
     yield takeLatest(ACCOUNT_LIKE_PLANNER_LIST_LOAD_TYPE, accountLikePlannerListLoad);
     yield takeLatest(ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE, accountLikeSpotListLoad);
+    yield takeLatest(ACCOUNT_NOTIFICATION_LOAD_TYPE, accountNotificationLoad);
 }
 
 const initialState = {
@@ -127,6 +137,7 @@ const initialState = {
         likePlannerList: {},
         likeSpotList: {},
     },
+    notifications: [],
     accountUpdate: false,
     accountError: null,
 };
@@ -168,6 +179,9 @@ function accountReducer(state = initialState, action) {
         case ACCOUNT_LIKE_SPOT_LIST_LOAD_SUECCESS_TYPE: {
             return { ...state, likeList: { ...state.likeList, likeSpotList: action.payload.data } };
         }
+        case ACCOUNT_NOTIFICATION_LOAD_SUECCESS_TYPE: {
+            return { ...state, notifications: action.payload.data };
+        }
         case ACCOUNT_LOAD_FAILURE_TYPE: {
             return { ...state, accountError: action.payload.data };
         }
@@ -175,7 +189,8 @@ function accountReducer(state = initialState, action) {
         case ACCOUNT_IMAGE_UPDATE_FAILURE_TYPE:
         case ACCOUNT_MY_PLANNER_LIST_LOAD_FAILURE_TYPE:
         case ACCOUNT_LIKE_PLANNER_LIST_LOAD_FAILURE_TYPE:
-        case ACCOUNT_LIKE_SPOT_LIST_LOAD_FAILURE_TYPE: {
+        case ACCOUNT_LIKE_SPOT_LIST_LOAD_FAILURE_TYPE:
+        case ACCOUNT_NOTIFICATION_LOAD_FAILURE_TYPE: {
             return { ...state, accountUpdate: false, accountError: action.payload.message };
         }
         case RESET_LIKE_SPOT_LIST_TYPE:

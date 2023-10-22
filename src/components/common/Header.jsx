@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import SideNav from './SideNav.jsx';
 import { useState } from 'react';
+import Notification from './Notification.jsx';
 
 const HeaderBlock = styled.div`
     height: 75px;
@@ -45,6 +46,7 @@ const Logo = styled.h1`
 `;
 
 const MenuList = styled.ul`
+    margin: auto;
     list-style: none;
     display: none;
     padding: 0;
@@ -142,9 +144,22 @@ const DropDownMenu = styled.ul`
     }
 `;
 
-const Header = ({ account, handlePurge, onChangePage }) => {
+const Header = ({
+    loading,
+    account,
+    handlePurge,
+    onChangePage,
+    notifications,
+    onNotificationLoad,
+    onInviteReject,
+    onInviteAccept,
+    invitationInfo,
+    onInvitationInitialize,
+}) => {
     const headerRef = useRef();
     const [styled, setStyled] = useState(false);
+    const [notificationView, setNotificationView] = useState(false);
+    const notificationRef = useRef(null);
 
     const headerStyling = () => {
         if (window.pageYOffset === 0) {
@@ -173,6 +188,31 @@ const Header = ({ account, handlePurge, onChangePage }) => {
             setDropDown(false);
         }
     };
+
+    const handleNotificationClose = () => {
+        setNotificationView(false);
+    };
+
+    const handleChangeNotificationView = () => {
+        setNotificationView(!notificationView);
+        if (!notificationView) {
+            onNotificationLoad();
+        }
+    };
+
+    const handleNotificationSideClick = (e) => {
+        if (notificationView && notificationRef.current && !notificationRef.current.contains(e.target)) {
+            setNotificationView(false);
+        }
+    };
+
+    // 알림 바깥공간 클릭
+    useEffect(() => {
+        document.addEventListener('click', handleNotificationSideClick);
+        return () => {
+            document.removeEventListener('click', handleNotificationSideClick);
+        };
+    });
 
     useEffect(() => {
         window.addEventListener('click', onCloseDropDown);
@@ -204,6 +244,18 @@ const Header = ({ account, handlePurge, onChangePage }) => {
                             </DropDownMenu>
                         </DropDown>
                     )}
+                    <Notification
+                        ref={notificationRef}
+                        loading={loading}
+                        view={notificationView}
+                        notifications={notifications}
+                        onClose={handleNotificationClose}
+                        onChange={handleChangeNotificationView}
+                        onInviteReject={onInviteReject}
+                        onInviteAccept={onInviteAccept}
+                        invitationInfo={invitationInfo}
+                        onInvitationInitialize={onInvitationInitialize}
+                    />
                 </>
             ) : (
                 <AccountList styled={styled}>

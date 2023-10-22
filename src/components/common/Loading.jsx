@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 const loadingAnimation = keyframes`
     form {
@@ -13,14 +13,24 @@ const LoadingCircle = styled.div`
     border-radius: 50%;
     border: 8px solid ${(props) => props.theme.outlineColor};
     border-top: 8px solid ${(props) => props.theme.mainColor};
-    width: 32px;
-    height: 32px;
     animation: ${loadingAnimation} 1s linear infinite;
     margin: 0px auto;
+    ${(props) =>
+        props.size === 'normal' &&
+        css`
+            width: 2rem;
+            height: 2rem;
+        `}
+    ${(props) =>
+        props.size === 'small' &&
+        css`
+            width: 1rem;
+            height: 1rem;
+        `}
 `;
 
-const Loading = () => {
-    return <LoadingCircle />;
+const Loading = ({ size }) => {
+    return <LoadingCircle size={size} />;
 };
 
 export default Loading;

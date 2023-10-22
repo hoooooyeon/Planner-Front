@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
+import Loading from './Loading';
+import { useRef } from 'react';
+import { forwardRef } from 'react';
 
 const Modalbackground = styled.div`
     position: fixed;
@@ -77,15 +80,18 @@ const ModalButton = styled.button`
     }
 `;
 
-const Modal = ({
-    modalVisible,
-    title,
-    children,
-    modalCloseText = '닫기',
-    modalConfirmText = '확인',
-    onModalClose,
-    onModalConfirm,
-}) => {
+const Modal = forwardRef((props, ref) => {
+    const {
+        modalVisible,
+        title,
+        children,
+        modalCancleText = '닫기',
+        modalConfirmText = '확인',
+        onModalClose,
+        onModalCancle,
+        onModalConfirm,
+        loading,
+    } = props;
     // 모달 외부 스크롤 고정
     useEffect(() => {
         if (modalVisible) {
@@ -105,19 +111,22 @@ const Modal = ({
     if (!modalVisible) return null;
     return (
         <Modalbackground>
-            <ModalBox>
+            <ModalBox ref={ref}>
                 <ModalHeader>
                     <ModalTitle>{title}</ModalTitle>
                     <ModalClose icon={faXmark} onClick={onModalClose} />
                 </ModalHeader>
                 <ModalBody>{children}</ModalBody>
                 <ModalFooter>
-                    <ModalButton onClick={onModalClose}>{modalCloseText}</ModalButton>
-                    <ModalButton onClick={onModalConfirm}>{modalConfirmText}</ModalButton>
+                    <ModalButton onClick={onModalCancle}>{modalCancleText}</ModalButton>
+                    <ModalButton onClick={onModalConfirm}>
+                        {loading || modalConfirmText}
+                        {loading && <Loading size="small" />}
+                    </ModalButton>
                 </ModalFooter>
             </ModalBox>
         </Modalbackground>
     );
-};
+});
 
 export default Modal;
