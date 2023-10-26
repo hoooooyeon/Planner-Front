@@ -3,7 +3,6 @@ import Modal from '../common/Modal';
 
 const MemberBox = styled.div`
     width: 25rem;
-    height: 15rem;
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 0.5rem;
 `;
@@ -58,6 +57,15 @@ const Member = styled.li`
     align-items: center;
 `;
 
+const ErrorText = styled.div`
+    color: ${(props) => props.theme.errorColor};
+    font-weight: bold;
+    font-size: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0.5rem 0;
+`;
+
 const MemberModal = ({
     planner,
     members,
@@ -89,6 +97,11 @@ const MemberModal = ({
                 onResetMember();
                 onCloseError();
             }}
+            onModalCancle={() => {
+                onToggleMemberModal();
+                onResetMember();
+                onCloseError();
+            }}
             onModalConfirm={() => {
                 onResetMember();
                 onCloseError();
@@ -105,7 +118,7 @@ const MemberModal = ({
                     />
                     <Button onClick={onInviteMemberMd}>초대</Button>
                 </InviteBox>
-                {/* {plannerError && plannerError.} */}
+                {plannerError && <ErrorText>{plannerError}</ErrorText>}
                 <h5>현재 멤버</h5>
                 <MemberList>
                     {planMembers &&

@@ -33,4 +33,8 @@ const Loading = ({ size }) => {
     return <LoadingCircle size={size} />;
 };
 
+Loading.defaultProps = {
+    size: 'normal',
+};
+
 export default Loading;

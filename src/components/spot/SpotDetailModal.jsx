@@ -116,6 +116,9 @@ const SpotDetailModal = ({ spotData, detail, onResetDetailSpot, onToggleDetailLi
             onModalClose={() => {
                 onResetDetailSpot();
             }}
+            onModalCancle={() => {
+                onResetDetailSpot();
+            }}
             onModalConfirm={() => {
                 onResetDetailSpot();
             }}

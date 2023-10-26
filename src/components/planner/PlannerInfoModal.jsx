@@ -136,6 +136,10 @@ const PlannerInfoModal = ({
                 onTogglePlannerInfoModal();
                 onCloseError();
             }}
+            onModalCancle={() => {
+                onTogglePlannerInfoModal();
+                onCloseError();
+            }}
             onModalConfirm={() => {
                 onUpdatePlanner();
                 onCloseError();
