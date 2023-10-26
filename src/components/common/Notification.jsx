@@ -17,7 +17,8 @@ const NotificationActionBox = styled.div`
     color: ${(props) => props.theme.secondaryColor};
 
     &:hover {
-        color: ${(props) => props.theme.primaryColor};
+        cursor: pointer;
+        color: ${(props) => props.theme.hoverColor};
     }
 `;
 
