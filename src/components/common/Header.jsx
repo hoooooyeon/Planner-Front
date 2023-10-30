@@ -26,7 +26,7 @@ const HeaderBlock = styled.div`
             background-color: rgba(255, 255, 255, 0.8);
         `}
     @media all and (min-width: 768px) {
-        justify-content: space-between;
+        /* justify-content: space-between; */
         padding: 0 9rem;
     }
     @media all and (min-width: 1200px) {
@@ -89,7 +89,7 @@ const AccountList = styled.ul`
 `;
 
 const Account = styled.div`
-    display: none;
+    display: flex;
     align-items: center;
     position: relative;
     width: 76px;
@@ -105,6 +105,7 @@ const Account = styled.div`
         width: 40px;
         height: 40px;
     }
+    display: none;
     @media all and (min-width: 768px) {
         display: flex;
     }
@@ -231,6 +232,18 @@ const Header = ({
             </MenuList>
             {account ? (
                 <>
+                    <Notification
+                        ref={notificationRef}
+                        loading={loading}
+                        view={notificationView}
+                        notifications={notifications}
+                        onClose={handleNotificationClose}
+                        onChange={handleChangeNotificationView}
+                        onInviteReject={onInviteReject}
+                        onInviteAccept={onInviteAccept}
+                        invitationInfo={invitationInfo}
+                        onInvitationInitialize={onInvitationInitialize}
+                    />
                     <Account styled={styled} onClick={onClickDropDown}>
                         {/* <img className="user-img" src="logo192.png"></img> */}
                         <StyledFontAwesomeIcon icon={faCircleUser} />
@@ -244,18 +257,6 @@ const Header = ({
                             </DropDownMenu>
                         </DropDown>
                     )}
-                    <Notification
-                        ref={notificationRef}
-                        loading={loading}
-                        view={notificationView}
-                        notifications={notifications}
-                        onClose={handleNotificationClose}
-                        onChange={handleChangeNotificationView}
-                        onInviteReject={onInviteReject}
-                        onInviteAccept={onInviteAccept}
-                        invitationInfo={invitationInfo}
-                        onInvitationInitialize={onInvitationInitialize}
-                    />
                 </>
             ) : (
                 <AccountList styled={styled}>

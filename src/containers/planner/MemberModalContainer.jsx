@@ -26,6 +26,7 @@ const MemberModalContainer = () => {
     const onInviteMember = () => {
         if (accountId === planner.accountId) {
             dispatch(inviteMemberAction({ plannerId, members }));
+            setMembers([]);
         }
     };
 
@@ -42,17 +43,11 @@ const MemberModalContainer = () => {
     };
 
     // 멤버 타이핑 리셋
-    const onResetMember = () => {
-        setMembers([]);
-    };
-
     // 멤버 모달 토글
-    const onToggleMemberModal = () => {
-        dispatch(toggleMemberModalAction());
-    };
-
     // plannerError 리셋
-    const onCloseError = () => {
+    const onToggleMemberModal = () => {
+        setMembers([]);
+        dispatch(toggleMemberModalAction());
         dispatch(resetPlannerErrorAction());
     };
 
@@ -68,9 +63,7 @@ const MemberModalContainer = () => {
             onChangeMember={onChangeMember}
             onInviteMember={onInviteMember}
             onDeleteMember={onDeleteMember}
-            onResetMember={onResetMember}
             onToggleMemberModal={onToggleMemberModal}
-            onCloseError={onCloseError}
         />
     );
 };

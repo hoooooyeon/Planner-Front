@@ -429,10 +429,6 @@ function plannerReducer(state = initialState, action) {
                 plannerData: {
                     ...state.plannerData,
                 },
-                modal: {
-                    ...state.modal,
-                    member: false,
-                },
             };
         case DELETE_MEMBER_SUCCESS_TYPE:
             return {

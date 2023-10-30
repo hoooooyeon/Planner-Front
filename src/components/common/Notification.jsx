@@ -11,11 +11,14 @@ const Box = styled.div`
     box-sizing: border-box;
     padding: 10px;
     border-radius: 6px;
+    @media all and (max-width: 767px) {
+        position: absolute;
+        left: 0;
+    }
 `;
 
 const NotificationActionBox = styled.div`
     color: ${(props) => props.theme.secondaryColor};
-
     &:hover {
         cursor: pointer;
         color: ${(props) => props.theme.hoverColor};
@@ -25,12 +28,17 @@ const NotificationActionBox = styled.div`
 const NotificationBox = styled.div`
     position: absolute;
     margin-top: 20px;
-    right: 40px;
-    width: 420px;
-    height: 520px;
+    right: 14px;
+    width: 250px;
+    height: 260px;
     border-radius: 6px;
     box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
     background-color: ${(props) => props.theme.primaryBackgroundColor};
+    @media all and (max-width: 767px) {
+        right: 0;
+        left: 10px;
+        top: 27px;
+    }
 `;
 
 const NotificationHeader = styled.div`
@@ -45,6 +53,10 @@ const NotificationHeader = styled.div`
 const NotificationBody = styled.div`
     display: flex;
     flex-direction: column;
+    height: 92%;
+    overflow: auto;
+    background-color: white;
+    border-radius: 0.5rem;
 `;
 
 const NotificationList = styled.ul`
@@ -54,7 +66,7 @@ const NotificationList = styled.ul`
 
 const NotiBox = styled.li`
     margin: 10px;
-    /* padding: 10px; */
+    padding: 10px;
     box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
     background-color: ${(props) => props.theme.primaryBackgroundColor};
 
@@ -77,6 +89,9 @@ const NotiContent = styled.a`
         /* max-height: 60px; */
         overflow: hidden;
         text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 11px;
+        font-weight: bolder;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
