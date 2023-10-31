@@ -1,4 +1,5 @@
 import { faBell } from '@fortawesome/free-regular-svg-icons';
+import { faRectangleXmark } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -6,6 +7,7 @@ import Modal from './Modal';
 import { useEffect } from 'react';
 import { forwardRef } from 'react';
 import { useRef } from 'react';
+import Loading from './Loading';
 
 const Box = styled.div`
     box-sizing: border-box;
@@ -72,6 +74,9 @@ const NotiBox = styled.li`
 
     &:hover {
         background-color: ${(props) => props.theme.mainColor};
+        p {
+            color: ${(props) => props.theme.primaryColor};
+        }
     }
 `;
 
@@ -79,10 +84,6 @@ const NotiContent = styled.a`
     display: block;
     padding: 10px;
     color: ${(props) => (props.read ? props.theme.tertiaryColor : props.theme.secondaryColor)};
-
-    &:hover {
-        color: ${(props) => props.theme.primaryColor};
-    }
 
     p {
         margin: 0px;
@@ -98,7 +99,7 @@ const NotiContent = styled.a`
     }
 `;
 
-const NotificationItem = ({ item, onItemClick }) => {
+const NotificationItem = ({ item, onItemClick, onNotifyDelete }) => {
     return (
         <NotiBox onClick={(e) => onItemClick(e, item)}>
             <NotiContent href={item.link} read={item.read}>
@@ -119,6 +120,10 @@ const Notification = forwardRef((props, ref) => {
         onInviteAccept,
         invitationInfo,
         onInvitationInitialize,
+        notificationInfo,
+        onNotifyRead,
+        onNotifyDelete,
+        onNotificationInitialize,
     } = props;
 
     const [isPopup, setIsPopup] = useState(false);
@@ -132,6 +137,7 @@ const Notification = forwardRef((props, ref) => {
             e.preventDefault();
             setSeletItem(item);
             setIsPopup(true);
+            onNotifyRead(item.id);
         }
 
         onClose();
@@ -144,15 +150,18 @@ const Notification = forwardRef((props, ref) => {
     const handleModalCancle = () => {
         setIsPopup(false);
         onInviteReject(selectItem.link);
+        onNotifyDelete(selectItem.id);
     };
 
     const handleModalConfirm = () => {
         onInviteAccept(selectItem.link);
+        onNotifyDelete(selectItem.id);
     };
 
     const handleErrorModalClose = () => {
         setErrorModal(false);
         onInvitationInitialize();
+        onNotificationInitialize();
     };
 
     const modalSideCheck = (state, ref, target, onClose) => {
@@ -190,11 +199,15 @@ const Notification = forwardRef((props, ref) => {
                 <NotificationBox ref={ref}>
                     <NotificationHeader>알림</NotificationHeader>
                     <NotificationBody>
-                        <NotificationList>
-                            {notifications.map((item) => (
-                                <NotificationItem item={item} onItemClick={handleItemClick} />
-                            ))}
-                        </NotificationList>
+                        {loading ? (
+                            <Loading size="small" pos="center" />
+                        ) : (
+                            <NotificationList>
+                                {notifications.map((item) => (
+                                    <NotificationItem item={item} onItemClick={handleItemClick} />
+                                ))}
+                            </NotificationList>
+                        )}
                     </NotificationBody>
                 </NotificationBox>
             )}
@@ -203,7 +216,7 @@ const Notification = forwardRef((props, ref) => {
                     ref={modalRef}
                     modalVisible={isPopup}
                     title="초대"
-                    modalCloseText="거절"
+                    modalCancleText="거절"
                     modalConfirmText="수락"
                     onModalClose={handleModalClose}
                     onModalCancle={handleModalCancle}
@@ -223,6 +236,7 @@ const Notification = forwardRef((props, ref) => {
                     onModalConfirm={handleErrorModalClose}
                 >
                     <p>{invitationInfo.message}</p>
+                    <p>{notificationInfo.message}</p>
                 </Modal>
             )}
         </Box>

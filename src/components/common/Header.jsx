@@ -156,6 +156,10 @@ const Header = ({
     onInviteAccept,
     invitationInfo,
     onInvitationInitialize,
+    notificationInfo,
+    onNotifyRead,
+    onNotifyDelete,
+    onNotificationInitialize,
 }) => {
     const headerRef = useRef();
     const [styled, setStyled] = useState(false);
@@ -243,6 +247,10 @@ const Header = ({
                         onInviteAccept={onInviteAccept}
                         invitationInfo={invitationInfo}
                         onInvitationInitialize={onInvitationInitialize}
+                        notificationInfo={notificationInfo}
+                        onNotifyRead={onNotifyRead}
+                        onNotifyDelete={onNotifyDelete}
+                        onNotificationInitialize={onNotificationInitialize}
                     />
                     <Account styled={styled} onClick={onClickDropDown}>
                         {/* <img className="user-img" src="logo192.png"></img> */}

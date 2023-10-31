@@ -10,11 +10,20 @@ import spotReducer, { spotSaga } from './spotModule';
 import reviewReducer, { reviewSaga } from './reviewModule';
 import accountReducer, { accountSaga } from './accountModule';
 import invitationReducer, { invitationSaga } from './invitationModule';
+import notificationReducer, { notificationSaga } from './notificationModule';
 
 const rootPersistConfig = {
     key: 'root',
     storage,
-    blacklist: ['loadingReducer', 'profileReducer', 'plannerReducer', 'spotReducer', 'reviewReducer', 'invitationReducer'],
+    blacklist: [
+        'loadingReducer',
+        'profileReducer',
+        'plannerReducer',
+        'spotReducer',
+        'reviewReducer',
+        'invitationReducer',
+        'notificationReducer',
+    ],
 };
 
 const plannerPersistConfig = {
@@ -30,11 +39,20 @@ const rootReducer = combineReducers({
     plannerReducer: persistReducer(plannerPersistConfig, plannerReducer),
     spotReducer,
     reviewReducer,
-    invitationReducer
+    invitationReducer,
+    notificationReducer,
 });
 
 export function* rootSaga() {
-    yield all([authSaga(), accountSaga(), plannerSaga(), reviewSaga(), spotSaga(), invitationSaga()]);
+    yield all([
+        authSaga(),
+        accountSaga(),
+        plannerSaga(),
+        reviewSaga(),
+        spotSaga(),
+        invitationSaga(),
+        notificationSaga(),
+    ]);
 }
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
 export default persistedReducer;
