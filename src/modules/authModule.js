@@ -25,9 +25,9 @@ const registerFailureType = 'auth/REGISTER_FAILURE';
 // const emailCodeCheckSuccessType = 'auth/EMAIL_CODE_CHECK_SUCCESS_TYPE';
 // const emailCodeCheckFailureType = 'auth/EMAIL_CODE_CHECK_FAILURE_TYPE';
 
-const phoneCodeSendType = 'auth/PHONE_CODE_SEND_TYPE';
-const phoneCodeSendSuccessType = 'auth/PHONE_CODE_SEND_SUCCESS_TYPE';
-const phoneCodeSendFailureType = 'auth/PHONE_CODE_SEND_FAILURE_TYPE';
+export const phoneCodeRequestType = 'auth/PHONE_CODE_REQUEST_TYPE';
+const phoneCodeRequestSuccessType = 'auth/PHONE_CODE_REQUEST_SUCCESS_TYPE';
+const phoneCodeRequestFailureType = 'auth/PHONE_CODE_REQUEST_FAILURE_TYPE';
 
 // const phoneCodeCheckType = 'auth/PHONE_CODE_CHECK_TYPE';
 // const phoneCodeCheckSuccessType = 'auth/PHONE_CODE_CHECK_SUCCESS_TYPE';
@@ -74,30 +74,12 @@ export const registerAction = ({ email, password, username, nickname, phone }) =
     phone,
 });
 
-// export const emailCodeSendAction = ({ email }) => ({ type: emailCodeSendType, email });
-// export const emailCodeCheckAction = ({ email, code }) => ({ type: emailCodeCheckType, email, code });
-export const phoneCodeSendAction = ({ username, phone }) => ({ type: phoneCodeSendType, username, phone });
-// export const phoneCodeCheckAction = ({ userName, phone, code }) => ({
-//     type: phoneCodeCheckType,
-//     userName,
-//     phone,
-//     code,
-// });
-
 export const loginSaga = createSaga(loginType, authAPI.login);
 export const registerSaga = createSaga(registerType, authAPI.register);
-// export const emailCodeSendSaga = createSaga(emailCodeSendType, authAPI.emailCodeSend);
-// export const emailCodeCheckSaga = createSaga(emailCodeCheckType, authAPI.emailCodeCheck);
-export const phoneCodeSendSaga = createSaga(phoneCodeSendType, authAPI.phoneCodeSend);
-// export const phoneCodeCheckSaga = createSaga(phoneCodeCheckType, authAPI.phoneCodeCheck);
 
 export function* authSaga() {
     yield takeLatest(loginType, loginSaga);
     yield takeLatest(registerType, registerSaga);
-    // yield takeLatest(emailCodeSendType, emailCodeSendSaga);
-    // yield takeLatest(emailCodeCheckType, emailCodeCheckSaga);
-    yield takeLatest(phoneCodeSendType, phoneCodeSendSaga);
-    // yield takeLatest(phoneCodeCheckType, phoneCodeCheckSaga);
 }
 
 const initialState = {
@@ -113,13 +95,6 @@ const initialState = {
         nickname: '',
         phone: '',
     },
-    authentication: {
-        username: '',
-        phone: '',
-        // email: '',
-        code: '',
-    },
-    idFinding: false,
     account: undefined,
     token: '',
     authError: {},
@@ -163,48 +138,8 @@ function authReducer(state = initialState, action) {
         case validateType: {
             return { ...state, authError: { ...action.validState } };
         }
-        // case emailCodeSendSuccessType: {
-        //     return {
-        //         ...state,
-        //         authentication: {
-        //             ...state.authentication,
-        //             state: '',
-        //         },
-        //     };
-        // }
-        // case emailCodeCheckSuccessType: {
-        //     return {
-        //         ...state,
-        //         authentication: {
-        //             ...state.authentication,
-        //             state: true,
-        //         },
-        //     };
-        // }
-        case phoneCodeSendSuccessType: {
-            return {
-                ...state,
-                authentication: {
-                    ...state.authentication,
-                },
-                idFinding: '',
-            };
-        }
-        // case phoneCodeCheckSuccessType: {
-        //     return {
-        //         ...state,
-        //         authentication: {
-        //             ...state.authentication,
-        //             isSend: true,
-        //         },
-        //     };
-        // }
-        // case emailCodeSendFailureType:
-        // case emailCodeCheckFailureType:
-        // case phoneCodeCheckFailureType:
         case loginFailureType:
-        case registerFailureType:
-        case phoneCodeSendFailureType: {
+        case registerFailureType: {
             return { ...state, authError: action.payload.message, state: { ...action.payload } };
         }
         default: {

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom';
-import styled, { css, keyframes } from 'styled-components';
+import styled, { css } from 'styled-components';
 import LabelTextBox from '../../common/LabelTextBox';
 import Modal from '../../common/Modal';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleDot } from '@fortawesome/free-solid-svg-icons';
+import { status } from './Status';
+import Timer from '../../common/Timer';
 
 const Container = styled.div`
     width: 100%;
@@ -72,76 +72,13 @@ const LinkBox = styled.div`
     font-size: 0.8rem;
 `;
 
-const VerificationBox = styled.div`
-    display: flex;
-    justify-content: flex-end;
-`;
-
-const VerificationButton = styled.button`
-    width: 75px;
-    margin: 10px 0px;
-    height: 36px;
-    border: none;
-    border-radius: 6px;
-    background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
-    color: ${(props) => props.theme.secondaryColor};
-    transition: box-shadow 0.1s ease-in;
-
-    &:hover {
-        box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
-        background-color: ${(props) => props.theme.hoverColor};
-        color: ${(props) => props.theme.primaryColor};
-    }
-`;
-const AuthTypeBox = styled.div`
-    display: inline-flex;
-    align-items: center;
-    margin: 1rem 0;
-    cursor: pointer;
-`;
-
-const AuthTypeButton = styled(FontAwesomeIcon)`
-    color: ${(props) => (props.selected ? props.theme.secondaryColor : props.theme.primaryColor)};
-`;
-
-const AuthTypeText = styled.div`
-    font-size: 0.9rem;
-    margin-left: 0.5rem;
-`;
-
-const loadingAnimation = keyframes`
-    form {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-`;
-
-const LoadingCircle = styled.div`
-    border-radius: 50%;
-    border: 8px solid ${(props) => props.theme.outlineColor};
-    border-top: 8px solid ${(props) => props.theme.mainColor};
-    width: 16px;
-    height: 16px;
-    animation: ${loadingAnimation} 1s linear infinite;
-    margin: 0px auto;
-`;
-
-const FindId = ({
-    code,
-    form,
-    authError,
-    authType,
-    idFinding,
-    onToggleAuthType,
-    loading,
-    onChange,
-    handleCodeSend,
-    handleCodeCheck,
-}) => {
-    const isNormalError = typeof authError === 'string';
+const FindId = ({ accountError, idFindForm, phase, codeRequest, onChange, loading, onFindId, onCodeTimerEnd }) => {
+    const isNormalError = typeof accountError === 'string';
     const [modal, setModal] = useState(false);
+
+    const handleFindIdClick = () => {
+        onFindId();
+    };
 
     const handleModalConfirm = () => {
         setModal(!modal);
@@ -151,97 +88,52 @@ const FindId = ({
         if (isNormalError) {
             setModal(true);
         }
-    }, [isNormalError]);
+    }, [isNormalError, accountError]);
 
     return (
         <Container>
             <ContentBox>
                 <LogoText>한국다봄</LogoText>
                 <FormBox>
-                    {/* <div>
-                        <AuthTypeBox
-                            onClick={() => {
-                                onToggleAuthType('email');
-                            }}
-                        >
-                            <AuthTypeButton icon={faCircleDot} selected={authType === 'email'} />
-                            <AuthTypeText>이메일</AuthTypeText>
-                        </AuthTypeBox>
-                    </div>
-                    {authType === 'email' && (
-                        <>
-                            <LabelTextBox
-                                type="text"
-                                name="username"
-                                placeholder="이름"
-                                label="이름"
-                                onChange={onChange}
-                                value={form.username}
-                                error={authError}
-                            />
-                            <LabelTextBox
-                                type="email"
-                                name="email"
-                                placeholder="이메일"
-                                label="이메일"
-                                onChange={onChange}
-                                value={form.email}
-                                error={authError}
-                            />
-                        </>
-                    )} */}
-                    <div>
-                        <AuthTypeBox
-                            onClick={() => {
-                                onToggleAuthType('phone');
-                            }}
-                        >
-                            <AuthTypeButton icon={faCircleDot} selected={authType === 'phone'} />
-                            <AuthTypeText>휴대전화</AuthTypeText>
-                        </AuthTypeBox>
-                    </div>
-                    {authType === 'phone' && (
-                        <>
-                            <LabelTextBox
-                                type="text"
-                                name="username"
-                                placeholder="이름"
-                                label="이름"
-                                onChange={onChange}
-                                value={form.username}
-                                error={authError}
-                            />
-                            <LabelTextBox
-                                type="text"
-                                name="phone"
-                                placeholder="전화번호"
-                                label="전화번호"
-                                onChange={onChange}
-                                value={form.phone}
-                                error={authError}
-                            />
-                        </>
-                    )}
-                    <VerificationBox>
-                        <VerificationButton onClick={handleCodeSend}>인증 요청</VerificationButton>
-                    </VerificationBox>
+                    <LabelTextBox
+                        type="text"
+                        name="username"
+                        placeholder="이름"
+                        label="이름"
+                        onChange={onChange}
+                        value={idFindForm.username}
+                        error={accountError}
+                    />
+                    <LabelTextBox
+                        type="text"
+                        name="phone"
+                        placeholder="전화번호"
+                        label="전화번호"
+                        onChange={onChange}
+                        value={idFindForm.phone}
+                        error={accountError}
+                    />
                     {/* 인증 요청 이후에 생성된 input에 인증 코드를 적고 아이디 찾기 클릭 */}
-                    {idFinding === '' && (
+                    {codeRequest && (
                         <LabelTextBox
                             type="text"
                             name="code"
                             placeholder="인증코드"
                             label="인증코드"
                             onChange={onChange}
-                            value={form.code}
-                            error={authError}
+                            value={idFindForm.code}
+                            error={accountError}
                         />
                     )}
-                    {isNormalError && <Error>{authError}</Error>}
+                    {codeRequest && (
+                        <p>
+                            인증코드 유효시간: <Timer onTimerEnd={onCodeTimerEnd} />
+                        </p>
+                    )}
 
-                    {/* 아이디 찾기 결과 페이지로 이동 */}
-                    <Button isCode={code && code.length > 0} onClick={handleCodeCheck}>
-                        {loading && idFinding ? <LoadingCircle /> : '아이디 찾기'}
+                    <Button onClick={handleFindIdClick}>
+                        {phase == status.REQUEST && '인증 번호 요청'}
+                        {phase == status.FIND && '아이디 찾기'}
                     </Button>
                 </FormBox>
                 <LinkBox>
@@ -250,7 +142,7 @@ const FindId = ({
             </ContentBox>
             {isNormalError && (
                 <Modal modalVisible={modal} title="알림" onModalConfirm={handleModalConfirm}>
-                    <b>{authError}</b>
+                    <b>{accountError}</b>
                 </Modal>
             )}
         </Container>

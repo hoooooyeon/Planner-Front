@@ -5,27 +5,22 @@ import ResultFindId from '../../../components/account/find/ResultFindId';
 import { initializeAction, initializeErrorAction } from '../../../modules/accountModule';
 
 const ResultFindIdContainer = () => {
-    const dispatch = useDispatch();
     const history = useHistory();
-    const { accountError } = useSelector(({ accountReducer }) => ({
-        accountError: accountReducer.accountError,
+
+    const { idFindList, codeRequest, idFindRequest } = useSelector(({ accountReducer }) => ({
+        idFindList: accountReducer.idFindList,
+        codeRequest: accountReducer.codeRequest,
+        idFindRequest: accountReducer.idFindRequest,
     }));
 
-    // useEffect(() => {
-    //     if(!verificationCode || verificationCode.length < 0){
-    //         alert('잘못된 접근입니다.');
-    //         history.push('/login')
-    //     }
-    // })
-
     useEffect(() => {
-        return () => {
-            dispatch(initializeAction());
-            dispatch(initializeErrorAction());
-        };
-    }, [dispatch]);
+        if ((!codeRequest && !idFindRequest) || (codeRequest && !idFindRequest)) {
+            alert('잘못된 접근입니다.');
+            history.push('/login');
+        }
+    });
 
-    return <ResultFindId accountError={accountError} />;
+    return <ResultFindId idFindList={idFindList} />;
 };
 
 export default ResultFindIdContainer;

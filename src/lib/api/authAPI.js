@@ -14,9 +14,9 @@ export const register = ({ email, password, username, nickname, phone }) => {
 //     return client.post(`${baseUrl}/authentication-code/send?email=${email}`, { email });
 // };
 
-export const phoneCodeSend = ({ username, phone }) => {
+export const phoneCodeRequest = ({ username, phone }) => {
     const userName = username;
-    return client.post(`${baseUrl}/authentication-code/send?phone=${phone}`, { userName, phone });
+    return client.post(`${baseUrl}/authentication-code/request?phone=${phone}`, { userName, phone });
 };
 
 // export const emailCodeCheck = ({ email, code }) => {

@@ -11,8 +11,8 @@ const regexType = {
     password: /^(?=.*[\w])(?=.*[~!@#$%^&*()+|=])[\w~!@#$%^&*()+|=]{8,16}$/,
     username: /^.*[가-힣a-zA-z]$/,
     nickname: /^.*[가-힣a-zA-z\d]$/,
-    phone: /^010[\d]{4}[\d]{3}$/,
-    code: /^\d{0,6}$/,
+    phone: /^010[\d]{4}[\d]{4}$/,
+    code: /^\d{6}$/,
 };
 const notValidMsg = {
     email: '이메일 형식이 아닙니다.',

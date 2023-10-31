@@ -35,26 +35,20 @@ const FormBox = styled.div`
     color: ${(props) => props.theme.secondaryColor};
 `;
 
-const SuccessText = styled.div`
+const ResultText = styled.div`
     width: 70%;
     word-break: keep-all;
     font-size: 1.1rem;
     font-weight: bold;
     margin: 2rem auto;
 `;
-const SuccessBox = styled.div`
+const IdList = styled.div`
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     color: ${(props) => props.theme.secondaryColor};
     padding: 0.5rem 1rem;
     margin: 2rem 0;
     border-radius: 0.5rem;
     text-align: center;
-`;
-
-const Error = styled.b`
-    font-size: 0.8rem;
-    color: ${(props) => props.theme.errorColor};
-    margin: 3px 0px;
 `;
 
 const Button = styled.button`
@@ -80,25 +74,26 @@ const LinkBox = styled.div`
     font-size: 0.8rem;
 `;
 
-const ResultFindId = ({ accountError }) => {
+const ResultFindId = ({ idFindList }) => {
     const history = useHistory();
-    const isNormalError = typeof authError === 'string';
-    const [modal, setModal] = useState(false);
-    const handleModalConfirm = () => {
-        setModal(!modal);
-    };
-    useEffect(() => {
-        if (isNormalError) {
-            setModal(true);
-        }
-    }, [isNormalError]);
+
     return (
         <Container>
             <ContentBox>
                 <LogoText>한국다봄</LogoText>
                 <FormBox>
-                    <SuccessText>회원님의 휴대전화로 가입된 아이디가 있습니다.</SuccessText>
-                    <SuccessBox>bluebear1234@naver.com</SuccessBox>
+                    <ResultText>
+                        {idFindList == null || idFindList.length == 0
+                            ? '회원님의 휴대전화로 가입된 아이디가 없습니다.'
+                            : '회원님의 휴대전화로 가입된 아이디가 있습니다.'}
+                    </ResultText>
+                    {idFindList != null && (
+                        <IdList>
+                            {idFindList.map((item) => (
+                                <p>{item}</p>
+                            ))}
+                        </IdList>
+                    )}
                     <Button
                         onClick={() => {
                             history.push('/login');
@@ -111,11 +106,6 @@ const ResultFindId = ({ accountError }) => {
                     <NavLink to="findPassword">비밀번호 찾기</NavLink>
                 </LinkBox>
             </ContentBox>
-            {isNormalError && (
-                <Modal modalVisible={modal} title="알림" onModalConfirm={handleModalConfirm}>
-                    <b>{accountError}</b>
-                </Modal>
-            )}
         </Container>
     );
 };
