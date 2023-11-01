@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom/cjs/react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import LabelTextBox from '../../common/LabelTextBox';
 import Modal from '../../common/Modal';
+import Loading from '../../common/Loading';
+import { useHistory } from 'react-router';
 
 const Container = styled.div`
     width: 100%;
@@ -63,31 +65,24 @@ const LinkBox = styled.div`
     font-size: 0.8rem;
 `;
 
-const loadingAnimation = keyframes`
-    form {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-`;
-
-const LoadingCircle = styled.div`
-    border-radius: 50%;
-    border: 8px solid ${(props) => props.theme.outlineColor};
-    border-top: 8px solid ${(props) => props.theme.mainColor};
-    width: 16px;
-    height: 16px;
-    animation: ${loadingAnimation} 1s linear infinite;
-    margin: 0px auto;
-`;
-
-const FindPassword = ({ form, accountError, pwFinding, loading, onChange, handlePasswordFind }) => {
+const FindPassword = ({
+    accountError,
+    passwordFindForm,
+    onChange,
+    loading,
+    passwordFindRequest,
+    handlePasswordFind,
+}) => {
+    const history = useHistory();
     const isNormalError = typeof accountError === 'string';
     const [modal, setModal] = useState(false);
 
     const handleModalConfirm = () => {
         setModal(!modal);
+    };
+
+    const handleConfirmClick = () => {
+        history.push('/login');
     };
 
     useEffect(() => {
@@ -100,26 +95,36 @@ const FindPassword = ({ form, accountError, pwFinding, loading, onChange, handle
         <Container>
             <ContentBox>
                 <LogoText>한국다봄</LogoText>
-                <FormBox>
-                    <LabelTextBox
-                        type="email"
-                        name="email"
-                        placeholder="이메일을 적어주세요."
-                        label="아이디(이메일)"
-                        onChange={onChange}
-                        value={form.email}
-                        error={accountError}
-                    />
-                    {isNormalError && <Error>{accountError}</Error>}
+                {!passwordFindRequest ? (
+                    <>
+                        <FormBox>
+                            <LabelTextBox
+                                type="email"
+                                name="email"
+                                placeholder="이메일을 적어주세요."
+                                label="아이디(이메일)"
+                                onChange={onChange}
+                                value={passwordFindForm.email}
+                                error={accountError}
+                            />
+                            {isNormalError && <Error>{accountError}</Error>}
 
-                    <Button onClick={handlePasswordFind}>
-                        {loading && pwFinding ? <LoadingCircle /> : '비밀번호 찾기'}
-                    </Button>
-                </FormBox>
-                <LinkBox>
-                    <NavLink to="findId">아이디 찾기</NavLink>
-                </LinkBox>
+                            <Button onClick={handlePasswordFind}>
+                                {loading && !passwordFindRequest ? <Loading size="small" /> : '비밀번호 찾기'}
+                            </Button>
+                        </FormBox>
+                        <LinkBox>
+                            <NavLink to="findId">아이디 찾기</NavLink>
+                        </LinkBox>
+                    </>
+                ) : (
+                    <>
+                        <p>비밀번호 설정 메일이 전송되었습니다.</p>
+                        <Button onClick={handleConfirmClick}>확인</Button>
+                    </>
+                )}
             </ContentBox>
+
             {isNormalError && (
                 <Modal modalVisible={modal} title="알림" onModalConfirm={handleModalConfirm}>
                     <b>{accountError}</b>

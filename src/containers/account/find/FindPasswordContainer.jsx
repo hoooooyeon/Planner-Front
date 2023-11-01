@@ -3,29 +3,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import FindPassword from '../../../components/account/find/FindPassword';
 import validation from '../../../lib/utils/validationCheck';
 import {
+    ACCOUNT_PASSWORD_FIND_TYPE,
     accountPasswordFindAction,
     changeFieldAction,
     initializeAction,
     initializeErrorAction,
+    initializeFormAction,
+    initializePasswordFindRequestAction,
     validateFieldAction,
 } from '../../../modules/accountModule';
 
 const FindPasswordContainer = () => {
     const dispatch = useDispatch();
-    const { findPw, accountError, loading, pwFinding } = useSelector(({ accountReducer, loadingReducer }) => ({
-        findPw: accountReducer.findPw,
-        pwFinding: accountReducer.pwFinding,
-        accountError: accountReducer.accountError,
-        loading: loadingReducer.loading,
-    }));
-
-    const { email } = { ...findPw };
+    const { accountError, passwordFindForm, loading, passwordFindRequest } = useSelector(
+        ({ accountReducer, loadingReducer }) => ({
+            accountError: accountReducer.accountError,
+            passwordFindForm: accountReducer.passwordFindForm,
+            passwordFindRequest: accountReducer.passwordFindRequest,
+            loading: loadingReducer[ACCOUNT_PASSWORD_FIND_TYPE],
+        }),
+    );
 
     const onChange = (e) => {
         const { name, value } = e.target;
         dispatch(
             changeFieldAction({
-                form: 'findPw',
+                form: 'passwordFindForm',
                 name,
                 value,
             }),
@@ -35,37 +38,31 @@ const FindPasswordContainer = () => {
     // 비밀번호 찾기
     const handlePasswordFind = () => {
         if (!loading) {
-            const validState = validation(findPw);
+            const validState = validation(passwordFindForm);
             if (Object.keys(validState).length > 0) {
                 dispatch(validateFieldAction(validState));
             } else {
                 dispatch(initializeErrorAction());
-                dispatch(accountPasswordFindAction({ email }));
+                dispatch(accountPasswordFindAction(passwordFindForm));
             }
         }
     };
 
-    // 비밀번호 찾기 완료
-    useEffect(() => {
-        if (pwFinding) {
-            alert('입력하신 이메일을 확인해주세요.');
-        }
-    }, [pwFinding]);
-
     useEffect(() => {
         return () => {
-            dispatch(initializeAction());
             dispatch(initializeErrorAction());
+            dispatch(initializeFormAction('passowrdFindForm'));
+            dispatch(initializePasswordFindRequestAction());
         };
     }, [dispatch]);
 
     return (
         <FindPassword
-            form={findPw}
             accountError={accountError}
-            loading={loading}
-            pwFinding={pwFinding}
+            passwordFindForm={passwordFindForm}
             onChange={onChange}
+            loading={loading}
+            passwordFindRequest={passwordFindRequest}
             handlePasswordFind={handlePasswordFind}
         />
     );

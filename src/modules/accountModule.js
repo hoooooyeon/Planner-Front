@@ -6,7 +6,6 @@ import * as accountAPI from '../lib/api/accountAPI';
 const INITIALIZE_TYPE = 'account/INITIALIZE';
 const INITIALIZE_FORM_TYPE = 'account/INITIALIZE_FORM';
 const INITIALIZE_ERROR_TYPE = 'account/INITIALIZERROR';
-const INITIALIZE_ID_FIND_REQUEST_TYPE = 'account/INITIALIZE_ID_FIND_REQUEST';
 const CHANGE_FIELD_TYPE = 'account/CHANGE_FIELD';
 const VALIDATE_TYPE = 'account/VALIDATE';
 const CODE_TIMER_END_TYPE = 'account/CODE_TIMER_END';
@@ -39,6 +38,8 @@ const RESET_LIKE_SPOT_LIST_TYPE = 'account/RESET_LIKE_SPOT_LIST';
 const RESET_MY_PLANNER_LIST_TYPE = 'account/RESET_MY_PLANNER_LIST';
 const RESET_ACCOUNT_ERROR_TYPE = 'account/RESET_ACCOUNT_ERROR';
 
+const INITIALIZE_ID_FIND_REQUEST_TYPE = 'account/INITIALIZE_ID_FIND_REQUEST';
+
 export const ACCOUNT_ID_FIND_CODE_REQUEST_TYPE = 'account/ACCOUNT_ID_FIND_CODE_REQUEST';
 const ACCOUNT_ID_FIND_CODE_REQUEST_SUCCESS_TYPE = 'account/ACCOUNT_ID_FIND_CODE_REQUEST_SUCCESS';
 const ACCOUNT_ID_FIND_CODE_REQUEST_FAILURE_TYPE = 'account/ACCOUNT_ID_FIND_CODE_REQUEST_FAILURE';
@@ -46,6 +47,8 @@ const ACCOUNT_ID_FIND_CODE_REQUEST_FAILURE_TYPE = 'account/ACCOUNT_ID_FIND_CODE_
 export const ACCOUNT_ID_FIND_TYPE = 'account/ACCOUNT_ID_FIND';
 const ACCOUNT_ID_FIND_SUCCESS_TYPE = 'account/ACCOUNT_ID_FIND_SUCCESS';
 const ACCOUNT_ID_FIND_FAILURE_TYPE = 'account/ACCOUNT_ID_FIND_FAILURE';
+
+const INITIALIZE_PASSWORD_FIND_REQUEST_TYPE = 'account/INITIALIZE_PASSWORD_FIND_REQUEST';
 
 export const ACCOUNT_PASSWORD_FIND_TYPE = 'account/ACCOUNT_PASSWORD_FIND';
 const ACCOUNT_PASSWORD_FIND_SUCCESS_TYPE = 'account/ACCOUNT_PASSWORD_FIND_SUCCESS';
@@ -67,10 +70,6 @@ export const initializeFormAction = (form) => ({
 
 export const initializeErrorAction = () => ({
     type: INITIALIZE_ERROR_TYPE,
-});
-
-export const initializeIdFindRequestAction = () => ({
-    type: INITIALIZE_ID_FIND_REQUEST_TYPE
 });
 
 export const changeFieldAction = ({ form, name, value }) => ({
@@ -148,6 +147,10 @@ export const resetLikeSpotListAction = () => ({ type: RESET_LIKE_SPOT_LIST_TYPE 
 export const resetMyPlannerListAction = () => ({ type: RESET_MY_PLANNER_LIST_TYPE });
 export const resetAccountErrorAction = () => ({ type: RESET_ACCOUNT_ERROR_TYPE });
 
+export const initializeIdFindRequestAction = () => ({
+    type: INITIALIZE_ID_FIND_REQUEST_TYPE
+});
+
 export const accountIdFindCodeRequestAction = ({ username, phone }) => ({
     type: ACCOUNT_ID_FIND_CODE_REQUEST_TYPE,
     username,
@@ -159,6 +162,10 @@ export const accountIdFindAction = ({ username, phone, code }) => ({
     username,
     phone,
     code,
+});
+
+export const initializePasswordFindRequestAction = () => ({
+    type: INITIALIZE_PASSWORD_FIND_REQUEST_TYPE
 });
 
 export const accountPasswordFindAction = ({ email }) => ({ type: ACCOUNT_PASSWORD_FIND_TYPE, email });
@@ -207,9 +214,10 @@ const initialState = {
     idFindList: null,
     codeRequest: false,
     idFindRequest: false,
-    // findPw: {
-    //     email: '',
-    // },
+    passwordFindForm: {
+        email: ''
+    },
+    passwordFindRequest: false,
     // changePw: {
     //     password: '',
     //     passwordConfirm: '',
@@ -237,9 +245,6 @@ function accountReducer(state = initialState, action) {
         }
         case INITIALIZE_ERROR_TYPE: {
             return { ...state, accountError: null };
-        }
-        case INITIALIZE_ID_FIND_REQUEST_TYPE: {
-            return { ...state, codeRequest: false, idFindRequest: false };
         }
         case CHANGE_FIELD_TYPE: {
             return { ...state, [action.form]: { ...state[action.form], [action.name]: action.value } };
@@ -294,20 +299,21 @@ function accountReducer(state = initialState, action) {
                 ...state,
                 accountError: null,
             };
+        case INITIALIZE_ID_FIND_REQUEST_TYPE: {
+            return { ...state, codeRequest: false, idFindRequest: false };
+        }
         case ACCOUNT_ID_FIND_CODE_REQUEST_SUCCESS_TYPE: {
             return { ...state, codeRequest: true };
         }
         case ACCOUNT_ID_FIND_SUCCESS_TYPE: {
             return { ...state, idFindRequest: true, idFindList: action.payload.data };
         }
-        case ACCOUNT_PASSWORD_FIND_SUCCESS_TYPE:
-            return {
-                ...state,
-                findPw: {
-                    ...state.findPw,
-                },
-                pwFinding: true,
-            };
+        case INITIALIZE_PASSWORD_FIND_REQUEST_TYPE: {
+            return { ...state, passwordFindRequest: false };
+        }
+        case ACCOUNT_PASSWORD_FIND_SUCCESS_TYPE: {
+            return { ...state, passwordFindRequest: true };
+        }
         case ACCOUNT_PASSWORD_CHANGE_SUCCESS_TYPE:
             return {
                 ...state,
