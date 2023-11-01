@@ -63,6 +63,10 @@ const UpdatePassword = ({
     const isNormalError = typeof accountError === 'string';
     const [modal, setModal] = useState(false);
 
+    const handleModalClose = () => {
+        setModal(false);
+    };
+
     const handleModalConfirm = () => {
         setModal(!modal);
     };
@@ -111,7 +115,12 @@ const UpdatePassword = ({
                 )}
             </ContentBox>
             {isNormalError && (
-                <Modal modalVisible={modal} title="알림" onModalConfirm={handleModalConfirm}>
+                <Modal
+                    modalVisible={modal}
+                    title="알림"
+                    onModalClose={handleModalClose}
+                    onModalConfirm={handleModalConfirm}
+                >
                     <b>{accountError}</b>
                 </Modal>
             )}

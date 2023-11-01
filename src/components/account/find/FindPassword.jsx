@@ -81,6 +81,10 @@ const FindPassword = ({
         setModal(!modal);
     };
 
+    const handleModalClose = () => {
+        setModal(false);
+    };
+
     const handleConfirmClick = () => {
         history.push('/login');
     };
@@ -126,7 +130,12 @@ const FindPassword = ({
             </ContentBox>
 
             {isNormalError && (
-                <Modal modalVisible={modal} title="알림" onModalConfirm={handleModalConfirm}>
+                <Modal
+                    modalVisible={modal}
+                    title="알림"
+                    onModalClose={handleModalClose}
+                    onModalConfirm={handleModalConfirm}
+                >
                     <b>{accountError}</b>
                 </Modal>
             )}

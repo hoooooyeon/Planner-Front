@@ -80,6 +80,10 @@ const FindId = ({ accountError, idFindForm, phase, codeRequest, onChange, loadin
         onFindId();
     };
 
+    const handleModalClose = () => {
+        setModal(false);
+    };
+
     const handleModalConfirm = () => {
         setModal(!modal);
     };
@@ -141,7 +145,12 @@ const FindId = ({ accountError, idFindForm, phase, codeRequest, onChange, loadin
                 </LinkBox>
             </ContentBox>
             {isNormalError && (
-                <Modal modalVisible={modal} title="알림" onModalConfirm={handleModalConfirm}>
+                <Modal
+                    modalVisible={modal}
+                    title="알림"
+                    onModalClose={handleModalClose}
+                    onModalConfirm={handleModalConfirm}
+                >
                     <b>{accountError}</b>
                 </Modal>
             )}
