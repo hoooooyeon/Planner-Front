@@ -118,11 +118,13 @@ const Modal = forwardRef((props, ref) => {
                 </ModalHeader>
                 <ModalBody>{children}</ModalBody>
                 <ModalFooter>
-                    <ModalButton onClick={onModalCancle}>{modalCancleText}</ModalButton>
-                    <ModalButton onClick={onModalConfirm}>
-                        {loading || modalConfirmText}
-                        {loading && <Loading size="small" />}
-                    </ModalButton>
+                    {onModalCancle && <ModalButton onClick={onModalCancle}>{modalCancleText}</ModalButton>}
+                    {onModalConfirm && (
+                        <ModalButton onClick={onModalConfirm}>
+                            {loading || modalConfirmText}
+                            {loading && <Loading size="small" />}
+                        </ModalButton>
+                    )}
                 </ModalFooter>
             </ModalBox>
         </Modalbackground>
