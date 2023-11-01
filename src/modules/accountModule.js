@@ -54,6 +54,8 @@ export const ACCOUNT_PASSWORD_FIND_TYPE = 'account/ACCOUNT_PASSWORD_FIND';
 const ACCOUNT_PASSWORD_FIND_SUCCESS_TYPE = 'account/ACCOUNT_PASSWORD_FIND_SUCCESS';
 const ACCOUNT_PASSWORD_FIND_FAILURE_TYPE = 'account/ACCOUNT_PASSWORD_FIND_FAILURE';
 
+const INITIALIZE_PASSWORD_UPDATE_REQUEST_TYPE = 'account/INITIALIZE_PASSWORD_UPDATE_REQUEST';
+
 export const ACCOUNT_PASSWORD_CHANGE_TYPE = 'account/ACCOUNT_PASSWORD_CHANGE';
 const ACCOUNT_PASSWORD_CHANGE_SUCCESS_TYPE = 'account/ACCOUNT_PASSWORD_CHANGE_SUCCESS';
 const ACCOUNT_PASSWORD_CHANGE_FAILURE_TYPE = 'account/ACCOUNT_PASSWORD_CHANGE_FAILURE';
@@ -170,6 +172,10 @@ export const initializePasswordFindRequestAction = () => ({
 
 export const accountPasswordFindAction = ({ email }) => ({ type: ACCOUNT_PASSWORD_FIND_TYPE, email });
 
+export const initializePasswordUpdateRequestAction = () => ({
+    type: INITIALIZE_PASSWORD_UPDATE_REQUEST_TYPE
+});
+
 export const accountPasswordChangeAction = ({ password, passwordConfirm, key }) => ({
     type: ACCOUNT_PASSWORD_CHANGE_TYPE,
     password,
@@ -218,13 +224,11 @@ const initialState = {
         email: ''
     },
     passwordFindRequest: false,
-    // changePw: {
-    //     password: '',
-    //     passwordConfirm: '',
-    //     key: '',
-    // },
-    // pwFinding: false,
-    // pwChanging: false,
+    passwordChangeForm: {
+        password: '',
+        passwordConfirm: '',
+    },
+    passwordChangeRequest: false,
     account: null,
     myPlannerList: {},
     likeList: {
@@ -314,14 +318,12 @@ function accountReducer(state = initialState, action) {
         case ACCOUNT_PASSWORD_FIND_SUCCESS_TYPE: {
             return { ...state, passwordFindRequest: true };
         }
-        case ACCOUNT_PASSWORD_CHANGE_SUCCESS_TYPE:
-            return {
-                ...state,
-                changePw: {
-                    ...state.changePw,
-                },
-                pwChanging: true,
-            };
+        case INITIALIZE_PASSWORD_UPDATE_REQUEST_TYPE: {
+            return { ...state, passwordChangeRequest: false };
+        }
+        case ACCOUNT_PASSWORD_CHANGE_SUCCESS_TYPE: {
+            return { ...state, passwordChangeRequest: true };
+        }
         case ACCOUNT_LOAD_FAILURE_TYPE: {
             return { ...state, accountError: action.payload.data };
         }
