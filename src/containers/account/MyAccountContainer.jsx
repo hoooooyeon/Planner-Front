@@ -48,7 +48,7 @@ const MyAccountContainer = () => {
 
     const handleProfileChange = (e) => {
         const { name, value } = e.target;
-        dispatch(changeFieldAction({ name, value }));
+        dispatch(changeFieldAction({ form: 'accountField', name, value }));
     };
 
     const handleProfileUpdate = (e) => {

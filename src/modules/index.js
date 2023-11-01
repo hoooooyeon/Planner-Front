@@ -14,7 +14,21 @@ import invitationReducer, { invitationSaga } from './invitationModule';
 const rootPersistConfig = {
     key: 'root',
     storage,
-    blacklist: ['loadingReducer', 'profileReducer', 'plannerReducer', 'spotReducer', 'reviewReducer', 'invitationReducer'],
+    blacklist: [
+        'accountReducer',
+        'authReducer',
+        'loadingReducer',
+        'profileReducer',
+        'plannerReducer',
+        'spotReducer',
+        'reviewReducer', 'invitationReducer',
+    ],
+};
+
+const authPersistConfig = {
+    key: 'authReducer',
+    storage,
+    whitelist: ['account', 'token'],
 };
 
 const plannerPersistConfig = {
@@ -25,7 +39,7 @@ const plannerPersistConfig = {
 
 const rootReducer = combineReducers({
     loadingReducer,
-    authReducer,
+    authReducer: persistReducer(authPersistConfig, authReducer),
     accountReducer,
     plannerReducer: persistReducer(plannerPersistConfig, plannerReducer),
     spotReducer,

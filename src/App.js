@@ -12,6 +12,10 @@ import ReviewPage from './pages/review/ReviewPage';
 import ReviewPostPage from './pages/review/ReviewPostPage';
 import ReviewPostViewerPage from './pages/review/ReviewPostViewerPage';
 import SpotPage from './pages/SpotPage';
+import FindIdPage from './pages/account/find/FindIdPage';
+import ResultFindIdPage from './pages/account/find/ResultFindIdPage';
+import UpdatePasswordPage from './pages/account/find/UpdatePasswordPage';
+import FindPasswordPage from './pages/account/find/FindPasswordPage';
 
 const App = () => {
     return (
@@ -19,6 +23,10 @@ const App = () => {
             <Route path="/" render={HomePage} exact />
             <Route path="/Login" render={LoginPage} />
             <Route path="/Register" render={RegisterPage} />
+            <Route path="/FindId" render={FindIdPage} />
+            <Route path="/ResultFindId" render={ResultFindIdPage} />
+            <Route path="/FindPassword" render={FindPasswordPage} />
+            <Route path="/UpdatePassword" render={UpdatePasswordPage} />
             <Route path="/Spot" component={SpotPage} />
             <Route path="/Profile" render={ProfilePage} />
             <Route exact path="/reviews" component={ReviewPage} />

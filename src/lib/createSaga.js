@@ -6,7 +6,7 @@ export default function createSaga(type, request) {
         const success = `${type}_SUCCESS`;
         const failure = `${type}_FAILURE`;
 
-        yield put(loadingStartAction());
+        yield put(loadingStartAction(type));
         try {
             const response = yield call(request, action);
             yield put({
@@ -22,6 +22,6 @@ export default function createSaga(type, request) {
                 response: e.response
             });
         }
-        yield put(loadingFinishAction());
+        yield put(loadingFinishAction(type));
     }
 }
