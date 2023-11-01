@@ -104,8 +104,8 @@ const FindPassword = ({ form, accountError, pwFinding, loading, onChange, handle
                     <LabelTextBox
                         type="email"
                         name="email"
-                        placeholder="이메일"
-                        label="아이디"
+                        placeholder="이메일을 적어주세요."
+                        label="아이디(이메일)"
                         onChange={onChange}
                         value={form.email}
                         error={accountError}

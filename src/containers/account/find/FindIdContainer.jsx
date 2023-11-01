@@ -9,11 +9,12 @@ import {
     validateFieldAction,
     ACCOUNT_ID_FIND_TYPE,
     accountIdFindAction,
-    CodeTimerEndAction,
+    codeTimerEndAction,
     initializeErrorAction,
     initializeIdFindRequestAction,
     accountIdFindCodeRequestAction,
     ACCOUNT_ID_FIND_CODE_REQUEST_TYPE,
+    initializeFormAction,
 } from '../../../modules/accountModule';
 import { status } from '../../../components/account/find/Status';
 
@@ -60,6 +61,7 @@ const FindIdContainer = () => {
             dispatch(initializeErrorAction());
 
             if (phase == status.REQUEST) {
+                dispatch(initializeIdFindRequestAction());
                 dispatch(accountIdFindCodeRequestAction(idFindForm));
             } else {
                 dispatch(accountIdFindAction(idFindForm));
@@ -69,7 +71,7 @@ const FindIdContainer = () => {
 
     const handleCodeTimerEnd = () => {
         setPhase(status.REQUEST);
-        dispatch(CodeTimerEndAction('인증 시간이 끝났습니다. 다시 시도하세요.'));
+        dispatch(codeTimerEndAction('인증 시간이 끝났습니다. 다시 시도하세요.'));
     };
 
     useEffect(() => {
@@ -83,7 +85,7 @@ const FindIdContainer = () => {
     useEffect(() => {
         return () => {
             dispatch(initializeErrorAction());
-            dispatch(initializeIdFindRequestAction());
+            dispatch(initializeFormAction('idFindForm'));
         };
     }, [dispatch]);
 

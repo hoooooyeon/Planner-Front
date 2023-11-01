@@ -4,7 +4,7 @@ import * as accountAPI from '../lib/api/accountAPI';
 
 // 액션 타입
 const INITIALIZE_TYPE = 'account/INITIALIZE';
-const INITIALIZE_FORM_TYPE = 'auth/INITIALIZE_FORM';
+const INITIALIZE_FORM_TYPE = 'account/INITIALIZE_FORM';
 const INITIALIZE_ERROR_TYPE = 'account/INITIALIZERROR';
 const INITIALIZE_ID_FIND_REQUEST_TYPE = 'account/INITIALIZE_ID_FIND_REQUEST';
 const CHANGE_FIELD_TYPE = 'account/CHANGE_FIELD';
@@ -85,7 +85,7 @@ export const validateFieldAction = (validState) => ({
     validState,
 });
 
-export const CodeTimerEndAction = (error) => ({
+export const codeTimerEndAction = (error) => ({
     type: CODE_TIMER_END_TYPE,
     error
 });
@@ -294,7 +294,7 @@ function accountReducer(state = initialState, action) {
                 ...state,
                 accountError: null,
             };
-        case ACCOUNT_ID_FIND_CODE_REQUEST_TYPE: {
+        case ACCOUNT_ID_FIND_CODE_REQUEST_SUCCESS_TYPE: {
             return { ...state, codeRequest: true };
         }
         case ACCOUNT_ID_FIND_SUCCESS_TYPE: {
@@ -323,6 +323,7 @@ function accountReducer(state = initialState, action) {
         case ACCOUNT_IMAGE_UPDATE_FAILURE_TYPE:
         case ACCOUNT_MY_PLANNER_LIST_LOAD_FAILURE_TYPE:
         case ACCOUNT_LIKE_PLANNER_LIST_LOAD_FAILURE_TYPE:
+        case ACCOUNT_ID_FIND_CODE_REQUEST_FAILURE_TYPE:
         case ACCOUNT_ID_FIND_FAILURE_TYPE:
         case ACCOUNT_PASSWORD_FIND_FAILURE_TYPE:
         case ACCOUNT_PASSWORD_CHANGE_FAILURE_TYPE:
