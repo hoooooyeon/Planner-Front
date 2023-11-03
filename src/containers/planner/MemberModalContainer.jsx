@@ -10,11 +10,12 @@ import {
 
 const MemberModalContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, modal, account } = useSelector(({ plannerReducer, authReducer }) => ({
+    const { planner, plannerError, modal, account, isInvite } = useSelector(({ plannerReducer, authReducer }) => ({
         planner: plannerReducer.planner,
         plannerError: plannerReducer.plannerError,
         modal: plannerReducer.modal,
         account: authReducer.account,
+        isInvite: plannerReducer.isInvite,
     }));
 
     const { plannerId } = { ...planner };
@@ -26,6 +27,7 @@ const MemberModalContainer = () => {
     const onInviteMember = () => {
         if (accountId === planner.accountId) {
             dispatch(inviteMemberAction({ plannerId, members }));
+            dispatch(resetPlannerErrorAction());
             setMembers([]);
         }
     };
@@ -60,6 +62,7 @@ const MemberModalContainer = () => {
             members={members}
             modal={modal}
             plannerError={plannerError}
+            isInvite={isInvite}
             onChangeMember={onChangeMember}
             onInviteMember={onInviteMember}
             onDeleteMember={onDeleteMember}

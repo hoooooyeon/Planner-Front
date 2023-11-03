@@ -267,6 +267,7 @@ const initialState = {
     sharePlanners: {},
     planner: {},
     plannerError: null,
+    isInvite: false,
     modal: {
         member: false,
         plannerInfo: false,
@@ -299,6 +300,12 @@ function plannerReducer(state = initialState, action) {
                 plannerError: action.payload.message,
                 planner: false,
             };
+        case INVITE_MEMBER_FAILURE_TYPE:
+            return {
+                ...state,
+                plannerError: action.payload.message,
+                isInvite: false,
+            };
         case LOAD_SHARE_PLANNER_LIST_FAILURE_TYPE:
         case CREATE_PLANNER_FAILURE_TYPE:
         case UPDATE_PLANNER_FAILURE_TYPE:
@@ -309,7 +316,6 @@ function plannerReducer(state = initialState, action) {
         case CREATE_PLAN_FAILURE_TYPE:
         case UPDATE_PLAN_FAILURE_TYPE:
         case DELETE_PLAN_FAILURE_TYPE:
-        case INVITE_MEMBER_FAILURE_TYPE:
         case DELETE_MEMBER_FAILURE_TYPE:
         case CREATE_LOCATION_FAILURE_TYPE:
         case UPDATE_LOCATION_FAILURE_TYPE:
@@ -429,6 +435,7 @@ function plannerReducer(state = initialState, action) {
                 plannerData: {
                     ...state.plannerData,
                 },
+                isInvite: true,
             };
         case DELETE_MEMBER_SUCCESS_TYPE:
             return {
@@ -444,6 +451,7 @@ function plannerReducer(state = initialState, action) {
                     ...state.modal,
                     member: !state.modal.member,
                 },
+                isInvite: false,
             };
         case TOGGLE_PLANNER_INFO_MODAL_TYPE:
             return {
