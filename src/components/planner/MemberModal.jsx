@@ -66,45 +66,34 @@ const ErrorText = styled.div`
     padding: 0.5rem 0;
 `;
 
+const InviteText = styled(ErrorText)`
+    color: ${(props) => props.theme.mainColor};
+`;
+
 const MemberModal = ({
     planner,
     members,
     modal,
     plannerError,
+    isInvite,
     onChangeMember,
     onDeleteMember,
     onInviteMember,
-    onResetMember,
     onToggleMemberModal,
-    onCloseError,
 }) => {
     const { planMembers, creator } = { ...planner };
-
-    const onInviteMemberMd = () => {
-        if (creator === members[0]) {
-            alert('생성자는 초대할 수 없습니다.');
-            return;
-        }
-        onInviteMember();
-    };
-
     return (
         <Modal
             modalVisible={modal.member}
             title="멤버 관리"
             onModalClose={() => {
                 onToggleMemberModal();
-                onResetMember();
-                onCloseError();
             }}
             onModalCancle={() => {
                 onToggleMemberModal();
-                onResetMember();
-                onCloseError();
             }}
             onModalConfirm={() => {
-                onResetMember();
-                onCloseError();
+                onToggleMemberModal();
             }}
         >
             <MemberBox>
@@ -115,10 +104,12 @@ const MemberModal = ({
                         onChange={(e) => {
                             onChangeMember(e.target.value);
                         }}
+                        value={members.length > 0 ? members[0] : ''}
                     />
-                    <Button onClick={onInviteMemberMd}>초대</Button>
+                    <Button onClick={onInviteMember}>초대</Button>
                 </InviteBox>
-                {plannerError && <ErrorText>{plannerError}</ErrorText>}
+                {plannerError && <ErrorText>{plannerError.members || plannerError}</ErrorText>}
+                {isInvite && <InviteText>전송 완료!</InviteText>}
                 <h5>현재 멤버</h5>
                 <MemberList>
                     {planMembers &&

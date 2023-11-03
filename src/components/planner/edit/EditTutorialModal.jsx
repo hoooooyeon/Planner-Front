@@ -29,8 +29,8 @@ const CloseButton = styled(FontAwesomeIcon)`
     height: 3rem;
     position: absolute;
     z-index: 999;
-    top: 2rem;
-    right: 2rem;
+    top: 5%;
+    right: 5%;
     color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
 `;
@@ -85,7 +85,7 @@ const ImgCover = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.5);
 `;
 
 const ArrowIcon = styled(FontAwesomeIcon)`

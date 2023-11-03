@@ -5,16 +5,18 @@ import { useHistory } from 'react-router';
 import { accountNotificationLoadAction } from '../../modules/accountModule';
 import { useEffect } from 'react';
 import { invitationInitializeAction, inviteAcceptAction, inviteRejectAction } from '../../modules/invitationModule';
+import { notificationInitializeAction, notifyDeleteAction, notifyReadAction } from '../../modules/notificationModule';
 
 const HeaderContainer = () => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const { loading, account, notifications, invitation } = useSelector(
-        ({ loadingReducer, authReducer, accountReducer, invitationReducer }) => ({
+    const { loading, account, notifications, invitation, notification } = useSelector(
+        ({ loadingReducer, authReducer, accountReducer, invitationReducer, notificationReducer }) => ({
             loading: loadingReducer.loading,
             account: authReducer.account,
             notifications: accountReducer.notifications,
             invitation: invitationReducer.invitation,
+            notification: notificationReducer.notification,
         }),
     );
 
@@ -50,6 +52,18 @@ const HeaderContainer = () => {
         handleNotificationLoad();
     }, [dispatch, account]);
 
+    const handleNotificationInitialize = () => {
+        dispatch(notificationInitializeAction());
+    };
+
+    const handleNotifyRead = (notificationId) => {
+        dispatch(notifyReadAction({ notificationId }));
+    };
+
+    const handleNotifyDelete = (notificationId) => {
+        dispatch(notifyDeleteAction({ notificationId }));
+    };
+
     return (
         <Header
             loading={loading}
@@ -62,6 +76,10 @@ const HeaderContainer = () => {
             onInviteAccept={handleInviteAccept}
             invitationInfo={invitation}
             onInvitationInitialize={handleInvitationInitialize}
+            notificationInfo={notification}
+            onNotifyRead={handleNotifyRead}
+            onNotifyDelete={handleNotifyDelete}
+            onNotificationInitialize={handleNotificationInitialize}
         />
     );
 };

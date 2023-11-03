@@ -10,6 +10,7 @@ import spotReducer, { spotSaga } from './spotModule';
 import reviewReducer, { reviewSaga } from './reviewModule';
 import accountReducer, { accountSaga } from './accountModule';
 import invitationReducer, { invitationSaga } from './invitationModule';
+import notificationReducer, { notificationSaga } from './notificationModule';
 
 const rootPersistConfig = {
     key: 'root',
@@ -21,7 +22,9 @@ const rootPersistConfig = {
         'profileReducer',
         'plannerReducer',
         'spotReducer',
-        'reviewReducer', 'invitationReducer',
+        'reviewReducer',
+        'invitationReducer',
+        'notificationReducer',
     ],
 };
 
@@ -44,11 +47,20 @@ const rootReducer = combineReducers({
     plannerReducer: persistReducer(plannerPersistConfig, plannerReducer),
     spotReducer,
     reviewReducer,
-    invitationReducer
+    invitationReducer,
+    notificationReducer,
 });
 
 export function* rootSaga() {
-    yield all([authSaga(), accountSaga(), plannerSaga(), reviewSaga(), spotSaga(), invitationSaga()]);
+    yield all([
+        authSaga(),
+        accountSaga(),
+        plannerSaga(),
+        reviewSaga(),
+        spotSaga(),
+        invitationSaga(),
+        notificationSaga(),
+    ]);
 }
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
 export default persistedReducer;
