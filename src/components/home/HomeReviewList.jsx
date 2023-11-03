@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import Empty from '../common/Empty';
+import tempImage from '../../lib/images/plannerErrorImg.png';
 
 const HomeReviewListBlock = styled.div`
     width: 100%;
@@ -89,15 +91,16 @@ const Title = styled.div`
     font-size: 0.8rem;
     font-weight: bold;
     overflow: hidden;
+    text-overflow: ellipsis;
 `;
 const Date = styled.div`
-    font-size: 0.4rem;
+    font-size: 0.8rem;
     color: ${(props) => props.theme.tertiaryColor};
     margin-top: 0.5rem;
     overflow: hidden;
 `;
 
-const HomeReviewList = ({ loading }) => {
+const HomeReviewList = ({ reviewList, loading, onReviewClick }) => {
     return (
         <HomeReviewListBlock>
             <Container>
@@ -106,42 +109,21 @@ const HomeReviewList = ({ loading }) => {
                     <p>먼저 여행을 다녀온 이용자들의 여행 후기를 살펴보세요.</p>
                 </Header>
                 <ReviewList>
-                    <ReviewItem>
-                        <ImgBox>
-                            <Img />
-                        </ImgBox>
-                        <InfoBox>
-                            <Title>1</Title>
-                            <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                        </InfoBox>
-                    </ReviewItem>{' '}
-                    <ReviewItem>
-                        <ImgBox>
-                            <Img />
-                        </ImgBox>
-                        <InfoBox>
-                            <Title>1</Title>
-                            <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                        </InfoBox>
-                    </ReviewItem>{' '}
-                    <ReviewItem>
-                        <ImgBox>
-                            <Img />
-                        </ImgBox>
-                        <InfoBox>
-                            <Title>1</Title>
-                            <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                        </InfoBox>
-                    </ReviewItem>{' '}
-                    <ReviewItem>
-                        <ImgBox>
-                            <Img />
-                        </ImgBox>
-                        <InfoBox>
-                            <Title>1</Title>
-                            <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
-                        </InfoBox>
-                    </ReviewItem>
+                    {reviewList ? (
+                        reviewList.map((item, index) => (
+                            <ReviewItem key={index} onClick={() => onReviewClick(item.reviewId)}>
+                                <ImgBox>
+                                    <Img src={item.thumbnail || tempImage} />
+                                </ImgBox>
+                                <InfoBox>
+                                    <Title>{item.title}</Title>
+                                    <Date>작성일: {item.createDate}</Date>
+                                </InfoBox>
+                            </ReviewItem>
+                        ))
+                    ) : (
+                        <Empty text="리뷰" />
+                    )}
                 </ReviewList>
             </Container>
         </HomeReviewListBlock>

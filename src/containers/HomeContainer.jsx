@@ -8,17 +8,19 @@ import {
 } from '../modules/plannerModule';
 import Home from '../components/home/Home';
 import { useHistory } from 'react-router';
+import { loadReviewListAction } from '../modules/reviewModule';
 
 const HomeContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { sharePlanners, planner, plannerData, pType, loading } = useSelector(
-        ({ plannerReducer, loadingReducer }) => ({
+    const { sharePlanners, planner, plannerData, pType, reviewList, loading } = useSelector(
+        ({ plannerReducer, reviewReducer, loadingReducer }) => ({
             sharePlanners: plannerReducer.sharePlanners,
             planner: plannerReducer.planner,
             plannerData: plannerReducer.plannerData,
             pType: plannerReducer.pType,
+            reviewList: (reviewReducer.reviewList && reviewReducer.reviewList.list) || null,
             loading: loadingReducer.loading,
         }),
     );
@@ -30,10 +32,15 @@ const HomeContainer = () => {
         dispatch(changeCurPlannerIdAction(plannerId));
     };
 
+    const handleReviewClick = (reviewId) => {
+        history.push(`/reviews/${reviewId}`);
+    };
+
     // 공유 플래너리스트 가져오기
     useEffect(() => {
         const queryString = { itemCount: 4, sortCriteria: 1, pageNum: 1 };
         dispatch(loadSharePlannerListAction(queryString));
+        dispatch(loadReviewListAction(queryString));
     }, [dispatch]);
 
     // 주소 이동
@@ -51,7 +58,15 @@ const HomeContainer = () => {
         };
     }, [dispatch]);
 
-    return <Home sharePlanners={sharePlanners} loading={loading} onClickPlanner={onClickPlanner} />;
+    return (
+        <Home
+            sharePlanners={sharePlanners}
+            reviewList={reviewList}
+            loading={loading}
+            onClickPlanner={onClickPlanner}
+            onReviewClick={handleReviewClick}
+        />
+    );
 };
 
 export default HomeContainer;
