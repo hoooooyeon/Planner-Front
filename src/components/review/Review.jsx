@@ -160,7 +160,9 @@ const Review = ({
                         </Info>
                     </FlexBox>
                     <TitleMenus>
-                        {auth.accountId == reviewData.writerId && <Menu list={menuList} onItemClick={onItemClick} />}
+                        {auth && auth.accountId == reviewData.writerId && (
+                            <Menu list={menuList} onItemClick={onItemClick} />
+                        )}
                     </TitleMenus>
                 </PostTitleBox>
                 <PlannerInfoBox>
@@ -170,14 +172,14 @@ const Review = ({
                 </PlannerInfoBox>
                 <PostContentBox dangerouslySetInnerHTML={{ __html: reviewData.content }}></PostContentBox>
                 <PostFooterBox>{reviewData.tag && reviewData.tag.map((tag) => <PostTag>{tag}</PostTag>)}</PostFooterBox>
-                <CommentInput name={auth.nickname} onCommentWrite={onCommentWrite} />
+                {auth && <CommentInput name={auth.nickname} onCommentWrite={onCommentWrite} />}
                 <CommentsBox>
                     {comments &&
                         comments.map((comment, index) => (
                             <Comment
                                 key={index}
                                 commentInfo={comment}
-                                accountId={auth.accountId}
+                                accountId={auth && auth.accountId}
                                 onCommentWrite={onCommentWrite}
                                 onCommentDelete={onCommentDelete}
                             />
