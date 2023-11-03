@@ -115,9 +115,9 @@ const PlannerInfoModal = ({
     curExpense,
     curMemberCount,
     curMemberTypeId,
+    onChangeExpense,
+    onChangeMemberCount,
     setCurTitle,
-    setCurExpense,
-    setCurMemberCount,
     setCurMemberTypeId,
     onCloseError,
 }) => {
@@ -165,7 +165,7 @@ const PlannerInfoModal = ({
                         type="number"
                         value={curExpense}
                         onChange={(e) => {
-                            setCurExpense(e.target.value);
+                            onChangeExpense(e.target.value);
                         }}
                     ></Funds>
                 </FlexDiv>
@@ -176,7 +176,7 @@ const PlannerInfoModal = ({
                         type="number"
                         value={curMemberCount}
                         onChange={(e) => {
-                            setCurMemberCount(e.target.value);
+                            onChangeMemberCount(e.target.value);
                         }}
                     ></People>
                 </FlexDiv>

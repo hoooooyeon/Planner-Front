@@ -26,12 +26,28 @@ const PlannerInfoModalContainer = () => {
     const [curMemberCount, setCurMemberCount] = useState(memberCount);
     const [curMemberTypeId, setCurMemberTypeId] = useState(memberTypeId);
 
+    const onChangeExpense = (keyword) => {
+        const regex = /^[0-9]+$/;
+
+        if (regex.test(keyword) || keyword === '') {
+            setCurExpense(keyword);
+        }
+    };
+
+    const onChangeMemberCount = (keyword) => {
+        const regex = /^[0-9]+$/;
+
+        if (regex.test(keyword) || keyword === '') {
+            setCurMemberCount(keyword);
+        }
+    };
+
     useEffect(() => {
         setCurTitle(title);
         setCurExpense(expense);
         setCurMemberCount(memberCount);
         setCurMemberTypeId(memberTypeId);
-    }, [title, expense, memberCount, memberTypeId, modal]);
+    }, [modal]);
 
     // 플래너 수정
     const onUpdatePlanner = () => {
@@ -73,8 +89,8 @@ const PlannerInfoModalContainer = () => {
             curMemberCount={curMemberCount}
             curMemberTypeId={curMemberTypeId}
             setCurTitle={setCurTitle}
-            setCurExpense={setCurExpense}
-            setCurMemberCount={setCurMemberCount}
+            onChangeExpense={onChangeExpense}
+            onChangeMemberCount={onChangeMemberCount}
             setCurMemberTypeId={setCurMemberTypeId}
             onCloseError={onCloseError}
         />
