@@ -10,8 +10,10 @@ import {
     changeFieldAction,
 } from '../../modules/accountModule';
 import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const MyAccountContainer = () => {
+    const history = useHistory();
     const dispatch = useDispatch();
     const { loading, auth, account, accountField, likeList } = useSelector(
         ({ loadingReducer, authReducer, accountReducer }) => ({
@@ -68,12 +70,10 @@ const MyAccountContainer = () => {
         }
     };
 
-    useEffect(() => {
-        // if (auth) {
-        //     const { accountId } = auth;
-        //     dispatch(accountLoadAction(accountId));
-        // }
-    }, []);
+    if (!auth) {
+        alert('정상적인 접근이 아닙니다.');
+        history.push('/');
+    }
 
     return (
         <MyAccount
