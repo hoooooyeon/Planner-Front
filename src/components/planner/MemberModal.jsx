@@ -89,9 +89,6 @@ const MemberModal = ({
             onModalClose={() => {
                 onToggleMemberModal();
             }}
-            onModalCancle={() => {
-                onToggleMemberModal();
-            }}
             onModalConfirm={() => {
                 onToggleMemberModal();
             }}
