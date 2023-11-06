@@ -35,14 +35,13 @@ const SideListItem = styled.div`
     ${(props) =>
         props.active &&
         css`
-            /* border: solid 1px silver; */
-            color: var(--md-sys-color-on-secondary-container);
-            background-color: var(--md-sys-color-secondary-container);
+            color: ${(props) => props.theme.primaryColor};
+            background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
         `}
 
     &:hover {
-        color: var(--md-sys-color-on-surface-variant);
-        background-color: var(--md-sys-color-surface-variant);
+        color: ${(props) => props.theme.hoverColor};
+        background-color: ${(props) => props.theme.hoverBackgroundColor};
     }
 
     svg {
@@ -75,7 +74,7 @@ const LikeListView = ({ likeLists, onLikeListLoad }) => {
     const [searchText, setSearchText] = useState('');
     const [pageNum, setPageNum] = useState(1);
 
-    const likeList = likeLists[menu[selectIndex].value];
+    const likeList = likeLists[menu[selectIndex].value] || {};
     const list = likeList.list || null;
     const totalCount = likeList.totalCount || 0;
 

@@ -11,10 +11,10 @@ export const SelectBox = styled.div`
     user-select: none;
     margin: 0px 5px;
     box-sizing: border-box;
-    box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
+    /* box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor}; */
 
     &:hover {
-        box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
+        box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
     }
 `;
 
@@ -38,7 +38,7 @@ const SelectOption = styled.div`
     border-radius: 6px;
     animation: fadein 0.3s;
     z-index: 3;
-    box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
+    box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
 
     @keyframes fadein {
         from {

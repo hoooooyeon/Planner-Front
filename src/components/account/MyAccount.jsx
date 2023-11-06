@@ -19,24 +19,20 @@ const TopNav = styled.div`
     align-items: stretch;
     border-radius: 6px;
     border: solid 1px silver;
-    box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
-    background-color: var(--md-sys-color-surface);
+    box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
 `;
 
 const NavItem = styled.div`
-    /* height: 50px; */
     padding: 0px 10px;
-    /* margin: 0px 10px; */
     text-align: center;
-    /* line-height: 50px; */
     line-height: 60px;
-    /* border: solid 1px white; */
 
     ${(props) =>
         props.active &&
         css`
-            color: var(--md-sys-color-on-secondary-container);
-            background-color: var(--md-sys-color-secondary-container);
+            color: ${(props) => props.theme.primaryColor};
+            background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
         `}
 
     &:first-child {
@@ -50,11 +46,8 @@ const NavItem = styled.div`
     }
 
     &:hover {
-        /* background-color: silver; */
-        /* border-radius: 6px; */
-        /* border: solid 1px silver; */
-        color: var(--md-sys-color-on-surface-variant);
-        background-color: var(--md-sys-color-surface-variant);
+        color: ${(props) => props.theme.hoverColor};
+        background-color: ${(props) => props.theme.hoverBackgroundColor};
     }
 
     svg {
@@ -63,12 +56,11 @@ const NavItem = styled.div`
 `;
 
 const ContentBlock = styled.div`
-    /* height: 580px; */
     border-radius: 6px;
     border: solid 1px silver;
     margin-top: 20px;
-    box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
-    background-color: var(--md-sys-color-surface);
+    box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
 `;
 
 const MyAccount = ({

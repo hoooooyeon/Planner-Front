@@ -8,13 +8,17 @@ const SearchBlock = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-`;
+    border-radius: 1rem;
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
+    height: 10rem;
+    margin: 0px 10rem;
 
-const SortSelect = styled(Select)`
-    ${SelectMain} {
-        width: 100px;
-        color: var(--md-sys-color-on-surface-variant);
-        background-color: var(--md-sys-color-surface-variant);
+    @media screen and (max-width: 1200px) {
+        margin: 0px 5rem;
+    }
+
+    @media screen and (max-width: 1024px) {
+        margin: 0px 2rem;
     }
 `;
 
@@ -29,18 +33,18 @@ const SearchButton = styled.button`
     height: 36px;
     border-radius: 6px;
     border: solid 1px silver;
-    color: var(--md-sys-color-primary);
-    background-color: var(--md-sys-color-surface);
+    color: ${(props) => props.theme.primaryColor};
+    background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
 
     &:hover {
-        box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
+        box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
     }
 `;
 
 const ListSearchBar = ({ sortValue, sortOption, searchText, onSortChange, onSearchTextChange }) => {
     return (
         <SearchBlock>
-            <SortSelect value={sortValue} options={sortOption} onChange={onSortChange}></SortSelect>
+            <Select value={sortValue} options={sortOption} onChange={onSortChange}></Select>
             <SearchBar type="text" name="searchBar" onChange={onSearchTextChange} value={searchText} />
             <SearchButton>검색</SearchButton>
         </SearchBlock>

@@ -19,7 +19,6 @@ const MyAccountContainer = () => {
         ({ loadingReducer, authReducer, accountReducer }) => ({
             loading: loadingReducer.loading,
             auth: authReducer.account,
-            account: accountReducer.account,
             accountField: accountReducer.accountField,
             likeList: accountReducer.likeList,
         }),
@@ -77,7 +76,7 @@ const MyAccountContainer = () => {
 
     return (
         <MyAccount
-            account={account}
+            account={auth}
             accountField={accountField}
             likeList={likeList}
             onProfileLoad={handleProfileLoad}

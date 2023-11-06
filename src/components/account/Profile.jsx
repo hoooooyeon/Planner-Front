@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import ImageSelectModal from './ImageSelectModal';
 import LabelTextBox from '../common/LabelTextBox';
 import tempImage from '../../images/temp.jpg';
+import tempAccountImage from '../../lib/images/blank-profile-picture.png';
 import { useEffect } from 'react';
 
 const ProfileBlock = styled.div`
@@ -36,7 +37,8 @@ const ProfileImageBlock = styled.div`
 `;
 
 const ProfileImage = styled.img`
-    background-color: black;
+    background-color: ${(props) => props.theme.secondaryBackgroundColor};
+    border: none;
     border-radius: 32px;
     width: 128px;
     height: 128px;
@@ -50,12 +52,12 @@ const ImageModifyBtn = styled.div`
     height: 28px;
     border-radius: 6px;
     border: solid 1px silver;
-    color: var(--md-sys-color-primary);
-    background-color: var(--md-sys-color-surface);
+    color: ${(props) => props.theme.secondaryColor};
+    background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
 
     &:hover {
         border-radius: 6px;
-        box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
+        box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
     }
 `;
 
@@ -85,11 +87,11 @@ const SaveButton = styled.button`
     height: 42px;
     border-radius: 6px;
     border: solid 1px silver;
-    color: var(--md-sys-color-primary);
-    background-color: var(--md-sys-color-surface);
+    color: ${(props) => props.theme.primaryColor};
+    background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
 
     &:hover {
-        box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
+        box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
     }
 `;
 
@@ -140,13 +142,13 @@ const Profile = ({
                 <ProfileInfoBlock>
                     <ProfileImageBlock>
                         <ProfileImage
-                            src={account && `${process.env.PUBLIC_URL}/${account.image}`}
+                            src={account ? `${process.env.PUBLIC_URL}/${account.image}` : tempAccountImage}
                             onError={handleImageLoadError}
                         ></ProfileImage>
                         <ImageModifyBtn onClick={handleModalShow}>변경</ImageModifyBtn>
                     </ProfileImageBlock>
                     <ProfileTextBoxBlock>
-                        <StyledLabelTextBox name={'username'} label={'이름'} defaultValue={username} readOnly />
+                        <StyledLabelTextBox name={'username'} label={'이름'} value={username} readOnly />
                         <StyledLabelTextBox
                             name={'nickname'}
                             label={'닉네임'}
