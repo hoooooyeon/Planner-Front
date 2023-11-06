@@ -171,6 +171,7 @@ const Profile = ({
                 ref={inputRef}
                 modalVisible={modalVisible}
                 onModalClose={handleModalClose}
+                onModalCancle={handleModalClose}
                 onModalConfirm={handleModalConfirm}
             />
         </ProfileBlock>

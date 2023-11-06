@@ -73,6 +73,7 @@ const PlannerSelectModal = ({
             modalVisible={modalVisible}
             title="플래너 선택"
             onModalClose={onModalClose}
+            onModalCancle={onModalClose}
             onModalConfirm={handleModalConfirm}
             modalConfirmText="선택"
         >

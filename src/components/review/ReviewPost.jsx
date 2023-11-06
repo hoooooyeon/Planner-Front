@@ -151,6 +151,7 @@ const ReviewPost = ({
                 modalVisible={plannerConfirmModal}
                 title="플래너 확인"
                 onModalClose={handleModalClose}
+                onModalCancle={handleModalClose}
                 onModalConfirm={handleModalConfirm}
                 modalConfirmText="확인"
             >
