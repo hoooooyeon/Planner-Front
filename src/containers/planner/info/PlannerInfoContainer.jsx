@@ -100,11 +100,7 @@ const PlannerInfoContainer = () => {
 
     // 플래너 좋아요 토글
     const onToggleLikePlanner = () => {
-        if (accountId) {
-            dispatch(toggleLikePlannerAction(plannerId));
-        } else {
-            alert('로그인이 필요합니다.');
-        }
+        dispatch(toggleLikePlannerAction(plannerId));
     };
 
     /* 지도 관련 함수들 */

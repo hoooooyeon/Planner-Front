@@ -13,6 +13,8 @@ import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/spotErrorImg.jpg';
 import Empty from '../../common/Empty';
 import Loading from '../../common/Loading';
+import Modal from '../../common/Modal';
+import ErrorModal from '../../common/ErrorModal';
 
 const EditListBlock = styled.div`
     position: fixed;
@@ -146,6 +148,7 @@ const ErrorList = styled.div`
 `;
 
 const EditList = ({
+    plannerData,
     spots,
     onCreateLocation,
     onOpenDetail,
@@ -174,6 +177,7 @@ const EditList = ({
     const navRef = useRef();
     const [navOpen, setNavOpen] = useState(true);
     const [resizeNav, setResizeNav] = useState(false);
+    const [isPlanModal, setIsPlanModal] = useState(false);
 
     // nav 토글 함수
     const onToggleNav = () => {
@@ -187,6 +191,18 @@ const EditList = ({
             setResizeNav(false);
         } else if (window.innerWidth >= 768) {
             setResizeNav(true);
+        }
+    };
+
+    const handleConfirmModal = () => {
+        setIsPlanModal(false);
+    };
+
+    const handleCreateLocation = (spot) => {
+        if (plannerData && plannerData.planId) {
+            onCreateLocation(spot);
+        } else {
+            setIsPlanModal(true);
         }
     };
 
@@ -250,7 +266,7 @@ const EditList = ({
 
                                                 <StyledFontAwesomeIcon
                                                     onClick={() => {
-                                                        onCreateLocation(s);
+                                                        handleCreateLocation(s);
                                                         onClickDateSchedule();
                                                     }}
                                                     icon={faPlus}
@@ -284,7 +300,7 @@ const EditList = ({
 
                                                 <StyledFontAwesomeIcon
                                                     onClick={() => {
-                                                        onCreateLocation(s);
+                                                        handleCreateLocation(s);
                                                     }}
                                                     icon={faPlus}
                                                 />
@@ -320,6 +336,7 @@ const EditList = ({
                     />
                 </PageBox>
             </EditListBlock>
+            <ErrorModal errorState={isPlanModal} onCloseError={handleConfirmModal} errorMessage="일정을 선택하세요!" />
         </>
     );
 };

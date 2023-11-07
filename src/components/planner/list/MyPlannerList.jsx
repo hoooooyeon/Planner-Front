@@ -6,6 +6,7 @@ import errorImg from '../../../lib/images/plannerErrorImg.png';
 import Empty from '../../common/Empty';
 import ErrorModal from '../../common/ErrorModal';
 import Loading from '../../common/Loading';
+import { useState } from 'react';
 
 const MyPlannerListBlock = styled.div`
     width: 100%;
@@ -134,6 +135,7 @@ const Img = styled.img`
 `;
 
 const MyPlannerList = ({
+    accountId,
     myPlannerList,
     accountError,
     loading,
@@ -145,12 +147,26 @@ const MyPlannerList = ({
     drag,
 }) => {
     const itemRef = useRef();
+    const [createPlannerModal, setCreatePlannerModal] = useState(false);
+
+    const handlecreatePlanner = () => {
+        if (accountId) {
+            onCreatePlanner();
+        } else {
+            setCreatePlannerModal(true);
+        }
+    };
+
+    const handleConfirmModal = () => {
+        setCreatePlannerModal(false);
+    };
+
     return (
         <MyPlannerListBlock>
             <Container>
                 <Header>
                     <HeaderTitle>나의 플래너</HeaderTitle>
-                    <Button onClick={onCreatePlanner}>플래너 생성</Button>
+                    <Button onClick={handlecreatePlanner}>플래너 생성</Button>
                 </Header>
                 {loading && Object.keys(myPlannerList).length <= 0 ? (
                     <Loading />
@@ -199,6 +215,11 @@ const MyPlannerList = ({
             {accountError && typeof accountError === 'string' && (
                 <ErrorModal errorState={accountError} errorMessage={accountError} onCloseError={onCloseError} />
             )}
+            <ErrorModal
+                errorState={createPlannerModal}
+                onCloseError={handleConfirmModal}
+                errorMessage="로그인이 필요합니다!"
+            />
         </MyPlannerListBlock>
     );
 };

@@ -38,6 +38,7 @@ const EditRouteContainer = () => {
     const { accountId } = { ...account };
     const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : new Date());
     const [endDate, setEndDate] = useState(planDateEnd ? new Date(planDateEnd) : new Date());
+    const [accountErrorModal, setAccountErrorModal] = useState({ message: '', state: false });
 
     // 여행 날짜 변환
     const letsFormat = (d) => {
@@ -47,16 +48,21 @@ const EditRouteContainer = () => {
         );
     };
 
+    const handleAccountError = (text) => {
+        setAccountErrorModal({ message: text, stete: true });
+    };
+
     // 페이지 접근 제어
     useEffect(() => {
+        // alert;
         if (!accountId) {
-            alert('로그인이 필요합니다.');
+            handleAccountError('로그인이 필요합니다.');
             history.push('/Planners');
         } else if (planner === false) {
-            alert('잘못된 접근입니다.');
+            handleAccountError('잘못된 접근입니다.');
             history.push(`/Planners`);
         } else if (Object.keys(planner).length > 0 && accountId !== planner.accountId) {
-            alert('호스트만 접근할 수 있습니다.');
+            handleAccountError('호스트만 접근할 수 있습니다.');
             history.push('/Planners');
         }
     }, [history, accountId, account, planner]);

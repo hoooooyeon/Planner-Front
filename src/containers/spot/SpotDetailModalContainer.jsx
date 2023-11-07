@@ -16,14 +16,10 @@ const SpotDetailModalContainer = () => {
 
     // 여행지 좋아요 토글.
     const onToggleDetailLike = () => {
-        if (accountId) {
-            if (likeState) {
-                dispatch(removeSpotLikeAction({ contentId }));
-            } else {
-                dispatch(addSpotLikeAction({ title, contentId, image }));
-            }
+        if (likeState) {
+            dispatch(removeSpotLikeAction({ contentId }));
         } else {
-            alert('로그인이 필요합니다.');
+            dispatch(addSpotLikeAction({ title, contentId, image }));
         }
     };
 
@@ -34,6 +30,7 @@ const SpotDetailModalContainer = () => {
 
     return (
         <SpotDetailModal
+            accountId={accountId}
             spotData={spotData}
             detail={detail}
             onResetDetailSpot={onResetDetailSpot}

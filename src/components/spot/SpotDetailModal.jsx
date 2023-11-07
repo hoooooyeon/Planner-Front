@@ -4,6 +4,8 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../common/Modal';
 import { handleErrorImg } from '../../lib/utils/CommonFunction';
 import errorImg from '../../lib/images/spotErrorImg.jpg';
+import { useState } from 'react';
+import ErrorModal from '../common/ErrorModal';
 
 const DetailModalBlock = styled.div`
     width: 50rem;
@@ -105,9 +107,22 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: ${(props) => (props.like ? `${props.theme.likeButtonColor}` : `${props.theme.secondaryColor}`)};
 `;
 
-const SpotDetailModal = ({ spotData, detail, onResetDetailSpot, onToggleDetailLike }) => {
+const SpotDetailModal = ({ accountId, spotData, detail, onResetDetailSpot, onToggleDetailLike }) => {
     const { title, image, overview, addr1, likeCount, likeState } = { ...detail };
     const { contentId } = { ...spotData };
+    const [likeSpotModal, setLikeSpotModal] = useState(false);
+
+    const handletoggleLikeSpot = () => {
+        if (accountId) {
+            onToggleDetailLike();
+        } else {
+            setLikeSpotModal(true);
+        }
+    };
+
+    const handleConfirmModal = () => {
+        setLikeSpotModal(false);
+    };
 
     return (
         <Modal
@@ -132,7 +147,7 @@ const SpotDetailModal = ({ spotData, detail, onResetDetailSpot, onToggleDetailLi
                 </ImgBox>
                 <InfoBox>
                     {likeCount >= 0 && (
-                        <LikeBox onClick={onToggleDetailLike} like={likeState ? likeState.toString() : undefined}>
+                        <LikeBox onClick={handletoggleLikeSpot} like={likeState ? likeState.toString() : undefined}>
                             <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
                             <div>{likeCount}</div>
                         </LikeBox>
@@ -151,6 +166,11 @@ const SpotDetailModal = ({ spotData, detail, onResetDetailSpot, onToggleDetailLi
                     </FlexDiv>
                 </InfoBox>
             </DetailModalBlock>
+            <ErrorModal
+                errorState={likeSpotModal}
+                onCloseError={handleConfirmModal}
+                errorMessage="로그인이 필요합니다!"
+            />
         </Modal>
     );
 };

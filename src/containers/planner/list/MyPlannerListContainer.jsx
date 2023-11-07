@@ -48,22 +48,18 @@ const MyPlannerListContainer = () => {
 
     // 플래너 생성
     const onCreatePlanner = () => {
-        if (accountId) {
-            const queryString = {
-                accountId,
-                creator: nickname,
-                title: `${nickname}의 여행 플래너`,
-                planDateStart: letsFormat(new Date()),
-                planDateEnd: letsFormat(new Date()),
-                planMembers: [],
-                expense: 0,
-                memberCount: 1,
-                memberTypeId: 1,
-            };
-            dispatch(createPlannerAction(queryString));
-        } else {
-            alert('로그인이 필요합니다.');
-        }
+        const queryString = {
+            accountId,
+            creator: nickname,
+            title: `${nickname}의 여행 플래너`,
+            planDateStart: letsFormat(new Date()),
+            planDateEnd: letsFormat(new Date()),
+            planMembers: [],
+            expense: 0,
+            memberCount: 1,
+            memberTypeId: 1,
+        };
+        dispatch(createPlannerAction(queryString));
     };
 
     // 플래너 선택
@@ -119,6 +115,7 @@ const MyPlannerListContainer = () => {
 
     return (
         <MyPlannerList
+            accountId={accountId}
             myPlannerList={myPlannerList}
             accountError={accountError}
             drag={drag}
