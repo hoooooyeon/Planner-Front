@@ -39,8 +39,10 @@ const PlannerInfoContainer = () => {
         if (planner === false) {
             alert('잘못된 접근입니다.');
             history.push('/Planners');
+        } else if (plannerId === '') {
+            history.push('/Planners');
         }
-    }, [history, planner]);
+    }, [history, planner, plannerId]);
 
     // 주소 입력 접근시 plannerData.plannerId 설정
     useEffect(() => {
@@ -52,7 +54,6 @@ const PlannerInfoContainer = () => {
         if (accountId === planner.accountId) {
             if (window.confirm('정말로 삭제하시겠습니까?')) {
                 dispatch(deletePlannerAction(plannerId));
-                history.push('/Planners');
             }
         }
     };

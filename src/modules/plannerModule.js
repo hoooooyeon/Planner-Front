@@ -367,7 +367,9 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 plannerData: {
                     ...state.plannerData,
+                    plannerId: '',
                 },
+                planner: {},
             };
         case TOGGLE_LIKE_PLANNER_SUCCESS_TYPE:
             return {

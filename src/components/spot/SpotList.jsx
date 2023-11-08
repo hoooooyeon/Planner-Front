@@ -196,7 +196,9 @@ const SpotList = ({
                     itemIndex={12}
                 />
             </Container>
-            {spotError && <ErrorModal errorState={spotError} errorMessage={message} onCloseError={onCloseError} />}
+            {spotError && typeof spotError === 'string' && (
+                <ErrorModal errorState={spotError} errorMessage={message} onCloseError={onCloseError} />
+            )}
         </SpotListBlock>
     );
 };

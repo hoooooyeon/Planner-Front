@@ -107,7 +107,15 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: ${(props) => (props.like ? `${props.theme.likeButtonColor}` : `${props.theme.secondaryColor}`)};
 `;
 
-const SpotDetailModal = ({ accountId, spotData, detail, onResetDetailSpot, onToggleDetailLike }) => {
+const ErrorText = styled.b`
+    font-size: 0.8rem;
+    color: ${(props) => props.theme.errorColor};
+    margin: 3px 0px;
+    display: flex;
+    justify-content: center;
+`;
+
+const SpotDetailModal = ({ accountId, spotData, spotError, detail, onResetDetailSpot, onToggleDetailLike }) => {
     const { title, image, overview, addr1, likeCount, likeState } = { ...detail };
     const { contentId } = { ...spotData };
     const [likeSpotModal, setLikeSpotModal] = useState(false);
@@ -152,6 +160,7 @@ const SpotDetailModal = ({ accountId, spotData, detail, onResetDetailSpot, onTog
                             <div>{likeCount}</div>
                         </LikeBox>
                     )}
+                    {spotError && <ErrorText>{spotError.detailError}</ErrorText>}
                     <FlexDiv>
                         <Label>이름</Label>
                         <Title>{title}</Title>

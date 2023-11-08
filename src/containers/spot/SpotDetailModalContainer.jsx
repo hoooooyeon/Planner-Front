@@ -4,7 +4,7 @@ import { addSpotLikeAction, removeSpotLikeAction, resetDetailSpotAction } from '
 
 const SpotDetailModalContainer = () => {
     const dispatch = useDispatch();
-    const { detail, spotData, account } = useSelector(({ spotReducer, authReducer }) => ({
+    const { detail, spotData, account, spotError } = useSelector(({ spotReducer, authReducer }) => ({
         detail: spotReducer.detail,
         spotError: spotReducer.spotError,
         spotData: spotReducer.spotData,
@@ -32,6 +32,7 @@ const SpotDetailModalContainer = () => {
         <SpotDetailModal
             accountId={accountId}
             spotData={spotData}
+            spotError={spotError}
             detail={detail}
             onResetDetailSpot={onResetDetailSpot}
             onToggleDetailLike={onToggleDetailLike}
