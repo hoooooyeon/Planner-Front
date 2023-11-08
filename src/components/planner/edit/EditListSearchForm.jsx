@@ -49,7 +49,7 @@ const MenuIcon = styled(FontAwesomeIcon)`
 `;
 
 const IconName = styled.div`
-    font-size: 0.1rem;
+    font-size: 0.7rem;
     padding: 0.2rem 0.4rem;
     font-weight: bold;
     color: ${(props) => props.theme.secondaryColor};
@@ -58,7 +58,7 @@ const IconName = styled.div`
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 1rem;
     position: absolute;
-    top: 35px;
+    top: 33px;
 `;
 
 const FormDiv = styled.div`

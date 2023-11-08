@@ -139,6 +139,7 @@ const PlannerInfo = ({
     const menuRef = useRef();
     const containerRef = useRef();
     const [isDropDown, setIsDropDown] = useState(false);
+    const [likePlannerModal, setLikePlannerModal] = useState(false);
 
     const onOpenDropDown = () => {
         setIsDropDown(!isDropDown);
@@ -164,6 +165,18 @@ const PlannerInfo = ({
             window.removeEventListener('resize', onResizeDropDown);
         };
     });
+
+    const handleToggleLikePlanner = () => {
+        if (accountId) {
+            onToggleLikePlanner();
+        } else {
+            setLikePlannerModal(true);
+        }
+    };
+
+    const handleConfirmModal = () => {
+        setLikePlannerModal(false);
+    };
 
     return (
         <PlannerInfoBlock ref={containerRef}>
@@ -199,9 +212,10 @@ const PlannerInfo = ({
                 <FlexBox>
                     <InfoMap
                         planner={planner}
+                        accountId={accountId}
                         allSchedule={allSchedule}
                         mapRef={mapRef}
-                        onToggleLikePlanner={onToggleLikePlanner}
+                        onToggleLikePlanner={handleToggleLikePlanner}
                         onClickAllSchedule={onClickAllSchedule}
                     />
                     <InfoRoute
@@ -214,6 +228,11 @@ const PlannerInfo = ({
                 </FlexBox>
             </Container>
             <InfoMenu planner={planner} />
+            <ErrorModal
+                errorState={likePlannerModal}
+                onCloseError={handleConfirmModal}
+                errorMessage="로그인이 필요합니다!"
+            />
         </PlannerInfoBlock>
     );
 };

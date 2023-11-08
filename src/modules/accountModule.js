@@ -33,6 +33,7 @@ const ACCOUNT_LIKE_PLANNER_LIST_LOAD_FAILURE_TYPE = 'account/ACCOUNT_LIKE_PLANNE
 const ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE = 'account/ACCOUNT_LIKE_SPOT_LIST_LOAD';
 const ACCOUNT_LIKE_SPOT_LIST_LOAD_SUECCESS_TYPE = 'account/ACCOUNT_LIKE_SPOT_LIST_LOAD_SUCCESS';
 const ACCOUNT_LIKE_SPOT_LIST_LOAD_FAILURE_TYPE = 'account/ACCOUNT_LIKE_SPOT_LIST_LOAD_FAILURE';
+
 const ACCOUNT_NOTIFICATION_LOAD_TYPE = 'account/ACCOUNT_NOTIFICATION_LOAD';
 const ACCOUNT_NOTIFICATION_LOAD_SUECCESS_TYPE = 'account/ACCOUNT_NOTIFICATION_LOAD_SUCCESS';
 const ACCOUNT_NOTIFICATION_LOAD_FAILURE_TYPE = 'account/ACCOUNT_NOTIFICATION_LOAD_FAILURE';
@@ -91,9 +92,8 @@ export const validateFieldAction = (validState) => ({
 
 export const codeTimerEndAction = (error) => ({
     type: CODE_TIMER_END_TYPE,
-    error
+    error,
 });
-
 
 export const accountLoadAction = (accountId) => ({
     type: ACCOUNT_LOAD_TYPE,
@@ -150,7 +150,7 @@ export const accountLikeSpotListLoadAction = ({ accountId, itemCount, sortCriter
 
 export const accountNotificationLoadAction = (accountId) => ({
     type: ACCOUNT_NOTIFICATION_LOAD_TYPE,
-    accountId
+    accountId,
 });
 
 export const resetLikeSpotListAction = () => ({ type: RESET_LIKE_SPOT_LIST_TYPE });
@@ -158,7 +158,7 @@ export const resetMyPlannerListAction = () => ({ type: RESET_MY_PLANNER_LIST_TYP
 export const resetAccountErrorAction = () => ({ type: RESET_ACCOUNT_ERROR_TYPE });
 
 export const initializeIdFindRequestAction = () => ({
-    type: INITIALIZE_ID_FIND_REQUEST_TYPE
+    type: INITIALIZE_ID_FIND_REQUEST_TYPE,
 });
 
 export const accountIdFindCodeRequestAction = ({ username, phone }) => ({
@@ -175,13 +175,13 @@ export const accountIdFindAction = ({ username, phone, code }) => ({
 });
 
 export const initializePasswordFindRequestAction = () => ({
-    type: INITIALIZE_PASSWORD_FIND_REQUEST_TYPE
+    type: INITIALIZE_PASSWORD_FIND_REQUEST_TYPE,
 });
 
 export const accountPasswordFindAction = ({ email }) => ({ type: ACCOUNT_PASSWORD_FIND_TYPE, email });
 
 export const initializePasswordUpdateRequestAction = () => ({
-    type: INITIALIZE_PASSWORD_UPDATE_REQUEST_TYPE
+    type: INITIALIZE_PASSWORD_UPDATE_REQUEST_TYPE,
 });
 
 export const accountPasswordChangeAction = ({ password, passwordConfirm, key }) => ({
@@ -231,7 +231,7 @@ const initialState = {
     codeRequest: false,
     idFindRequest: false,
     passwordFindForm: {
-        email: ''
+        email: '',
     },
     passwordFindRequest: false,
     passwordChangeForm: {

@@ -27,13 +27,7 @@ const ErrorText = styled.div`
 
 const ErrorModal = ({ errorState, errorMessage, onCloseError }) => {
     return (
-        <Modal
-            modalVisible={errorState}
-            title="에러 발생!"
-            onModalClose={onCloseError}
-            onModalCancle={onCloseError}
-            onModalConfirm={onCloseError}
-        >
+        <Modal modalVisible={errorState} title="에러 발생!" onModalClose={onCloseError} onModalConfirm={onCloseError}>
             <ErrorBox>
                 <ErrorIcon icon={faTriangleExclamation} />
                 <ErrorText>{errorMessage}</ErrorText>

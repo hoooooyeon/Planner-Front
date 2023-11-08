@@ -122,9 +122,13 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 areas: action.payload.data.items,
             };
+        case LOAD_DETAIL_SPOT_FAILURE_TYPE:
+            return {
+                ...state,
+                spotError: { detailError: action.payload.message },
+            };
         case LOAD_AREAS_FAILURE_TYPE:
         case LOAD_SPOTS_FAILURE_TYPE:
-        case LOAD_DETAIL_SPOT_FAILURE_TYPE:
         case ADD_SPOT_LIKE_FAILURE_TYPE:
         case REMOVE_SPOT_LIKE_FAILURE_TYPE:
         case SEARCH_SPOT_FAILURE_TYPE:

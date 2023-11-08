@@ -61,11 +61,6 @@ const EditListContainer = () => {
     // 로케이션 추가
     const onCreateLocation = (spot) => {
         if (accountId === planner.accountId) {
-            if (!planId) {
-                alert('일정을 선택하세요.');
-                return;
-            }
-
             const { title, contentId, firstImage, firstImage2, addr1, mapx, mapy } = spot;
 
             const queryString = {
@@ -236,6 +231,7 @@ const EditListContainer = () => {
     }
     return (
         <EditList
+            plannerData={plannerData}
             spots={spots}
             areas={areas}
             keyword={keyword}
