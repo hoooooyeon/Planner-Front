@@ -52,9 +52,7 @@ const PlannerInfoContainer = () => {
     // 플래너 삭제
     const onDeletePlanner = () => {
         if (accountId === planner.accountId) {
-            if (window.confirm('정말로 삭제하시겠습니까?')) {
-                dispatch(deletePlannerAction(plannerId));
-            }
+            dispatch(deletePlannerAction(plannerId));
         }
     };
 
