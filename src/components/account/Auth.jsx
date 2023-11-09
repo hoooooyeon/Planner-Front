@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import LabelTextBox from '../common/LabelTextBox';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom';
 import Modal from '../common/Modal';
+import Loading from '../common/Loading';
 
 const Container = styled.div`
     width: 100%;
@@ -65,7 +66,7 @@ const LinkBox = styled.div`
     font-size: 0.8rem;
 `;
 
-const Auth = ({ type, form, onChange, onSubmit, authError }) => {
+const Auth = ({ loading, type, form, onChange, onSubmit, authError }) => {
     const isRegister = type == 'register';
     const isNormalError = typeof authError === 'string';
     const [modal, setModal] = useState(false);
@@ -145,7 +146,9 @@ const Auth = ({ type, form, onChange, onSubmit, authError }) => {
                     )}
 
                     {!isRegister && isNormalError && <Error>{authError}</Error>}
-                    <Button onClick={onSubmit}>{!isRegister ? '로그인' : '회원가입'}</Button>
+                    <Button onClick={onSubmit}>
+                        {!loading ? !isRegister ? '로그인' : '회원가입' : <Loading size="small" />}
+                    </Button>
                 </FormBox>
                 {isRegister || (
                     <LinkBox>

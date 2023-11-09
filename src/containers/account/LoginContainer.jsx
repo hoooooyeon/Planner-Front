@@ -5,11 +5,19 @@ import { withRouter } from 'react-router';
 import Auth from '../../components/account/Auth';
 import { tokenUse } from '../../lib/api/client';
 import validUtil from '../../lib/utils/validationCheck';
-import { changeField, initialize, initializeError, initializeForm, loginAction } from '../../modules/authModule';
+import {
+    LOGIN_TYPE,
+    changeField,
+    initialize,
+    initializeError,
+    initializeForm,
+    loginAction,
+} from '../../modules/authModule';
 
 const LoginContainer = ({ history, type }) => {
     const dispatch = useDispatch();
-    const { form, token, account, authError, state } = useSelector(({ authReducer }) => ({
+    const { loading, form, token, account, authError, state } = useSelector(({ authReducer, loadingReducer }) => ({
+        loading: loadingReducer[LOGIN_TYPE],
         form: authReducer[type],
         account: authReducer.account,
         token: authReducer.token,
@@ -59,7 +67,9 @@ const LoginContainer = ({ history, type }) => {
         };
     }, [dispatch]);
 
-    return <Auth type={type} form={form} onChange={onChange} onSubmit={onSubmit} authError={authError} />;
+    return (
+        <Auth loading={loading} type={type} form={form} onChange={onChange} onSubmit={onSubmit} authError={authError} />
+    );
 };
 
 export default withRouter(LoginContainer);

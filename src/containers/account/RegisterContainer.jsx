@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 import Auth from '../../components/account/Auth';
 import {
+    REGISTER_TYPE,
     changeField,
     initialize,
     initializeError,
@@ -16,7 +17,8 @@ import validation from '../../lib/utils/validationCheck';
 
 const RegisterContainer = ({ history, type }) => {
     const dispatch = useDispatch();
-    const { form, authError, state } = useSelector(({ authReducer }) => ({
+    const { loading, form, authError, state } = useSelector(({ authReducer, loadingReducer }) => ({
+        loading: loadingReducer[REGISTER_TYPE],
         form: authReducer[type],
         authError: authReducer.authError,
         state: authReducer.state,
@@ -63,7 +65,9 @@ const RegisterContainer = ({ history, type }) => {
         };
     }, [dispatch]);
 
-    return <Auth type={type} form={form} onChange={onChange} onSubmit={onSubmit} authError={authError} />;
+    return (
+        <Auth loading={loading} type={type} form={form} onChange={onChange} onSubmit={onSubmit} authError={authError} />
+    );
 };
 
 export default withRouter(RegisterContainer);

@@ -1,6 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import MyAccount from '../../components/account/MyAccount';
 import {
+    ACCOUNT_IMAGE_UPDATE_TYPE,
+    ACCOUNT_LIKE_PLANNER_LIST_LOAD_TYPE,
+    ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE,
+    ACCOUNT_LOAD_TYPE,
+    ACCOUNT_UPDATE_TYPE,
     accountImageUpdateAction,
     accountLikePlannerListLoadAction,
     accountLikeSpotListLoadAction,
@@ -17,7 +22,13 @@ const MyAccountContainer = () => {
     const dispatch = useDispatch();
     const { loading, auth, account, accountField, likeList } = useSelector(
         ({ loadingReducer, authReducer, accountReducer }) => ({
-            loading: loadingReducer.loading,
+            loading: {
+                profileLoading: loadingReducer[ACCOUNT_LOAD_TYPE],
+                profileUpdateLoading: loadingReducer[ACCOUNT_UPDATE_TYPE],
+                profileImageUpdateLoading: loadingReducer[ACCOUNT_IMAGE_UPDATE_TYPE],
+                likePlannerListLoading: loadingReducer[ACCOUNT_LIKE_PLANNER_LIST_LOAD_TYPE],
+                likeSpotListLoading: loadingReducer[ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE],
+            },
             auth: authReducer.account,
             accountField: accountReducer.accountField,
             likeList: accountReducer.likeList,
@@ -63,7 +74,7 @@ const MyAccountContainer = () => {
     };
 
     const handleProfileImageUpdate = (formData) => {
-        if (auth && account) {
+        if (auth) {
             const { accountId } = auth;
             dispatch(accountImageUpdateAction({ accountId, formData }));
         }
@@ -76,6 +87,7 @@ const MyAccountContainer = () => {
 
     return (
         <MyAccount
+            loading={loading}
             account={auth}
             accountField={accountField}
             likeList={likeList}

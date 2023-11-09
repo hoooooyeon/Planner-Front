@@ -3,6 +3,7 @@ import tempImage from '../../images/temp.jpg';
 import PlannerSelectModal from './PlannerSelectModal';
 import { useState } from 'react';
 import Loading from '../common/Loading';
+import { isEmpty } from '../../lib/utils/objectEmptyCheck';
 
 const InfoBox = styled.div`
     display: flex;
@@ -57,7 +58,7 @@ const PlannerInfo = ({ loading, viewMode, selectPlanner, plannerList, onPlannerL
         setModal(false);
     };
 
-    if (loading && viewMode && !selectPlanner) {
+    if (loading.plannerLoading && !selectPlanner) {
         return (
             <InfoBox>
                 <Loading />
@@ -68,7 +69,7 @@ const PlannerInfo = ({ loading, viewMode, selectPlanner, plannerList, onPlannerL
     return (
         <>
             <InfoBox onClick={handlePlannerSelectClick}>
-                {selectPlanner ? (
+                {!isEmpty(selectPlanner) ? (
                     <>
                         <Image src={tempImage} />
                         <FlexBox>
@@ -84,16 +85,19 @@ const PlannerInfo = ({ loading, viewMode, selectPlanner, plannerList, onPlannerL
                 )}
             </InfoBox>
 
-            {viewMode || (
-                <PlannerSelectModal
-                    modalVisible={modal}
-                    onModalClose={handleModalClose}
-                    onModalConfirm={handleModalConfirm}
-                    loading={loading}
-                    plannerList={plannerList}
-                    onPlannerListLoad={onPlannerListLoad}
-                />
-            )}
+            {
+                /* 플래너 선택 모달에서는 로딩을 추가적으로 가져와야함 */
+                viewMode || (
+                    <PlannerSelectModal
+                        modalVisible={modal}
+                        onModalClose={handleModalClose}
+                        onModalConfirm={handleModalConfirm}
+                        loading={loading}
+                        plannerList={plannerList}
+                        onPlannerListLoad={onPlannerListLoad}
+                    />
+                )
+            }
         </>
     );
 };

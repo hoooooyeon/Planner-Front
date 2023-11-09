@@ -6,35 +6,35 @@ import * as reviewAPI from '../lib/api/reviewAPI';
 const INITIALIZE_REVIEW_TYPE = 'review/INITAILIZE'
 const INITIALIZE_PROPERTY_TYPE = 'review/INITIALIZE_PORPERTY';
 const CHANGE_UISTATE_TYPE = 'review/CHANGE_STATE';
-const LOAD_REVIEW_LIST_TYPE = 'review/LOAD_REVIEWLIST';
+export const LOAD_REVIEW_LIST_TYPE = 'review/LOAD_REVIEWLIST';
 const LOAD_REVIEW_LIST_SUCCESS_TYPE = 'review/LOAD_REVIEWLIST_SUCCESS';
 const LOAD_REVIEW_LIST_FAILURE_TYPE = 'review/LOAD_REVIEWLIST_FAILURE';
 const REVIEW_PAGE_CHANGE_TYPE = 'review/REVIEW_PAGE_CHANGE';
-const LOAD_REVIEW_TYPE = 'review/LOAD_REVIEW';
+export const LOAD_REVIEW_TYPE = 'review/LOAD_REVIEW';
 const LOAD_REVIEW_SUCCESS_TYPE = 'review/LOAD_REVIEW_SUCCESS';
 const LOAD_REVIEW_FAILURE_TYPE = 'review/LOAD_REVIEW_FAILURE';
 const CHANGE_CONTENT_TYPE = 'review/CHANGE_CONTENT';
-const WRITE_REVIEW_TYPE = 'review/WRITE_REVIEW';
+export const WRITE_REVIEW_TYPE = 'review/WRITE_REVIEW';
 const WRITE_REVIEW_SUCCESS_TYPE = 'review/WRITE_REVIEW_SUCCESS';
 const WRITE_REVIEW_FAILURE_TYPE = 'review/WRITE_REVIEW_FAILURE';
-const UPDATE_REVIEW_TYPE = 'review/UPDATE_REVIEW';
+export const UPDATE_REVIEW_TYPE = 'review/UPDATE_REVIEW';
 const UPDATE_REVIEW_SUCCESS_TYPE = 'review/UPDATE_REVIEW_SUCCESS';
 const UPDATE_REVIEW_FAILURE_TYPE = 'review/UPDATE_REVIEW_FAILURE';
-const DELETE_REVIEW_TYPE = 'review/DELETE_REVIEW';
+export const DELETE_REVIEW_TYPE = 'review/DELETE_REVIEW';
 const DELETE_REVIEW_SUCCESS_TYPE = 'review/DELETE_REVIEW_SUCCESS';
 const DELETE_REVIEW_FAILURE_TYPE = 'review/DELETE_REVIEW_FAILURE';
-const FILE_UPLOAD_TYPE = 'review/FILE_UPLOAD';
+export const FILE_UPLOAD_TYPE = 'review/FILE_UPLOAD';
 const FILE_UPLOAD_SUCCESS_TYPE = 'review/FILE_UPLOAD_SUCCESS';
 const FILE_UPLOAD_FAILURE_TYPE = 'review/FILE_UPLOAD_FAILURE';
 const CHANGE_PLANNER_INFO_TYPE = 'review/CHANGE_PLANNER_INFO';
 
-const WRITE_COMMENT_TYPE = 'reivew/WRITE_COMMENT';
+export const WRITE_COMMENT_TYPE = 'reivew/WRITE_COMMENT';
 const WRITE_COMMENT_SUCCESS_TYPE = 'reivew/WRITE_COMMENT_SUCCESS';
 const WRITE_COMMENT_FAILURE_TYPE = 'reivew/WRITE_COMMENT_FAILURE';
-const UPDATE_COMMENT_TYPE = 'reivew/UPDATE_COMMENT';
+export const UPDATE_COMMENT_TYPE = 'reivew/UPDATE_COMMENT';
 const UPDATE_COMMENT_SUCCESS_TYPE = 'reivew/UPDATE_COMMENT_SUCCESS';
 const UPDATE_COMMENT_FAILURE_TYPE = 'reivew/UPDATE_COMMENT_FAILURE';
-const DELETE_COMMENT_TYPE = 'reivew/DELETE_COMMENT';
+export const DELETE_COMMENT_TYPE = 'reivew/DELETE_COMMENT';
 const DELETE_COMMENT_SUCCESS_TYPE = 'reivew/DELETE_COMMENT_SUCCESS';
 const DELETE_COMMENT_FAILURE_TYPE = 'reivew/DELETE_COMMENT_FAILURE';
 
@@ -188,6 +188,7 @@ const initialState = {
     newFileList: [],
     newReviewId: null,
     newCommentId: null,
+    deleteReview: false,
     commentUpdate: false,
     status: {
         state: null,
@@ -224,7 +225,9 @@ function reviewReducer(state = initialState, action) {
         case UPDATE_REVIEW_SUCCESS_TYPE: {
             return { ...state, status: { state: action.payload.state, message: action.payload.message } };
         }
-        case DELETE_REVIEW_SUCCESS_TYPE: return state;
+        case DELETE_REVIEW_SUCCESS_TYPE: {
+            return { ...state, review: null, deleteReview: true };
+        }
         case FILE_UPLOAD_SUCCESS_TYPE: {
             return { ...state, newFileList: action.payload.data };
         }
@@ -245,6 +248,7 @@ function reviewReducer(state = initialState, action) {
         case DELETE_REVIEW_FAILURE_TYPE:
         case FILE_UPLOAD_FAILURE_TYPE:
         case WRITE_COMMENT_FAILURE_TYPE:
+        case UPDATE_COMMENT_FAILURE_TYPE:
         case DELETE_COMMENT_FAILURE_TYPE: {
             return { ...state, status: { state: action.payload.state, message: action.payload.message } };
         }

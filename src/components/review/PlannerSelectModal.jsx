@@ -80,7 +80,7 @@ const PlannerSelectModal = ({
             <Tab tabItems={tabItems} selectTab={selectTab} onChangeTab={handleChangeTab}>
                 <TabContent index={0} selectTab={selectTab}>
                     <PlannerList
-                        loading={loading}
+                        loading={loading.myPlannerListLoading}
                         type={tabItems[selectTab]}
                         plannerList={list}
                         onItemClick={handleSelectPlanner}
@@ -88,7 +88,7 @@ const PlannerSelectModal = ({
                 </TabContent>
                 <TabContent index={1} selectTab={selectTab}>
                     <PlannerList
-                        loading={loading}
+                        loading={loading.likePlannerListLoading}
                         type={tabItems[selectTab]}
                         plannerList={list}
                         onItemClick={handleSelectPlanner}

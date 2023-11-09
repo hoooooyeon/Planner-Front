@@ -21,12 +21,12 @@ const App = () => {
     return (
         <Switch>
             <Route path="/" render={HomePage} exact />
-            <Route path="/Login" render={LoginPage} />
-            <Route path="/Register" render={RegisterPage} />
-            <Route path="/FindId" render={FindIdPage} />
-            <Route path="/ResultFindId" render={ResultFindIdPage} />
-            <Route path="/FindPassword" render={FindPasswordPage} />
-            <Route path="/UpdatePassword" render={UpdatePasswordPage} />
+            <Route path="/login" render={LoginPage} />
+            <Route path="/register" render={RegisterPage} />
+            <Route path="/findId" render={FindIdPage} />
+            <Route path="/resultFindId" render={ResultFindIdPage} />
+            <Route path="/findPassword" render={FindPasswordPage} />
+            <Route path="/updatePassword" render={UpdatePasswordPage} />
             <Route path="/Spot" component={SpotPage} />
             <Route path="/Profile" render={ProfilePage} />
             <Route exact path="/reviews" component={ReviewPage} />

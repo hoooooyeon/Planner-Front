@@ -108,8 +108,13 @@ const ReviewPost = ({
 
     const handleModalConfirm = () => {
         onWritePost();
-        setPlannerConfirmModal(false);
     };
+
+    useEffect(() => {
+        if (plannerConfirmModal && !loading.writeLoading) {
+            setPlannerConfirmModal(false);
+        }
+    }, [loading.writeLoading]);
 
     return (
         <Container>
@@ -154,6 +159,7 @@ const ReviewPost = ({
                 onModalCancle={handleModalClose}
                 onModalConfirm={handleModalConfirm}
                 modalConfirmText="확인"
+                loading={isEdit ? loading.updateLoading : loading.writeLoading}
             >
                 <b>플래너를 선택하지 않으셨습니다.. 그래도 진행합니까?</b>
             </Modal>

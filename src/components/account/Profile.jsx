@@ -6,6 +6,7 @@ import LabelTextBox from '../common/LabelTextBox';
 import tempImage from '../../images/temp.jpg';
 import tempAccountImage from '../../lib/images/blank-profile-picture.png';
 import { useEffect } from 'react';
+import Loading from '../common/Loading';
 
 const ProfileBlock = styled.div`
     /* background-color: silver; */
@@ -121,7 +122,7 @@ const Profile = ({
         const formData = new FormData();
         formData.append('image', data);
         onProfileImageUpdate(formData);
-        setModalVisible(false);
+        //setModalVisible(false);
     };
 
     // if (!loading && profileError) {
@@ -129,8 +130,14 @@ const Profile = ({
     // }
 
     const handleImageLoadError = (e) => {
-        e.target.src = tempImage;
+        e.target.src = tempAccountImage;
     };
+
+    useEffect(() => {
+        if (modalVisible && !loading.profileImageUpdateLoading) {
+            setModalVisible(false);
+        }
+    }, [loading.profileImageUpdateLoading]);
 
     useEffect(() => {
         onProfileLoad();
@@ -173,6 +180,7 @@ const Profile = ({
                 onModalClose={handleModalClose}
                 onModalCancle={handleModalClose}
                 onModalConfirm={handleModalConfirm}
+                loading={loading.profileImageUpdateLoading}
             />
         </ProfileBlock>
     );

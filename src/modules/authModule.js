@@ -3,19 +3,19 @@ import createSaga from '../lib/createSaga';
 import * as authAPI from '../lib/api/authAPI';
 
 // 액션 타입
-const initializeType = 'auth/INITIALIZE';
-const initializeFormType = 'auth/INITIALIZE_FORM';
-const initializeErrorType = 'auth/INITIALIZE_ERROR';
-const changeFieldType = 'auth/CHANGE_FIELD';
-const validateType = 'auth/VALIDATE';
+const INITIALIZE_TYPE = 'auth/INITIALIZE';
+const INITIALIZE_FROM_TYPE = 'auth/INITIALIZE_FORM';
+const INITIALIZE_ERROR_TYPE = 'auth/INITIALIZE_ERROR';
+const CHANGE_FIELD_TYPE = 'auth/CHANGE_FIELD';
+const VALIDATE_TYPE = 'auth/VALIDATE';
 
-const loginType = 'auth/LOGIN';
-const loginSuccessType = 'auth/LOGIN_SUCCESS';
-const loginFailureType = 'auth/LOGIN_FAILURE';
+export const LOGIN_TYPE = 'auth/LOGIN';
+const LOGIN_SUCCESS_TYPE = 'auth/LOGIN_SUCCESS';
+const LOGIN_FAILURE_TYPE = 'auth/LOGIN_FAILURE';
 
-const registerType = 'auth/REGISTER';
-const registerSuccessType = 'auth/REGISTER_SUCCESS';
-const registerFailureType = 'auth/REGISTER_FAILURE';
+export const REGISTER_TYPE = 'auth/REGISTER';
+const REGISTER_SUCCESS_TYPE = 'auth/REGISTER_SUCCESS';
+const REGISTER_FAILURE_TYPE = 'auth/REGISTER_FAILURE';
 
 // const emailCodeSendType = 'auth/EMAIL_CODE_SEND_TYPE';
 // const emailCodeSendSuccessType = 'auth/EMAIL_CODE_SEND_SUCCESS_TYPE';
@@ -25,9 +25,9 @@ const registerFailureType = 'auth/REGISTER_FAILURE';
 // const emailCodeCheckSuccessType = 'auth/EMAIL_CODE_CHECK_SUCCESS_TYPE';
 // const emailCodeCheckFailureType = 'auth/EMAIL_CODE_CHECK_FAILURE_TYPE';
 
-export const phoneCodeRequestType = 'auth/PHONE_CODE_REQUEST_TYPE';
-const phoneCodeRequestSuccessType = 'auth/PHONE_CODE_REQUEST_SUCCESS_TYPE';
-const phoneCodeRequestFailureType = 'auth/PHONE_CODE_REQUEST_FAILURE_TYPE';
+export const PHONE_CODE_REQUEST_TYPE = 'auth/PHONE_CODE_REQUEST_TYPE';
+const PHONE_CODE_REQUESET_SUCCESS_TYPE = 'auth/PHONE_CODE_REQUEST_SUCCESS_TYPE';
+const PHONE_CODE_REQUEST_FAILURE_TYPE = 'auth/PHONE_CODE_REQUEST_FAILURE_TYPE';
 
 // const phoneCodeCheckType = 'auth/PHONE_CODE_CHECK_TYPE';
 // const phoneCodeCheckSuccessType = 'auth/PHONE_CODE_CHECK_SUCCESS_TYPE';
@@ -35,38 +35,38 @@ const phoneCodeRequestFailureType = 'auth/PHONE_CODE_REQUEST_FAILURE_TYPE';
 
 // 액션함수
 export const initialize = () => ({
-    type: initializeType,
+    type: INITIALIZE_TYPE,
 });
 
 export const initializeForm = (form) => ({
-    type: initializeFormType,
+    type: INITIALIZE_FROM_TYPE,
     form,
 });
 
 export const initializeError = () => ({
-    type: initializeErrorType,
+    type: INITIALIZE_ERROR_TYPE,
 });
 
 export const changeField = ({ form, field, value }) => ({
-    type: changeFieldType,
+    type: CHANGE_FIELD_TYPE,
     form,
     field,
     value,
 });
 
 export const validateFieldAction = (validState) => ({
-    type: validateType,
+    type: VALIDATE_TYPE,
     validState,
 });
 
 export const loginAction = ({ email, password }) => ({
-    type: loginType,
+    type: LOGIN_TYPE,
     email,
     password,
 });
 
 export const registerAction = ({ email, password, username, nickname, phone }) => ({
-    type: registerType,
+    type: REGISTER_TYPE,
     email,
     password,
     username,
@@ -74,12 +74,12 @@ export const registerAction = ({ email, password, username, nickname, phone }) =
     phone,
 });
 
-export const loginSaga = createSaga(loginType, authAPI.login);
-export const registerSaga = createSaga(registerType, authAPI.register);
+export const loginSaga = createSaga(LOGIN_TYPE, authAPI.login);
+export const registerSaga = createSaga(REGISTER_TYPE, authAPI.register);
 
 export function* authSaga() {
-    yield takeLatest(loginType, loginSaga);
-    yield takeLatest(registerType, registerSaga);
+    yield takeLatest(LOGIN_TYPE, loginSaga);
+    yield takeLatest(REGISTER_TYPE, registerSaga);
 }
 
 const initialState = {
@@ -106,7 +106,7 @@ const initialState = {
 
 function authReducer(state = initialState, action) {
     switch (action.type) {
-        case initializeType: {
+        case INITIALIZE_TYPE: {
             return {
                 ...state,
                 login: initialState.login,
@@ -115,16 +115,16 @@ function authReducer(state = initialState, action) {
                 state: initialState.state,
             };
         }
-        case initializeFormType: {
+        case INITIALIZE_FROM_TYPE: {
             return { ...state, [action.form]: initialState[action.form] };
         }
-        case initializeErrorType: {
+        case INITIALIZE_ERROR_TYPE: {
             return { ...state, authError: initialState.authError };
         }
-        case changeFieldType: {
+        case CHANGE_FIELD_TYPE: {
             return { ...state, [action.form]: { ...state[action.form], [action.field]: action.value } };
         }
-        case loginSuccessType: {
+        case LOGIN_SUCCESS_TYPE: {
             return {
                 ...state,
                 account: action.payload.data,
@@ -132,14 +132,14 @@ function authReducer(state = initialState, action) {
                 token: action.payload.token,
             };
         }
-        case registerSuccessType: {
+        case REGISTER_SUCCESS_TYPE: {
             return { ...state, state: { ...action.payload } };
         }
-        case validateType: {
+        case VALIDATE_TYPE: {
             return { ...state, authError: { ...action.validState } };
         }
-        case loginFailureType:
-        case registerFailureType: {
+        case LOGIN_FAILURE_TYPE:
+        case REGISTER_FAILURE_TYPE: {
             return { ...state, authError: action.payload.message, state: { ...action.payload } };
         }
         default: {
