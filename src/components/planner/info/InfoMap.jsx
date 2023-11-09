@@ -4,6 +4,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import Empty from '../../common/Empty';
+import Loading from '../../common/Loading';
 
 const MapBlock = styled.div`
     width: 60%;
@@ -113,9 +114,17 @@ const InfoMap = ({ planner, mapRef, loading, allSchedule, onToggleLikePlanner, o
                 <>
                     <Map ref={mapRef} />
                     <IconBox onClick={onToggleLikePlanner} like={likeState ? likeState.toString() : undefined}>
-                        {loading}
-                        <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
-                        <div>{likeCount}</div>
+                        {loading.likePlannerLoading ? (
+                            <Loading size="smaller" />
+                        ) : (
+                            <>
+                                <StyledFontAwesomeIcon
+                                    icon={faStar}
+                                    like={likeState ? likeState.toString() : undefined}
+                                />
+                                <div>{likeCount}</div>
+                            </>
+                        )}
                     </IconBox>
                     <AllSchedule
                         allSchedule={allSchedule}

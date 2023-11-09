@@ -8,6 +8,7 @@ import InfoRoute from './InfoRoute';
 import InfoMenu from './InfoMenu';
 import ErrorModal from '../../common/ErrorModal';
 import Loading from '../../common/Loading';
+import Modal from '../../common/Modal';
 
 const PlannerInfoBlock = styled.div`
     width: 100%;
@@ -142,6 +143,7 @@ const PlannerInfo = ({
     const menuRef = useRef();
     const containerRef = useRef();
     const [isDropDown, setIsDropDown] = useState(false);
+    const [isDeleteModal, setIsDeleteModal] = useState(false);
     const [likePlannerModal, setLikePlannerModal] = useState(false);
 
     const onOpenDropDown = () => {
@@ -181,6 +183,10 @@ const PlannerInfo = ({
         setLikePlannerModal(false);
     };
 
+    const handleToggleDeleteModal = () => {
+        setIsDeleteModal((isDeleteModal) => !isDeleteModal);
+    };
+
     return (
         <PlannerInfoBlock ref={containerRef}>
             <Container>
@@ -196,7 +202,7 @@ const PlannerInfo = ({
                                         <MenuItem onClick={onTogglePlannerInfoModal}>플래너 정보 수정</MenuItem>
                                         <MenuItem onClick={onClickEditPlanner}>플래너 루트 수정</MenuItem>
                                         <MenuItem onClick={onToggleMemberModal}>멤버 관리</MenuItem>
-                                        <MenuItem onClick={onDeletePlanner}>플래너 삭제</MenuItem>
+                                        <MenuItem onClick={handleToggleDeleteModal}>플래너 삭제</MenuItem>
                                     </MenuList>
                                     <Menu onClick={onOpenDropDown}>
                                         <FontAwesomeIcon icon={faGear} />
@@ -207,7 +213,7 @@ const PlannerInfo = ({
                                             <li onClick={onTogglePlannerInfoModal}>플래너 정보 수정</li>
                                             <li onClick={onClickEditPlanner}>플래너 루트 수정</li>
                                             <li onClick={onToggleMemberModal}>멤버 관리</li>
-                                            <li onClick={onDeletePlanner}>플래너 삭제</li>
+                                            <li onClick={handleToggleDeleteModal}>플래너 삭제</li>
                                         </DropDownMenu>
                                     )}
                                 </MenuBox>
@@ -235,14 +241,28 @@ const PlannerInfo = ({
                 )}
             </Container>
             <InfoMenu planner={planner} loading={loading} />
-            {plannerError && typeof plannerError === 'string' && (
-                <ErrorModal errorState={plannerError} errorMessage={plannerError} onCloseError={onCloseError} />
-            )}
+            <ErrorModal
+                errorState={plannerError && typeof plannerError === 'string'}
+                errorMessage={plannerError}
+                onCloseError={onCloseError}
+            />
             <ErrorModal
                 errorState={likePlannerModal}
                 onCloseError={handleConfirmModal}
                 errorMessage="로그인이 필요합니다!"
             />
+            <Modal
+                modalVisible={isDeleteModal}
+                title="플래너 삭제"
+                onModalClose={handleToggleDeleteModal}
+                onModalCancle={handleToggleDeleteModal}
+                onModalConfirm={onDeletePlanner}
+                modalCancleText="아니오"
+                modalConfirmText="예"
+                loading={loading.deletePlannerLoading}
+            >
+                "정말로 삭제하시겠습니까?"
+            </Modal>
         </PlannerInfoBlock>
     );
 };

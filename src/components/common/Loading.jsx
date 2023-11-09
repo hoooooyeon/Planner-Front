@@ -27,6 +27,12 @@ const LoadingCircle = styled.div`
             width: 1rem;
             height: 1rem;
         `}
+    ${(props) =>
+        props.size === 'smaller' &&
+        css`
+            width: 0.5rem;
+            height: 0.5rem;
+        `}
         ${(props) =>
         props.pos === 'center' &&
         css`
