@@ -6,11 +6,14 @@ import {
     changeCurPlanIdAction,
     changeCurPlannerIdAction,
     deletePlannerAction,
+    DELETE_PLANNER_TYPE,
     loadPlannerAction,
+    LOAD_PLANNER_TYPE,
     resetPlannerErrorAction,
     toggleLikePlannerAction,
     toggleMemberModalAction,
     togglePlannerInfoModalAction,
+    TOGGLE_LIKE_PLANNER_TYPE,
 } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import { useHistory, useParams } from 'react-router';
@@ -20,13 +23,18 @@ const PlannerInfoContainer = () => {
     const history = useHistory();
     const params = useParams();
 
-    const { planner, plannerError, plannerData, allSchedule, account } = useSelector(
-        ({ plannerReducer, authReducer }) => ({
+    const { planner, plannerError, plannerData, loading, allSchedule, account } = useSelector(
+        ({ plannerReducer, authReducer, loadingReducer }) => ({
             planner: plannerReducer.planner,
             plannerError: plannerReducer.plannerError,
             plannerData: plannerReducer.plannerData,
             account: authReducer.account,
             allSchedule: plannerReducer.allSchedule,
+            loading: {
+                plannerLoading: loadingReducer[LOAD_PLANNER_TYPE],
+                deletePlannerLoading: loadingReducer[DELETE_PLANNER_TYPE],
+                likePlannerLoading: loadingReducer[TOGGLE_LIKE_PLANNER_TYPE],
+            },
         }),
     );
 
@@ -388,6 +396,7 @@ const PlannerInfoContainer = () => {
             mapRef={mapRef}
             drag={drag}
             plannerError={plannerError}
+            loading={loading}
             allSchedule={allSchedule}
             onCloseError={onCloseError}
             onClickAllSchedule={onClickAllSchedule}

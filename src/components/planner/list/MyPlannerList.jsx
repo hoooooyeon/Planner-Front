@@ -17,7 +17,7 @@ const MyPlannerListBlock = styled.div`
 const Container = styled.div`
     padding: 1rem;
     margin: 0 auto;
-    min-height: 10rem;
+    min-height: 17rem;
     @media all and (min-width: 768px) {
         padding: 1rem 9rem;
     }
@@ -166,9 +166,11 @@ const MyPlannerList = ({
             <Container>
                 <Header>
                     <HeaderTitle>나의 플래너</HeaderTitle>
-                    <Button onClick={handlecreatePlanner}>플래너 생성</Button>
+                    <Button onClick={handlecreatePlanner}>
+                        {loading.createPlannerLoading ? <Loading size="small" /> : <>플래너 생성</>}
+                    </Button>
                 </Header>
-                {loading && Object.keys(myPlannerList).length <= 0 ? (
+                {loading.myPlannersLoading && Object.keys(myPlannerList).length <= 0 ? (
                     <Loading />
                 ) : Object.keys(myPlannerList).length > 0 && myPlannerList.list.length > 0 ? (
                     <Slider

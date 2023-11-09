@@ -95,7 +95,7 @@ const IconName = styled.div`
     padding: 0.5rem;
 `;
 
-const InfoMap = ({ planner, mapRef, allSchedule, onToggleLikePlanner, onClickAllSchedule }) => {
+const InfoMap = ({ planner, mapRef, loading, allSchedule, onToggleLikePlanner, onClickAllSchedule }) => {
     const { likeState, likeCount } = { ...planner };
     const [isHovered, setIsHovered] = useState(false);
 
@@ -113,6 +113,7 @@ const InfoMap = ({ planner, mapRef, allSchedule, onToggleLikePlanner, onClickAll
                 <>
                     <Map ref={mapRef} />
                     <IconBox onClick={onToggleLikePlanner} like={likeState ? likeState.toString() : undefined}>
+                        {loading}
                         <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
                         <div>{likeCount}</div>
                     </IconBox>

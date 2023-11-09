@@ -141,12 +141,13 @@ const SpotList = ({
                     curKeyword={curKeyword}
                     spotData={spotData}
                     contentTypeList={contentTypeList}
+                    loading={loading}
                     onClickArea={onClickArea}
                     onChangeContentTypeId={onChangeContentTypeId}
                     onChangeCurKeyword={onChangeCurKeyword}
                     onChangeResultKeyword={onChangeResultKeyword}
                 />
-                {loading && Object.keys(spots).length <= 0 ? (
+                {(loading.spotsLoading || loading.searchSpotLoading) && Object.keys(spots).length <= 0 ? (
                     <Loading />
                 ) : Object.keys(spots).length > 0 && spots.list.length > 0 ? (
                     <Slider list={spots.list} scroll={true} drag={drag} itemRef={itemRef}>

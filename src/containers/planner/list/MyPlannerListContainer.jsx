@@ -1,10 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeCurPlannerIdAction, createPlannerAction, resetPlannerDataAction } from '../../../modules/plannerModule';
+import {
+    changeCurPlannerIdAction,
+    createPlannerAction,
+    CREATE_PLANNER_TYPE,
+    resetPlannerDataAction,
+} from '../../../modules/plannerModule';
 import MyPlannerList from '../../../components/planner/list/MyPlannerList';
 import { useHistory } from 'react-router';
 import {
     accountMyPlannerListLoadAction,
+    ACCOUNT_MY_PLANNER_LIST_LOAD_TYPE,
     resetAccountErrorAction,
     resetMyPlannerListAction,
 } from '../../../modules/accountModule';
@@ -21,7 +27,10 @@ const MyPlannerListContainer = () => {
             planner: plannerReducer.planner,
             plannerData: plannerReducer.plannerData,
             pType: plannerReducer.pType,
-            loading: loadingReducer.loading,
+            loading: {
+                myPlannersLoading: loadingReducer[ACCOUNT_MY_PLANNER_LIST_LOAD_TYPE],
+                createPlannerLoading: loadingReducer[CREATE_PLANNER_TYPE],
+            },
         }),
     );
 

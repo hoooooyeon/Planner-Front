@@ -6,6 +6,7 @@ import { handleErrorImg } from '../../lib/utils/CommonFunction';
 import errorImg from '../../lib/images/spotErrorImg.jpg';
 import { useState } from 'react';
 import ErrorModal from '../common/ErrorModal';
+import Loading from '../common/Loading';
 
 const DetailModalBlock = styled.div`
     width: 50rem;
@@ -115,10 +116,19 @@ const ErrorText = styled.b`
     justify-content: center;
 `;
 
-const SpotDetailModal = ({ accountId, spotData, spotError, detail, onResetDetailSpot, onToggleDetailLike }) => {
+const SpotDetailModal = ({
+    accountId,
+    spotData,
+    spotError,
+    detail,
+    loading,
+    onResetDetailSpot,
+    onToggleDetailLike,
+}) => {
     const { title, image, overview, addr1, likeCount, likeState } = { ...detail };
     const { contentId } = { ...spotData };
     const [likeSpotModal, setLikeSpotModal] = useState(false);
+    const { detailSpotLoading, addSpotLikeLoading, removeSpotLikeLoading } = { ...loading };
 
     const handletoggleLikeSpot = () => {
         if (accountId) {
@@ -144,36 +154,54 @@ const SpotDetailModal = ({ accountId, spotData, spotError, detail, onResetDetail
             }}
         >
             <DetailModalBlock>
-                <ImgBox>
-                    <Img
-                        src={image}
-                        alt={title}
-                        onError={(e) => {
-                            handleErrorImg({ e, errorImg });
-                        }}
-                    />
-                </ImgBox>
-                <InfoBox>
-                    {likeCount >= 0 && (
-                        <LikeBox onClick={handletoggleLikeSpot} like={likeState ? likeState.toString() : undefined}>
-                            <StyledFontAwesomeIcon icon={faStar} like={likeState ? likeState.toString() : undefined} />
-                            <div>{likeCount}</div>
-                        </LikeBox>
-                    )}
-                    {spotError && <ErrorText>{spotError.detailError}</ErrorText>}
-                    <FlexDiv>
-                        <Label>이름</Label>
-                        <Title>{title}</Title>
-                    </FlexDiv>
-                    <FlexDiv>
-                        <Label>주소</Label>
-                        <Addr>{addr1}</Addr>
-                    </FlexDiv>
-                    <FlexDiv>
-                        <Label>설명</Label>
-                        <Overview>{overview}</Overview>
-                    </FlexDiv>
-                </InfoBox>
+                {detailSpotLoading ? (
+                    <Loading pos="center" />
+                ) : (
+                    <>
+                        <ImgBox>
+                            <Img
+                                src={image}
+                                alt={title}
+                                onError={(e) => {
+                                    handleErrorImg({ e, errorImg });
+                                }}
+                            />
+                        </ImgBox>
+                        <InfoBox>
+                            {likeCount >= 0 && (
+                                <LikeBox
+                                    onClick={handletoggleLikeSpot}
+                                    like={likeState ? likeState.toString() : undefined}
+                                >
+                                    {addSpotLikeLoading || removeSpotLikeLoading ? (
+                                        <Loading size="small" />
+                                    ) : (
+                                        <>
+                                            <StyledFontAwesomeIcon
+                                                icon={faStar}
+                                                like={likeState ? likeState.toString() : undefined}
+                                            />
+                                            <div>{likeCount}</div>
+                                        </>
+                                    )}
+                                </LikeBox>
+                            )}
+                            {spotError && <ErrorText>{spotError.detailError}</ErrorText>}
+                            <FlexDiv>
+                                <Label>이름</Label>
+                                <Title>{title}</Title>
+                            </FlexDiv>
+                            <FlexDiv>
+                                <Label>주소</Label>
+                                <Addr>{addr1}</Addr>
+                            </FlexDiv>
+                            <FlexDiv>
+                                <Label>설명</Label>
+                                <Overview>{overview}</Overview>
+                            </FlexDiv>
+                        </InfoBox>
+                    </>
+                )}
             </DetailModalBlock>
             <ErrorModal
                 errorState={likeSpotModal}

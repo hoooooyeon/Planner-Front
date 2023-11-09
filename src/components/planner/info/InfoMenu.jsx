@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Loading from '../../common/Loading';
 
 const InfoMenuBlock = styled.div`
     background-color: ${(props) => props.theme.primaryBackgroundColor};
@@ -9,6 +10,7 @@ const Container = styled.div`
     border-top: 1px solid ${(props) => props.theme.outlineColor};
     border-bottom: 1px solid ${(props) => props.theme.outlineColor};
     height: 100%;
+    min-height: 6rem;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -70,37 +72,44 @@ const Text = styled.div`
     }
 `;
 
-const InfoMenu = ({ planner }) => {
+const InfoMenu = ({ planner, loading }) => {
     const { title, planDateStart, planDateEnd, expense, memberCount, memberTypeId } = { ...planner };
     const memberTypeList = ['혼자', '연인', '친구', '가족'];
 
     return (
         <InfoMenuBlock>
             <Container>
-                <FlexDiv>
-                    <InfoBox>
-                        <Ask>플래너 이름:</Ask>
-                        <Text>{title}</Text>
-                    </InfoBox>
-                    <InfoBox>
-                        <Ask>여행 일정:</Ask>
-                        <Text>
-                            {planDateStart} ~ {planDateEnd}
-                        </Text>
-                    </InfoBox>
-                </FlexDiv>
-                <FlexDiv>
-                    <InfoBox>
-                        <Ask>여행 멤버:</Ask>
-                        <Text>
-                            {memberTypeList[memberTypeId - 1]} ({memberCount}명)
-                        </Text>
-                    </InfoBox>
-                    <InfoBox>
-                        <Ask>여행 비용:</Ask>
-                        <Text>{expense}원</Text>
-                    </InfoBox>
-                </FlexDiv>
+                {loading.plannerLoading ? (
+                    <Loading size="small" />
+                ) : (
+                    <>
+                        {' '}
+                        <FlexDiv>
+                            <InfoBox>
+                                <Ask>플래너 이름:</Ask>
+                                <Text>{title}</Text>
+                            </InfoBox>
+                            <InfoBox>
+                                <Ask>여행 일정:</Ask>
+                                <Text>
+                                    {planDateStart} ~ {planDateEnd}
+                                </Text>
+                            </InfoBox>
+                        </FlexDiv>
+                        <FlexDiv>
+                            <InfoBox>
+                                <Ask>여행 멤버:</Ask>
+                                <Text>
+                                    {memberTypeList[memberTypeId - 1]} ({memberCount}명)
+                                </Text>
+                            </InfoBox>
+                            <InfoBox>
+                                <Ask>여행 비용:</Ask>
+                                <Text>{expense}원</Text>
+                            </InfoBox>
+                        </FlexDiv>
+                    </>
+                )}
             </Container>
         </InfoMenuBlock>
     );

@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
+import Loading from '../common/Loading';
 
 const FormDiv = styled.div`
     margin: 1rem 0;
@@ -159,6 +160,7 @@ const SpotSearchForm = ({
     curKeyword,
     spotData,
     contentTypeList,
+    loading,
     onClickArea,
     onChangeContentTypeId,
     onChangeCurKeyword,
@@ -167,69 +169,73 @@ const SpotSearchForm = ({
     return (
         <>
             <FormDiv>
-                <Form>
-                    <SelectDiv>
-                        <SelectBox>
-                            <Label>지역</Label>
-                            <Select
-                                required
-                                value={spotData.areaCode}
-                                onChange={(e) => {
-                                    onClickArea(e.target.value);
-                                }}
-                            >
-                                {areas.length > 0 &&
-                                    areas.map((area) => (
-                                        <option value={area.code} key={area.code}>
-                                            {area.name}
-                                        </option>
-                                    ))}
-                            </Select>
-                        </SelectBox>
-                        <SelectBox>
-                            <Label>종류</Label>
-                            <Select
-                                required
-                                value={spotData.contentTypeId}
-                                onChange={(e) => {
-                                    onChangeContentTypeId(e.target.value);
-                                }}
-                            >
-                                {contentTypeList &&
-                                    contentTypeList.map((contentType) => (
-                                        <option value={contentType.id} key={contentType.id}>
-                                            {contentType.label}
-                                        </option>
-                                    ))}
-                            </Select>
-                        </SelectBox>
-                    </SelectDiv>
-                    <SearchBox>
-                        <Label>여행지 검색</Label>
-                        <SearchInput
-                            placeholder="키워드 검색"
-                            type="text"
-                            value={curKeyword}
-                            onChange={(e) => {
-                                onChangeCurKeyword(e.target.value);
-                            }}
-                        />
-                        <InvisibleInput type="text" />
-                        <IconBox>
-                            {curKeyword.length > 0 ? (
-                                <StyledFontAwesomeIcon
-                                    onClick={() => {
-                                        onChangeCurKeyword('');
+                {loading.areaLoading ? (
+                    <Loading />
+                ) : (
+                    <Form>
+                        <SelectDiv>
+                            <SelectBox>
+                                <Label>지역</Label>
+                                <Select
+                                    required
+                                    value={spotData.areaCode}
+                                    onChange={(e) => {
+                                        onClickArea(e.target.value);
                                     }}
-                                    icon={faXmark}
-                                />
-                            ) : null}
-                        </IconBox>
-                        <SearchButton type="button" onClick={onChangeResultKeyword}>
-                            <FontAwesomeIcon icon={faMagnifyingGlass} />
-                        </SearchButton>
-                    </SearchBox>
-                </Form>
+                                >
+                                    {areas.length > 0 &&
+                                        areas.map((area) => (
+                                            <option value={area.code} key={area.code}>
+                                                {area.name}
+                                            </option>
+                                        ))}
+                                </Select>
+                            </SelectBox>
+                            <SelectBox>
+                                <Label>종류</Label>
+                                <Select
+                                    required
+                                    value={spotData.contentTypeId}
+                                    onChange={(e) => {
+                                        onChangeContentTypeId(e.target.value);
+                                    }}
+                                >
+                                    {contentTypeList &&
+                                        contentTypeList.map((contentType) => (
+                                            <option value={contentType.id} key={contentType.id}>
+                                                {contentType.label}
+                                            </option>
+                                        ))}
+                                </Select>
+                            </SelectBox>
+                        </SelectDiv>
+                        <SearchBox>
+                            <Label>여행지 검색</Label>
+                            <SearchInput
+                                placeholder="키워드 검색"
+                                type="text"
+                                value={curKeyword}
+                                onChange={(e) => {
+                                    onChangeCurKeyword(e.target.value);
+                                }}
+                            />
+                            <InvisibleInput type="text" />
+                            <IconBox>
+                                {curKeyword.length > 0 ? (
+                                    <StyledFontAwesomeIcon
+                                        onClick={() => {
+                                            onChangeCurKeyword('');
+                                        }}
+                                        icon={faXmark}
+                                    />
+                                ) : null}
+                            </IconBox>
+                            <SearchButton type="button" onClick={onChangeResultKeyword}>
+                                <FontAwesomeIcon icon={faMagnifyingGlass} />
+                            </SearchButton>
+                        </SearchBox>
+                    </Form>
+                )}
             </FormDiv>
             {resultKeyword.length > 0 ? <SearchResult>' {resultKeyword} ' 에 대한 검색 결과...</SearchResult> : null}
         </>
