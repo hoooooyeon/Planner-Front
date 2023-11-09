@@ -12,7 +12,7 @@ export const accountUpdate = ({ accountId, nickname, phone }) => {
 };
 
 export const accountImageUpdate = ({ accountId, formData }) => {
-    return client.patch(baseUrl`/${accountId}/images`, formData, {
+    return client.patch(baseUrl + `/${accountId}/images`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
 };

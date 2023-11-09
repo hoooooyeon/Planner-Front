@@ -68,7 +68,7 @@ const menu = [
     { id: 2, title: '여행지', value: 'likeSpot' },
 ];
 
-const LikeListView = ({ likeLists, onLikeListLoad }) => {
+const LikeListView = ({ loading, likeLists, onLikeListLoad }) => {
     const [selectIndex, setSelectIndex] = useState(0);
     const [sortValue, setSortValue] = useState(sortOption[0]);
     const [searchText, setSearchText] = useState('');
@@ -139,9 +139,9 @@ const LikeListView = ({ likeLists, onLikeListLoad }) => {
                         onSearchTextChange={handleSearchTextChange}
                     />
                     {selectIndex == 0 ? (
-                        <PlannerList plannerList={list}></PlannerList>
+                        <PlannerList loading={loading.likePlannerListLoading} plannerList={list}></PlannerList>
                     ) : (
-                        <SpotList spotList={list}></SpotList>
+                        <SpotList loading={loading.likeSpotListLoading} spotList={list}></SpotList>
                     )}
                     <Pagination
                         page={pageNum}

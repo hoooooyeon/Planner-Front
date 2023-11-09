@@ -64,6 +64,7 @@ const ContentBlock = styled.div`
 `;
 
 const MyAccount = ({
+    loading,
     account,
     accountField,
     likeList,
@@ -92,6 +93,7 @@ const MyAccount = ({
                     if (menu == 1) {
                         return (
                             <Profile
+                                loading={loading}
                                 account={account}
                                 accountField={accountField}
                                 onProfileLoad={onProfileLoad}
@@ -101,7 +103,13 @@ const MyAccount = ({
                             ></Profile>
                         );
                     } else if (menu == 2) {
-                        return <LikeListView likeLists={likeList} onLikeListLoad={onLikeListLoad}></LikeListView>;
+                        return (
+                            <LikeListView
+                                loading={loading}
+                                likeLists={likeList}
+                                onLikeListLoad={onLikeListLoad}
+                            ></LikeListView>
+                        );
                     }
                 })()}
             </ContentBlock>

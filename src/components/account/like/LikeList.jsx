@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import tempImage from '../../../images/temp.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamation } from '@fortawesome/free-solid-svg-icons';
+import Loading from '../../common/Loading';
 
 const ListBlock = styled.div`
     display: flex;
@@ -102,7 +103,15 @@ const EmptyItem = () => {
 };
 
 export const PlannerList = (props) => {
-    const { plannerList } = props;
+    const { loading, plannerList } = props;
+
+    if (loading && !plannerList) {
+        return (
+            <ListBlock>
+                <Loading />
+            </ListBlock>
+        );
+    }
 
     return (
         <ListBlock>
@@ -131,7 +140,15 @@ export const PlannerList = (props) => {
 };
 
 export const SpotList = (props) => {
-    const { spotList } = props;
+    const { loading, spotList } = props;
+
+    if (loading && !spotList) {
+        return (
+            <ListBlock>
+                <Loading />
+            </ListBlock>
+        );
+    }
 
     return (
         <ListBlock>
