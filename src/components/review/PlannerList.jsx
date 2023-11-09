@@ -68,7 +68,7 @@ const PlannerList = ({ loading, type, plannerList, onItemClick }) => {
         onItemClick(item);
     };
 
-    if (loading) {
+    if (loading && !list) {
         return <Loading />;
     }
 

@@ -22,7 +22,7 @@ export const accountMyPlannerListLoad = ({ type, accountId, ...queryString }) =>
 };
 
 export const accountLikeListLoad = ({ type, accountId, ...queryString }) => {
-    return client.get(baseUrl`/${accountId}/likes` + qs.stringify(queryString, { addQueryPrefix: true }));
+    return client.get(baseUrl + `/${accountId}/likes` + qs.stringify(queryString, { addQueryPrefix: true }));
 };
 
 export const accountNotificationLoad = ({ accountId }) => {

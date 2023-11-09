@@ -3,24 +3,36 @@ import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 import Review from '../../components/review/Review';
 import {
+    DELETE_REVIEW_TYPE,
+    LOAD_REVIEW_TYPE,
+    UPDATE_REVIEW_TYPE,
+    WRITE_REVIEW_TYPE,
     deleteCommentAction,
     deleteReviewAction,
     initializePropertyAction,
+    initializeReviewAction,
     loadReviewAction,
     updateCommentAction,
     writeCommentAction,
 } from '../../modules/reviewModule';
-import { loadPlannerAction, resetPlannerDataAction } from '../../modules/plannerModule';
+import { LOAD_PLANNER_TYPE, loadPlannerAction, resetPlannerDataAction } from '../../modules/plannerModule';
 
 const ReviewContainer = ({ match, history }) => {
     const { reviewId } = match.params;
     const dispatch = useDispatch();
-    const { loading, auth, reviewData, newCommentId, commentUpdate, planner } = useSelector(
+    const { loading, auth, reviewData, newCommentId, deleteReview, commentUpdate, planner } = useSelector(
         ({ loadingReducer, authReducer, reviewReducer, plannerReducer }) => ({
-            loading: loadingReducer.loading,
+            loading: {
+                loadLoading: loadingReducer[LOAD_REVIEW_TYPE],
+                wrtieLoading: loadingReducer[WRITE_REVIEW_TYPE],
+                updateLoading: loadingReducer[UPDATE_REVIEW_TYPE],
+                deleteLoading: loadingReducer[DELETE_REVIEW_TYPE],
+                plannerLoading: loadingReducer[LOAD_PLANNER_TYPE],
+            },
             auth: authReducer.account,
             reviewData: reviewReducer.review,
             newCommentId: reviewReducer.newCommentId,
+            deleteReview: reviewReducer.deleteReview,
             commentUpdate: reviewReducer.commentUpdate,
             planner: plannerReducer.planner,
         }),
@@ -88,6 +100,14 @@ const ReviewContainer = ({ match, history }) => {
         }
     }, [dispatch, reviewData]);
 
+    // 리뷰 삭제 성공
+    useEffect(() => {
+        if (deleteReview) {
+            dispatch(initializePropertyAction('deleteReview', false));
+            history.push('/reviews');
+        }
+    }, [deleteReview]);
+
     useEffect(() => {
         if (commentUpdate) {
             dispatch(loadReviewAction(reviewId));
@@ -96,6 +116,7 @@ const ReviewContainer = ({ match, history }) => {
     }, [dispatch, commentUpdate]);
 
     useEffect(() => {
+        dispatch(initializeReviewAction());
         return () => {
             dispatch(resetPlannerDataAction());
         };

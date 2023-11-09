@@ -1,5 +1,5 @@
 export const isEmpty = (object) => {
-    if (object.constructor === Object && object.keys().length() === 0) {
+    if (object == null || object.constructor === Object && Object.keys(object).length === 0) {
         return true;
     }
     else {

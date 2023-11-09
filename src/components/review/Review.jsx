@@ -9,6 +9,8 @@ import { useState } from 'react';
 import CommentInput from './comment/CommentInput';
 import UpDown from './UpDown/UpDown';
 import Loading from '../common/Loading';
+import Modal from '../common/Modal';
+import { useEffect } from 'react';
 
 const Container = styled.div`
     padding: 20px 0px;
@@ -127,17 +129,32 @@ const Review = ({
     planner,
     onUpDownClick,
 }) => {
+    const [modal, setModal] = useState(false);
     const comments = (reviewData && reviewData.comments) || [];
+
+    const handleModalClose = () => {
+        setModal(!modal);
+    };
+
+    const handleModalConfirm = () => {
+        onPostDelete();
+    };
 
     const onItemClick = (value, index) => {
         if (index == 0) {
             onPostEdit();
         } else {
-            onPostDelete();
+            setModal(true);
         }
     };
 
-    if (!reviewData || (loading && !reviewData)) {
+    useEffect(() => {
+        if (modal && loading.deleteLoading) {
+            setModal(!modal);
+        }
+    }, [loading.deleteLoading]);
+
+    if ((loading.loadLoading && !reviewData) || !reviewData) {
         return (
             <Container>
                 <Loading />
@@ -167,7 +184,11 @@ const Review = ({
                 </PostTitleBox>
                 <PlannerInfoBox>
                     <b>플래너 정보</b>
-                    <PlannerInfo loading={loading} selectPlanner={planner} viewMode={true}></PlannerInfo>
+                    <PlannerInfo
+                        loading={{ plannerLoading: loading.plannerLoading }}
+                        selectPlanner={planner}
+                        viewMode={true}
+                    ></PlannerInfo>
                     {/* {planner ? <PlannerInfo></PlannerInfo> : <div>추가한 플래너가 없습니다.</div>} */}
                 </PlannerInfoBox>
                 <PostContentBox dangerouslySetInnerHTML={{ __html: reviewData.content }}></PostContentBox>
@@ -186,6 +207,21 @@ const Review = ({
                         ))}
                 </CommentsBox>
             </ReviewPostBox>
+
+            {modal && (
+                <Modal
+                    modalVisible={modal}
+                    title="알림"
+                    onModalClose={handleModalClose}
+                    onModalCancle={handleModalClose}
+                    onModalConfirm={handleModalConfirm}
+                    loading={loading.deleteLoading}
+                >
+                    <p>
+                        <b>정말 삭제합니까?</b>
+                    </p>
+                </Modal>
+            )}
         </Container>
     );
 };

@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 import ReviewPost from '../../components/review/ReviewPost';
 import {
+    UPDATE_REVIEW_TYPE,
+    WRITE_REVIEW_TYPE,
     changeContentAction,
     changePlannerInfoAction,
     fileUploadAction,
@@ -11,6 +13,8 @@ import {
     writeReviewAction,
 } from '../../modules/reviewModule';
 import {
+    ACCOUNT_LIKE_PLANNER_LIST_LOAD_TYPE,
+    ACCOUNT_MY_PLANNER_LIST_LOAD_TYPE,
     accountLikePlannerListLoadAction,
     accountMyPlannerListLoadAction,
     initializeAction,
@@ -22,7 +26,12 @@ const ReviewWriteEditContainer = ({ location, history }) => {
     const dispatch = useDispatch();
     const { loading, account, review, selectPlanner, newFileList, newReviewId, plannerList, uiState } = useSelector(
         ({ loadingReducer, authReducer, reviewReducer, plannerReducer, accountReducer }) => ({
-            loading: loadingReducer.loading,
+            loading: {
+                writeLoading: loadingReducer[WRITE_REVIEW_TYPE],
+                updateLoading: loadingReducer[UPDATE_REVIEW_TYPE],
+                myPlannerListLoading: loadingReducer[ACCOUNT_MY_PLANNER_LIST_LOAD_TYPE],
+                likePlannerListLoading: loadingReducer[ACCOUNT_LIKE_PLANNER_LIST_LOAD_TYPE],
+            },
             account: authReducer.account,
             review: reviewReducer.review,
             selectPlanner: isEdit ? plannerReducer.planner : reviewReducer.selectPlanner,
