@@ -102,9 +102,9 @@ const InfoPostContainer = () => {
         setCurMemo({ title: '', content: '' });
     };
 
-    if (Object.keys(planner).length <= 0) {
-        return null;
-    }
+    // if (Object.keys(planner).length <= 0) {
+    //     return null;
+    // }
     return (
         <InfoPostList
             planner={planner}

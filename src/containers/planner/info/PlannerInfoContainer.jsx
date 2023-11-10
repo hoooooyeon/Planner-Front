@@ -119,9 +119,9 @@ const PlannerInfoContainer = () => {
         dispatch(resetPlannerErrorAction());
     };
 
-    if (Object.keys(planner).length <= 0) {
-        return null;
-    }
+    // if (Object.keys(planner).length <= 0) {
+    //     return null;
+    // }
     return (
         <PlannerInfo
             account={account}

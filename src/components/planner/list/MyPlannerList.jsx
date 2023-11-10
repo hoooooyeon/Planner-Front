@@ -134,6 +134,13 @@ const Img = styled.img`
     object-fit: cover;
 `;
 
+const CenterDiv = styled.div`
+    display: flex;
+    justify-content: center;
+    height: 10rem;
+    align-items: center;
+`;
+
 const MyPlannerList = ({
     accountId,
     myPlannerList,
@@ -170,8 +177,10 @@ const MyPlannerList = ({
                         {loading.createPlannerLoading ? <Loading size="small" /> : <>플래너 생성</>}
                     </Button>
                 </Header>
-                {loading.myPlannersLoading && Object.keys(myPlannerList).length <= 0 ? (
-                    <Loading />
+                {loading.myPlannersLoading ? (
+                    <CenterDiv>
+                        <Loading />
+                    </CenterDiv>
                 ) : Object.keys(myPlannerList).length > 0 && myPlannerList.list.length > 0 ? (
                     <Slider
                         list={myPlannerList.list}

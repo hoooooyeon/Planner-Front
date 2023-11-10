@@ -40,6 +40,7 @@ const Shares = styled.ul`
     width: 100%;
     height: 100%;
     margin: 0 auto;
+    min-height: 13rem;
 `;
 
 const ShareItem = styled.li`
@@ -128,6 +129,13 @@ const ErrorDiv = styled.div`
     margin-top: 2rem;
 `;
 
+const CenterDiv = styled.div`
+    display: flex;
+    justify-content: center;
+    height: 35rem;
+    align-items: center;
+`;
+
 const ShareList = ({
     sharePlanners,
     loading,
@@ -159,8 +167,10 @@ const ShareList = ({
                     onChangeResultKeyword={onChangeResultKeyword}
                     onChangeSort={onChangeSort}
                 />
-                {loading && Object.keys(sharePlanners).length <= 0 ? (
-                    <Loading />
+                {loading ? (
+                    <CenterDiv>
+                        <Loading />
+                    </CenterDiv>
                 ) : Object.keys(sharePlanners).length > 0 && sharePlanners.list.length > 0 ? (
                     <Slider list={sharePlanners.list} itemRef={itemRef} scroll={true} drag={drag}>
                         <Shares>

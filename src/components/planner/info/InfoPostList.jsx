@@ -156,28 +156,31 @@ const InfoPostList = ({
                         {accountId === planner.accountId && <Button onClick={onCreateMemo}>ADD</Button>}
                     </PostListHeader>
                     <PostList>
-                        {/* {!loading.plannerLoading ? (
-                            <Loading size="small" />
+                        {loading.plannerLoading ||
+                        loading.deleteMemoLoading ||
+                        loading.updateMemoLoading ||
+                        loading.createMemoLoading ? (
+                            <Loading size="small" pos="center" />
                         ) : (
-                            <> */}
-                        {planMemos && planMembers.find((member) => member === nickname) !== undefined ? (
-                            planMemos.map((memo) => {
-                                return (
-                                    <InfoPostItem
-                                        key={memo.memoId}
-                                        memo={memo}
-                                        onDeleteMemo={onDeleteMemo}
-                                        onLoadMemo={onLoadMemo}
-                                        account={account}
-                                        planner={planner}
-                                    />
-                                );
-                            })
-                        ) : (
-                            <Empty text="메모" />
+                            <>
+                                {planMemos && planMembers.find((member) => member === nickname) !== undefined ? (
+                                    planMemos.map((memo) => {
+                                        return (
+                                            <InfoPostItem
+                                                key={memo.memoId}
+                                                memo={memo}
+                                                onDeleteMemo={onDeleteMemo}
+                                                onLoadMemo={onLoadMemo}
+                                                account={account}
+                                                planner={planner}
+                                            />
+                                        );
+                                    })
+                                ) : (
+                                    <Empty text="메모" />
+                                )}
+                            </>
                         )}
-                        {/* </>
-                        )} */}
                     </PostList>
                     {Object.keys(modal).length > 0 && modal.memo && (
                         <MemoModal

@@ -3,20 +3,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import MemberModal from '../../components/planner/MemberModal';
 import {
     deleteMemberAction,
+    DELETE_MEMBER_TYPE,
     inviteMemberAction,
+    INVITE_MEMBER_TYPE,
     resetPlannerErrorAction,
     toggleMemberModalAction,
 } from '../../modules/plannerModule';
 
 const MemberModalContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, modal, account, isInvite } = useSelector(({ plannerReducer, authReducer }) => ({
-        planner: plannerReducer.planner,
-        plannerError: plannerReducer.plannerError,
-        modal: plannerReducer.modal,
-        account: authReducer.account,
-        isInvite: plannerReducer.isInvite,
-    }));
+    const { planner, plannerError, modal, account, isInvite, loading } = useSelector(
+        ({ plannerReducer, authReducer, loadingReducer }) => ({
+            planner: plannerReducer.planner,
+            plannerError: plannerReducer.plannerError,
+            modal: plannerReducer.modal,
+            account: authReducer.account,
+            isInvite: plannerReducer.isInvite,
+            loading: {
+                deleteMemberLoading: loadingReducer[DELETE_MEMBER_TYPE],
+                inviteMemberLoading: loadingReducer[INVITE_MEMBER_TYPE],
+            },
+        }),
+    );
 
     const { plannerId } = { ...planner };
     const { accountId } = { ...account };
@@ -60,6 +68,7 @@ const MemberModalContainer = () => {
         <MemberModal
             planner={planner}
             members={members}
+            loading={loading}
             modal={modal}
             plannerError={plannerError}
             isInvite={isInvite}
