@@ -134,8 +134,8 @@ const PlannerInfo = ({
     onTogglePlannerInfoModal,
     onChangeCurPlanId,
     onToggleLikePlanner,
-    onClickAllSchedule,
-    onClickDateSchedule,
+    onClickToggleScheduleView,
+    onClickToggleMapSchedule,
     onClickEditPlanner,
 }) => {
     const { creator } = { ...planner };
@@ -222,19 +222,21 @@ const PlannerInfo = ({
                         <FlexBox>
                             <InfoMap
                                 planner={planner}
+                                plannerData={plannerData}
                                 accountId={accountId}
                                 allSchedule={allSchedule}
-                                mapRef={mapRef}
+                                // mapRef={mapRef}
                                 loading={loading}
                                 onToggleLikePlanner={handleToggleLikePlanner}
-                                onClickAllSchedule={onClickAllSchedule}
+                                // onClickToggleMapSchedule={onClickToggleMapSchedule}
+                                onClickToggleScheduleView={onClickToggleScheduleView}
                             />
                             <InfoRoute
                                 planner={planner}
                                 plannerData={plannerData}
                                 drag={drag}
                                 onChangeCurPlanId={onChangeCurPlanId}
-                                onClickDateSchedule={onClickDateSchedule}
+                                onClickToggleScheduleView={onClickToggleScheduleView}
                             />
                         </FlexBox>
                     </>

@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import EditList from '../../../components/planner/edit/EditList';
 import { accountLikeSpotListLoadAction, resetLikeSpotListAction } from '../../../modules/accountModule';
 import {
-    changeAllScheduleAction,
     changeKeywordAction,
     changePageNumAction,
     changeResultKeywordAction,
     createLocationAction,
+    toggleScheduleViewAction,
 } from '../../../modules/plannerModule';
 import {
     loadDetailSpotAction,
@@ -223,7 +223,7 @@ const EditListContainer = () => {
 
     // 현재 일정 루트 보기
     const onClickDateSchedule = () => {
-        dispatch(changeAllScheduleAction(false));
+        dispatch(toggleScheduleViewAction(false));
     };
 
     if (accountId !== planner.accountId) {

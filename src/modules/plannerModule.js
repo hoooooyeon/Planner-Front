@@ -86,7 +86,7 @@ const CHANGE_PAGE_NUM_TYPE = 'planner/CHANGE_PAGE_NUM';
 const CHANGE_KEYWORD_TYPE = 'planner/CHANGE_KEYWORD';
 const CHANGE_RESULT_KEYWORD_TYPE = 'planner/CHANGE_RESULT_KEYWORD';
 
-const CHANGE_ALL_SCHEDULE_TYPE = 'planner/CHANGE_ALL_SCHEDULE';
+const TOGGLE_SCHEDULE_VIEW_TYPE = 'planner/TOGGLE_SCHEDULE_VIEW_TYPE';
 const RESET_SHARE_PLANNER_LIST_TYPE = 'planner/RESET_SHARE_PLANNER_LIST';
 
 const RESET_PLANNER_ERROR_TYPE = 'planner/RESET_PLANNER_ERROR';
@@ -220,7 +220,7 @@ export const changeCurMemoIdAction = (memoId) => ({ type: CHANGE_CUR_MEMO_ID_TYP
 export const changePageNumAction = (pageNum) => ({ type: CHANGE_PAGE_NUM_TYPE, pageNum });
 export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, keyword });
 export const changeResultKeywordAction = (keyword) => ({ type: CHANGE_RESULT_KEYWORD_TYPE, keyword });
-export const changeAllScheduleAction = (bool) => ({ type: CHANGE_ALL_SCHEDULE_TYPE, bool });
+export const toggleScheduleViewAction = (bool) => ({ type: TOGGLE_SCHEDULE_VIEW_TYPE, bool });
 export const resetSharePlannerListAction = () => ({ type: RESET_SHARE_PLANNER_LIST_TYPE });
 export const resetPlannerErrorAction = () => ({ type: RESET_PLANNER_ERROR_TYPE });
 export const toggleMemoModalAction = () => ({ type: TOGGLE_MEMO_MODAL_TYPE });
@@ -542,7 +542,7 @@ function plannerReducer(state = initialState, action) {
                     resultKeyword: action.keyword,
                 },
             };
-        case CHANGE_ALL_SCHEDULE_TYPE:
+        case TOGGLE_SCHEDULE_VIEW_TYPE:
             return {
                 ...state,
                 allSchedule: action.bool,

@@ -60,7 +60,7 @@ const RouteLine = styled.div`
     z-index: -1;
 `;
 
-const InfoDatination = ({ planner, plannerData, drag, onChangeCurPlanId, onClickDateSchedule }) => {
+const InfoDatination = ({ planner, plannerData, drag, onChangeCurPlanId, onClickToggleScheduleView }) => {
     const { plans } = { ...planner };
     const itemRef = useRef();
 
@@ -81,7 +81,7 @@ const InfoDatination = ({ planner, plannerData, drag, onChangeCurPlanId, onClick
                                 aria-current={p.planId === plannerData.planId ? 'date' : null}
                                 onClick={() => {
                                     onChangeCurPlanId(p.planId);
-                                    onClickDateSchedule();
+                                    onClickToggleScheduleView(false);
                                 }}
                             >
                                 <DateButton aria-current={p.planId === plannerData.planId ? 'date' : null}>

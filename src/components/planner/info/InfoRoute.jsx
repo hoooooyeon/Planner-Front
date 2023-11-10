@@ -154,7 +154,7 @@ const ErrorDiv = styled.div`
     transform: translate(-50%, -50%);
 `;
 
-const InfoRoute = ({ planner, plannerData, drag, onChangeCurPlanId, onClickDateSchedule }) => {
+const InfoRoute = ({ planner, plannerData, drag, onChangeCurPlanId, onClickToggleScheduleView }) => {
     const { plans } = { ...planner };
     const transIconList = [faPlane, faTrainSubway, faBus, faTaxi, faBicycle, faPersonWalking];
     const itemRef = useRef();
@@ -166,7 +166,7 @@ const InfoRoute = ({ planner, plannerData, drag, onChangeCurPlanId, onClickDateS
                 plannerData={plannerData}
                 drag={drag}
                 onChangeCurPlanId={onChangeCurPlanId}
-                onClickDateSchedule={onClickDateSchedule}
+                onClickToggleScheduleView={onClickToggleScheduleView}
             />
             <WidthDiv>
                 {plans && plans.length > 0 ? (

@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import EditRoute from '../../../components/planner/edit/EditRoute';
 import {
-    changeAllScheduleAction,
     changeCurPlanIdAction,
     changeCurPlannerIdAction,
     createPlanAction,
@@ -13,6 +12,7 @@ import {
     loadPlannerAction,
     toggleMemberModalAction,
     togglePlannerInfoModalAction,
+    toggleScheduleViewAction,
     updateLocationAction,
     updatePlanAction,
     updatePlannerAction,
@@ -307,7 +307,7 @@ const EditRouteContainer = () => {
 
     // 일정 루트 보기
     const onClickDateSchedule = () => {
-        dispatch(changeAllScheduleAction(false));
+        dispatch(toggleScheduleViewAction(false));
     };
 
     if (Object.keys(planner).length <= 0 || accountId !== planner.accountId) {
