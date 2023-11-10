@@ -196,7 +196,7 @@ const PlannerInfoContainer = () => {
     const line = useRef();
     // 모든 일정의 루트 보기
     const showAllRouteMarker = () => {
-        if (map && plans) {
+        if (map && plans && mapRef.current) {
             let infowindow = new kakao.maps.InfoWindow({ removable: true });
             let linePath = [];
             let markerPosition;
@@ -277,7 +277,7 @@ const PlannerInfoContainer = () => {
     };
 
     const showDateRouteMarker = useCallback(() => {
-        if (map && plans) {
+        if (map && plans && mapRef.current) {
             let infowindow = new kakao.maps.InfoWindow({ removable: true });
             let linePath = [];
             let markerPosition;
@@ -358,11 +358,14 @@ const PlannerInfoContainer = () => {
         map,
         plans,
         plannerData.planId,
+        loading[LOAD_PLANNER_TYPE],
     ]);
 
     useEffect(() => {
-        showDateRouteMarker();
-    }, [showDateRouteMarker]);
+        if (mapRef.current) {
+            showDateRouteMarker();
+        }
+    }, [showDateRouteMarker, loading[LOAD_PLANNER_TYPE]]);
 
     // 지도에 일정의 루트 출력 토글.
     const onClickAllSchedule = () => {

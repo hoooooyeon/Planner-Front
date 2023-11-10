@@ -5,6 +5,7 @@ import InfoPostItem from './InfoPostItem';
 import ad1 from '../../../lib/images/ad1.jpg';
 import ad2 from '../../../lib/images/serviceImg1.jpg';
 import Empty from '../../common/Empty';
+import Loading from '../../common/Loading';
 
 const InfoPostListBlock = styled.div`
     background-color: ${(props) => props.theme.secondaryBackgroundColor};
@@ -113,6 +114,7 @@ const InfoPostList = ({
     curMemo,
     account,
     modal,
+    loading,
     plannerError,
     onCreateMemo,
     onUpdateMemo,
@@ -154,6 +156,10 @@ const InfoPostList = ({
                         {accountId === planner.accountId && <Button onClick={onCreateMemo}>ADD</Button>}
                     </PostListHeader>
                     <PostList>
+                        {/* {!loading.plannerLoading ? (
+                            <Loading size="small" />
+                        ) : (
+                            <> */}
                         {planMemos && planMembers.find((member) => member === nickname) !== undefined ? (
                             planMemos.map((memo) => {
                                 return (
@@ -170,6 +176,8 @@ const InfoPostList = ({
                         ) : (
                             <Empty text="메모" />
                         )}
+                        {/* </>
+                        )} */}
                     </PostList>
                     {Object.keys(modal).length > 0 && modal.memo && (
                         <MemoModal
