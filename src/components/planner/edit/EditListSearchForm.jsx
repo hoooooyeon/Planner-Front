@@ -11,6 +11,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { useState } from 'react';
+import Loading from '../../common/Loading';
 
 const MenuList = styled.div`
     padding: 1rem 0 0.8rem;
@@ -67,6 +68,7 @@ const FormDiv = styled.div`
     flex-direction: column;
     padding: 0.9rem 1rem 0;
     margin-bottom: 1rem;
+    min-height: 13rem;
     background-color: ${(props) => props.theme.secondaryBackgroundColor};
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
 `;
@@ -189,12 +191,17 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     }
 `;
 
+const CenterDiv = styled.div`
+    height: 12rem;
+`;
+
 const EditListSearchForm = ({
     keyword,
     spotData,
     areas,
     contentTypeList,
     likeKeyword,
+    loading,
     onChangeAreaIndex,
     onChangeContentTypeId,
     onChangeResultKeyword,
@@ -217,122 +224,130 @@ const EditListSearchForm = ({
 
     return (
         <FormDiv>
-            <SelectDiv>
-                <SelectBox>
-                    <Label>지역</Label>
-                    <Select
-                        required
-                        value={spotData.areaIndex}
-                        onChange={(e) => {
-                            onChangeAreaIndex(e.target.value);
-                        }}
-                    >
-                        {Object.keys(areas).length > 0 &&
-                            areas.map((area) => (
-                                <option value={area.code} key={area.code}>
-                                    {area.name}
-                                </option>
-                            ))}
-                    </Select>
-                </SelectBox>
-            </SelectDiv>
+            {loading ? (
+                <CenterDiv>
+                    <Loading pos="center" />
+                </CenterDiv>
+            ) : (
+                <>
+                    <SelectDiv>
+                        <SelectBox>
+                            <Label>지역</Label>
+                            <Select
+                                required
+                                value={spotData.areaIndex}
+                                onChange={(e) => {
+                                    onChangeAreaIndex(e.target.value);
+                                }}
+                            >
+                                {Object.keys(areas).length > 0 &&
+                                    areas.map((area) => (
+                                        <option value={area.code} key={area.code}>
+                                            {area.name}
+                                        </option>
+                                    ))}
+                            </Select>
+                        </SelectBox>
+                    </SelectDiv>
 
-            <MenuList>
-                {contentTypeList.map((c, i) => (
-                    <MenuItem
-                        onClick={() => {
-                            onChangeContentTypeId(c.id);
-                            onIndexPage(1);
-                        }}
-                        key={i}
-                        onMouseEnter={() => onOpenName(i)}
-                        onMouseLeave={onCloseName}
-                    >
-                        <MenuIcon icon={iconList[i]} aria-current={contentTypeId === c.id ? 'cur' : null} />
-                        {hoveredItemId === i && <IconName>{c.label}</IconName>}
-                    </MenuItem>
-                ))}
-                <MenuItem
-                    onClick={() => {
-                        onIndexPage(1);
-                        onChangeContentTypeId(0);
-                    }}
-                    onMouseEnter={() => onOpenName(7)}
-                    onMouseLeave={onCloseName}
-                >
-                    <MenuIcon icon={faHeart} aria-current={contentTypeId === 0 ? 'cur' : null} />
-                    {hoveredItemId === 7 && <IconName>좋아요</IconName>}
-                </MenuItem>
-            </MenuList>
-            {contentTypeId !== 0 && (
-                <Form>
-                    <SearchBox>
-                        <SearchInput
-                            placeholder="키워드 검색"
-                            type="text"
-                            value={curKeyword}
-                            onChange={(e) => {
-                                onChangeCurKeyword(e.target.value);
+                    <MenuList>
+                        {contentTypeList.map((c, i) => (
+                            <MenuItem
+                                onClick={() => {
+                                    onChangeContentTypeId(c.id);
+                                    onIndexPage(1);
+                                }}
+                                key={i}
+                                onMouseEnter={() => onOpenName(i)}
+                                onMouseLeave={onCloseName}
+                            >
+                                <MenuIcon icon={iconList[i]} aria-current={contentTypeId === c.id ? 'cur' : null} />
+                                {hoveredItemId === i && <IconName>{c.label}</IconName>}
+                            </MenuItem>
+                        ))}
+                        <MenuItem
+                            onClick={() => {
+                                onIndexPage(1);
+                                onChangeContentTypeId(0);
                             }}
-                        />
-                        <InvisibleInput type="text" />
-                        <IconBox>
-                            {curKeyword.length > 0 ? (
-                                <StyledFontAwesomeIcon
-                                    onClick={() => {
-                                        onChangeCurKeyword('');
+                            onMouseEnter={() => onOpenName(7)}
+                            onMouseLeave={onCloseName}
+                        >
+                            <MenuIcon icon={faHeart} aria-current={contentTypeId === 0 ? 'cur' : null} />
+                            {hoveredItemId === 7 && <IconName>좋아요</IconName>}
+                        </MenuItem>
+                    </MenuList>
+                    {contentTypeId !== 0 && (
+                        <Form>
+                            <SearchBox>
+                                <SearchInput
+                                    placeholder="키워드 검색"
+                                    type="text"
+                                    value={curKeyword}
+                                    onChange={(e) => {
+                                        onChangeCurKeyword(e.target.value);
                                     }}
-                                    icon={faXmark}
                                 />
-                            ) : null}
-                        </IconBox>
-                        <SearchButton type="button" onClick={onChangeResultKeyword}>
-                            <FontAwesomeIcon icon={faMagnifyingGlass} />
-                        </SearchButton>
-                    </SearchBox>
-                    <ResultBox>
-                        {resultKeyword.length > 0 ? (
-                            <>
-                                ' <SearchResult>{resultKeyword}</SearchResult> ' 에 대한 검색 결과...
-                            </>
-                        ) : null}
-                    </ResultBox>
-                </Form>
-            )}
-            {contentTypeId === 0 && (
-                <Form>
-                    <SearchBox>
-                        <SearchInput
-                            placeholder="키워드 검색"
-                            type="text"
-                            value={curKeyword}
-                            onChange={(e) => {
-                                onChangeCurKeyword(e.target.value);
-                            }}
-                        />
-                        <InvisibleInput type="text" />
-                        <IconBox>
-                            {curKeyword.length > 0 ? (
-                                <StyledFontAwesomeIcon
-                                    onClick={() => {
-                                        onChangeCurKeyword('');
+                                <InvisibleInput type="text" />
+                                <IconBox>
+                                    {curKeyword.length > 0 ? (
+                                        <StyledFontAwesomeIcon
+                                            onClick={() => {
+                                                onChangeCurKeyword('');
+                                            }}
+                                            icon={faXmark}
+                                        />
+                                    ) : null}
+                                </IconBox>
+                                <SearchButton type="button" onClick={onChangeResultKeyword}>
+                                    <FontAwesomeIcon icon={faMagnifyingGlass} />
+                                </SearchButton>
+                            </SearchBox>
+                            <ResultBox>
+                                {resultKeyword.length > 0 ? (
+                                    <>
+                                        ' <SearchResult>{resultKeyword}</SearchResult> ' 에 대한 검색 결과...
+                                    </>
+                                ) : null}
+                            </ResultBox>
+                        </Form>
+                    )}
+                    {contentTypeId === 0 && (
+                        <Form>
+                            <SearchBox>
+                                <SearchInput
+                                    placeholder="키워드 검색"
+                                    type="text"
+                                    value={curKeyword}
+                                    onChange={(e) => {
+                                        onChangeCurKeyword(e.target.value);
                                     }}
-                                    icon={faXmark}
                                 />
-                            ) : null}
-                        </IconBox>
-                        <SearchButton type="button" onClick={onChangeLikeKeyword}>
-                            <FontAwesomeIcon icon={faMagnifyingGlass} />
-                        </SearchButton>
-                    </SearchBox>
-                    <ResultBox>
-                        {likeKeyword.length > 0 ? (
-                            <>
-                                ' <SearchResult>{likeKeyword}</SearchResult> ' 에 대한 검색 결과...
-                            </>
-                        ) : null}
-                    </ResultBox>
-                </Form>
+                                <InvisibleInput type="text" />
+                                <IconBox>
+                                    {curKeyword.length > 0 ? (
+                                        <StyledFontAwesomeIcon
+                                            onClick={() => {
+                                                onChangeCurKeyword('');
+                                            }}
+                                            icon={faXmark}
+                                        />
+                                    ) : null}
+                                </IconBox>
+                                <SearchButton type="button" onClick={onChangeLikeKeyword}>
+                                    <FontAwesomeIcon icon={faMagnifyingGlass} />
+                                </SearchButton>
+                            </SearchBox>
+                            <ResultBox>
+                                {likeKeyword.length > 0 ? (
+                                    <>
+                                        ' <SearchResult>{likeKeyword}</SearchResult> ' 에 대한 검색 결과...
+                                    </>
+                                ) : null}
+                            </ResultBox>
+                        </Form>
+                    )}
+                </>
             )}
         </FormDiv>
     );

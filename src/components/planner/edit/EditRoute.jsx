@@ -7,14 +7,17 @@ import EditRouteList from './EditRouteList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
+import Loading from '../../common/Loading';
 
 const EditRouteBlock = styled.div`
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     height: 100vh;
     float: left;
+    min-width: 24rem;
 `;
 
 const InfoDiv = styled.div`
+    height: 14rem;
     background-color: ${(props) => props.theme.secondaryBackgroundColor};
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     margin-bottom: 1rem;
@@ -207,6 +210,16 @@ const EditRoute = ({
 }) => {
     const { title, creator, updateDate } = { ...planner };
     const [dropDown, setDropDown] = useState(false);
+    const {
+        createLocationLoading,
+        deleteLocationLoading,
+        updateLocationLoading,
+        createPlanLoading,
+        deletePlanLoading,
+        updatePlanLoading,
+        updatePlannerLoading,
+        plannerLoading,
+    } = { ...loading };
 
     const onClickDropDown = () => {
         setDropDown(!dropDown);
@@ -225,81 +238,104 @@ const EditRoute = ({
 
     return (
         <EditRouteBlock>
-            <InfoDiv>
-                <InfoBox>
-                    <MenuIcon icon={faEllipsis} onClick={onClickDropDown} />
-                    <DropDown dropDown={dropDown}>
-                        <DropDownMenu>
-                            <li onClick={onTogglePlannerInfoModal}>정보 수정</li>
-                            <li onClick={onToggleMemberModal}>멤버 관리</li>
-                        </DropDownMenu>
-                    </DropDown>
-                    <Title>{title}</Title>
-                    <Creator>By {creator}</Creator>
-                    <Dates>
-                        <ShadowDiv>
-                            <StartDateBox>
-                                <p>Start Date</p>
-                                <SetIcon icon={faGear} />
-                                <PointerStyledDatePicker
-                                    selected={startDate}
-                                    minDate={new Date()}
-                                    onChange={(date) => {
-                                        onUpdatePlannerDate(date);
-                                    }}
-                                    dateFormat=" yyyy. MM. dd "
-                                />
-                            </StartDateBox>
-                        </ShadowDiv>
-                        <ShadowDiv>
-                            <DateBox>
-                                <p>End Date</p>
-                                <StyledDatePicker
-                                    readOnly
-                                    selected={endDate}
-                                    minDate={new Date()}
-                                    dateFormat=" yyyy. MM. dd "
-                                />
-                            </DateBox>
-                        </ShadowDiv>
-                    </Dates>
-                    <UpdatedDate>Updated {updateDate}</UpdatedDate>
-                </InfoBox>
-            </InfoDiv>
-            <RouteBox>
-                <EditCalendar
-                    planner={planner}
-                    plannerData={plannerData}
-                    onCreatePlan={onCreatePlan}
-                    onDeletePlan={onDeletePlan}
-                    onChangeCurPlanId={onChangeCurPlanId}
-                    onAddDate={onAddDate}
-                    onSubDate={onSubDate}
-                    onUpdatePlan={onUpdatePlan}
-                    setCurPlan={setCurPlan}
-                    cloneElement={cloneElement}
-                    cloneElStyle={cloneElStyle}
-                    onCloneElement={onCloneElement}
-                    onDeleteElement={onDeleteElement}
-                    onChangeStyle={onChangeStyle}
-                    setUpdatePlans={setUpdatePlans}
-                    onClickDateSchedule={onClickDateSchedule}
-                />
-                <EditRouteList
-                    planner={planner}
-                    plannerData={plannerData}
-                    onDeleteLocation={onDeleteLocation}
-                    onUpdateTrans={onUpdateTrans}
-                    onUpdateLocation={onUpdateLocation}
-                    setCurLocation={setCurLocation}
-                    cloneElement={cloneElement}
-                    cloneElStyle={cloneElStyle}
-                    onCloneElement={onCloneElement}
-                    onDeleteElement={onDeleteElement}
-                    onChangeStyle={onChangeStyle}
-                    setUpdatePlans={setUpdatePlans}
-                />
-            </RouteBox>
+            {plannerLoading ? (
+                <Loading pos="center" />
+            ) : (
+                <>
+                    {updatePlannerLoading ? (
+                        <InfoDiv>
+                            <Loading pos="center" />
+                        </InfoDiv>
+                    ) : (
+                        <InfoDiv>
+                            <InfoBox>
+                                <MenuIcon icon={faEllipsis} onClick={onClickDropDown} />
+                                <DropDown dropDown={dropDown}>
+                                    <DropDownMenu>
+                                        <li onClick={onTogglePlannerInfoModal}>정보 수정</li>
+                                        <li onClick={onToggleMemberModal}>멤버 관리</li>
+                                    </DropDownMenu>
+                                </DropDown>
+                                <Title>{title}</Title>
+                                <Creator>By {creator}</Creator>
+                                <Dates>
+                                    <ShadowDiv>
+                                        <StartDateBox>
+                                            <p>Start Date</p>
+                                            <SetIcon icon={faGear} />
+                                            <PointerStyledDatePicker
+                                                selected={startDate}
+                                                minDate={new Date()}
+                                                onChange={(date) => {
+                                                    onUpdatePlannerDate(date);
+                                                }}
+                                                dateFormat=" yyyy. MM. dd "
+                                            />
+                                        </StartDateBox>
+                                    </ShadowDiv>
+                                    <ShadowDiv>
+                                        <DateBox>
+                                            <p>End Date</p>
+                                            <StyledDatePicker
+                                                readOnly
+                                                selected={endDate}
+                                                minDate={new Date()}
+                                                dateFormat=" yyyy. MM. dd "
+                                            />
+                                        </DateBox>
+                                    </ShadowDiv>
+                                </Dates>
+                                <UpdatedDate>Updated {updateDate}</UpdatedDate>
+                            </InfoBox>
+                        </InfoDiv>
+                    )}
+                    {createLocationLoading ||
+                    deleteLocationLoading ||
+                    updateLocationLoading ||
+                    createPlanLoading ||
+                    deletePlanLoading ||
+                    updatePlanLoading ? (
+                        <RouteBox>
+                            <Loading pos="center" />
+                        </RouteBox>
+                    ) : (
+                        <RouteBox>
+                            <EditCalendar
+                                planner={planner}
+                                plannerData={plannerData}
+                                onCreatePlan={onCreatePlan}
+                                onDeletePlan={onDeletePlan}
+                                onChangeCurPlanId={onChangeCurPlanId}
+                                onAddDate={onAddDate}
+                                onSubDate={onSubDate}
+                                onUpdatePlan={onUpdatePlan}
+                                setCurPlan={setCurPlan}
+                                cloneElement={cloneElement}
+                                cloneElStyle={cloneElStyle}
+                                onCloneElement={onCloneElement}
+                                onDeleteElement={onDeleteElement}
+                                onChangeStyle={onChangeStyle}
+                                setUpdatePlans={setUpdatePlans}
+                                onClickDateSchedule={onClickDateSchedule}
+                            />
+                            <EditRouteList
+                                planner={planner}
+                                plannerData={plannerData}
+                                onDeleteLocation={onDeleteLocation}
+                                onUpdateTrans={onUpdateTrans}
+                                onUpdateLocation={onUpdateLocation}
+                                setCurLocation={setCurLocation}
+                                cloneElement={cloneElement}
+                                cloneElStyle={cloneElStyle}
+                                onCloneElement={onCloneElement}
+                                onDeleteElement={onDeleteElement}
+                                onChangeStyle={onChangeStyle}
+                                setUpdatePlans={setUpdatePlans}
+                            />
+                        </RouteBox>
+                    )}
+                </>
+            )}
         </EditRouteBlock>
     );
 };

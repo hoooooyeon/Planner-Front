@@ -45,10 +45,10 @@ const PlannerInfoContainer = () => {
     // 페이지 접근 제어
     useEffect(() => {
         if (planner === false) {
-            alert('잘못된 접근입니다.');
-            history.push('/Planners');
+            // alert('잘못된 접근입니다.');
+            // history.push('/Planners');
         } else if (plannerId === '') {
-            history.push('/Planners');
+            // history.push('/Planners');
         }
     }, [history, planner, plannerId]);
 

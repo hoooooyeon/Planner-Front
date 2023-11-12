@@ -21,9 +21,6 @@ import {
     resetSpotErrorAction,
     LOAD_AREAS_TYPE,
     LOAD_SPOTS_TYPE,
-    LOAD_DETAIL_SPOT_TYPE,
-    ADD_SPOT_LIKE_TYPE,
-    REMOVE_SPOT_LIKE_TYPE,
     SEARCH_SPOT_TYPE,
 } from '../../modules/spotModule';
 

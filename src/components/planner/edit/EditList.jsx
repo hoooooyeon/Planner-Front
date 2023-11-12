@@ -216,125 +216,136 @@ const EditList = ({
     return (
         <>
             <EditListBlock ref={navRef} navOpen={navOpen}>
-                {navOpen ? (
-                    <NavArrowIcon onClick={onToggleNav} icon={faCaretRight} />
+                {loading.plannerLoading ? (
+                    <Loading pos="center" />
                 ) : (
-                    <NavArrowIcon onClick={onToggleNav} icon={faCaretLeft} />
-                )}
-                <EditListSearchForm
-                    keyword={keyword}
-                    spotData={spotData}
-                    areas={areas}
-                    contentTypeList={contentTypeList}
-                    likeKeyword={likeKeyword}
-                    onChangeAreaIndex={onChangeAreaIndex}
-                    onChangeContentTypeId={onChangeContentTypeId}
-                    onChangeResultKeyword={onChangeResultKeyword}
-                    onChangeLikeKeyword={onChangeLikeKeyword}
-                    onChangeCurKeyword={onChangeCurKeyword}
-                    onIndexPage={onIndexPage}
-                />
-                <List>
-                    {loading && Object.keys(likeSpotList).length <= 0 && Object.keys(spots).length <= 0 ? (
-                        <Loading />
-                    ) : (
-                        <>
-                            {Object.keys(spots).length > 0 &&
-                                spots.list.map((s, i) => {
-                                    const { firstImage, firstImage2, title, addr1 } = s;
+                    <>
+                        {navOpen ? (
+                            <NavArrowIcon onClick={onToggleNav} icon={faCaretRight} />
+                        ) : (
+                            <NavArrowIcon onClick={onToggleNav} icon={faCaretLeft} />
+                        )}
+                        <EditListSearchForm
+                            keyword={keyword}
+                            spotData={spotData}
+                            areas={areas}
+                            contentTypeList={contentTypeList}
+                            likeKeyword={likeKeyword}
+                            loading={loading.areasLoading}
+                            onChangeAreaIndex={onChangeAreaIndex}
+                            onChangeContentTypeId={onChangeContentTypeId}
+                            onChangeResultKeyword={onChangeResultKeyword}
+                            onChangeLikeKeyword={onChangeLikeKeyword}
+                            onChangeCurKeyword={onChangeCurKeyword}
+                            onIndexPage={onIndexPage}
+                        />
+                        {loading.spotLoading || loading.searchSpotLoading || loading.likeSpotLoading ? (
+                            // Object.keys(likeSpotList).length <= 0 &&
+                            // Object.keys(spots).length <= 0
+                            <List>
+                                <Loading pos="center" />
+                            </List>
+                        ) : (
+                            <>
+                                <List>
+                                    {Object.keys(spots).length > 0 &&
+                                        spots.list.map((s, i) => {
+                                            const { firstImage, firstImage2, title, addr1 } = s;
 
-                                    return (
-                                        <ListItem key={i}>
-                                            <Img
-                                                src={firstImage || firstImage2}
-                                                alt={title}
-                                                onError={(e) => {
-                                                    handleErrorImg({ e, errorImg });
-                                                }}
-                                            />
-                                            <TextInfo>
-                                                <Name>{title}</Name>
-                                                <Address>{addr1.split(' ')[0]}</Address>
-                                            </TextInfo>
-                                            <Icons>
-                                                <StyledFontAwesomeIcon
-                                                    onClick={() => {
-                                                        onOpenDetail(s);
-                                                    }}
-                                                    icon={faExclamation}
-                                                />
+                                            return (
+                                                <ListItem key={i}>
+                                                    <Img
+                                                        src={firstImage || firstImage2}
+                                                        alt={title}
+                                                        onError={(e) => {
+                                                            handleErrorImg({ e, errorImg });
+                                                        }}
+                                                    />
+                                                    <TextInfo>
+                                                        <Name>{title}</Name>
+                                                        <Address>{addr1.split(' ')[0]}</Address>
+                                                    </TextInfo>
+                                                    <Icons>
+                                                        <StyledFontAwesomeIcon
+                                                            onClick={() => {
+                                                                onOpenDetail(s);
+                                                            }}
+                                                            icon={faExclamation}
+                                                        />
 
-                                                <StyledFontAwesomeIcon
-                                                    onClick={() => {
-                                                        handleCreateLocation(s);
-                                                        onClickDateSchedule();
-                                                    }}
-                                                    icon={faPlus}
-                                                />
-                                            </Icons>
-                                        </ListItem>
-                                    );
-                                })}
-                            {Object.keys(likeSpotList).length > 0 &&
-                                likeSpotList.list.map((s, i) => {
-                                    const { image, title } = s;
-                                    return (
-                                        <ListItem key={i}>
-                                            <Img
-                                                src={image}
-                                                alt={title}
-                                                onError={(e) => {
-                                                    handleErrorImg({ e, errorImg });
-                                                }}
-                                            />
-                                            <TextInfo>
-                                                <Name>{title}</Name>
-                                            </TextInfo>
-                                            <Icons>
-                                                <StyledFontAwesomeIcon
-                                                    onClick={() => {
-                                                        onOpenDetail(s);
-                                                    }}
-                                                    icon={faExclamation}
-                                                />
+                                                        <StyledFontAwesomeIcon
+                                                            onClick={() => {
+                                                                handleCreateLocation(s);
+                                                                onClickDateSchedule();
+                                                            }}
+                                                            icon={faPlus}
+                                                        />
+                                                    </Icons>
+                                                </ListItem>
+                                            );
+                                        })}
+                                    {Object.keys(likeSpotList).length > 0 &&
+                                        likeSpotList.list.map((s, i) => {
+                                            const { image, title } = s;
+                                            return (
+                                                <ListItem key={i}>
+                                                    <Img
+                                                        src={image}
+                                                        alt={title}
+                                                        onError={(e) => {
+                                                            handleErrorImg({ e, errorImg });
+                                                        }}
+                                                    />
+                                                    <TextInfo>
+                                                        <Name>{title}</Name>
+                                                    </TextInfo>
+                                                    <Icons>
+                                                        <StyledFontAwesomeIcon
+                                                            onClick={() => {
+                                                                onOpenDetail(s);
+                                                            }}
+                                                            icon={faExclamation}
+                                                        />
 
-                                                <StyledFontAwesomeIcon
-                                                    onClick={() => {
-                                                        handleCreateLocation(s);
-                                                    }}
-                                                    icon={faPlus}
-                                                />
-                                            </Icons>
-                                        </ListItem>
-                                    );
-                                })}
-                            {/* 1. spots와 likeSpotList가 없을 떄
+                                                        <StyledFontAwesomeIcon
+                                                            onClick={() => {
+                                                                handleCreateLocation(s);
+                                                            }}
+                                                            icon={faPlus}
+                                                        />
+                                                    </Icons>
+                                                </ListItem>
+                                            );
+                                        })}
+                                    {/* 1. spots와 likeSpotList가 없을 떄
                         2. spots가 비었을 때(likeSpotList x)
                         3. likeSpotList가 비었을 때(spots x)
                     */}
-                            {(Object.keys(likeSpotList).length <= 0 &&
-                                Object.keys(spots).length > 0 &&
-                                spots.list <= 0) ||
-                            (Object.keys(likeSpotList).length > 0 &&
-                                likeSpotList.list.length <= 0 &&
-                                Object.keys(spots).length <= 0) ? (
-                                <Empty text="리스트" />
-                            ) : null}
-                        </>
-                    )}
-                </List>
-                <PageBox>
-                    <Pagination
-                        totalCount={totalCount}
-                        itemIndex={itemIndex}
-                        page={page}
-                        onIndexPage={onIndexPage}
-                        onPreviousPage={onPreviousPage}
-                        onNextPage={onNextPage}
-                        onFirstPage={onFirstPage}
-                        onLastPage={onLastPage}
-                    />
-                </PageBox>
+                                    {(Object.keys(likeSpotList).length <= 0 &&
+                                        Object.keys(spots).length > 0 &&
+                                        spots.list <= 0) ||
+                                    (Object.keys(likeSpotList).length > 0 &&
+                                        likeSpotList.list.length <= 0 &&
+                                        Object.keys(spots).length <= 0) ? (
+                                        <Empty text="리스트" />
+                                    ) : null}
+                                </List>
+                                <PageBox>
+                                    <Pagination
+                                        totalCount={totalCount}
+                                        itemIndex={itemIndex}
+                                        page={page}
+                                        onIndexPage={onIndexPage}
+                                        onPreviousPage={onPreviousPage}
+                                        onNextPage={onNextPage}
+                                        onFirstPage={onFirstPage}
+                                        onLastPage={onLastPage}
+                                    />
+                                </PageBox>
+                            </>
+                        )}
+                    </>
+                )}
             </EditListBlock>
             <ErrorModal errorState={isPlanModal} onCloseError={handleConfirmModal} errorMessage="일정을 선택하세요!" />
         </>

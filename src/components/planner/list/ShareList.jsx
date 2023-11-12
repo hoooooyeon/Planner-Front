@@ -129,11 +129,9 @@ const ErrorDiv = styled.div`
     margin-top: 2rem;
 `;
 
-const CenterDiv = styled.div`
-    display: flex;
-    justify-content: center;
+const LoadingDiv = styled.div`
     height: 35rem;
-    align-items: center;
+    position: relative;
 `;
 
 const ShareList = ({
@@ -168,9 +166,9 @@ const ShareList = ({
                     onChangeSort={onChangeSort}
                 />
                 {loading ? (
-                    <CenterDiv>
-                        <Loading />
-                    </CenterDiv>
+                    <LoadingDiv>
+                        <Loading pos="center" />
+                    </LoadingDiv>
                 ) : Object.keys(sharePlanners).length > 0 && sharePlanners.list.length > 0 ? (
                     <Slider list={sharePlanners.list} itemRef={itemRef} scroll={true} drag={drag}>
                         <Shares>

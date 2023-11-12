@@ -1,12 +1,17 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditList from '../../../components/planner/edit/EditList';
-import { accountLikeSpotListLoadAction, resetLikeSpotListAction } from '../../../modules/accountModule';
+import {
+    accountLikeSpotListLoadAction,
+    ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE,
+    resetLikeSpotListAction,
+} from '../../../modules/accountModule';
 import {
     changeKeywordAction,
     changePageNumAction,
     changeResultKeywordAction,
     createLocationAction,
+    LOAD_PLANNER_TYPE,
     toggleScheduleViewAction,
 } from '../../../modules/plannerModule';
 import {
@@ -21,6 +26,9 @@ import {
     resetSpotsAction,
     resetSpotDataAction,
     changeContentIdAction,
+    LOAD_AREAS_TYPE,
+    LOAD_SPOTS_TYPE,
+    SEARCH_SPOT_TYPE,
 } from '../../../modules/spotModule';
 
 const EditListContainer = () => {
@@ -48,7 +56,13 @@ const EditListContainer = () => {
         detail: spotReducer.detail,
         contentTypeList: spotReducer.contentTypeList,
         likeList: accountReducer.likeList,
-        loading: loadingReducer.loading,
+        loading: {
+            areasLoading: loadingReducer[LOAD_AREAS_TYPE],
+            spotLoading: loadingReducer[LOAD_SPOTS_TYPE],
+            searchSpotLoading: loadingReducer[SEARCH_SPOT_TYPE],
+            likeSpotLoading: loadingReducer[ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE],
+            plannerLoading: loadingReducer[LOAD_PLANNER_TYPE],
+        },
     }));
 
     const { plannerId, planId, pageNum } = { ...plannerData };

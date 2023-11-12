@@ -135,10 +135,7 @@ const Img = styled.img`
 `;
 
 const CenterDiv = styled.div`
-    display: flex;
-    justify-content: center;
     height: 10rem;
-    align-items: center;
 `;
 
 const MyPlannerList = ({
@@ -179,7 +176,7 @@ const MyPlannerList = ({
                 </Header>
                 {loading.myPlannersLoading ? (
                     <CenterDiv>
-                        <Loading />
+                        <Loading pos="center" />
                     </CenterDiv>
                 ) : Object.keys(myPlannerList).length > 0 && myPlannerList.list.length > 0 ? (
                     <Slider

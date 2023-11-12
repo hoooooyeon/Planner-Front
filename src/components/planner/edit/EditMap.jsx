@@ -7,6 +7,7 @@ import ErrorModal from '../../common/ErrorModal';
 import EditTutorialModal from './EditTutorialModal';
 import circleImg from '../../../lib/images/circle.png';
 import locationImg from '../../../lib/images/location.png';
+import Loading from '../../common/Loading';
 
 const EditMapBlock = styled.div`
     width: calc(100% - 392px);
@@ -64,10 +65,22 @@ const Button = styled.button`
         `}
 `;
 
+const DisplayDiv = styled.div`
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    ${(props) =>
+        props.loading &&
+        css`
+            display: none;
+        `}
+`;
+
 const EditMap = ({
     // mapRef,
     planner,
     spots,
+    loading,
     plannerData,
     spotError,
     plannerError,
@@ -554,14 +567,17 @@ const EditMap = ({
     return (
         <>
             <EditMapBlock>
-                <Map ref={mapRef} />
-                <ButtonBox>
-                    <Button allSchedule={allSchedule} onClick={onClickAllSchedule}>
-                        모든 일정 보기
-                    </Button>
-                    <Button onClick={onClickTutorialModal}>사용 방법</Button>
-                    <Button onClick={onSavePlanner}>일정 저장</Button>
-                </ButtonBox>
+                {loading && <Loading pos="center" />}
+                <DisplayDiv loading={loading}>
+                    <Map ref={mapRef} />
+                    <ButtonBox>
+                        <Button allSchedule={allSchedule} onClick={onClickAllSchedule}>
+                            모든 일정 보기
+                        </Button>
+                        <Button onClick={onClickTutorialModal}>사용 방법</Button>
+                        <Button onClick={onSavePlanner}>일정 저장</Button>
+                    </ButtonBox>
+                </DisplayDiv>
             </EditMapBlock>
             {tutorialVisible && <EditTutorialModal onClickTutorialModal={onClickTutorialModal} />}
             {plannerError && typeof plannerError === 'string' && (
