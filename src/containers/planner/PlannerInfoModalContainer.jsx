@@ -6,16 +6,20 @@ import {
     resetPlannerErrorAction,
     togglePlannerInfoModalAction,
     updatePlannerAction,
+    UPDATE_PLANNER_TYPE,
 } from '../../modules/plannerModule';
 
 const PlannerInfoModalContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, modal, account } = useSelector(({ plannerReducer, authReducer }) => ({
-        planner: plannerReducer.planner,
-        plannerError: plannerReducer.plannerError,
-        modal: plannerReducer.modal,
-        account: authReducer.account,
-    }));
+    const { planner, plannerError, modal, account, loading } = useSelector(
+        ({ plannerReducer, authReducer, loadingReducer }) => ({
+            planner: plannerReducer.planner,
+            plannerError: plannerReducer.plannerError,
+            modal: plannerReducer.modal,
+            account: authReducer.account,
+            loading: loadingReducer[UPDATE_PLANNER_TYPE],
+        }),
+    );
 
     const { accountId } = { ...account };
     const { plannerId, planDateStart, planDateEnd, title, expense, memberCount, memberTypeId, creator } = {
@@ -82,6 +86,7 @@ const PlannerInfoModalContainer = () => {
         <PlannerInfoModal
             modal={modal}
             plannerError={plannerError}
+            loading={loading}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onUpdatePlanner={onUpdatePlanner}
             curTitle={curTitle}

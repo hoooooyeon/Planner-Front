@@ -27,14 +27,14 @@ const App = () => {
             <Route path="/resultFindId" render={ResultFindIdPage} />
             <Route path="/findPassword" render={FindPasswordPage} />
             <Route path="/updatePassword" render={UpdatePasswordPage} />
-            <Route path="/Spot" component={SpotPage} />
+            <Route path="/spot" component={SpotPage} />
             <Route path="/Profile" render={ProfilePage} />
             <Route exact path="/reviews" component={ReviewPage} />
             <Route exact path={['/reviews/write', '/reviews/edit']} component={ReviewPostPage} />
             <Route exact path="/reviews/:reviewId" component={ReviewPostViewerPage} />
-            <Route path="/Planners/edit/:plannerId" render={PlannerEditPage} />
-            <Route path="/Planners/:plannerId" render={PlannerInfoPage} />
-            <Route path="/Planners" render={PlannerListPage} />
+            <Route path="/planners/edit/:plannerId" render={PlannerEditPage} />
+            <Route path="/planners/:plannerId" render={PlannerInfoPage} />
+            <Route path="/planners" render={PlannerListPage} />
         </Switch>
     );
 };

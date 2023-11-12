@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     changeCurPlannerIdAction,
     loadSharePlannerListAction,
+    LOAD_SHARE_PLANNER_LIST_TYPE,
     resetPlannerDataAction,
     resetSharePlannerListAction,
 } from '../modules/plannerModule';
@@ -21,7 +22,9 @@ const HomeContainer = () => {
             plannerData: plannerReducer.plannerData,
             pType: plannerReducer.pType,
             reviewList: (reviewReducer.reviewList && reviewReducer.reviewList.list) || null,
-            loading: loadingReducer.loading,
+            loading: {
+                plannerLoading: loadingReducer[LOAD_SHARE_PLANNER_LIST_TYPE],
+            },
         }),
     );
 

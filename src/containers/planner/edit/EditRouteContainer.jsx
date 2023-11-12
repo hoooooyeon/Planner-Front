@@ -4,18 +4,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import EditRoute from '../../../components/planner/edit/EditRoute';
 import {
-    changeAllScheduleAction,
     changeCurPlanIdAction,
     changeCurPlannerIdAction,
     createPlanAction,
+    CREATE_LOCATION_TYPE,
+    CREATE_PLAN_TYPE,
     deleteLocationAction,
     deletePlanAction,
+    DELETE_LOCATION_TYPE,
+    DELETE_PLAN_TYPE,
     loadPlannerAction,
+    LOAD_PLANNER_TYPE,
     toggleMemberModalAction,
     togglePlannerInfoModalAction,
+    toggleScheduleViewAction,
     updateLocationAction,
     updatePlanAction,
     updatePlannerAction,
+    UPDATE_LOCATION_TYPE,
+    UPDATE_PLANNER_TYPE,
+    UPDATE_PLAN_TYPE,
 } from '../../../modules/plannerModule';
 
 const EditRouteContainer = () => {
@@ -23,13 +31,25 @@ const EditRouteContainer = () => {
     const history = useHistory();
     const params = useParams();
 
-    const { planner, plan, plannerData, account } = useSelector(({ authReducer, plannerReducer }) => ({
-        planner: plannerReducer.planner,
-        plan: plannerReducer.plan,
-        plannerData: plannerReducer.plannerData,
-        location: plannerReducer.location,
-        account: authReducer.account,
-    }));
+    const { planner, plan, plannerData, account, loading } = useSelector(
+        ({ authReducer, plannerReducer, loadingReducer }) => ({
+            planner: plannerReducer.planner,
+            plan: plannerReducer.plan,
+            plannerData: plannerReducer.plannerData,
+            location: plannerReducer.location,
+            account: authReducer.account,
+            loading: {
+                createLocationLoading: loadingReducer[CREATE_LOCATION_TYPE],
+                deleteLocationLoading: loadingReducer[DELETE_LOCATION_TYPE],
+                updateLocationLoading: loadingReducer[UPDATE_LOCATION_TYPE],
+                createPlanLoading: loadingReducer[CREATE_PLAN_TYPE],
+                deletePlanLoading: loadingReducer[DELETE_PLAN_TYPE],
+                updatePlanLoading: loadingReducer[UPDATE_PLAN_TYPE],
+                updatePlannerLoading: loadingReducer[UPDATE_PLANNER_TYPE],
+                plannerLoading: loadingReducer[LOAD_PLANNER_TYPE],
+            },
+        }),
+    );
 
     const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId, creator } = {
         ...planner,
@@ -307,7 +327,7 @@ const EditRouteContainer = () => {
 
     // 일정 루트 보기
     const onClickDateSchedule = () => {
-        dispatch(changeAllScheduleAction(false));
+        dispatch(toggleScheduleViewAction(false));
     };
 
     if (Object.keys(planner).length <= 0 || accountId !== planner.accountId) {
@@ -320,6 +340,7 @@ const EditRouteContainer = () => {
             plannerData={plannerData}
             startDate={startDate}
             endDate={endDate}
+            loading={loading}
             cloneElement={cloneElement}
             cloneElStyle={cloneElStyle}
             onCloneElement={onCloneElement}

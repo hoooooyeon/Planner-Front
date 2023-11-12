@@ -1,8 +1,10 @@
 import styled from 'styled-components';
+import Loading from '../common/Loading';
 import Modal from '../common/Modal';
 
 const MemberBox = styled.div`
     width: 25rem;
+    min-height: 14rem;
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 0.5rem;
 `;
@@ -73,6 +75,7 @@ const InviteText = styled(ErrorText)`
 const MemberModal = ({
     planner,
     members,
+    loading,
     modal,
     plannerError,
     isInvite,
@@ -94,41 +97,47 @@ const MemberModal = ({
             }}
         >
             <MemberBox>
-                <InviteBox>
-                    <Text
-                        placeholder="초대할 아이디"
-                        type="text"
-                        onChange={(e) => {
-                            onChangeMember(e.target.value);
-                        }}
-                        value={members.length > 0 ? members[0] : ''}
-                    />
-                    <Button onClick={onInviteMember}>초대</Button>
-                </InviteBox>
-                {plannerError && <ErrorText>{plannerError.members || plannerError}</ErrorText>}
-                {isInvite && <InviteText>전송 완료!</InviteText>}
-                <h5>현재 멤버</h5>
-                <MemberList>
-                    {planMembers &&
-                        planMembers.map((m, i) =>
-                            creator !== m ? (
-                                <Member key={i}>
-                                    <p>{m}</p>
-                                    <Button
-                                        onClick={() => {
-                                            onDeleteMember(m);
-                                        }}
-                                    >
-                                        제거
-                                    </Button>
-                                </Member>
-                            ) : (
-                                <Member key={i}>
-                                    <p>{m}</p>
-                                </Member>
-                            ),
-                        )}
-                </MemberList>
+                {loading.deleteMemberLoading || loading.inviteMemberLoading ? (
+                    <Loading size="small" pos="center" />
+                ) : (
+                    <>
+                        <InviteBox>
+                            <Text
+                                placeholder="초대할 아이디"
+                                type="text"
+                                onChange={(e) => {
+                                    onChangeMember(e.target.value);
+                                }}
+                                value={members.length > 0 ? members[0] : ''}
+                            />
+                            <Button onClick={onInviteMember}>초대</Button>
+                        </InviteBox>
+                        {plannerError && <ErrorText>{plannerError.members || plannerError}</ErrorText>}
+                        {isInvite && <InviteText>전송 완료!</InviteText>}
+                        <h5>현재 멤버</h5>
+                        <MemberList>
+                            {planMembers &&
+                                planMembers.map((m, i) =>
+                                    creator !== m ? (
+                                        <Member key={i}>
+                                            <p>{m}</p>
+                                            <Button
+                                                onClick={() => {
+                                                    onDeleteMember(m);
+                                                }}
+                                            >
+                                                제거
+                                            </Button>
+                                        </Member>
+                                    ) : (
+                                        <Member key={i}>
+                                            <p>{m}</p>
+                                        </Member>
+                                    ),
+                                )}
+                        </MemberList>
+                    </>
+                )}
             </MemberBox>
         </Modal>
     );

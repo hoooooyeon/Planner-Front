@@ -1,15 +1,29 @@
 import { useDispatch, useSelector } from 'react-redux';
 import SpotDetailModal from '../../components/spot/SpotDetailModal';
-import { addSpotLikeAction, removeSpotLikeAction, resetDetailSpotAction } from '../../modules/spotModule';
+import {
+    addSpotLikeAction,
+    ADD_SPOT_LIKE_TYPE,
+    LOAD_DETAIL_SPOT_TYPE,
+    removeSpotLikeAction,
+    REMOVE_SPOT_LIKE_TYPE,
+    resetDetailSpotAction,
+} from '../../modules/spotModule';
 
 const SpotDetailModalContainer = () => {
     const dispatch = useDispatch();
-    const { detail, spotData, account, spotError } = useSelector(({ spotReducer, authReducer }) => ({
-        detail: spotReducer.detail,
-        spotError: spotReducer.spotError,
-        spotData: spotReducer.spotData,
-        account: authReducer.account,
-    }));
+    const { detail, spotData, account, spotError, loading } = useSelector(
+        ({ spotReducer, authReducer, loadingReducer }) => ({
+            detail: spotReducer.detail,
+            spotError: spotReducer.spotError,
+            spotData: spotReducer.spotData,
+            account: authReducer.account,
+            loading: {
+                detailSpotLoading: loadingReducer[LOAD_DETAIL_SPOT_TYPE],
+                addSpotLikeLoading: loadingReducer[ADD_SPOT_LIKE_TYPE],
+                removeSpotLikeLoading: loadingReducer[REMOVE_SPOT_LIKE_TYPE],
+            },
+        }),
+    );
 
     const { likeState, title, image, contentId } = { ...detail };
     const { accountId } = { ...account };
@@ -34,6 +48,7 @@ const SpotDetailModalContainer = () => {
             spotData={spotData}
             spotError={spotError}
             detail={detail}
+            loading={loading}
             onResetDetailSpot={onResetDetailSpot}
             onToggleDetailLike={onToggleDetailLike}
         />

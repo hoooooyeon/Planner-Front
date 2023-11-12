@@ -5,21 +5,33 @@ import InfoPostList from '../../../components/planner/info/InfoPostList';
 import {
     changeCurMemoIdAction,
     createMemoAction,
+    CREATE_MEMO_TYPE,
     deleteMemoAction,
+    DELETE_MEMO_TYPE,
+    LOAD_PLANNER_TYPE,
     resetPlannerErrorAction,
     toggleMemoModalAction,
     updateMemoAction,
+    UPDATE_MEMO_TYPE,
 } from '../../../modules/plannerModule';
 
 const InfoPostContainer = () => {
     const dispatch = useDispatch();
-    const { planner, modal, plannerError, account, plannerData } = useSelector(({ plannerReducer, authReducer }) => ({
-        planner: plannerReducer.planner,
-        plannerError: plannerReducer.plannerError,
-        plannerData: plannerReducer.plannerData,
-        modal: plannerReducer.modal,
-        account: authReducer.account,
-    }));
+    const { planner, modal, plannerError, account, plannerData, loading } = useSelector(
+        ({ plannerReducer, authReducer, loadingReducer }) => ({
+            planner: plannerReducer.planner,
+            plannerError: plannerReducer.plannerError,
+            plannerData: plannerReducer.plannerData,
+            modal: plannerReducer.modal,
+            account: authReducer.account,
+            loading: {
+                createMemoLoading: loadingReducer[CREATE_MEMO_TYPE],
+                deleteMemoLoading: loadingReducer[DELETE_MEMO_TYPE],
+                updateMemoLoading: loadingReducer[UPDATE_MEMO_TYPE],
+                plannerLoading: loadingReducer[LOAD_PLANNER_TYPE],
+            },
+        }),
+    );
     const { plannerId, planMembers } = { ...planner };
     const { accountId, nickname } = { ...account };
     const { memoId } = { ...plannerData };
@@ -90,15 +102,16 @@ const InfoPostContainer = () => {
         setCurMemo({ title: '', content: '' });
     };
 
-    if (Object.keys(planner).length <= 0) {
-        return null;
-    }
+    // if (Object.keys(planner).length <= 0) {
+    //     return null;
+    // }
     return (
         <InfoPostList
             planner={planner}
             curMemo={curMemo}
             account={account}
             modal={modal}
+            loading={loading}
             plannerError={plannerError}
             onCreateMemo={onCreateMemo}
             onUpdateMemo={onUpdateMemo}

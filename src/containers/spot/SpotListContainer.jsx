@@ -19,6 +19,9 @@ import {
     resetDetailSpotAction,
     resetAreasAction,
     resetSpotErrorAction,
+    LOAD_AREAS_TYPE,
+    LOAD_SPOTS_TYPE,
+    SEARCH_SPOT_TYPE,
 } from '../../modules/spotModule';
 
 const SpotListContainer = ({
@@ -33,6 +36,7 @@ const SpotListContainer = ({
     loadSpots,
     loadDetailSpot,
     changeAreaIndex,
+    changePageIndex,
     resetAreas,
     resetSpots,
     resetSpotData,
@@ -50,7 +54,6 @@ const SpotListContainer = ({
     // 지역 가져오기
     useEffect(() => {
         loadAreas();
-        console.log(1);
     }, [loadAreas]);
 
     // 여행지리스트 가져오기
@@ -178,23 +181,23 @@ const SpotListContainer = ({
     };
 
     const onIndexPage = (index) => {
-        changePageIndexAction(index);
+        changePageIndex(index);
     };
     const onNextPage = (maxPage) => {
         if (pageNo < maxPage) {
-            changePageIndexAction(pageNo + 1);
+            changePageIndex(pageNo + 1);
         }
     };
     const onPreviousPage = () => {
         if (pageNo > 1) {
-            changePageIndexAction(pageNo - 1);
+            changePageIndex(pageNo - 1);
         }
     };
     const onFirstPage = () => {
-        changePageIndexAction(1);
+        changePageIndex(1);
     };
     const onLastPage = (maxPage) => {
-        changePageIndexAction(maxPage);
+        changePageIndex(maxPage);
     };
 
     return (
@@ -232,7 +235,11 @@ const mapStateToProps = (state) => ({
     spotData: state.spotReducer.spotData,
     contentTypeList: state.spotReducer.contentTypeList,
     spotModal: state.spotReducer.spotModal,
-    loading: state.loadingReducer.loading,
+    loading: {
+        areasLoading: state.loadingReducer[LOAD_AREAS_TYPE],
+        spotsLoading: state.loadingReducer[LOAD_SPOTS_TYPE],
+        searchSpotLoading: state.loadingReducer[SEARCH_SPOT_TYPE],
+    },
 });
 const mapDispatchToProps = (dispatch) => ({
     loadAreas: () => {
@@ -280,8 +287,8 @@ const mapDispatchToProps = (dispatch) => ({
     resetSpotError: () => {
         dispatch(resetSpotErrorAction());
     },
-    changePageIndex: () => {
-        dispatch(changePageIndexAction());
+    changePageIndex: (index) => {
+        dispatch(changePageIndexAction(index));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);

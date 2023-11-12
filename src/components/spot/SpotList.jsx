@@ -105,6 +105,10 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: ${(props) => (props.like ? `${props.theme.likeButtonColor}` : 'transparent')};
 `;
 
+const CenterDiv = styled.div`
+    height: 29rem;
+`;
+
 const SpotList = ({
     areas,
     spots,
@@ -141,13 +145,17 @@ const SpotList = ({
                     curKeyword={curKeyword}
                     spotData={spotData}
                     contentTypeList={contentTypeList}
+                    loading={loading}
                     onClickArea={onClickArea}
                     onChangeContentTypeId={onChangeContentTypeId}
                     onChangeCurKeyword={onChangeCurKeyword}
                     onChangeResultKeyword={onChangeResultKeyword}
                 />
-                {loading && Object.keys(spots).length <= 0 ? (
-                    <Loading />
+                {loading.spotsLoading || loading.searchSpotLoading ? (
+                    // && Object.keys(spots).length <= 0
+                    <CenterDiv>
+                        <Loading pos="center" />
+                    </CenterDiv>
                 ) : Object.keys(spots).length > 0 && spots.list.length > 0 ? (
                     <Slider list={spots.list} scroll={true} drag={drag} itemRef={itemRef}>
                         <List>

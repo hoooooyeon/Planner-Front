@@ -71,6 +71,7 @@ const ModalButton = styled.button`
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
+    position: relative;
     &:hover {
         box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
         color: ${(props) => props.theme.mainColor};

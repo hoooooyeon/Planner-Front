@@ -40,6 +40,7 @@ const Shares = styled.ul`
     width: 100%;
     height: 100%;
     margin: 0 auto;
+    min-height: 13rem;
 `;
 
 const ShareItem = styled.li`
@@ -128,6 +129,11 @@ const ErrorDiv = styled.div`
     margin-top: 2rem;
 `;
 
+const LoadingDiv = styled.div`
+    height: 35rem;
+    position: relative;
+`;
+
 const ShareList = ({
     sharePlanners,
     loading,
@@ -159,8 +165,10 @@ const ShareList = ({
                     onChangeResultKeyword={onChangeResultKeyword}
                     onChangeSort={onChangeSort}
                 />
-                {loading && Object.keys(sharePlanners).length <= 0 ? (
-                    <Loading />
+                {loading ? (
+                    <LoadingDiv>
+                        <Loading pos="center" />
+                    </LoadingDiv>
                 ) : Object.keys(sharePlanners).length > 0 && sharePlanners.list.length > 0 ? (
                     <Slider list={sharePlanners.list} itemRef={itemRef} scroll={true} drag={drag}>
                         <Shares>

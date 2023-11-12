@@ -5,6 +5,7 @@ import InfoPostItem from './InfoPostItem';
 import ad1 from '../../../lib/images/ad1.jpg';
 import ad2 from '../../../lib/images/serviceImg1.jpg';
 import Empty from '../../common/Empty';
+import Loading from '../../common/Loading';
 
 const InfoPostListBlock = styled.div`
     background-color: ${(props) => props.theme.secondaryBackgroundColor};
@@ -113,6 +114,7 @@ const InfoPostList = ({
     curMemo,
     account,
     modal,
+    loading,
     plannerError,
     onCreateMemo,
     onUpdateMemo,
@@ -154,21 +156,30 @@ const InfoPostList = ({
                         {accountId === planner.accountId && <Button onClick={onCreateMemo}>ADD</Button>}
                     </PostListHeader>
                     <PostList>
-                        {planMemos && planMembers.find((member) => member === nickname) !== undefined ? (
-                            planMemos.map((memo) => {
-                                return (
-                                    <InfoPostItem
-                                        key={memo.memoId}
-                                        memo={memo}
-                                        onDeleteMemo={onDeleteMemo}
-                                        onLoadMemo={onLoadMemo}
-                                        account={account}
-                                        planner={planner}
-                                    />
-                                );
-                            })
+                        {loading.plannerLoading ||
+                        loading.deleteMemoLoading ||
+                        loading.updateMemoLoading ||
+                        loading.createMemoLoading ? (
+                            <Loading size="small" pos="center" />
                         ) : (
-                            <Empty text="메모" />
+                            <>
+                                {planMemos && planMembers.find((member) => member === nickname) !== undefined ? (
+                                    planMemos.map((memo) => {
+                                        return (
+                                            <InfoPostItem
+                                                key={memo.memoId}
+                                                memo={memo}
+                                                onDeleteMemo={onDeleteMemo}
+                                                onLoadMemo={onLoadMemo}
+                                                account={account}
+                                                planner={planner}
+                                            />
+                                        );
+                                    })
+                                ) : (
+                                    <Empty text="메모" />
+                                )}
+                            </>
                         )}
                     </PostList>
                     {Object.keys(modal).length > 0 && modal.memo && (

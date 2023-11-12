@@ -109,6 +109,7 @@ const ErrorText = styled.div`
 const PlannerInfoModal = ({
     modal,
     plannerError,
+    loading,
     onUpdatePlanner,
     onTogglePlannerInfoModal,
     curTitle,
@@ -144,6 +145,7 @@ const PlannerInfoModal = ({
                 onUpdatePlanner();
                 onCloseError();
             }}
+            loading={loading}
         >
             <InfoForm>
                 <FlexDiv>

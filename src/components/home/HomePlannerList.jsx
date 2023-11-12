@@ -101,6 +101,10 @@ const Date = styled.div`
     overflow: hidden;
 `;
 
+const CenterDiv = styled.div`
+    height: 10rem;
+`;
+
 const HomePlannerList = ({ sharePlanners, loading, onClickPlanner }) => {
     const itemRef = useRef();
 
@@ -111,8 +115,11 @@ const HomePlannerList = ({ sharePlanners, loading, onClickPlanner }) => {
                     <h3>다른 여행객들의 플래너</h3>
                     <p>먼저 여행을 끝마친 여행객들의 플래너를 구경 해보세요.</p>
                 </Header>
-                {loading && Object.keys(sharePlanners).length <= 0 ? (
-                    <Loading />
+                {loading.plannerLoading ? (
+                    // && Object.keys(sharePlanners).length <= 0
+                    <CenterDiv>
+                        <Loading />
+                    </CenterDiv>
                 ) : Object.keys(sharePlanners).length > 0 && sharePlanners.list.length > 0 ? (
                     <PlannerList>
                         {sharePlanners.list.map((p) => (

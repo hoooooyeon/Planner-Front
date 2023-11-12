@@ -6,6 +6,7 @@ import {
     changePageNumAction,
     changeResultKeywordAction,
     loadSharePlannerListAction,
+    LOAD_SHARE_PLANNER_LIST_TYPE,
     resetPlannerDataAction,
     resetPlannerErrorAction,
     resetSharePlannerListAction,
@@ -23,7 +24,7 @@ const ShareListContainer = () => {
             account: authReducer.account,
             plannerData: plannerReducer.plannerData,
             keyword: plannerReducer.keyword,
-            loading: loadingReducer.loading,
+            loading: loadingReducer[LOAD_SHARE_PLANNER_LIST_TYPE],
         }),
     );
 
