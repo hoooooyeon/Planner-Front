@@ -129,7 +129,7 @@ const ErrorDiv = styled.div`
     margin-top: 2rem;
 `;
 
-const LoadingDiv = styled.div`
+const CenterDiv = styled.div`
     height: 35rem;
     position: relative;
 `;
@@ -166,9 +166,9 @@ const ShareList = ({
                     onChangeSort={onChangeSort}
                 />
                 {loading ? (
-                    <LoadingDiv>
+                    <CenterDiv>
                         <Loading pos="center" />
-                    </LoadingDiv>
+                    </CenterDiv>
                 ) : Object.keys(sharePlanners).length > 0 && sharePlanners.list.length > 0 ? (
                     <Slider list={sharePlanners.list} itemRef={itemRef} scroll={true} drag={drag}>
                         <Shares>
@@ -207,7 +207,9 @@ const ShareList = ({
                         </Shares>
                     </Slider>
                 ) : (
-                    <Empty text="플래너" />
+                    <CenterDiv>
+                        <Empty text="플래너" />
+                    </CenterDiv>
                 )}
                 <Pagination
                     totalCount={sharePlanners.totalCount}

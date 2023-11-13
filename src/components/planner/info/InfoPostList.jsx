@@ -155,33 +155,36 @@ const InfoPostList = ({
                         <h3>Memo</h3>
                         {accountId === planner.accountId && <Button onClick={onCreateMemo}>ADD</Button>}
                     </PostListHeader>
-                    <PostList>
-                        {loading.plannerLoading ||
-                        loading.deleteMemoLoading ||
-                        loading.updateMemoLoading ||
-                        loading.createMemoLoading ? (
-                            <Loading size="small" pos="center" />
-                        ) : (
-                            <>
-                                {planMemos && planMembers.find((member) => member === nickname) !== undefined ? (
-                                    planMemos.map((memo) => {
-                                        return (
-                                            <InfoPostItem
-                                                key={memo.memoId}
-                                                memo={memo}
-                                                onDeleteMemo={onDeleteMemo}
-                                                onLoadMemo={onLoadMemo}
-                                                account={account}
-                                                planner={planner}
-                                            />
-                                        );
-                                    })
-                                ) : (
-                                    <Empty text="메모" />
-                                )}
-                            </>
-                        )}
-                    </PostList>
+
+                    {planMemos &&
+                    (planMemos.length <= 0 || planMembers.find((member) => member === nickname) === undefined) ? (
+                        <Empty text="메모" />
+                    ) : (
+                        <PostList>
+                            {loading.plannerLoading ||
+                            loading.deleteMemoLoading ||
+                            loading.updateMemoLoading ||
+                            loading.createMemoLoading ? (
+                                <Loading size="small" pos="center" />
+                            ) : (
+                                <>
+                                    {planMemos &&
+                                        planMemos.map((memo) => {
+                                            return (
+                                                <InfoPostItem
+                                                    key={memo.memoId}
+                                                    memo={memo}
+                                                    onDeleteMemo={onDeleteMemo}
+                                                    onLoadMemo={onLoadMemo}
+                                                    account={account}
+                                                    planner={planner}
+                                                />
+                                            );
+                                        })}
+                                </>
+                            )}
+                        </PostList>
+                    )}
                     {Object.keys(modal).length > 0 && modal.memo && (
                         <MemoModal
                             plannerError={plannerError}

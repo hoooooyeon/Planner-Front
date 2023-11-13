@@ -154,6 +154,10 @@ const ErrorDiv = styled.div`
     transform: translate(-50%, -50%);
 `;
 
+const CenterDiv = styled.div`
+    height: 22rem;
+`;
+
 const InfoRoute = ({ planner, plannerData, drag, onChangeCurPlanId, onClickToggleScheduleView }) => {
     const { plans } = { ...planner };
     const transIconList = [faPlane, faTrainSubway, faBus, faTaxi, faBicycle, faPersonWalking];
@@ -196,7 +200,9 @@ const InfoRoute = ({ planner, plannerData, drag, onChangeCurPlanId, onClickToggl
                         ))}
                     </Slider>
                 ) : (
-                    <Empty text="일정" />
+                    <CenterDiv>
+                        <Empty text="일정" />
+                    </CenterDiv>
                 )}
             </WidthDiv>
         </InfoRouteBlock>

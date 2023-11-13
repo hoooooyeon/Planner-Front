@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditMap from '../../../components/planner/edit/EditMap';
-import { LOAD_PLANNER_TYPE, resetPlannerErrorAction, toggleScheduleViewAction } from '../../../modules/plannerModule';
+import { resetPlannerErrorAction, toggleScheduleViewAction } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import locationImg from '../../../lib/images/location.png';
 import { changeAreaIndexAction, resetSpotErrorAction } from '../../../modules/spotModule';
@@ -11,14 +11,13 @@ import { useHistory } from 'react-router';
 const EditMapContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { planner, plannerError, spotError, plannerData, spots, account, allSchedule, loading } = useSelector(
-        ({ plannerReducer, spotReducer, authReducer, loadingReducer }) => ({
+    const { planner, plannerError, spotError, plannerData, spots, account, allSchedule } = useSelector(
+        ({ plannerReducer, spotReducer, authReducer }) => ({
             planner: plannerReducer.planner,
             plannerError: plannerReducer.plannerError,
             spotError: spotReducer.spotError,
             spots: spotReducer.spots,
             keyword: spotReducer.keyword,
-            loading: loadingReducer[LOAD_PLANNER_TYPE],
             contentTypeList: spotReducer.contentTypeList,
             plannerData: plannerReducer.plannerData,
             allSchedule: plannerReducer.allSchedule,

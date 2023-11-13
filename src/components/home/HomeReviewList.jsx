@@ -108,9 +108,9 @@ const HomeReviewList = ({ reviewList, loading, onReviewClick }) => {
                     <h3>다른 이용자들의 여행 후기</h3>
                     <p>먼저 여행을 다녀온 이용자들의 여행 후기를 살펴보세요.</p>
                 </Header>
-                <ReviewList>
-                    {reviewList ? (
-                        reviewList.map((item, index) => (
+                {reviewList ? (
+                    <ReviewList>
+                        {reviewList.map((item, index) => (
                             <ReviewItem key={index} onClick={() => onReviewClick(item.reviewId)}>
                                 <ImgBox>
                                     <Img src={item.thumbnail || tempImage} />
@@ -120,11 +120,11 @@ const HomeReviewList = ({ reviewList, loading, onReviewClick }) => {
                                     <Date>작성일: {item.createDate}</Date>
                                 </InfoBox>
                             </ReviewItem>
-                        ))
-                    ) : (
-                        <Empty text="리뷰" />
-                    )}
-                </ReviewList>
+                        ))}
+                    </ReviewList>
+                ) : (
+                    <Empty text="리뷰" />
+                )}
             </Container>
         </HomeReviewListBlock>
     );

@@ -101,10 +101,6 @@ const Date = styled.div`
     overflow: hidden;
 `;
 
-const CenterDiv = styled.div`
-    height: 10rem;
-`;
-
 const HomePlannerList = ({ sharePlanners, loading, onClickPlanner }) => {
     const itemRef = useRef();
 
@@ -117,9 +113,7 @@ const HomePlannerList = ({ sharePlanners, loading, onClickPlanner }) => {
                 </Header>
                 {loading.plannerLoading ? (
                     // && Object.keys(sharePlanners).length <= 0
-                    <CenterDiv>
-                        <Loading />
-                    </CenterDiv>
+                    <Loading />
                 ) : Object.keys(sharePlanners).length > 0 && sharePlanners.list.length > 0 ? (
                     <PlannerList>
                         {sharePlanners.list.map((p) => (

@@ -217,7 +217,9 @@ const MyPlannerList = ({
                         </PlannerList>
                     </Slider>
                 ) : (
-                    <Empty text="플래너" />
+                    <CenterDiv>
+                        <Empty text="플래너" />
+                    </CenterDiv>
                 )}
             </Container>
             {accountError && typeof accountError === 'string' && (

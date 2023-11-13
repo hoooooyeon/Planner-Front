@@ -156,7 +156,8 @@ const SpotList = ({
                     <CenterDiv>
                         <Loading pos="center" />
                     </CenterDiv>
-                ) : Object.keys(spots).length > 0 && spots.list.length > 0 ? (
+                ) : // Object.keys(spots).length > 0 &&
+                !spots.list.length > 0 ? (
                     <Slider list={spots.list} scroll={true} drag={drag} itemRef={itemRef}>
                         <List>
                             {spots.list.map((spot) => {
@@ -191,7 +192,9 @@ const SpotList = ({
                         </List>
                     </Slider>
                 ) : (
-                    <Empty text="여행지" />
+                    <CenterDiv>
+                        <Empty text="여행지" />
+                    </CenterDiv>
                 )}
                 <Pagination
                     onIndexPage={onIndexPage}

@@ -6,10 +6,12 @@ const ErrorDiv = styled.div`
     color: ${(props) => props.theme.tertiaryColor};
     font-weight: bold;
     text-align: center;
-    margin-top: 2rem;
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `;
 
 const ErrorIcon = styled(FontAwesomeIcon)`

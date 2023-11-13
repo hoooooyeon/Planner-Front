@@ -213,6 +213,10 @@ const MoveIcon = styled(FontAwesomeIcon)`
     color: ${(props) => props.theme.tertiaryColor};
 `;
 
+const CenterDiv = styled.div`
+    height: 30rem;
+`;
+
 const EditRouteList = ({
     planner,
     plannerData,
@@ -387,7 +391,9 @@ const EditRouteList = ({
                                     );
                                 })
                             ) : (
-                                <Empty text="여행지" />
+                                <CenterDiv>
+                                    <Empty text="여행지" />
+                                </CenterDiv>
                             )}
                             {cloneElement && (
                                 <CloneItem cloneElStyle={cloneElStyle} onDragEnter={dragFunction.onCloneEnter} />
