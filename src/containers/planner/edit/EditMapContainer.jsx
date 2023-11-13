@@ -35,7 +35,7 @@ const EditMapContainer = () => {
     };
 
     // 튜토리얼모달 토글
-    const [tutorialVisible, setTutorialVisible] = useState(true);
+    const [tutorialVisible, setTutorialVisible] = useState(false);
     const onClickTutorialModal = () => {
         setTutorialVisible(!tutorialVisible);
     };

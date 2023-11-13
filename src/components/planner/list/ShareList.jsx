@@ -134,6 +134,10 @@ const CenterDiv = styled.div`
     position: relative;
 `;
 
+const PageBox = styled.div`
+    padding-top: 1rem;
+`;
+
 const ShareList = ({
     sharePlanners,
     loading,
@@ -211,16 +215,18 @@ const ShareList = ({
                         <Empty text="플래너" />
                     </CenterDiv>
                 )}
-                <Pagination
-                    totalCount={sharePlanners.totalCount}
-                    page={page}
-                    itemIndex={12}
-                    onIndexPage={onIndexPage}
-                    onNextPage={onNextPage}
-                    onPreviousPage={onPreviousPage}
-                    onFirstPage={onFirstPage}
-                    onLastPage={onLastPage}
-                />
+                <PageBox>
+                    <Pagination
+                        totalCount={sharePlanners.totalCount}
+                        page={page}
+                        itemIndex={12}
+                        onIndexPage={onIndexPage}
+                        onNextPage={onNextPage}
+                        onPreviousPage={onPreviousPage}
+                        onFirstPage={onFirstPage}
+                        onLastPage={onLastPage}
+                    />
+                </PageBox>
             </Container>
             {plannerError && (
                 <ErrorModal errorState={plannerError} errorMessage={plannerError} onCloseError={onCloseError} />

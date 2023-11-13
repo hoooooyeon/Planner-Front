@@ -211,7 +211,7 @@ const EditListSearchForm = ({
 }) => {
     const iconList = [faLandmarkFlag, faHotel, faRankingStar, faTrophy, faBed, faBagShopping, faUtensils];
     const { curKeyword, resultKeyword } = { ...keyword };
-    const { contentTypeId } = { ...spotData };
+    const { contentTypeId, areaCode } = { ...spotData };
     const [hoveredItemId, setHoveredItemId] = useState(null);
 
     const onOpenName = (itemId) => {
@@ -235,9 +235,10 @@ const EditListSearchForm = ({
                             <Label>지역</Label>
                             <Select
                                 required
-                                value={spotData.areaIndex}
+                                value={areaCode}
                                 onChange={(e) => {
                                     onChangeAreaIndex(e.target.value);
+                                    console.log(areaCode);
                                 }}
                             >
                                 {Object.keys(areas).length > 0 &&

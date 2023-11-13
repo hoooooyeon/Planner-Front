@@ -109,6 +109,10 @@ const CenterDiv = styled.div`
     height: 29rem;
 `;
 
+const PageBox = styled.div`
+    padding-top: 1rem;
+`;
+
 const SpotList = ({
     areas,
     spots,
@@ -156,56 +160,59 @@ const SpotList = ({
                     <CenterDiv>
                         <Loading pos="center" />
                     </CenterDiv>
-                ) : // Object.keys(spots).length > 0 &&
-                !spots.list.length > 0 ? (
-                    <Slider list={spots.list} scroll={true} drag={drag} itemRef={itemRef}>
-                        <List>
-                            {spots.list.map((spot) => {
-                                const { title, firstImage, likeState, contentId } = spot;
-                                return (
-                                    <SpotItem
-                                        ref={itemRef}
-                                        onClick={() => {
-                                            onOpenDetail(spot);
-                                        }}
-                                        key={contentId}
-                                    >
-                                        <ImgBox>
-                                            <Img
-                                                src={firstImage}
-                                                alt={title}
-                                                onError={(e) => {
-                                                    handleErrorImg({ e, errorImg });
-                                                }}
-                                            />
-                                            <IconBox>
-                                                <StyledFontAwesomeIcon
-                                                    icon={faStar}
-                                                    like={likeState ? likeState.toString() : undefined}
+                ) : spots.list && spots.list.length > 0 ? (
+                    <>
+                        <Slider list={spots.list} scroll={true} drag={drag} itemRef={itemRef}>
+                            <List>
+                                {spots.list.map((spot) => {
+                                    const { title, firstImage, likeState, contentId } = spot;
+                                    return (
+                                        <SpotItem
+                                            ref={itemRef}
+                                            onClick={() => {
+                                                onOpenDetail(spot);
+                                            }}
+                                            key={contentId}
+                                        >
+                                            <ImgBox>
+                                                <Img
+                                                    src={firstImage}
+                                                    alt={title}
+                                                    onError={(e) => {
+                                                        handleErrorImg({ e, errorImg });
+                                                    }}
                                                 />
-                                            </IconBox>
-                                        </ImgBox>
-                                        <Name>{title}</Name>
-                                    </SpotItem>
-                                );
-                            })}
-                        </List>
-                    </Slider>
+                                                <IconBox>
+                                                    <StyledFontAwesomeIcon
+                                                        icon={faStar}
+                                                        like={likeState ? likeState.toString() : undefined}
+                                                    />
+                                                </IconBox>
+                                            </ImgBox>
+                                            <Name>{title}</Name>
+                                        </SpotItem>
+                                    );
+                                })}
+                            </List>
+                        </Slider>
+                        <PageBox>
+                            <Pagination
+                                onIndexPage={onIndexPage}
+                                onNextPage={onNextPage}
+                                onPreviousPage={onPreviousPage}
+                                onFirstPage={onFirstPage}
+                                onLastPage={onLastPage}
+                                page={spotData.pageNo}
+                                totalCount={spots.totalCount}
+                                itemIndex={12}
+                            />
+                        </PageBox>
+                    </>
                 ) : (
                     <CenterDiv>
                         <Empty text="여행지" />
                     </CenterDiv>
                 )}
-                <Pagination
-                    onIndexPage={onIndexPage}
-                    onNextPage={onNextPage}
-                    onPreviousPage={onPreviousPage}
-                    onFirstPage={onFirstPage}
-                    onLastPage={onLastPage}
-                    page={spotData.pageNo}
-                    totalCount={spots.totalCount}
-                    itemIndex={12}
-                />
             </Container>
             {spotError && typeof spotError === 'string' && (
                 <ErrorModal errorState={spotError} errorMessage={message} onCloseError={onCloseError} />
