@@ -16,7 +16,7 @@ import {
     TOGGLE_LIKE_PLANNER_TYPE,
 } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
-import { useHistory, useParams } from 'react-router';
+import { useHistory, useLocation, useParams } from 'react-router';
 
 const PlannerInfoContainer = () => {
     const dispatch = useDispatch();
@@ -45,10 +45,7 @@ const PlannerInfoContainer = () => {
     // 페이지 접근 제어
     useEffect(() => {
         if (planner === false) {
-            // alert('잘못된 접근입니다.');
-            // history.push('/Planners');
-        } else if (plannerId === '') {
-            // history.push('/Planners');
+            history.push('/Planners');
         }
     }, [history, planner, plannerId]);
 

@@ -156,11 +156,10 @@ const SpotList = ({
                     onChangeResultKeyword={onChangeResultKeyword}
                 />
                 {loading.spotsLoading || loading.searchSpotLoading ? (
-                    // && Object.keys(spots).length <= 0
                     <CenterDiv>
                         <Loading pos="center" />
                     </CenterDiv>
-                ) : spots.list && spots.list.length > 0 ? (
+                ) : Object.keys(spots).length > 0 && spots.list.length > 0 ? (
                     <>
                         <Slider list={spots.list} scroll={true} drag={drag} itemRef={itemRef}>
                             <List>

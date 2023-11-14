@@ -240,9 +240,9 @@ const EditListContainer = () => {
         dispatch(toggleScheduleViewAction(false));
     };
 
-    if (accountId !== planner.accountId) {
-        return null;
-    }
+    // if (accountId !== planner.accountId) {
+    //     return null;
+    // }
     return (
         <EditList
             plannerData={plannerData}

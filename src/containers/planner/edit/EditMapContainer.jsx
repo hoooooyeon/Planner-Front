@@ -58,13 +58,13 @@ const EditMapContainer = () => {
         dispatch(changeAreaIndexAction(index));
     };
 
-    if (
-        // !mapRef ||
-        Object.keys(planner).length <= 0 ||
-        accountId !== planner.accountId
-    ) {
-        return null;
-    }
+    // if (
+    //     // !mapRef ||
+    //     Object.keys(planner).length <= 0 ||
+    //     accountId !== planner.accountId
+    // ) {
+    //     return null;
+    // }
     return (
         <EditMap
             // mapRef={mapRef}

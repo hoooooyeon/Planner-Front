@@ -240,8 +240,6 @@ const EditList = ({
                             onIndexPage={onIndexPage}
                         />
                         {loading.spotLoading || loading.searchSpotLoading || loading.likeSpotLoading ? (
-                            // Object.keys(likeSpotList).length <= 0 &&
-                            // Object.keys(spots).length <= 0
                             <List>
                                 <Loading pos="center" />
                             </List>

@@ -294,7 +294,7 @@ const EditRouteList = ({
 
     return (
         <EditRouteListBlock ref={containerRef}>
-            {plans.length > 0 ? (
+            {plans && plans.length > 0 ? (
                 plans.map((p) => {
                     const items = p.planLocations;
                     return (

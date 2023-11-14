@@ -83,7 +83,6 @@ const InfoMenu = ({ planner, loading }) => {
                     <Loading size="small" />
                 ) : (
                     <>
-                        {' '}
                         <FlexDiv>
                             <InfoBox>
                                 <Ask>플래너 이름:</Ask>

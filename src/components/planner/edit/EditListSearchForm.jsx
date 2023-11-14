@@ -241,7 +241,7 @@ const EditListSearchForm = ({
                                     console.log(areaCode);
                                 }}
                             >
-                                {Object.keys(areas).length > 0 &&
+                                {areas.length > 0 &&
                                     areas.map((area) => (
                                         <option value={area.code} key={area.code}>
                                             {area.name}

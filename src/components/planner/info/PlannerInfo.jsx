@@ -196,7 +196,7 @@ const PlannerInfo = ({
                     <>
                         <InfoHeader>
                             <h3>{creator}의 플래너</h3>
-                            {accountId === planner.accountId && (
+                            {Object.keys(planner).length > 0 && accountId === planner.accountId && (
                                 <MenuBox>
                                     <MenuList>
                                         <MenuItem onClick={onTogglePlannerInfoModal}>플래너 정보 수정</MenuItem>

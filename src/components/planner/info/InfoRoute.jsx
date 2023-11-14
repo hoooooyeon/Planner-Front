@@ -173,7 +173,7 @@ const InfoRoute = ({ planner, plannerData, drag, onChangeCurPlanId, onClickToggl
                 onClickToggleScheduleView={onClickToggleScheduleView}
             />
             <WidthDiv>
-                {plans && plans.length > 0 ? (
+                {Object.keys(planner).length > 0 && plans && plans.length > 0 ? (
                     <Slider list={plans} itemRef={itemRef}>
                         {plans.map((p) => (
                             <RouteList aria-current={p.planId === plannerData.planId ? 'plan' : null} key={p.planId}>
