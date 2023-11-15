@@ -23,14 +23,6 @@ const Container = styled.div`
     }
 `;
 
-const PlannerList = styled.ul`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    margin: 0 auto;
-    padding: 0.5rem 0;
-`;
-
 const Header = styled.div`
     display: flex;
     justify-content: space-between;
@@ -65,17 +57,31 @@ const Button = styled.button`
         box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
 `;
+
+const PlannerList = styled.ul`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    margin: 0 auto;
+    padding: 0.5rem 0;
+    box-sizing: border-box;
+`;
+
 const PlannerItem = styled.li`
-    flex-basis: 22.5%;
-    height: 20vw;
-    position: relative;
     flex-shrink: 0;
-    margin-left: 0.5%;
+    /* height: 20vw; */
+    /* flex-basis: 22.5%; */
+    /* overflow: hidden; */
+    box-sizing: border-box;
+    width: 200px;
+    height: 200px;
+    float: left;
+    position: relative;
+    margin: 5px;
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 0.5rem;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     cursor: pointer;
-    overflow: hidden;
     &:hover {
         box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
         transition: transform 0.3s ease;

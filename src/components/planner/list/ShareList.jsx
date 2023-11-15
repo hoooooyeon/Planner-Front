@@ -48,10 +48,10 @@ const ShareItem = styled.li`
     width: 200px;
     height: 200px;
     float: left;
+    position: relative;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     border-radius: 0.5rem;
     margin: 0.5%;
-    position: relative;
     cursor: pointer;
     @media all and (min-width: 768px) {
         width: 24%;

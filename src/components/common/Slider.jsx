@@ -55,6 +55,7 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
     let currentX = 0; // 마우스 이동한 x 좌표
     const moveX = useRef(0);
     const sliderX = useRef(0);
+    const turnPage = useRef(false);
 
     const scrollBoxRef = useRef();
     const scrollRef = useRef();
@@ -103,22 +104,37 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
     const sliderEnd = (e) => {
         if (itemRef.current && isSlide) {
             const computedStyle = getComputedStyle(itemRef.current);
-            const itemWidth = itemRef.current.getBoundingClientRect().height + parseInt(computedStyle.marginTop);
+            const itemWidth = itemRef.current.getBoundingClientRect().width + parseInt(computedStyle.marginTop) * 2;
 
-            sliderX.current = Math.round(moveX.current / itemWidth) * itemWidth;
+            sliderX.current = Math.floor(moveX.current / itemWidth) * itemWidth;
 
             if (sliderX.current > 0) {
                 sliderX.current = 0;
-                if (page) {
+                if (turnPage.current === true && page) {
                     prevPage();
+
+                    turnPage.current = false;
                 }
-            } else if (sliderX.current < hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth) {
+            } else if (
+                sliderX.current <
+                hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth - itemWidth / 2
+            ) {
                 sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth;
-                if (page) {
-                    sliderX.current = 0;
+                if (turnPage.current === true && page) {
                     nextPage();
+
+                    turnPage.current = false;
                 }
             }
+
+            // 슬라이드 끝에 닿아도 바로 넘어가지 않게 한 번 더 드래그 필요하게 방지.
+            if (
+                sliderX.current == 0 ||
+                sliderX.current == hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth
+            ) {
+                turnPage.current = true;
+            }
+
             listRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
             listRef.current.style.transitionDuration = ' 1000ms';
 
