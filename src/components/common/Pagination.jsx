@@ -61,8 +61,9 @@ const Pagination = ({
     onPreviousPage,
     onFirstPage,
     onLastPage,
+    itemCount,
 }) => {
-    const maxPage = Math.ceil(totalCount / pageSize);
+    const maxPage = Math.ceil(totalCount / itemCount);
     const isMaxPageGroup = maxPage > pageSize ? (maxPage - page < maxPage - pageSize ? true : false) : true;
     const endPageNum = isMaxPageGroup ? maxPage : Math.ceil(page / pageSize) * pageSize;
     const startPageNum = isMaxPageGroup ? Math.floor(page / pageSize) * pageSize + 1 : endPageNum - (pageSize - 1);

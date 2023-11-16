@@ -10,7 +10,7 @@ import errorImg from '../../lib/images/spotErrorImg.jpg';
 import Empty from '../common/Empty';
 import ErrorModal from '../common/ErrorModal';
 import Loading from '../common/Loading';
-import Pagination from '../common/Pagination.js';
+import Pagination from '../common/Pagination.jsx';
 
 const SpotListBlock = styled.div`
     width: 100%;
