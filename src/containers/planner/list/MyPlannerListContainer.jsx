@@ -119,10 +119,6 @@ const MyPlannerListContainer = () => {
         setPageNum(index);
     };
 
-    useEffect(() => {
-        dispatch(changeMyPlannerListPageIndexAction(pageNum));
-    }, [pageNum]);
-
     return (
         <MyPlannerList
             accountId={accountId}

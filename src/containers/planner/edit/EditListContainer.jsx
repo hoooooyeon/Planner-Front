@@ -29,6 +29,7 @@ import {
     LOAD_AREAS_TYPE,
     LOAD_SPOTS_TYPE,
     SEARCH_SPOT_TYPE,
+    changePageIndexAction,
 } from '../../../modules/spotModule';
 
 const EditListContainer = () => {
@@ -65,7 +66,7 @@ const EditListContainer = () => {
         },
     }));
 
-    const { plannerId, planId, pageNum } = { ...plannerData };
+    const { plannerId, planId } = { ...plannerData };
     const { accountId } = { ...account };
     const { areaCode, contentTypeId, contentId } = { ...spotData };
     const { curKeyword, resultKeyword } = { ...keyword };
@@ -94,14 +95,16 @@ const EditListContainer = () => {
     };
 
     // 여행지 불러오기
+    const [page, setPage] = useState(1);
+
     useEffect(() => {
         if (contentTypeId !== 0 && areas.length > 0 && resultKeyword.length === 0) {
-            const queryString = { areaCode, contentTypeId, pageNo: pageNum, numOfRows };
+            const queryString = { areaCode, contentTypeId, pageNo: page, numOfRows };
             dispatch(initializeFormAction('likeList'));
             dispatch(resetSpotsAction());
             dispatch(loadSpotsAction(queryString));
         }
-    }, [dispatch, areaCode, pageNum, contentTypeId, resultKeyword, areas]);
+    }, [dispatch, areaCode, page, contentTypeId, resultKeyword, areas]);
 
     // 여행지 상세정보 모달 열기
     const onOpenDetail = (spotInfo) => {
@@ -147,10 +150,10 @@ const EditListContainer = () => {
     useEffect(() => {
         if (resultKeyword.length !== 0) {
             dispatch(resetSpotsAction());
-            const queryString = { areaCode, contentTypeId, keyword: resultKeyword, pageNo: pageNum, numOfRows };
+            const queryString = { areaCode, contentTypeId, keyword: resultKeyword, pageNo: page, numOfRows };
             dispatch(searchSpotAction(queryString));
         }
-    }, [dispatch, resultKeyword, pageNum]);
+    }, [dispatch, resultKeyword, page]);
 
     // 여행지 좋아요리스트 검색 키워드 저장
     const [likeKeyword, setLikeKeyword] = useState('');
@@ -167,13 +170,13 @@ const EditListContainer = () => {
                 sortCriteria: 2,
                 keyword: likeKeyword,
                 postType: 2,
-                pageNum,
+                pageNum: page,
             };
             dispatch(resetSpotsAction());
             dispatch(initializeFormAction('likeList'));
             dispatch(accountLikeSpotListLoadAction(queryString));
         }
-    }, [dispatch, accountId, likeKeyword, contentTypeId, pageNum, detail.likeState]);
+    }, [dispatch, accountId, likeKeyword, contentTypeId, page, detail.likeState]);
 
     // 여행 정보 및 검색 키워드 초기화
     useEffect(() => {
@@ -186,7 +189,6 @@ const EditListContainer = () => {
         };
     }, [dispatch]);
 
-    const [page, setPage] = useState(1);
     const totalCount = useRef();
 
     useEffect(() => {
@@ -203,12 +205,12 @@ const EditListContainer = () => {
     };
     const onNextPage = (maxPage) => {
         if (page < maxPage) {
-            setPage((index) => index + 1);
+            setPage((page) => page + 1);
         }
     };
     const onPreviousPage = () => {
         if (page > 1) {
-            setPage((index) => index - 1);
+            setPage((page) => page - 1);
         }
     };
     const onFirstPage = () => {
@@ -217,10 +219,6 @@ const EditListContainer = () => {
     const onLastPage = (maxPage) => {
         setPage(maxPage);
     };
-
-    useEffect(() => {
-        dispatch(changePageNumAction(page));
-    }, [page, dispatch]);
 
     // 지역, 컨텐츠 변경시 키워드 리셋.
     useEffect(() => {
