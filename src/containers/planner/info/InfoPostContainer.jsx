@@ -102,6 +102,9 @@ const InfoPostContainer = () => {
         setCurMemo({ title: '', content: '' });
     };
 
+    useEffect(() => {
+        return () => dispatch(resetPlannerErrorAction());
+    }, []);
     // if (Object.keys(planner).length <= 0) {
     //     return null;
     // }

@@ -29,10 +29,6 @@ export const REMOVE_SPOT_LIKE_TYPE = 'spot/REMOVE_SPOT_LIKE';
 const REMOVE_SPOT_LIKE_SUCCESS_TYPE = 'spot/REMOVE_SPOT_LIKE_SUCCESS';
 const REMOVE_SPOT_LIKE_FAILURE_TYPE = 'spot/REMOVE_SPOT_LIKE_FAILURE';
 
-const RESET_AREAS_TYPE = 'spot/RESET_AREAS';
-const RESET_SPOTS_TYPE = 'spot/RESET_SPOTS';
-const RESET_SPOT_DATA_TYPE = 'spot/RESET_SPOT_DATA';
-
 export const SEARCH_SPOT_TYPE = 'spot/SEARCH_SPOT';
 const SEARCH_SPOT_SUCCESS_TYPE = 'spot/SEARCH_SPOT_SUCCESS';
 const SEARCH_SPOT_FAILURE_TYPE = 'spot/SEARCH_SPOT_FAILURE';
@@ -40,6 +36,8 @@ const SEARCH_SPOT_FAILURE_TYPE = 'spot/SEARCH_SPOT_FAILURE';
 const CHANGE_CONTENT_TYPE_ID_TYPE = 'spot/CHANGE_CONTENT_TYPE_ID';
 
 const RESET_SPOT_ERROR_TYPE = 'spot/RESET_SPOT_ERROR';
+const SPOT_INITIALIZE_TYPE = 'spot/SPOT_INITIALIZE';
+const SPOT_INITIALIZE_FORM_TYPE = 'spots/SPOT_INITIALIZE_FORM';
 
 export const loadAreasAction = () => ({ type: LOAD_AREAS_TYPE });
 export const loadSpotsAction = ({ areaCode, contentTypeId, pageNo, numOfRows }) => ({
@@ -62,9 +60,6 @@ export const addSpotLikeAction = ({ contentId, title, image }) => ({
     image,
 });
 export const removeSpotLikeAction = ({ contentId }) => ({ type: REMOVE_SPOT_LIKE_TYPE, contentId });
-export const resetAreasAction = () => ({ type: RESET_AREAS_TYPE });
-export const resetSpotsAction = () => ({ type: RESET_SPOTS_TYPE });
-export const resetSpotDataAction = () => ({ type: RESET_SPOT_DATA_TYPE });
 export const searchSpotAction = ({ areaCode, contentTypeId, keyword, numOfRows, pageNo }) => ({
     type: SEARCH_SPOT_TYPE,
     areaCode,
@@ -75,6 +70,14 @@ export const searchSpotAction = ({ areaCode, contentTypeId, keyword, numOfRows, 
 });
 export const changeContentTypeIdAction = (contentTypeId) => ({ type: CHANGE_CONTENT_TYPE_ID_TYPE, contentTypeId });
 export const resetSpotErrorAction = () => ({ type: RESET_SPOT_ERROR_TYPE });
+export const spotInitializeAction = () => ({
+    type: SPOT_INITIALIZE_TYPE,
+});
+
+export const spotInitializeFormAction = (form) => ({
+    type: SPOT_INITIALIZE_FORM_TYPE,
+    form,
+});
 
 const loadAreasSaga = createSaga(LOAD_AREAS_TYPE, spotAPI.loadAreas);
 const loadSpotsSaga = createSaga(LOAD_SPOTS_TYPE, spotAPI.loadSpots);
@@ -213,21 +216,6 @@ function spotReducer(state = initialState, action) {
                 },
             };
 
-        case RESET_AREAS_TYPE:
-            return { ...state, areas: [] };
-        case RESET_SPOTS_TYPE:
-            return { ...state, spots: {} };
-
-        case RESET_SPOT_DATA_TYPE:
-            return {
-                ...state,
-                spotData: {
-                    areaCode: 1,
-                    pageNo: 1,
-                    contentTypeId: 12,
-                    contentId: '',
-                },
-            };
         case SEARCH_SPOT_SUCCESS_TYPE:
             return {
                 ...state,
@@ -250,6 +238,12 @@ function spotReducer(state = initialState, action) {
                 ...state,
                 spotError: null,
             };
+        case SPOT_INITIALIZE_TYPE: {
+            return { ...initialState };
+        }
+        case SPOT_INITIALIZE_FORM_TYPE: {
+            return { ...state, [action.form]: initialState[action.form] };
+        }
         default:
             return state;
     }

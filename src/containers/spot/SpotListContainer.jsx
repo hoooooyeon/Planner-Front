@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
 import {
     addSpotLikeAction,
-    resetSpotDataAction,
-    resetSpotsAction,
     loadAreasAction,
     loadDetailSpotAction,
     loadSpotsAction,
@@ -16,12 +14,12 @@ import {
     changeContentIdAction,
     searchSpotAction,
     changeContentTypeIdAction,
-    resetDetailSpotAction,
-    resetAreasAction,
     resetSpotErrorAction,
     LOAD_AREAS_TYPE,
     LOAD_SPOTS_TYPE,
     SEARCH_SPOT_TYPE,
+    spotInitializeFormAction,
+    spotInitializeAction,
 } from '../../modules/spotModule';
 
 const SpotListContainer = ({
@@ -37,15 +35,13 @@ const SpotListContainer = ({
     loadDetailSpot,
     changeAreaIndex,
     changePageIndex,
-    resetAreas,
-    resetSpots,
-    resetSpotData,
     changeDetailSpot,
     searchSpot,
     changeContentTypeId,
     changeContentId,
-    resetDetailSpot,
     resetSpotError,
+    initialize,
+    initializeForm,
 }) => {
     const { areaCode, pageNo, contentTypeId, contentId } = { ...spotData };
     const [curKeyword, setCurKeyword] = useState('');
@@ -59,7 +55,7 @@ const SpotListContainer = ({
     // 여행지리스트 가져오기
     useEffect(() => {
         if (areas.length > 0 && resultKeyword === '') {
-            resetSpots();
+            initializeForm('spots');
             const queryString = {
                 areaCode,
                 contentTypeId,
@@ -96,12 +92,9 @@ const SpotListContainer = ({
     // 여행지 페이지에서 벗어날 때 정보 초기화
     useEffect(() => {
         return () => {
-            resetAreas();
-            resetSpots();
-            resetSpotData();
-            resetDetailSpot();
+            initialize();
         };
-    }, [resetSpotData, resetSpots, resetDetailSpot, resetAreas]);
+    }, []);
 
     // 여행지 키워드 타이핑
     const onChangeCurKeyword = (keyword) => {
@@ -118,7 +111,7 @@ const SpotListContainer = ({
     // 여행지리스트 키워드로 검색
     useEffect(() => {
         if (resultKeyword !== '') {
-            resetSpots();
+            initializeForm('spots');
             const queryString = {
                 areaCode,
                 contentTypeId,
@@ -266,23 +259,17 @@ const mapDispatchToProps = (dispatch) => ({
     removeSpotLike: (spotId) => {
         dispatch(removeSpotLikeAction(spotId));
     },
-    resetAreas: () => {
-        dispatch(resetAreasAction());
+    initialize: () => {
+        dispatch(spotInitializeAction());
     },
-    resetSpots: () => {
-        dispatch(resetSpotsAction());
-    },
-    resetSpotData: () => {
-        dispatch(resetSpotDataAction());
+    initializeForm: (form) => {
+        dispatch(spotInitializeFormAction(form));
     },
     searchSpot: ({ areaCode, contentTypeId, keyword, pageNo, numOfRows }) => {
         dispatch(searchSpotAction({ areaCode, contentTypeId, keyword, pageNo, numOfRows }));
     },
     changeContentTypeId: (contentTypeId) => {
         dispatch(changeContentTypeIdAction(contentTypeId));
-    },
-    resetDetailSpot: () => {
-        dispatch(resetDetailSpotAction());
     },
     resetSpotError: () => {
         dispatch(resetSpotErrorAction());

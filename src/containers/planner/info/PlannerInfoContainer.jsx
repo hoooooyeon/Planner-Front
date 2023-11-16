@@ -116,6 +116,10 @@ const PlannerInfoContainer = () => {
         dispatch(resetPlannerErrorAction());
     };
 
+    useEffect(() => {
+        return () => dispatch(resetPlannerErrorAction());
+    }, []);
+
     // if (Object.keys(planner).length <= 0) {
     //     return null;
     // }

@@ -90,6 +90,7 @@ const TOGGLE_SCHEDULE_VIEW_TYPE = 'planner/TOGGLE_SCHEDULE_VIEW_TYPE';
 const RESET_SHARE_PLANNER_LIST_TYPE = 'planner/RESET_SHARE_PLANNER_LIST';
 
 const RESET_PLANNER_ERROR_TYPE = 'planner/RESET_PLANNER_ERROR';
+const PLANNER_INITIALIZE_TYPE = 'planner/PLANNER_INITIALIZE';
 
 export const createPlannerAction = ({
     accountId,
@@ -224,7 +225,9 @@ export const toggleScheduleViewAction = (bool) => ({ type: TOGGLE_SCHEDULE_VIEW_
 export const resetSharePlannerListAction = () => ({ type: RESET_SHARE_PLANNER_LIST_TYPE });
 export const resetPlannerErrorAction = () => ({ type: RESET_PLANNER_ERROR_TYPE });
 export const toggleMemoModalAction = () => ({ type: TOGGLE_MEMO_MODAL_TYPE });
-
+export const plannerInitializeAction = () => ({
+    type: PLANNER_INITIALIZE_TYPE,
+});
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
 const loadSharePlannerListSaga = createSaga(LOAD_SHARE_PLANNER_LIST_TYPE, plannerAPI.loadSharePlannerList);
@@ -557,6 +560,9 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 plannerError: null,
             };
+        case PLANNER_INITIALIZE_TYPE: {
+            return { ...initialState };
+        }
         default:
             return state;
     }

@@ -4,6 +4,7 @@ import EditList from '../../../components/planner/edit/EditList';
 import {
     accountLikeSpotListLoadAction,
     ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE,
+    initializeAction,
     initializeFormAction,
 } from '../../../modules/accountModule';
 import {
@@ -12,6 +13,7 @@ import {
     changeResultKeywordAction,
     createLocationAction,
     LOAD_PLANNER_TYPE,
+    resetPlannerErrorAction,
     toggleScheduleViewAction,
 } from '../../../modules/plannerModule';
 import {
@@ -23,13 +25,13 @@ import {
     changeAreaIndexAction,
     loadAreasAction,
     searchSpotAction,
-    resetSpotsAction,
-    resetSpotDataAction,
     changeContentIdAction,
     LOAD_AREAS_TYPE,
     LOAD_SPOTS_TYPE,
     SEARCH_SPOT_TYPE,
     changePageIndexAction,
+    spotInitializeFormAction,
+    spotInitializeAction,
 } from '../../../modules/spotModule';
 
 const EditListContainer = () => {
@@ -62,7 +64,6 @@ const EditListContainer = () => {
             spotLoading: loadingReducer[LOAD_SPOTS_TYPE],
             searchSpotLoading: loadingReducer[SEARCH_SPOT_TYPE],
             likeSpotLoading: loadingReducer[ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE],
-            plannerLoading: loadingReducer[LOAD_PLANNER_TYPE],
         },
     }));
 
@@ -101,7 +102,7 @@ const EditListContainer = () => {
         if (contentTypeId !== 0 && areas.length > 0 && resultKeyword.length === 0) {
             const queryString = { areaCode, contentTypeId, pageNo: page, numOfRows };
             dispatch(initializeFormAction('likeList'));
-            dispatch(resetSpotsAction());
+            dispatch(spotInitializeFormAction('spots'));
             dispatch(loadSpotsAction(queryString));
         }
     }, [dispatch, areaCode, page, contentTypeId, resultKeyword, areas]);
@@ -149,7 +150,7 @@ const EditListContainer = () => {
     // 여행지 키워드로 조회
     useEffect(() => {
         if (resultKeyword.length !== 0) {
-            dispatch(resetSpotsAction());
+            dispatch(spotInitializeFormAction('spots'));
             const queryString = { areaCode, contentTypeId, keyword: resultKeyword, pageNo: page, numOfRows };
             dispatch(searchSpotAction(queryString));
         }
@@ -172,7 +173,7 @@ const EditListContainer = () => {
                 postType: 2,
                 pageNum: page,
             };
-            dispatch(resetSpotsAction());
+            dispatch(spotInitializeFormAction('spots'));
             dispatch(initializeFormAction('likeList'));
             dispatch(accountLikeSpotListLoadAction(queryString));
         }
@@ -183,11 +184,11 @@ const EditListContainer = () => {
         return () => {
             dispatch(changeKeywordAction(''));
             dispatch(changeResultKeywordAction(''));
-            dispatch(resetSpotDataAction());
-            dispatch(resetSpotsAction());
-            dispatch(resetDetailSpotAction());
+            dispatch(initializeAction());
+            dispatch(spotInitializeAction());
+            dispatch(resetPlannerErrorAction());
         };
-    }, [dispatch]);
+    }, []);
 
     const totalCount = useRef();
 

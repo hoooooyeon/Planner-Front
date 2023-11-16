@@ -53,6 +53,7 @@ const MyPlannerListContainer = () => {
         dispatch(resetPlannerDataAction());
         return () => {
             dispatch(initializeFormAction('myPlannerList'));
+            dispatch(initializeErrorAction());
         };
     }, [dispatch]);
 

@@ -80,6 +80,7 @@ const ShareListContainer = () => {
             dispatch(changeKeywordAction(''));
             dispatch(changeResultKeywordAction(''));
             dispatch(resetSharePlannerListAction());
+            dispatch(resetPlannerErrorAction());
         };
     }, [dispatch]);
 
