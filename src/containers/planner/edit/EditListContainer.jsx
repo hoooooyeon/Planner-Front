@@ -4,7 +4,7 @@ import EditList from '../../../components/planner/edit/EditList';
 import {
     accountLikeSpotListLoadAction,
     ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE,
-    resetLikeSpotListAction,
+    initializeFormAction,
 } from '../../../modules/accountModule';
 import {
     changeKeywordAction,
@@ -97,7 +97,7 @@ const EditListContainer = () => {
     useEffect(() => {
         if (contentTypeId !== 0 && areas.length > 0 && resultKeyword.length === 0) {
             const queryString = { areaCode, contentTypeId, pageNo: pageNum, numOfRows };
-            dispatch(resetLikeSpotListAction());
+            dispatch(initializeFormAction('likeList'));
             dispatch(resetSpotsAction());
             dispatch(loadSpotsAction(queryString));
         }
@@ -170,7 +170,7 @@ const EditListContainer = () => {
                 pageNum,
             };
             dispatch(resetSpotsAction());
-            dispatch(resetLikeSpotListAction());
+            dispatch(initializeFormAction('likeList'));
             dispatch(accountLikeSpotListLoadAction(queryString));
         }
     }, [dispatch, accountId, likeKeyword, contentTypeId, pageNum, detail.likeState]);

@@ -65,6 +65,10 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
     const sliderStart = (e) => {
         isSlide = true;
         startX = e.clientX;
+        // 슬라이드 끝에 닿아도 바로 넘어가지 않게 한 번 더 드래그 필요하게 방지.
+        if (sliderX.current == 0 || sliderX.current == hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth) {
+            turnPage.current = true;
+        }
         if (drag) {
             drag.current = false;
         }
@@ -112,8 +116,6 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
                 sliderX.current = 0;
                 if (turnPage.current === true && page) {
                     prevPage();
-
-                    turnPage.current = false;
                 }
             } else if (
                 sliderX.current <
@@ -122,17 +124,7 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
                 sliderX.current = hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth;
                 if (turnPage.current === true && page) {
                     nextPage();
-
-                    turnPage.current = false;
                 }
-            }
-
-            // 슬라이드 끝에 닿아도 바로 넘어가지 않게 한 번 더 드래그 필요하게 방지.
-            if (
-                sliderX.current == 0 ||
-                sliderX.current == hiddenBoxRef.current.clientWidth - listRef.current.scrollWidth
-            ) {
-                turnPage.current = true;
             }
 
             listRef.current.style.transform = 'translateX(' + sliderX.current + 'px)';
@@ -144,6 +136,7 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
             }
 
             isSlide = false;
+            turnPage.current = false;
         }
     };
 

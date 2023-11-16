@@ -11,8 +11,9 @@ import { useHistory } from 'react-router';
 import {
     accountMyPlannerListLoadAction,
     ACCOUNT_MY_PLANNER_LIST_LOAD_TYPE,
-    resetAccountErrorAction,
-    resetMyPlannerListAction,
+    changeMyPlannerListPageIndexAction,
+    initializeErrorAction,
+    initializeFormAction,
 } from '../../../modules/accountModule';
 
 const MyPlannerListContainer = () => {
@@ -51,7 +52,7 @@ const MyPlannerListContainer = () => {
     useEffect(() => {
         dispatch(resetPlannerDataAction());
         return () => {
-            dispatch(resetMyPlannerListAction());
+            dispatch(initializeFormAction('myPlannerList'));
         };
     }, [dispatch]);
 
@@ -92,7 +93,7 @@ const MyPlannerListContainer = () => {
     const [pageNum, setPageNum] = useState(1);
     useEffect(() => {
         if (accountId) {
-            dispatch(resetMyPlannerListAction());
+            dispatch(initializeFormAction('myPlannerList'));
             const queryString = { accountId, pageNum, itemCount: 10, sortCriteria: 2 };
 
             dispatch(accountMyPlannerListLoadAction(queryString));
@@ -101,26 +102,26 @@ const MyPlannerListContainer = () => {
 
     // accountError 리셋
     const onCloseError = () => {
-        dispatch(resetAccountErrorAction());
+        dispatch(initializeErrorAction());
     };
 
-    const maxPage = pageLastIndex;
-    const [page, setPage] = useState(1);
-
     const onNextPage = () => {
-        if (page !== maxPage) {
-            setPage((index) => index + 1);
+        if (pageNum < pageLastIndex) {
+            setPageNum((pageIndex) => pageIndex + 1);
         }
     };
     const onPreviousPage = () => {
-        if (page !== 1) {
-            setPage((index) => index - 1);
+        if (pageNum > 1) {
+            setPageNum((pageIndex) => pageIndex - 1);
         }
+    };
+    const onChangePage = (index) => {
+        setPageNum(index);
     };
 
     useEffect(() => {
-        setPageNum(page);
-    }, [page]);
+        dispatch(changeMyPlannerListPageIndexAction(pageNum));
+    }, [pageNum]);
 
     return (
         <MyPlannerList
@@ -134,6 +135,7 @@ const MyPlannerListContainer = () => {
             onClickPlanner={onClickPlanner}
             onPreviousPage={onPreviousPage}
             onNextPage={onNextPage}
+            onChangePage={onChangePage}
         />
     );
 };

@@ -7,6 +7,8 @@ import Empty from '../../common/Empty';
 import ErrorModal from '../../common/ErrorModal';
 import Loading from '../../common/Loading';
 import { useState } from 'react';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const MyPlannerListBlock = styled.div`
     width: 100%;
@@ -144,6 +146,27 @@ const CenterDiv = styled.div`
     height: 10rem;
 `;
 
+const GuideList = styled.ul`
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0.2rem 0.5rem;
+    li + li {
+        margin-left: 0.5rem;
+    }
+`;
+
+const CircleIcon = styled(FontAwesomeIcon)`
+    color: rgba(255, 255, 255, 0.6);
+    width: 0.8rem;
+    height: 0.8rem;
+    cursor: pointer;
+    &[aria-current] {
+        color: ${(props) => props.theme.clickedButtonBackgroundColor};
+    }
+`;
+
 const MyPlannerList = ({
     accountId,
     myPlannerList,
@@ -154,10 +177,12 @@ const MyPlannerList = ({
     onClickPlanner,
     onPreviousPage,
     onNextPage,
+    onChangePage,
     drag,
 }) => {
     const itemRef = useRef();
     const [createPlannerModal, setCreatePlannerModal] = useState(false);
+    const { list, pageLastIndex, pageIndex } = { ...myPlannerList };
 
     const handlecreatePlanner = () => {
         if (accountId) {
@@ -184,44 +209,54 @@ const MyPlannerList = ({
                     <CenterDiv>
                         <Loading pos="center" />
                     </CenterDiv>
-                ) : Object.keys(myPlannerList).length > 0 && myPlannerList.list.length > 0 ? (
-                    <Slider
-                        list={myPlannerList.list}
-                        itemRef={itemRef}
-                        drag={drag}
-                        page={true}
-                        prevPage={onPreviousPage}
-                        nextPage={onNextPage}
-                    >
-                        <PlannerList>
-                            {myPlannerList.list.map((p) => (
-                                <PlannerItem
-                                    key={p.plannerId}
-                                    ref={itemRef}
-                                    onClick={() => {
-                                        onClickPlanner(p.plannerId);
-                                    }}
-                                >
-                                    <ImgBox>
-                                        <Img
-                                            src={p.thumbnail}
-                                            alt={p.title}
-                                            onError={(e) => {
-                                                handleErrorImg({ e, errorImg });
-                                            }}
-                                        />
-                                    </ImgBox>
-                                    <InfoBox>
-                                        <Title>{p.title}</Title>
-                                        <Creator>{p.creator}</Creator>
-                                        <Date>
-                                            {p.planDateStart} ~ {p.planDateEnd}
-                                        </Date>
-                                    </InfoBox>
-                                </PlannerItem>
-                            ))}
-                        </PlannerList>
-                    </Slider>
+                ) : Object.keys(myPlannerList).length > 0 && list.length > 0 ? (
+                    <>
+                        <Slider
+                            list={list}
+                            itemRef={itemRef}
+                            drag={drag}
+                            page={true}
+                            prevPage={onPreviousPage}
+                            nextPage={onNextPage}
+                        >
+                            <PlannerList>
+                                {list.map((p) => (
+                                    <PlannerItem
+                                        key={p.plannerId}
+                                        ref={itemRef}
+                                        onClick={() => {
+                                            onClickPlanner(p.plannerId);
+                                        }}
+                                    >
+                                        <ImgBox>
+                                            <Img
+                                                src={p.thumbnail}
+                                                alt={p.title}
+                                                onError={(e) => {
+                                                    handleErrorImg({ e, errorImg });
+                                                }}
+                                            />
+                                        </ImgBox>
+                                        <InfoBox>
+                                            <Title>{p.title}</Title>
+                                            <Creator>{p.creator}</Creator>
+                                            <Date>
+                                                {p.planDateStart} ~ {p.planDateEnd}
+                                            </Date>
+                                        </InfoBox>
+                                    </PlannerItem>
+                                ))}
+                            </PlannerList>
+                        </Slider>
+                        <GuideList>
+                            {Object.keys(myPlannerList).length > 0 &&
+                                Array.from({ length: pageLastIndex }, (_, i) => i).map((_, i) => (
+                                    <li key={i} onClick={() => onChangePage(i + 1)}>
+                                        <CircleIcon icon={faCircle} aria-current={pageIndex === i + 1 ? 'cur' : null} />
+                                    </li>
+                                ))}
+                        </GuideList>
+                    </>
                 ) : (
                     <CenterDiv>
                         <Empty text="플래너" />

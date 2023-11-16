@@ -33,13 +33,10 @@ const ACCOUNT_LIKE_PLANNER_LIST_LOAD_FAILURE_TYPE = 'account/ACCOUNT_LIKE_PLANNE
 export const ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE = 'account/ACCOUNT_LIKE_SPOT_LIST_LOAD';
 const ACCOUNT_LIKE_SPOT_LIST_LOAD_SUECCESS_TYPE = 'account/ACCOUNT_LIKE_SPOT_LIST_LOAD_SUCCESS';
 const ACCOUNT_LIKE_SPOT_LIST_LOAD_FAILURE_TYPE = 'account/ACCOUNT_LIKE_SPOT_LIST_LOAD_FAILURE';
+
 export const ACCOUNT_NOTIFICATION_LOAD_TYPE = 'account/ACCOUNT_NOTIFICATION_LOAD';
 const ACCOUNT_NOTIFICATION_LOAD_SUECCESS_TYPE = 'account/ACCOUNT_NOTIFICATION_LOAD_SUCCESS';
 const ACCOUNT_NOTIFICATION_LOAD_FAILURE_TYPE = 'account/ACCOUNT_NOTIFICATION_LOAD_FAILURE';
-
-const RESET_LIKE_SPOT_LIST_TYPE = 'account/RESET_LIKE_SPOT_LIST';
-const RESET_MY_PLANNER_LIST_TYPE = 'account/RESET_MY_PLANNER_LIST';
-const RESET_ACCOUNT_ERROR_TYPE = 'account/RESET_ACCOUNT_ERROR';
 
 const INITIALIZE_ID_FIND_REQUEST_TYPE = 'account/INITIALIZE_ID_FIND_REQUEST';
 
@@ -62,6 +59,9 @@ const INITIALIZE_PASSWORD_UPDATE_REQUEST_TYPE = 'account/INITIALIZE_PASSWORD_UPD
 export const ACCOUNT_PASSWORD_CHANGE_TYPE = 'account/ACCOUNT_PASSWORD_CHANGE';
 const ACCOUNT_PASSWORD_CHANGE_SUCCESS_TYPE = 'account/ACCOUNT_PASSWORD_CHANGE_SUCCESS';
 const ACCOUNT_PASSWORD_CHANGE_FAILURE_TYPE = 'account/ACCOUNT_PASSWORD_CHANGE_FAILURE';
+
+const CHANGE_MY_PLANNER_LIST_PAGE_INDEX_TYPE = 'account/CHANGE_MY_PLANNER_LIST_PAGE_INDEX';
+const CHANGE_LIKE_LIST_PAGE_INDEX_TYPE = 'account/CHANGE_LIKE_LIST_PAGE_INDEX';
 
 // 액션 함수
 export const initializeAction = () => ({
@@ -152,10 +152,6 @@ export const accountNotificationLoadAction = (accountId) => ({
     accountId,
 });
 
-export const resetLikeSpotListAction = () => ({ type: RESET_LIKE_SPOT_LIST_TYPE });
-export const resetMyPlannerListAction = () => ({ type: RESET_MY_PLANNER_LIST_TYPE });
-export const resetAccountErrorAction = () => ({ type: RESET_ACCOUNT_ERROR_TYPE });
-
 export const initializeIdFindRequestAction = () => ({
     type: INITIALIZE_ID_FIND_REQUEST_TYPE,
 });
@@ -188,6 +184,16 @@ export const accountPasswordChangeAction = ({ password, passwordConfirm, key }) 
     password,
     passwordConfirm,
     key,
+});
+
+export const changeMyPlannerListPageIndexAction = ({ index }) => ({
+    type: CHANGE_MY_PLANNER_LIST_PAGE_INDEX_TYPE,
+    index,
+});
+export const changeLikeLIstPageIndexAction = ({ form, index }) => ({
+    type: CHANGE_LIKE_LIST_PAGE_INDEX_TYPE,
+    form,
+    index,
 });
 
 const accountLoad = createSaga(ACCOUNT_LOAD_TYPE, accountAPI.accountLoad);
@@ -298,24 +304,6 @@ function accountReducer(state = initialState, action) {
         case ACCOUNT_NOTIFICATION_LOAD_SUECCESS_TYPE: {
             return { ...state, notifications: action.payload.data };
         }
-        case RESET_LIKE_SPOT_LIST_TYPE:
-            return {
-                ...state,
-                likeList: {
-                    ...state.likeList,
-                    likeSpotList: {},
-                },
-            };
-        case RESET_MY_PLANNER_LIST_TYPE:
-            return {
-                ...state,
-                myPlannerList: {},
-            };
-        case RESET_ACCOUNT_ERROR_TYPE:
-            return {
-                ...state,
-                accountError: null,
-            };
         case INITIALIZE_ID_FIND_REQUEST_TYPE: {
             return { ...state, codeRequest: false, idFindRequest: false };
         }
@@ -339,6 +327,27 @@ function accountReducer(state = initialState, action) {
         }
         case ACCOUNT_LOAD_FAILURE_TYPE: {
             return { ...state, accountError: action.payload.data };
+        }
+        case CHANGE_MY_PLANNER_LIST_PAGE_INDEX_TYPE: {
+            return {
+                ...state,
+                myPlannerList: {
+                    ...state.myPlannerList,
+                    pageIndex: action.index,
+                },
+            };
+        }
+        case CHANGE_LIKE_LIST_PAGE_INDEX_TYPE: {
+            return {
+                ...state,
+                likeList: {
+                    ...state.likeList,
+                    [action.form]: {
+                        ...state.likeList[action.form],
+                        pageIndex: action.index,
+                    },
+                },
+            };
         }
         case ACCOUNT_UPDATE_FAILURE_TYPE:
         case ACCOUNT_IMAGE_UPDATE_FAILURE_TYPE:
