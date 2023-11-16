@@ -32,6 +32,7 @@ const ShareListContainer = () => {
     const { curKeyword, resultKeyword } = { ...keyword };
     const [sortCriteria, setSortCriteria] = useState(2);
     const drag = useRef(false);
+    // const totalCount = (sharePlanners && sharePlanners.totalCount) || 0;
 
     // 플래너 검색 순위 설정
     const onChangeSort = (num) => {
@@ -92,17 +93,13 @@ const ShareListContainer = () => {
         dispatch(changePageNumAction(index));
     };
     const onNextPage = (maxPage) => {
-        if (pageNum < maxPage) {
-            dispatch(changePageNumAction(pageNum + 1));
-        }
+        dispatch(changePageNumAction(pageNum + 1));
     };
     const onPreviousPage = () => {
-        if (pageNum > 1) {
-            dispatch(changePageNumAction(pageNum - 1));
-        }
+        dispatch(changePageNumAction(pageNum - 1));
     };
-    const onFirstPage = () => {
-        dispatch(changePageNumAction(1));
+    const onFirstPage = (startPage) => {
+        dispatch(changePageNumAction(startPage));
     };
     const onLastPage = (maxPage) => {
         dispatch(changePageNumAction(maxPage));

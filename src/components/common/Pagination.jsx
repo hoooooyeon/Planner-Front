@@ -7,7 +7,10 @@ import { faForward } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 
 const PaginationBlock = styled.div`
-    padding: 20px 0px;
+    /* padding: 20px 0px; */
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
     display: flex;
     flex-direction: row;
     justify-content: center;

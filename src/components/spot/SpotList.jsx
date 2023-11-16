@@ -196,14 +196,15 @@ const SpotList = ({
                         </Slider>
                         <PageBox>
                             <Pagination
-                                onIndexPage={onIndexPage}
+                                onPageChange={onIndexPage}
                                 onNextPage={onNextPage}
                                 onPreviousPage={onPreviousPage}
                                 onFirstPage={onFirstPage}
                                 onLastPage={onLastPage}
                                 page={spotData.pageNo}
                                 totalCount={spots.totalCount}
-                                itemIndex={12}
+                                pageSize={5}
+                                itemCount={12}
                             />
                         </PageBox>
                     </>
