@@ -13,7 +13,7 @@ import circleImg from '../../../lib/images/circle.png';
 const MapBlock = styled.div`
     width: 60%;
     position: relative;
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         width: 100%;
         height: 80vw;
     }

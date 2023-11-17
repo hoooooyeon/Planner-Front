@@ -372,7 +372,7 @@ function plannerReducer(state = initialState, action) {
                     ...state.plannerData,
                     plannerId: '',
                 },
-                planner: {},
+                planner: false,
             };
         case TOGGLE_LIKE_PLANNER_SUCCESS_TYPE:
             return {

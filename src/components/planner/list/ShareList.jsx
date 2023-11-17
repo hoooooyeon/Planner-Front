@@ -22,7 +22,7 @@ const Container = styled.div`
     margin: 0 auto;
     padding: 1rem;
     min-height: 40rem;
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         padding: 1rem 9rem;
     }
 `;
@@ -53,7 +53,7 @@ const ShareItem = styled.li`
     border-radius: 0.5rem;
     margin: 0.5%;
     cursor: pointer;
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         width: 24%;
         height: auto;
     }
@@ -94,7 +94,7 @@ const ImgBox = styled.div`
     padding-top: 90%;
     width: 100%;
     border-radius: 0.5rem 0.5rem 0 0;
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         padding-top: 75%;
     }
 `;

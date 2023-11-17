@@ -17,7 +17,7 @@ const List = styled.div`
         props.scroll &&
         css`
             width: 850px;
-            @media all and (min-width: 768px) {
+            @media all and (min-width: 769px) {
                 width: 100%;
             }
         `}
@@ -35,7 +35,7 @@ const ScrollBox = styled.div`
     overflow: hidden;
     z-index: 1;
     opacity: 0;
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         display: none;
     }
 `;

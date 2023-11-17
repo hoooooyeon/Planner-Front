@@ -16,10 +16,10 @@ const HomePlannerListBlock = styled.div`
 const Container = styled.div`
     margin: 0 auto;
     padding: 6rem 1rem;
-    @media all and (min-width: 400px) {
-        padding: 6rem;
+    @media all and (min-width: 481px) {
+        padding: 6rem 3rem;
     }
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         padding: 6rem 9rem;
     }
 `;
@@ -38,22 +38,40 @@ const Header = styled.div`
 const PlannerList = styled.ul`
     list-style-type: none;
     height: 100%;
-    width: calc(100% - 3rem);
     padding: 0;
     display: flex;
+    justify-content: center;
+    @media all and (max-width: 480px) {
+        flex-direction: column;
+    }
+    @media all and (min-width: 481px) and (max-width: 768px) {
+        flex-wrap: wrap;
+    }
 `;
 
 const PlannerItem = styled.li`
-    width: 24%;
+    float: left;
+    flex-shrink: 0;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     border-radius: 0.5rem;
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     cursor: pointer;
-    & + & {
-        margin-left: 1rem;
-    }
+    margin: 0.5rem;
     &:hover {
         box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
+    }
+    @media all and (min-width: 481px) and (max-width: 768px) {
+        width: 45%;
+    }
+    @media all and (min-width: 769px) {
+        & + & {
+            margin-left: 0.5rem;
+        }
+        margin: 0;
+        width: 33%;
+    }
+    @media all and (min-width: 1025px) {
+        width: 24%;
     }
 `;
 
@@ -61,9 +79,12 @@ const ImgBox = styled.div`
     margin: 0;
     overflow: hidden;
     position: relative;
-    padding-top: 75%;
     width: 100%;
     border-radius: 0.5rem 0.5rem 0 0;
+    padding-top: 30%;
+    @media all and (min-width: 481px) {
+        padding-top: 75%;
+    }
 `;
 
 const Img = styled.img`
@@ -95,7 +116,7 @@ const Title = styled.div`
     overflow: hidden;
 `;
 const Date = styled.div`
-    font-size: 0.4rem;
+    font-size: 0.7rem;
     color: ${(props) => props.theme.tertiaryColor};
     margin-top: 0.5rem;
     overflow: hidden;
@@ -128,8 +149,10 @@ const HomePlannerList = ({ sharePlanners, loading, onClickPlanner }) => {
                                     />
                                 </ImgBox>
                                 <InfoBox>
-                                    <Title>너어디에있었어여기 서울에 널찾아 헤맸어 그게 내 행복이야</Title>
-                                    <Date>2020년 11월 11일 ~ 2022년 17월 29일</Date>
+                                    <Title>{p.title}</Title>
+                                    <Date>
+                                        {p.planDateStart} ~ {p.planDateEnd}
+                                    </Date>
                                 </InfoBox>
                             </PlannerItem>
                         ))}

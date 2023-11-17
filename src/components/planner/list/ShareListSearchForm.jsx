@@ -9,7 +9,7 @@ const ShareListSearchFormBlock = styled.div`
     padding: 0.5rem 5rem;
     display: flex;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
-    @media all and (max-width: 1023px) {
+    @media all and (max-width: 1024px) {
         border-radius: 1rem;
         height: 6rem;
         padding: 0.5rem 2rem;
@@ -17,7 +17,7 @@ const ShareListSearchFormBlock = styled.div`
         align-items: flex-start;
         justify-content: center;
     }
-    @media all and (min-width: 1024px) {
+    @media all and (min-width: 1025px) {
         height: 4rem;
         border-radius: 5rem;
         align-items: center;
@@ -30,7 +30,7 @@ const SearchForm = styled.form`
     align-items: center;
     margin-left: 2rem;
     height: 4rem;
-    @media all and (max-width: 1023px) {
+    @media all and (max-width: 1024px) {
         justify-content: center;
         margin-left: 0;
     }
@@ -55,7 +55,7 @@ const SortButton = styled.div`
         background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
         color: ${(props) => props.theme.primaryColor};
     }
-    @media all and (min-width: 480px) {
+    @media all and (min-width: 481px) {
         white-space: nowrap;
     }
     & + & {
@@ -95,7 +95,7 @@ const Button = styled.button`
     font-weight: bold;
     white-space: nowrap;
     cursor: pointer;
-    @media all and (max-width: 1023px) {
+    @media all and (max-width: 1024px) {
         max-width: 3rem;
         min-width: 3rem;
         width: 100%;
@@ -104,8 +104,9 @@ const Button = styled.button`
 const Label = styled.label`
     margin-right: 0.5rem;
     font-size: 0.9rem;
-    @media all and (min-width: 480px) {
-        white-space: nowrap;
+    white-space: nowrap;
+    @media all and (max-width: 360px) {
+        white-space: normal;
     }
 `;
 const ResultBox = styled.div`

@@ -13,10 +13,10 @@ const FormDiv = styled.div`
     height: 10rem;
     padding: 0.5rem;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
-    @media all and (min-width: 320px) {
+    @media all and (min-width: 481px) {
         padding: 0.5rem 3rem;
     }
-    @media all and (min-width: 1024px) {
+    @media all and (min-width: 1025px) {
         height: 4rem;
         border-radius: 5rem;
     }
@@ -27,7 +27,7 @@ const Form = styled.form`
     height: 100%;
     display: flex;
     align-items: center;
-    @media all and (max-width: 1023px) {
+    @media all and (max-width: 1024px) {
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
@@ -39,7 +39,7 @@ const SearchBox = styled.div`
     align-items: center;
     width: 100%;
     padding-left: 0.9rem;
-    @media all and (max-width: 1023px) {
+    @media all and (max-width: 1024px) {
         margin: 1rem 0 0 0;
         padding-left: 0;
     }
@@ -62,7 +62,7 @@ const SearchInput = styled.input`
         color: ${(props) => props.theme.tertiaryColor};
         outline: none;
     }
-    @media all and (min-width: 1024px) {
+    @media all and (min-width: 1025px) {
         margin-left: 1rem;
     }
 `;
@@ -78,7 +78,7 @@ const SearchButton = styled.button`
     font-weight: bold;
     white-space: nowrap;
     cursor: pointer;
-    @media all and (max-width: 1023px) {
+    @media all and (max-width: 1024px) {
         max-width: 3rem;
         min-width: 3rem;
         width: 100%;
@@ -106,7 +106,7 @@ const SelectBox = styled.div`
     & + & {
         padding-left: 0.9rem;
     }
-    @media all and (max-width: 1023px) {
+    @media all and (max-width: 1024px) {
         & + & {
             padding-right: 0;
             border-right: none;
@@ -127,7 +127,7 @@ const Select = styled.select`
     option:disabled {
         display: none;
     }
-    @media all and (max-width: 1023px) {
+    @media all and (max-width: 1024px) {
         min-width: 1rem;
     }
 `;
@@ -135,8 +135,9 @@ const Select = styled.select`
 const Label = styled.label`
     margin-right: 0.5rem;
     font-size: 0.9rem;
-    @media all and (min-width: 480px) {
-        white-space: nowrap;
+    white-space: nowrap;
+    @media all and (max-width: 360px) {
+        white-space: normal;
     }
 `;
 const IconBox = styled.div`

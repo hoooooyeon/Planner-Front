@@ -36,9 +36,10 @@ const MyPlannerListContainer = () => {
     );
 
     const { plannerId } = { ...plannerData };
-    const { pageLastIndex } = { ...myPlannerList };
+    const { totalCount } = { ...myPlannerList };
     const { accountId, nickname } = { ...account };
     const drag = useRef(false);
+    const pageLastIndex = Math.ceil(totalCount / 10) || 0;
 
     // 날짜데이터 형식 변환.
     const letsFormat = (d) => {

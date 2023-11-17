@@ -21,7 +21,7 @@ const SpotListBlock = styled.div`
 const Container = styled.div`
     margin: 0 auto;
     padding: 3rem 1rem;
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         padding: 3rem 9rem;
     }
 `;
@@ -46,7 +46,7 @@ const SpotItem = styled.li`
     border: none;
     margin: 0.5%;
     position: relative;
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         width: 24%;
     }
     &:hover {
