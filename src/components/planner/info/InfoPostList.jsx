@@ -19,7 +19,7 @@ const Container = styled.div`
     padding: 0 1rem 1rem;
     display: flex;
     justify-content: space-between;
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         padding: 0 9rem 1rem;
     }
 `;
@@ -31,7 +31,7 @@ const PostListBlock = styled.div`
     padding: 1rem;
     width: calc(100% - 2rem);
     height: 20rem;
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         width: calc(60% - 2rem);
         height: calc(40vw - 2rem);
     }
@@ -84,7 +84,7 @@ const Ad = styled.div`
     transition: all 0.3s;
     position: relative;
     border-radius: 0.5rem;
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         display: block;
     }
     div {

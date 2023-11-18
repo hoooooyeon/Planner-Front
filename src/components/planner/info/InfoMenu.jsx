@@ -15,15 +15,33 @@ const Container = styled.div`
     justify-content: center;
     flex-direction: column;
     padding: 0.1rem 0.5rem;
-    @media all and (min-width: 400px) {
+    @media all and (min-width: 481px) {
         padding: 0.1rem 1rem;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-direction: row;
     }
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         padding: 0 9rem;
     }
-    @media all and (min-width: 1024px) {
-        align-items: center;
+    @media all and (min-width: 1025px) {
+    }
+`;
+const FlexDiv = styled.div`
+    display: flex;
+    align-items: center;
+    /* overflow: hidden; */
+    align-items: flex-start;
+    flex-direction: column;
+    @media all and (min-width: 481px) {
+    }
+    @media all and (min-width: 769px) {
         flex-direction: row;
+        justify-content: space-between;
+    }
+    @media all and (min-width: 1025px) {
+        width: 70%;
+        justify-content: space-evenly;
     }
 `;
 
@@ -32,43 +50,50 @@ const InfoBox = styled.div`
     align-items: center;
     justify-content: center;
     padding: 0.5rem;
-    @media all and (min-width: 400px) {
-        padding: 1rem;
+    /* width: 100%;
+    max-width: 17rem; */
+    @media all and (min-width: 481px) {
+        /* padding: 1rem; */
     }
-`;
-
-const FlexDiv = styled.div`
-    display: flex;
-    align-items: center;
-    overflow: hidden;
 `;
 
 const Ask = styled.div`
     color: ${(props) => props.theme.tertiaryColor};
     margin-right: 0.5rem;
     font-weight: bold;
-    font-size: 0.6rem;
-    @media all and (min-width: 400px) {
-        margin-right: 1rem;
+    font-size: 0.8rem;
+    @media all and (min-width: 361px) {
         font-size: 0.8rem;
-    }
-    @media all and (min-width: 1024px) {
+        /* margin-right: 1rem; */
         white-space: nowrap;
-        overflow: hidden;
+        /* overflow: hidden; */
+    }
+    @media all and (min-width: 481px) {
+    }
+    @media all and (min-width: 1025px) {
         text-overflow: ellipsis;
+        font-size: 0.9rem;
     }
 `;
 
 const Text = styled.div`
     font-weight: bold;
-    font-size: 0.7rem;
-    @media all and (min-width: 400px) {
-        font-size: 0.9rem;
+    font-size: 0.8rem;
+    border-radius: 1rem;
+    box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
+    padding: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @media all and (min-width: 361px) {
+        overflow: clip;
+        text-overflow: visible;
     }
-    @media all and (min-width: 1024px) {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    @media all and (min-width: 769px) {
+        font-size: 0.8rem;
+    }
+    @media all and (min-width: 1025px) {
+        font-size: 0.9rem;
     }
 `;
 
@@ -85,11 +110,11 @@ const InfoMenu = ({ planner, loading }) => {
                     <>
                         <FlexDiv>
                             <InfoBox>
-                                <Ask>플래너 이름:</Ask>
+                                <Ask>플래너 이름</Ask>
                                 <Text>{title}</Text>
                             </InfoBox>
                             <InfoBox>
-                                <Ask>여행 일정:</Ask>
+                                <Ask>여행 일정</Ask>
                                 <Text>
                                     {planDateStart} ~ {planDateEnd}
                                 </Text>
@@ -97,13 +122,13 @@ const InfoMenu = ({ planner, loading }) => {
                         </FlexDiv>
                         <FlexDiv>
                             <InfoBox>
-                                <Ask>여행 멤버:</Ask>
+                                <Ask>여행 멤버</Ask>
                                 <Text>
                                     {memberTypeList[memberTypeId - 1]} ({memberCount}명)
                                 </Text>
                             </InfoBox>
                             <InfoBox>
-                                <Ask>여행 비용:</Ask>
+                                <Ask>여행 비용</Ask>
                                 <Text>{expense}원</Text>
                             </InfoBox>
                         </FlexDiv>

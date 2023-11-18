@@ -23,7 +23,7 @@ const Container = styled.div`
     padding: 0 1rem;
     margin: 0 auto;
     min-height: 31rem;
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         padding: 0 9rem;
     }
 `;
@@ -46,7 +46,7 @@ const MenuList = styled.ul`
     display: none;
     padding: 0;
     margin: 0;
-    @media all and (min-width: 1024px) {
+    @media all and (min-width: 1025px) {
         display: flex;
     }
 `;
@@ -82,7 +82,7 @@ const Menu = styled.div`
         color: ${(props) => props.theme.hoverColor};
         box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
-    @media all and (max-width: 1023px) {
+    @media all and (max-width: 1024px) {
         display: flex;
     }
 `;
@@ -113,7 +113,7 @@ const DropDownMenu = styled.ul`
 const FlexBox = styled.div`
     width: 100%;
     padding: 1rem 0;
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         display: flex;
         justify-content: space-between;
     }

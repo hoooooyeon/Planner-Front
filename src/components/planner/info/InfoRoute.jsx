@@ -24,7 +24,7 @@ const InfoRouteBlock = styled.div`
     height: 40vw;
     margin-left: 1rem;
     position: relative;
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         width: calc(100% - 2rem);
         height: auto;
         margin: 1rem 0 0;
@@ -38,7 +38,7 @@ const WidthDiv = styled.div`
     &::-webkit-scrollbar {
         display: none;
     }
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         width: 100%;
         min-height: 4rem;
     }
@@ -53,7 +53,7 @@ const RouteList = styled.ul`
     &[aria-current] {
         display: flex;
     }
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         padding: 1rem 0;
         flex-direction: row;
         overflow: visible;
@@ -66,7 +66,7 @@ const RouteItem = styled.li`
     & + & {
         margin: 2rem 0 0;
     }
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         & + & {
             margin: 0 0 0 2rem;
         }
@@ -135,7 +135,7 @@ const RouteLine = styled.div`
     left: 50%;
     top: -11%;
     transform: translate(-50%, -50%);
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         width: 2rem;
         height: 0.2rem;
         left: -20%;
