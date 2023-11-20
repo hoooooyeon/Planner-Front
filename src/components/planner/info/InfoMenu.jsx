@@ -15,6 +15,7 @@ const Container = styled.div`
     justify-content: center;
     flex-direction: column;
     padding: 0.1rem 0.5rem;
+    overflow: hidden;
     @media all and (min-width: 481px) {
         padding: 0.1rem 1rem;
         align-items: center;
@@ -62,16 +63,16 @@ const Ask = styled.div`
     margin-right: 0.5rem;
     font-weight: bold;
     font-size: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
     @media all and (min-width: 361px) {
         font-size: 0.8rem;
         /* margin-right: 1rem; */
         white-space: nowrap;
-        /* overflow: hidden; */
     }
     @media all and (min-width: 481px) {
     }
     @media all and (min-width: 1025px) {
-        text-overflow: ellipsis;
         font-size: 0.9rem;
     }
 `;
@@ -82,12 +83,13 @@ const Text = styled.div`
     border-radius: 1rem;
     box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     padding: 0.5rem;
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 10rem;
     @media all and (min-width: 361px) {
-        overflow: clip;
-        text-overflow: visible;
+        white-space: nowrap;
+        /* overflow: clip; */
+        /* text-overflow: visible; */
     }
     @media all and (min-width: 769px) {
         font-size: 0.8rem;
@@ -95,6 +97,10 @@ const Text = styled.div`
     @media all and (min-width: 1025px) {
         font-size: 0.9rem;
     }
+`;
+
+const Date = styled(Text)`
+    max-width: 12rem;
 `;
 
 const InfoMenu = ({ planner, loading }) => {
@@ -115,9 +121,9 @@ const InfoMenu = ({ planner, loading }) => {
                             </InfoBox>
                             <InfoBox>
                                 <Ask>여행 일정</Ask>
-                                <Text>
+                                <Date>
                                     {planDateStart} ~ {planDateEnd}
-                                </Text>
+                                </Date>
                             </InfoBox>
                         </FlexDiv>
                         <FlexDiv>
