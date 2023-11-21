@@ -4,6 +4,7 @@ import PlannerInfo from '../../../components/planner/info/PlannerInfo';
 import {
     changeCurPlanIdAction,
     changeCurPlannerIdAction,
+    changeMapDataAction,
     deletePlannerAction,
     DELETE_PLANNER_TYPE,
     loadPlannerAction,
@@ -12,7 +13,6 @@ import {
     toggleLikePlannerAction,
     toggleMemberModalAction,
     togglePlannerInfoModalAction,
-    toggleScheduleViewAction,
     TOGGLE_LIKE_PLANNER_TYPE,
 } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
@@ -23,13 +23,13 @@ const PlannerInfoContainer = () => {
     const history = useHistory();
     const params = useParams();
 
-    const { planner, plannerError, plannerData, loading, allSchedule, account } = useSelector(
+    const { planner, plannerError, plannerData, loading, mapData, account } = useSelector(
         ({ plannerReducer, authReducer, loadingReducer }) => ({
             planner: plannerReducer.planner,
             plannerError: plannerReducer.plannerError,
             plannerData: plannerReducer.plannerData,
             account: authReducer.account,
-            allSchedule: plannerReducer.allSchedule,
+            mapData: plannerReducer.mapData,
             loading: {
                 plannerLoading: loadingReducer[LOAD_PLANNER_TYPE],
                 deletePlannerLoading: loadingReducer[DELETE_PLANNER_TYPE],
@@ -41,6 +41,7 @@ const PlannerInfoContainer = () => {
     const { plans } = { ...planner };
     const { plannerId, planId } = { ...plannerData };
     const { accountId } = { ...account };
+    const { allSchedule } = { ...mapData };
 
     // 페이지 접근 제어
     useEffect(() => {
@@ -108,7 +109,7 @@ const PlannerInfoContainer = () => {
     };
 
     const handleToggleScheduleView = (bool) => {
-        dispatch(toggleScheduleViewAction(bool));
+        dispatch(changeMapDataAction({ property: 'allSchedule', value: bool }));
     };
 
     // plannerError 리셋

@@ -86,11 +86,12 @@ const CHANGE_PAGE_NUM_TYPE = 'planner/CHANGE_PAGE_NUM';
 const CHANGE_KEYWORD_TYPE = 'planner/CHANGE_KEYWORD';
 const CHANGE_RESULT_KEYWORD_TYPE = 'planner/CHANGE_RESULT_KEYWORD';
 
-const TOGGLE_SCHEDULE_VIEW_TYPE = 'planner/TOGGLE_SCHEDULE_VIEW_TYPE';
+const CHANGE_MAP_DATA_TYPE = 'planner/CHANGE_MAP_DATA_TYPE';
 const RESET_SHARE_PLANNER_LIST_TYPE = 'planner/RESET_SHARE_PLANNER_LIST';
 
 const RESET_PLANNER_ERROR_TYPE = 'planner/RESET_PLANNER_ERROR';
 const PLANNER_INITIALIZE_TYPE = 'planner/PLANNER_INITIALIZE';
+const PLANNER_INITIALIZE_PROPERTY_TYPE = 'planner/PLANNER_INITIALIZE_PROPERTY';
 
 export const createPlannerAction = ({
     accountId,
@@ -221,13 +222,18 @@ export const changeCurMemoIdAction = (memoId) => ({ type: CHANGE_CUR_MEMO_ID_TYP
 export const changePageNumAction = (pageNum) => ({ type: CHANGE_PAGE_NUM_TYPE, pageNum });
 export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, keyword });
 export const changeResultKeywordAction = (keyword) => ({ type: CHANGE_RESULT_KEYWORD_TYPE, keyword });
-export const toggleScheduleViewAction = (bool) => ({ type: TOGGLE_SCHEDULE_VIEW_TYPE, bool });
+export const changeMapDataAction = ({ property, value }) => ({ type: CHANGE_MAP_DATA_TYPE, property, value });
 export const resetSharePlannerListAction = () => ({ type: RESET_SHARE_PLANNER_LIST_TYPE });
 export const resetPlannerErrorAction = () => ({ type: RESET_PLANNER_ERROR_TYPE });
 export const toggleMemoModalAction = () => ({ type: TOGGLE_MEMO_MODAL_TYPE });
 export const plannerInitializeAction = () => ({
     type: PLANNER_INITIALIZE_TYPE,
 });
+export const plannerInitializePropertyAction = (property) => ({
+    type: PLANNER_INITIALIZE_PROPERTY_TYPE,
+    property,
+});
+
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
 const loadSharePlannerListSaga = createSaga(LOAD_SHARE_PLANNER_LIST_TYPE, plannerAPI.loadSharePlannerList);
@@ -287,7 +293,11 @@ const initialState = {
         resultKeyword: '',
     },
     pType: '',
-    allSchedule: false,
+    mapData: {
+        allSchedule: false,
+        navRoute: true,
+        navList: true,
+    },
 };
 
 function plannerReducer(state = initialState, action) {
@@ -545,10 +555,13 @@ function plannerReducer(state = initialState, action) {
                     resultKeyword: action.keyword,
                 },
             };
-        case TOGGLE_SCHEDULE_VIEW_TYPE:
+        case CHANGE_MAP_DATA_TYPE:
             return {
                 ...state,
-                allSchedule: action.bool,
+                mapData: {
+                    ...state.mapData,
+                    [action.property]: action.value,
+                },
             };
         case RESET_SHARE_PLANNER_LIST_TYPE:
             return {
@@ -560,8 +573,10 @@ function plannerReducer(state = initialState, action) {
                 ...state,
                 plannerError: null,
             };
-        case PLANNER_INITIALIZE_TYPE: {
+        case PLANNER_INITIALIZE_TYPE:
             return { ...initialState };
+        case PLANNER_INITIALIZE_PROPERTY_TYPE: {
+            return { ...state, [action.property]: initialState[action.property] };
         }
         default:
             return state;

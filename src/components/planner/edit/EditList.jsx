@@ -5,6 +5,7 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import Pagination from '../../common/Pagination.js';
 import { faExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 import { useRef } from 'react';
@@ -28,6 +29,11 @@ const EditListBlock = styled.div`
     z-index: 200;
     transform: ${(props) => (props.navOpen ? 'translateX(0px)' : 'translateX(350px)')};
     transition: 0.4s ease;
+    @media all and (max-width: 480px) {
+        width: 100%;
+        top: 250px;
+        transform: translateX(0px);
+    }
 `;
 
 const List = styled.div`
@@ -116,8 +122,8 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 
 const NavArrowIcon = styled(FontAwesomeIcon)`
     position: absolute;
-    top: 16px;
-    left: -41px;
+    top: 10px;
+    left: -48px;
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 2rem;
@@ -147,6 +153,31 @@ const ErrorList = styled.div`
     left: 50%;
 `;
 
+const NavList = styled.div`
+    display: none;
+    padding: 0.5rem;
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    margin-bottom: 5px;
+    position: absolute;
+    border-radius: 1rem;
+    top: -41px;
+    left: 73px;
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    font-weight: bold;
+    font-size: 0.8rem;
+    cursor: pointer;
+    &:hover {
+        box-shadow: 2px 3px 6px ${(props) => props.theme.shadowColor};
+    }
+    @media all and (max-width: 480px) {
+        display: block;
+    }
+`;
+
+const NavListIcon = styled(FontAwesomeIcon)`
+    margin-right: 0.2rem;
+`;
+
 const EditList = ({
     plannerData,
     spots,
@@ -164,6 +195,7 @@ const EditList = ({
     onLastPage,
     keyword,
     spotData,
+    navList,
     areas,
     contentTypeList,
     likeKeyword,
@@ -173,16 +205,11 @@ const EditList = ({
     onChangeLikeKeyword,
     onChangeCurKeyword,
     onClickDateSchedule,
+    onClickToggleNavList,
 }) => {
-    const navRef = useRef();
-    const [navOpen, setNavOpen] = useState(true);
     const [resizeNav, setResizeNav] = useState(false);
     const [isPlanModal, setIsPlanModal] = useState(false);
-
-    // nav 토글 함수
-    const onToggleNav = () => {
-        setNavOpen(!navOpen);
-    };
+    const [navOpen, setNavOpen] = useState(true);
 
     // 창 크기에 따른 nav 자동 종료
     const resizeNavClose = () => {
@@ -213,13 +240,21 @@ const EditList = ({
         };
     });
 
+    const onClickNavToggle = () => {
+        setNavOpen((navOpen) => !navOpen);
+    };
+
     return (
         <>
-            <EditListBlock ref={navRef} navOpen={navOpen}>
+            <EditListBlock navOpen={navOpen}>
+                <NavList>
+                    <NavListIcon icon={faMapLocationDot} />
+                    여행지
+                </NavList>
                 {navOpen ? (
-                    <NavArrowIcon onClick={onToggleNav} icon={faCaretRight} />
+                    <NavArrowIcon onClick={onClickNavToggle} icon={faCaretRight} />
                 ) : (
-                    <NavArrowIcon onClick={onToggleNav} icon={faCaretLeft} />
+                    <NavArrowIcon onClick={onClickNavToggle} icon={faCaretLeft} />
                 )}
                 <EditListSearchForm
                     keyword={keyword}

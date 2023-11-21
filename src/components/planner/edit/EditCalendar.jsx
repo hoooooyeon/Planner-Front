@@ -14,7 +14,7 @@ const FlexDiv = styled.div`
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     padding: 0.5rem;
     width: 4rem;
-    height: 29.5rem;
+    height: 29rem;
 `;
 
 const EditCalendarBlock = styled.div`

@@ -10,7 +10,7 @@ import locationImg from '../../../lib/images/location.png';
 import Loading from '../../common/Loading';
 
 const EditMapBlock = styled.div`
-    width: calc(100% - 392px);
+    width: 100%;
     height: 100vh;
     float: left;
     position: relative;
@@ -21,50 +21,6 @@ const Map = styled.div`
     height: 100%;
 `;
 
-const ButtonBox = styled.div`
-    position: fixed;
-    left: 405px;
-    top: 10px;
-    z-index: 150;
-    display: flex;
-    flex-direction: column;
-`;
-
-const Button = styled.button`
-    border: none;
-    border-radius: 2rem;
-    width: 8rem;
-    height: 3rem;
-    background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
-    margin-bottom: 10px;
-    color: ${(props) => props.theme.secondaryColor};
-    &:hover {
-        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
-        color: ${(props) => props.theme.hoverColor};
-    }
-    a {
-        display: block;
-        color: ${(props) => props.theme.secondaryColor};
-        height: 100%;
-        line-height: 3rem;
-        &:hover {
-            color: ${(props) => props.theme.hoverColor};
-        }
-    }
-    ${(props) =>
-        props.allSchedule &&
-        css`
-            color: ${(props) => props.theme.primaryColor};
-            background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
-            &:hover {
-                color: ${(props) => props.theme.primaryColor};
-            }
-        `}
-`;
-
 const EditMap = ({
     // mapRef,
     planner,
@@ -72,17 +28,15 @@ const EditMap = ({
     plannerData,
     spotError,
     plannerError,
-    allSchedule,
+    mapData,
     onClosePlannerError,
     onCloseSpotError,
     // onClickAllSchedule,
-    onSavePlanner,
-    tutorialVisible,
-    onClickTutorialModal,
     handleToggleScheduleView,
     onChangeAreaIndex,
 }) => {
     const { plans } = { ...planner };
+    const { allSchedule, navRoute, navList } = { ...mapData };
     const mapRef = useRef(null);
     const [map, setMap] = useState();
     const { kakao } = window;
@@ -540,31 +494,36 @@ const EditMap = ({
     }, [centerCoord, kakao.maps.LatLng, kakao.maps.Polyline, map]);
 
     // 모든 일정 루트 보기 토글
-    const onClickAllSchedule = () => {
+    // const onClickAllSchedule = () => {
+    //     if (allSchedule) {
+    //         showDateRouteMarker();
+    //         // dispatch(toggleScheduleViewAction(false));
+    //         handleToggleScheduleView(false);
+    //     } else {
+    //         showAllRouteMarker();
+    //         // dispatch(toggleScheduleViewAction(true));
+    //         handleToggleScheduleView(true);
+    //     }
+    // };
+
+    // 모든 일정 루트 보기 토글
+    useEffect(() => {
         if (allSchedule) {
-            showDateRouteMarker();
-            // dispatch(toggleScheduleViewAction(false));
-            handleToggleScheduleView(false);
-        } else {
             showAllRouteMarker();
+            // dispatch(toggleScheduleViewAction(false));
+            // handleToggleScheduleView(false);
+        } else {
+            showDateRouteMarker();
             // dispatch(toggleScheduleViewAction(true));
-            handleToggleScheduleView(true);
+            // handleToggleScheduleView(true);
         }
-    };
+    }, [allSchedule]);
 
     return (
         <>
-            <EditMapBlock>
+            <EditMapBlock navRoute={{ navRoute: navRoute, size: 392 }} navList={{ navList: navList, size: 350 }}>
                 <Map ref={mapRef} />
-                <ButtonBox>
-                    <Button allSchedule={allSchedule} onClick={onClickAllSchedule}>
-                        모든 일정 보기
-                    </Button>
-                    <Button onClick={onClickTutorialModal}>사용 방법</Button>
-                    <Button onClick={onSavePlanner}>일정 저장</Button>
-                </ButtonBox>
             </EditMapBlock>
-            {tutorialVisible && <EditTutorialModal onClickTutorialModal={onClickTutorialModal} />}
             {plannerError && typeof plannerError === 'string' && (
                 <ErrorModal errorState={plannerError} errorMessage={plannerError} onCloseError={onClosePlannerError} />
             )}

@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditMap from '../../../components/planner/edit/EditMap';
-import { resetPlannerErrorAction, toggleScheduleViewAction } from '../../../modules/plannerModule';
+import { resetPlannerErrorAction, changeMapDataAction } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import locationImg from '../../../lib/images/location.png';
 import { changeAreaIndexAction, resetSpotErrorAction } from '../../../modules/spotModule';
@@ -11,7 +11,7 @@ import { useHistory } from 'react-router';
 const EditMapContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { planner, plannerError, spotError, plannerData, spots, account, allSchedule } = useSelector(
+    const { planner, plannerError, spotError, plannerData, spots, account, mapData } = useSelector(
         ({ plannerReducer, spotReducer, authReducer }) => ({
             planner: plannerReducer.planner,
             plannerError: plannerReducer.plannerError,
@@ -20,7 +20,7 @@ const EditMapContainer = () => {
             keyword: spotReducer.keyword,
             contentTypeList: spotReducer.contentTypeList,
             plannerData: plannerReducer.plannerData,
-            allSchedule: plannerReducer.allSchedule,
+            mapData: plannerReducer.mapData,
             account: authReducer.account,
         }),
     );
@@ -28,17 +28,6 @@ const EditMapContainer = () => {
     const { plannerId } = { ...plannerData };
     const { plans } = { ...planner };
     const { accountId } = { ...account };
-
-    // 일정 저장 버튼
-    const onSavePlanner = () => {
-        history.push(`/Planners/${plannerId}`);
-    };
-
-    // 튜토리얼모달 토글
-    const [tutorialVisible, setTutorialVisible] = useState(false);
-    const onClickTutorialModal = () => {
-        setTutorialVisible(!tutorialVisible);
-    };
 
     // spotError 리셋
     const onCloseSpotError = () => {
@@ -51,7 +40,7 @@ const EditMapContainer = () => {
     };
 
     const handleToggleScheduleView = (bool) => {
-        dispatch(toggleScheduleViewAction(bool));
+        dispatch(changeMapDataAction({ property: 'allSchedule', value: bool }));
     };
 
     const onChangeAreaIndex = (index) => {
@@ -71,13 +60,10 @@ const EditMapContainer = () => {
             planner={planner}
             spots={spots}
             plannerData={plannerData}
-            allSchedule={allSchedule}
+            mapData={mapData}
             plannerError={plannerError}
             spotError={spotError}
             // onClickAllSchedule={onClickAllSchedule}
-            onSavePlanner={onSavePlanner}
-            tutorialVisible={tutorialVisible}
-            onClickTutorialModal={onClickTutorialModal}
             onClosePlannerError={onClosePlannerError}
             onCloseSpotError={onCloseSpotError}
             handleToggleScheduleView={handleToggleScheduleView}

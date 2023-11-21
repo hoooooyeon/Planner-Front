@@ -17,7 +17,7 @@ import Empty from '../../common/Empty';
 const EditRouteListBlock = styled.div`
     margin-left: 0.2rem;
     width: 284px;
-    height: 30.5rem;
+    height: 30rem;
     overflow: auto;
     border-radius: 1rem;
     &::-webkit-scrollbar {
@@ -128,7 +128,7 @@ const TransIcon = styled(FontAwesomeIcon)`
 `;
 
 const TransName = styled.div`
-    font-size: 0.1rem;
+    font-size: 0.6rem;
     padding: 0.2rem 0.4rem;
     font-weight: bold;
     white-space: nowrap;

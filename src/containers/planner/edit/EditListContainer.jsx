@@ -9,12 +9,13 @@ import {
 } from '../../../modules/accountModule';
 import {
     changeKeywordAction,
+    changeMapDataAction,
     changePageNumAction,
     changeResultKeywordAction,
     createLocationAction,
     LOAD_PLANNER_TYPE,
+    plannerInitializePropertyAction,
     resetPlannerErrorAction,
-    toggleScheduleViewAction,
 } from '../../../modules/plannerModule';
 import {
     loadDetailSpotAction,
@@ -48,11 +49,13 @@ const EditListContainer = () => {
         contentTypeList,
         likeList,
         loading,
+        mapData,
     } = useSelector(({ plannerReducer, spotReducer, accountReducer, authReducer, loadingReducer }) => ({
         account: authReducer.account,
         planner: plannerReducer.planner,
         plannerData: plannerReducer.plannerData,
         keyword: plannerReducer.keyword,
+        mapData: plannerReducer.mapData,
         spots: spotReducer.spots,
         areas: spotReducer.areas,
         spotData: spotReducer.spotData,
@@ -73,6 +76,7 @@ const EditListContainer = () => {
     const { curKeyword, resultKeyword } = { ...keyword };
     const { likeSpotList } = { ...likeList };
     const numOfRows = 12;
+    const { navList } = { ...mapData };
 
     // 로케이션 추가
     const onCreateLocation = (spot) => {
@@ -187,6 +191,7 @@ const EditListContainer = () => {
             dispatch(initializeAction());
             dispatch(spotInitializeAction());
             dispatch(resetPlannerErrorAction());
+            dispatch(plannerInitializePropertyAction('mapData'));
         };
     }, []);
 
@@ -236,7 +241,13 @@ const EditListContainer = () => {
 
     // 현재 일정 루트 보기
     const onClickDateSchedule = () => {
-        dispatch(toggleScheduleViewAction(false));
+        dispatch(changeMapDataAction({ property: 'allSchedule', value: false }));
+    };
+
+    // navList toggle
+    const onClickToggleNavList = (bool) => {
+        dispatch(changeMapDataAction({ property: 'navList', value: bool }));
+        dispatch(changeMapDataAction({ property: 'navRoute', value: false }));
     };
 
     // if (accountId !== planner.accountId) {
@@ -250,6 +261,7 @@ const EditListContainer = () => {
             keyword={keyword}
             loading={loading}
             spotData={spotData}
+            navList={navList}
             contentTypeList={contentTypeList}
             likeSpotList={likeSpotList}
             likeKeyword={likeKeyword}
@@ -269,6 +281,7 @@ const EditListContainer = () => {
             onChangeResultKeyword={onChangeResultKeyword}
             onChangeLikeKeyword={onChangeLikeKeyword}
             onClickDateSchedule={onClickDateSchedule}
+            onClickToggleNavList={onClickToggleNavList}
         />
     );
 };
