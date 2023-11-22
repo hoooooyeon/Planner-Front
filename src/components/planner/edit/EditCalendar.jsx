@@ -15,6 +15,9 @@ const FlexDiv = styled.div`
     padding: 0.5rem;
     width: 4rem;
     height: 29rem;
+    @media all and (max-width: 480px) {
+        height: 18.5rem;
+    }
 `;
 
 const EditCalendarBlock = styled.div`

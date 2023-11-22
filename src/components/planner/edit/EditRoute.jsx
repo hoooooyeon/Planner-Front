@@ -9,11 +9,8 @@ import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
-import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
-import { faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../../common/Loading';
 import EditTutorialModal from './EditTutorialModal';
-import { useRef } from 'react';
 
 const EditRouteBlock = styled.div`
     background-color: ${(props) => props.theme.primaryBackgroundColor};
@@ -22,11 +19,15 @@ const EditRouteBlock = styled.div`
     min-width: 24rem;
     z-index: 10;
     position: fixed;
-    transition: 0.4s ease;
-    transform: ${(props) => (props.navOpen ? 'translateX(0px)' : 'translateX(-392px)')};
     @media all and (max-width: 480px) {
+        transition: 0s;
         width: 100%;
-        top: 250px;
+        min-width: 21rem;
+        top: ${(props) => (props.navRoute ? '250px' : '740px')};
+    }
+    @media all and (min-width: 481px) {
+        /* transition: 0.4s ease; */
+        transform: ${(props) => (props.navRoute ? 'translateX(0px)' : 'translateX(-392px)')};
     }
 `;
 
@@ -109,6 +110,7 @@ const DateBox = styled.div`
         text-align: center;
     }
     @media all and (max-width: 480px) {
+        width: 7rem;
         height: 2rem;
         p {
             font-size: 0.6rem;
@@ -152,6 +154,9 @@ const SetIcon = styled(FontAwesomeIcon)`
     position: absolute;
     left: 138px;
     top: 5px;
+    @media all and (max-width: 480px) {
+        left: 90px;
+    }
 `;
 
 const UpdatedDate = styled.div`
@@ -175,6 +180,7 @@ const RouteBox = styled.div`
     background-color: ${(props) => props.theme.secondaryBackgroundColor};
     @media all and (max-width: 480px) {
         width: auto;
+        height: 308px;
     }
 `;
 
@@ -218,6 +224,9 @@ const DropDownMenu = styled.ul`
         &:hover {
             font-weight: bold;
         }
+    }
+    @media all and (max-width: 480px) {
+        left: 305px;
     }
 `;
 
@@ -283,31 +292,6 @@ const NavArrowIcon = styled(FontAwesomeIcon)`
     }
 `;
 
-const NavRoute = styled.div`
-    display: none;
-    padding: 0.5rem;
-    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
-    margin-bottom: 5px;
-    position: absolute;
-    border-radius: 1rem;
-    top: -41px;
-    left: 8px;
-    background-color: ${(props) => props.theme.primaryBackgroundColor};
-    font-weight: bold;
-    font-size: 0.8rem;
-    cursor: pointer;
-    &:hover {
-        box-shadow: 2px 3px 6px ${(props) => props.theme.shadowColor};
-    }
-    @media all and (max-width: 480px) {
-        display: block;
-    }
-`;
-
-const NavRouteIcon = styled(FontAwesomeIcon)`
-    margin-right: 0.2rem;
-`;
-
 const EditRoute = ({
     planner,
     plannerData,
@@ -315,7 +299,7 @@ const EditRoute = ({
     endDate,
     loading,
     allSchedule,
-    navRoute,
+    mapData,
     onCreatePlan,
     onDeletePlan,
     onDeleteLocation,
@@ -338,10 +322,9 @@ const EditRoute = ({
     setUpdatePlans,
     onClickDateSchedule,
     onSavePlanner,
-    tutorialVisible,
     onClickTutorialModal,
     onClickAllSchedule,
-    onClickToggleNavRoute,
+    onToggleWindowNavRoute,
 }) => {
     const { title, creator, updateDate } = { ...planner };
     const [dropDown, setDropDown] = useState(false);
@@ -355,7 +338,7 @@ const EditRoute = ({
         updatePlannerLoading,
         plannerLoading,
     } = { ...loading };
-    const [navOpen, setNavOpen] = useState(true);
+    const { navRoute } = { ...mapData };
 
     const onClickDropDown = () => {
         setDropDown(!dropDown);
@@ -372,17 +355,9 @@ const EditRoute = ({
         return () => window.removeEventListener('click', onCloseDropDown);
     });
 
-    const onClickNavToggle = () => {
-        setNavOpen((navOpen) => !navOpen);
-    };
-
     return (
         <>
-            <EditRouteBlock navOpen={navOpen}>
-                <NavRoute>
-                    <NavRouteIcon icon={faCalendarDays} />
-                    일정
-                </NavRoute>
+            <EditRouteBlock navRoute={navRoute}>
                 {plannerLoading ? (
                     <Loading pos="center" />
                 ) : (
@@ -482,19 +457,18 @@ const EditRoute = ({
                     </>
                 )}
                 <ButtonBox>
-                    {navOpen ? (
-                        <NavArrowIcon onClick={onClickNavToggle} icon={faCaretLeft} />
+                    {navRoute ? (
+                        <NavArrowIcon onClick={() => onToggleWindowNavRoute(false)} icon={faCaretLeft} />
                     ) : (
-                        <NavArrowIcon onClick={onClickNavToggle} icon={faCaretRight} />
+                        <NavArrowIcon onClick={() => onToggleWindowNavRoute(true)} icon={faCaretRight} />
                     )}
                     <Button allSchedule={allSchedule} onClick={onClickAllSchedule}>
-                        모든 일정 보기
+                        모든 일정
                     </Button>
                     <Button onClick={onClickTutorialModal}>사용 방법</Button>
                     <Button onClick={onSavePlanner}>일정 저장</Button>
                 </ButtonBox>
             </EditRouteBlock>
-            {tutorialVisible && <EditTutorialModal onClickTutorialModal={onClickTutorialModal} />}
         </>
     );
 };

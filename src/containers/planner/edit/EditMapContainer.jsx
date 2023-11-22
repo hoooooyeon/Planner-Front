@@ -28,6 +28,7 @@ const EditMapContainer = () => {
     const { plannerId } = { ...plannerData };
     const { plans } = { ...planner };
     const { accountId } = { ...account };
+    const { allSchedule, tutorial } = { ...mapData };
 
     // spotError 리셋
     const onCloseSpotError = () => {
@@ -45,6 +46,37 @@ const EditMapContainer = () => {
 
     const onChangeAreaIndex = (index) => {
         dispatch(changeAreaIndexAction(index));
+    };
+
+    // mobbile Route Nav 토글
+    const onToggleMobileNavRoute = (bool) => {
+        dispatch(changeMapDataAction({ property: 'navRoute', value: bool }));
+        dispatch(changeMapDataAction({ property: 'navList', value: false }));
+    };
+
+    // mobile navList toggle
+    const onToggleMobileNavList = (bool) => {
+        dispatch(changeMapDataAction({ property: 'navList', value: bool }));
+        dispatch(changeMapDataAction({ property: 'navRoute', value: false }));
+    };
+
+    // 새로고침시 navList 최소화.
+    useEffect(() => {
+        dispatch(changeMapDataAction({ property: 'navList', value: false }));
+    }, []);
+
+    const onClickAllSchedule = () => {
+        dispatch(changeMapDataAction({ property: 'allSchedule', value: !allSchedule }));
+    };
+
+    // 튜토리얼모달 토글
+    const onClickTutorialModal = () => {
+        dispatch(changeMapDataAction({ property: 'tutorial', value: !tutorial }));
+    };
+
+    // 일정 저장 버튼
+    const onSavePlanner = () => {
+        history.push(`/Planners/${plannerId}`);
     };
 
     // if (
@@ -68,6 +100,11 @@ const EditMapContainer = () => {
             onCloseSpotError={onCloseSpotError}
             handleToggleScheduleView={handleToggleScheduleView}
             onChangeAreaIndex={onChangeAreaIndex}
+            onToggleMobileNavRoute={onToggleMobileNavRoute}
+            onToggleMobileNavList={onToggleMobileNavList}
+            onClickAllSchedule={onClickAllSchedule}
+            onClickTutorialModal={onClickTutorialModal}
+            onSavePlanner={onSavePlanner}
         />
     );
 };

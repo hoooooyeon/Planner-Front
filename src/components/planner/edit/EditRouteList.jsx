@@ -23,6 +23,10 @@ const EditRouteListBlock = styled.div`
     &::-webkit-scrollbar {
         display: none;
     }
+    @media all and (max-width: 480px) {
+        width: 100%;
+        height: 19.5rem;
+    }
 `;
 
 const RouteList = styled.div`
@@ -51,6 +55,9 @@ const RouteItem = styled.div`
     &[aria-current] {
         display: flex;
     }
+    @media all and (max-width: 480px) {
+        padding: 1rem 1rem 0.5rem 1rem;
+    }
 `;
 
 const CloneItem = styled.div`
@@ -64,6 +71,10 @@ const CloneItem = styled.div`
         css`
             top: ${props.cloneElStyle}px;
         `}
+    @media all and (max-width: 480px) {
+        width: 176px;
+        height: 56px;
+    }
 `;
 
 const TransItem = styled.div`
@@ -81,6 +92,11 @@ const TransItem = styled.div`
     &:hover {
         transition: transform 0.3s ease;
         transform: scale(1.05);
+    }
+    @media all and (max-width: 480px) {
+        width: 1.7rem;
+        height: 1.7rem;
+        top: 0;
     }
 `;
 
@@ -149,6 +165,10 @@ const SpotItem = styled.div`
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     z-index: 99;
+    @media all and (max-width: 480px) {
+        width: 10rem;
+        height: 2.5rem;
+    }
 `;
 
 const Img = styled.img`
@@ -157,6 +177,10 @@ const Img = styled.img`
     width: 3.5rem;
     height: 3.5rem;
     font-size: 0.7rem;
+    @media all and (max-width: 480px) {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
 `;
 
 const TextInfo = styled.div`
@@ -175,6 +199,10 @@ const Name = styled.div`
     font-size: 0.8rem;
     margin-bottom: 0.3rem;
     text-overflow: ellipsis;
+    @media all and (max-width: 480px) {
+        width: 7rem;
+        font-size: 0.7rem;
+    }
 `;
 
 const Address = styled.div`
@@ -182,9 +210,13 @@ const Address = styled.div`
     height: 1rem;
     overflow: hidden;
     white-space: wrap;
-    font-size: 0.1rem;
+    font-size: 0.6rem;
     color: ${(props) => props.theme.tertiaryColor};
     text-overflow: ellipsis;
+    @media all and (max-width: 480px) {
+        width: 7rem;
+        font-size: 0.5rem;
+    }
 `;
 
 const DeleteButton = styled.div`
@@ -195,6 +227,10 @@ const DeleteButton = styled.div`
     top: 28px;
     left: 235px;
     z-index: 100;
+    @media all and (max-width: 480px) {
+        top: 9px;
+        left: 179px;
+    }
 `;
 
 const DeleteIcon = styled(FontAwesomeIcon)`
@@ -211,6 +247,10 @@ const MoveIcon = styled(FontAwesomeIcon)`
     top: 49px;
     left: 9px;
     color: ${(props) => props.theme.tertiaryColor};
+    @media all and (max-width: 480px) {
+        top: 35px;
+        left: 6px;
+    }
 `;
 
 const CenterDiv = styled.div`

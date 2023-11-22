@@ -57,7 +57,7 @@ const EditRouteContainer = () => {
     };
     const { planId } = { ...plannerData };
     const { accountId } = { ...account };
-    const { allSchedule, navRoute } = { ...mapData };
+    const { allSchedule, navRoute, tutorial } = { ...mapData };
     const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : new Date());
     const [endDate, setEndDate] = useState(planDateEnd ? new Date(planDateEnd) : new Date());
 
@@ -328,9 +328,8 @@ const EditRouteContainer = () => {
     };
 
     // 튜토리얼모달 토글
-    const [tutorialVisible, setTutorialVisible] = useState(false);
     const onClickTutorialModal = () => {
-        setTutorialVisible(!tutorialVisible);
+        dispatch(changeMapDataAction({ property: 'tutorial', value: !tutorial }));
     };
 
     // 일정 저장 버튼
@@ -338,9 +337,9 @@ const EditRouteContainer = () => {
         history.push(`/Planners/${plannerId}`);
     };
 
-    const onClickToggleNavRoute = (bool) => {
+    // window Route Nav 토글
+    const onToggleWindowNavRoute = (bool) => {
         dispatch(changeMapDataAction({ property: 'navRoute', value: bool }));
-        dispatch(changeMapDataAction({ property: 'navList', value: false }));
     };
 
     // if (Object.keys(planner).length <= 0 || accountId !== planner.accountId) {
@@ -354,7 +353,7 @@ const EditRouteContainer = () => {
             startDate={startDate}
             endDate={endDate}
             loading={loading}
-            navRoute={navRoute}
+            mapData={mapData}
             allSchedule={allSchedule}
             cloneElement={cloneElement}
             cloneElStyle={cloneElStyle}
@@ -378,10 +377,9 @@ const EditRouteContainer = () => {
             setUpdatePlans={setUpdatePlans}
             onClickDateSchedule={onClickDateSchedule}
             onSavePlanner={onSavePlanner}
-            tutorialVisible={tutorialVisible}
             onClickTutorialModal={onClickTutorialModal}
             onClickAllSchedule={onClickAllSchedule}
-            onClickToggleNavRoute={onClickToggleNavRoute}
+            onToggleWindowNavRoute={onToggleWindowNavRoute}
         />
     );
 };

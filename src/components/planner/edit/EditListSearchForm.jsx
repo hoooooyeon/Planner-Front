@@ -68,9 +68,12 @@ const FormDiv = styled.div`
     flex-direction: column;
     padding: 0.9rem 1rem 0;
     margin-bottom: 1rem;
-    min-height: 13rem;
+    min-height: 12rem;
     background-color: ${(props) => props.theme.secondaryBackgroundColor};
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    @media all and (max-width: 480px) {
+        min-height: 11rem;
+    }
 `;
 
 const Form = styled.form`
@@ -103,6 +106,9 @@ const SearchInput = styled.input`
         color: ${(props) => props.theme.tertiaryColor};
         outline: none;
     }
+    @media all and (max-width: 480px) {
+        height: 2rem;
+    }
 `;
 
 const SearchButton = styled.button`
@@ -116,6 +122,10 @@ const SearchButton = styled.button`
     font-weight: bold;
     white-space: nowrap;
     cursor: pointer;
+    @media all and (max-width: 480px) {
+        min-width: 2.5rem;
+        height: 2rem;
+    }
 `;
 const InvisibleInput = styled.input`
     display: none;
@@ -125,9 +135,14 @@ const ResultBox = styled.div`
     align-items: center;
     width: 20rem;
     height: 2rem;
-    padding: 0.8rem 0;
     font-size: 0.9rem;
+    padding: 0.8rem 0;
     color: ${(props) => props.theme.secondaryColor};
+    @media all and (max-width: 480px) {
+        height: 1.8rem;
+        font-size: 0.8rem;
+        padding: 0.5rem 0;
+    }
 `;
 
 const SearchResult = styled.div`
@@ -182,6 +197,10 @@ const IconBox = styled.div`
     height: 2.5rem;
     line-height: 2.5rem;
     padding: 0 0.5rem;
+    @media all and (max-width: 480px) {
+        height: 2rem;
+        line-height: 2rem;
+    }
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`

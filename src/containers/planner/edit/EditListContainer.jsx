@@ -244,10 +244,9 @@ const EditListContainer = () => {
         dispatch(changeMapDataAction({ property: 'allSchedule', value: false }));
     };
 
-    // navList toggle
-    const onClickToggleNavList = (bool) => {
+    // window navList toggle
+    const onToggleWindowNavList = (bool) => {
         dispatch(changeMapDataAction({ property: 'navList', value: bool }));
-        dispatch(changeMapDataAction({ property: 'navRoute', value: false }));
     };
 
     // if (accountId !== planner.accountId) {
@@ -281,7 +280,7 @@ const EditListContainer = () => {
             onChangeResultKeyword={onChangeResultKeyword}
             onChangeLikeKeyword={onChangeLikeKeyword}
             onClickDateSchedule={onClickDateSchedule}
-            onClickToggleNavList={onClickToggleNavList}
+            onToggleWindowNavList={onToggleWindowNavList}
         />
     );
 };

@@ -5,10 +5,8 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import Pagination from '../../common/Pagination.js';
 import { faExclamation } from '@fortawesome/free-solid-svg-icons';
-import { faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
-import { useRef } from 'react';
 import EditListSearchForm from './EditListSearchForm';
 import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/spotErrorImg.jpg';
@@ -27,12 +25,14 @@ const EditListBlock = styled.div`
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     float: left;
     z-index: 200;
-    transform: ${(props) => (props.navOpen ? 'translateX(0px)' : 'translateX(350px)')};
-    transition: 0.4s ease;
     @media all and (max-width: 480px) {
+        transition: 0s;
         width: 100%;
-        top: 250px;
-        transform: translateX(0px);
+        top: ${(props) => (props.navList ? '250px' : '740px')};
+    }
+    @media all and (min-width: 481px) {
+        /* transition: 0.4s ease; */
+        transform: ${(props) => (props.navList ? 'translateX(0px)' : 'translateX(350px)')};
     }
 `;
 
@@ -49,6 +49,9 @@ const List = styled.div`
     position: relative;
     &::-webkit-scrollbar {
         display: none;
+    }
+    @media all and (max-width: 480px) {
+        height: 13.5rem;
     }
 `;
 
@@ -70,6 +73,10 @@ const Img = styled.img`
     width: 5rem;
     height: 5rem;
     font-size: 0.7rem;
+    @media all and (max-width: 480px) {
+        width: 4rem;
+        height: 4rem;
+    }
 `;
 const TextInfo = styled.div`
     height: 100%;
@@ -87,6 +94,9 @@ const Name = styled.div`
     text-overflow: ellipsis;
     font-size: 0.9rem;
     margin-bottom: 0.3rem;
+    @media all and (max-width: 480px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const Address = styled.div`
@@ -117,6 +127,10 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     &:hover {
         box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
         color: ${(props) => props.theme.hoverColor};
+    }
+    @media all and (max-width: 480px) {
+        height: 0.8rem;
+        width: 0.8rem;
     }
 `;
 
@@ -153,31 +167,6 @@ const ErrorList = styled.div`
     left: 50%;
 `;
 
-const NavList = styled.div`
-    display: none;
-    padding: 0.5rem;
-    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
-    margin-bottom: 5px;
-    position: absolute;
-    border-radius: 1rem;
-    top: -41px;
-    left: 73px;
-    background-color: ${(props) => props.theme.primaryBackgroundColor};
-    font-weight: bold;
-    font-size: 0.8rem;
-    cursor: pointer;
-    &:hover {
-        box-shadow: 2px 3px 6px ${(props) => props.theme.shadowColor};
-    }
-    @media all and (max-width: 480px) {
-        display: block;
-    }
-`;
-
-const NavListIcon = styled(FontAwesomeIcon)`
-    margin-right: 0.2rem;
-`;
-
 const EditList = ({
     plannerData,
     spots,
@@ -205,19 +194,27 @@ const EditList = ({
     onChangeLikeKeyword,
     onChangeCurKeyword,
     onClickDateSchedule,
-    onClickToggleNavList,
+    onToggleWindowNavList,
 }) => {
-    const [resizeNav, setResizeNav] = useState(false);
+    const [resizeMobileNav, setResizeMobileNav] = useState(false);
+    const [resizeWindowNav, setResizeWindowNav] = useState(false);
     const [isPlanModal, setIsPlanModal] = useState(false);
-    const [navOpen, setNavOpen] = useState(true);
 
     // 창 크기에 따른 nav 자동 종료
-    const resizeNavClose = () => {
-        if (window.innerWidth <= 767 && resizeNav) {
-            setNavOpen(false);
-            setResizeNav(false);
-        } else if (window.innerWidth >= 768) {
-            setResizeNav(true);
+    const resizeWindowNavClose = () => {
+        if (window.innerWidth <= 768 && resizeWindowNav) {
+            onToggleWindowNavList(false);
+            setResizeWindowNav(false);
+        } else if (window.innerWidth >= 769) {
+            setResizeWindowNav(true);
+        }
+    };
+    const resizeMobileNavClose = () => {
+        if (window.innerWidth <= 480 && resizeMobileNav) {
+            onToggleWindowNavList(false);
+            setResizeMobileNav(false);
+        } else if (window.innerWidth >= 481) {
+            setResizeMobileNav(true);
         }
     };
 
@@ -234,27 +231,21 @@ const EditList = ({
     };
 
     useEffect(() => {
-        window.addEventListener('resize', resizeNavClose);
+        window.addEventListener('resize', resizeWindowNavClose);
+        window.addEventListener('resize', resizeMobileNavClose);
         return () => {
-            window.removeEventListener('resize', resizeNavClose);
+            window.removeEventListener('resize', resizeWindowNavClose);
+            window.removeEventListener('resize', resizeMobileNavClose);
         };
     });
 
-    const onClickNavToggle = () => {
-        setNavOpen((navOpen) => !navOpen);
-    };
-
     return (
         <>
-            <EditListBlock navOpen={navOpen}>
-                <NavList>
-                    <NavListIcon icon={faMapLocationDot} />
-                    여행지
-                </NavList>
-                {navOpen ? (
-                    <NavArrowIcon onClick={onClickNavToggle} icon={faCaretRight} />
+            <EditListBlock navList={navList}>
+                {navList ? (
+                    <NavArrowIcon onClick={() => onToggleWindowNavList(false)} icon={faCaretRight} />
                 ) : (
-                    <NavArrowIcon onClick={onClickNavToggle} icon={faCaretLeft} />
+                    <NavArrowIcon onClick={() => onToggleWindowNavList(true)} icon={faCaretLeft} />
                 )}
                 <EditListSearchForm
                     keyword={keyword}

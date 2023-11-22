@@ -297,6 +297,7 @@ const initialState = {
         allSchedule: false,
         navRoute: true,
         navList: true,
+        tutorial: false,
     },
 };
 

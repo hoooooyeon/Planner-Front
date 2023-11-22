@@ -8,6 +8,9 @@ import EditTutorialModal from './EditTutorialModal';
 import circleImg from '../../../lib/images/circle.png';
 import locationImg from '../../../lib/images/location.png';
 import Loading from '../../common/Loading';
+import { FontAwesomeIcon } from '../../../../node_modules/@fortawesome/react-fontawesome/index';
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 
 const EditMapBlock = styled.div`
     width: 100%;
@@ -19,6 +22,111 @@ const EditMapBlock = styled.div`
 const Map = styled.div`
     width: 100%;
     height: 100%;
+`;
+
+const NavButtonList = styled.div`
+    display: none;
+    width: 100%;
+    /* width: 8.5rem; */
+    height: 2.8rem;
+    padding: 0.5rem;
+    margin-bottom: 5px;
+    z-index: 2;
+    position: absolute;
+    /* left: 8px; */
+    font-weight: bold;
+    font-size: 0.8rem;
+    overflow: hidden;
+    box-sizing: border-box;
+    @media all and (max-width: 480px) {
+        display: flex;
+        /* justify-content: space-between; */
+        top: 693px;
+        ${(props) =>
+            (props.navRoute || props.navList) &&
+            css`
+                top: 206px;
+            `}
+    }
+`;
+
+const NavButton = styled.div`
+    background-color: ${(props) => props.theme.mainColor};
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    border-radius: 1rem;
+    padding: 0.7rem;
+    color: ${(props) => props.theme.primaryColor};
+    margin-left: 0.5rem;
+    text-align: center;
+    width: 3.5rem;
+    height: 3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    &:hover {
+        box-shadow: 2px 3px 6px ${(props) => props.theme.shadowColor};
+    }
+    ${(props) =>
+        props.navRoute &&
+        css`
+            background-color: ${(props) => props.theme.secondaryBackgroundColor};
+            color: ${(props) => props.theme.secondaryColor};
+        `}
+    ${(props) =>
+        props.navList &&
+        css`
+            background-color: ${(props) => props.theme.secondaryBackgroundColor};
+            color: ${(props) => props.theme.secondaryColor};
+        `}
+`;
+
+const NavIcon = styled(FontAwesomeIcon)`
+    margin-right: 0.2rem;
+`;
+
+const ButtonBox = styled.div`
+    display: flex;
+`;
+
+const Button = styled.button`
+    border: none;
+    border-radius: 2rem;
+    /* width: 8rem;
+    height: 3rem; */
+    background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    margin-left: 0.5rem;
+    color: ${(props) => props.theme.secondaryColor};
+    white-space: nowrap;
+    padding: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.7rem;
+    &:hover {
+        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
+        color: ${(props) => props.theme.hoverColor};
+    }
+    a {
+        display: block;
+        color: ${(props) => props.theme.secondaryColor};
+        height: 100%;
+        line-height: 3rem;
+        &:hover {
+            color: ${(props) => props.theme.hoverColor};
+        }
+    }
+    ${(props) =>
+        props.allSchedule &&
+        css`
+            color: ${(props) => props.theme.primaryColor};
+            background-color: ${(props) => props.theme.clickedButtonBackgroundColor};
+            &:hover {
+                color: ${(props) => props.theme.primaryColor};
+            }
+        `}
 `;
 
 const EditMap = ({
@@ -34,9 +142,14 @@ const EditMap = ({
     // onClickAllSchedule,
     handleToggleScheduleView,
     onChangeAreaIndex,
+    onToggleMobileNavRoute,
+    onToggleMobileNavList,
+    onClickAllSchedule,
+    onClickTutorialModal,
+    onSavePlanner,
 }) => {
     const { plans } = { ...planner };
-    const { allSchedule, navRoute, navList } = { ...mapData };
+    const { allSchedule, navRoute, navList, tutorial } = { ...mapData };
     const mapRef = useRef(null);
     const [map, setMap] = useState();
     const { kakao } = window;
@@ -522,6 +635,23 @@ const EditMap = ({
     return (
         <>
             <EditMapBlock navRoute={{ navRoute: navRoute, size: 392 }} navList={{ navList: navList, size: 350 }}>
+                <NavButtonList navRoute={navRoute} navList={navList}>
+                    <NavButton navRoute={navRoute} onClick={() => onToggleMobileNavRoute(!navRoute)}>
+                        <NavIcon icon={faCalendarDays} />
+                        일정
+                    </NavButton>
+                    <NavButton navList={navList} onClick={() => onToggleMobileNavList(!navList)}>
+                        <NavIcon icon={faMapLocationDot} />
+                        여행지
+                    </NavButton>
+                    <ButtonBox>
+                        <Button allSchedule={allSchedule} onClick={onClickAllSchedule}>
+                            모든 일정
+                        </Button>
+                        <Button onClick={onClickTutorialModal}>사용 방법</Button>
+                        <Button onClick={onSavePlanner}>일정 저장</Button>
+                    </ButtonBox>
+                </NavButtonList>
                 <Map ref={mapRef} />
             </EditMapBlock>
             {plannerError && typeof plannerError === 'string' && (
@@ -530,6 +660,7 @@ const EditMap = ({
             {spotError && typeof spotError === 'string' && (
                 <ErrorModal errorState={spotError} errorMessage={spotError} onCloseError={onCloseSpotError} />
             )}
+            {tutorial && <EditTutorialModal onClickTutorialModal={onClickTutorialModal} />}
         </>
     );
 };
