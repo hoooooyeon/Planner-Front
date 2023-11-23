@@ -198,7 +198,9 @@ const MenuIcon = styled(FontAwesomeIcon)`
 
 const DropDown = styled.div`
     display: none;
-    position: relative;
+    position: absolute;
+    right: 17px;
+    z-index: 300;
     ${(props) =>
         props.dropDown &&
         css`
@@ -207,9 +209,7 @@ const DropDown = styled.div`
 `;
 
 const DropDownMenu = styled.ul`
-    position: absolute;
     line-height: 25px;
-    left: 257px;
     width: 4.4rem;
     z-index: 1000;
     border-radius: 0.5rem;
@@ -224,9 +224,6 @@ const DropDownMenu = styled.ul`
         &:hover {
             font-weight: bold;
         }
-    }
-    @media all and (max-width: 480px) {
-        left: 305px;
     }
 `;
 
