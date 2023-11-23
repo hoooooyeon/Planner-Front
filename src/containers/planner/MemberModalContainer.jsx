@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MemberModal from '../../components/planner/MemberModal';
 import {
+    changeModalDataAction,
     deleteMemberAction,
     DELETE_MEMBER_TYPE,
     inviteMemberAction,
     INVITE_MEMBER_TYPE,
+    plannerInitializePropertyAction,
     resetPlannerErrorAction,
     toggleMemberModalAction,
 } from '../../modules/plannerModule';
@@ -28,6 +30,7 @@ const MemberModalContainer = () => {
 
     const { plannerId } = { ...planner };
     const { accountId } = { ...account };
+    const { member } = { ...modal };
 
     const [members, setMembers] = useState([]);
 
@@ -57,7 +60,9 @@ const MemberModalContainer = () => {
     // plannerError 리셋
     const onToggleMemberModal = () => {
         setMembers([]);
-        dispatch(toggleMemberModalAction());
+        // dispatch(toggleMemberModalAction());
+        dispatch(changeModalDataAction({ property: 'member', value: !member }));
+        dispatch(plannerInitializePropertyAction('isInvite'));
         dispatch(resetPlannerErrorAction());
     };
 

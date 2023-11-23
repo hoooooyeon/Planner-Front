@@ -5,10 +5,13 @@ import {
     changeCurPlanIdAction,
     changeCurPlannerIdAction,
     changeMapDataAction,
+    changeModalDataAction,
+    changePlannerDataAction,
     deletePlannerAction,
     DELETE_PLANNER_TYPE,
     loadPlannerAction,
     LOAD_PLANNER_TYPE,
+    plannerInitializePropertyAction,
     resetPlannerErrorAction,
     toggleLikePlannerAction,
     toggleMemberModalAction,
@@ -23,11 +26,12 @@ const PlannerInfoContainer = () => {
     const history = useHistory();
     const params = useParams();
 
-    const { planner, plannerError, plannerData, loading, mapData, account } = useSelector(
+    const { planner, plannerError, plannerData, modal, loading, mapData, account } = useSelector(
         ({ plannerReducer, authReducer, loadingReducer }) => ({
             planner: plannerReducer.planner,
             plannerError: plannerReducer.plannerError,
             plannerData: plannerReducer.plannerData,
+            modal: plannerReducer.modal,
             account: authReducer.account,
             mapData: plannerReducer.mapData,
             loading: {
@@ -42,6 +46,7 @@ const PlannerInfoContainer = () => {
     const { plannerId, planId } = { ...plannerData };
     const { accountId } = { ...account };
     const { allSchedule } = { ...mapData };
+    const { plannerInfo, member } = { ...modal };
 
     // 페이지 접근 제어
     useEffect(() => {
@@ -52,7 +57,9 @@ const PlannerInfoContainer = () => {
 
     // 주소 입력 접근시 plannerData.plannerId 설정
     useEffect(() => {
-        dispatch(changeCurPlannerIdAction(params.plannerId));
+        // dispatch(changeCurPlannerIdAction(params.plannerId));
+        dispatch(changePlannerDataAction({ property: 'plannerId', value: params.plannerId }));
+        dispatch(changePlannerDataAction({ property: 'pType', value: 1 }));
     }, [dispatch, params]);
 
     // 플래너 삭제
@@ -70,21 +77,26 @@ const PlannerInfoContainer = () => {
     // 멤버수정모달 토글.
     const onToggleMemberModal = () => {
         if (accountId === planner.accountId) {
-            dispatch(toggleMemberModalAction());
+            // dispatch(toggleMemberModalAction());
+
+            dispatch(changeModalDataAction({ property: 'member', value: !member }));
+            dispatch(plannerInitializePropertyAction('isInvite'));
         }
     };
 
     // 플래너정보모달 토글.
     const onTogglePlannerInfoModal = () => {
         if (accountId === planner.accountId) {
-            dispatch(togglePlannerInfoModalAction());
+            // dispatch(togglePlannerInfoModalAction());
+            dispatch(changeModalDataAction({ property: 'plannerInfo', value: !plannerInfo }));
         }
     };
 
     // 수정페이지 도달시 맨처음 plannerData.planId 설정.
     useEffect(() => {
         if (planId === '' && plans && plans.length > 0) {
-            dispatch(changeCurPlanIdAction(plans[0].planId));
+            // dispatch(changeCurPlanIdAction(plans[0].planId));
+            dispatch(changePlannerDataAction({ property: 'planId', value: plans[0].planId }));
         }
     }, [dispatch, plans, planId]);
 
@@ -99,7 +111,8 @@ const PlannerInfoContainer = () => {
     const drag = useRef(false);
     const onChangeCurPlanId = (planId) => {
         if (!drag.current) {
-            dispatch(changeCurPlanIdAction(planId));
+            // dispatch(changeCurPlanIdAction(planId));
+            dispatch(changePlannerDataAction({ property: 'planId', value: planId }));
         }
     };
 

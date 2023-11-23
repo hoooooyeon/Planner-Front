@@ -92,6 +92,8 @@ const RESET_SHARE_PLANNER_LIST_TYPE = 'planner/RESET_SHARE_PLANNER_LIST';
 const RESET_PLANNER_ERROR_TYPE = 'planner/RESET_PLANNER_ERROR';
 const PLANNER_INITIALIZE_TYPE = 'planner/PLANNER_INITIALIZE';
 const PLANNER_INITIALIZE_PROPERTY_TYPE = 'planner/PLANNER_INITIALIZE_PROPERTY';
+const CHANGE_PLANNER_DATA_TYPE = 'planner/CHANGE_PLANNER_DATA_TYPE';
+const CHANGE_MODAL_DATA_TYPE = 'planner/CHANGE_MODAL_DATA_TYPE';
 
 export const createPlannerAction = ({
     accountId,
@@ -233,6 +235,16 @@ export const plannerInitializePropertyAction = (property) => ({
     type: PLANNER_INITIALIZE_PROPERTY_TYPE,
     property,
 });
+export const changePlannerDataAction = ({ property, value }) => ({
+    type: CHANGE_PLANNER_DATA_TYPE,
+    property,
+    value,
+});
+export const changeModalDataAction = ({ property, value }) => ({
+    type: CHANGE_MODAL_DATA_TYPE,
+    property,
+    value,
+});
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
 const updatePlannerSaga = createSaga(UPDATE_PLANNER_TYPE, plannerAPI.updatePlanner);
@@ -287,12 +299,12 @@ const initialState = {
         planId: '',
         memoId: '',
         pageNum: 1,
+        pType: '',
     },
     keyword: {
         curKeyword: '',
         resultKeyword: '',
     },
-    pType: '',
     mapData: {
         allSchedule: false,
         navRoute: true,
@@ -350,8 +362,8 @@ function plannerReducer(state = initialState, action) {
                 plannerData: {
                     ...state.plannerData,
                     plannerId: action.payload.data,
+                    pType: 2,
                 },
-                pType: 2,
             };
         case UPDATE_PLANNER_SUCCESS_TYPE:
             return {
@@ -522,7 +534,7 @@ function plannerReducer(state = initialState, action) {
                     ...state.plannerData,
                     plannerId: action.plannerId,
                 },
-                pType: 1,
+                // pType: 1,
             };
         case CHANGE_CUR_MEMO_ID_TYPE:
             return {
@@ -579,6 +591,22 @@ function plannerReducer(state = initialState, action) {
         case PLANNER_INITIALIZE_PROPERTY_TYPE: {
             return { ...state, [action.property]: initialState[action.property] };
         }
+        case CHANGE_PLANNER_DATA_TYPE:
+            return {
+                ...state,
+                plannerData: {
+                    ...state.plannerData,
+                    [action.property]: action.value,
+                },
+            };
+        case CHANGE_MODAL_DATA_TYPE:
+            return {
+                ...state,
+                modal: {
+                    ...state.plannerData,
+                    [action.property]: action.value,
+                },
+            };
         default:
             return state;
     }

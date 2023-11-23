@@ -4,9 +4,11 @@ import {
     changeCurPlannerIdAction,
     changeKeywordAction,
     changePageNumAction,
+    changePlannerDataAction,
     changeResultKeywordAction,
     loadSharePlannerListAction,
     LOAD_SHARE_PLANNER_LIST_TYPE,
+    plannerInitializePropertyAction,
     resetPlannerDataAction,
     resetPlannerErrorAction,
     resetSharePlannerListAction,
@@ -40,7 +42,8 @@ const ShareListContainer = () => {
 
     // 공유 플래너리스트 가져오기
     useEffect(() => {
-        dispatch(resetSharePlannerListAction());
+        // dispatch(resetSharePlannerListAction());
+        dispatch(plannerInitializePropertyAction('sharePlanners'));
         const queryString = { itemCount: 12, sortCriteria, pageNum, keyword: resultKeyword };
         dispatch(loadSharePlannerListAction(queryString));
     }, [dispatch, pageNum, resultKeyword, sortCriteria]);
@@ -48,8 +51,13 @@ const ShareListContainer = () => {
     // 플래너 선택
     const onClickPlanner = (plannerId) => {
         if (!drag.current) {
-            dispatch(resetPlannerDataAction());
-            dispatch(changeCurPlannerIdAction(plannerId));
+            // dispatch(resetPlannerDataAction());
+            dispatch(plannerInitializePropertyAction('plannerData'));
+            dispatch(plannerInitializePropertyAction('planner'));
+
+            // dispatch(changeCurPlannerIdAction(plannerId));
+            dispatch(changePlannerDataAction({ property: 'plannerId', value: plannerId }));
+            dispatch(changePlannerDataAction({ property: 'pType', value: 1 }));
         }
     };
 
@@ -65,7 +73,8 @@ const ShareListContainer = () => {
 
     // 검색 순위, 키워드 변경시 페이지 리셋
     useEffect(() => {
-        dispatch(changePageNumAction(1));
+        // dispatch(changePageNumAction(1));
+        dispatch(changePlannerDataAction({ property: 'pageNum', value: 1 }));
     }, [sortCriteria, resultKeyword]);
 
     // 키워드 리셋
@@ -79,7 +88,8 @@ const ShareListContainer = () => {
         return () => {
             dispatch(changeKeywordAction(''));
             dispatch(changeResultKeywordAction(''));
-            dispatch(resetSharePlannerListAction());
+            // dispatch(resetSharePlannerListAction());
+            dispatch(plannerInitializePropertyAction('sharePlanners'));
             dispatch(resetPlannerErrorAction());
         };
     }, [dispatch]);
@@ -90,23 +100,28 @@ const ShareListContainer = () => {
     };
 
     const onIndexPage = (index) => {
-        dispatch(changePageNumAction(index));
+        // dispatch(changePageNumAction(index));
+        dispatch(changePlannerDataAction({ property: 'pageNum', value: index }));
     };
     const onNextPage = (maxPage) => {
         if (pageNum < maxPage) {
-            dispatch(changePageNumAction(pageNum + 1));
+            // dispatch(changePageNumAction(pageNum + 1));
+            dispatch(changePlannerDataAction({ property: 'pageNum', value: pageNum + 1 }));
         }
     };
     const onPreviousPage = () => {
         if (pageNum > 1) {
-            dispatch(changePageNumAction(pageNum - 1));
+            // dispatch(changePageNumAction(pageNum - 1));
+            dispatch(changePlannerDataAction({ property: 'pageNum', value: pageNum - 1 }));
         }
     };
     const onFirstPage = () => {
-        dispatch(changePageNumAction(1));
+        // dispatch(changePageNumAction(1));
+        dispatch(changePlannerDataAction({ property: 'pageNum', value: 1 }));
     };
     const onLastPage = (maxPage) => {
-        dispatch(changePageNumAction(maxPage));
+        // dispatch(changePageNumAction(maxPage));
+        dispatch(changePlannerDataAction({ property: 'pageNum', value: maxPage }));
     };
 
     return (

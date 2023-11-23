@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfoModal from '../../components/planner/PlannerInfoModal';
 import {
+    changeModalDataAction,
     resetPlannerErrorAction,
     togglePlannerInfoModalAction,
     updatePlannerAction,
@@ -29,6 +30,7 @@ const PlannerInfoModalContainer = () => {
     const [curExpense, setCurExpense] = useState(expense);
     const [curMemberCount, setCurMemberCount] = useState(memberCount);
     const [curMemberTypeId, setCurMemberTypeId] = useState(memberTypeId);
+    const { plannerInfo } = { ...modal };
 
     const onChangeExpense = (keyword) => {
         const regex = /^[0-9]+$/;
@@ -71,7 +73,8 @@ const PlannerInfoModalContainer = () => {
 
     // 플래너정보수정모달 토글
     const onTogglePlannerInfoModal = () => {
-        dispatch(togglePlannerInfoModalAction());
+        // dispatch(togglePlannerInfoModalAction());
+        dispatch(changeModalDataAction({ property: 'plannerInfo', value: !plannerInfo }));
     };
 
     // plannerError 리셋

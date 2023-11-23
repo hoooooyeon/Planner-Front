@@ -2,8 +2,10 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     changeCurPlannerIdAction,
+    changePlannerDataAction,
     loadSharePlannerListAction,
     LOAD_SHARE_PLANNER_LIST_TYPE,
+    plannerInitializePropertyAction,
     resetPlannerDataAction,
     resetSharePlannerListAction,
 } from '../modules/plannerModule';
@@ -15,12 +17,11 @@ const HomeContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { sharePlanners, planner, plannerData, pType, reviewList, loading } = useSelector(
+    const { sharePlanners, planner, plannerData, reviewList, loading } = useSelector(
         ({ plannerReducer, reviewReducer, loadingReducer }) => ({
             sharePlanners: plannerReducer.sharePlanners,
             planner: plannerReducer.planner,
             plannerData: plannerReducer.plannerData,
-            pType: plannerReducer.pType,
             reviewList: (reviewReducer.reviewList && reviewReducer.reviewList.list) || null,
             loading: {
                 plannerLoading: loadingReducer[LOAD_SHARE_PLANNER_LIST_TYPE],
@@ -28,11 +29,13 @@ const HomeContainer = () => {
         }),
     );
 
-    const { plannerId } = { ...plannerData };
+    const { plannerId, pType } = { ...plannerData };
 
     // 플래너 선택
     const onClickPlanner = (plannerId) => {
-        dispatch(changeCurPlannerIdAction(plannerId));
+        // dispatch(changeCurPlannerIdAction(plannerId));
+        dispatch(changePlannerDataAction({ property: 'plannerId', value: plannerId }));
+        dispatch(changePlannerDataAction({ property: 'pType', value: 1 }));
     };
 
     const handleReviewClick = (reviewId) => {
@@ -55,9 +58,12 @@ const HomeContainer = () => {
 
     // plannerData, sharePlanners 리셋
     useEffect(() => {
-        dispatch(resetPlannerDataAction());
+        // dispatch(resetPlannerDataAction());
+        dispatch(plannerInitializePropertyAction('plannerData'));
+        dispatch(plannerInitializePropertyAction('planner'));
         return () => {
-            dispatch(resetSharePlannerListAction());
+            // dispatch(resetSharePlannerListAction());
+            dispatch(plannerInitializePropertyAction('sharePlanners'));
         };
     }, [dispatch]);
 

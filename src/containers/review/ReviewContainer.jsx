@@ -15,7 +15,12 @@ import {
     updateCommentAction,
     writeCommentAction,
 } from '../../modules/reviewModule';
-import { LOAD_PLANNER_TYPE, loadPlannerAction, resetPlannerDataAction } from '../../modules/plannerModule';
+import {
+    LOAD_PLANNER_TYPE,
+    loadPlannerAction,
+    resetPlannerDataAction,
+    plannerInitializePropertyAction,
+} from '../../modules/plannerModule';
 
 const ReviewContainer = ({ match, history }) => {
     const { reviewId } = match.params;
@@ -118,7 +123,9 @@ const ReviewContainer = ({ match, history }) => {
     useEffect(() => {
         dispatch(initializeReviewAction());
         return () => {
-            dispatch(resetPlannerDataAction());
+            // dispatch(resetPlannerDataAction());
+            dispatch(plannerInitializePropertyAction('plannerData'));
+            dispatch(plannerInitializePropertyAction('planner'));
         };
     }, []);
 

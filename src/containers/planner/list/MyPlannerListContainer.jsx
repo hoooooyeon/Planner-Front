@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     changeCurPlannerIdAction,
+    changePlannerDataAction,
     createPlannerAction,
     CREATE_PLANNER_TYPE,
+    plannerInitializePropertyAction,
     resetPlannerDataAction,
 } from '../../../modules/plannerModule';
 import MyPlannerList from '../../../components/planner/list/MyPlannerList';
@@ -20,14 +22,13 @@ const MyPlannerListContainer = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { myPlannerList, accountError, loading, planner, pType, plannerData, account } = useSelector(
+    const { myPlannerList, accountError, loading, planner, plannerData, account } = useSelector(
         ({ plannerReducer, authReducer, accountReducer, loadingReducer }) => ({
             account: authReducer.account,
             myPlannerList: accountReducer.myPlannerList,
             accountError: accountReducer.accountError,
             planner: plannerReducer.planner,
             plannerData: plannerReducer.plannerData,
-            pType: plannerReducer.pType,
             loading: {
                 myPlannersLoading: loadingReducer[ACCOUNT_MY_PLANNER_LIST_LOAD_TYPE],
                 createPlannerLoading: loadingReducer[CREATE_PLANNER_TYPE],
@@ -35,7 +36,7 @@ const MyPlannerListContainer = () => {
         }),
     );
 
-    const { plannerId } = { ...plannerData };
+    const { plannerId, pType } = { ...plannerData };
     const { totalCount } = { ...myPlannerList };
     const { accountId, nickname } = { ...account };
     const drag = useRef(false);
@@ -51,7 +52,10 @@ const MyPlannerListContainer = () => {
 
     // 데이터 리셋
     useEffect(() => {
-        dispatch(resetPlannerDataAction());
+        // dispatch(resetPlannerDataAction());
+        dispatch(plannerInitializePropertyAction('plannerData'));
+        dispatch(plannerInitializePropertyAction('planner'));
+
         return () => {
             dispatch(initializeFormAction('myPlannerList'));
             dispatch(initializeErrorAction());
@@ -77,8 +81,13 @@ const MyPlannerListContainer = () => {
     // 플래너 선택
     const onClickPlanner = (plannerId) => {
         if (!drag.current) {
-            dispatch(resetPlannerDataAction());
-            dispatch(changeCurPlannerIdAction(plannerId));
+            // dispatch(resetPlannerDataAction());
+            // dispatch(changeCurPlannerIdAction(plannerId));
+            dispatch(plannerInitializePropertyAction('plannerData'));
+            dispatch(plannerInitializePropertyAction('planner'));
+
+            dispatch(changePlannerDataAction({ property: 'pType', value: 1 }));
+            dispatch(changePlannerDataAction({ property: 'plannerId', value: plannerId }));
         }
     };
 

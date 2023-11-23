@@ -7,6 +7,8 @@ import {
     changeCurPlanIdAction,
     changeCurPlannerIdAction,
     changeMapDataAction,
+    changeModalDataAction,
+    changePlannerDataAction,
     createPlanAction,
     CREATE_LOCATION_TYPE,
     CREATE_PLAN_TYPE,
@@ -16,6 +18,7 @@ import {
     DELETE_PLAN_TYPE,
     loadPlannerAction,
     LOAD_PLANNER_TYPE,
+    plannerInitializePropertyAction,
     toggleMemberModalAction,
     togglePlannerInfoModalAction,
     updateLocationAction,
@@ -31,11 +34,12 @@ const EditRouteContainer = () => {
     const history = useHistory();
     const params = useParams();
 
-    const { planner, plan, plannerData, account, loading, mapData } = useSelector(
+    const { planner, plan, plannerData, modal, account, loading, mapData } = useSelector(
         ({ authReducer, plannerReducer, loadingReducer }) => ({
             planner: plannerReducer.planner,
             plan: plannerReducer.plan,
             plannerData: plannerReducer.plannerData,
+            modal: plannerReducer.mdoal,
             location: plannerReducer.location,
             account: authReducer.account,
             mapData: plannerReducer.mapData,
@@ -60,6 +64,7 @@ const EditRouteContainer = () => {
     const { allSchedule, navRoute, tutorial } = { ...mapData };
     const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : new Date());
     const [endDate, setEndDate] = useState(planDateEnd ? new Date(planDateEnd) : new Date());
+    const { plannerInfo, member } = { ...modal };
 
     // 여행 날짜 변환
     const letsFormat = (d) => {
@@ -82,7 +87,9 @@ const EditRouteContainer = () => {
 
     // 주소 입력 접근시 plannerData.plannerId 설정.
     useEffect(() => {
-        dispatch(changeCurPlannerIdAction(params.plannerId));
+        // dispatch(changeCurPlannerIdAction(params.plannerId));
+        dispatch(changePlannerDataAction({ property: 'plannerId', value: params.plannerId }));
+        dispatch(changePlannerDataAction({ property: 'pType', value: 1 }));
     }, [dispatch, params]);
 
     // 출발 날짜 선택
@@ -239,7 +246,8 @@ const EditRouteContainer = () => {
 
     // plan 선택
     const onChangeCurPlanId = (planId) => {
-        dispatch(changeCurPlanIdAction(planId));
+        // dispatch(changeCurPlanIdAction(planId));
+        dispatch(changePlannerDataAction({ property: 'planId', value: planId }));
     };
 
     // 로케이션의 이동수단 선택
@@ -274,12 +282,16 @@ const EditRouteContainer = () => {
 
     // 멤버모달 토글
     const onToggleMemberModal = () => {
-        dispatch(toggleMemberModalAction());
+        // dispatch(toggleMemberModalAction());
+
+        dispatch(changeModalDataAction({ property: 'member', value: !member }));
+        dispatch(plannerInitializePropertyAction('isInvite'));
     };
 
     // 플래너정보수정모달 토글
     const onTogglePlannerInfoModal = () => {
-        dispatch(togglePlannerInfoModalAction());
+        // dispatch(togglePlannerInfoModalAction());
+        dispatch(changeModalDataAction({ property: 'plannerInfo', value: !plannerInfo }));
     };
 
     // 드래그시 클론요소 생성 관련 함수
@@ -309,11 +321,13 @@ const EditRouteContainer = () => {
                 }
             });
             if (isPlanId === 0) {
-                dispatch(changeCurPlanIdAction(plans[0].planId));
+                // dispatch(changeCurPlanIdAction(plans[0].planId));
+                dispatch(changePlannerDataAction({ property: 'planId', value: plans[0].planId }));
             }
         } else {
             if (planId !== '') {
-                dispatch(changeCurPlanIdAction(''));
+                // dispatch(changeCurPlanIdAction(''));
+                dispatch(changePlannerDataAction({ property: 'planId', value: '' }));
             }
         }
     }, [dispatch, plans]);
