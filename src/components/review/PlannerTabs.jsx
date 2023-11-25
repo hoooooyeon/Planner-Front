@@ -12,10 +12,10 @@ const TabItem = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 80px;
-    height: 40px;
+    min-width: 5rem;
+    height: 2.5rem;
     color: black;
-    margin: 0px 10px;
+    margin: 0rem 0.625rem;
 
     &.active {
         border-bottom: 2px solid skyblue;
@@ -27,7 +27,7 @@ const TabItem = styled.div`
 `;
 
 const TabContentBox = styled.div`
-    min-height: 80px;
+    min-height: 5rem;
 `;
 
 const PlannerTabs = ({ tabMenu, plannerList, onPlannerListLoad, onSelectPlanner }) => {
@@ -48,7 +48,11 @@ const PlannerTabs = ({ tabMenu, plannerList, onPlannerListLoad, onSelectPlanner 
         <TabBox>
             <TabMenuBox>
                 {tabMenu.map((item, index) => (
-                    <TabItem className={index === tabIndex ? 'active' : ''} key={index} onClick={() => onTabMenuClick(index, item.type)}>
+                    <TabItem
+                        className={index === tabIndex ? 'active' : ''}
+                        key={index}
+                        onClick={() => onTabMenuClick(index, item.type)}
+                    >
                         {item.title}
                     </TabItem>
                 ))}

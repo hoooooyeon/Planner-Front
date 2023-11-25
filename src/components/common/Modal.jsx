@@ -26,6 +26,7 @@ const ModalBox = styled.div`
     border-radius: 0.5rem;
     padding: 0.5rem 0.5rem 1rem;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    margin: 0.625rem;
 `;
 
 const ModalHeader = styled.div`

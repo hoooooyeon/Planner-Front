@@ -3,53 +3,81 @@ import tempImage from '../../images/temp.jpg';
 import { useState } from 'react';
 import Loading from '../common/Loading';
 
+const ItemContainer = styled.div`
+    max-width: 37.5rem;
+    height: 23.75rem;
+    overflow-y: auto;
+`;
+
 const ItemList = styled.ul`
-    width: 720px;
-    padding: 0px;
-    margin: 10px 0px;
+    padding: 0rem;
+    margin: 0.625rem 0rem;
+    margin: 0px;
     list-style: none;
     display: flex;
     flex-wrap: wrap;
 `;
 
 const Item = styled.li`
-    border-radius: 6px;
+    margin: 0.625rem;
+    padding: 0.3125rem;
+    width: calc((33.33% - 1.25rem));
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin: 10px 10px;
+
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+    border-radius: 8px;
+    box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
+
     ${(props) =>
         props.select &&
         css`
             background-color: #f2f2f2;
         `}
-    //background-color: #f2f2f2;
 
     &:hover {
-        //border: 2px solid skyblue;
         background-color: #f2f2f2;
         transition: all 0.2s;
+    }
+
+    @media screen and (max-width: 1440px) {
+        width: calc((33.33% - 1.25rem));
+    }
+
+    @media screen and (max-width: 1024px) {
+        width: calc(33.33% - 1.25rem);
+    }
+
+    @media screen and (max-width: 768px) {
+        width: calc(33.33% - 1.25rem);
+    }
+
+    @media screen and (max-width: 480px) {
+        width: calc(50% - 1.25rem);
     }
 `;
 
 const ItemImg = styled.img`
-    width: 140px;
-    height: 120px;
+    max-width: 100%;
     background-color: silver;
     border-radius: 6px;
-    margin: 10px 10px;
 `;
 
-const ItemName = styled.b`
+const ItemName = styled.div`
     display: block;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    width: 140px;
-    font-size: 12px;
     color: black;
     text-align: center;
-    margin-bottom: 10px;
+    margin-top: 0.3125rem;
+`;
+
+const ItemDate = styled.div`
+    font-size: 0.5625rem;
+    text-align: right;
+    margin: 0.3125rem;
 `;
 
 const EmptyItem = styled.div`
@@ -69,30 +97,39 @@ const PlannerList = ({ loading, type, plannerList, onItemClick }) => {
     };
 
     if (loading && !list) {
-        return <Loading />;
+        return (
+            <ItemContainer>
+                <Loading pos={true} />{' '}
+            </ItemContainer>
+        );
     }
 
     return (
-        <ItemList>
-            {list ? (
-                list.map((item, index) => (
-                    <Item
-                        key={index}
-                        select={index == selectItem}
-                        onClick={() => {
-                            handlePlannerItemClick(index, item);
-                        }}
-                    >
-                        <ItemImg src={tempImage} />
-                        <ItemName>{item.title}</ItemName>
-                    </Item>
-                ))
-            ) : (
-                <EmptyItem>
-                    <b>플래너가 없습니다.</b>
-                </EmptyItem>
-            )}
-        </ItemList>
+        <ItemContainer>
+            <ItemList>
+                {list ? (
+                    list.map((item, index) => (
+                        <Item
+                            key={index}
+                            select={index == selectItem}
+                            onClick={() => {
+                                handlePlannerItemClick(index, item);
+                            }}
+                        >
+                            <ItemImg src={tempImage} />
+                            <ItemName>{item.title}</ItemName>
+                            <ItemDate>
+                                {item.planDateStart} ~ {item.planDateEnd}
+                            </ItemDate>
+                        </Item>
+                    ))
+                ) : (
+                    <EmptyItem>
+                        <b>플래너가 없습니다.</b>
+                    </EmptyItem>
+                )}
+            </ItemList>
+        </ItemContainer>
     );
 };
 

@@ -5,14 +5,28 @@ import LikeListView from './like/LikeListView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faStar, faUser } from '@fortawesome/free-solid-svg-icons';
 
+const Container = styled.div`
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
+`;
+
 const AccountBlock = styled.div`
-    min-width: 768px;
+    //min-width: 48rem;
+    margin: 0px auto;
+    max-width: 1440px;
     box-sizing: border-box;
-    padding: 20px 40px;
+    padding: 1.25rem 2.5rem;
+
+    @media screen and (max-width: 768px) {
+        padding: 1.25rem 0.625rem;
+    }
+
+    @media screen and (max-width: 480px) {
+        padding: 1.25rem 0.625rem;
+    }
 `;
 
 const TopNav = styled.div`
-    height: 60px;
+    height: 3.75rem;
     display: flex;
     flex-direction: row;
     justify-content: left;
@@ -24,9 +38,9 @@ const TopNav = styled.div`
 `;
 
 const NavItem = styled.div`
-    padding: 0px 10px;
+    padding: 0rem 0.625rem;
     text-align: center;
-    line-height: 60px;
+    line-height: 3.75rem;
 
     ${(props) =>
         props.active &&
@@ -77,43 +91,45 @@ const MyAccount = ({
     const [menu, setMenu] = useState(1);
 
     return (
-        <AccountBlock>
-            <TopNav>
-                <NavItem active={menu == 1} onClick={() => setMenu(1)}>
-                    <FontAwesomeIcon icon={faUser} />
-                    <span>계정 정보</span>
-                </NavItem>
-                <NavItem active={menu == 2} onClick={() => setMenu(2)}>
-                    <FontAwesomeIcon icon={faStar} />
-                    <span>좋아요</span>
-                </NavItem>
-            </TopNav>
-            <ContentBlock>
-                {(() => {
-                    if (menu == 1) {
-                        return (
-                            <Profile
-                                loading={loading}
-                                account={account}
-                                accountField={accountField}
-                                onProfileLoad={onProfileLoad}
-                                onProfileChange={onProfileChange}
-                                onProfileUpdate={onProfileUpdate}
-                                onProfileImageUpdate={onProfileImageUpdate}
-                            ></Profile>
-                        );
-                    } else if (menu == 2) {
-                        return (
-                            <LikeListView
-                                loading={loading}
-                                likeLists={likeList}
-                                onLikeListLoad={onLikeListLoad}
-                            ></LikeListView>
-                        );
-                    }
-                })()}
-            </ContentBlock>
-        </AccountBlock>
+        <Container>
+            <AccountBlock>
+                <TopNav>
+                    <NavItem active={menu == 1} onClick={() => setMenu(1)}>
+                        <FontAwesomeIcon icon={faUser} />
+                        <span>계정 정보</span>
+                    </NavItem>
+                    <NavItem active={menu == 2} onClick={() => setMenu(2)}>
+                        <FontAwesomeIcon icon={faStar} />
+                        <span>좋아요</span>
+                    </NavItem>
+                </TopNav>
+                <ContentBlock>
+                    {(() => {
+                        if (menu == 1) {
+                            return (
+                                <Profile
+                                    loading={loading}
+                                    account={account}
+                                    accountField={accountField}
+                                    onProfileLoad={onProfileLoad}
+                                    onProfileChange={onProfileChange}
+                                    onProfileUpdate={onProfileUpdate}
+                                    onProfileImageUpdate={onProfileImageUpdate}
+                                ></Profile>
+                            );
+                        } else if (menu == 2) {
+                            return (
+                                <LikeListView
+                                    loading={loading}
+                                    likeLists={likeList}
+                                    onLikeListLoad={onLikeListLoad}
+                                ></LikeListView>
+                            );
+                        }
+                    })()}
+                </ContentBlock>
+            </AccountBlock>
+        </Container>
     );
 };
 

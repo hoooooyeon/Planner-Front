@@ -7,33 +7,29 @@ import { useState } from 'react';
 import Modal from '../common/Modal';
 import PlannerInfo from './PlannerInfo';
 import Loading from '../common/Loading';
+import Button from '../common/Button';
 
 const Container = styled.div`
-    /* width: 800px; */
     color: ${(props) => props.theme.secondaryColor};
     background-color: ${(props) => props.theme.primaryBackgroundColor};
-    padding: 20px;
-`;
-
-const PostMain = styled.div`
-    margin-top: 50px;
+    padding: 1.25rem 0.625rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
 `;
 
-const BoxAlign = styled.div`
+const PostMain = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 0px 20px;
 `;
+
 const B = styled.b`
-    margin: 10px 0px;
+    margin: 0.625rem 0rem;
 `;
 
 const Title = styled.input`
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-top: 1.25rem;
+    margin-bottom: 0.625rem;
     outline: none;
     border: none;
     border-bottom: 1px solid silver;
@@ -42,12 +38,10 @@ const Title = styled.input`
     background-color: ${(props) => props.theme.primaryBackgroundColor};
 `;
 
-const PostTitleBox = styled(BoxAlign)``;
-
 const PostContentBox = styled.div`
-    margin: 10px 0px;
+    margin: 0.625rem 0rem;
     .ql-editor {
-        min-height: 320px;
+        min-height: 20rem;
     }
 `;
 
@@ -55,18 +49,17 @@ const PostFooterBox = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    padding: 0px 20px;
 `;
 
-const Button = styled.button`
-    width: 64px;
-    height: 32px;
+const FooterButton = styled(Button)`
+    width: 4rem;
+    height: 2rem;
     font-weight: bold;
-    color: ${(props) => props.secondaryColor};
+    color: ${(props) => props.theme.secondaryColor};
     background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
     border: none;
     border-radius: 6px;
-    margin: 10px 4px;
+    margin: 0.625rem 0.25rem;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
 
     &:hover {
@@ -119,39 +112,37 @@ const ReviewPost = ({
     return (
         <Container>
             <PostMain>
-                <BoxAlign>
-                    <Title
-                        type="text"
-                        name="title"
-                        value={title}
-                        onChange={(e) => onChangeText({ key: 'title', value: e.target.value })}
-                        placeholder="제목을 입력하세요."
+                <Title
+                    type="text"
+                    name="title"
+                    value={title}
+                    onChange={(e) => onChangeText({ key: 'title', value: e.target.value })}
+                    placeholder="제목을 입력하세요."
+                />
+                <B>플래너</B>
+                <PlannerInfo
+                    loading={loading}
+                    viewMode={false}
+                    selectPlanner={selectPlanner}
+                    plannerList={plannerList}
+                    onPlannerListLoad={onPlannerListLoad}
+                    onPlannerChange={onPlannerChange}
+                />
+                <PostContentBox>
+                    <Editor
+                        content={content}
+                        onChangeText={onChangeText}
+                        isEdit={isEdit}
+                        newFileList={newFileList}
+                        onFileUpload={onFileUpload}
+                        fileListUpdate={fileListUpdate}
                     />
-                    <B>플래너</B>
-                    <PlannerInfo
-                        loading={loading}
-                        viewMode={false}
-                        selectPlanner={selectPlanner}
-                        plannerList={plannerList}
-                        onPlannerListLoad={onPlannerListLoad}
-                        onPlannerChange={onPlannerChange}
-                    />
-                    <PostContentBox>
-                        <Editor
-                            content={content}
-                            onChangeText={onChangeText}
-                            isEdit={isEdit}
-                            newFileList={newFileList}
-                            onFileUpload={onFileUpload}
-                            fileListUpdate={fileListUpdate}
-                        />
-                    </PostContentBox>
-                </BoxAlign>
-                <PostFooterBox>
-                    <Button onClick={onCancel}>취소</Button>
-                    <Button onClick={handleWriteClick}>{isEdit ? '수정' : '쓰기'}</Button>
-                </PostFooterBox>
+                </PostContentBox>
             </PostMain>
+            <PostFooterBox>
+                <FooterButton onClick={onCancel}>취소</FooterButton>
+                <FooterButton onClick={handleWriteClick}>{isEdit ? '수정' : '쓰기'}</FooterButton>
+            </PostFooterBox>
             <Modal
                 modalVisible={plannerConfirmModal}
                 title="플래너 확인"

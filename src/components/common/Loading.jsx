@@ -27,18 +27,36 @@ const LoadingCircle = styled.div`
             width: 1rem;
             height: 1rem;
         `}
-        ${(props) =>
-        props.pos === 'center' &&
+    ${(props) =>
+        props.size === 'smaller' &&
         css`
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
+            width: 0.5rem;
+            height: 0.5rem;
         `}
 `;
 
+const CenterDiv = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); */
+`;
+
 const Loading = ({ size, pos }) => {
-    return <LoadingCircle size={size} pos={pos} />;
+    if (pos) {
+        return (
+            <CenterDiv>
+                <LoadingCircle size={size} />
+            </CenterDiv>
+        );
+    }
+
+    return <LoadingCircle size={size} />;
 };
 
 Loading.defaultProps = {

@@ -1,35 +1,7 @@
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import tempImage from '../../images/temp.jpg';
 import Modal from '../common/Modal';
-import Tab, { TabContent } from './Tab/Tab';
-import PlannerInfo from './PlannerInfo';
-import PlannerTabs from './PlannerTabs';
 import PlannerList from './PlannerList';
-import Loading from '../common/Loading';
-
-const InfoBox = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border: 1px solid silver;
-    border-radius: 6px;
-    //margin: 10px 0px;
-`;
-
-const AddButton = styled.button`
-    margin: 0px 10px;
-    width: 100px;
-    height: 48px;
-    border-radius: 6px;
-    color: ${(props) => props.primaryColor};
-    background-color: ${(props) => props.theme.secondaryButtonBackgroundColor};
-    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
-
-    &:hover {
-        box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
-    }
-`;
+import Tab, { TabContent } from './Tab/Tab';
 
 const tabItems = [
     { id: 0, type: 'myPlannerList', title: '나의 플래너' },

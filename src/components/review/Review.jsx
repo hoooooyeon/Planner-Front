@@ -1,19 +1,14 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronUp, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import Loading from '../common/Loading';
 import Menu from '../common/Menu';
-import Button from '../common/Button';
+import Modal from '../common/Modal';
 import PlannerInfo from './PlannerInfo';
 import Comment from './comment/Comment';
-import { useState } from 'react';
 import CommentInput from './comment/CommentInput';
-import UpDown from './UpDown/UpDown';
-import Loading from '../common/Loading';
-import Modal from '../common/Modal';
-import { useEffect } from 'react';
 
 const Container = styled.div`
-    padding: 20px 0px;
+    padding: 1.25rem 0.625rem;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -24,20 +19,21 @@ const Container = styled.div`
 const PostSideBox = styled.div`
     display: flex;
     flex-direction: column;
-    margin-right: 10px;
+    margin-right: 0.625rem;
 `;
 
 const ReviewPostBox = styled.div`
     display: flex;
     flex-direction: column;
-    flex-grow: 0.5;
+    flex-grow: 1;
+    max-width: 64rem;
 `;
 
 const PostTitleBox = styled.div`
     display: flex;
     justify-content: space-between;
     font-size: medium;
-    padding: 10px;
+    padding: 0.625rem;
     border-bottom: 1px solid silver;
 `;
 
@@ -48,14 +44,24 @@ const FlexBox = styled.div`
 
 const Title = styled.div`
     font-size: x-large;
-    margin: 10px 0px;
+    margin: 0.625rem 0rem;
 `;
 
 const Info = styled.div`
     font-size: small;
-    margin-top: 4px;
+    margin-top: 0.25rem;
+
     span:nth-child(2n) {
-        margin: 0px 4px;
+        margin: 0rem 0.25rem;
+    }
+
+    @media screen and (max-width: 480px) {
+        display: flex;
+        flex-direction: column;
+
+        span:nth-child(2n) {
+            margin: 0rem 0rem;
+        }
     }
 `;
 
@@ -65,15 +71,15 @@ const TitleMenus = styled.div`
     justify-content: space-evenly;
     align-items: center;
     & > * {
-        margin: 0px 10px;
+        margin: 0px 0.625rem;
     }
 `;
 
 const PlannerInfoBox = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 10px;
-    margin: 5px 10px;
+    padding: 0.625rem;
+    margin: 0.625rem 0.625rem;
     border: 1px solid silver;
     border-radius: 6px;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
@@ -85,32 +91,36 @@ const PlannerInfoBox = styled.div`
 
 const PostContentBox = styled.div`
     min-height: 320px;
-    margin-top: 10px;
-    padding: 10px;
+    margin-top: 0.625rem;
+    padding: 0.625rem;
     border-bottom: 1px solid silver;
+
+    img {
+        max-width: 100%;
+    }
 `;
 
 const PostFooterBox = styled.div`
     display: flex;
-    margin-top: 10px;
+    margin-top: 0.625rem;
 `;
 
 const PostTag = styled.a`
     min-width: 60px;
-    height: 26px;
-    padding: 2px;
-    line-height: 28px;
+    height: 1.625rem;
+    padding: 0.125rem;
+    line-height: 1.75rem;
     text-align: center;
     border-radius: 6px;
     background-color: #e3e3e3;
 
     &:nth-child(2n) {
-        margin: 0px 4px;
+        margin: 0rem 0.25rem;
     }
 `;
 
 const CommentsBox = styled.div`
-    margin: 20px 0px;
+    margin: 1.25rem 0rem;
 `;
 
 const menuList = [
@@ -164,9 +174,9 @@ const Review = ({
 
     return (
         <Container>
-            <PostSideBox>
+            {/* <PostSideBox>
                 <UpDown onUpDownClick={onUpDownClick} />
-            </PostSideBox>
+            </PostSideBox> */}
             <ReviewPostBox>
                 <PostTitleBox>
                     <FlexBox direction="column">
