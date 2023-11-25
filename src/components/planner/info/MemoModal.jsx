@@ -9,10 +9,16 @@ const MemoModalBlock = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 35rem;
+    min-width: 35rem;
     max-height: 20rem;
     padding: 0.5rem;
     background-color: ${(props) => props.theme.primaryBackgroundColor};
+    @media all and (max-width: 768px) {
+        min-width: 25rem;
+    }
+    @media all and (max-width: 480px) {
+        min-width: auto;
+    }
 `;
 const MemoModalHeader = styled.div`
     display: flex;

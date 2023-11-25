@@ -2,7 +2,8 @@ import Modal from '../common/Modal';
 import styled from 'styled-components';
 
 const InfoForm = styled.form`
-    width: 25rem;
+    max-width: 25rem;
+    min-width: 20rem;
     display: flex;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     flex-direction: column;
@@ -14,6 +15,9 @@ const InfoForm = styled.form`
     input::-webkit-inner-spin-button {
         -webkit-appearance: none;
         margin: 0;
+    }
+    @media all and (max-width: 480px) {
+        min-width: auto;
     }
 `;
 const FlexDiv = styled.div`

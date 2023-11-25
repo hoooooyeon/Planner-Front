@@ -3,10 +3,13 @@ import Loading from '../common/Loading';
 import Modal from '../common/Modal';
 
 const MemberBox = styled.div`
-    width: 25rem;
+    min-width: 25rem;
     min-height: 14rem;
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 0.5rem;
+    @media all and (max-width: 480px) {
+        min-width: auto;
+    }
 `;
 
 const InviteBox = styled.div`
@@ -36,9 +39,11 @@ const Button = styled.button`
     height: 2rem;
     border-radius: 0.5rem;
     border: none;
+    white-space: nowrap;
     background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
     font-weight: bold;
+    margin-left: 0.5rem;
     cursor: pointer;
     &:hover {
         color: ${(props) => props.theme.hoverColor};

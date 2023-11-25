@@ -23,14 +23,17 @@ const ModalBackground = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    @media all and (max-width: 768px) {
+        background-color: rgba(0, 0, 0, 0.9);
+    }
 `;
 const CloseButton = styled(FontAwesomeIcon)`
     width: 3rem;
     height: 3rem;
     position: absolute;
     z-index: 999;
-    top: 5%;
-    right: 5%;
+    top: 0;
+    right: 0;
     color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
 `;
@@ -38,11 +41,10 @@ const CloseButton = styled(FontAwesomeIcon)`
 const EditTutorialModalBlock = styled.div`
     background-color: rgba(0, 0, 0, 0.6);
     width: 90%;
-    height: 90%;
+    /* height: 90%; */
     position: relative;
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         width: 80%;
-        height: 80%;
     }
 `;
 
@@ -63,20 +65,31 @@ const SliderList = styled.ul`
 
 const SliderItem = styled.li`
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     float: left;
     align-items: flex-end;
     justify-content: center;
     position: relative;
+    padding-top: 90%;
+    overflow: hidden;
     display: none;
     &[aria-current] {
         display: flex;
+    }
+    @media all and (min-width: 769px) {
+        padding-top: 70%;
+    }
+    @media all and (min-width: 1025px) {
+        padding-top: 50%;
     }
 `;
 
 const Img = styled.img`
     width: 100%;
     height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
 `;
 
 const ImgCover = styled.div`
@@ -85,7 +98,7 @@ const ImgCover = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
 `;
 
 const ArrowIcon = styled(FontAwesomeIcon)`
@@ -102,13 +115,13 @@ const ArrowIcon = styled(FontAwesomeIcon)`
 const ArrowRight = styled(ArrowIcon)`
     position: absolute;
     right: 10px;
-    top: 50%;
+    top: 45%;
 }
 `;
 const ArrowLeft = styled(ArrowIcon)`
     position: absolute;
     left: 10px;
-    top: 50%;
+    top: 45%;
 }
 `;
 
@@ -238,6 +251,8 @@ const StepText = styled.div`
     padding: 0.2rem;
     border-radius: 0.5rem;
     z-index: 1;
+    margin-top: 0.5rem;
+    white-space: nowrap;
 `;
 
 const EditTutorialModal = ({ onClickTutorialModal }) => {
@@ -265,7 +280,6 @@ const EditTutorialModal = ({ onClickTutorialModal }) => {
 
     return (
         <ModalBackground>
-            <CloseButton icon={faXmark} onClick={onClickTutorialModal} />
             <EditTutorialModalBlock>
                 <ArrowLeft icon={faChevronLeft} onClick={onClickLeft} />
                 <Container>
@@ -273,6 +287,7 @@ const EditTutorialModal = ({ onClickTutorialModal }) => {
                         {tutorialArr &&
                             tutorialArr.map((_, i) => (
                                 <SliderItem key={i} aria-current={currentIndex === i + 1 ? 'cur' : null}>
+                                    <CloseButton icon={faXmark} onClick={onClickTutorialModal} />
                                     <Img alt={i} src={tutorialBackground} />
                                     <ImgCover />
                                     <StepCount>STEP{i + 1}</StepCount>

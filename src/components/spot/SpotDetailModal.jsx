@@ -9,7 +9,8 @@ import ErrorModal from '../common/ErrorModal';
 import Loading from '../common/Loading';
 
 const DetailModalBlock = styled.div`
-    width: 50rem;
+    max-width: 50rem;
+    min-width: 25rem;
     height: 20rem;
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 0.5rem;
@@ -17,6 +18,17 @@ const DetailModalBlock = styled.div`
     position: relative;
     padding: 2rem;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    @media all and (max-width: 480px) {
+        flex-direction: column;
+        max-width: 20rem;
+        min-width: 15rem;
+        height: 25rem;
+        align-items: center;
+    }
+    @media all and (min-width: 481px) and (max-width: 768px) {
+        min-width: 20rem;
+        height: 15rem;
+    }
 `;
 
 const ImgBox = styled.div`
@@ -24,9 +36,17 @@ const ImgBox = styled.div`
     margin: 0;
     overflow: hidden;
     position: relative;
-    padding-top: 41%;
+    padding-top: 40%;
     width: 40%;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    @media all and (max-width: 480px) {
+        height: 13rem;
+        width: 80%;
+        margin: 1rem 0;
+    }
+    @media all and (min-width: 481px) and (max-width: 768px) {
+        padding-top: 37%;
+    }
 `;
 
 const Img = styled.img`
@@ -44,6 +64,10 @@ const InfoBox = styled.div`
     margin-left: 2rem;
     width: 56%;
     height: 100%;
+    @media all and (max-width: 480px) {
+        width: 100%;
+        margin-left: 0;
+    }
 `;
 const FlexDiv = styled.div`
     display: flex;
@@ -58,13 +82,22 @@ const Label = styled.div`
     font-size: 0.8rem;
     white-space: nowrap;
     color: ${(props) => props.theme.tertiaryColor};
+    @media all and (max-width: 768px) {
+        height: 1rem;
+    }
 `;
 const Title = styled.div`
-    width: 100%;
+    width: 70%;
     height: 2rem;
     border: none;
     padding: 0 0.5rem;
     font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @media all and (max-width: 768px) {
+        height: 1.3rem;
+    }
 `;
 const Addr = styled.div`
     width: 100%;
@@ -72,6 +105,12 @@ const Addr = styled.div`
     border: none;
     padding: 0 0.5rem;
     font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @media all and (max-width: 768px) {
+        height: 1.3rem;
+    }
 `;
 const Overview = styled.div`
     width: 100%;
@@ -80,6 +119,12 @@ const Overview = styled.div`
     padding: 0 0.5rem;
     overflow: auto;
     font-size: 0.9rem;
+    @media all and (max-width: 480px) {
+        height: 9.5rem;
+    }
+    @media all and (min-width: 481px) and (max-width: 768px) {
+        height: 11.5rem;
+    }
 `;
 
 const LikeBox = styled.div`
