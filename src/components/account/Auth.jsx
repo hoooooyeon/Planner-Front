@@ -7,8 +7,7 @@ import Loading from '../common/Loading';
 
 const Container = styled.div`
     width: 100%;
-    /* margin-top: 5rem; */
-    padding: 5rem 0px;
+    height: 100vh;
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     display: flex;
     justify-content: center;
@@ -19,11 +18,11 @@ const ContentBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 320px;
+    width: 20rem;
     background-color: ${(props) => props.theme.secondaryBackgroundColor};
     border-radius: 6px;
-    padding: 20px;
-    /* box-shadow: 0px 3px 6px var(--md-sys-color-shadow); */
+    padding: 1.25rem;
+    box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
 `;
 
 const LogoText = styled.b`
@@ -40,13 +39,13 @@ const FormBox = styled.div`
 const Error = styled.b`
     font-size: 0.8rem;
     color: ${(props) => props.theme.errorColor};
-    margin: 3px 0px;
+    margin: 0.1875rem 0rem;
 `;
 
 const Button = styled.button`
     width: 100%;
-    margin: 10px 0px;
-    height: 36px;
+    margin: 0.625rem 0rem;
+    height: 2.25rem;
     border: none;
     border-radius: 6px;
     background-color: ${(props) => props.theme.mainColor};
@@ -62,7 +61,7 @@ const LinkBox = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
+    margin-top: 0.625rem;
     font-size: 0.8rem;
 `;
 

@@ -8,21 +8,18 @@ const ReviewListContainer = styled.ul`
     flex-wrap: wrap;
     list-style: none;
     padding: 0px;
-    margin: 20px 20px;
+    margin: 0.625rem 0rem;
 `;
 
 const ReviewListEmtpy = styled.b`
     margin: 0px auto;
-    padding: 80px;
+    padding: 5rem;
 `;
 
 const ReviewListItem = styled.li`
-    //background-color: skyblue;
-    /* height: 440px; */
-    //width: 240px;
-    margin: 20px 20px;
-    padding: 10px 10px;
-    width: calc(20% - 40px);
+    margin: 0.625rem 0.3125rem;
+    padding: 0.3125rem;
+    width: calc(20% - 0.625rem);
     box-sizing: border-box;
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 8px;
@@ -35,52 +32,35 @@ const ReviewListItem = styled.li`
     img {
         display: block;
         width: 100%;
-        margin-bottom: 5px;
+        margin-bottom: 0.3125rem;
     }
 
     @media screen and (min-width: 1024px) and (max-width: 1440px) {
-        width: calc(20% - 40px);
+        width: calc(20% -0.625rem);
     }
 
     @media screen and (max-width: 1024px) {
-        width: calc(50% - 40px);
+        width: calc(33.33% - 0.625rem);
     }
 
     @media screen and (max-width: 768px) {
-        width: calc(50% - 40px);
-    }
-`;
-
-const ReviewItem = styled.div`
-    background-color: ${(props) => props.theme.primaryBackgroundColor};
-    border-radius: 8px;
-    box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
-    &:hover {
-        background-color: silver;
+        width: calc(50% - 0.625rem);
     }
 
-    img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        margin-bottom: 5px;
+    @media screen and (max-width: 480px) {
+        width: calc(50% - 0.625rem);
     }
 `;
 
 const ReviewItemTitle = styled.h3`
-    //background-color: #00000062;
-    //margin-left: 10px;
     display: flex;
     align-items: center;
-    margin: 10px 0px;
-    /* padding: 25px 10px; */
-    /* height: 60px; */
+    margin: 0.625rem 0rem;
     color: black;
-    //line-height: 40px;
 `;
 
 const LocationText = styled.div`
-    font-size: 14px;
+    font-size: 0.875rem;
 `;
 
 const ReviewList = ({ loading, list, onItemClick }) => {

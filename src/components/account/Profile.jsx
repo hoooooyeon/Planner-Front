@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Button from '../common/Button';
 import { useRef, useState } from 'react';
 import ImageSelectModal from './ImageSelectModal';
 import LabelTextBox from '../common/LabelTextBox';
@@ -7,21 +6,22 @@ import tempImage from '../../images/temp.jpg';
 import tempAccountImage from '../../lib/images/blank-profile-picture.png';
 import { useEffect } from 'react';
 import Loading from '../common/Loading';
+import Button from '../common/Button';
 
 const ProfileBlock = styled.div`
     /* background-color: silver; */
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 10px 40px;
+    padding: 0.625rem 2.5rem;
 `;
 
 const ProfileFormBlock = styled.form`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    align-items: center;
-    padding: 3rem 0px;
+    align-items: stretch;
+    padding: 3rem 0rem;
 `;
 
 const ProfileInfoBlock = styled.div`
@@ -29,28 +29,32 @@ const ProfileInfoBlock = styled.div`
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    width: 100%;
+
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        align-items: stretch;
+    }
 `;
 
 const ProfileImageBlock = styled.div`
     display: flex;
     flex-direction: column;
+
+    @media screen and (max-width: 768px) {
+        align-items: center;
+    }
 `;
 
 const ProfileImage = styled.img`
     background-color: ${(props) => props.theme.secondaryBackgroundColor};
     border: none;
     border-radius: 32px;
-    width: 128px;
-    height: 128px;
+    width: 8rem;
+    height: 8rem;
 `;
 
-const ImageModifyBtn = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-    height: 28px;
+const ImageModifyBtn = styled(Button)`
+    margin-top: 0.625rem;
     border-radius: 6px;
     border: solid 1px silver;
     color: ${(props) => props.theme.secondaryColor};
@@ -69,7 +73,7 @@ const ProfileTextBoxBlock = styled.div`
 `;
 
 const StyledLabelTextBox = styled(LabelTextBox)`
-    margin-top: 20px;
+    margin-top: 1.25rem;
 
     input {
         border: solid 1px silver;
@@ -80,12 +84,12 @@ const ActionBlock = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    margin-top: 20px;
+    margin-top: 1.25rem;
 `;
 
-const SaveButton = styled.button`
-    width: 82px;
-    height: 42px;
+const SaveButton = styled(Button)`
+    width: 5rem;
+    height: 2.625rem;
     border-radius: 6px;
     border: solid 1px silver;
     color: ${(props) => props.theme.primaryColor};

@@ -13,17 +13,17 @@ const TabItemContainer = styled.div`
 
 const TabItem = styled.div`
     box-sizing: border-box;
-    min-width: 90px;
-    height: 38px;
+    min-width: 5.625rem;
+    height: 2.375rem;
     ${(props) =>
         props.active &&
         css`
-            border-bottom: 1px solid skyblue;
+            border-bottom: 1px solid ${(props) => props.theme.mainColor};
         `}
 `;
 
 const TabContentContainer = styled.div`
-    min-height: 180px;
+    min-height: 11.25rem;
 `;
 
 const Content = styled.div``;

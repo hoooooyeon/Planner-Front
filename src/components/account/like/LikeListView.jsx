@@ -7,30 +7,44 @@ import Pagination from '../../common/Pagination.jsx';
 import { useCallback } from 'react';
 import { faCalendarDays, faFlag } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle, faCircleDot } from '../../../../node_modules/@fortawesome/free-regular-svg-icons/index';
 
 const Container = styled.div`
     display: flex;
-    padding: 10px 40px;
+    padding: 0.625rem 0.625rem;
 `;
 
 const LikeListBlock = styled.div`
     display: flex;
     justify-content: flex-start;
     flex-grow: 1;
+
+    @media screen and (max-width: 480px) {
+        flex-direction: column;
+        /* justify-content: center; */
+    }
 `;
 
 const SideBlock = styled.nav`
     border-right: solid 2px silver;
-    padding-right: 20px;
+    padding-right: 0.625rem;
+
+    @media screen and (max-width: 480px) {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        border-right: none;
+        padding-right: 0rem;
+    }
 `;
 
 const SideListItem = styled.div`
-    width: 92px;
-    height: 48px;
+    width: 5.75rem;
+    height: 3rem;
     line-height: 48px;
     border-radius: 6px;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 0.625rem;
 
     ${(props) =>
         props.active &&
@@ -50,12 +64,27 @@ const SideListItem = styled.div`
 `;
 
 const ListBlock = styled.div`
-    margin-left: 40px;
+    /* margin-left: 40px; */
     /* width: 1160px; */
-    min-height: 500px;
+    min-height: 31.25rem;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+`;
+
+const ListOptions = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin: 0.5rem 2rem;
+
+    span {
+        margin: 0.3125rem;
+    }
+
+    @media screen and (max-width: 480px) {
+        margin: 0.5rem 0rem;
+    }
 `;
 
 const sortOption = [
@@ -70,7 +99,7 @@ const menu = [
 
 const LikeListView = ({ loading, likeLists, onLikeListLoad }) => {
     const [selectIndex, setSelectIndex] = useState(0);
-    const [sortValue, setSortValue] = useState(sortOption[0]);
+    const [sortValue, setSortValue] = useState(2);
     const [searchText, setSearchText] = useState('');
     const [pageNum, setPageNum] = useState(1);
 
@@ -82,8 +111,8 @@ const LikeListView = ({ loading, likeLists, onLikeListLoad }) => {
         setSelectIndex(index);
     };
 
-    const handleSortSelectChange = (option) => {
-        setSortValue(option);
+    const handleSortSelectChange = (id) => {
+        setSortValue(id);
     };
 
     const handleSearchTextChange = (e) => {
@@ -108,14 +137,14 @@ const LikeListView = ({ loading, likeLists, onLikeListLoad }) => {
 
     useEffect(() => {
         const queryString = {
-            sortCriteria: sortValue.id || 2,
+            sortCriteria: sortValue,
             itemCount: 10,
             keyword: searchText,
             postType: menu[selectIndex].id,
             pageNum,
         };
         onLikeListLoad(queryString);
-    }, [pageNum, selectIndex]);
+    }, [pageNum, selectIndex, sortValue]);
 
     return (
         <Container>
@@ -131,13 +160,15 @@ const LikeListView = ({ loading, likeLists, onLikeListLoad }) => {
                     </SideListItem>
                 </SideBlock>
                 <ListBlock>
-                    <ListSearchBar
-                        sortValue={sortValue}
-                        sortOption={sortOption}
-                        searchText={searchText}
-                        onSortChange={handleSortSelectChange}
-                        onSearchTextChange={handleSearchTextChange}
-                    />
+                    <ListSearchBar searchText={searchText} onSearchTextChange={handleSearchTextChange} />
+                    <ListOptions>
+                        {sortOption.map((item) => (
+                            <span key={item.id} onClick={() => handleSortSelectChange(item.id)}>
+                                <FontAwesomeIcon icon={sortValue == item.id ? faCircleDot : faCircle} />
+                                {item.value}
+                            </span>
+                        ))}
+                    </ListOptions>
                     {selectIndex == 0 ? (
                         <PlannerList loading={loading.likePlannerListLoading} plannerList={list}></PlannerList>
                     ) : (

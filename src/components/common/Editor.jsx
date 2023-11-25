@@ -1,5 +1,12 @@
 import Quill from 'quill';
 import { useEffect, useRef } from 'react';
+import styled from 'styled-components';
+
+const Container = styled.div`
+    .ql-editor img {
+        max-width: 100%;
+    }
+`;
 
 const Editor = ({ content, onChangeText, isEdit, newFileList, onFileUpload, fileListUpdate }) => {
     const quillElement = useRef(null);
@@ -60,7 +67,8 @@ const Editor = ({ content, onChangeText, isEdit, newFileList, onFileUpload, file
         if (quill) {
             if (newFileList) {
                 newFileList.map((item) => {
-                    quill.insertEmbed(quill.getSelection(), 'image', `/api/upload/files/${item}`, 'user');
+                    const src = `/api/upload/files/${item}`;
+                    const delta = quill.insertEmbed(quill.getSelection(), 'image', src, 'user');
                 });
             }
             const elements = quill.root.querySelectorAll('img');
@@ -73,7 +81,7 @@ const Editor = ({ content, onChangeText, isEdit, newFileList, onFileUpload, file
 
     return (
         <>
-            <div ref={quillElement}></div>
+            <Container ref={quillElement}></Container>
         </>
     );
 };

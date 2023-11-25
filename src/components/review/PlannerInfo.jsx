@@ -8,14 +8,21 @@ import { isEmpty } from '../../lib/utils/objectEmptyCheck';
 const InfoBox = styled.div`
     display: flex;
     flex-direction: row;
-    flex-grow: 1;
     align-items: center;
-    //border: 1px solid silver;
     border-radius: 6px;
-    margin: 10px;
+    margin: 0.625rem;
 
     &:hover {
         background-color: ${(props) => props.theme.hoverBackgroundColor};
+    }
+
+    @media screen and (max-width: 480px) {
+        flex-direction: column;
+
+        img {
+            width: 50%;
+            height: 50%;
+        }
     }
 `;
 
@@ -25,20 +32,19 @@ const SelectMessage = styled.b`
 `;
 
 const Image = styled.img`
-    padding: 10px;
-    width: 100px;
-    height: 80px;
+    padding: 0.625rem;
+    width: 6.25rem;
+    height: 5rem;
 `;
 
 const FlexBox = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-left: 10px;
-    //color: white;
+    margin-left: 0.625rem;
 
-    b {
-        display: block;
+    p {
+        margin: 5px 0px;
     }
 `;
 
@@ -73,9 +79,9 @@ const PlannerInfo = ({ loading, viewMode, selectPlanner, plannerList, onPlannerL
                     <>
                         <Image src={tempImage} />
                         <FlexBox>
-                            <b>제목: {selectPlanner.title}</b>
-                            <b>생성자: {selectPlanner.creator}</b>
-                            <b>여행비용: {selectPlanner.expense}</b>
+                            <p>제목: {selectPlanner.title}</p>
+                            <p>생성자: {selectPlanner.creator}</p>
+                            <p>여행비용: {selectPlanner.expense}</p>
                         </FlexBox>
                     </>
                 ) : (
