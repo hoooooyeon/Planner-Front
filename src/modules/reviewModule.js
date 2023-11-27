@@ -65,8 +65,9 @@ export function changeUIStateAction({ property, value }) {
     });
 }
 
-export const loadReviewListAction = ({ itemCount, sortCriteria, keyword, pageNum }) => ({
+export const loadReviewListAction = ({ areaCode, itemCount, sortCriteria, keyword, pageNum }) => ({
     type: LOAD_REVIEW_LIST_TYPE,
+    areaCode,
     itemCount,
     sortCriteria,
     keyword,
@@ -178,7 +179,7 @@ const initialState = {
     reviewList: null,
     review: null,
     uiState: {
-        areaCode: 1,
+        areaCode: 0,
         itemCount: 10,
         sortCriteria: 2,
         keyword: '',

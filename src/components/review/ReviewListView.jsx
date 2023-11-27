@@ -156,7 +156,11 @@ const ReviewListView = ({
         <MainContainer>
             <Container>
                 <ActionBox>
-                    <Select value={areaCode} options={areaCodes} onChange={onSelectAreaCode} />
+                    <Select
+                        value={areaCodes.find((item) => item.id == areaCode)}
+                        options={areaCodes}
+                        onChange={onSelectAreaCode}
+                    />
                     <SearchBox>
                         <SearchInputText type="text" onChange={onChangeKeyword} value={keyword}></SearchInputText>
                         <SearchIcon onClick={onSearchClick}>

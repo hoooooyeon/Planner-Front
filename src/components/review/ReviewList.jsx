@@ -64,7 +64,7 @@ const LocationText = styled.div`
 `;
 
 const ReviewList = ({ loading, list, onItemClick }) => {
-    if (!loading || !list) {
+    if (loading && !list) {
         return (
             <ReviewListContainer>
                 <Loading />

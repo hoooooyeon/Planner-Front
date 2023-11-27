@@ -20,9 +20,13 @@ const ReviewListContainer = ({ history, location, match }) => {
     const { pageNum, itemCount } = uiState;
     const totalCount = (reviewList && reviewList.totalCount) || 0;
 
-    function handleSelectAreaCode(areaCode) {
-        dispatch(changeUIStateAction({ property: 'areaCode', value: { ...areaCode } }));
-    }
+    const loadList = (uiState) => {
+        dispatch(loadReviewListAction(uiState));
+    };
+
+    const handleSelectAreaCode = ({ id }) => {
+        dispatch(changeUIStateAction({ property: 'areaCode', value: id }));
+    };
 
     const handleSelectSortCriteria = (SortNum) => {
         dispatch(changeUIStateAction({ property: 'sortCriteria', value: SortNum }));
@@ -72,7 +76,7 @@ const ReviewListContainer = ({ history, location, match }) => {
 
     // 리스트 가져오기
     useEffect(() => {
-        dispatch(loadReviewListAction({ ...uiState }));
+        dispatch(loadReviewListAction(uiState));
     }, [dispatch, uiState.pageNum]);
 
     return (
