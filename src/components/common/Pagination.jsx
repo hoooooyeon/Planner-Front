@@ -7,7 +7,10 @@ import { faForward } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 
 const PaginationBlock = styled.div`
-    padding: 20px 0px;
+    /* padding: 20px 0px; */
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -58,16 +61,24 @@ const Pagination = ({
     onPreviousPage,
     onFirstPage,
     onLastPage,
+    itemCount,
 }) => {
-    const maxPage = Math.ceil(totalCount / pageSize);
-    const isMaxPageGroup = maxPage > pageSize ? (maxPage - page < maxPage - pageSize ? true : false) : true;
+    const maxPage = Math.ceil(totalCount / itemCount);
+    const isMaxPageGroup =
+        maxPage > pageSize ? (Math.ceil(page / pageSize) === Math.ceil(maxPage / pageSize) ? true : false) : true;
     const endPageNum = isMaxPageGroup ? maxPage : Math.ceil(page / pageSize) * pageSize;
     const startPageNum = isMaxPageGroup ? Math.floor(page / pageSize) * pageSize + 1 : endPageNum - (pageSize - 1);
+
+    // const isMaxPageGroup = maxPage > pageSize ? (maxPage - page < maxPage - pageSize ? true : false) : true;
+    // const endPageNum = isMaxPageGroup ? maxPage : Math.ceil(page / pageSize) * pageSize;
+    // const startPageNum = isMaxPageGroup ? Math.floor(page / pageSize) * pageSize + 1 : endPageNum - (pageSize - 1);
 
     const [pageArr, setPageArr] = useState([]);
 
     const handleFirstPage = () => {
-        onFirstPage(startPageNum);
+        if (page != 1) {
+            onFirstPage(1);
+        }
     };
 
     const handleNextPage = () => {
@@ -77,7 +88,7 @@ const Pagination = ({
     };
 
     const handlePreviousPage = () => {
-        if (page != startPageNum) {
+        if (page != 1) {
             onPreviousPage();
         }
     };

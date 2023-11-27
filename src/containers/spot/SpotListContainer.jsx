@@ -176,18 +176,14 @@ const SpotListContainer = ({
     const onIndexPage = (index) => {
         changePageIndex(index);
     };
-    const onNextPage = (maxPage) => {
-        if (pageNo < maxPage) {
-            changePageIndex(pageNo + 1);
-        }
+    const onNextPage = () => {
+        changePageIndex(pageNo + 1);
     };
     const onPreviousPage = () => {
-        if (pageNo > 1) {
-            changePageIndex(pageNo - 1);
-        }
+        changePageIndex(pageNo - 1);
     };
-    const onFirstPage = () => {
-        changePageIndex(1);
+    const onFirstPage = (startPage) => {
+        changePageIndex(startPage);
     };
     const onLastPage = (maxPage) => {
         changePageIndex(maxPage);

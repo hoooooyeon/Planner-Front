@@ -10,7 +10,7 @@ import errorImg from '../../lib/images/spotErrorImg.jpg';
 import Empty from '../common/Empty';
 import ErrorModal from '../common/ErrorModal';
 import Loading from '../common/Loading';
-import Pagination from '../common/Pagination.js';
+import Pagination from '../common/Pagination.jsx';
 
 const SpotListBlock = styled.div`
     width: 100%;
@@ -196,14 +196,15 @@ const SpotList = ({
                         </Slider>
                         <PageBox>
                             <Pagination
-                                onIndexPage={onIndexPage}
+                                onPageChange={onIndexPage}
                                 onNextPage={onNextPage}
                                 onPreviousPage={onPreviousPage}
                                 onFirstPage={onFirstPage}
                                 onLastPage={onLastPage}
                                 page={spotData.pageNo}
-                                totalCount={spots.totalCount}
-                                itemIndex={12}
+                                totalCount={spots.totalCount || 0}
+                                pageSize={5}
+                                itemCount={12}
                             />
                         </PageBox>
                     </>

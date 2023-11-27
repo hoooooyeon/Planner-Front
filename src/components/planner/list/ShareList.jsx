@@ -9,7 +9,7 @@ import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import Empty from '../../common/Empty';
 import ErrorModal from '../../common/ErrorModal';
 import Loading from '../../common/Loading';
-import Pagination from '../../common/Pagination.js';
+import Pagination from '../../common/Pagination.jsx';
 
 const ShareListBlock = styled.div`
     width: 100%;
@@ -217,10 +217,11 @@ const ShareList = ({
                 )}
                 <PageBox>
                     <Pagination
-                        totalCount={sharePlanners.totalCount}
+                        totalCount={sharePlanners.totalCount || 0}
                         page={page}
-                        itemIndex={12}
-                        onIndexPage={onIndexPage}
+                        pageSize={5}
+                        itemCount={12}
+                        onPageChange={onIndexPage}
                         onNextPage={onNextPage}
                         onPreviousPage={onPreviousPage}
                         onFirstPage={onFirstPage}

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import Pagination from '../../common/Pagination.js';
+import Pagination from '../../common/Pagination.jsx';
 import { faExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
@@ -341,27 +341,30 @@ const EditList = ({
                         2. spots가 비었을 때(likeSpotList x)
                         3. likeSpotList가 비었을 때(spots x)
                     */}
-                            {(Object.keys(likeSpotList).length <= 0 &&
-                                Object.keys(spots).length > 0 &&
-                                spots.list <= 0) ||
-                            (Object.keys(likeSpotList).length > 0 &&
-                                likeSpotList.list.length <= 0 &&
-                                Object.keys(spots).length <= 0) ? (
-                                <Empty text="리스트" />
-                            ) : null}
-                        </List>
-                        <PageBox>
-                            <Pagination
-                                totalCount={totalCount}
-                                itemIndex={itemIndex}
-                                page={page}
-                                onIndexPage={onIndexPage}
-                                onPreviousPage={onPreviousPage}
-                                onNextPage={onNextPage}
-                                onFirstPage={onFirstPage}
-                                onLastPage={onLastPage}
-                            />
-                        </PageBox>
+                                    {(Object.keys(likeSpotList).length <= 0 &&
+                                        Object.keys(spots).length > 0 &&
+                                        spots.list <= 0) ||
+                                    (Object.keys(likeSpotList).length > 0 &&
+                                        likeSpotList.list.length <= 0 &&
+                                        Object.keys(spots).length <= 0) ? (
+                                        <Empty text="리스트" />
+                                    ) : null}
+                                </List>
+                                <PageBox>
+                                    <Pagination
+                                        totalCount={totalCount}
+                                        itemCount={itemIndex}
+                                        pageSize={5}
+                                        page={page}
+                                        onPageChange={onIndexPage}
+                                        onPreviousPage={onPreviousPage}
+                                        onNextPage={onNextPage}
+                                        onFirstPage={onFirstPage}
+                                        onLastPage={onLastPage}
+                                    />
+                                </PageBox>
+                            </>
+                        )}
                     </>
                 )}
             </EditListBlock>
