@@ -102,10 +102,10 @@ const EmptyItem = () => {
     );
 };
 
-export const PlannerList = (props) => {
-    const { loading, plannerList } = props;
+export const LikeList = (props) => {
+    const { loading, list } = props;
 
-    if (loading && !plannerList) {
+    if (loading && !list) {
         return (
             <ListBlock>
                 <Loading />
@@ -115,11 +115,11 @@ export const PlannerList = (props) => {
 
     return (
         <ListBlock>
-            {plannerList ? (
-                plannerList.length == 0 ? (
+            {list ? (
+                list.length == 0 ? (
                     <EmptyItem />
                 ) : (
-                    plannerList.map((item, i) => (
+                    list.map((item, i) => (
                         <ListItem key={i}>
                             <ListItemImgBox src={item.thumbnail || tempImage} />
                             <ListItemInfoBox>
@@ -128,39 +128,6 @@ export const PlannerList = (props) => {
                                 <span>
                                     {item.planDateStart} ~ {item.planDateEnd}
                                 </span>
-                            </ListItemInfoBox>
-                        </ListItem>
-                    ))
-                )
-            ) : (
-                <EmptyItem />
-            )}
-        </ListBlock>
-    );
-};
-
-export const SpotList = (props) => {
-    const { loading, spotList } = props;
-
-    if (loading && !spotList) {
-        return (
-            <ListBlock>
-                <Loading />
-            </ListBlock>
-        );
-    }
-
-    return (
-        <ListBlock>
-            {spotList ? (
-                spotList.length == 0 ? (
-                    <EmptyItem />
-                ) : (
-                    spotList.map((item, i) => (
-                        <ListItem key={i}>
-                            <ListItemImgBox src={item.image || tempImage} />
-                            <ListItemInfoBox>
-                                <b>{item.title}</b>
                             </ListItemInfoBox>
                         </ListItem>
                     ))

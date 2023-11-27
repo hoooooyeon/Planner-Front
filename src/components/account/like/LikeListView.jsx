@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { PlannerList, SpotList } from './LikeList';
+import { LikeList, PlannerList, SpotList } from './LikeList';
 import { useState } from 'react';
 import ListSearchBar from './ListSearchBar';
 import { useEffect } from 'react';
@@ -93,17 +93,17 @@ const sortOption = [
 ];
 
 const menu = [
-    { id: 1, title: '플래너', value: 'likePlanner' },
-    { id: 2, title: '여행지', value: 'likeSpot' },
+    { id: 1, title: '플래너', value: 'likePlannerList', icon: faCalendarDays },
+    { id: 2, title: '여행지', value: 'likeSpotList', icon: faFlag },
 ];
 
 const LikeListView = ({ loading, likeLists, onLikeListLoad }) => {
-    const [selectIndex, setSelectIndex] = useState(0);
+    const [selectIndex, setSelectIndex] = useState(1);
     const [sortValue, setSortValue] = useState(2);
     const [searchText, setSearchText] = useState('');
     const [pageNum, setPageNum] = useState(1);
 
-    const likeList = likeLists[menu[selectIndex].value] || {};
+    const likeList = likeLists[menu[selectIndex - 1].value] || {};
     const list = likeList.list || null;
     const totalCount = likeList.totalCount || 0;
 
@@ -140,7 +140,7 @@ const LikeListView = ({ loading, likeLists, onLikeListLoad }) => {
             sortCriteria: sortValue,
             itemCount: 10,
             keyword: searchText,
-            postType: menu[selectIndex].id,
+            postType: menu[selectIndex - 1].id,
             pageNum,
         };
         onLikeListLoad(queryString);
@@ -150,14 +150,24 @@ const LikeListView = ({ loading, likeLists, onLikeListLoad }) => {
         <Container>
             <LikeListBlock>
                 <SideBlock>
-                    <SideListItem active={selectIndex == 0} onClick={() => handleSideItemClick(0)}>
-                        <FontAwesomeIcon icon={faCalendarDays} />
-                        <span>플래너</span>
-                    </SideListItem>
-                    <SideListItem active={selectIndex == 1} onClick={() => handleSideItemClick(1)}>
-                        <FontAwesomeIcon icon={faFlag} />
-                        <span>여행지</span>
-                    </SideListItem>
+                    {menu.map((item) => (
+                        <SideListItem
+                            key={item.id}
+                            active={selectIndex == item.id}
+                            onClick={() => handleSideItemClick(item.id)}
+                        >
+                            <FontAwesomeIcon icon={item.icon} />
+                            <span>{item.title}</span>
+                        </SideListItem>
+                    ))}
+                    {/* <SideListItem active={selectIndex == 1} onClick={() => handleSideItemClick(1)}>
+                       <FontAwesomeIcon icon={faCalendarDays} />
+                         <span>플래너</span>
+                     </SideListItem>
+                     <SideListItem active={selectIndex == 2} onClick={() => handleSideItemClick(2)}>
+                         <FontAwesomeIcon icon={faFlag} />
+                         <span>여행지</span>
+                     </SideListItem> */}
                 </SideBlock>
                 <ListBlock>
                     <ListSearchBar searchText={searchText} onSearchTextChange={handleSearchTextChange} />
@@ -169,10 +179,10 @@ const LikeListView = ({ loading, likeLists, onLikeListLoad }) => {
                             </span>
                         ))}
                     </ListOptions>
-                    {selectIndex == 0 ? (
-                        <PlannerList loading={loading.likePlannerListLoading} plannerList={list}></PlannerList>
+                    {selectIndex == 1 ? (
+                        <LikeList loading={loading.likePlannerListLoading} list={list}></LikeList>
                     ) : (
-                        <SpotList loading={loading.likeSpotListLoading} spotList={list}></SpotList>
+                        <LikeList loading={loading.likeSpotListLoading} list={list}></LikeList>
                     )}
                     <Pagination
                         page={pageNum}
