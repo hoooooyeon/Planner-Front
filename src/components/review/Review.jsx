@@ -132,6 +132,7 @@ const Review = ({
     loading,
     auth,
     reviewData,
+    onPlannerInfoClick,
     onPostEdit,
     onPostDelete,
     onCommentWrite,
@@ -198,6 +199,7 @@ const Review = ({
                         loading={{ plannerLoading: loading.plannerLoading }}
                         selectPlanner={planner}
                         viewMode={true}
+                        onPlannerInfoClick={onPlannerInfoClick}
                     ></PlannerInfo>
                     {/* {planner ? <PlannerInfo></PlannerInfo> : <div>추가한 플래너가 없습니다.</div>} */}
                 </PlannerInfoBox>
