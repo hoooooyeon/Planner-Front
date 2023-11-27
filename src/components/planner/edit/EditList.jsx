@@ -209,6 +209,7 @@ const EditList = ({
             setResizeWindowNav(true);
         }
     };
+
     const resizeMobileNavClose = () => {
         if (window.innerWidth <= 480 && resizeMobileNav) {
             onToggleWindowNavList(false);
@@ -238,6 +239,12 @@ const EditList = ({
             window.removeEventListener('resize', resizeMobileNavClose);
         };
     });
+
+    useEffect(() => {
+        if (window.innerWidth <= 768) {
+            onToggleWindowNavList(false);
+        }
+    }, []);
 
     return (
         <>

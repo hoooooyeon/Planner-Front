@@ -60,11 +60,6 @@ const EditMapContainer = () => {
         dispatch(changeMapDataAction({ property: 'navRoute', value: false }));
     };
 
-    // 새로고침시 navList 최소화.
-    useEffect(() => {
-        dispatch(changeMapDataAction({ property: 'navList', value: false }));
-    }, []);
-
     const onClickAllSchedule = () => {
         dispatch(changeMapDataAction({ property: 'allSchedule', value: !allSchedule }));
     };
