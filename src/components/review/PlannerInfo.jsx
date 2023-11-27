@@ -48,11 +48,23 @@ const FlexBox = styled.div`
     }
 `;
 
-const PlannerInfo = ({ loading, viewMode, selectPlanner, plannerList, onPlannerListLoad, onPlannerChange }) => {
+const PlannerInfo = ({
+    loading,
+    viewMode,
+    selectPlanner,
+    plannerList,
+    onPlannerListLoad,
+    onPlannerChange,
+    onPlannerInfoClick,
+}) => {
     const [modal, setModal] = useState(false);
 
     const handlePlannerSelectClick = () => {
-        setModal(true);
+        if (viewMode) {
+            onPlannerInfoClick(selectPlanner.plannerId);
+        } else {
+            setModal(true);
+        }
     };
 
     const handleModalClose = () => {

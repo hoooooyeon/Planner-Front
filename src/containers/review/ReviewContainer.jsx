@@ -43,6 +43,10 @@ const ReviewContainer = ({ match, history }) => {
         }),
     );
 
+    const handlePlannerInfoClick = (plannerId) => {
+        history.push(`/planners/${plannerId}`);
+    };
+
     const onPostEdit = () => {
         history.push('/reviews/edit');
     };
@@ -134,6 +138,7 @@ const ReviewContainer = ({ match, history }) => {
             loading={loading}
             auth={auth}
             reviewData={reviewData}
+            onPlannerInfoClick={handlePlannerInfoClick}
             onPostEdit={onPostEdit}
             onPostDelete={onPostDelete}
             onCommentWrite={onCommentWrite}
