@@ -76,7 +76,7 @@ const ReviewListContainer = ({ history, location, match }) => {
 
     // 리스트 가져오기
     useEffect(() => {
-        dispatch(loadReviewListAction(uiState));
+        loadList(uiState);
     }, [dispatch, uiState.pageNum]);
 
     return (

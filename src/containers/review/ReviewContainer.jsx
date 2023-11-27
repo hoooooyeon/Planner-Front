@@ -47,15 +47,15 @@ const ReviewContainer = ({ match, history }) => {
         history.push(`/planners/${plannerId}`);
     };
 
-    const onPostEdit = () => {
+    const handlePostEdit = () => {
         history.push('/reviews/edit');
     };
 
-    const onPostDelete = () => {
+    const handlePostDelete = () => {
         dispatch(deleteReviewAction(reviewId));
     };
 
-    const onCommentWrite = ({ editMode, reCommentMode, commentId, commentText }) => {
+    const handleCommentWrite = ({ editMode, reCommentMode, commentId, commentText }) => {
         if (editMode) {
             dispatch(
                 updateCommentAction({
@@ -87,7 +87,7 @@ const ReviewContainer = ({ match, history }) => {
         }
     };
 
-    const onCommentDelete = (commentId) => {
+    const handleCommentDelete = (commentId) => {
         dispatch(
             deleteCommentAction({
                 reviewId: reviewData.reviewId,
@@ -139,10 +139,10 @@ const ReviewContainer = ({ match, history }) => {
             auth={auth}
             reviewData={reviewData}
             onPlannerInfoClick={handlePlannerInfoClick}
-            onPostEdit={onPostEdit}
-            onPostDelete={onPostDelete}
-            onCommentWrite={onCommentWrite}
-            onCommentDelete={onCommentDelete}
+            onPostEdit={handlePostEdit}
+            onPostDelete={handlePostDelete}
+            onCommentWrite={handleCommentWrite}
+            onCommentDelete={handleCommentDelete}
             planner={planner}
         />
     );
