@@ -331,9 +331,10 @@ const EditList = ({
                                 <PageBox>
                                     <Pagination
                                         totalCount={totalCount}
-                                        itemIndex={itemIndex}
+                                        itemCount={itemIndex}
+                                        pageSize={5}
                                         page={page}
-                                        onIndexPage={onIndexPage}
+                                        onPageChange={onIndexPage}
                                         onPreviousPage={onPreviousPage}
                                         onNextPage={onNextPage}
                                         onFirstPage={onFirstPage}

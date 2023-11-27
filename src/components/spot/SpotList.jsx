@@ -202,7 +202,7 @@ const SpotList = ({
                                 onFirstPage={onFirstPage}
                                 onLastPage={onLastPage}
                                 page={spotData.pageNo}
-                                totalCount={spots.totalCount}
+                                totalCount={spots.totalCount || 0}
                                 pageSize={5}
                                 itemCount={12}
                             />

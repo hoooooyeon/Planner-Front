@@ -217,9 +217,10 @@ const ShareList = ({
                 )}
                 <PageBox>
                     <Pagination
-                        totalCount={sharePlanners.totalCount}
+                        totalCount={sharePlanners.totalCount || 0}
                         page={page}
-                        pageSize={12}
+                        pageSize={5}
+                        itemCount={12}
                         onPageChange={onIndexPage}
                         onNextPage={onNextPage}
                         onPreviousPage={onPreviousPage}

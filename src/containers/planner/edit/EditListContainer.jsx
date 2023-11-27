@@ -204,17 +204,13 @@ const EditListContainer = () => {
         setPage(index);
     };
     const onNextPage = (maxPage) => {
-        if (page < maxPage) {
-            setPage((page) => page + 1);
-        }
+        setPage((page) => page + 1);
     };
     const onPreviousPage = () => {
-        if (page > 1) {
-            setPage((page) => page - 1);
-        }
+        setPage((page) => page - 1);
     };
-    const onFirstPage = () => {
-        setPage(1);
+    const onFirstPage = (startPage) => {
+        setPage(startPage);
     };
     const onLastPage = (maxPage) => {
         setPage(maxPage);

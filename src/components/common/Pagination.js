@@ -64,14 +64,20 @@ const Pagination = ({
     onLastPage,
 }) => {
     const maxPage = Math.ceil(totalCount / itemCount);
-    const isMaxPageGroup = maxPage > pageSize ? (maxPage - page < maxPage - pageSize ? true : false) : true;
+    const isMaxPageGroup =
+        maxPage > pageSize ? (Math.ceil(page / pageSize) === Math.ceil(maxPage / pageSize) ? true : false) : true;
     const endPageNum = isMaxPageGroup ? maxPage : Math.ceil(page / pageSize) * pageSize;
     const startPageNum = isMaxPageGroup ? Math.floor(page / pageSize) * pageSize + 1 : endPageNum - (pageSize - 1);
+    // const isMaxPageGroup = maxPage > pageSize ? (maxPage - page < maxPage - pageSize ? true : false) : true;
+    // const endPageNum = isMaxPageGroup ? maxPage : Math.ceil(page / pageSize) * pageSize;
+    // const startPageNum = isMaxPageGroup ? Math.floor(page / pageSize) * pageSize + 1 : endPageNum - (pageSize - 1);
 
     const [pageArr, setPageArr] = useState([]);
 
     const handleFirstPage = () => {
-        onFirstPage(startPageNum);
+        if (page != 1) {
+            onFirstPage(1);
+        }
     };
 
     const handleNextPage = () => {
@@ -81,7 +87,7 @@ const Pagination = ({
     };
 
     const handlePreviousPage = () => {
-        if (page != startPageNum) {
+        if (page != 1) {
             onPreviousPage();
         }
     };
