@@ -74,6 +74,11 @@ const EditMapContainer = () => {
         history.push(`/Planners/${plannerId}`);
     };
 
+    // isView 토글
+    const onClickToggleIsView = () => {
+        dispatch(changeMapDataAction({ property: 'isView', value: true }));
+    };
+
     // if (
     //     // !mapRef ||
     //     Object.keys(planner).length <= 0 ||
@@ -100,6 +105,7 @@ const EditMapContainer = () => {
             onClickAllSchedule={onClickAllSchedule}
             onClickTutorialModal={onClickTutorialModal}
             onSavePlanner={onSavePlanner}
+            onClickToggleIsView={onClickToggleIsView}
         />
     );
 };

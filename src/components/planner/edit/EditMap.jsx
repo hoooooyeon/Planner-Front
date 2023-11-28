@@ -147,12 +147,15 @@ const EditMap = ({
     onClickAllSchedule,
     onClickTutorialModal,
     onSavePlanner,
+    onClickToggleIsView,
 }) => {
     const { plans } = { ...planner };
-    const { allSchedule, navRoute, navList, tutorial } = { ...mapData };
+    const { allSchedule, navRoute, navList, tutorial, isView } = { ...mapData };
+    const { planId } = { ...plannerData };
     const mapRef = useRef(null);
     const [map, setMap] = useState();
     const { kakao } = window;
+
     // 지도 생성
     useEffect(() => {
         if (mapRef.current) {
@@ -168,9 +171,8 @@ const EditMap = ({
     }, [mapRef.current]);
 
     // 지도의 좌표 전부 보이게 시점 변경
-    const [view, setView] = useState(true);
     useEffect(() => {
-        if (map && plans && view) {
+        if (map && plans && isView) {
             let bounds = new kakao.maps.LatLngBounds();
             for (let i = 0; i < plans.length; i++) {
                 const { planLocations } = plans[i];
@@ -183,10 +185,10 @@ const EditMap = ({
             if (Object.keys(bounds).length !== 0) {
                 // 지도에 루트에 포함된 마커들이 보이도록 범위 재설정
                 map.setBounds(bounds);
-                setView(false);
+                onClickToggleIsView(false);
             }
         }
-    }, [map, plans, view, kakao.maps.LatLng, kakao.maps.LatLngBounds]);
+    }, [map, plans, planId, allSchedule, isView, kakao.maps.LatLng, kakao.maps.LatLngBounds]);
 
     const newSpotArr = useRef([]);
     const spotArr = useRef([]);
@@ -607,30 +609,18 @@ const EditMap = ({
     }, [centerCoord, kakao.maps.LatLng, kakao.maps.Polyline, map]);
 
     // 모든 일정 루트 보기 토글
-    // const onClickAllSchedule = () => {
-    //     if (allSchedule) {
-    //         showDateRouteMarker();
-    //         // dispatch(toggleScheduleViewAction(false));
-    //         handleToggleScheduleView(false);
-    //     } else {
-    //         showAllRouteMarker();
-    //         // dispatch(toggleScheduleViewAction(true));
-    //         handleToggleScheduleView(true);
-    //     }
-    // };
-
-    // 모든 일정 루트 보기 토글
     useEffect(() => {
         if (allSchedule) {
             showAllRouteMarker();
-            // dispatch(toggleScheduleViewAction(false));
-            // handleToggleScheduleView(false);
         } else {
             showDateRouteMarker();
-            // dispatch(toggleScheduleViewAction(true));
-            // handleToggleScheduleView(true);
         }
     }, [allSchedule]);
+
+    const onClickToggleAllSchedule = () => {
+        onClickToggleIsView();
+        onClickAllSchedule();
+    };
 
     return (
         <>
@@ -645,7 +635,7 @@ const EditMap = ({
                         여행지
                     </NavButton>
                     <ButtonBox>
-                        <Button allSchedule={allSchedule} onClick={onClickAllSchedule}>
+                        <Button allSchedule={allSchedule} onClick={onClickToggleAllSchedule}>
                             모든 일정
                         </Button>
                         <Button onClick={onClickTutorialModal}>사용 방법</Button>

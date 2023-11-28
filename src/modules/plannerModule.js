@@ -310,6 +310,7 @@ const initialState = {
         navRoute: true,
         navList: true,
         tutorial: false,
+        isView: true,
     },
 };
 

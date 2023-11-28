@@ -61,7 +61,7 @@ const EditRouteContainer = () => {
     };
     const { planId } = { ...plannerData };
     const { accountId } = { ...account };
-    const { allSchedule, navRoute, tutorial } = { ...mapData };
+    const { allSchedule, navRoute, tutorial, isView } = { ...mapData };
     const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : new Date());
     const [endDate, setEndDate] = useState(planDateEnd ? new Date(planDateEnd) : new Date());
     const { plannerInfo, member } = { ...modal };
@@ -335,6 +335,7 @@ const EditRouteContainer = () => {
     // 일정 루트 보기
     const onClickDateSchedule = () => {
         dispatch(changeMapDataAction({ property: 'allSchedule', value: false }));
+        dispatch(changeMapDataAction({ property: 'isView', value: true }));
     };
 
     const onClickAllSchedule = () => {
