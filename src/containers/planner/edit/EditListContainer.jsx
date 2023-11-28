@@ -11,6 +11,7 @@ import {
     changeKeywordAction,
     changeMapDataAction,
     changePageNumAction,
+    changePlannerDataAction,
     changeResultKeywordAction,
     createLocationAction,
     LOAD_PLANNER_TYPE,
@@ -244,6 +245,10 @@ const EditListContainer = () => {
     const onToggleWindowNavList = (bool) => {
         dispatch(changeMapDataAction({ property: 'navList', value: bool }));
     };
+
+    useEffect(() => {
+        dispatch(changePlannerDataAction({ property: 'pType', value: '' }));
+    }, []);
 
     // if (accountId !== planner.accountId) {
     //     return null;
