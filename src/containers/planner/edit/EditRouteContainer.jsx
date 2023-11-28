@@ -89,7 +89,7 @@ const EditRouteContainer = () => {
     useEffect(() => {
         // dispatch(changeCurPlannerIdAction(params.plannerId));
         dispatch(changePlannerDataAction({ property: 'plannerId', value: params.plannerId }));
-        dispatch(changePlannerDataAction({ property: 'pType', value: 1 }));
+        // dispatch(changePlannerDataAction({ property: 'pType', value: 1 }));
     }, [dispatch, params]);
 
     // 출발 날짜 선택
