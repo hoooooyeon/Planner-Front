@@ -1,7 +1,4 @@
 import styled from 'styled-components';
-import Select, { SelectMain } from '../../common/Select';
-import { useState } from 'react';
-import Input from '../../common/Input';
 import { faMagnifyingGlass } from '../../../../node_modules/@fortawesome/free-solid-svg-icons/index';
 import { FontAwesomeIcon } from '../../../../node_modules/@fortawesome/react-fontawesome/index';
 
@@ -11,7 +8,6 @@ const SearchBlock = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 1rem;
-    height: 5rem;
     margin: 0.5rem 10rem;
 
     @media screen and (max-width: 1024px) {

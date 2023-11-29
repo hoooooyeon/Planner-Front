@@ -80,6 +80,10 @@ const MyAccountContainer = () => {
         }
     };
 
+    const handleLikePlannerClick = (plannerId) => {
+        history.push(`/planners/${plannerId}`);
+    };
+
     if (!auth) {
         alert('정상적인 접근이 아닙니다.');
         history.push('/');
@@ -96,6 +100,7 @@ const MyAccountContainer = () => {
             onProfileChange={handleProfileChange}
             onProfileUpdate={handleProfileUpdate}
             onProfileImageUpdate={handleProfileImageUpdate}
+            onLikePlannerClick={handleLikePlannerClick}
         />
     );
 };

@@ -64,9 +64,6 @@ const SideListItem = styled.div`
 `;
 
 const ListBlock = styled.div`
-    /* margin-left: 40px; */
-    /* width: 1160px; */
-    min-height: 31.25rem;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -97,7 +94,7 @@ const menu = [
     { id: 2, title: '여행지', value: 'likeSpotList', icon: faFlag },
 ];
 
-const LikeListView = ({ loading, likeLists, onLikeListLoad }) => {
+const LikeListView = ({ loading, likeLists, onLikeListLoad, onLikePlannerClick }) => {
     const [selectIndex, setSelectIndex] = useState(1);
     const [sortValue, setSortValue] = useState(2);
     const [searchText, setSearchText] = useState('');
@@ -160,14 +157,6 @@ const LikeListView = ({ loading, likeLists, onLikeListLoad }) => {
                             <span>{item.title}</span>
                         </SideListItem>
                     ))}
-                    {/* <SideListItem active={selectIndex == 1} onClick={() => handleSideItemClick(1)}>
-                       <FontAwesomeIcon icon={faCalendarDays} />
-                         <span>플래너</span>
-                     </SideListItem>
-                     <SideListItem active={selectIndex == 2} onClick={() => handleSideItemClick(2)}>
-                         <FontAwesomeIcon icon={faFlag} />
-                         <span>여행지</span>
-                     </SideListItem> */}
                 </SideBlock>
                 <ListBlock>
                     <ListSearchBar searchText={searchText} onSearchTextChange={handleSearchTextChange} />
@@ -179,15 +168,17 @@ const LikeListView = ({ loading, likeLists, onLikeListLoad }) => {
                             </span>
                         ))}
                     </ListOptions>
-                    {selectIndex == 1 ? (
-                        <LikeList loading={loading.likePlannerListLoading} list={list}></LikeList>
-                    ) : (
-                        <LikeList loading={loading.likeSpotListLoading} list={list}></LikeList>
-                    )}
+                    <LikeList
+                        selectIndex={selectIndex}
+                        loading={selectIndex == 1 ? loading.likePlannerListLoading : loading.likeSpotListLoading}
+                        list={list}
+                        onLikePlannerClick={onLikePlannerClick}
+                    ></LikeList>
                     <Pagination
                         page={pageNum}
                         totalCount={totalCount}
                         pageSize={10}
+                        itemCount={10}
                         onPageChange={handlePageChange}
                         onPreviousPage={handlePreviousPage}
                         onNextPage={handleNextPage}
