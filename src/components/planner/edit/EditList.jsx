@@ -37,7 +37,7 @@ const EditListBlock = styled.div`
 `;
 
 const List = styled.div`
-    height: 28rem;
+    height: 27.3rem;
     padding: 0.5rem 0;
     display: flex;
     flex-direction: column;
@@ -51,7 +51,7 @@ const List = styled.div`
         display: none;
     }
     @media all and (max-width: 480px) {
-        height: 13.5rem;
+        height: 13rem;
     }
 `;
 

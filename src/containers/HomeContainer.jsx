@@ -65,7 +65,7 @@ const HomeContainer = () => {
             // dispatch(resetSharePlannerListAction());
             dispatch(plannerInitializePropertyAction('sharePlanners'));
         };
-    }, [dispatch]);
+    }, []);
 
     return (
         <Home

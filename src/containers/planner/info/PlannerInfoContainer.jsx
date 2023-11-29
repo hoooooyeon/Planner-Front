@@ -59,8 +59,8 @@ const PlannerInfoContainer = () => {
     useEffect(() => {
         // dispatch(changeCurPlannerIdAction(params.plannerId));
         dispatch(changePlannerDataAction({ property: 'plannerId', value: params.plannerId }));
-        dispatch(changePlannerDataAction({ property: 'pType', value: 1 }));
-    }, [dispatch, params]);
+        // dispatch(changePlannerDataAction({ property: 'pType', value: 1 }));
+    }, [params]);
 
     // 플래너 삭제
     const onDeletePlanner = () => {
@@ -131,7 +131,13 @@ const PlannerInfoContainer = () => {
     };
 
     useEffect(() => {
-        return () => dispatch(resetPlannerErrorAction());
+        return () => {
+            dispatch(resetPlannerErrorAction());
+        };
+    }, []);
+
+    useEffect(() => {
+        dispatch(changePlannerDataAction({ property: 'pType', value: '' }));
     }, []);
 
     // if (Object.keys(planner).length <= 0) {
