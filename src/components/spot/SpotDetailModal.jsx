@@ -10,7 +10,7 @@ import Loading from '../common/Loading';
 
 const DetailModalBlock = styled.div`
     max-width: 50rem;
-    min-width: 25rem;
+    min-width: 40rem;
     height: 20rem;
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     border-radius: 0.5rem;

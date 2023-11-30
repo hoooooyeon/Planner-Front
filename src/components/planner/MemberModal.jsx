@@ -77,6 +77,11 @@ const InviteText = styled(ErrorText)`
     color: ${(props) => props.theme.mainColor};
 `;
 
+const CenterDiv = styled.div`
+    height: 14rem;
+    position: relative;
+`;
+
 const MemberModal = ({
     planner,
     members,
@@ -103,7 +108,9 @@ const MemberModal = ({
         >
             <MemberBox>
                 {loading.deleteMemberLoading || loading.inviteMemberLoading ? (
-                    <Loading size="small" pos="center" />
+                    <CenterDiv>
+                        <Loading size="small" pos="center" />
+                    </CenterDiv>
                 ) : (
                     <>
                         <InviteBox>
