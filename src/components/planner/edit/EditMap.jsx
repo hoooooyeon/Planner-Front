@@ -602,7 +602,6 @@ const EditMap = ({
                     num = coordArr.findIndex((c) => c === minCoord);
                     return coordArr;
                 });
-                // dispatch(changeAreaIndexAction(areaArr[num].code));
                 onChangeAreaIndex(areaArr[num].code);
             }
         }

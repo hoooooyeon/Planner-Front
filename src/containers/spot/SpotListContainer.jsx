@@ -8,9 +8,8 @@ import {
     loadDetailSpotAction,
     loadSpotsAction,
     removeSpotLikeAction,
-    changeAreaIndexAction,
+    changeSpotDataAction,
     changeDetailSpotAction,
-    changePageIndexAction,
     changeContentIdAction,
     searchSpotAction,
     changeContentTypeIdAction,
@@ -33,8 +32,8 @@ const SpotListContainer = ({
     loadAreas,
     loadSpots,
     loadDetailSpot,
-    changeAreaIndex,
-    changePageIndex,
+    changeSpotData,
+
     changeDetailSpot,
     searchSpot,
     changeContentTypeId,
@@ -74,7 +73,8 @@ const SpotListContainer = ({
             return;
         }
         changeDetailSpot(spotInfo);
-        changeContentId(spotInfo.contentId);
+        // changeContentId(spotInfo.contentId);
+        changeSpotData({ property: 'contentId', value: spotInfo.contentId });
     };
 
     // 여행지 상세정보 로드
@@ -86,7 +86,8 @@ const SpotListContainer = ({
 
     // 지역  선택
     const onClickArea = (areaIndex) => {
-        changeAreaIndex(areaIndex);
+        // changeAreaIndex(areaIndex);
+        changeSpotData({ property: 'areaCode', value: areaIndex });
     };
 
     // 여행지 페이지에서 벗어날 때 정보 초기화
@@ -131,12 +132,14 @@ const SpotListContainer = ({
 
     // 여행지리스트 컨텐츠타입 변경.
     const onChangeContentTypeId = (contentTypeId) => {
-        changeContentTypeId(contentTypeId);
+        // changeContentTypeId(contentTypeId);
+        changeSpotData({ property: 'contentTypeId', value: contentTypeId });
     };
 
     // 지역, 컨텐츠타입, 키워드 변경시 페이지 리셋.
     useEffect(() => {
-        changePageIndexAction(1);
+        // changePageIndexAction(1);
+        changeSpotData({ property: 'pageNo', value: 1 });
     }, [areaCode, contentTypeId, resultKeyword]);
 
     // 여행지 슬라이더 배열.
@@ -174,19 +177,24 @@ const SpotListContainer = ({
     };
 
     const onIndexPage = (index) => {
-        changePageIndex(index);
+        // changePageIndex(index);
+        changeSpotData({ property: 'pageNo', value: index });
     };
     const onNextPage = () => {
-        changePageIndex(pageNo + 1);
+        // changePageIndex(pageNo + 1);
+        changeSpotData({ property: 'pageNo', value: pageNo + 1 });
     };
     const onPreviousPage = () => {
-        changePageIndex(pageNo - 1);
+        // changePageIndex(pageNo - 1);
+        changeSpotData({ property: 'pageNo', value: pageNo - 1 });
     };
     const onFirstPage = (startPage) => {
-        changePageIndex(startPage);
+        // changePageIndex(startPage);
+        changeSpotData({ property: 'pageNo', value: startPage });
     };
     const onLastPage = (maxPage) => {
-        changePageIndex(maxPage);
+        // changePageIndex(maxPage);
+        changeSpotData({ property: 'pageNo', value: maxPage });
     };
 
     return (
@@ -237,8 +245,8 @@ const mapDispatchToProps = (dispatch) => ({
     loadSpots: ({ areaCode, contentTypeId, pageNo, numOfRows }) => {
         dispatch(loadSpotsAction({ areaCode, contentTypeId, pageNo, numOfRows }));
     },
-    changeAreaIndex: (index) => {
-        dispatch(changeAreaIndexAction(index));
+    changeSpotData: ({ property, value }) => {
+        dispatch(changeSpotDataAction({ property, value }));
     },
     changeContentId: (id) => {
         dispatch(changeContentIdAction(id));
@@ -269,9 +277,6 @@ const mapDispatchToProps = (dispatch) => ({
     },
     resetSpotError: () => {
         dispatch(resetSpotErrorAction());
-    },
-    changePageIndex: (index) => {
-        dispatch(changePageIndexAction(index));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);

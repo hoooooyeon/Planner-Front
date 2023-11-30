@@ -34,6 +34,7 @@ import {
     changePageIndexAction,
     spotInitializeFormAction,
     spotInitializeAction,
+    changeSpotDataAction,
 } from '../../../modules/spotModule';
 
 const EditListContainer = () => {
@@ -115,7 +116,8 @@ const EditListContainer = () => {
     // 여행지 상세정보 모달 열기
     const onOpenDetail = (spotInfo) => {
         dispatch(changeDetailSpotAction(spotInfo));
-        dispatch(changeContentIdAction(spotInfo.contentId));
+        // dispatch(changeContentIdAction(spotInfo.contentId));
+        dispatch(changeSpotDataAction({ property: 'contentId', value: spotInfo.contentId }));
     };
 
     // 여행지 상세정보 로드
@@ -127,7 +129,8 @@ const EditListContainer = () => {
 
     // 여행지 타입 변경
     const onChangeContentTypeId = (id) => {
-        dispatch(changeContentTypeIdAction(id));
+        // dispatch(changeContentTypeIdAction(id));
+        dispatch(changeSpotDataAction({ property: 'contentTypeId', value: 12 }));
     };
 
     // 지역 리스트 로드
@@ -137,7 +140,8 @@ const EditListContainer = () => {
 
     // 지역 선택
     const onChangeAreaIndex = (num) => {
-        dispatch(changeAreaIndexAction(num));
+        // dispatch(changeAreaIndexAction(num));
+        dispatch(changeSpotDataAction({ property: 'areaCode', value: num }));
     };
 
     // 키워드 입력
@@ -210,7 +214,7 @@ const EditListContainer = () => {
     const onIndexPage = (index) => {
         setPage(index);
     };
-    const onNextPage = (maxPage) => {
+    const onNextPage = () => {
         setPage((page) => page + 1);
     };
     const onPreviousPage = () => {

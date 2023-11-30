@@ -39,6 +39,8 @@ const RESET_SPOT_ERROR_TYPE = 'spot/RESET_SPOT_ERROR';
 const SPOT_INITIALIZE_TYPE = 'spot/SPOT_INITIALIZE';
 const SPOT_INITIALIZE_FORM_TYPE = 'spots/SPOT_INITIALIZE_FORM';
 
+const CHANGE_SPOT_DATA_TYPE = 'spot/CHANGE_SPOT_DATA_TYPE';
+
 export const loadAreasAction = () => ({ type: LOAD_AREAS_TYPE });
 export const loadSpotsAction = ({ areaCode, contentTypeId, pageNo, numOfRows }) => ({
     type: LOAD_SPOTS_TYPE,
@@ -77,6 +79,12 @@ export const spotInitializeAction = () => ({
 export const spotInitializeFormAction = (form) => ({
     type: SPOT_INITIALIZE_FORM_TYPE,
     form,
+});
+
+export const changeSpotDataAction = ({ property, value }) => ({
+    type: CHANGE_SPOT_DATA_TYPE,
+    property,
+    value,
 });
 
 const loadAreasSaga = createSaga(LOAD_AREAS_TYPE, spotAPI.loadAreas);
@@ -243,6 +251,15 @@ function spotReducer(state = initialState, action) {
         }
         case SPOT_INITIALIZE_FORM_TYPE: {
             return { ...state, [action.form]: initialState[action.form] };
+        }
+        case CHANGE_SPOT_DATA_TYPE: {
+            return {
+                ...state,
+                spotData: {
+                    ...state.spotData,
+                    [action.property]: action.value,
+                },
+            };
         }
         default:
             return state;

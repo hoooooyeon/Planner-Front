@@ -5,7 +5,7 @@ import EditMap from '../../../components/planner/edit/EditMap';
 import { resetPlannerErrorAction, changeMapDataAction } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import locationImg from '../../../lib/images/location.png';
-import { changeAreaIndexAction, resetSpotErrorAction } from '../../../modules/spotModule';
+import { changeAreaIndexAction, changeSpotDataAction, resetSpotErrorAction } from '../../../modules/spotModule';
 import { useHistory } from 'react-router';
 
 const EditMapContainer = () => {
@@ -45,7 +45,8 @@ const EditMapContainer = () => {
     };
 
     const onChangeAreaIndex = (index) => {
-        dispatch(changeAreaIndexAction(index));
+        // dispatch(changeAreaIndexAction(index));
+        dispatch(changeSpotDataAction({ property: 'areaCode', value: index }));
     };
 
     // mobbile Route Nav 토글
