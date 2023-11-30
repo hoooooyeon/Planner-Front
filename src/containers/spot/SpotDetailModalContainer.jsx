@@ -7,6 +7,8 @@ import {
     removeSpotLikeAction,
     REMOVE_SPOT_LIKE_TYPE,
     resetDetailSpotAction,
+    resetSpotErrorAction,
+    spotInitializeFormAction,
 } from '../../modules/spotModule';
 
 const SpotDetailModalContainer = () => {
@@ -39,7 +41,9 @@ const SpotDetailModalContainer = () => {
 
     // 모달 닫을 때 detail 리셋.
     const onResetDetailSpot = () => {
+        dispatch(resetSpotErrorAction());
         dispatch(resetDetailSpotAction());
+        // dispatch(spotInitializeFormAction('detail'));
     };
 
     return (

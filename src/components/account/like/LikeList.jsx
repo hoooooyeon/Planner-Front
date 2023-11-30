@@ -104,12 +104,14 @@ const EmptyItem = () => {
 };
 
 export const LikeList = (props) => {
-    const { loading, list, selectIndex, onLikePlannerClick } = props;
+    const { loading, list, selectIndex, onLikePlannerClick, onLikeSpotClick } = props;
 
     const handleItemClick = (item) => {
         if (selectIndex == 1) {
             const { plannerId } = item;
             onLikePlannerClick(plannerId);
+        } else {
+            onLikeSpotClick(item);
         }
     };
 
@@ -130,7 +132,7 @@ export const LikeList = (props) => {
                     ) : (
                         list.map((item, i) => (
                             <ListItem key={i} onClick={() => handleItemClick(item)}>
-                                <ListItemImgBox src={item.thumbnail || tempImage} />
+                                <ListItemImgBox src={item.thumbnail || item.image || tempImage} />
                                 <ListItemInfoBox>
                                     <b>{item.title}</b>
                                     {selectIndex == 1 && (

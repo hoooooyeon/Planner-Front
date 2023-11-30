@@ -94,7 +94,7 @@ const menu = [
     { id: 2, title: '여행지', value: 'likeSpotList', icon: faFlag },
 ];
 
-const LikeListView = ({ loading, likeLists, onLikeListLoad, onLikePlannerClick }) => {
+const LikeListView = ({ loading, likeLists, onLikeListLoad, onLikePlannerClick, onLikeSpotClick }) => {
     const [selectIndex, setSelectIndex] = useState(1);
     const [sortValue, setSortValue] = useState(2);
     const [searchText, setSearchText] = useState('');
@@ -173,6 +173,7 @@ const LikeListView = ({ loading, likeLists, onLikeListLoad, onLikePlannerClick }
                         loading={selectIndex == 1 ? loading.likePlannerListLoading : loading.likeSpotListLoading}
                         list={list}
                         onLikePlannerClick={onLikePlannerClick}
+                        onLikeSpotClick={onLikeSpotClick}
                     ></LikeList>
                     <Pagination
                         page={pageNum}

@@ -88,6 +88,7 @@ const MyAccount = ({
     onProfileUpdate,
     onProfileImageUpdate,
     onLikePlannerClick,
+    onLikeSpotClick,
 }) => {
     const [menu, setMenu] = useState(1);
 
@@ -125,6 +126,7 @@ const MyAccount = ({
                                     likeLists={likeList}
                                     onLikeListLoad={onLikeListLoad}
                                     onLikePlannerClick={onLikePlannerClick}
+                                    onLikeSpotClick={onLikeSpotClick}
                                 ></LikeListView>
                             );
                         }
