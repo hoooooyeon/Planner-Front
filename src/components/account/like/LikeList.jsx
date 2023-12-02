@@ -49,12 +49,32 @@ const ListItem = styled.li`
     }
 `;
 
-const ListItemImgBox = styled.img`
+const ListItemImgBox = styled.div`
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     display: block;
-    background-size: cover;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+    padding-top: 75%;
     width: 100%;
+`;
+
+const Img = styled.img`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    margin: 0;
+    display: block;
+    -webkit-user-drag: none;
+    object-fit: cover;
+    font-size: 0.7rem;
+    color: ${(props) => props.theme.tertiaryColor};
 `;
 
 const ListItemInfoBox = styled.div`
@@ -132,7 +152,9 @@ export const LikeList = (props) => {
                     ) : (
                         list.map((item, i) => (
                             <ListItem key={i} onClick={() => handleItemClick(item)}>
-                                <ListItemImgBox src={item.thumbnail || item.image || tempImage} />
+                                <ListItemImgBox>
+                                    <Img src={item.thumbnail ? item.thumbnail : item.image ? item.image : tempImage} />
+                                </ListItemImgBox>
                                 <ListItemInfoBox>
                                     <b>{item.title}</b>
                                     {selectIndex == 1 && (
