@@ -247,7 +247,7 @@ const Footer = () => {
                 </FooterBox>
             </RelativeDiv>
             <Logo>
-                <div>대한민국 여행의 전부</div>
+                <div>한국을 모두 볼 수 있는 곳</div>
                 <div>한국다봄</div>
             </Logo>
         </FooterBlock>

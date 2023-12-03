@@ -18,7 +18,7 @@ const Container = styled.div`
     margin: 0 auto;
     position: relative;
     padding: 3rem 0 8rem;
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         padding-left: 1rem;
         padding-right: 1rem;
     }
@@ -56,11 +56,8 @@ const OverviewBox = styled.div`
     p + p {
         margin-top: 0;
     }
-    @media all and (min-width: 1024px) {
+    @media all and (min-width: 1025px) {
         width: 350px;
-    }
-    @media all and (min-width: 1200px) {
-        width: 390px;
     }
 `;
 
@@ -74,13 +71,9 @@ const Img = styled.img`
     -webkit-user-drag: none;
     width: 250px;
     height: 300px;
-    @media all and (min-width: 1024px) {
+    @media all and (min-width: 1025px) {
         width: 350px;
         height: 400px;
-    }
-    @media all and (min-width: 1200px) {
-        width: 390px;
-        height: 450px;
     }
 `;
 
@@ -93,7 +86,7 @@ const LeftIcon = styled(FontAwesomeIcon)`
     color: ${(props) => props.theme.tertiaryColor};
     opacity: 0.7;
     display: none;
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         display: inline-block;
     }
 `;
@@ -107,7 +100,7 @@ const RightIcon = styled(FontAwesomeIcon)`
     color: ${(props) => props.theme.tertiaryColor};
     opacity: 0.7;
     display: none;
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         display: inline-block;
     }
 `;

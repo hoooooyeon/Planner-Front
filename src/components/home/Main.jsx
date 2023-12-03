@@ -29,29 +29,39 @@ const MainBox = styled.div`
     font-weight: bold;
 `;
 
-const Title = styled.div`
-    font-size: 1.3rem;
-    color: ${(props) => props.theme.primaryColor};
-    @media all and (max-width: 479px) {
-        display: none;
-    }
-`;
-
 const Text = styled.div`
     display: flex;
     flex-direction: column;
     font-size: 1rem;
     color: ${(props) => props.theme.primaryColor};
-    @media all and (max-width: 479px) {
-        display: none;
+    @media all and (max-width: 768px) {
+        font-size: 0.9rem;
+    }
+    @media all and (max-width: 480px) {
+        font-size: 0.8rem;
+    }
+`;
+const Title = styled.div`
+    font-size: 1.2rem;
+    color: ${(props) => props.theme.primaryColor};
+    margin: 1rem 0 2rem;
+    @media all and (max-width: 768px) {
+        font-size: 1rem;
+    }
+    @media all and (max-width: 480px) {
+        font-size: 0.9rem;
     }
 `;
 
 const StyledLink = styled(Link)`
     text-decoration: none;
-    margin-top: 60px;
     color: ${(props) => props.theme.primaryColor};
+    box-sizing: border-box;
+    padding: 1rem;
+    border-radius: 2rem;
     &:hover {
+        color: ${(props) => props.theme.hoverColor};
+        background-color: ${(props) => props.theme.hoverBackgroundColor};
         cursor: pointer;
     }
 `;
@@ -74,12 +84,10 @@ const Main = () => {
             <ReactPlayer playing muted loop url={isVideo} width="100%" height="100%" />
 
             <MainBox>
-                <Text>
-                    <p>모든 것이 봄 자체 한국 여행의 모든 것을 담았다.</p>
-                </Text>
-                <Title>여행 계획 플래너</Title>
+                <Text>모든 곳이 봄이다</Text>
+                <Title>한국을 모두 담은 여행 플래너</Title>
                 <StyledLink to="/Planners">
-                    플래너 생성하러 가기
+                    플래너 만들기
                     <StyledFontAwesomeIcon icon={faChevronRight} />
                 </StyledLink>
             </MainBox>
