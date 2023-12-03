@@ -60,7 +60,7 @@ const PlannerItem = styled.li`
     &:hover {
         box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
-    @media all and (min-width: 481px) and (max-width: 768px) {
+    @media all and (min-width: 481px) {
         width: 45%;
     }
     @media all and (min-width: 769px) {
@@ -133,7 +133,6 @@ const HomePlannerList = ({ sharePlanners, loading, onClickPlanner }) => {
                     <p>먼저 여행을 끝마친 여행객들의 플래너를 구경 해보세요.</p>
                 </Header>
                 {loading.plannerLoading ? (
-                    // && Object.keys(sharePlanners).length <= 0
                     <Loading />
                 ) : Object.keys(sharePlanners).length > 0 && sharePlanners.list.length > 0 ? (
                     <PlannerList>

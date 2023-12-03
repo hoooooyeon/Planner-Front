@@ -35,7 +35,7 @@ const SpotList = styled.ul`
     padding: 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         grid-template-columns: repeat(3, 1fr);
     }
 `;
