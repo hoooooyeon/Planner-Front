@@ -172,14 +172,7 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
     return (
         <>
             <HiddenBox ref={hiddenBoxRef} scroll={scroll}>
-                <List
-                    ref={listRef}
-                    scroll={scroll}
-                    // draggable
-                    // onDragStart={() => {
-                    //     setHell(false);
-                    // }}
-                >
+                <List ref={listRef} scroll={scroll}>
                     {children}
                 </List>
             </HiddenBox>

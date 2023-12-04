@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
@@ -26,7 +25,6 @@ const HeaderBlock = styled.div`
             background-color: rgba(255, 255, 255, 0.8);
         `}
     @media all and (min-width: 768px) {
-        /* justify-content: space-between; */
         padding: 0 9rem;
     }
     @media all and (min-width: 1200px) {
@@ -119,8 +117,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 const DropDown = styled.div`
     z-index: 99;
     position: absolute;
-    top: 54px;
-    right: 188px;
+    top: 40px;
 `;
 
 const DropDownMenu = styled.ul`
@@ -142,6 +139,17 @@ const DropDownMenu = styled.ul`
             color: ${(props) => props.theme.hoverColor};
             font-weight: bold;
         }
+    }
+`;
+
+const AccountBox = styled.div`
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    @media all and (max-width: 767px) {
+        position: absolute;
+        left: 0;
     }
 `;
 
@@ -194,6 +202,12 @@ const Header = ({
         }
     };
 
+    const handleCloseDropDown = () => {
+        if (window.innerWidth <= 768) {
+            onCloseDropDown();
+        }
+    };
+
     const handleNotificationClose = () => {
         setNotificationView(false);
     };
@@ -221,7 +235,11 @@ const Header = ({
 
     useEffect(() => {
         window.addEventListener('click', onCloseDropDown);
-        return () => window.removeEventListener('click', onCloseDropDown);
+        window.addEventListener('resize', handleCloseDropDown);
+        return () => {
+            window.removeEventListener('click', onCloseDropDown);
+            window.removeEventListener('resize', handleCloseDropDown);
+        };
     });
 
     return (
@@ -235,7 +253,7 @@ const Header = ({
                 <li onClick={() => onChangePage('Spot')}>여행지</li>
             </MenuList>
             {account ? (
-                <>
+                <AccountBox>
                     <Notification
                         ref={notificationRef}
                         loading={loading}
@@ -265,7 +283,7 @@ const Header = ({
                             </DropDownMenu>
                         </DropDown>
                     )}
-                </>
+                </AccountBox>
             ) : (
                 <AccountList styled={styled}>
                     <li onClick={() => onChangePage('Login')}>

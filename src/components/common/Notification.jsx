@@ -13,7 +13,7 @@ const Box = styled.div`
     box-sizing: border-box;
     padding: 10px;
     border-radius: 6px;
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         position: absolute;
         left: 0;
     }
@@ -29,17 +29,17 @@ const NotificationActionBox = styled.div`
 
 const NotificationBox = styled.div`
     position: absolute;
-    margin-top: 20px;
+    top: 40px;
     right: 14px;
     width: 250px;
     height: 260px;
     border-radius: 6px;
     box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
     background-color: ${(props) => props.theme.primaryBackgroundColor};
-    @media all and (max-width: 767px) {
-        right: 0;
+    @media all and (max-width: 768px) {
         left: 10px;
-        top: 27px;
+        top: 40px;
+        right: 0;
     }
 `;
 
