@@ -3,10 +3,11 @@ import SpotDetailModal from '../../components/spot/SpotDetailModal';
 import {
     addSpotLikeAction,
     ADD_SPOT_LIKE_TYPE,
+    changeSpotDataAction,
     LOAD_DETAIL_SPOT_TYPE,
     removeSpotLikeAction,
     REMOVE_SPOT_LIKE_TYPE,
-    resetDetailSpotAction,
+    spotInitializeFormAction,
 } from '../../modules/spotModule';
 
 const SpotDetailModalContainer = () => {
@@ -39,7 +40,8 @@ const SpotDetailModalContainer = () => {
 
     // 모달 닫을 때 detail 리셋.
     const onResetDetailSpot = () => {
-        dispatch(resetDetailSpotAction());
+        dispatch(changeSpotDataAction({ property: 'contentId', value: '' }));
+        dispatch(spotInitializeFormAction('detail'));
     };
 
     return (

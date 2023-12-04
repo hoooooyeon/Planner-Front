@@ -21,7 +21,6 @@ import {
 import {
     loadDetailSpotAction,
     loadSpotsAction,
-    resetDetailSpotAction,
     changeContentTypeIdAction,
     changeDetailSpotAction,
     changeAreaIndexAction,

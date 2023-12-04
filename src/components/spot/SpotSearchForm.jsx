@@ -170,7 +170,7 @@ const SpotSearchForm = ({
     return (
         <>
             <FormDiv>
-                {loading.areaLoading ? (
+                {loading.areasLoading ? (
                     <Loading />
                 ) : (
                     <Form>

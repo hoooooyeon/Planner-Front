@@ -10,15 +10,10 @@ export const LOAD_SPOTS_TYPE = 'spot/LOAD_SPOTS';
 const LOAD_SPOTS_SUCCESS_TYPE = 'spot/LOAD_SPOTS_SUCCESS';
 const LOAD_SPOTS_FAILURE_TYPE = 'spot/LOAD_SPOTS_FAILURE';
 
-const CHANGE_AREA_INDEX_TYPE = 'spot/CHANGE_AREA_INDEX';
-const CHANGE_PAGE_INDEX_TYPE = 'spot/CHANGE_PAGE_INDEX';
-const CHANGE_CONTENT_ID_TYPE = 'spot/CHANGE_CONTENT_ID';
-
 export const LOAD_DETAIL_SPOT_TYPE = 'spot/LOAD_DETAIL_SPOT';
 const LOAD_DETAIL_SPOT_SUCCESS_TYPE = 'spot/LOAD_DETAIL_SPOT_SUCCESS';
 const LOAD_DETAIL_SPOT_FAILURE_TYPE = 'spot/LOAD_DETAIL_SPOT_FAILURE';
 
-const RESET_DETAIL_SPOT_TYPE = 'spot/RESET_DETAIL_SPOT';
 const CHANGE_DETAIL_SPOT_TYPE = 'spot/CHANGE_DETAIL_SPOT';
 
 export const ADD_SPOT_LIKE_TYPE = 'spot/ADD_SPOT_LIKE';
@@ -33,9 +28,6 @@ export const SEARCH_SPOT_TYPE = 'spot/SEARCH_SPOT';
 const SEARCH_SPOT_SUCCESS_TYPE = 'spot/SEARCH_SPOT_SUCCESS';
 const SEARCH_SPOT_FAILURE_TYPE = 'spot/SEARCH_SPOT_FAILURE';
 
-const CHANGE_CONTENT_TYPE_ID_TYPE = 'spot/CHANGE_CONTENT_TYPE_ID';
-
-const RESET_SPOT_ERROR_TYPE = 'spot/RESET_SPOT_ERROR';
 const SPOT_INITIALIZE_TYPE = 'spot/SPOT_INITIALIZE';
 const SPOT_INITIALIZE_FORM_TYPE = 'spots/SPOT_INITIALIZE_FORM';
 
@@ -49,11 +41,7 @@ export const loadSpotsAction = ({ areaCode, contentTypeId, pageNo, numOfRows }) 
     pageNo,
     numOfRows,
 });
-export const changeAreaIndexAction = (index) => ({ type: CHANGE_AREA_INDEX_TYPE, index });
-export const changePageIndexAction = (index) => ({ type: CHANGE_PAGE_INDEX_TYPE, index });
-export const changeContentIdAction = (id) => ({ type: CHANGE_CONTENT_ID_TYPE, id });
 export const loadDetailSpotAction = ({ contentId }) => ({ type: LOAD_DETAIL_SPOT_TYPE, contentId });
-export const resetDetailSpotAction = () => ({ type: RESET_DETAIL_SPOT_TYPE });
 export const changeDetailSpotAction = (spotInfo) => ({ type: CHANGE_DETAIL_SPOT_TYPE, spotInfo });
 export const addSpotLikeAction = ({ contentId, title, image }) => ({
     type: ADD_SPOT_LIKE_TYPE,
@@ -70,8 +58,6 @@ export const searchSpotAction = ({ areaCode, contentTypeId, keyword, numOfRows, 
     pageNo,
     numOfRows,
 });
-export const changeContentTypeIdAction = (contentTypeId) => ({ type: CHANGE_CONTENT_TYPE_ID_TYPE, contentTypeId });
-export const resetSpotErrorAction = () => ({ type: RESET_SPOT_ERROR_TYPE });
 export const spotInitializeAction = () => ({
     type: SPOT_INITIALIZE_TYPE,
 });
@@ -114,7 +100,7 @@ const initialState = {
         contentTypeId: 12,
         contentId: '',
     },
-    spotModal: false,
+    isLike: { state: '' },
     contentTypeList: [
         { label: '관광지', id: 12 },
         { label: '문화시설', id: 14 },
@@ -156,32 +142,6 @@ function spotReducer(state = initialState, action) {
                 },
             };
 
-        case CHANGE_AREA_INDEX_TYPE:
-            return {
-                ...state,
-                spotData: {
-                    ...state.spotData,
-                    areaCode: action.index,
-                    pageNo: 1,
-                },
-            };
-        case CHANGE_PAGE_INDEX_TYPE:
-            return {
-                ...state,
-                spotData: {
-                    ...state.spotData,
-                    pageNo: action.index,
-                },
-            };
-
-        case CHANGE_CONTENT_ID_TYPE:
-            return {
-                ...state,
-                spotData: {
-                    ...state.spotData,
-                    contentId: action.id,
-                },
-            };
         case LOAD_DETAIL_SPOT_SUCCESS_TYPE:
             return {
                 ...state,
@@ -200,27 +160,43 @@ function spotReducer(state = initialState, action) {
                     contentId: action.spotInfo.contentId,
                 },
             };
-        case RESET_DETAIL_SPOT_TYPE:
-            return {
-                ...state,
-                detail: {},
-                spotData: {
-                    ...state.spotData,
-                    contentId: '',
-                },
-            };
         case ADD_SPOT_LIKE_SUCCESS_TYPE:
+            const addUpdatedList = state.spots.list.map((spot) => {
+                if (spot.contentId == state.spotData.contentId) {
+                    return {
+                        ...spot,
+                        likeState: !spot.likeState,
+                        likeCount: spot.likeCount + 1,
+                    };
+                }
+                return spot;
+            });
+
             return {
                 ...state,
-                spotData: {
-                    ...state.spotData,
+                isLike: { state: action.payload.state },
+                spots: {
+                    ...state.spots,
+                    list: addUpdatedList,
                 },
             };
         case REMOVE_SPOT_LIKE_SUCCESS_TYPE:
+            const removeUpdatedList = state.spots.list.map((spot) => {
+                if (spot.contentId == state.spotData.contentId) {
+                    return {
+                        ...spot,
+                        likeState: !spot.likeState,
+                        likeCount: spot.likeCount + 1,
+                    };
+                }
+                return spot;
+            });
             return {
                 ...state,
-                spotData: {
-                    ...state.spotData,
+                isLike: { state: action.payload.state },
+                spots: {
+                    ...state.spots,
+                    list: removeUpdatedList,
                 },
             };
 
@@ -231,20 +207,6 @@ function spotReducer(state = initialState, action) {
                     list: action.payload.data.items,
                     totalCount: action.payload.data.totalCount,
                 },
-            };
-        case CHANGE_CONTENT_TYPE_ID_TYPE:
-            return {
-                ...state,
-                spotData: {
-                    ...state.spotData,
-                    contentTypeId: action.contentTypeId,
-                    pageNo: 1,
-                },
-            };
-        case RESET_SPOT_ERROR_TYPE:
-            return {
-                ...state,
-                spotError: null,
             };
         case SPOT_INITIALIZE_TYPE: {
             return { ...initialState };

@@ -5,7 +5,7 @@ import EditMap from '../../../components/planner/edit/EditMap';
 import { resetPlannerErrorAction, changeMapDataAction } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import locationImg from '../../../lib/images/location.png';
-import { changeAreaIndexAction, changeSpotDataAction, resetSpotErrorAction } from '../../../modules/spotModule';
+import { changeAreaIndexAction, changeSpotDataAction, spotInitializeFormAction } from '../../../modules/spotModule';
 import { useHistory } from 'react-router';
 
 const EditMapContainer = () => {
@@ -32,7 +32,7 @@ const EditMapContainer = () => {
 
     // spotError 리셋
     const onCloseSpotError = () => {
-        dispatch(resetSpotErrorAction());
+        dispatch(spotInitializeFormAction('spotError'));
     };
 
     // plannerError 리셋

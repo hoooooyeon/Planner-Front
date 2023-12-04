@@ -10,10 +10,7 @@ import {
     removeSpotLikeAction,
     changeSpotDataAction,
     changeDetailSpotAction,
-    changeContentIdAction,
     searchSpotAction,
-    changeContentTypeIdAction,
-    resetSpotErrorAction,
     LOAD_AREAS_TYPE,
     LOAD_SPOTS_TYPE,
     SEARCH_SPOT_TYPE,
@@ -25,7 +22,7 @@ const SpotListContainer = ({
     areas,
     spots,
     spotError,
-    spotModal,
+    isLike,
     spotData,
     contentTypeList,
     loading,
@@ -33,12 +30,8 @@ const SpotListContainer = ({
     loadSpots,
     loadDetailSpot,
     changeSpotData,
-
     changeDetailSpot,
     searchSpot,
-    changeContentTypeId,
-    changeContentId,
-    resetSpotError,
     initialize,
     initializeForm,
 }) => {
@@ -63,7 +56,7 @@ const SpotListContainer = ({
             };
             loadSpots(queryString);
         }
-    }, [loadSpots, areaCode, resultKeyword, pageNo, areas, contentTypeId, spotData]);
+    }, [loadSpots, areaCode, resultKeyword, pageNo, areas, contentTypeId]);
 
     // 여행지 상세정보 모달 열기
     const drag = useRef(false);
@@ -73,7 +66,6 @@ const SpotListContainer = ({
             return;
         }
         changeDetailSpot(spotInfo);
-        // changeContentId(spotInfo.contentId);
         changeSpotData({ property: 'contentId', value: spotInfo.contentId });
     };
 
@@ -82,11 +74,10 @@ const SpotListContainer = ({
         if (contentId !== '') {
             loadDetailSpot({ contentId });
         }
-    }, [loadDetailSpot, contentId, spotData]);
+    }, [loadDetailSpot, contentId, isLike]);
 
     // 지역  선택
     const onClickArea = (areaIndex) => {
-        // changeAreaIndex(areaIndex);
         changeSpotData({ property: 'areaCode', value: areaIndex });
     };
 
@@ -132,13 +123,11 @@ const SpotListContainer = ({
 
     // 여행지리스트 컨텐츠타입 변경.
     const onChangeContentTypeId = (contentTypeId) => {
-        // changeContentTypeId(contentTypeId);
         changeSpotData({ property: 'contentTypeId', value: contentTypeId });
     };
 
     // 지역, 컨텐츠타입, 키워드 변경시 페이지 리셋.
     useEffect(() => {
-        // changePageIndexAction(1);
         changeSpotData({ property: 'pageNo', value: 1 });
     }, [areaCode, contentTypeId, resultKeyword]);
 
@@ -173,27 +162,22 @@ const SpotListContainer = ({
 
     // spotError 리셋
     const onCloseError = () => {
-        resetSpotError();
+        initializeForm('spotError');
     };
 
     const onIndexPage = (index) => {
-        // changePageIndex(index);
         changeSpotData({ property: 'pageNo', value: index });
     };
     const onNextPage = () => {
-        // changePageIndex(pageNo + 1);
         changeSpotData({ property: 'pageNo', value: pageNo + 1 });
     };
     const onPreviousPage = () => {
-        // changePageIndex(pageNo - 1);
         changeSpotData({ property: 'pageNo', value: pageNo - 1 });
     };
     const onFirstPage = (startPage) => {
-        // changePageIndex(startPage);
         changeSpotData({ property: 'pageNo', value: startPage });
     };
     const onLastPage = (maxPage) => {
-        // changePageIndex(maxPage);
         changeSpotData({ property: 'pageNo', value: maxPage });
     };
 
@@ -201,7 +185,6 @@ const SpotListContainer = ({
         <SpotList
             areas={areas}
             spots={spots}
-            spotModal={spotModal}
             spotData={spotData}
             spotError={spotError}
             sliderSpots={sliderSpots}
@@ -231,7 +214,7 @@ const mapStateToProps = (state) => ({
     spotError: state.spotReducer.spotError,
     spotData: state.spotReducer.spotData,
     contentTypeList: state.spotReducer.contentTypeList,
-    spotModal: state.spotReducer.spotModal,
+    isLike: state.spotReducer.isLike,
     loading: {
         areasLoading: state.loadingReducer[LOAD_AREAS_TYPE],
         spotsLoading: state.loadingReducer[LOAD_SPOTS_TYPE],
@@ -247,9 +230,6 @@ const mapDispatchToProps = (dispatch) => ({
     },
     changeSpotData: ({ property, value }) => {
         dispatch(changeSpotDataAction({ property, value }));
-    },
-    changeContentId: (id) => {
-        dispatch(changeContentIdAction(id));
     },
     loadDetailSpot: (id) => {
         dispatch(loadDetailSpotAction(id));
@@ -271,12 +251,6 @@ const mapDispatchToProps = (dispatch) => ({
     },
     searchSpot: ({ areaCode, contentTypeId, keyword, pageNo, numOfRows }) => {
         dispatch(searchSpotAction({ areaCode, contentTypeId, keyword, pageNo, numOfRows }));
-    },
-    changeContentTypeId: (contentTypeId) => {
-        dispatch(changeContentTypeIdAction(contentTypeId));
-    },
-    resetSpotError: () => {
-        dispatch(resetSpotErrorAction());
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SpotListContainer);
