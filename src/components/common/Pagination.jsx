@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 const PaginationBlock = styled.div`
     /* padding: 20px 0px; */
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     margin: 0 auto;
     display: flex;
     flex-direction: row;
@@ -63,7 +63,7 @@ const Pagination = ({
     onLastPage,
     itemCount,
 }) => {
-    const maxPage = Math.ceil(totalCount / itemCount);
+    const maxPage = Math.ceil(totalCount / itemCount) || 1;
     const isMaxPageGroup =
         maxPage > pageSize ? (Math.ceil(page / pageSize) === Math.ceil(maxPage / pageSize) ? true : false) : true;
     const endPageNum = isMaxPageGroup ? maxPage : Math.ceil(page / pageSize) * pageSize;

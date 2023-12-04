@@ -4,60 +4,81 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamation } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../../common/Loading';
 
-const ListBlock = styled.div`
+const Container = styled.div`
+    max-height: 48rem;
+    overflow-y: auto;
+`;
+
+const ListBlock = styled.ul`
+    margin: 0rem;
+    padding: 0rem;
+    list-style: none;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: start;
-    /* min-height: 443px; */
-    height: 100%;
 `;
 
-const ListItem = styled.div`
+const ListItem = styled.li`
     border: 1px solid silver;
     border-radius: 6px;
-    color: var(--md-sys-color-on-surface-variant);
-    background-color: var(--md-sys-color-surface-variant);
+    color: ${(props) => props.theme.secondaryColor};
+    background-color: ${(props) => props.theme.primaryBackgroundColor};
     box-sizing: border-box;
-    margin: 10px 1.25rem;
-    width: calc(20% - 1.25rem);
+    margin: 0.625rem;
+    width: calc(25% - 1.25rem);
 
     &:hover {
-        box-shadow: 0px 3px 6px var(--md-sys-color-shadow);
+        box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
     }
 
-    @media screen and (max-width: 1200px) {
-        width: calc(25% - 2.5rem);
+    @media screen and (max-width: 1440px) {
+        width: calc(25% - 1.25rem);
     }
 
-    @media screen and (max-width: 1130px) {
-        width: calc(33.33% - 2.5rem);
-    }
-
-    @media screen and (max-width: 920px) {
-        width: calc(50% - 2.5rem);
+    @media screen and (max-width: 1024px) {
+        width: calc(33.33% - 1.25rem);
     }
 
     @media screen and (max-width: 768px) {
-        width: calc(50% - 2.5rem);
+        width: calc(50% - 1.25rem);
     }
 
-    @media screen and (max-width: 425px) {
-        width: calc(100% - 2.5rem);
+    @media screen and (max-width: 480px) {
+        width: calc(100% - 1.25rem);
     }
 `;
 
-const ListItemImgBox = styled.img`
+const ListItemImgBox = styled.div`
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     display: block;
-    background-size: cover;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+    padding-top: 75%;
     width: 100%;
-    height: 140px;
+`;
+
+const Img = styled.img`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    margin: 0;
+    display: block;
+    -webkit-user-drag: none;
+    object-fit: cover;
+    font-size: 0.7rem;
+    color: ${(props) => props.theme.tertiaryColor};
 `;
 
 const ListItemInfoBox = styled.div`
-    height: 60px;
+    padding: 0.625rem;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
 
@@ -66,13 +87,13 @@ const ListItemInfoBox = styled.div`
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        margin-left: 5px;
+        /* margin: 0.625rem; */
     }
 
     span {
         display: block;
         text-align: right;
-        margin-right: 5px;
+        margin-right: 0.3125rem;
     }
 
     b + span + span {
@@ -89,7 +110,7 @@ const ItemEmptyBlock = styled.div`
     font-size: 20px;
 
     div {
-        margin-top: 20px;
+        margin: 1.25rem;
     }
 `;
 
@@ -103,7 +124,16 @@ const EmptyItem = () => {
 };
 
 export const LikeList = (props) => {
-    const { loading, list } = props;
+    const { loading, list, selectIndex, onLikePlannerClick, onLikeSpotClick } = props;
+
+    const handleItemClick = (item) => {
+        if (selectIndex == 1) {
+            const { plannerId } = item;
+            onLikePlannerClick(plannerId);
+        } else {
+            onLikeSpotClick(item);
+        }
+    };
 
     if (loading && !list) {
         return (
@@ -114,27 +144,35 @@ export const LikeList = (props) => {
     }
 
     return (
-        <ListBlock>
-            {list ? (
-                list.length == 0 ? (
-                    <EmptyItem />
+        <Container>
+            <ListBlock>
+                {list ? (
+                    list.length == 0 ? (
+                        <EmptyItem />
+                    ) : (
+                        list.map((item, i) => (
+                            <ListItem key={i} onClick={() => handleItemClick(item)}>
+                                <ListItemImgBox>
+                                    <Img src={item.thumbnail ? item.thumbnail : item.image ? item.image : tempImage} />
+                                </ListItemImgBox>
+                                <ListItemInfoBox>
+                                    <b>{item.title}</b>
+                                    {selectIndex == 1 && (
+                                        <>
+                                            <span>{item.memberCount}명</span>
+                                            <span>
+                                                {item.planDateStart} ~ {item.planDateEnd}
+                                            </span>
+                                        </>
+                                    )}
+                                </ListItemInfoBox>
+                            </ListItem>
+                        ))
+                    )
                 ) : (
-                    list.map((item, i) => (
-                        <ListItem key={i}>
-                            <ListItemImgBox src={item.thumbnail || tempImage} />
-                            <ListItemInfoBox>
-                                <b>{item.title}</b>
-                                <span>{item.memberCount}명</span>
-                                <span>
-                                    {item.planDateStart} ~ {item.planDateEnd}
-                                </span>
-                            </ListItemInfoBox>
-                        </ListItem>
-                    ))
-                )
-            ) : (
-                <EmptyItem />
-            )}
-        </ListBlock>
+                    <EmptyItem />
+                )}
+            </ListBlock>
+        </Container>
     );
 };

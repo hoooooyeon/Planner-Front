@@ -16,12 +16,17 @@ import {
 } from '../../modules/accountModule';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import spotReducer, {
+    changeContentIdAction,
+    changeDetailSpotAction,
+    loadDetailSpotAction,
+} from '../../modules/spotModule';
 
 const MyAccountContainer = () => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const { loading, auth, account, accountField, likeList } = useSelector(
-        ({ loadingReducer, authReducer, accountReducer }) => ({
+    const { loading, auth, account, accountField, likeList, isLike, spotData } = useSelector(
+        ({ loadingReducer, authReducer, accountReducer, spotReducer }) => ({
             loading: {
                 profileLoading: loadingReducer[ACCOUNT_LOAD_TYPE],
                 profileUpdateLoading: loadingReducer[ACCOUNT_UPDATE_TYPE],
@@ -32,6 +37,8 @@ const MyAccountContainer = () => {
             auth: authReducer.account,
             accountField: accountReducer.accountField,
             likeList: accountReducer.likeList,
+            spotData: spotReducer.spotData,
+            isLike: spotReducer.isLike,
         }),
     );
 
@@ -80,6 +87,29 @@ const MyAccountContainer = () => {
         }
     };
 
+    const handleLikePlannerClick = (plannerId) => {
+        history.push(`/planners/${plannerId}`);
+    };
+
+    // 여행지 상세정보 모달 열기
+    const handleLikeSpotClick = (spotInfo) => {
+        dispatch(changeDetailSpotAction(spotInfo));
+
+        dispatch(changeContentIdAction(spotInfo.contentId));
+        // dispatch(changeSpotDataAction({property: 'contentId', value:spotInfo.contentId}))
+    };
+
+    // 여행지 상세정보 로드
+    const { contentId } = { ...spotData };
+    useEffect(() => {
+        if (contentId !== '') {
+            dispatch(loadDetailSpotAction({ contentId }));
+        }
+    }, [
+        contentId,
+        //  isLike
+    ]);
+
     if (!auth) {
         alert('정상적인 접근이 아닙니다.');
         history.push('/');
@@ -96,6 +126,8 @@ const MyAccountContainer = () => {
             onProfileChange={handleProfileChange}
             onProfileUpdate={handleProfileUpdate}
             onProfileImageUpdate={handleProfileImageUpdate}
+            onLikePlannerClick={handleLikePlannerClick}
+            onLikeSpotClick={handleLikeSpotClick}
         />
     );
 };
