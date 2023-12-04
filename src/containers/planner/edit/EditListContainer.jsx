@@ -129,7 +129,7 @@ const EditListContainer = () => {
     // 여행지 타입 변경
     const onChangeContentTypeId = (id) => {
         // dispatch(changeContentTypeIdAction(id));
-        dispatch(changeSpotDataAction({ property: 'contentTypeId', value: 12 }));
+        dispatch(changeSpotDataAction({ property: 'contentTypeId', value: id }));
     };
 
     // 지역 리스트 로드

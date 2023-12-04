@@ -119,14 +119,7 @@ const IconBox = styled.div`
     padding: 5px;
 `;
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: ${(props) => (props.like ? ` ${props.theme.likeButtonColor}` : 'rgba(0,0,0,0)')};
-`;
-
-const ErrorDiv = styled.div`
-    color: ${(props) => props.theme.tertiaryColor};
-    font-weight: bold;
-    text-align: center;
-    margin-top: 2rem;
+    color: ${(props) => (props.like ? ` ${props.theme.likeButtonColor}` : `${props.theme.primaryBackgroundColor}`)};
 `;
 
 const CenterDiv = styled.div`
