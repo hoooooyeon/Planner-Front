@@ -25,7 +25,7 @@ import spotReducer, {
 const MyAccountContainer = () => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const { loading, auth, account, accountField, likeList, spotData } = useSelector(
+    const { loading, auth, account, accountField, likeList, isLike, spotData } = useSelector(
         ({ loadingReducer, authReducer, accountReducer, spotReducer }) => ({
             loading: {
                 profileLoading: loadingReducer[ACCOUNT_LOAD_TYPE],
@@ -38,6 +38,7 @@ const MyAccountContainer = () => {
             accountField: accountReducer.accountField,
             likeList: accountReducer.likeList,
             spotData: spotReducer.spotData,
+            isLike: spotReducer.isLike,
         }),
     );
 
@@ -93,7 +94,9 @@ const MyAccountContainer = () => {
     // 여행지 상세정보 모달 열기
     const handleLikeSpotClick = (spotInfo) => {
         dispatch(changeDetailSpotAction(spotInfo));
+
         dispatch(changeContentIdAction(spotInfo.contentId));
+        // dispatch(changeSpotDataAction({property: 'contentId', value:spotInfo.contentId}))
     };
 
     // 여행지 상세정보 로드
@@ -102,7 +105,10 @@ const MyAccountContainer = () => {
         if (contentId !== '') {
             dispatch(loadDetailSpotAction({ contentId }));
         }
-    }, [dispatch, spotData]);
+    }, [
+        contentId,
+        //  isLike
+    ]);
 
     if (!auth) {
         alert('정상적인 접근이 아닙니다.');
