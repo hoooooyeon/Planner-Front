@@ -93,6 +93,7 @@ const Auth = ({ loading, type, form, onChange, onSubmit, authError }) => {
                         onChange={onChange}
                         value={form.email}
                         error={authError}
+                        readOnly={isRegister}
                     />
                     <LabelTextBox
                         type="password"
@@ -146,7 +147,13 @@ const Auth = ({ loading, type, form, onChange, onSubmit, authError }) => {
 
                     {!isRegister && isNormalError && <Error>{authError}</Error>}
                     <Button onClick={onSubmit}>
-                        {!loading ? !isRegister ? '로그인' : '회원가입' : <Loading size="small" />}
+                        {loading.loginLoading || loading.registerLoading ? (
+                            <Loading size="small" />
+                        ) : !isRegister ? (
+                            '로그인'
+                        ) : (
+                            '회원가입'
+                        )}
                     </Button>
                 </FormBox>
                 {isRegister || (
