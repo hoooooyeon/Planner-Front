@@ -16,7 +16,7 @@ import {
     ACCOUNT_ID_FIND_CODE_REQUEST_TYPE,
     initializeFormAction,
 } from '../../../modules/accountModule';
-import { status } from '../../../components/account/find/Status';
+import { status } from '../../../enum/Status';
 
 const FindIdContainer = () => {
     const dispatch = useDispatch();

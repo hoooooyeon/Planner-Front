@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom';
 import styled, { css } from 'styled-components';
-import LabelTextBox from '../../common/LabelTextBox';
-import Modal from '../../common/Modal';
-import { status } from '../../../enum/Status';
-import Timer from '../../common/Timer';
+import LabelTextBox from '../common/LabelTextBox';
+import Modal from '../common/Modal';
+import Timer from '../common/Timer';
+import Loading from '../common/Loading';
+import { RegisterStatus } from '../../enum/RegisterStatus';
 
 const Container = styled.div`
     width: 100%;
-    padding: 5rem 0px;
+    height: 100vh;
+    /* padding: 5rem 0px; */
     background-color: ${(props) => props.theme.primaryBackgroundColor};
     display: flex;
     justify-content: center;
@@ -72,13 +74,17 @@ const LinkBox = styled.div`
     font-size: 0.8rem;
 `;
 
-const FindId = ({ accountError, idFindForm, phase, codeRequest, onChange, loading, onFindId, onCodeTimerEnd }) => {
-    const isNormalError = typeof accountError === 'string';
+const EmailConfirm = ({
+    loading,
+    emailConfirm,
+    emailCodeRequest,
+    onCodeTimerEnd,
+    onChange,
+    onEmailConfirmClick,
+    authError,
+}) => {
+    const isNormalError = typeof authError === 'string';
     const [modal, setModal] = useState(false);
-
-    const handleFindIdClick = () => {
-        onFindId();
-    };
 
     const handleModalClose = () => {
         setModal(false);
@@ -92,7 +98,7 @@ const FindId = ({ accountError, idFindForm, phase, codeRequest, onChange, loadin
         if (isNormalError) {
             setModal(true);
         }
-    }, [isNormalError, accountError]);
+    }, [isNormalError, authError]);
 
     return (
         <Container>
@@ -101,43 +107,42 @@ const FindId = ({ accountError, idFindForm, phase, codeRequest, onChange, loadin
                 <FormBox>
                     <LabelTextBox
                         type="text"
-                        name="username"
-                        placeholder="이름"
-                        label="이름"
+                        name="email"
+                        placeholder="이메일"
+                        label="이메일"
                         onChange={onChange}
-                        value={idFindForm.username}
-                        error={accountError}
-                    />
-                    <LabelTextBox
-                        type="text"
-                        name="phone"
-                        placeholder="전화번호"
-                        label="전화번호"
-                        onChange={onChange}
-                        value={idFindForm.phone}
-                        error={accountError}
+                        value={emailConfirm.email}
+                        error={authError}
                     />
                     {/* 인증 요청 이후에 생성된 input에 인증 코드를 적고 아이디 찾기 클릭 */}
-                    {codeRequest && (
+                    {emailCodeRequest && (
                         <LabelTextBox
                             type="text"
                             name="code"
                             placeholder="인증코드"
                             label="인증코드"
                             onChange={onChange}
-                            value={idFindForm.code}
-                            error={accountError}
+                            value={emailConfirm.code}
+                            error={authError}
                         />
                     )}
-                    {codeRequest && (
-                        <p>
-                            인증코드 유효시간: <Timer onTimerEnd={onCodeTimerEnd} />
-                        </p>
+                    {emailCodeRequest && (
+                        <>
+                            <div>이메일에 인증코드를 전송했습니다.</div>
+                            <p>
+                                인증코드 유효시간: <Timer onTimerEnd={onCodeTimerEnd} />
+                            </p>
+                        </>
                     )}
 
-                    <Button onClick={handleFindIdClick}>
-                        {phase == status.REQUEST && '인증 번호 요청'}
-                        {phase == status.FIND && '아이디 찾기'}
+                    <Button onClick={onEmailConfirmClick}>
+                        {loading.emailCodeRequestLoading || loading.emailCodeCheckLoading ? (
+                            <Loading size="small" />
+                        ) : !emailCodeRequest ? (
+                            '인증코드 전송'
+                        ) : (
+                            '인증하기'
+                        )}
                     </Button>
                 </FormBox>
                 <LinkBox>
@@ -151,11 +156,11 @@ const FindId = ({ accountError, idFindForm, phase, codeRequest, onChange, loadin
                     onModalClose={handleModalClose}
                     onModalConfirm={handleModalConfirm}
                 >
-                    <b>{accountError}</b>
+                    <b>{authError}</b>
                 </Modal>
             )}
         </Container>
     );
 };
 
-export default FindId;
+export default EmailConfirm;

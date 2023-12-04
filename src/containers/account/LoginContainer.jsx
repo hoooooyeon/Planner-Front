@@ -17,7 +17,7 @@ import {
 const LoginContainer = ({ history, type }) => {
     const dispatch = useDispatch();
     const { loading, form, token, account, authError, state } = useSelector(({ authReducer, loadingReducer }) => ({
-        loading: loadingReducer[LOGIN_TYPE],
+        loading: { loginLoading: loadingReducer[LOGIN_TYPE] },
         form: authReducer[type],
         account: authReducer.account,
         token: authReducer.token,
