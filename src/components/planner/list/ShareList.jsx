@@ -134,7 +134,7 @@ const PageBox = styled.div`
 const ShareList = ({
     sharePlanners,
     loading,
-    keyword,
+    keywordData,
     plannerError,
     page,
     sortCriteria,
@@ -156,7 +156,7 @@ const ShareList = ({
             <Container>
                 <HeaderTitle>다른 이용자들의 플래너</HeaderTitle>
                 <ShareListSearchForm
-                    keyword={keyword}
+                    keywordData={keywordData}
                     sortCriteria={sortCriteria}
                     onChangeKeyword={onChangeKeyword}
                     onChangeResultKeyword={onChangeResultKeyword}

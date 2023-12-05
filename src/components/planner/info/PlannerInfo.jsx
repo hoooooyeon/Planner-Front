@@ -113,16 +113,23 @@ const DropDownMenu = styled.ul`
 const FlexBox = styled.div`
     width: 100%;
     padding: 1rem 0;
+
     @media all and (min-width: 769px) {
         display: flex;
         justify-content: space-between;
     }
 `;
 
+const CenterDiv = styled.div`
+    height: 30rem;
+    @media all and (min-width: 481) and (max-width: 768px) {
+        height: 55rem;
+    }
+`;
+
 const PlannerInfo = ({
     account,
     planner,
-    mapRef,
     allSchedule,
     plannerData,
     loading,
@@ -135,7 +142,6 @@ const PlannerInfo = ({
     onChangeCurPlanId,
     onToggleLikePlanner,
     onClickToggleScheduleView,
-    onClickToggleMapSchedule,
     onClickEditPlanner,
 }) => {
     const { creator } = { ...planner };
@@ -190,56 +196,54 @@ const PlannerInfo = ({
     return (
         <PlannerInfoBlock ref={containerRef}>
             <Container>
-                {loading.plannerLoading ? (
-                    <Loading />
-                ) : (
-                    <>
-                        <InfoHeader>
-                            <h3>{creator}의 플래너</h3>
-                            {Object.keys(planner).length > 0 && accountId === planner.accountId && (
-                                <MenuBox>
-                                    <MenuList>
-                                        <MenuItem onClick={onTogglePlannerInfoModal}>플래너 정보 수정</MenuItem>
-                                        <MenuItem onClick={onClickEditPlanner}>플래너 루트 수정</MenuItem>
-                                        <MenuItem onClick={onToggleMemberModal}>멤버 관리</MenuItem>
-                                        <MenuItem onClick={handleToggleDeleteModal}>플래너 삭제</MenuItem>
-                                    </MenuList>
-                                    <Menu onClick={onOpenDropDown}>
-                                        <FontAwesomeIcon icon={faGear} />
-                                        <p>관리</p>
-                                    </Menu>
-                                    {isDropDown && (
-                                        <DropDownMenu isDropDown={isDropDown} ref={menuRef}>
-                                            <li onClick={onTogglePlannerInfoModal}>플래너 정보 수정</li>
-                                            <li onClick={onClickEditPlanner}>플래너 루트 수정</li>
-                                            <li onClick={onToggleMemberModal}>멤버 관리</li>
-                                            <li onClick={handleToggleDeleteModal}>플래너 삭제</li>
-                                        </DropDownMenu>
-                                    )}
-                                </MenuBox>
+                <InfoHeader>
+                    <h3>{creator}의 플래너</h3>
+                    {Object.keys(planner).length > 0 && accountId === planner.accountId && (
+                        <MenuBox>
+                            <MenuList>
+                                <MenuItem onClick={onTogglePlannerInfoModal}>플래너 정보 수정</MenuItem>
+                                <MenuItem onClick={onClickEditPlanner}>플래너 루트 수정</MenuItem>
+                                <MenuItem onClick={onToggleMemberModal}>멤버 관리</MenuItem>
+                                <MenuItem onClick={handleToggleDeleteModal}>플래너 삭제</MenuItem>
+                            </MenuList>
+                            <Menu onClick={onOpenDropDown}>
+                                <FontAwesomeIcon icon={faGear} />
+                                <p>관리</p>
+                            </Menu>
+                            {isDropDown && (
+                                <DropDownMenu isDropDown={isDropDown} ref={menuRef}>
+                                    <li onClick={onTogglePlannerInfoModal}>플래너 정보 수정</li>
+                                    <li onClick={onClickEditPlanner}>플래너 루트 수정</li>
+                                    <li onClick={onToggleMemberModal}>멤버 관리</li>
+                                    <li onClick={handleToggleDeleteModal}>플래너 삭제</li>
+                                </DropDownMenu>
                             )}
-                        </InfoHeader>
-                        <FlexBox>
-                            <InfoMap
-                                planner={planner}
-                                plannerData={plannerData}
-                                accountId={accountId}
-                                allSchedule={allSchedule}
-                                // mapRef={mapRef}
-                                loading={loading}
-                                onToggleLikePlanner={handleToggleLikePlanner}
-                                // onClickToggleMapSchedule={onClickToggleMapSchedule}
-                                onClickToggleScheduleView={onClickToggleScheduleView}
-                            />
-                            <InfoRoute
-                                planner={planner}
-                                plannerData={plannerData}
-                                drag={drag}
-                                onChangeCurPlanId={onChangeCurPlanId}
-                                onClickToggleScheduleView={onClickToggleScheduleView}
-                            />
-                        </FlexBox>
-                    </>
+                        </MenuBox>
+                    )}
+                </InfoHeader>
+                {loading.plannerLoading ? (
+                    <CenterDiv>
+                        <Loading pos="center" />
+                    </CenterDiv>
+                ) : (
+                    <FlexBox>
+                        <InfoMap
+                            planner={planner}
+                            plannerData={plannerData}
+                            accountId={accountId}
+                            allSchedule={allSchedule}
+                            loading={loading}
+                            onToggleLikePlanner={handleToggleLikePlanner}
+                            onClickToggleScheduleView={onClickToggleScheduleView}
+                        />
+                        <InfoRoute
+                            planner={planner}
+                            plannerData={plannerData}
+                            drag={drag}
+                            onChangeCurPlanId={onChangeCurPlanId}
+                            onClickToggleScheduleView={onClickToggleScheduleView}
+                        />
+                    </FlexBox>
                 )}
             </Container>
             <InfoMenu planner={planner} loading={loading} />

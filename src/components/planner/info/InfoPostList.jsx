@@ -81,7 +81,6 @@ const Ad = styled.div`
     margin-left: 1rem;
     display: none;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
-    transition: all 0.3s;
     position: relative;
     border-radius: 0.5rem;
     @media all and (min-width: 769px) {

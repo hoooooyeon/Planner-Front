@@ -182,7 +182,7 @@ const EditList = ({
     onNextPage,
     onFirstPage,
     onLastPage,
-    keyword,
+    keywordData,
     spotData,
     navList,
     areas,
@@ -255,7 +255,7 @@ const EditList = ({
                     <NavArrowIcon onClick={() => onToggleWindowNavList(true)} icon={faCaretLeft} />
                 )}
                 <EditListSearchForm
-                    keyword={keyword}
+                    keywordData={keywordData}
                     spotData={spotData}
                     areas={areas}
                     contentTypeList={contentTypeList}

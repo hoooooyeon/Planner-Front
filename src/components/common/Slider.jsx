@@ -84,7 +84,6 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
             listRef.current.style.transitionDuration = '0ms';
 
             scrollMoveX = -((moveX.current / -(hiddenBoxRef.current.clientWidth - listRef.current.clientWidth)) * 100);
-
             if (scroll) {
                 if (scrollMoveX < 0) {
                     scrollMoveX = 0;
@@ -108,7 +107,9 @@ const Slider = ({ children, list, itemRef, scroll, page, drag, prevPage, nextPag
     const sliderEnd = (e) => {
         if (itemRef.current && isSlide) {
             const computedStyle = getComputedStyle(itemRef.current);
-            const itemWidth = itemRef.current.getBoundingClientRect().width + parseInt(computedStyle.marginTop) * 2;
+            const itemWidth =
+                itemRef.current.getBoundingClientRect().width +
+                (parseInt(computedStyle.marginLeft) != 0 ? parseInt(computedStyle.marginLeft) : 1) * 2;
 
             sliderX.current = Math.floor(moveX.current / itemWidth) * itemWidth;
 

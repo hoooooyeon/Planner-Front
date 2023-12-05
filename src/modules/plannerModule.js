@@ -18,9 +18,6 @@ export const UPDATE_PLANNER_TYPE = 'planner/UPDATE_PLANNER';
 const UPDATE_PLANNER_SUCCESS_TYPE = 'planner/UPDATE_PLANNER_SUCCESS';
 const UPDATE_PLANNER_FAILURE_TYPE = 'planner/UPDATE_PLANNER_FAILURE';
 
-const RESET_PLANNER_DATA_TYPE = 'planner/RESET_PLANNER_DATA';
-const TOGGLE_PLANNER_INFO_MODAL_TYPE = 'planner/TOGGLE_PLANNER_INFO_MODAL_TYPE';
-
 export const DELETE_PLANNER_TYPE = 'planner/DELETE_PLANNER';
 const DELETE_PLANNER_SUCCESS_TYPE = 'planner/DELETE_PLANNER_SUCCESS';
 const DELETE_PLANNER_FAILURE_TYPE = 'planner/DELETE_PLANNER_FAILURE';
@@ -40,8 +37,6 @@ const UPDATE_MEMO_FAILURE_TYPE = 'planner/UPDATE_MEMO_FAILURE';
 export const DELETE_MEMO_TYPE = 'planner/DELETE_MEMO';
 const DELETE_MEMO_SUCCESS_TYPE = 'planner/DELETE_MEMO_SUCCESS';
 const DELETE_MEMO_FAILURE_TYPE = 'planner/DELETE_MEMO_FAILURE';
-
-const TOGGLE_MEMO_MODAL_TYPE = 'planner/TOGGLE_MEMO_MODAL';
 
 export const CREATE_PLAN_TYPE = 'planner/CREATE_PLAN';
 const CREATE_PLAN_SUCCESS_TYPE = 'planner/CREATE_PLAN_SUCCESS';
@@ -63,8 +58,6 @@ export const DELETE_MEMBER_TYPE = 'planner/DELETE_MEMBER';
 const DELETE_MEMBER_SUCCESS_TYPE = 'planner/DELETE_MEMBER_SUCCESS';
 const DELETE_MEMBER_FAILURE_TYPE = 'planner/DELETE_MEMBER_FAILURE';
 
-const TOGGLE_MEMBER_MODAL_TYPE = 'planner/TOGGLE_MEMBER_MODAL_TYPE';
-
 export const CREATE_LOCATION_TYPE = 'planner/CREATE_LOCATION';
 const CREATE_LOCATION_SUCCESS_TYPE = 'planner/CREATE_LOCATION_SUCCESS';
 const CREATE_LOCATION_FAILURE_TYPE = 'planner/CREATE_LOCATION_FAILURE';
@@ -77,21 +70,11 @@ export const DELETE_LOCATION_TYPE = 'planner/DELETE_LOCATION';
 const DELETE_LOCATION_SUCCESS_TYPE = 'planner/DELETE_LOCATION_SUCCESS';
 const DELETE_LOCATION_FAILURE_TYPE = 'planner/DELETE_LOCATION_FAILURE';
 
-const CHANGE_CUR_PLAN_ID_TYPE = 'planner/CHANGE_CUR_PLAN_ID';
-const CHANGE_CUR_PLANNER_ID_TYPE = 'planner/CHANGE_CUR_PLANNER_ID';
-const CHANGE_CUR_MEMO_ID_TYPE = 'planner/CHANGE_CUR_MEMO_ID';
-
-const CHANGE_PAGE_NUM_TYPE = 'planner/CHANGE_PAGE_NUM';
-
-const CHANGE_KEYWORD_TYPE = 'planner/CHANGE_KEYWORD';
-const CHANGE_RESULT_KEYWORD_TYPE = 'planner/CHANGE_RESULT_KEYWORD';
-
-const CHANGE_MAP_DATA_TYPE = 'planner/CHANGE_MAP_DATA_TYPE';
-const RESET_SHARE_PLANNER_LIST_TYPE = 'planner/RESET_SHARE_PLANNER_LIST';
-
-const RESET_PLANNER_ERROR_TYPE = 'planner/RESET_PLANNER_ERROR';
 const PLANNER_INITIALIZE_TYPE = 'planner/PLANNER_INITIALIZE';
 const PLANNER_INITIALIZE_PROPERTY_TYPE = 'planner/PLANNER_INITIALIZE_PROPERTY';
+
+const CHANGE_KEYWORD_DATA_TYPE = 'planner/CHANGE_KEYWORD_DATA';
+const CHANGE_MAP_DATA_TYPE = 'planner/CHANGE_MAP_DATA_TYPE';
 const CHANGE_PLANNER_DATA_TYPE = 'planner/CHANGE_PLANNER_DATA_TYPE';
 const CHANGE_MODAL_DATA_TYPE = 'planner/CHANGE_MODAL_DATA_TYPE';
 
@@ -134,7 +117,6 @@ export const loadSharePlannerListAction = ({ itemCount, sortCriteria, keyword, p
     pageNum,
 });
 export const loadPlannerAction = (plannerId) => ({ type: LOAD_PLANNER_TYPE, plannerId });
-export const resetPlannerDataAction = () => ({ type: RESET_PLANNER_DATA_TYPE });
 export const deletePlannerAction = (plannerId) => ({ type: DELETE_PLANNER_TYPE, plannerId });
 export const toggleLikePlannerAction = (plannerId) => ({ type: TOGGLE_LIKE_PLANNER_TYPE, plannerId });
 export const createMemoAction = ({ plannerId, title, content }) => ({
@@ -162,8 +144,6 @@ export const updatePlanAction = ({ planId, plannerId, planDate, index }) => ({
 export const deletePlanAction = ({ plannerId, planId }) => ({ type: DELETE_PLAN_TYPE, plannerId, planId });
 export const inviteMemberAction = ({ plannerId, members }) => ({ type: INVITE_MEMBER_TYPE, plannerId, members });
 export const deleteMemberAction = ({ plannerId, nickName }) => ({ type: DELETE_MEMBER_TYPE, plannerId, nickName });
-export const toggleMemberModalAction = () => ({ type: TOGGLE_MEMBER_MODAL_TYPE });
-export const togglePlannerInfoModalAction = () => ({ type: TOGGLE_PLANNER_INFO_MODAL_TYPE });
 export const createLocationAction = ({
     plannerId,
     locationName,
@@ -218,16 +198,9 @@ export const deleteLocationAction = ({ plannerId, locationId, planId }) => ({
     locationId,
     planId,
 });
-export const changeCurPlanIdAction = (planId) => ({ type: CHANGE_CUR_PLAN_ID_TYPE, planId });
-export const changeCurPlannerIdAction = (plannerId) => ({ type: CHANGE_CUR_PLANNER_ID_TYPE, plannerId });
-export const changeCurMemoIdAction = (memoId) => ({ type: CHANGE_CUR_MEMO_ID_TYPE, memoId });
-export const changePageNumAction = (pageNum) => ({ type: CHANGE_PAGE_NUM_TYPE, pageNum });
-export const changeKeywordAction = (keyword) => ({ type: CHANGE_KEYWORD_TYPE, keyword });
-export const changeResultKeywordAction = (keyword) => ({ type: CHANGE_RESULT_KEYWORD_TYPE, keyword });
+
+export const changeKeywordDataAction = (keyword) => ({ type: CHANGE_KEYWORD_DATA_TYPE, keyword });
 export const changeMapDataAction = ({ property, value }) => ({ type: CHANGE_MAP_DATA_TYPE, property, value });
-export const resetSharePlannerListAction = () => ({ type: RESET_SHARE_PLANNER_LIST_TYPE });
-export const resetPlannerErrorAction = () => ({ type: RESET_PLANNER_ERROR_TYPE });
-export const toggleMemoModalAction = () => ({ type: TOGGLE_MEMO_MODAL_TYPE });
 export const plannerInitializeAction = () => ({
     type: PLANNER_INITIALIZE_TYPE,
 });
@@ -301,7 +274,7 @@ const initialState = {
         pageNum: 1,
         pType: '',
     },
-    keyword: {
+    keywordData: {
         curKeyword: '',
         resultKeyword: '',
     },
@@ -377,18 +350,7 @@ function plannerReducer(state = initialState, action) {
                     plannerInfo: false,
                 },
             };
-        case RESET_PLANNER_DATA_TYPE:
-            return {
-                ...state,
-                plannerData: {
-                    pageNum: 1,
-                    plannerId: '',
-                    planId: '',
-                    memoId: '',
-                },
-                pType: '',
-                planner: {},
-            };
+
         case DELETE_PLANNER_SUCCESS_TYPE:
             return {
                 ...state,
@@ -473,31 +435,6 @@ function plannerReducer(state = initialState, action) {
                     ...state.plannerData,
                 },
             };
-        case TOGGLE_MEMBER_MODAL_TYPE:
-            return {
-                ...state,
-                modal: {
-                    ...state.modal,
-                    member: !state.modal.member,
-                },
-                isInvite: false,
-            };
-        case TOGGLE_PLANNER_INFO_MODAL_TYPE:
-            return {
-                ...state,
-                modal: {
-                    ...state.modal,
-                    plannerInfo: !state.modal.plannerInfo,
-                },
-            };
-        case TOGGLE_MEMO_MODAL_TYPE:
-            return {
-                ...state,
-                modal: {
-                    ...state.modal,
-                    memo: !state.modal.memo,
-                },
-            };
 
         case CREATE_LOCATION_SUCCESS_TYPE:
             return {
@@ -520,53 +457,13 @@ function plannerReducer(state = initialState, action) {
                     ...state.plannerData,
                 },
             };
-        case CHANGE_CUR_PLAN_ID_TYPE:
+
+        case CHANGE_KEYWORD_DATA_TYPE:
             return {
                 ...state,
-                plannerData: {
-                    ...state.plannerData,
-                    planId: action.planId,
-                },
-            };
-        case CHANGE_CUR_PLANNER_ID_TYPE:
-            return {
-                ...state,
-                plannerData: {
-                    ...state.plannerData,
-                    plannerId: action.plannerId,
-                },
-                // pType: 1,
-            };
-        case CHANGE_CUR_MEMO_ID_TYPE:
-            return {
-                ...state,
-                plannerData: {
-                    ...state.plannerData,
-                    memoId: action.memoId,
-                },
-            };
-        case CHANGE_PAGE_NUM_TYPE:
-            return {
-                ...state,
-                plannerData: {
-                    ...state.plannerData,
-                    pageNum: action.pageNum,
-                },
-            };
-        case CHANGE_KEYWORD_TYPE:
-            return {
-                ...state,
-                keyword: {
-                    curKeyword: action.keyword,
-                    resultKeyword: state.keyword.resultKeyword,
-                },
-            };
-        case CHANGE_RESULT_KEYWORD_TYPE:
-            return {
-                ...state,
-                keyword: {
-                    curKeyword: state.keyword.curKeyword,
-                    resultKeyword: action.keyword,
+                keywordData: {
+                    ...state.keywordData,
+                    [action.property]: action.value,
                 },
             };
         case CHANGE_MAP_DATA_TYPE:
@@ -576,16 +473,6 @@ function plannerReducer(state = initialState, action) {
                     ...state.mapData,
                     [action.property]: action.value,
                 },
-            };
-        case RESET_SHARE_PLANNER_LIST_TYPE:
-            return {
-                ...state,
-                sharePlanners: {},
-            };
-        case RESET_PLANNER_ERROR_TYPE:
-            return {
-                ...state,
-                plannerError: null,
             };
         case PLANNER_INITIALIZE_TYPE:
             return { ...initialState };
@@ -604,7 +491,7 @@ function plannerReducer(state = initialState, action) {
             return {
                 ...state,
                 modal: {
-                    ...state.plannerData,
+                    ...state.modal,
                     [action.property]: action.value,
                 },
             };

@@ -137,8 +137,8 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     }
 `;
 
-const ShareListSearchForm = ({ keyword, sortCriteria, onChangeKeyword, onChangeSort, onChangeResultKeyword }) => {
-    const { curKeyword, resultKeyword } = { ...keyword };
+const ShareListSearchForm = ({ keywordData, sortCriteria, onChangeKeyword, onChangeSort, onChangeResultKeyword }) => {
+    const { curKeyword, resultKeyword } = { ...keywordData };
     return (
         <>
             <ShareListSearchFormBlock>

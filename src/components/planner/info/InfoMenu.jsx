@@ -31,7 +31,6 @@ const Container = styled.div`
 const FlexDiv = styled.div`
     display: flex;
     align-items: center;
-    /* overflow: hidden; */
     align-items: flex-start;
     flex-direction: column;
     @media all and (min-width: 481px) {
@@ -51,11 +50,6 @@ const InfoBox = styled.div`
     align-items: center;
     justify-content: center;
     padding: 0.5rem;
-    /* width: 100%;
-    max-width: 17rem; */
-    @media all and (min-width: 481px) {
-        /* padding: 1rem; */
-    }
 `;
 
 const Ask = styled.div`
@@ -67,7 +61,6 @@ const Ask = styled.div`
     text-overflow: ellipsis;
     @media all and (min-width: 361px) {
         font-size: 0.8rem;
-        /* margin-right: 1rem; */
         white-space: nowrap;
     }
     @media all and (min-width: 481px) {
@@ -88,8 +81,6 @@ const Text = styled.div`
     max-width: 10rem;
     @media all and (min-width: 361px) {
         white-space: nowrap;
-        /* overflow: clip; */
-        /* text-overflow: visible; */
     }
     @media all and (min-width: 769px) {
         font-size: 0.8rem;

@@ -215,7 +215,7 @@ const CenterDiv = styled.div`
 `;
 
 const EditListSearchForm = ({
-    keyword,
+    keywordData,
     spotData,
     areas,
     contentTypeList,
@@ -229,7 +229,7 @@ const EditListSearchForm = ({
     onIndexPage,
 }) => {
     const iconList = [faLandmarkFlag, faHotel, faRankingStar, faTrophy, faBed, faBagShopping, faUtensils];
-    const { curKeyword, resultKeyword } = { ...keyword };
+    const { curKeyword, resultKeyword } = { ...keywordData };
     const { contentTypeId, areaCode } = { ...spotData };
     const [hoveredItemId, setHoveredItemId] = useState(null);
 

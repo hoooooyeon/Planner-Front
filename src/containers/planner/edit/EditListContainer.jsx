@@ -8,15 +8,13 @@ import {
     initializeFormAction,
 } from '../../../modules/accountModule';
 import {
-    changeKeywordAction,
+    changeKeywordDataAction,
     changeMapDataAction,
     changePageNumAction,
     changePlannerDataAction,
-    changeResultKeywordAction,
     createLocationAction,
     LOAD_PLANNER_TYPE,
     plannerInitializePropertyAction,
-    resetPlannerErrorAction,
 } from '../../../modules/plannerModule';
 import {
     loadDetailSpotAction,
@@ -42,7 +40,7 @@ const EditListContainer = () => {
         planner,
         spots,
         account,
-        keyword,
+        keywordData,
         areas,
         spotData,
         plannerData,
@@ -55,7 +53,7 @@ const EditListContainer = () => {
         account: authReducer.account,
         planner: plannerReducer.planner,
         plannerData: plannerReducer.plannerData,
-        keyword: plannerReducer.keyword,
+        keywordData: plannerReducer.keywordData,
         mapData: plannerReducer.mapData,
         spots: spotReducer.spots,
         areas: spotReducer.areas,
@@ -74,7 +72,7 @@ const EditListContainer = () => {
     const { plannerId, planId } = { ...plannerData };
     const { accountId } = { ...account };
     const { areaCode, contentTypeId, contentId } = { ...spotData };
-    const { curKeyword, resultKeyword } = { ...keyword };
+    const { curKeyword, resultKeyword } = { ...keywordData };
     const { likeSpotList } = { ...likeList };
     const numOfRows = 12;
     const { navList } = { ...mapData };
@@ -145,13 +143,13 @@ const EditListContainer = () => {
 
     // 키워드 입력
     const onChangeCurKeyword = (keyword) => {
-        dispatch(changeKeywordAction(keyword));
+        dispatch(changeKeywordDataAction({ property: 'curKeyword', value: keyword }));
     };
 
     // 실제로 검색될 키워드 저장
     const onChangeResultKeyword = () => {
         if (curKeyword.length !== 0) {
-            dispatch(changeResultKeywordAction(curKeyword));
+            dispatch(changeKeywordDataAction({ property: 'resultKeyword', value: curKeyword }));
         }
     };
 
@@ -190,11 +188,11 @@ const EditListContainer = () => {
     // 여행 정보 및 검색 키워드 초기화
     useEffect(() => {
         return () => {
-            dispatch(changeKeywordAction(''));
-            dispatch(changeResultKeywordAction(''));
+            dispatch(changeKeywordDataAction({ property: 'curKeyword', value: '' }));
+            dispatch(changeKeywordDataAction({ property: 'resultKeyword', value: '' }));
             dispatch(initializeAction());
             dispatch(spotInitializeAction());
-            dispatch(resetPlannerErrorAction());
+            dispatch(plannerInitializePropertyAction('plannerError'));
             dispatch(plannerInitializePropertyAction('mapData'));
         };
     }, []);
@@ -229,8 +227,8 @@ const EditListContainer = () => {
     // 지역, 컨텐츠 변경시 키워드 리셋.
     useEffect(() => {
         setPage(1);
-        dispatch(changeKeywordAction(''));
-        dispatch(changeResultKeywordAction(''));
+        dispatch(changeKeywordDataAction({ property: 'curKeyword', value: '' }));
+        dispatch(changeKeywordDataAction({ property: 'resultKeyword', value: '' }));
         setLikeKeyword('');
     }, [areaCode, contentTypeId]);
 
@@ -261,7 +259,7 @@ const EditListContainer = () => {
             plannerData={plannerData}
             spots={spots}
             areas={areas}
-            keyword={keyword}
+            keywordData={keywordData}
             loading={loading}
             spotData={spotData}
             navList={navList}

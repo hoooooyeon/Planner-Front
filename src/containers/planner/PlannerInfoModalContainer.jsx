@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfoModal from '../../components/planner/PlannerInfoModal';
 import {
     changeModalDataAction,
-    resetPlannerErrorAction,
-    togglePlannerInfoModalAction,
+    plannerInitializePropertyAction,
     updatePlannerAction,
     UPDATE_PLANNER_TYPE,
 } from '../../modules/plannerModule';
@@ -73,13 +72,12 @@ const PlannerInfoModalContainer = () => {
 
     // 플래너정보수정모달 토글
     const onTogglePlannerInfoModal = () => {
-        // dispatch(togglePlannerInfoModalAction());
         dispatch(changeModalDataAction({ property: 'plannerInfo', value: !plannerInfo }));
     };
 
     // plannerError 리셋
     const onCloseError = () => {
-        dispatch(resetPlannerErrorAction());
+        dispatch(plannerInitializePropertyAction('plannerError'));
     };
 
     if (Object.keys(planner).length <= 0) {

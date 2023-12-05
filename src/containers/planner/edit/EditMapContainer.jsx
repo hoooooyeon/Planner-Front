@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditMap from '../../../components/planner/edit/EditMap';
-import { resetPlannerErrorAction, changeMapDataAction } from '../../../modules/plannerModule';
+import { changeMapDataAction, plannerInitializePropertyAction } from '../../../modules/plannerModule';
 import circleImg from '../../../lib/images/circle.png';
 import locationImg from '../../../lib/images/location.png';
 import { changeAreaIndexAction, changeSpotDataAction, spotInitializeFormAction } from '../../../modules/spotModule';
@@ -17,7 +17,6 @@ const EditMapContainer = () => {
             plannerError: plannerReducer.plannerError,
             spotError: spotReducer.spotError,
             spots: spotReducer.spots,
-            keyword: spotReducer.keyword,
             contentTypeList: spotReducer.contentTypeList,
             plannerData: plannerReducer.plannerData,
             mapData: plannerReducer.mapData,
@@ -37,7 +36,7 @@ const EditMapContainer = () => {
 
     // plannerError 리셋
     const onClosePlannerError = () => {
-        dispatch(resetPlannerErrorAction());
+        dispatch(plannerInitializePropertyAction('plannerError'));
     };
 
     const handleToggleScheduleView = (bool) => {

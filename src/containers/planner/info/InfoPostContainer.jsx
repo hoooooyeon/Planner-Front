@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InfoPostList from '../../../components/planner/info/InfoPostList';
 import {
-    changeCurMemoIdAction,
     changeModalDataAction,
     changePlannerDataAction,
     createMemoAction,
@@ -12,8 +11,6 @@ import {
     DELETE_MEMO_TYPE,
     LOAD_PLANNER_TYPE,
     plannerInitializePropertyAction,
-    resetPlannerErrorAction,
-    toggleMemoModalAction,
     updateMemoAction,
     UPDATE_MEMO_TYPE,
 } from '../../../modules/plannerModule';
@@ -35,7 +32,7 @@ const InfoPostContainer = () => {
             },
         }),
     );
-    const { plannerId, planMembers } = { ...planner };
+    const { plannerId } = { ...planner };
     const { accountId, nickname } = { ...account };
     const { memoId } = { ...plannerData };
     const { memo } = { ...modal };
@@ -60,7 +57,7 @@ const InfoPostContainer = () => {
         if (accountId === planner.accountId) {
             const queryString = { plannerId, memoId, title: curMemo.title, content: curMemo.content };
             dispatch(updateMemoAction(queryString));
-            dispatch(resetPlannerErrorAction());
+            dispatch(plannerInitializePropertyAction('plannerError'));
         }
     };
 
@@ -73,9 +70,8 @@ const InfoPostContainer = () => {
 
     // 모달 닫기
     const onCloseModal = () => {
-        // dispatch(toggleMemoModalAction());
         dispatch(changeModalDataAction({ property: 'memo', value: !memo }));
-        dispatch(resetPlannerErrorAction());
+        dispatch(plannerInitializePropertyAction('plannerError'));
         onResetMemo();
     };
 
@@ -97,10 +93,8 @@ const InfoPostContainer = () => {
 
     // 현재 메모 로드
     const onLoadMemo = (memo) => {
-        // dispatch(toggleMemoModalAction());
-        dispatch(changeModalDataAction({ property: 'memo', value: !memo }));
+        dispatch(changeModalDataAction({ property: 'memo', value: !modal.memo }));
 
-        // dispatch(changeCurMemoIdAction(memo.memoId));
         dispatch(changePlannerDataAction({ property: 'memoId', value: memo.memoId }));
         setCurMemo({ title: memo.title, content: memo.content });
     };
@@ -111,11 +105,9 @@ const InfoPostContainer = () => {
     };
 
     useEffect(() => {
-        return () => dispatch(resetPlannerErrorAction());
+        return () => dispatch(plannerInitializePropertyAction('plannerError'));
     }, []);
-    // if (Object.keys(planner).length <= 0) {
-    //     return null;
-    // }
+
     return (
         <InfoPostList
             planner={planner}
