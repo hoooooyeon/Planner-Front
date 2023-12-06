@@ -190,9 +190,10 @@ const EditList = ({
     likeKeyword,
     onChangeAreaIndex,
     onChangeContentTypeId,
-    onChangeResultKeyword,
+    onChangeField,
+    onClickSearch,
+    handleCleanKeyword,
     onChangeLikeKeyword,
-    onChangeCurKeyword,
     onClickDateSchedule,
     onToggleWindowNavList,
 }) => {
@@ -263,9 +264,10 @@ const EditList = ({
                     loading={loading.areasLoading}
                     onChangeAreaIndex={onChangeAreaIndex}
                     onChangeContentTypeId={onChangeContentTypeId}
-                    onChangeResultKeyword={onChangeResultKeyword}
+                    onClickSearch={onClickSearch}
                     onChangeLikeKeyword={onChangeLikeKeyword}
-                    onChangeCurKeyword={onChangeCurKeyword}
+                    onChangeField={onChangeField}
+                    handleCleanKeyword={handleCleanKeyword}
                     onIndexPage={onIndexPage}
                 />
                 {loading.spotLoading || loading.searchSpotLoading || loading.likeSpotLoading ? (

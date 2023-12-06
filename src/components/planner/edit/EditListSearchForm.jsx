@@ -223,10 +223,11 @@ const EditListSearchForm = ({
     loading,
     onChangeAreaIndex,
     onChangeContentTypeId,
-    onChangeResultKeyword,
     onChangeLikeKeyword,
-    onChangeCurKeyword,
     onIndexPage,
+    onChangeField,
+    onClickSearch,
+    handleCleanKeyword,
 }) => {
     const iconList = [faLandmarkFlag, faHotel, faRankingStar, faTrophy, faBed, faBagShopping, faUtensils];
     const { curKeyword, resultKeyword } = { ...keywordData };
@@ -303,23 +304,17 @@ const EditListSearchForm = ({
                                 <SearchInput
                                     placeholder="키워드 검색"
                                     type="text"
+                                    name="curKeyword"
                                     value={curKeyword}
-                                    onChange={(e) => {
-                                        onChangeCurKeyword(e.target.value);
-                                    }}
+                                    onChange={onChangeField}
                                 />
                                 <InvisibleInput type="text" />
                                 <IconBox>
                                     {curKeyword.length > 0 ? (
-                                        <StyledFontAwesomeIcon
-                                            onClick={() => {
-                                                onChangeCurKeyword('');
-                                            }}
-                                            icon={faXmark}
-                                        />
+                                        <StyledFontAwesomeIcon onClick={handleCleanKeyword} icon={faXmark} />
                                     ) : null}
                                 </IconBox>
-                                <SearchButton type="button" onClick={onChangeResultKeyword}>
+                                <SearchButton type="button" onClick={onClickSearch}>
                                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                                 </SearchButton>
                             </SearchBox>
@@ -338,20 +333,14 @@ const EditListSearchForm = ({
                                 <SearchInput
                                     placeholder="키워드 검색"
                                     type="text"
+                                    name="curKeyword"
                                     value={curKeyword}
-                                    onChange={(e) => {
-                                        onChangeCurKeyword(e.target.value);
-                                    }}
+                                    onChange={onChangeField}
                                 />
                                 <InvisibleInput type="text" />
                                 <IconBox>
                                     {curKeyword.length > 0 ? (
-                                        <StyledFontAwesomeIcon
-                                            onClick={() => {
-                                                onChangeCurKeyword('');
-                                            }}
-                                            icon={faXmark}
-                                        />
+                                        <StyledFontAwesomeIcon onClick={handleCleanKeyword} icon={faXmark} />
                                     ) : null}
                                 </IconBox>
                                 <SearchButton type="button" onClick={onChangeLikeKeyword}>

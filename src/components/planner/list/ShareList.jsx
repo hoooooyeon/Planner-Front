@@ -140,9 +140,10 @@ const ShareList = ({
     sortCriteria,
     onCloseError,
     onClickPlanner,
-    onChangeKeyword,
-    onChangeResultKeyword,
+    onChangeField,
+    handleCleanKeyword,
     onChangeSort,
+    handleSearchPlanner,
     drag,
     onIndexPage,
     onNextPage,
@@ -158,8 +159,9 @@ const ShareList = ({
                 <ShareListSearchForm
                     keywordData={keywordData}
                     sortCriteria={sortCriteria}
-                    onChangeKeyword={onChangeKeyword}
-                    onChangeResultKeyword={onChangeResultKeyword}
+                    onChangeField={onChangeField}
+                    handleSearchPlanner={handleSearchPlanner}
+                    handleCleanKeyword={handleCleanKeyword}
                     onChangeSort={onChangeSort}
                 />
                 {loading ? (

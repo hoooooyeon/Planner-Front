@@ -4,6 +4,7 @@ import {
     changeKeywordDataAction,
     changePageNumAction,
     changePlannerDataAction,
+    changePlannerFieldAction,
     loadSharePlannerListAction,
     LOAD_SHARE_PLANNER_LIST_TYPE,
     plannerInitializePropertyAction,
@@ -53,13 +54,18 @@ const ShareListContainer = () => {
     };
 
     // 플래너 키워드 타이핑
-    const onChangeKeyword = (keyword) => {
-        dispatch(changeKeywordDataAction({ property: 'curKeyword', value: keyword }));
+    const onChangeField = (e) => {
+        const { name, value } = e.target;
+        dispatch(changePlannerFieldAction({ form: 'keywordData', name: name, value: value }));
     };
 
     // 실제적으로 검색된 키워드 저장
-    const onChangeResultKeyword = () => {
-        dispatch(changeKeywordDataAction({ property: 'resultKeyword', value: curKeyword }));
+    const handleSearchPlanner = () => {
+        dispatch(changePlannerFieldAction({ form: 'keywordData', name: 'resultKeyword', value: curKeyword }));
+    };
+
+    const handleCleanKeyword = () => {
+        dispatch(changePlannerFieldAction({ form: 'keywordData', name: 'curKeyword', value: '' }));
     };
 
     // 검색 순위, 키워드 변경시 페이지 리셋
@@ -69,15 +75,13 @@ const ShareListContainer = () => {
 
     // 키워드 리셋
     useEffect(() => {
-        dispatch(changeKeywordDataAction({ property: 'curKeyword', value: '' }));
-        dispatch(changeKeywordDataAction({ property: 'resultKeyword', value: '' }));
+        dispatch(plannerInitializePropertyAction('keywordData'));
     }, [sortCriteria]);
 
     // 검색 키워드 및 플래너리스트 초기화
     useEffect(() => {
         return () => {
-            dispatch(changeKeywordDataAction({ property: 'curKeyword', value: '' }));
-            dispatch(changeKeywordDataAction({ property: 'resultKeyword', value: '' }));
+            dispatch(plannerInitializePropertyAction('keywordData'));
             dispatch(plannerInitializePropertyAction('sharePlanners'));
             dispatch(plannerInitializePropertyAction('plannerError'));
         };
@@ -114,8 +118,9 @@ const ShareListContainer = () => {
             loading={loading}
             page={pageNum}
             onClickPlanner={onClickPlanner}
-            onChangeKeyword={onChangeKeyword}
-            onChangeResultKeyword={onChangeResultKeyword}
+            onChangeField={onChangeField}
+            handleSearchPlanner={handleSearchPlanner}
+            handleCleanKeyword={handleCleanKeyword}
             onChangeSort={onChangeSort}
             onCloseError={onCloseError}
             onIndexPage={onIndexPage}

@@ -8,7 +8,6 @@ import {
     inviteMemberAction,
     INVITE_MEMBER_TYPE,
     plannerInitializePropertyAction,
-    toggleMemberModalAction,
 } from '../../modules/plannerModule';
 
 const MemberModalContainer = () => {
@@ -59,7 +58,6 @@ const MemberModalContainer = () => {
     // plannerError 리셋
     const onToggleMemberModal = () => {
         setMembers([]);
-        // dispatch(toggleMemberModalAction());
         dispatch(changeModalDataAction({ property: 'member', value: !member }));
         dispatch(plannerInitializePropertyAction('isInvite'));
         dispatch(plannerInitializePropertyAction('plannerError'));

@@ -73,10 +73,11 @@ const DELETE_LOCATION_FAILURE_TYPE = 'planner/DELETE_LOCATION_FAILURE';
 const PLANNER_INITIALIZE_TYPE = 'planner/PLANNER_INITIALIZE';
 const PLANNER_INITIALIZE_PROPERTY_TYPE = 'planner/PLANNER_INITIALIZE_PROPERTY';
 
-const CHANGE_KEYWORD_DATA_TYPE = 'planner/CHANGE_KEYWORD_DATA';
 const CHANGE_MAP_DATA_TYPE = 'planner/CHANGE_MAP_DATA_TYPE';
 const CHANGE_PLANNER_DATA_TYPE = 'planner/CHANGE_PLANNER_DATA_TYPE';
 const CHANGE_MODAL_DATA_TYPE = 'planner/CHANGE_MODAL_DATA_TYPE';
+const CHANGE_PLANNER_FIELD_TYPE = 'planner/CHANGE_PLANNER_FIELD';
+const VALIDATE_TYPE = 'planner/VALIDATE';
 
 export const createPlannerAction = ({
     accountId,
@@ -199,7 +200,6 @@ export const deleteLocationAction = ({ plannerId, locationId, planId }) => ({
     planId,
 });
 
-export const changeKeywordDataAction = (keyword) => ({ type: CHANGE_KEYWORD_DATA_TYPE, keyword });
 export const changeMapDataAction = ({ property, value }) => ({ type: CHANGE_MAP_DATA_TYPE, property, value });
 export const plannerInitializeAction = () => ({
     type: PLANNER_INITIALIZE_TYPE,
@@ -217,6 +217,17 @@ export const changeModalDataAction = ({ property, value }) => ({
     type: CHANGE_MODAL_DATA_TYPE,
     property,
     value,
+});
+export const changePlannerFieldAction = ({ form, name, value }) => ({
+    type: CHANGE_PLANNER_FIELD_TYPE,
+    form,
+    name,
+    value,
+});
+
+export const validateFieldAction = (validState) => ({
+    type: VALIDATE_TYPE,
+    validState,
 });
 
 const createPlannerSaga = createSaga(CREATE_PLANNER_TYPE, plannerAPI.createPlanner);
@@ -284,6 +295,12 @@ const initialState = {
         navList: true,
         tutorial: false,
         isView: true,
+    },
+    plannerInfoForm: {
+        title: '',
+        expense: '',
+        memberCount: '',
+        memberTypeId: 1,
     },
 };
 
@@ -457,15 +474,6 @@ function plannerReducer(state = initialState, action) {
                     ...state.plannerData,
                 },
             };
-
-        case CHANGE_KEYWORD_DATA_TYPE:
-            return {
-                ...state,
-                keywordData: {
-                    ...state.keywordData,
-                    [action.property]: action.value,
-                },
-            };
         case CHANGE_MAP_DATA_TYPE:
             return {
                 ...state,
@@ -495,6 +503,12 @@ function plannerReducer(state = initialState, action) {
                     [action.property]: action.value,
                 },
             };
+        case CHANGE_PLANNER_FIELD_TYPE: {
+            return { ...state, [action.form]: { ...state[action.form], [action.name]: action.value } };
+        }
+        case VALIDATE_TYPE: {
+            return { ...state, plannerError: { ...action.validState } };
+        }
         default:
             return state;
     }

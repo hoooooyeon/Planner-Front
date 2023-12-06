@@ -8,10 +8,10 @@ import {
     initializeFormAction,
 } from '../../../modules/accountModule';
 import {
-    changeKeywordDataAction,
     changeMapDataAction,
     changePageNumAction,
     changePlannerDataAction,
+    changePlannerFieldAction,
     createLocationAction,
     LOAD_PLANNER_TYPE,
     plannerInitializePropertyAction,
@@ -141,16 +141,18 @@ const EditListContainer = () => {
         dispatch(changeSpotDataAction({ property: 'areaCode', value: num }));
     };
 
-    // 키워드 입력
-    const onChangeCurKeyword = (keyword) => {
-        dispatch(changeKeywordDataAction({ property: 'curKeyword', value: keyword }));
+    // 플래너 키워드 타이핑
+    const onChangeField = (e) => {
+        const { name, value } = e.target;
+        dispatch(changePlannerFieldAction({ form: 'keywordData', name: name, value: value }));
+    };
+    // 실제적으로 검색된 키워드 저장
+    const handleSearchPlanner = () => {
+        dispatch(changePlannerFieldAction({ form: 'keywordData', name: 'resultKeyword', value: curKeyword }));
     };
 
-    // 실제로 검색될 키워드 저장
-    const onChangeResultKeyword = () => {
-        if (curKeyword.length !== 0) {
-            dispatch(changeKeywordDataAction({ property: 'resultKeyword', value: curKeyword }));
-        }
+    const handleCleanKeyword = () => {
+        dispatch(changePlannerFieldAction({ form: 'keywordData', name: 'curKeyword', value: '' }));
     };
 
     // 여행지 키워드로 조회
@@ -188,8 +190,7 @@ const EditListContainer = () => {
     // 여행 정보 및 검색 키워드 초기화
     useEffect(() => {
         return () => {
-            dispatch(changeKeywordDataAction({ property: 'curKeyword', value: '' }));
-            dispatch(changeKeywordDataAction({ property: 'resultKeyword', value: '' }));
+            dispatch(plannerInitializePropertyAction('keywordData'));
             dispatch(initializeAction());
             dispatch(spotInitializeAction());
             dispatch(plannerInitializePropertyAction('plannerError'));
@@ -227,8 +228,7 @@ const EditListContainer = () => {
     // 지역, 컨텐츠 변경시 키워드 리셋.
     useEffect(() => {
         setPage(1);
-        dispatch(changeKeywordDataAction({ property: 'curKeyword', value: '' }));
-        dispatch(changeKeywordDataAction({ property: 'resultKeyword', value: '' }));
+        dispatch(plannerInitializePropertyAction('keywordData'));
         setLikeKeyword('');
     }, [areaCode, contentTypeId]);
 
@@ -278,8 +278,9 @@ const EditListContainer = () => {
             onFirstPage={onFirstPage}
             onLastPage={onLastPage}
             onChangeAreaIndex={onChangeAreaIndex}
-            onChangeCurKeyword={onChangeCurKeyword}
-            onChangeResultKeyword={onChangeResultKeyword}
+            onChangeField={onChangeField}
+            onClickSearch={handleSearchPlanner}
+            handleCleanKeyword={handleCleanKeyword}
             onChangeLikeKeyword={onChangeLikeKeyword}
             onClickDateSchedule={onClickDateSchedule}
             onToggleWindowNavList={onToggleWindowNavList}
