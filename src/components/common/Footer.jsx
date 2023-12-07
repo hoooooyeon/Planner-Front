@@ -47,14 +47,14 @@ const FooterBox = styled.div`
             font-size: 0.7rem;
         }
     }
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         flex-direction: row;
         padding: 2rem 4rem;
         div + div {
             margin-top: 0;
         }
     }
-    @media all and (min-width: 1024px) {
+    @media all and (min-width: 1025px) {
         padding: 2rem 6rem;
     }
 `;
@@ -72,7 +72,7 @@ const Img = styled.img`
 const Music = styled.div`
     display: flex;
     flex-direction: column;
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         align-items: center;
     }
 `;
@@ -80,7 +80,7 @@ const Music = styled.div`
 const MusicBox = styled.div`
     width: 120px;
     height: 120px;
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         display: none;
     }
     position: relative;
@@ -96,7 +96,7 @@ const Writing = styled.div`
     justify-content: space-around;
     flex-direction: column;
     margin-left: 1rem;
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         align-items: center;
     }
 `;
@@ -123,7 +123,7 @@ const Info = styled.div`
     flex-direction: column;
     justify-content: center;
     margin-left: 1rem;
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         align-items: center;
     }
 `;
@@ -131,7 +131,7 @@ const Info = styled.div`
 const FlexDiv = styled.div`
     display: flex;
     justify-content: flex-end;
-    @media all and (max-width: 399px) {
+    @media all and (max-width: 480px) {
         flex-direction: column;
         align-items: center;
     }
@@ -148,7 +148,7 @@ const ColumnDiv = styled.div`
     p + p {
         margin: 0;
     }
-    @media all and (max-width: 399px) {
+    @media all and (max-width: 480px) {
         align-items: flex-start;
         margin: 0;
     }
