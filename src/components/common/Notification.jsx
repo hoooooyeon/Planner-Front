@@ -30,16 +30,17 @@ const NotificationActionBox = styled.div`
 const NotificationBox = styled.div`
     position: absolute;
     top: 40px;
-    right: 14px;
+    left: -20px;
     width: 250px;
     height: 260px;
     border-radius: 6px;
     box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
     background-color: ${(props) => props.theme.primaryBackgroundColor};
+    @media all and (max-width: 320px) {
+        width: 70vw;
+    }
     @media all and (max-width: 768px) {
         left: 10px;
-        top: 40px;
-        right: 0;
     }
 `;
 

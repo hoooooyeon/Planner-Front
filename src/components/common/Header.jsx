@@ -24,10 +24,7 @@ const HeaderBlock = styled.div`
         css`
             background-color: rgba(255, 255, 255, 0.8);
         `}
-    @media all and (min-width: 768px) {
-        padding: 0 9rem;
-    }
-    @media all and (min-width: 1200px) {
+    @media all and (min-width: 769px) {
         padding: 0 9rem;
     }
 `;
@@ -48,7 +45,7 @@ const MenuList = styled.ul`
     list-style: none;
     display: none;
     padding: 0;
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         display: flex;
     }
     li {
@@ -81,7 +78,7 @@ const AccountList = styled.ul`
             color: ${(props) => props.theme.mainColor};
         }
     }
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         display: flex;
     }
 `;
@@ -104,7 +101,7 @@ const Account = styled.div`
         height: 40px;
     }
     display: none;
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         display: flex;
     }
 `;
@@ -147,7 +144,7 @@ const AccountBox = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         position: absolute;
         left: 0;
     }

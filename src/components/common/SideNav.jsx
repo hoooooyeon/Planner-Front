@@ -20,7 +20,7 @@ const SideNavContainer = styled.div`
     bottom: 0;
     transform: ${(props) => (props.navOpen ? 'translateX(0px)' : 'translateX(302px)')};
     transition: 0.4s ease;
-    @media all and (min-width: 768px) {
+    @media all and (min-width: 769px) {
         transform: translateX(380px);
     }
 `;
