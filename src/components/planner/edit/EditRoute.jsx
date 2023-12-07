@@ -10,7 +10,6 @@ import { faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../../common/Loading';
-import EditTutorialModal from './EditTutorialModal';
 
 const EditRouteBlock = styled.div`
     background-color: ${(props) => props.theme.primaryBackgroundColor};
@@ -26,7 +25,6 @@ const EditRouteBlock = styled.div`
         top: ${(props) => (props.navRoute ? '250px' : '740px')};
     }
     @media all and (min-width: 481px) {
-        /* transition: 0.4s ease; */
         transform: ${(props) => (props.navRoute ? 'translateX(0px)' : 'translateX(-392px)')};
     }
 `;

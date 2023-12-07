@@ -12,7 +12,6 @@ import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/spotErrorImg.jpg';
 import Empty from '../../common/Empty';
 import Loading from '../../common/Loading';
-import Modal from '../../common/Modal';
 import ErrorModal from '../../common/ErrorModal';
 
 const EditListBlock = styled.div`
@@ -31,7 +30,6 @@ const EditListBlock = styled.div`
         top: ${(props) => (props.navList ? '250px' : '740px')};
     }
     @media all and (min-width: 481px) {
-        /* transition: 0.4s ease; */
         transform: ${(props) => (props.navList ? 'translateX(0px)' : 'translateX(350px)')};
     }
 `;
@@ -155,16 +153,6 @@ const PageBox = styled.div`
     width: 100%;
     padding: 5px 0;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
-`;
-
-const ErrorList = styled.div`
-    color: ${(props) => props.theme.tertiaryColor};
-    font-weight: bold;
-    font-size: 1.2rem;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
 `;
 
 const EditList = ({

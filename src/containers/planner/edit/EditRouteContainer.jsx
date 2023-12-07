@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import EditRoute from '../../../components/planner/edit/EditRoute';
 import {
-    changeCurPlanIdAction,
-    changeCurPlannerIdAction,
     changeMapDataAction,
     changeModalDataAction,
     changePlannerDataAction,
@@ -19,8 +17,6 @@ import {
     loadPlannerAction,
     LOAD_PLANNER_TYPE,
     plannerInitializePropertyAction,
-    toggleMemberModalAction,
-    togglePlannerInfoModalAction,
     updateLocationAction,
     updatePlanAction,
     updatePlannerAction,
@@ -61,7 +57,7 @@ const EditRouteContainer = () => {
     };
     const { planId } = { ...plannerData };
     const { accountId } = { ...account };
-    const { allSchedule, navRoute, tutorial, isView } = { ...mapData };
+    const { allSchedule, tutorial } = { ...mapData };
     const [startDate, setStartDate] = useState(planDateStart ? new Date(planDateStart) : new Date());
     const [endDate, setEndDate] = useState(planDateEnd ? new Date(planDateEnd) : new Date());
     const { plannerInfo, member } = { ...modal };
@@ -87,9 +83,7 @@ const EditRouteContainer = () => {
 
     // 주소 입력 접근시 plannerData.plannerId 설정.
     useEffect(() => {
-        // dispatch(changeCurPlannerIdAction(params.plannerId));
         dispatch(changePlannerDataAction({ property: 'plannerId', value: params.plannerId }));
-        // dispatch(changePlannerDataAction({ property: 'pType', value: 1 }));
     }, [dispatch, params]);
 
     // 출발 날짜 선택
@@ -246,7 +240,6 @@ const EditRouteContainer = () => {
 
     // plan 선택
     const onChangeCurPlanId = (planId) => {
-        // dispatch(changeCurPlanIdAction(planId));
         dispatch(changePlannerDataAction({ property: 'planId', value: planId }));
     };
 
@@ -282,15 +275,12 @@ const EditRouteContainer = () => {
 
     // 멤버모달 토글
     const onToggleMemberModal = () => {
-        // dispatch(toggleMemberModalAction());
-
         dispatch(changeModalDataAction({ property: 'member', value: !member }));
         dispatch(plannerInitializePropertyAction('isInvite'));
     };
 
     // 플래너정보수정모달 토글
     const onTogglePlannerInfoModal = () => {
-        // dispatch(togglePlannerInfoModalAction());
         dispatch(changeModalDataAction({ property: 'plannerInfo', value: !plannerInfo }));
     };
 
@@ -321,12 +311,10 @@ const EditRouteContainer = () => {
                 }
             });
             if (isPlanId === 0) {
-                // dispatch(changeCurPlanIdAction(plans[0].planId));
                 dispatch(changePlannerDataAction({ property: 'planId', value: plans[0].planId }));
             }
         } else {
             if (planId !== '') {
-                // dispatch(changeCurPlanIdAction(''));
                 dispatch(changePlannerDataAction({ property: 'planId', value: '' }));
             }
         }
@@ -357,9 +345,6 @@ const EditRouteContainer = () => {
         dispatch(changeMapDataAction({ property: 'navRoute', value: bool }));
     };
 
-    // if (Object.keys(planner).length <= 0 || accountId !== planner.accountId) {
-    //     return null;
-    // }
     return (
         <EditRoute
             planner={planner}

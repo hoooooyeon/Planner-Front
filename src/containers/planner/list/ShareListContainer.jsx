@@ -11,6 +11,7 @@ import {
 } from '../../../modules/plannerModule';
 import ShareList from '../../../components/planner/list/ShareList';
 import { useState } from 'react';
+import { handleRemoveSpaces } from '../../../lib/utils/CommonFunction';
 
 const ShareListContainer = () => {
     const dispatch = useDispatch();
@@ -61,7 +62,8 @@ const ShareListContainer = () => {
 
     // 실제적으로 검색된 키워드 저장
     const handleSearchPlanner = () => {
-        dispatch(changePlannerFieldAction({ form: 'keywordData', name: 'resultKeyword', value: curKeyword }));
+        const keyword = handleRemoveSpaces(curKeyword);
+        dispatch(changePlannerFieldAction({ form: 'keywordData', name: 'resultKeyword', value: keyword }));
     };
 
     const handleCleanKeyword = () => {

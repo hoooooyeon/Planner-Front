@@ -77,7 +77,7 @@ const CHANGE_MAP_DATA_TYPE = 'planner/CHANGE_MAP_DATA_TYPE';
 const CHANGE_PLANNER_DATA_TYPE = 'planner/CHANGE_PLANNER_DATA_TYPE';
 const CHANGE_MODAL_DATA_TYPE = 'planner/CHANGE_MODAL_DATA_TYPE';
 const CHANGE_PLANNER_FIELD_TYPE = 'planner/CHANGE_PLANNER_FIELD';
-const VALIDATE_TYPE = 'planner/VALIDATE';
+const PLANNER_VALIDATE_TYPE = 'planner/PLANNER_VALIDATE';
 
 export const createPlannerAction = ({
     accountId,
@@ -225,8 +225,8 @@ export const changePlannerFieldAction = ({ form, name, value }) => ({
     value,
 });
 
-export const validateFieldAction = (validState) => ({
-    type: VALIDATE_TYPE,
+export const plannerValidateFieldAction = (validState) => ({
+    type: PLANNER_VALIDATE_TYPE,
     validState,
 });
 
@@ -506,7 +506,7 @@ function plannerReducer(state = initialState, action) {
         case CHANGE_PLANNER_FIELD_TYPE: {
             return { ...state, [action.form]: { ...state[action.form], [action.name]: action.value } };
         }
-        case VALIDATE_TYPE: {
+        case PLANNER_VALIDATE_TYPE: {
             return { ...state, plannerError: { ...action.validState } };
         }
         default:

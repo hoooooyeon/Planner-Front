@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
+import { handleRemoveSpaces } from '../../lib/utils/CommonFunction';
 import {
     addSpotLikeAction,
     loadAreasAction,
@@ -34,6 +35,7 @@ const SpotListContainer = ({
     searchSpot,
     initialize,
     initializeForm,
+    spotValidateField,
 }) => {
     const { areaCode, pageNo, contentTypeId, contentId } = { ...spotData };
     const [curKeyword, setCurKeyword] = useState('');
@@ -46,7 +48,7 @@ const SpotListContainer = ({
 
     // 여행지리스트 가져오기
     useEffect(() => {
-        if (areas.length > 0 && resultKeyword === '') {
+        if (areas.length > 0 && resultKeyword.length === 0) {
             initializeForm('spots');
             const queryString = {
                 areaCode,
@@ -95,14 +97,13 @@ const SpotListContainer = ({
 
     // 실제적으로 검색될 키워드 저장
     const onChangeResultKeyword = () => {
-        if (curKeyword !== '') {
-            setResultKeyword(curKeyword);
-        }
+        const keyword = handleRemoveSpaces(curKeyword);
+        setResultKeyword(keyword);
     };
 
     // 여행지리스트 키워드로 검색
     useEffect(() => {
-        if (resultKeyword !== '') {
+        if (resultKeyword.length !== 0) {
             initializeForm('spots');
             const queryString = {
                 areaCode,

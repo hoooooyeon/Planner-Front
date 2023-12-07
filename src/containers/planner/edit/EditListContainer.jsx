@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditList from '../../../components/planner/edit/EditList';
+import { handleRemoveSpaces } from '../../../lib/utils/CommonFunction';
 import {
     accountLikeSpotListLoadAction,
     ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE,
@@ -9,26 +10,20 @@ import {
 } from '../../../modules/accountModule';
 import {
     changeMapDataAction,
-    changePageNumAction,
     changePlannerDataAction,
     changePlannerFieldAction,
     createLocationAction,
-    LOAD_PLANNER_TYPE,
     plannerInitializePropertyAction,
 } from '../../../modules/plannerModule';
 import {
     loadDetailSpotAction,
     loadSpotsAction,
-    changeContentTypeIdAction,
     changeDetailSpotAction,
-    changeAreaIndexAction,
     loadAreasAction,
     searchSpotAction,
-    changeContentIdAction,
     LOAD_AREAS_TYPE,
     LOAD_SPOTS_TYPE,
     SEARCH_SPOT_TYPE,
-    changePageIndexAction,
     spotInitializeFormAction,
     spotInitializeAction,
     changeSpotDataAction,
@@ -113,7 +108,6 @@ const EditListContainer = () => {
     // 여행지 상세정보 모달 열기
     const onOpenDetail = (spotInfo) => {
         dispatch(changeDetailSpotAction(spotInfo));
-        // dispatch(changeContentIdAction(spotInfo.contentId));
         dispatch(changeSpotDataAction({ property: 'contentId', value: spotInfo.contentId }));
     };
 
@@ -126,7 +120,6 @@ const EditListContainer = () => {
 
     // 여행지 타입 변경
     const onChangeContentTypeId = (id) => {
-        // dispatch(changeContentTypeIdAction(id));
         dispatch(changeSpotDataAction({ property: 'contentTypeId', value: id }));
     };
 
@@ -137,7 +130,6 @@ const EditListContainer = () => {
 
     // 지역 선택
     const onChangeAreaIndex = (num) => {
-        // dispatch(changeAreaIndexAction(num));
         dispatch(changeSpotDataAction({ property: 'areaCode', value: num }));
     };
 
@@ -148,7 +140,8 @@ const EditListContainer = () => {
     };
     // 실제적으로 검색된 키워드 저장
     const handleSearchPlanner = () => {
-        dispatch(changePlannerFieldAction({ form: 'keywordData', name: 'resultKeyword', value: curKeyword }));
+        const keyword = handleRemoveSpaces(curKeyword);
+        dispatch(changePlannerFieldAction({ form: 'keywordData', name: 'resultKeyword', value: keyword }));
     };
 
     const handleCleanKeyword = () => {
@@ -164,12 +157,6 @@ const EditListContainer = () => {
         }
     }, [dispatch, resultKeyword, page]);
 
-    // 여행지 좋아요리스트 검색 키워드 저장
-    const [likeKeyword, setLikeKeyword] = useState('');
-    const onChangeLikeKeyword = () => {
-        setLikeKeyword(curKeyword);
-    };
-
     // 여행지 좋아요리스트 로드
     useEffect(() => {
         if (accountId && contentTypeId === 0) {
@@ -177,7 +164,7 @@ const EditListContainer = () => {
                 accountId,
                 itemCount: 12,
                 sortCriteria: 2,
-                keyword: likeKeyword,
+                keyword: resultKeyword,
                 postType: 2,
                 pageNum: page,
             };
@@ -185,7 +172,7 @@ const EditListContainer = () => {
             dispatch(initializeFormAction('likeList'));
             dispatch(accountLikeSpotListLoadAction(queryString));
         }
-    }, [dispatch, accountId, likeKeyword, contentTypeId, page, detail.likeState]);
+    }, [dispatch, accountId, resultKeyword, contentTypeId, page, detail.likeState]);
 
     // 여행 정보 및 검색 키워드 초기화
     useEffect(() => {
@@ -229,13 +216,12 @@ const EditListContainer = () => {
     useEffect(() => {
         setPage(1);
         dispatch(plannerInitializePropertyAction('keywordData'));
-        setLikeKeyword('');
     }, [areaCode, contentTypeId]);
 
     // 키워드 검색시 페이지 리셋.
     useEffect(() => {
         setPage(1);
-    }, [resultKeyword, likeKeyword]);
+    }, [resultKeyword]);
 
     // 현재 일정 루트 보기
     const onClickDateSchedule = () => {
@@ -251,9 +237,6 @@ const EditListContainer = () => {
         dispatch(changePlannerDataAction({ property: 'pType', value: '' }));
     }, []);
 
-    // if (accountId !== planner.accountId) {
-    //     return null;
-    // }
     return (
         <EditList
             plannerData={plannerData}
@@ -265,7 +248,6 @@ const EditListContainer = () => {
             navList={navList}
             contentTypeList={contentTypeList}
             likeSpotList={likeSpotList}
-            likeKeyword={likeKeyword}
             totalCount={totalCount.current}
             page={page}
             itemIndex={numOfRows}
@@ -281,7 +263,6 @@ const EditListContainer = () => {
             onChangeField={onChangeField}
             onClickSearch={handleSearchPlanner}
             handleCleanKeyword={handleCleanKeyword}
-            onChangeLikeKeyword={onChangeLikeKeyword}
             onClickDateSchedule={onClickDateSchedule}
             onToggleWindowNavList={onToggleWindowNavList}
         />

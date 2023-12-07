@@ -219,11 +219,9 @@ const EditListSearchForm = ({
     spotData,
     areas,
     contentTypeList,
-    likeKeyword,
     loading,
     onChangeAreaIndex,
     onChangeContentTypeId,
-    onChangeLikeKeyword,
     onIndexPage,
     onChangeField,
     onClickSearch,
@@ -258,7 +256,6 @@ const EditListSearchForm = ({
                                 value={areaCode}
                                 onChange={(e) => {
                                     onChangeAreaIndex(e.target.value);
-                                    console.log(areaCode);
                                 }}
                             >
                                 {areas.length > 0 &&
@@ -298,64 +295,33 @@ const EditListSearchForm = ({
                             {hoveredItemId === 7 && <IconName>좋아요</IconName>}
                         </MenuItem>
                     </MenuList>
-                    {contentTypeId !== 0 && (
-                        <Form>
-                            <SearchBox>
-                                <SearchInput
-                                    placeholder="키워드 검색"
-                                    type="text"
-                                    name="curKeyword"
-                                    value={curKeyword}
-                                    onChange={onChangeField}
-                                />
-                                <InvisibleInput type="text" />
-                                <IconBox>
-                                    {curKeyword.length > 0 ? (
-                                        <StyledFontAwesomeIcon onClick={handleCleanKeyword} icon={faXmark} />
-                                    ) : null}
-                                </IconBox>
-                                <SearchButton type="button" onClick={onClickSearch}>
-                                    <FontAwesomeIcon icon={faMagnifyingGlass} />
-                                </SearchButton>
-                            </SearchBox>
-                            <ResultBox>
-                                {resultKeyword.length > 0 ? (
-                                    <>
-                                        ' <SearchResult>{resultKeyword}</SearchResult> ' 에 대한 검색 결과...
-                                    </>
+                    <Form>
+                        <SearchBox>
+                            <SearchInput
+                                placeholder="키워드 검색"
+                                type="text"
+                                name="curKeyword"
+                                value={curKeyword}
+                                onChange={onChangeField}
+                            />
+                            <InvisibleInput type="text" />
+                            <IconBox>
+                                {curKeyword.length > 0 ? (
+                                    <StyledFontAwesomeIcon onClick={handleCleanKeyword} icon={faXmark} />
                                 ) : null}
-                            </ResultBox>
-                        </Form>
-                    )}
-                    {contentTypeId === 0 && (
-                        <Form>
-                            <SearchBox>
-                                <SearchInput
-                                    placeholder="키워드 검색"
-                                    type="text"
-                                    name="curKeyword"
-                                    value={curKeyword}
-                                    onChange={onChangeField}
-                                />
-                                <InvisibleInput type="text" />
-                                <IconBox>
-                                    {curKeyword.length > 0 ? (
-                                        <StyledFontAwesomeIcon onClick={handleCleanKeyword} icon={faXmark} />
-                                    ) : null}
-                                </IconBox>
-                                <SearchButton type="button" onClick={onChangeLikeKeyword}>
-                                    <FontAwesomeIcon icon={faMagnifyingGlass} />
-                                </SearchButton>
-                            </SearchBox>
-                            <ResultBox>
-                                {likeKeyword.length > 0 ? (
-                                    <>
-                                        ' <SearchResult>{likeKeyword}</SearchResult> ' 에 대한 검색 결과...
-                                    </>
-                                ) : null}
-                            </ResultBox>
-                        </Form>
-                    )}
+                            </IconBox>
+                            <SearchButton type="button" onClick={onClickSearch}>
+                                <FontAwesomeIcon icon={faMagnifyingGlass} />
+                            </SearchButton>
+                        </SearchBox>
+                        <ResultBox>
+                            {resultKeyword.length > 0 ? (
+                                <>
+                                    ' <SearchResult>{resultKeyword}</SearchResult> ' 에 대한 검색 결과...
+                                </>
+                            ) : null}
+                        </ResultBox>
+                    </Form>
                 </>
             )}
         </FormDiv>

@@ -8,7 +8,7 @@ import {
     plannerInitializePropertyAction,
     updatePlannerAction,
     UPDATE_PLANNER_TYPE,
-    validateFieldAction,
+    plannerValidateFieldAction,
 } from '../../modules/plannerModule';
 
 const PlannerInfoModalContainer = () => {
@@ -41,7 +41,7 @@ const PlannerInfoModalContainer = () => {
             const validState = validation(form);
 
             if (Object.keys(validState).length > 0) {
-                dispatch(validateFieldAction(validState));
+                dispatch(plannerValidateFieldAction(validState));
             } else {
                 const { title, expense, memberCount, memberTypeId } = { ...plannerInfoForm };
 
