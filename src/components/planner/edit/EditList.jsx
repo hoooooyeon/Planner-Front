@@ -12,7 +12,6 @@ import { handleErrorImg } from '../../../lib/utils/CommonFunction';
 import errorImg from '../../../lib/images/spotErrorImg.jpg';
 import Empty from '../../common/Empty';
 import Loading from '../../common/Loading';
-import Modal from '../../common/Modal';
 import ErrorModal from '../../common/ErrorModal';
 
 const EditListBlock = styled.div`
@@ -31,7 +30,6 @@ const EditListBlock = styled.div`
         top: ${(props) => (props.navList ? '250px' : '740px')};
     }
     @media all and (min-width: 481px) {
-        /* transition: 0.4s ease; */
         transform: ${(props) => (props.navList ? 'translateX(0px)' : 'translateX(350px)')};
     }
 `;
@@ -157,16 +155,6 @@ const PageBox = styled.div`
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
 `;
 
-const ErrorList = styled.div`
-    color: ${(props) => props.theme.tertiaryColor};
-    font-weight: bold;
-    font-size: 1.2rem;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-`;
-
 const EditList = ({
     plannerData,
     spots,
@@ -182,7 +170,7 @@ const EditList = ({
     onNextPage,
     onFirstPage,
     onLastPage,
-    keyword,
+    keywordData,
     spotData,
     navList,
     areas,
@@ -190,9 +178,10 @@ const EditList = ({
     likeKeyword,
     onChangeAreaIndex,
     onChangeContentTypeId,
-    onChangeResultKeyword,
+    onChangeField,
+    onClickSearch,
+    handleCleanKeyword,
     onChangeLikeKeyword,
-    onChangeCurKeyword,
     onClickDateSchedule,
     onToggleWindowNavList,
 }) => {
@@ -255,7 +244,7 @@ const EditList = ({
                     <NavArrowIcon onClick={() => onToggleWindowNavList(true)} icon={faCaretLeft} />
                 )}
                 <EditListSearchForm
-                    keyword={keyword}
+                    keywordData={keywordData}
                     spotData={spotData}
                     areas={areas}
                     contentTypeList={contentTypeList}
@@ -263,9 +252,10 @@ const EditList = ({
                     loading={loading.areasLoading}
                     onChangeAreaIndex={onChangeAreaIndex}
                     onChangeContentTypeId={onChangeContentTypeId}
-                    onChangeResultKeyword={onChangeResultKeyword}
+                    onClickSearch={onClickSearch}
                     onChangeLikeKeyword={onChangeLikeKeyword}
-                    onChangeCurKeyword={onChangeCurKeyword}
+                    onChangeField={onChangeField}
+                    handleCleanKeyword={handleCleanKeyword}
                     onIndexPage={onIndexPage}
                 />
                 {loading.spotLoading || loading.searchSpotLoading || loading.likeSpotLoading ? (

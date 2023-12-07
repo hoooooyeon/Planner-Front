@@ -41,7 +41,6 @@ const CloseButton = styled(FontAwesomeIcon)`
 const EditTutorialModalBlock = styled.div`
     background-color: rgba(0, 0, 0, 0.6);
     width: 90%;
-    /* height: 90%; */
     position: relative;
     @media all and (min-width: 769px) {
         width: 80%;
@@ -65,7 +64,6 @@ const SliderList = styled.ul`
 
 const SliderItem = styled.li`
     width: 100%;
-    /* height: 100%; */
     float: left;
     align-items: flex-end;
     justify-content: center;

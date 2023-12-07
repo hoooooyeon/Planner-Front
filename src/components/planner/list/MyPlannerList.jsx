@@ -29,7 +29,6 @@ const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
 `;
 
 const HeaderTitle = styled.p`
@@ -75,9 +74,6 @@ const PlannerList = styled.ul`
 
 const PlannerItem = styled.li`
     flex-shrink: 0;
-    /* height: 20vw; */
-    /* flex-basis: 22.5%; */
-    /* overflow: hidden; */
     box-sizing: border-box;
     width: 200px;
     height: 200px;
@@ -191,7 +187,7 @@ const MyPlannerList = ({
 }) => {
     const itemRef = useRef();
     const [createPlannerModal, setCreatePlannerModal] = useState(false);
-    const { list, pageLastIndex, pageIndex } = { ...myPlannerList };
+    const { list, totalCount, pageIndex } = { ...myPlannerList };
 
     const handlecreatePlanner = () => {
         if (accountId) {
@@ -259,7 +255,7 @@ const MyPlannerList = ({
                         </Slider>
                         <GuideList>
                             {Object.keys(myPlannerList).length > 0 &&
-                                Array.from({ length: pageLastIndex }, (_, i) => i).map((_, i) => (
+                                Array.from({ length: Math.ceil(totalCount / 10) }, (_, i) => i).map((_, i) => (
                                     <li key={i} onClick={() => onChangePage(i + 1)}>
                                         <CircleIcon icon={faCircle} aria-current={pageIndex === i + 1 ? 'cur' : null} />
                                     </li>

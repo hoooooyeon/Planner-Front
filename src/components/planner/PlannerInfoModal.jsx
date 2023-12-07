@@ -112,18 +112,12 @@ const ErrorText = styled.div`
 
 const PlannerInfoModal = ({
     modal,
+    plannerInfoForm,
     plannerError,
     loading,
     onUpdatePlanner,
     onTogglePlannerInfoModal,
-    curTitle,
-    curExpense,
-    curMemberCount,
-    curMemberTypeId,
-    onChangeExpense,
-    onChangeMemberCount,
-    setCurTitle,
-    setCurMemberTypeId,
+    onChangeField,
     onCloseError,
 }) => {
     const categoryList = [
@@ -132,6 +126,7 @@ const PlannerInfoModal = ({
         { label: '친구', value: 3 },
         { label: '가족', value: 4 },
     ];
+    const { title, expense, memberCount, memberTypeId } = { ...plannerInfoForm };
 
     return (
         <Modal
@@ -147,21 +142,13 @@ const PlannerInfoModal = ({
             }}
             onModalConfirm={() => {
                 onUpdatePlanner();
-                onCloseError();
             }}
             loading={loading}
         >
             <InfoForm>
                 <FlexDiv>
                     <Label>플래너 제목</Label>
-                    <Title
-                        placeholder="플래너 이름"
-                        type="text"
-                        onChange={(e) => {
-                            setCurTitle(e.target.value);
-                        }}
-                        value={curTitle}
-                    />
+                    <Title placeholder="플래너 이름" type="text" name="title" onChange={onChangeField} value={title} />
                 </FlexDiv>
                 {plannerError && plannerError.title && <ErrorText>{plannerError.title}</ErrorText>}
                 <FlexDiv>
@@ -169,36 +156,29 @@ const PlannerInfoModal = ({
                     <Funds
                         placeholder="비용"
                         type="number"
-                        value={curExpense}
-                        onChange={(e) => {
-                            onChangeExpense(e.target.value);
-                        }}
+                        name="expense"
+                        value={expense}
+                        onChange={onChangeField}
                     ></Funds>
                 </FlexDiv>
+                {plannerError && plannerError.expense && <ErrorText>{plannerError.expense}</ErrorText>}
                 <FlexDiv>
-                    <Label>여행 멤버 인원</Label>
+                    <Label>여행 인원</Label>
                     <People
                         placeholder="인원"
                         type="number"
-                        value={curMemberCount}
-                        onChange={(e) => {
-                            onChangeMemberCount(e.target.value);
-                        }}
+                        name="memberCount"
+                        value={memberCount}
+                        onChange={onChangeField}
                     ></People>
                 </FlexDiv>
                 {plannerError && plannerError.memberCount && <ErrorText>{plannerError.memberCount}</ErrorText>}
                 <FlexDiv>
                     <Label>여행 멤버 유형</Label>
-                    <Category
-                        required
-                        value={curMemberTypeId}
-                        onChange={(e) => {
-                            setCurMemberTypeId(e.target.value);
-                        }}
-                    >
-                        {categoryList.map((c) => (
-                            <option value={c.value} key={c.value}>
-                                {c.label}
+                    <Category required value={memberTypeId} name="memberTypeId" onChange={onChangeField}>
+                        {categoryList.map((item) => (
+                            <option value={item.value} key={item.value}>
+                                {item.label}
                             </option>
                         ))}
                     </Category>

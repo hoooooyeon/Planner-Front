@@ -1,13 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    changeCurPlannerIdAction,
     changePlannerDataAction,
     loadSharePlannerListAction,
     LOAD_SHARE_PLANNER_LIST_TYPE,
     plannerInitializePropertyAction,
-    resetPlannerDataAction,
-    resetSharePlannerListAction,
 } from '../modules/plannerModule';
 import Home from '../components/home/Home';
 import { useHistory } from 'react-router';
@@ -33,7 +30,6 @@ const HomeContainer = () => {
 
     // 플래너 선택
     const onClickPlanner = (plannerId) => {
-        // dispatch(changeCurPlannerIdAction(plannerId));
         dispatch(changePlannerDataAction({ property: 'plannerId', value: plannerId }));
         dispatch(changePlannerDataAction({ property: 'pType', value: 1 }));
     };
@@ -58,11 +54,9 @@ const HomeContainer = () => {
 
     // plannerData, sharePlanners 리셋
     useEffect(() => {
-        // dispatch(resetPlannerDataAction());
         dispatch(plannerInitializePropertyAction('plannerData'));
         dispatch(plannerInitializePropertyAction('planner'));
         return () => {
-            // dispatch(resetSharePlannerListAction());
             dispatch(plannerInitializePropertyAction('sharePlanners'));
         };
     }, []);

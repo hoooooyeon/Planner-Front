@@ -100,16 +100,7 @@ const IconName = styled.div`
     padding: 0.5rem;
 `;
 
-const InfoMap = ({
-    planner,
-    //  mapRef,
-    loading,
-    allSchedule,
-    onToggleLikePlanner,
-    //    onClickToggleMapSchedule,
-    onClickToggleScheduleView,
-    plannerData,
-}) => {
+const InfoMap = ({ planner, loading, allSchedule, onToggleLikePlanner, onClickToggleScheduleView, plannerData }) => {
     const { likeState, likeCount, plans } = { ...planner };
     const [isHovered, setIsHovered] = useState(false);
 
@@ -131,12 +122,10 @@ const InfoMap = ({
             const options = {
                 center: new kakao.maps.LatLng(36.5, 127.8),
                 level: 14,
-                draggable: false,
             };
             const map = new kakao.maps.Map(mapRef.current, options);
             setMap(map);
             onClickToggleScheduleView(false);
-            // dispatch(changeAllScheduleAction(false));
         }
     }, [mapRef.current]);
 
@@ -379,12 +368,10 @@ const InfoMap = ({
     const onClickToggleMapSchedule = () => {
         if (allSchedule) {
             showDateRouteMarker(false);
-            // dispatch(changeAllScheduleAction(false));
             onClickToggleScheduleView(false);
         } else {
             showAllRouteMarker();
             onClickToggleScheduleView(true);
-            // dispatch(changeAllScheduleAction(true));
         }
     };
 

@@ -137,8 +137,15 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     }
 `;
 
-const ShareListSearchForm = ({ keyword, sortCriteria, onChangeKeyword, onChangeSort, onChangeResultKeyword }) => {
-    const { curKeyword, resultKeyword } = { ...keyword };
+const ShareListSearchForm = ({
+    keywordData,
+    sortCriteria,
+    handleCleanKeyword,
+    onChangeField,
+    onChangeSort,
+    handleSearchPlanner,
+}) => {
+    const { curKeyword, resultKeyword } = { ...keywordData };
     return (
         <>
             <ShareListSearchFormBlock>
@@ -155,24 +162,18 @@ const ShareListSearchForm = ({ keyword, sortCriteria, onChangeKeyword, onChangeS
                     <Label>플래너 검색</Label>
                     <Text
                         placeholder="키워드 검색"
+                        name="curKeyword"
                         type="text"
                         value={curKeyword}
-                        onChange={(e) => {
-                            onChangeKeyword(e.target.value);
-                        }}
+                        onChange={onChangeField}
                     />
                     <InvisibleInput type="text" />
                     <IconBox>
                         {curKeyword.length > 0 ? (
-                            <StyledFontAwesomeIcon
-                                onClick={() => {
-                                    onChangeKeyword('');
-                                }}
-                                icon={faXmark}
-                            />
+                            <StyledFontAwesomeIcon onClick={handleCleanKeyword} icon={faXmark} />
                         ) : null}
                     </IconBox>
-                    <Button type="button" onClick={onChangeResultKeyword}>
+                    <Button type="button" onClick={handleSearchPlanner}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
                     </Button>
                 </SearchForm>

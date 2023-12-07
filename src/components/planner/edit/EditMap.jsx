@@ -7,7 +7,6 @@ import ErrorModal from '../../common/ErrorModal';
 import EditTutorialModal from './EditTutorialModal';
 import circleImg from '../../../lib/images/circle.png';
 import locationImg from '../../../lib/images/location.png';
-import Loading from '../../common/Loading';
 import { FontAwesomeIcon } from '../../../../node_modules/@fortawesome/react-fontawesome/index';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
@@ -27,20 +26,17 @@ const Map = styled.div`
 const NavButtonList = styled.div`
     display: none;
     width: 100%;
-    /* width: 8.5rem; */
     height: 2.8rem;
     padding: 0.5rem;
     margin-bottom: 5px;
     z-index: 2;
     position: absolute;
-    /* left: 8px; */
     font-weight: bold;
     font-size: 0.8rem;
     overflow: hidden;
     box-sizing: border-box;
     @media all and (max-width: 480px) {
         display: flex;
-        /* justify-content: space-between; */
         top: 693px;
         ${(props) =>
             (props.navRoute || props.navList) &&
@@ -59,6 +55,7 @@ const NavButton = styled.div`
     margin-left: 0.5rem;
     text-align: center;
     width: 3.5rem;
+    min-width: 0.7rem;
     height: 3rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -92,8 +89,6 @@ const ButtonBox = styled.div`
 const Button = styled.button`
     border: none;
     border-radius: 2rem;
-    /* width: 8rem;
-    height: 3rem; */
     background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
     font-weight: bold;
     cursor: pointer;
@@ -130,7 +125,6 @@ const Button = styled.button`
 `;
 
 const EditMap = ({
-    // mapRef,
     planner,
     spots,
     plannerData,
@@ -139,7 +133,6 @@ const EditMap = ({
     mapData,
     onClosePlannerError,
     onCloseSpotError,
-    // onClickAllSchedule,
     handleToggleScheduleView,
     onChangeAreaIndex,
     onToggleMobileNavRoute,
@@ -165,7 +158,6 @@ const EditMap = ({
             };
             const map = new kakao.maps.Map(mapRef.current, options);
             setMap(map);
-            // dispatch(toggleScheduleViewAction(false));
             handleToggleScheduleView(false);
         }
     }, [mapRef.current]);

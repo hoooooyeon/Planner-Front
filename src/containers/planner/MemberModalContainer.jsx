@@ -8,8 +8,6 @@ import {
     inviteMemberAction,
     INVITE_MEMBER_TYPE,
     plannerInitializePropertyAction,
-    resetPlannerErrorAction,
-    toggleMemberModalAction,
 } from '../../modules/plannerModule';
 
 const MemberModalContainer = () => {
@@ -38,7 +36,7 @@ const MemberModalContainer = () => {
     const onInviteMember = () => {
         if (accountId === planner.accountId) {
             dispatch(inviteMemberAction({ plannerId, members }));
-            dispatch(resetPlannerErrorAction());
+            dispatch(plannerInitializePropertyAction('plannerError'));
             setMembers([]);
         }
     };
@@ -60,10 +58,9 @@ const MemberModalContainer = () => {
     // plannerError 리셋
     const onToggleMemberModal = () => {
         setMembers([]);
-        // dispatch(toggleMemberModalAction());
         dispatch(changeModalDataAction({ property: 'member', value: !member }));
         dispatch(plannerInitializePropertyAction('isInvite'));
-        dispatch(resetPlannerErrorAction());
+        dispatch(plannerInitializePropertyAction('plannerError'));
     };
 
     if (Object.keys(planner).length <= 0) {

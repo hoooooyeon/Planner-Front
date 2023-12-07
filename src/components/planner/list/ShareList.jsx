@@ -119,14 +119,7 @@ const IconBox = styled.div`
     padding: 5px;
 `;
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: ${(props) => (props.like ? ` ${props.theme.likeButtonColor}` : 'rgba(0,0,0,0)')};
-`;
-
-const ErrorDiv = styled.div`
-    color: ${(props) => props.theme.tertiaryColor};
-    font-weight: bold;
-    text-align: center;
-    margin-top: 2rem;
+    color: ${(props) => (props.like ? ` ${props.theme.likeButtonColor}` : `${props.theme.primaryBackgroundColor}`)};
 `;
 
 const CenterDiv = styled.div`
@@ -141,15 +134,16 @@ const PageBox = styled.div`
 const ShareList = ({
     sharePlanners,
     loading,
-    keyword,
+    keywordData,
     plannerError,
     page,
     sortCriteria,
     onCloseError,
     onClickPlanner,
-    onChangeKeyword,
-    onChangeResultKeyword,
+    onChangeField,
+    handleCleanKeyword,
     onChangeSort,
+    handleSearchPlanner,
     drag,
     onIndexPage,
     onNextPage,
@@ -163,10 +157,11 @@ const ShareList = ({
             <Container>
                 <HeaderTitle>다른 이용자들의 플래너</HeaderTitle>
                 <ShareListSearchForm
-                    keyword={keyword}
+                    keywordData={keywordData}
                     sortCriteria={sortCriteria}
-                    onChangeKeyword={onChangeKeyword}
-                    onChangeResultKeyword={onChangeResultKeyword}
+                    onChangeField={onChangeField}
+                    handleSearchPlanner={handleSearchPlanner}
+                    handleCleanKeyword={handleCleanKeyword}
                     onChangeSort={onChangeSort}
                 />
                 {loading ? (

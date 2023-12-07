@@ -17,11 +17,7 @@ const HomeServicesBlock = styled.div`
 const Container = styled.div`
     margin: 0 auto;
     position: relative;
-    padding: 3rem 0 8rem;
-    @media all and (max-width: 767px) {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
+    padding: 3rem 1rem 8rem;
 `;
 
 const Header = styled.div`
@@ -41,13 +37,14 @@ const ServiceList = styled.ul`
 const ServiceItem = styled.li`
     display: flex;
     flex-direction: column;
+    width: 33.33%;
     & + & {
         margin-left: 1rem;
     }
 `;
 
 const OverviewBox = styled.div`
-    width: 250px;
+    width: 100%;
     font-weight: bold;
     color: ${(props) => props.theme.secondaryColor};
     p {
@@ -55,12 +52,6 @@ const OverviewBox = styled.div`
     }
     p + p {
         margin-top: 0;
-    }
-    @media all and (min-width: 1024px) {
-        width: 350px;
-    }
-    @media all and (min-width: 1200px) {
-        width: 390px;
     }
 `;
 
@@ -72,15 +63,10 @@ const Img = styled.img`
     border: none;
     object-fit: cover;
     -webkit-user-drag: none;
-    width: 250px;
+    width: 100%;
     height: 300px;
-    @media all and (min-width: 1024px) {
-        width: 350px;
+    @media all and (min-width: 1025px) {
         height: 400px;
-    }
-    @media all and (min-width: 1200px) {
-        width: 390px;
-        height: 450px;
     }
 `;
 
@@ -93,7 +79,7 @@ const LeftIcon = styled(FontAwesomeIcon)`
     color: ${(props) => props.theme.tertiaryColor};
     opacity: 0.7;
     display: none;
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         display: inline-block;
     }
 `;
@@ -107,7 +93,7 @@ const RightIcon = styled(FontAwesomeIcon)`
     color: ${(props) => props.theme.tertiaryColor};
     opacity: 0.7;
     display: none;
-    @media all and (max-width: 767px) {
+    @media all and (max-width: 768px) {
         display: inline-block;
     }
 `;

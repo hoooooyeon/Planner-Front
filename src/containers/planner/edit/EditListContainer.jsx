@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditList from '../../../components/planner/edit/EditList';
+import { handleRemoveSpaces } from '../../../lib/utils/CommonFunction';
 import {
     accountLikeSpotListLoadAction,
     ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE,
@@ -8,30 +9,21 @@ import {
     initializeFormAction,
 } from '../../../modules/accountModule';
 import {
-    changeKeywordAction,
     changeMapDataAction,
-    changePageNumAction,
     changePlannerDataAction,
-    changeResultKeywordAction,
+    changePlannerFieldAction,
     createLocationAction,
-    LOAD_PLANNER_TYPE,
     plannerInitializePropertyAction,
-    resetPlannerErrorAction,
 } from '../../../modules/plannerModule';
 import {
     loadDetailSpotAction,
     loadSpotsAction,
-    resetDetailSpotAction,
-    changeContentTypeIdAction,
     changeDetailSpotAction,
-    changeAreaIndexAction,
     loadAreasAction,
     searchSpotAction,
-    changeContentIdAction,
     LOAD_AREAS_TYPE,
     LOAD_SPOTS_TYPE,
     SEARCH_SPOT_TYPE,
-    changePageIndexAction,
     spotInitializeFormAction,
     spotInitializeAction,
     changeSpotDataAction,
@@ -43,7 +35,7 @@ const EditListContainer = () => {
         planner,
         spots,
         account,
-        keyword,
+        keywordData,
         areas,
         spotData,
         plannerData,
@@ -56,7 +48,7 @@ const EditListContainer = () => {
         account: authReducer.account,
         planner: plannerReducer.planner,
         plannerData: plannerReducer.plannerData,
-        keyword: plannerReducer.keyword,
+        keywordData: plannerReducer.keywordData,
         mapData: plannerReducer.mapData,
         spots: spotReducer.spots,
         areas: spotReducer.areas,
@@ -75,7 +67,7 @@ const EditListContainer = () => {
     const { plannerId, planId } = { ...plannerData };
     const { accountId } = { ...account };
     const { areaCode, contentTypeId, contentId } = { ...spotData };
-    const { curKeyword, resultKeyword } = { ...keyword };
+    const { curKeyword, resultKeyword } = { ...keywordData };
     const { likeSpotList } = { ...likeList };
     const numOfRows = 12;
     const { navList } = { ...mapData };
@@ -116,7 +108,6 @@ const EditListContainer = () => {
     // 여행지 상세정보 모달 열기
     const onOpenDetail = (spotInfo) => {
         dispatch(changeDetailSpotAction(spotInfo));
-        // dispatch(changeContentIdAction(spotInfo.contentId));
         dispatch(changeSpotDataAction({ property: 'contentId', value: spotInfo.contentId }));
     };
 
@@ -129,8 +120,7 @@ const EditListContainer = () => {
 
     // 여행지 타입 변경
     const onChangeContentTypeId = (id) => {
-        // dispatch(changeContentTypeIdAction(id));
-        dispatch(changeSpotDataAction({ property: 'contentTypeId', value: 12 }));
+        dispatch(changeSpotDataAction({ property: 'contentTypeId', value: id }));
     };
 
     // 지역 리스트 로드
@@ -140,20 +130,22 @@ const EditListContainer = () => {
 
     // 지역 선택
     const onChangeAreaIndex = (num) => {
-        // dispatch(changeAreaIndexAction(num));
         dispatch(changeSpotDataAction({ property: 'areaCode', value: num }));
     };
 
-    // 키워드 입력
-    const onChangeCurKeyword = (keyword) => {
-        dispatch(changeKeywordAction(keyword));
+    // 플래너 키워드 타이핑
+    const onChangeField = (e) => {
+        const { name, value } = e.target;
+        dispatch(changePlannerFieldAction({ form: 'keywordData', name: name, value: value }));
+    };
+    // 실제적으로 검색된 키워드 저장
+    const handleSearchPlanner = () => {
+        const keyword = handleRemoveSpaces(curKeyword);
+        dispatch(changePlannerFieldAction({ form: 'keywordData', name: 'resultKeyword', value: keyword }));
     };
 
-    // 실제로 검색될 키워드 저장
-    const onChangeResultKeyword = () => {
-        if (curKeyword.length !== 0) {
-            dispatch(changeResultKeywordAction(curKeyword));
-        }
+    const handleCleanKeyword = () => {
+        dispatch(changePlannerFieldAction({ form: 'keywordData', name: 'curKeyword', value: '' }));
     };
 
     // 여행지 키워드로 조회
@@ -165,12 +157,6 @@ const EditListContainer = () => {
         }
     }, [dispatch, resultKeyword, page]);
 
-    // 여행지 좋아요리스트 검색 키워드 저장
-    const [likeKeyword, setLikeKeyword] = useState('');
-    const onChangeLikeKeyword = () => {
-        setLikeKeyword(curKeyword);
-    };
-
     // 여행지 좋아요리스트 로드
     useEffect(() => {
         if (accountId && contentTypeId === 0) {
@@ -178,7 +164,7 @@ const EditListContainer = () => {
                 accountId,
                 itemCount: 12,
                 sortCriteria: 2,
-                keyword: likeKeyword,
+                keyword: resultKeyword,
                 postType: 2,
                 pageNum: page,
             };
@@ -186,16 +172,15 @@ const EditListContainer = () => {
             dispatch(initializeFormAction('likeList'));
             dispatch(accountLikeSpotListLoadAction(queryString));
         }
-    }, [dispatch, accountId, likeKeyword, contentTypeId, page, detail.likeState]);
+    }, [dispatch, accountId, resultKeyword, contentTypeId, page, detail.likeState]);
 
     // 여행 정보 및 검색 키워드 초기화
     useEffect(() => {
         return () => {
-            dispatch(changeKeywordAction(''));
-            dispatch(changeResultKeywordAction(''));
+            dispatch(plannerInitializePropertyAction('keywordData'));
             dispatch(initializeAction());
             dispatch(spotInitializeAction());
-            dispatch(resetPlannerErrorAction());
+            dispatch(plannerInitializePropertyAction('plannerError'));
             dispatch(plannerInitializePropertyAction('mapData'));
         };
     }, []);
@@ -230,15 +215,13 @@ const EditListContainer = () => {
     // 지역, 컨텐츠 변경시 키워드 리셋.
     useEffect(() => {
         setPage(1);
-        dispatch(changeKeywordAction(''));
-        dispatch(changeResultKeywordAction(''));
-        setLikeKeyword('');
+        dispatch(plannerInitializePropertyAction('keywordData'));
     }, [areaCode, contentTypeId]);
 
     // 키워드 검색시 페이지 리셋.
     useEffect(() => {
         setPage(1);
-    }, [resultKeyword, likeKeyword]);
+    }, [resultKeyword]);
 
     // 현재 일정 루트 보기
     const onClickDateSchedule = () => {
@@ -254,21 +237,17 @@ const EditListContainer = () => {
         dispatch(changePlannerDataAction({ property: 'pType', value: '' }));
     }, []);
 
-    // if (accountId !== planner.accountId) {
-    //     return null;
-    // }
     return (
         <EditList
             plannerData={plannerData}
             spots={spots}
             areas={areas}
-            keyword={keyword}
+            keywordData={keywordData}
             loading={loading}
             spotData={spotData}
             navList={navList}
             contentTypeList={contentTypeList}
             likeSpotList={likeSpotList}
-            likeKeyword={likeKeyword}
             totalCount={totalCount.current}
             page={page}
             itemIndex={numOfRows}
@@ -281,9 +260,9 @@ const EditListContainer = () => {
             onFirstPage={onFirstPage}
             onLastPage={onLastPage}
             onChangeAreaIndex={onChangeAreaIndex}
-            onChangeCurKeyword={onChangeCurKeyword}
-            onChangeResultKeyword={onChangeResultKeyword}
-            onChangeLikeKeyword={onChangeLikeKeyword}
+            onChangeField={onChangeField}
+            onClickSearch={handleSearchPlanner}
+            handleCleanKeyword={handleCleanKeyword}
             onClickDateSchedule={onClickDateSchedule}
             onToggleWindowNavList={onToggleWindowNavList}
         />

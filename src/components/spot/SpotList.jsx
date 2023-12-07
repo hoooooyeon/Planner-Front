@@ -102,7 +102,7 @@ const IconBox = styled.div`
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-    color: ${(props) => (props.like ? `${props.theme.likeButtonColor}` : 'transparent')};
+    color: ${(props) => (props.like ? `${props.theme.likeButtonColor}` : `${props.theme.primaryBackgroundColor}`)};
 `;
 
 const CenterDiv = styled.div`
@@ -155,7 +155,7 @@ const SpotList = ({
                     onChangeCurKeyword={onChangeCurKeyword}
                     onChangeResultKeyword={onChangeResultKeyword}
                 />
-                {loading.spotsLoading || loading.searchSpotLoading ? (
+                {loading.areasLoading || loading.spotsLoading || loading.searchSpotLoading ? (
                     <CenterDiv>
                         <Loading pos="center" />
                     </CenterDiv>

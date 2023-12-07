@@ -1,19 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    changeCurPlannerIdAction,
     changePlannerDataAction,
     createPlannerAction,
     CREATE_PLANNER_TYPE,
     plannerInitializePropertyAction,
-    resetPlannerDataAction,
 } from '../../../modules/plannerModule';
 import MyPlannerList from '../../../components/planner/list/MyPlannerList';
 import { useHistory } from 'react-router';
 import {
     accountMyPlannerListLoadAction,
     ACCOUNT_MY_PLANNER_LIST_LOAD_TYPE,
-    changeMyPlannerListPageIndexAction,
     initializeErrorAction,
     initializeFormAction,
 } from '../../../modules/accountModule';
@@ -52,7 +49,6 @@ const MyPlannerListContainer = () => {
 
     // 데이터 리셋
     useEffect(() => {
-        // dispatch(resetPlannerDataAction());
         dispatch(plannerInitializePropertyAction('plannerData'));
         dispatch(plannerInitializePropertyAction('planner'));
 
@@ -81,8 +77,6 @@ const MyPlannerListContainer = () => {
     // 플래너 선택
     const onClickPlanner = (plannerId) => {
         if (!drag.current) {
-            // dispatch(resetPlannerDataAction());
-            // dispatch(changeCurPlannerIdAction(plannerId));
             dispatch(plannerInitializePropertyAction('plannerData'));
             dispatch(plannerInitializePropertyAction('planner'));
 

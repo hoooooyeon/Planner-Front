@@ -57,7 +57,7 @@ const ReviewItem = styled.li`
     &:hover {
         box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     }
-    @media all and (min-width: 481px) and (max-width: 768px) {
+    @media all and (min-width: 481px) {
         width: 45%;
     }
     @media all and (min-width: 769px) {

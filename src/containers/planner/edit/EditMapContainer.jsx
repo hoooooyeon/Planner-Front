@@ -1,11 +1,7 @@
-import { useCallback } from 'react';
-import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditMap from '../../../components/planner/edit/EditMap';
-import { resetPlannerErrorAction, changeMapDataAction } from '../../../modules/plannerModule';
-import circleImg from '../../../lib/images/circle.png';
-import locationImg from '../../../lib/images/location.png';
-import { changeAreaIndexAction, changeSpotDataAction, resetSpotErrorAction } from '../../../modules/spotModule';
+import { changeMapDataAction, plannerInitializePropertyAction } from '../../../modules/plannerModule';
+import { changeSpotDataAction, spotInitializeFormAction } from '../../../modules/spotModule';
 import { useHistory } from 'react-router';
 
 const EditMapContainer = () => {
@@ -17,7 +13,6 @@ const EditMapContainer = () => {
             plannerError: plannerReducer.plannerError,
             spotError: spotReducer.spotError,
             spots: spotReducer.spots,
-            keyword: spotReducer.keyword,
             contentTypeList: spotReducer.contentTypeList,
             plannerData: plannerReducer.plannerData,
             mapData: plannerReducer.mapData,
@@ -26,18 +21,16 @@ const EditMapContainer = () => {
     );
 
     const { plannerId } = { ...plannerData };
-    const { plans } = { ...planner };
-    const { accountId } = { ...account };
     const { allSchedule, tutorial } = { ...mapData };
 
     // spotError 리셋
     const onCloseSpotError = () => {
-        dispatch(resetSpotErrorAction());
+        dispatch(spotInitializeFormAction('spotError'));
     };
 
     // plannerError 리셋
     const onClosePlannerError = () => {
-        dispatch(resetPlannerErrorAction());
+        dispatch(plannerInitializePropertyAction('plannerError'));
     };
 
     const handleToggleScheduleView = (bool) => {
@@ -45,7 +38,6 @@ const EditMapContainer = () => {
     };
 
     const onChangeAreaIndex = (index) => {
-        // dispatch(changeAreaIndexAction(index));
         dispatch(changeSpotDataAction({ property: 'areaCode', value: index }));
     };
 
@@ -80,23 +72,14 @@ const EditMapContainer = () => {
         dispatch(changeMapDataAction({ property: 'isView', value: true }));
     };
 
-    // if (
-    //     // !mapRef ||
-    //     Object.keys(planner).length <= 0 ||
-    //     accountId !== planner.accountId
-    // ) {
-    //     return null;
-    // }
     return (
         <EditMap
-            // mapRef={mapRef}
             planner={planner}
             spots={spots}
             plannerData={plannerData}
             mapData={mapData}
             plannerError={plannerError}
             spotError={spotError}
-            // onClickAllSchedule={onClickAllSchedule}
             onClosePlannerError={onClosePlannerError}
             onCloseSpotError={onCloseSpotError}
             handleToggleScheduleView={handleToggleScheduleView}

@@ -49,7 +49,7 @@ const RouteList = styled.ul`
     flex-direction: column;
     align-items: center;
     margin: 1rem 0 0;
-    padding: 1rem 2rem;
+    padding: 1rem;
     &[aria-current] {
         display: flex;
     }
@@ -63,6 +63,8 @@ const RouteList = styled.ul`
 const RouteItem = styled.li`
     display: flex;
     position: relative;
+    width: 100%;
+    height: 100%;
     & + & {
         margin: 2rem 0 0;
     }
@@ -74,8 +76,6 @@ const RouteItem = styled.li`
 `;
 
 const SpotItem = styled.div`
-    width: 4rem;
-    height: 4rem;
     display: flex;
     border-radius: 4rem;
     padding: 0.5rem;
@@ -84,6 +84,13 @@ const SpotItem = styled.div`
     background-color: ${(props) => props.theme.primaryBackgroundColor};
 
     z-index: 2;
+    width: 5rem;
+    height: 5rem;
+
+    @media all and (min-width: 1025px) {
+        width: 7rem;
+        height: 7rem;
+    }
 `;
 
 const Img = styled.img`
@@ -105,25 +112,38 @@ const RouteSpotName = styled.div`
     position: absolute;
     top: 61px;
     background-color: ${(props) => props.theme.primaryBackgroundColor};
-    padding: 0.2rem 0.3rem;
     border-radius: 1rem;
     left: 50%;
     top: 95%;
     transform: translate(-50%, -50%);
     box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
+    padding: 0.3rem 0.4rem;
+
+    @media all and (min-width: 1025px) {
+        padding: 0.4rem 0.5rem;
+        top: 97%;
+    }
 `;
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     position: absolute;
-    padding: 0.5rem;
-    width: 1rem;
-    height: 1rem;
+    padding: 0.6rem;
     box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     border-radius: 2rem;
     background-color: ${(props) => props.theme.primaryBackgroundColor};
-    top: -4px;
-    left: 53px;
+
     z-index: 3;
+    width: 1rem;
+    height: 1rem;
+    top: -2px;
+    left: 64px;
+
+    @media all and (min-width: 1025px) {
+        width: 1.2rem;
+        height: 1.2rem;
+        top: -2px;
+        left: 89px;
+    }
 `;
 
 const RouteLine = styled.div`
@@ -142,16 +162,6 @@ const RouteLine = styled.div`
         top: 50%;
         transform: translate(-50%, -50%);
     }
-`;
-
-const ErrorDiv = styled.div`
-    color: ${(props) => props.theme.tertiaryColor};
-    font-weight: bold;
-    min-width: 8rem;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
 `;
 
 const CenterDiv = styled.div`
@@ -174,7 +184,7 @@ const InfoRoute = ({ planner, plannerData, drag, onChangeCurPlanId, onClickToggl
             />
             <WidthDiv>
                 {Object.keys(planner).length > 0 && plans && plans.length > 0 ? (
-                    <Slider list={plans} itemRef={itemRef}>
+                    <Slider list={plans} itemRef={itemRef} drag={drag}>
                         {plans.map((p) => (
                             <RouteList aria-current={p.planId === plannerData.planId ? 'plan' : null} key={p.planId}>
                                 {p.planLocations.map((pl, i) => {

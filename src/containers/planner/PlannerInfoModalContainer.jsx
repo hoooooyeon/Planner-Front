@@ -1,21 +1,23 @@
 import { useEffect } from 'react';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PlannerInfoModal from '../../components/planner/PlannerInfoModal';
+import validation from '../../lib/utils/validationCheck';
 import {
     changeModalDataAction,
-    resetPlannerErrorAction,
-    togglePlannerInfoModalAction,
+    changePlannerFieldAction,
+    plannerInitializePropertyAction,
     updatePlannerAction,
     UPDATE_PLANNER_TYPE,
+    plannerValidateFieldAction,
 } from '../../modules/plannerModule';
 
 const PlannerInfoModalContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, modal, account, loading } = useSelector(
+    const { planner, plannerError, modal, account, loading, plannerInfoForm } = useSelector(
         ({ plannerReducer, authReducer, loadingReducer }) => ({
             planner: plannerReducer.planner,
             plannerError: plannerReducer.plannerError,
+            plannerInfoForm: plannerReducer.plannerInfoForm,
             modal: plannerReducer.modal,
             account: authReducer.account,
             loading: loadingReducer[UPDATE_PLANNER_TYPE],
@@ -26,60 +28,53 @@ const PlannerInfoModalContainer = () => {
     const { plannerId, planDateStart, planDateEnd, title, expense, memberCount, memberTypeId, creator } = {
         ...planner,
     };
-    const [curTitle, setCurTitle] = useState(title);
-    const [curExpense, setCurExpense] = useState(expense);
-    const [curMemberCount, setCurMemberCount] = useState(memberCount);
-    const [curMemberTypeId, setCurMemberTypeId] = useState(memberTypeId);
     const { plannerInfo } = { ...modal };
 
-    const onChangeExpense = (keyword) => {
-        const regex = /^[0-9]+$/;
-
-        if (regex.test(keyword) || keyword === '') {
-            setCurExpense(keyword);
-        }
+    const onChangeField = (e) => {
+        const { name, value } = e.target;
+        dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: name, value: value }));
     };
 
-    const onChangeMemberCount = (keyword) => {
-        const regex = /^[0-9]+$/;
+    const onUpdatePlanner = () => {
+        if (accountId === planner.accountId) {
+            const form = { ...plannerInfoForm };
+            const validState = validation(form);
 
-        if (regex.test(keyword) || keyword === '') {
-            setCurMemberCount(keyword);
+            if (Object.keys(validState).length > 0) {
+                dispatch(plannerValidateFieldAction(validState));
+            } else {
+                const { title, expense, memberCount, memberTypeId } = { ...plannerInfoForm };
+
+                const queryString = {
+                    plannerId,
+                    title: title,
+                    planDateStart,
+                    planDateEnd,
+                    expense: expense,
+                    memberCount: memberCount,
+                    memberTypeId: memberTypeId,
+                };
+                dispatch(updatePlannerAction(queryString));
+                dispatch(plannerInitializePropertyAction('plannerError'));
+            }
         }
     };
 
     useEffect(() => {
-        setCurTitle(title);
-        setCurExpense(expense);
-        setCurMemberCount(memberCount);
-        setCurMemberTypeId(memberTypeId);
-    }, [modal]);
-
-    // 플래너 수정
-    const onUpdatePlanner = () => {
-        if (accountId === planner.accountId) {
-            const queryString = {
-                plannerId,
-                title: curTitle,
-                planDateStart,
-                planDateEnd,
-                expense: curExpense,
-                memberCount: curMemberCount,
-                memberTypeId: curMemberTypeId,
-            };
-            dispatch(updatePlannerAction(queryString));
-        }
-    };
+        dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'title', value: title }));
+        dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'expense', value: expense }));
+        dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'memberCount', value: memberCount }));
+        dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'memberTypeId', value: memberTypeId }));
+    }, [plannerInfo]);
 
     // 플래너정보수정모달 토글
     const onTogglePlannerInfoModal = () => {
-        // dispatch(togglePlannerInfoModalAction());
         dispatch(changeModalDataAction({ property: 'plannerInfo', value: !plannerInfo }));
     };
 
     // plannerError 리셋
     const onCloseError = () => {
-        dispatch(resetPlannerErrorAction());
+        dispatch(plannerInitializePropertyAction('plannerError'));
     };
 
     if (Object.keys(planner).length <= 0) {
@@ -88,18 +83,12 @@ const PlannerInfoModalContainer = () => {
     return (
         <PlannerInfoModal
             modal={modal}
+            plannerInfoForm={plannerInfoForm}
             plannerError={plannerError}
             loading={loading}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onUpdatePlanner={onUpdatePlanner}
-            curTitle={curTitle}
-            curExpense={curExpense}
-            curMemberCount={curMemberCount}
-            curMemberTypeId={curMemberTypeId}
-            setCurTitle={setCurTitle}
-            onChangeExpense={onChangeExpense}
-            onChangeMemberCount={onChangeMemberCount}
-            setCurMemberTypeId={setCurMemberTypeId}
+            onChangeField={onChangeField}
             onCloseError={onCloseError}
         />
     );
