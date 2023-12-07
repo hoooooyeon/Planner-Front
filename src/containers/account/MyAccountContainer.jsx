@@ -17,8 +17,8 @@ import {
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import spotReducer, {
-    changeContentIdAction,
     changeDetailSpotAction,
+    changeSpotDataAction,
     loadDetailSpotAction,
 } from '../../modules/spotModule';
 
@@ -95,8 +95,7 @@ const MyAccountContainer = () => {
     const handleLikeSpotClick = (spotInfo) => {
         dispatch(changeDetailSpotAction(spotInfo));
 
-        dispatch(changeContentIdAction(spotInfo.contentId));
-        // dispatch(changeSpotDataAction({property: 'contentId', value:spotInfo.contentId}))
+        dispatch(changeSpotDataAction({ property: 'contentId', value: spotInfo.contentId }));
     };
 
     // 여행지 상세정보 로드
@@ -105,10 +104,7 @@ const MyAccountContainer = () => {
         if (contentId !== '') {
             dispatch(loadDetailSpotAction({ contentId }));
         }
-    }, [
-        contentId,
-        //  isLike
-    ]);
+    }, [contentId, isLike]);
 
     if (!auth) {
         alert('정상적인 접근이 아닙니다.');
