@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { DragFunction } from '../../../lib/utils/CommonFunction';
+import { DragFunction } from '../../../lib/utils/itemDrag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBus } from '@fortawesome/free-solid-svg-icons'; // 버스
 import { faTaxi } from '@fortawesome/free-solid-svg-icons'; // 택시
@@ -10,8 +10,7 @@ import { faBicycle } from '@fortawesome/free-solid-svg-icons'; // 자전거 or �
 import { faTrainSubway } from '@fortawesome/free-solid-svg-icons'; // 지하철 or 기차
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
-import { handleErrorImg } from '../../../lib/utils/CommonFunction';
-import errorImg from '../../../lib/images/spotErrorImg.jpg';
+import { replaceImageOnError } from '../../../lib/utils/imageReplace';
 import Empty from '../../common/Empty';
 
 const EditRouteListBlock = styled.div`
@@ -411,9 +410,7 @@ const EditRouteList = ({
                                                 <Img
                                                     src={locationImage}
                                                     alt={locationId}
-                                                    onError={(e) => {
-                                                        handleErrorImg({ e, errorImg });
-                                                    }}
+                                                    onError={(e) => replaceImageOnError(e, 'spot')}
                                                 />
                                                 <TextInfo>
                                                     <Name>{locationName}</Name>

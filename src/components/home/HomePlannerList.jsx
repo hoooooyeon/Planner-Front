@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import styled from 'styled-components';
-import errorImg from '../../lib/images/plannerErrorImg.png';
-import { handleErrorImg } from '../../lib/utils/CommonFunction';
+import { replaceImageOnError } from '../../lib/utils/imageReplace';
 import Empty from '../common/Empty';
 import Loading from '../common/Loading';
 
@@ -142,9 +141,7 @@ const HomePlannerList = ({ sharePlanners, loading, onClickPlanner }) => {
                                     <Img
                                         src={p.thumbnail}
                                         alt={p.title}
-                                        onError={(e) => {
-                                            handleErrorImg({ e, errorImg });
-                                        }}
+                                        onError={(e) => replaceImageOnError(e, 'planner')}
                                     />
                                 </ImgBox>
                                 <InfoBox>

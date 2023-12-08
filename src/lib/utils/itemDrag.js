@@ -191,13 +191,3 @@ export function DragFunction() {
         onCloneEnter,
     };
 }
-
-// 에러 이미지 대체
-export function handleErrorImg({ e, errorImg }) {
-    e.target.src = errorImg;
-}
-
-// 검색 공백 제거
-export function handleRemoveSpaces(str) {
-    return str.replace(/^\s+|\s+$/g, '');
-}

@@ -5,8 +5,7 @@ import SpotSearchForm from './SpotSearchForm';
 import { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { handleErrorImg } from '../../lib/utils/CommonFunction';
-import errorImg from '../../lib/images/spotErrorImg.jpg';
+import { replaceImageOnError } from '../../lib/utils/imageReplace.js';
 import Empty from '../common/Empty';
 import ErrorModal from '../common/ErrorModal';
 import Loading from '../common/Loading';
@@ -177,9 +176,7 @@ const SpotList = ({
                                                 <Img
                                                     src={firstImage}
                                                     alt={title}
-                                                    onError={(e) => {
-                                                        handleErrorImg({ e, errorImg });
-                                                    }}
+                                                    onError={(e) => replaceImageOnError(e, 'spot')}
                                                 />
                                                 <IconBox>
                                                     <StyledFontAwesomeIcon

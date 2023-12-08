@@ -8,7 +8,7 @@ import { faExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 import EditListSearchForm from './EditListSearchForm';
-import { handleErrorImg } from '../../../lib/utils/CommonFunction';
+import { replaceImageOnError } from '../../../lib/utils/imageReplace';
 import errorImg from '../../../lib/images/spotErrorImg.jpg';
 import Empty from '../../common/Empty';
 import Loading from '../../common/Loading';
@@ -274,9 +274,7 @@ const EditList = ({
                                             <Img
                                                 src={firstImage || firstImage2}
                                                 alt={title}
-                                                onError={(e) => {
-                                                    handleErrorImg({ e, errorImg });
-                                                }}
+                                                onError={(e) => replaceImageOnError(e, 'spot')}
                                             />
                                             <TextInfo>
                                                 <Name>{title}</Name>
@@ -309,9 +307,7 @@ const EditList = ({
                                             <Img
                                                 src={image}
                                                 alt={title}
-                                                onError={(e) => {
-                                                    handleErrorImg({ e, errorImg });
-                                                }}
+                                                onError={(e) => replaceImageOnError(e, 'spot')}
                                             />
                                             <TextInfo>
                                                 <Name>{title}</Name>

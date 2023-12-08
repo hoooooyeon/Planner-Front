@@ -1,8 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    changeKeywordDataAction,
-    changePageNumAction,
     changePlannerDataAction,
     changePlannerFieldAction,
     loadSharePlannerListAction,
@@ -11,7 +9,7 @@ import {
 } from '../../../modules/plannerModule';
 import ShareList from '../../../components/planner/list/ShareList';
 import { useState } from 'react';
-import { handleRemoveSpaces } from '../../../lib/utils/CommonFunction';
+import { removeSpaceText } from '../../../lib/utils/spaceRemove';
 
 const ShareListContainer = () => {
     const dispatch = useDispatch();
@@ -62,7 +60,7 @@ const ShareListContainer = () => {
 
     // 실제적으로 검색된 키워드 저장
     const handleSearchPlanner = () => {
-        const keyword = handleRemoveSpaces(curKeyword);
+        const keyword = removeSpaceText(curKeyword);
         dispatch(changePlannerFieldAction({ form: 'keywordData', name: 'resultKeyword', value: keyword }));
     };
 

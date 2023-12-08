@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import styled from 'styled-components';
 import Slider from '../../common/Slider';
-import { handleErrorImg } from '../../../lib/utils/CommonFunction';
+import { replaceImageOnError } from '../../../lib/utils/imageReplace';
 import errorImg from '../../../lib/images/plannerErrorImg.png';
 import Empty from '../../common/Empty';
 import ErrorModal from '../../common/ErrorModal';
@@ -237,9 +237,7 @@ const MyPlannerList = ({
                                             <Img
                                                 src={p.thumbnail}
                                                 alt={p.title}
-                                                onError={(e) => {
-                                                    handleErrorImg({ e, errorImg });
-                                                }}
+                                                onError={(e) => replaceImageOnError(e, 'planner')}
                                             />
                                         </ImgBox>
                                         <InfoBox>

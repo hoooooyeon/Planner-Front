@@ -5,7 +5,7 @@ import ShareListSearchForm from './ShareListSearchForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import errorImg from '../../../lib/images/plannerErrorImg.png';
-import { handleErrorImg } from '../../../lib/utils/CommonFunction';
+import { replaceImageOnError } from '../../../lib/utils/imageReplace';
 import Empty from '../../common/Empty';
 import ErrorModal from '../../common/ErrorModal';
 import Loading from '../../common/Loading';
@@ -184,9 +184,7 @@ const ShareList = ({
                                         <Img
                                             src={p.thumbnail}
                                             alt={p.title}
-                                            onError={(e) => {
-                                                handleErrorImg({ e, errorImg });
-                                            }}
+                                            onError={(e) => replaceImageOnError(e, 'planner')}
                                         />
                                         <IconBox>
                                             <StyledFontAwesomeIcon

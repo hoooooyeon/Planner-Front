@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditList from '../../../components/planner/edit/EditList';
-import { handleRemoveSpaces } from '../../../lib/utils/CommonFunction';
+import { removeSpaceText } from '../../../lib/utils/spaceRemove';
 import {
     accountLikeSpotListLoadAction,
     ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE,
@@ -140,7 +140,7 @@ const EditListContainer = () => {
     };
     // 실제적으로 검색된 키워드 저장
     const handleSearchPlanner = () => {
-        const keyword = handleRemoveSpaces(curKeyword);
+        const keyword = removeSpaceText(curKeyword);
         dispatch(changePlannerFieldAction({ form: 'keywordData', name: 'resultKeyword', value: keyword }));
     };
 

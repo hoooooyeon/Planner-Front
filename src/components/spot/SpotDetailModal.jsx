@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../common/Modal';
-import { handleErrorImg } from '../../lib/utils/CommonFunction';
+import { replaceImageOnError } from '../../lib/utils/imageReplace';
 import errorImg from '../../lib/images/spotErrorImg.jpg';
 import { useState } from 'react';
 import ErrorModal from '../common/ErrorModal';
@@ -205,13 +205,7 @@ const SpotDetailModal = ({
             ) : (
                 <DetailModalBlock>
                     <ImgBox>
-                        <Img
-                            src={image}
-                            alt={title}
-                            onError={(e) => {
-                                handleErrorImg({ e, errorImg });
-                            }}
-                        />
+                        <Img src={image} alt={title} onError={(e) => replaceImageOnError(e, 'spot')} />
                     </ImgBox>
                     <InfoBox>
                         {likeCount >= 0 && (

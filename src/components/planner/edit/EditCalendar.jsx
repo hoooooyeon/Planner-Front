@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
-import { DragFunction } from '../../../lib/utils/CommonFunction';
+import { DragFunction } from '../../../lib/utils/itemDrag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import { faCalendarPlus } from '@fortawesome/free-regular-svg-icons';

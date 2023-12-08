@@ -9,7 +9,7 @@ import { faBicycle } from '@fortawesome/free-solid-svg-icons';
 import { faTrainSubway } from '@fortawesome/free-solid-svg-icons';
 import { useRef } from 'react';
 import Slider from '../../common/Slider';
-import { handleErrorImg } from '../../../lib/utils/CommonFunction';
+import { replaceImageOnError } from '../../../lib/utils/imageReplace';
 import errorImg from '../../../lib/images/spotErrorImg.jpg';
 import Empty from '../../common/Empty';
 
@@ -197,9 +197,7 @@ const InfoRoute = ({ planner, plannerData, drag, onChangeCurPlanId, onClickToggl
                                                 <Img
                                                     alt={locationName}
                                                     src={locationImage}
-                                                    onError={(e) => {
-                                                        handleErrorImg({ e, errorImg });
-                                                    }}
+                                                    onError={(e) => replaceImageOnError(e, 'spot')}
                                                 />
                                                 <RouteSpotName>{locationName}</RouteSpotName>
                                             </SpotItem>

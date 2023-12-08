@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import SpotList from '../../components/spot/SpotList';
-import { handleRemoveSpaces } from '../../lib/utils/CommonFunction';
+import { removeSpaceText } from '../../lib/utils/spaceRemove';
 import {
     addSpotLikeAction,
     loadAreasAction,
@@ -97,7 +97,7 @@ const SpotListContainer = ({
 
     // 실제적으로 검색될 키워드 저장
     const onChangeResultKeyword = () => {
-        const keyword = handleRemoveSpaces(curKeyword);
+        const keyword = removeSpaceText(curKeyword);
         setResultKeyword(keyword);
     };
 
