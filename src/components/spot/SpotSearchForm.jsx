@@ -3,6 +3,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import Loading from '../common/Loading';
+import Select from '../common/Select';
 
 const FormDiv = styled.div`
     margin: 1rem 0;
@@ -114,23 +115,23 @@ const SelectBox = styled.div`
     }
 `;
 
-const Select = styled.select`
-    border-radius: 0.5rem;
-    border: none;
-    width: 100%;
-    min-width: 6rem;
-    height: 2.5rem;
-    text-align-last: center;
-    &:focus {
-        outline: none;
-    }
-    option:disabled {
-        display: none;
-    }
-    @media all and (max-width: 1024px) {
-        min-width: 1rem;
-    }
-`;
+// const Select = styled.select`
+//     border-radius: 0.5rem;
+//     border: none;
+//     width: 100%;
+//     min-width: 6rem;
+//     height: 2.5rem;
+//     text-align-last: center;
+//     &:focus {
+//         outline: none;
+//     }
+//     option:disabled {
+//         display: none;
+//     }
+//     @media all and (max-width: 1024px) {
+//         min-width: 1rem;
+//     }
+// `;
 
 const Label = styled.label`
     margin-right: 0.5rem;
@@ -178,6 +179,11 @@ const SpotSearchForm = ({
                             <SelectBox>
                                 <Label>지역</Label>
                                 <Select
+                                    value={areas.find((item) => item.id == areaCode)}
+                                    options={areas}
+                                    onChange={onClickArea}
+                                />
+                                {/* <Select
                                     required
                                     value={spotData.areaCode}
                                     onChange={(e) => {
@@ -190,7 +196,7 @@ const SpotSearchForm = ({
                                                 {area.name}
                                             </option>
                                         ))}
-                                </Select>
+                                </Select> */}
                             </SelectBox>
                             <SelectBox>
                                 <Label>종류</Label>
