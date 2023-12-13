@@ -84,7 +84,7 @@ const Select = ({ className, value, options, onChange }) => {
     return (
         <SelectBox className={className}>
             <SelectMain onClick={onClick}>
-                {value.id ? value.value : '선택'}
+                {value && value.code ? value.name : '선택'}
                 <FontAwesomeIcon icon={faAngleDown} />
             </SelectMain>
             {selecting && (
@@ -92,7 +92,7 @@ const Select = ({ className, value, options, onChange }) => {
                     {options &&
                         options.map((v, i) => (
                             <SelectOptionItem key={i} onClick={() => onSelect(v)}>
-                                {v.value}
+                                {v.name}
                             </SelectOptionItem>
                         ))}
                 </SelectOption>

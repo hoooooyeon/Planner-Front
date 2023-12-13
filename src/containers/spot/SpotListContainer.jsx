@@ -43,8 +43,10 @@ const SpotListContainer = ({
 
     // 지역 가져오기
     useEffect(() => {
-        loadAreas();
-    }, [loadAreas]);
+        if (areas.length < 0) {
+            loadAreas();
+        }
+    }, []);
 
     // 여행지리스트 가져오기
     useEffect(() => {
@@ -79,8 +81,8 @@ const SpotListContainer = ({
     }, [loadDetailSpot, contentId, isLike]);
 
     // 지역  선택
-    const onClickArea = (areaIndex) => {
-        changeSpotData({ property: 'areaCode', value: areaIndex });
+    const onClickArea = (area) => {
+        changeSpotData({ property: 'areaCode', value: area.code });
     };
 
     // 여행지 페이지에서 벗어날 때 정보 초기화

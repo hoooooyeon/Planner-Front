@@ -8,13 +8,15 @@ import {
     initializeReviewAction,
     loadReviewListAction,
 } from '../../modules/reviewModule';
+import { loadAreasAction } from '../../modules/spotModule';
 
 const ReviewListContainer = ({ history, location, match }) => {
     const dispatch = useDispatch();
-    const { loading, reviewList, uiState } = useSelector(({ loadingReducer, reviewReducer }) => ({
+    const { loading, reviewList, uiState, areas } = useSelector(({ loadingReducer, reviewReducer, spotReducer }) => ({
         loading: loadingReducer[LOAD_REVIEW_LIST_TYPE],
         reviewList: reviewReducer.reviewList,
         uiState: reviewReducer.uiState,
+        areas: spotReducer.areas,
     }));
 
     const { pageNum, itemCount } = uiState;
@@ -79,9 +81,17 @@ const ReviewListContainer = ({ history, location, match }) => {
         loadList(uiState);
     }, [dispatch, uiState.pageNum]);
 
+    // 지역 가져오기
+    useEffect(() => {
+        if (areas.length < 0) {
+            dispatch(loadAreasAction());
+        }
+    }, []);
+
     return (
         <ReviewListView
             loading={loading}
+            areas={areas}
             reviewList={reviewList}
             uiState={uiState}
             onSelectAreaCode={handleSelectAreaCode}

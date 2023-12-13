@@ -179,7 +179,7 @@ const SpotSearchForm = ({
                             <SelectBox>
                                 <Label>지역</Label>
                                 <Select
-                                    value={areas.find((item) => item.id == areaCode)}
+                                    value={areas.find((item) => item.code == spotData.areaCode)}
                                     options={areas}
                                     onChange={onClickArea}
                                 />
@@ -200,7 +200,7 @@ const SpotSearchForm = ({
                             </SelectBox>
                             <SelectBox>
                                 <Label>종류</Label>
-                                <Select
+                                {/* <Select
                                     required
                                     value={spotData.contentTypeId}
                                     onChange={(e) => {
@@ -213,7 +213,7 @@ const SpotSearchForm = ({
                                                 {contentType.label}
                                             </option>
                                         ))}
-                                </Select>
+                                </Select> */}
                             </SelectBox>
                         </SelectDiv>
                         <SearchBox>

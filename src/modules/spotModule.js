@@ -209,7 +209,10 @@ function spotReducer(state = initialState, action) {
                 },
             };
         case SPOT_INITIALIZE_TYPE: {
-            return { ...initialState };
+            return {
+                ...initialState,
+                //  areas: [...state.areas]
+            };
         }
         case SPOT_INITIALIZE_FORM_TYPE: {
             return { ...state, [action.form]: initialState[action.form] };

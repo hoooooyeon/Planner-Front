@@ -40,12 +40,18 @@ const plannerPersistConfig = {
     whitelist: ['plannerData'],
 };
 
+const spotPersistConfig = {
+    key: 'spotReducer',
+    storage,
+    whitelist: ['areas'],
+};
+
 const rootReducer = combineReducers({
     loadingReducer,
     authReducer: persistReducer(authPersistConfig, authReducer),
     accountReducer,
     plannerReducer: persistReducer(plannerPersistConfig, plannerReducer),
-    spotReducer,
+    spotReducer: persistReducer(spotPersistConfig, spotReducer),
     reviewReducer,
     invitationReducer,
     notificationReducer,
