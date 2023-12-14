@@ -272,15 +272,15 @@ const EditListSearchForm = ({
                         {contentTypeList.map((c, i) => (
                             <MenuItem
                                 onClick={() => {
-                                    onChangeContentTypeId(c.id);
+                                    onChangeContentTypeId(c.code);
                                     onIndexPage(1);
                                 }}
                                 key={i}
                                 onMouseEnter={() => onOpenName(i)}
                                 onMouseLeave={onCloseName}
                             >
-                                <MenuIcon icon={iconList[i]} aria-current={contentTypeId === c.id ? 'cur' : null} />
-                                {hoveredItemId === i && <IconName>{c.label}</IconName>}
+                                <MenuIcon icon={iconList[i]} aria-current={contentTypeId === c.code ? 'cur' : null} />
+                                {hoveredItemId === i && <IconName>{c.name}</IconName>}
                             </MenuItem>
                         ))}
                         <MenuItem

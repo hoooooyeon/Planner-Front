@@ -83,7 +83,7 @@ const ReviewListContainer = ({ history, location, match }) => {
 
     // 지역 가져오기
     useEffect(() => {
-        if (areas.length < 0) {
+        if (areas.length == 0) {
             dispatch(loadAreasAction());
         }
     }, []);

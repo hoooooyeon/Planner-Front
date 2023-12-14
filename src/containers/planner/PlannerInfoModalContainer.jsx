@@ -35,6 +35,10 @@ const PlannerInfoModalContainer = () => {
         dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: name, value: value }));
     };
 
+    const onChangememberType = (memberType) => {
+        dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'memberTypeId', value: memberType.code }));
+    };
+
     const onUpdatePlanner = () => {
         if (accountId === planner.accountId) {
             const form = { ...plannerInfoForm };
@@ -89,6 +93,7 @@ const PlannerInfoModalContainer = () => {
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onUpdatePlanner={onUpdatePlanner}
             onChangeField={onChangeField}
+            onChangememberType={onChangememberType}
             onCloseError={onCloseError}
         />
     );

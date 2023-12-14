@@ -1,5 +1,6 @@
 import Modal from '../common/Modal';
 import styled from 'styled-components';
+import Select from '../common/Select';
 
 const InfoForm = styled.form`
     max-width: 25rem;
@@ -118,13 +119,14 @@ const PlannerInfoModal = ({
     onUpdatePlanner,
     onTogglePlannerInfoModal,
     onChangeField,
+    onChangememberType,
     onCloseError,
 }) => {
     const categoryList = [
-        { label: '혼자', value: 1 },
-        { label: '연인', value: 2 },
-        { label: '친구', value: 3 },
-        { label: '가족', value: 4 },
+        { name: '혼자', code: 1 },
+        { name: '연인', code: 2 },
+        { name: '친구', code: 3 },
+        { name: '가족', code: 4 },
     ];
     const { title, expense, memberCount, memberTypeId } = { ...plannerInfoForm };
 
@@ -175,13 +177,18 @@ const PlannerInfoModal = ({
                 {plannerError && plannerError.memberCount && <ErrorText>{plannerError.memberCount}</ErrorText>}
                 <FlexDiv>
                     <Label>여행 멤버 유형</Label>
-                    <Category required value={memberTypeId} name="memberTypeId" onChange={onChangeField}>
+                    <Select
+                        value={categoryList.find((item) => item.code == memberTypeId)}
+                        options={categoryList}
+                        onChange={onChangememberType}
+                    />
+                    {/* <Category required value={memberTypeId} name="memberTypeId" onChange={onChangeField}>
                         {categoryList.map((item) => (
                             <option value={item.value} key={item.value}>
                                 {item.label}
                             </option>
                         ))}
-                    </Category>
+                    </Category> */}
                 </FlexDiv>
                 {plannerError && plannerError.memberTypeId && <ErrorText>{plannerError.memberTypeId}</ErrorText>}
             </InfoForm>

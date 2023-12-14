@@ -43,7 +43,7 @@ const SpotListContainer = ({
 
     // 지역 가져오기
     useEffect(() => {
-        if (areas.length < 0) {
+        if (areas.length == 0) {
             loadAreas();
         }
     }, []);
@@ -126,7 +126,7 @@ const SpotListContainer = ({
 
     // 여행지리스트 컨텐츠타입 변경.
     const onChangeContentTypeId = (contentTypeId) => {
-        changeSpotData({ property: 'contentTypeId', value: contentTypeId });
+        changeSpotData({ property: 'contentTypeId', value: contentTypeId.code });
     };
 
     // 지역, 컨텐츠타입, 키워드 변경시 페이지 리셋.

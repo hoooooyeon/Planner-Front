@@ -102,13 +102,13 @@ const initialState = {
     },
     isLike: { state: '' },
     contentTypeList: [
-        { label: '관광지', id: 12 },
-        { label: '문화시설', id: 14 },
-        { label: '행사', id: 15 },
-        { label: '레포츠', id: 28 },
-        { label: '숙박', id: 32 },
-        { label: '쇼핑', id: 38 },
-        { label: '음식점', id: 39 },
+        { name: '관광지', code: 12 },
+        { name: '문화시설', code: 14 },
+        { name: '행사', code: 15 },
+        { name: '레포츠', code: 28 },
+        { name: '숙박', code: 32 },
+        { name: '쇼핑', code: 38 },
+        { name: '음식점', code: 39 },
     ],
 };
 
@@ -211,7 +211,7 @@ function spotReducer(state = initialState, action) {
         case SPOT_INITIALIZE_TYPE: {
             return {
                 ...initialState,
-                //  areas: [...state.areas]
+                areas: [...state.areas],
             };
         }
         case SPOT_INITIALIZE_FORM_TYPE: {

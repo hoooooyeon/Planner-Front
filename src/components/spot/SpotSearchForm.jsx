@@ -200,6 +200,11 @@ const SpotSearchForm = ({
                             </SelectBox>
                             <SelectBox>
                                 <Label>종류</Label>
+                                <Select
+                                    value={contentTypeList.find((item) => item.code == spotData.contentTypeId)}
+                                    options={contentTypeList}
+                                    onChange={onChangeContentTypeId}
+                                />
                                 {/* <Select
                                     required
                                     value={spotData.contentTypeId}
