@@ -129,8 +129,8 @@ const EditListContainer = () => {
     }, [dispatch]);
 
     // 지역 선택
-    const onChangeAreaIndex = (num) => {
-        dispatch(changeSpotDataAction({ property: 'areaCode', value: num }));
+    const onChangeAreaIndex = (area) => {
+        dispatch(changeSpotDataAction({ property: 'areaCode', value: area.code }));
     };
 
     // 플래너 키워드 타이핑

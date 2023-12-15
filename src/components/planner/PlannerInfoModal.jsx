@@ -182,13 +182,6 @@ const PlannerInfoModal = ({
                         options={categoryList}
                         onChange={onChangememberType}
                     />
-                    {/* <Category required value={memberTypeId} name="memberTypeId" onChange={onChangeField}>
-                        {categoryList.map((item) => (
-                            <option value={item.value} key={item.value}>
-                                {item.label}
-                            </option>
-                        ))}
-                    </Category> */}
                 </FlexDiv>
                 {plannerError && plannerError.memberTypeId && <ErrorText>{plannerError.memberTypeId}</ErrorText>}
             </InfoForm>

@@ -12,6 +12,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { useState } from 'react';
 import Loading from '../../common/Loading';
+import Select from '../../common/Select';
 
 const MenuList = styled.div`
     padding: 1rem 0 0.8rem;
@@ -63,6 +64,8 @@ const IconName = styled.div`
 `;
 
 const FormDiv = styled.div`
+    position: relative;
+    z-index: 201;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -169,23 +172,6 @@ const SelectBox = styled.div`
     }
 `;
 
-const Select = styled.select`
-    border-radius: 0.5rem;
-    border: none;
-    width: 100%;
-    min-width: 6rem;
-    height: 2.5rem;
-    text-align-last: center;
-    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
-    cursor: pointer;
-    &:focus {
-        outline: none;
-    }
-    option:disabled {
-        display: none;
-    }
-`;
-
 const Label = styled.label`
     margin-right: 0.5rem;
     font-size: 0.9rem;
@@ -252,19 +238,10 @@ const EditListSearchForm = ({
                         <SelectBox>
                             <Label>지역</Label>
                             <Select
-                                required
-                                value={areaCode}
-                                onChange={(e) => {
-                                    onChangeAreaIndex(e.target.value);
-                                }}
-                            >
-                                {areas.length > 0 &&
-                                    areas.map((area) => (
-                                        <option value={area.code} key={area.code}>
-                                            {area.name}
-                                        </option>
-                                    ))}
-                            </Select>
+                                value={areas.find((item) => item.code == spotData.areaCode)}
+                                options={areas}
+                                onChange={onChangeAreaIndex}
+                            />
                         </SelectBox>
                     </SelectDiv>
 

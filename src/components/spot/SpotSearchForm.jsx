@@ -115,24 +115,6 @@ const SelectBox = styled.div`
     }
 `;
 
-// const Select = styled.select`
-//     border-radius: 0.5rem;
-//     border: none;
-//     width: 100%;
-//     min-width: 6rem;
-//     height: 2.5rem;
-//     text-align-last: center;
-//     &:focus {
-//         outline: none;
-//     }
-//     option:disabled {
-//         display: none;
-//     }
-//     @media all and (max-width: 1024px) {
-//         min-width: 1rem;
-//     }
-// `;
-
 const Label = styled.label`
     margin-right: 0.5rem;
     font-size: 0.9rem;
@@ -183,20 +165,6 @@ const SpotSearchForm = ({
                                     options={areas}
                                     onChange={onClickArea}
                                 />
-                                {/* <Select
-                                    required
-                                    value={spotData.areaCode}
-                                    onChange={(e) => {
-                                        onClickArea(e.target.value);
-                                    }}
-                                >
-                                    {areas.length > 0 &&
-                                        areas.map((area) => (
-                                            <option value={area.code} key={area.code}>
-                                                {area.name}
-                                            </option>
-                                        ))}
-                                </Select> */}
                             </SelectBox>
                             <SelectBox>
                                 <Label>종류</Label>
@@ -205,20 +173,6 @@ const SpotSearchForm = ({
                                     options={contentTypeList}
                                     onChange={onChangeContentTypeId}
                                 />
-                                {/* <Select
-                                    required
-                                    value={spotData.contentTypeId}
-                                    onChange={(e) => {
-                                        onChangeContentTypeId(e.target.value);
-                                    }}
-                                >
-                                    {contentTypeList &&
-                                        contentTypeList.map((contentType) => (
-                                            <option value={contentType.id} key={contentType.id}>
-                                                {contentType.label}
-                                            </option>
-                                        ))}
-                                </Select> */}
                             </SelectBox>
                         </SelectDiv>
                         <SearchBox>
