@@ -11,11 +11,8 @@ export const SelectBox = styled.div`
     user-select: none;
     margin: 0px 5px;
     box-sizing: border-box;
-    /* box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor}; */
-
-    &:hover {
-        box-shadow: 0px 3px 6px ${(props) => props.theme.shadowColor};
-    }
+    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    font-size: 0.8rem;
 `;
 
 export const SelectMain = styled.div`
@@ -24,8 +21,13 @@ export const SelectMain = styled.div`
     text-align: center;
     line-height: 36px;
     white-space: nowrap;
-    svg {
-        margin: 0px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+
+    @media all and (max-width: 270px) {
+        width: 40px;
     }
 `;
 
@@ -70,6 +72,13 @@ const SelectOptionItem = styled.div`
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)``;
 
+const Text = styled.div`
+    width: 6.5rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+`;
+
 const Select = ({ className, value, options, onChange }) => {
     const [selecting, setSelecting] = useState(false);
 
@@ -91,7 +100,7 @@ const Select = ({ className, value, options, onChange }) => {
     return (
         <SelectBox className={className}>
             <SelectMain onClick={onClick}>
-                {value && value.code ? value.name : '선택'}
+                <Text>{value && value.code ? value.name : '선택'}</Text>
                 <StyledFontAwesomeIcon icon={faAngleDown} />
             </SelectMain>
             {selecting && (

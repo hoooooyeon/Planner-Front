@@ -14,7 +14,8 @@ const FormDiv = styled.div`
     height: 10rem;
     padding: 0.5rem;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
-    @media all and (min-width: 481px) {
+
+    @media all and (min-width: 769px) {
         padding: 0.5rem 3rem;
     }
     @media all and (min-width: 1025px) {
@@ -96,6 +97,9 @@ const SearchResult = styled.h3`
 
 const SelectDiv = styled.div`
     display: flex;
+    @media all and (max-width: 480px) {
+        flex-direction: column;
+    }
 `;
 
 const SelectBox = styled.div`
@@ -106,6 +110,13 @@ const SelectBox = styled.div`
     padding-right: 0.9rem;
     & + & {
         padding-left: 0.9rem;
+    }
+    @media all and (max-width: 480px) {
+        border-right: none;
+        & + & {
+            padding-left: 0;
+            margin-top: 1rem;
+        }
     }
     @media all and (max-width: 1024px) {
         & + & {
