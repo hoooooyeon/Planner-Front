@@ -62,6 +62,11 @@ const EditRouteContainer = () => {
     const [endDate, setEndDate] = useState(planDateEnd ? new Date(planDateEnd) : new Date());
     const { plannerInfo, member } = { ...modal };
 
+    // 주소 입력 접근시 plannerData.plannerId 설정.
+    useEffect(() => {
+        dispatch(changePlannerDataAction({ property: 'plannerId', value: params.plannerId }));
+    }, [dispatch, params]);
+
     // 여행 날짜 변환
     const letsFormat = (d) => {
         const date = new Date(d);
@@ -80,11 +85,6 @@ const EditRouteContainer = () => {
             history.push(`/Planners/${params.plannerId}`);
         }
     }, [history, accountId, account, planner]);
-
-    // 주소 입력 접근시 plannerData.plannerId 설정.
-    useEffect(() => {
-        dispatch(changePlannerDataAction({ property: 'plannerId', value: params.plannerId }));
-    }, [dispatch, params]);
 
     // 출발 날짜 선택
     const onUpdatePlannerDate = (date) => {

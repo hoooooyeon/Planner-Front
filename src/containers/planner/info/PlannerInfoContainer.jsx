@@ -42,17 +42,17 @@ const PlannerInfoContainer = () => {
     const { allSchedule } = { ...mapData };
     const { plannerInfo, member } = { ...modal };
 
+    // 주소 입력 접근시 plannerData.plannerId 설정
+    useEffect(() => {
+        dispatch(changePlannerDataAction({ property: 'plannerId', value: params.plannerId }));
+    }, [params]);
+
     // 페이지 접근 제어
     useEffect(() => {
         if (planner === false) {
             history.push('/Planners');
         }
     }, [history, planner, plannerId]);
-
-    // 주소 입력 접근시 plannerData.plannerId 설정
-    useEffect(() => {
-        dispatch(changePlannerDataAction({ property: 'plannerId', value: params.plannerId }));
-    }, [params]);
 
     // 플래너 삭제
     const onDeletePlanner = () => {
