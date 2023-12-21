@@ -60,8 +60,7 @@ const StyledLink = styled(Link)`
     padding: 1rem;
     border-radius: 2rem;
     &:hover {
-        color: ${(props) => props.theme.hoverColor};
-        background-color: ${(props) => props.theme.hoverBackgroundColor};
+        background-color: rgba(0, 0, 0, 0.6);
         cursor: pointer;
     }
 `;
