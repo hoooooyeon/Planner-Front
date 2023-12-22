@@ -138,11 +138,14 @@ const ShareList = ({
     plannerError,
     page,
     sortCriteria,
+    areas,
+    areaCode,
     onCloseError,
     onClickPlanner,
     onChangeField,
     handleCleanKeyword,
     onChangeSort,
+    onChangeAreaCode,
     handleSearchPlanner,
     drag,
     onIndexPage,
@@ -159,10 +162,13 @@ const ShareList = ({
                 <ShareListSearchForm
                     keywordData={keywordData}
                     sortCriteria={sortCriteria}
+                    areas={areas}
+                    areaCode={areaCode}
                     onChangeField={onChangeField}
                     handleSearchPlanner={handleSearchPlanner}
                     handleCleanKeyword={handleCleanKeyword}
                     onChangeSort={onChangeSort}
+                    onChangeAreaCode={onChangeAreaCode}
                 />
                 {loading ? (
                     <CenterDiv>

@@ -2,25 +2,28 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import Select from '../../common/Select';
 
 const ShareListSearchFormBlock = styled.div`
     margin: 1rem 0;
     background-color: ${(props) => props.theme.secondaryBackgroundColor};
-    padding: 0.5rem 5rem;
+    padding: 1rem 5rem;
     display: flex;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    @media all and (min-width: 1025px) {
+        border-radius: 5rem;
+        align-items: center;
+    }
     @media all and (max-width: 1024px) {
         border-radius: 1rem;
-        height: 6rem;
-        padding: 0.5rem 2rem;
+        padding: 1rem 2rem;
         flex-direction: column;
         align-items: flex-start;
         justify-content: center;
     }
-    @media all and (min-width: 1025px) {
-        height: 4rem;
-        border-radius: 5rem;
-        align-items: center;
+    @media all and (max-width: 480px) {
+        height: 9rem;
+        padding: 1rem 1rem;
     }
 `;
 
@@ -28,18 +31,30 @@ const SearchForm = styled.form`
     width: 100%;
     display: flex;
     align-items: center;
-    margin-left: 2rem;
-    height: 4rem;
+    margin-left: 1rem;
+    height: 3rem;
     @media all and (max-width: 1024px) {
         justify-content: center;
         margin-left: 0;
     }
 `;
 
-const SortBox = styled.div`
+const FlexDiv = styled.div`
+    display: flex;
+    @media all and (max-width: 480px) {
+        flex-direction: column;
+    }
+`;
+
+const CategoryBox = styled.div`
     display: flex;
     align-items: center;
-    height: 4rem;
+    height: 3rem;
+    @media all and (min-width: 481px) {
+        & + & {
+            margin-left: 0.5rem;
+        }
+    }
 `;
 
 const SortButton = styled.div`
@@ -48,7 +63,7 @@ const SortButton = styled.div`
     background-color: ${(props) => props.theme.primaryButtonBackgroundColor};
     font-size: 0.7rem;
     font-weight: bold;
-    padding: 0.4rem;
+    padding: 0.5rem;
     text-align: center;
     cursor: pointer;
     &[aria-current] {
@@ -140,24 +155,37 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 const ShareListSearchForm = ({
     keywordData,
     sortCriteria,
+    areas,
+    areaCode,
     handleCleanKeyword,
     onChangeField,
     onChangeSort,
+    onChangeAreaCode,
     handleSearchPlanner,
 }) => {
     const { curKeyword, resultKeyword } = { ...keywordData };
     return (
         <>
             <ShareListSearchFormBlock>
-                <SortBox>
-                    <Label>정렬</Label>
-                    <SortButton aria-current={sortCriteria === 2 ? 'cur' : null} onClick={() => onChangeSort(2)}>
-                        최신순
-                    </SortButton>
-                    <SortButton aria-current={sortCriteria === 1 ? 'cur' : null} onClick={() => onChangeSort(1)}>
-                        인기순
-                    </SortButton>
-                </SortBox>
+                <FlexDiv>
+                    <CategoryBox>
+                        <Label>지역</Label>
+                        <Select
+                            value={areas.find((item) => item.code == areaCode)}
+                            options={areas}
+                            onChange={onChangeAreaCode}
+                        />
+                    </CategoryBox>
+                    <CategoryBox>
+                        <Label>정렬</Label>
+                        <SortButton aria-current={sortCriteria === 2 ? 'cur' : null} onClick={() => onChangeSort(2)}>
+                            최신순
+                        </SortButton>
+                        <SortButton aria-current={sortCriteria === 1 ? 'cur' : null} onClick={() => onChangeSort(1)}>
+                            인기순
+                        </SortButton>
+                    </CategoryBox>
+                </FlexDiv>
                 <SearchForm>
                     <Label>플래너 검색</Label>
                     <Text

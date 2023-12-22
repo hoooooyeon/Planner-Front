@@ -110,12 +110,13 @@ export const updatePlannerAction = ({
     memberCount,
     memberTypeId,
 }) => ({ type: UPDATE_PLANNER_TYPE, plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
-export const loadSharePlannerListAction = ({ itemCount, sortCriteria, keyword, pageNum }) => ({
+export const loadSharePlannerListAction = ({ itemCount, areaCode, sortCriteria, keyword, pageNum }) => ({
     type: LOAD_SHARE_PLANNER_LIST_TYPE,
     itemCount,
     sortCriteria,
     keyword,
     pageNum,
+    areaCode,
 });
 export const loadPlannerAction = (plannerId) => ({ type: LOAD_PLANNER_TYPE, plannerId });
 export const deletePlannerAction = (plannerId) => ({ type: DELETE_PLANNER_TYPE, plannerId });

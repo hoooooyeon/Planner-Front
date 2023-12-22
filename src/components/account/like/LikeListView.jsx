@@ -99,6 +99,7 @@ const LikeListView = ({ loading, likeLists, onLikeListLoad, onLikePlannerClick, 
     const [sortValue, setSortValue] = useState(2);
     const [searchText, setSearchText] = useState('');
     const [pageNum, setPageNum] = useState(1);
+    const [areaCode, setAreaCode] = useState('');
 
     const likeList = likeLists[menu[selectIndex - 1].value] || {};
     const list = likeList.list || null;
@@ -120,6 +121,10 @@ const LikeListView = ({ loading, likeLists, onLikeListLoad, onLikePlannerClick, 
         setPageNum(num);
     };
 
+    const handleAreaCodeChange = (code) => {
+        setAreaCode(code);
+    };
+
     const handlePreviousPage = () => {
         if (pageNum != 1) {
             setPageNum(pageNum - 1);
@@ -139,9 +144,10 @@ const LikeListView = ({ loading, likeLists, onLikeListLoad, onLikePlannerClick, 
             keyword: searchText,
             postType: menu[selectIndex - 1].id,
             pageNum,
+            areaCode,
         };
         onLikeListLoad(queryString);
-    }, [pageNum, selectIndex, sortValue]);
+    }, [pageNum, selectIndex, sortValue, areaCode]);
 
     return (
         <Container>

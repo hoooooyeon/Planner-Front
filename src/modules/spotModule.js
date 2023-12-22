@@ -115,9 +115,11 @@ const initialState = {
 function spotReducer(state = initialState, action) {
     switch (action.type) {
         case LOAD_AREAS_SUCCESS_TYPE:
+            const areaList = action.payload.data.items;
+            areaList.unshift({ rnum: '0', code: '0', name: '전체' });
             return {
                 ...state,
-                areas: action.payload.data.items,
+                areas: areaList,
             };
         case LOAD_DETAIL_SPOT_FAILURE_TYPE:
             return {
