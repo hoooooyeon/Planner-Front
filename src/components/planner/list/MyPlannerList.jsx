@@ -207,7 +207,7 @@ const MyPlannerList = ({
                 <Header>
                     <HeaderTitle>나의 플래너</HeaderTitle>
                     <Button onClick={handlecreatePlanner}>
-                        {loading.createPlannerLoading ? <Loading size="small" /> : <>플래너 생성</>}
+                        {!loading.createPlannerLoading ? <Loading size="smaller" /> : <>플래너 생성</>}
                     </Button>
                 </Header>
                 {loading.myPlannersLoading ? (

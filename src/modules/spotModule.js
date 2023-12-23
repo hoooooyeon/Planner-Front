@@ -43,11 +43,12 @@ export const loadSpotsAction = ({ areaCode, contentTypeId, pageNo, numOfRows }) 
 });
 export const loadDetailSpotAction = ({ contentId }) => ({ type: LOAD_DETAIL_SPOT_TYPE, contentId });
 export const changeDetailSpotAction = (spotInfo) => ({ type: CHANGE_DETAIL_SPOT_TYPE, spotInfo });
-export const addSpotLikeAction = ({ contentId, title, image }) => ({
+export const addSpotLikeAction = ({ contentId, title, image, areaCode }) => ({
     type: ADD_SPOT_LIKE_TYPE,
     contentId,
     title,
     image,
+    areaCode,
 });
 export const removeSpotLikeAction = ({ contentId }) => ({ type: REMOVE_SPOT_LIKE_TYPE, contentId });
 export const searchSpotAction = ({ areaCode, contentTypeId, keyword, numOfRows, pageNo }) => ({

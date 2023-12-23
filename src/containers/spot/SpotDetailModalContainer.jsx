@@ -28,13 +28,14 @@ const SpotDetailModalContainer = () => {
 
     const { likeState, title, image, contentId } = { ...detail };
     const { accountId } = { ...account };
+    const { areaCode } = { ...spotData };
 
     // 여행지 좋아요 토글.
     const onToggleDetailLike = () => {
         if (likeState) {
             dispatch(removeSpotLikeAction({ contentId }));
         } else {
-            dispatch(addSpotLikeAction({ title, contentId, image }));
+            dispatch(addSpotLikeAction({ title, contentId, image, areaCode }));
         }
     };
 
