@@ -82,6 +82,7 @@ const MyAccount = ({
     account,
     accountField,
     likeList,
+    areas,
     onProfileLoad,
     onLikeListLoad,
     onProfileChange,
@@ -124,6 +125,7 @@ const MyAccount = ({
                                 <LikeListView
                                     loading={loading}
                                     likeLists={likeList}
+                                    areas={areas}
                                     onLikeListLoad={onLikeListLoad}
                                     onLikePlannerClick={onLikePlannerClick}
                                     onLikeSpotClick={onLikeSpotClick}

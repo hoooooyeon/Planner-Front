@@ -8,6 +8,7 @@ import { useCallback } from 'react';
 import { faCalendarDays, faFlag } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle, faCircleDot } from '../../../../node_modules/@fortawesome/free-regular-svg-icons/index';
+import Select from '../../common/Select';
 
 const Container = styled.div`
     display: flex;
@@ -69,12 +70,19 @@ const ListBlock = styled.div`
     flex-direction: column;
 `;
 
+const OptionBox = styled.div`
+    display: flex;
+    @media all and (max-width: 480px) {
+        flex-direction: column;
+    }
+`;
+
 const ListOptions = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: left;
-    margin: 0.5rem 2rem;
-
+    align-items: center;
+    margin: 0.5rem 1rem;
     span {
         margin: 0.3125rem;
     }
@@ -82,6 +90,10 @@ const ListOptions = styled.div`
     @media screen and (max-width: 480px) {
         margin: 0.5rem 0rem;
     }
+`;
+
+const Label = styled.div`
+    margin-right: 0.5rem;
 `;
 
 const sortOption = [
@@ -94,12 +106,12 @@ const menu = [
     { id: 2, title: '여행지', value: 'likeSpotList', icon: faFlag },
 ];
 
-const LikeListView = ({ loading, likeLists, onLikeListLoad, onLikePlannerClick, onLikeSpotClick }) => {
+const LikeListView = ({ loading, likeLists, areas, onLikeListLoad, onLikePlannerClick, onLikeSpotClick }) => {
     const [selectIndex, setSelectIndex] = useState(1);
     const [sortValue, setSortValue] = useState(2);
     const [searchText, setSearchText] = useState('');
     const [pageNum, setPageNum] = useState(1);
-    const [areaCode, setAreaCode] = useState('');
+    const [areaCode, setAreaCode] = useState(0);
 
     const likeList = likeLists[menu[selectIndex - 1].value] || {};
     const list = likeList.list || null;
@@ -122,7 +134,7 @@ const LikeListView = ({ loading, likeLists, onLikeListLoad, onLikePlannerClick, 
     };
 
     const handleAreaCodeChange = (code) => {
-        setAreaCode(code);
+        setAreaCode(code.code);
     };
 
     const handlePreviousPage = () => {
@@ -166,14 +178,25 @@ const LikeListView = ({ loading, likeLists, onLikeListLoad, onLikePlannerClick, 
                 </SideBlock>
                 <ListBlock>
                     <ListSearchBar searchText={searchText} onSearchTextChange={handleSearchTextChange} />
-                    <ListOptions>
-                        {sortOption.map((item) => (
-                            <span key={item.id} onClick={() => handleSortSelectChange(item.id)}>
-                                <FontAwesomeIcon icon={sortValue == item.id ? faCircleDot : faCircle} />
-                                {item.value}
-                            </span>
-                        ))}
-                    </ListOptions>
+                    <OptionBox>
+                        <ListOptions>
+                            <Label>정렬</Label>
+                            {sortOption.map((item) => (
+                                <span key={item.id} onClick={() => handleSortSelectChange(item.id)}>
+                                    <FontAwesomeIcon icon={sortValue == item.id ? faCircleDot : faCircle} />
+                                    {item.value}
+                                </span>
+                            ))}
+                        </ListOptions>
+                        <ListOptions>
+                            <Label>지역</Label>
+                            <Select
+                                value={areas.find((item) => item.code == areaCode)}
+                                options={areas}
+                                onChange={handleAreaCodeChange}
+                            />
+                        </ListOptions>
+                    </OptionBox>
                     <LikeList
                         selectIndex={selectIndex}
                         loading={selectIndex == 1 ? loading.likePlannerListLoading : loading.likeSpotListLoading}

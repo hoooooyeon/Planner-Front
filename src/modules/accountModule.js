@@ -260,7 +260,6 @@ const initialState = {
     account: null,
     myPlannerList: {},
     likeList: {
-        areaCode: '',
         likePlannerList: {},
         likeSpotList: {},
     },
