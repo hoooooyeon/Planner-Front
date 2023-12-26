@@ -109,7 +109,18 @@ export const updatePlannerAction = ({
     expense,
     memberCount,
     memberTypeId,
-}) => ({ type: UPDATE_PLANNER_TYPE, plannerId, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId });
+    areaCode,
+}) => ({
+    type: UPDATE_PLANNER_TYPE,
+    plannerId,
+    title,
+    planDateStart,
+    planDateEnd,
+    expense,
+    memberCount,
+    memberTypeId,
+    areaCode,
+});
 export const loadSharePlannerListAction = ({ itemCount, areaCode, sortCriteria, keyword, pageNum }) => ({
     type: LOAD_SHARE_PLANNER_LIST_TYPE,
     itemCount,
@@ -302,6 +313,7 @@ const initialState = {
         expense: '',
         memberCount: '',
         memberTypeId: 1,
+        areaCode: 0,
     },
 };
 

@@ -81,7 +81,7 @@ const Title = styled.div`
     overflow: hidden;
 `;
 const Date = styled.div`
-    font-size: 0.4rem;
+    font-size: 0.6rem;
     color: ${(props) => props.theme.tertiaryColor};
     margin-top: 0.6rem;
     overflow: hidden;

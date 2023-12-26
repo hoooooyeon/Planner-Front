@@ -160,6 +160,7 @@ const EditListContainer = () => {
     // 여행지 좋아요리스트 로드
     useEffect(() => {
         if (accountId && contentTypeId === 0) {
+            const { areaCode } = { ...likeList };
             const queryString = {
                 accountId,
                 itemCount: 12,
@@ -167,12 +168,13 @@ const EditListContainer = () => {
                 keyword: resultKeyword,
                 postType: 2,
                 pageNum: page,
+                areaCode,
             };
             dispatch(spotInitializeFormAction('spots'));
             dispatch(initializeFormAction('likeList'));
             dispatch(accountLikeSpotListLoadAction(queryString));
         }
-    }, [dispatch, accountId, resultKeyword, contentTypeId, page, detail.likeState]);
+    }, [dispatch, accountId, resultKeyword, contentTypeId, page, detail.likeState, areaCode]);
 
     // 여행 정보 및 검색 키워드 초기화
     useEffect(() => {
@@ -247,7 +249,7 @@ const EditListContainer = () => {
             spotData={spotData}
             navList={navList}
             contentTypeList={contentTypeList}
-            likeSpotList={likeSpotList}
+            likeSpotList={likeList}
             totalCount={totalCount.current}
             page={page}
             itemIndex={numOfRows}

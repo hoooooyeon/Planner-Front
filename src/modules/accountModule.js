@@ -262,6 +262,7 @@ const initialState = {
     likeList: {
         likePlannerList: {},
         likeSpotList: {},
+        areaCode: 0,
     },
     notifications: [],
     accountUpdate: false,

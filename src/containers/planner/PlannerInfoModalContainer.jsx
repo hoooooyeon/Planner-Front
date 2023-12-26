@@ -25,7 +25,7 @@ const PlannerInfoModalContainer = () => {
     );
 
     const { accountId } = { ...account };
-    const { plannerId, planDateStart, planDateEnd, title, expense, memberCount, memberTypeId, creator } = {
+    const { plannerId, planDateStart, planDateEnd, title, expense, memberCount, memberTypeId, areaCode } = {
         ...planner,
     };
     const { plannerInfo } = { ...modal };
@@ -47,16 +47,17 @@ const PlannerInfoModalContainer = () => {
             if (Object.keys(validState).length > 0) {
                 dispatch(plannerValidateFieldAction(validState));
             } else {
-                const { title, expense, memberCount, memberTypeId } = { ...plannerInfoForm };
+                const { title, expense, memberCount, memberTypeId, areaCode } = { ...plannerInfoForm };
 
                 const queryString = {
                     plannerId,
-                    title: title,
+                    title,
                     planDateStart,
                     planDateEnd,
-                    expense: expense,
-                    memberCount: memberCount,
-                    memberTypeId: memberTypeId,
+                    expense,
+                    memberCount,
+                    memberTypeId,
+                    areaCode,
                 };
                 dispatch(updatePlannerAction(queryString));
                 dispatch(plannerInitializePropertyAction('plannerError'));
@@ -69,6 +70,7 @@ const PlannerInfoModalContainer = () => {
         dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'expense', value: expense }));
         dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'memberCount', value: memberCount }));
         dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'memberTypeId', value: memberTypeId }));
+        dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'areaCode', value: areaCode }));
     }, [plannerInfo]);
 
     // 플래너정보수정모달 토글
