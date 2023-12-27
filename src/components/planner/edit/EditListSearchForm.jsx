@@ -203,6 +203,7 @@ const CenterDiv = styled.div`
 const EditListSearchForm = ({
     keywordData,
     spotData,
+    likeList,
     areas,
     contentTypeList,
     loading,
@@ -215,8 +216,10 @@ const EditListSearchForm = ({
 }) => {
     const iconList = [faLandmarkFlag, faHotel, faRankingStar, faTrophy, faBed, faBagShopping, faUtensils];
     const { curKeyword, resultKeyword } = { ...keywordData };
-    const { contentTypeId, areaCode } = { ...spotData };
+    const { contentTypeId } = { ...spotData };
     const [hoveredItemId, setHoveredItemId] = useState(null);
+
+    const areaCode = Object.keys(likeList).length <= 0 ? spotData.areaCode : likeList.areCode;
 
     const onOpenName = (itemId) => {
         setHoveredItemId(itemId);
@@ -238,7 +241,7 @@ const EditListSearchForm = ({
                         <SelectBox>
                             <Label>지역</Label>
                             <Select
-                                value={areas.find((item) => item.code == spotData.areaCode)}
+                                value={areas.find((item) => item.code == areaCode)}
                                 options={areas}
                                 onChange={onChangeAreaIndex}
                             />

@@ -106,13 +106,21 @@ const menu = [
     { id: 2, title: '여행지', value: 'likeSpotList', icon: faFlag },
 ];
 
-const LikeListView = ({ loading, likeLists, areas, onLikeListLoad, onLikePlannerClick, onLikeSpotClick }) => {
+const LikeListView = ({
+    loading,
+    likeLists,
+    areas,
+    onLikeListLoad,
+    onLikePlannerClick,
+    onLikeSpotClick,
+    onAreaCodeChange,
+}) => {
     const [selectIndex, setSelectIndex] = useState(1);
     const [sortValue, setSortValue] = useState(2);
     const [searchText, setSearchText] = useState('');
     const [pageNum, setPageNum] = useState(1);
-    const [areaCode, setAreaCode] = useState(0);
 
+    const areaCode = likeLists.areaCode;
     const likeList = likeLists[menu[selectIndex - 1].value] || {};
     const list = likeList.list || null;
     const totalCount = likeList.totalCount || 0;
@@ -131,10 +139,6 @@ const LikeListView = ({ loading, likeLists, areas, onLikeListLoad, onLikePlanner
 
     const handlePageChange = (num) => {
         setPageNum(num);
-    };
-
-    const handleAreaCodeChange = (code) => {
-        setAreaCode(code.code);
     };
 
     const handlePreviousPage = () => {
@@ -156,10 +160,15 @@ const LikeListView = ({ loading, likeLists, areas, onLikeListLoad, onLikePlanner
             keyword: searchText,
             postType: menu[selectIndex - 1].id,
             pageNum,
-            areaCode,
+            areaCode: areaCode,
         };
         onLikeListLoad(queryString);
     }, [pageNum, selectIndex, sortValue, areaCode]);
+
+    // 지역 코드 초기화
+    useEffect(() => {
+        onAreaCodeChange({ code: 0 });
+    }, [menu[selectIndex - 1].id]);
 
     return (
         <Container>
@@ -193,7 +202,7 @@ const LikeListView = ({ loading, likeLists, areas, onLikeListLoad, onLikePlanner
                             <Select
                                 value={areas.find((item) => item.code == areaCode)}
                                 options={areas}
-                                onChange={handleAreaCodeChange}
+                                onChange={onAreaCodeChange}
                             />
                         </ListOptions>
                     </OptionBox>

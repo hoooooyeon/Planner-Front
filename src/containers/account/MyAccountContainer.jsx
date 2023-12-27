@@ -10,13 +10,12 @@ import {
     accountLikePlannerListLoadAction,
     accountLikeSpotListLoadAction,
     accountLoadAction,
-    accountMyPlannerListLoadAction,
     accountUpdateAction,
     changeFieldAction,
 } from '../../modules/accountModule';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import spotReducer, {
+import {
     changeDetailSpotAction,
     changeSpotDataAction,
     loadAreasAction,
@@ -58,7 +57,6 @@ const MyAccountContainer = () => {
                 accountId,
                 ...data,
             };
-
             if (data.postType === 1) {
                 dispatch(accountLikePlannerListLoadAction(queryString));
             } else if (data.postType === 2) {
@@ -113,6 +111,10 @@ const MyAccountContainer = () => {
         dispatch(loadAreasAction());
     }, []);
 
+    const handleAreaCodeChange = (code) => {
+        dispatch(changeFieldAction({ form: 'likeList', name: 'areaCode', value: code.code }));
+    };
+
     if (!auth) {
         alert('정상적인 접근이 아닙니다.');
         history.push('/');
@@ -132,6 +134,7 @@ const MyAccountContainer = () => {
             onProfileImageUpdate={handleProfileImageUpdate}
             onLikePlannerClick={handleLikePlannerClick}
             onLikeSpotClick={handleLikeSpotClick}
+            onAreaCodeChange={handleAreaCodeChange}
         />
     );
 };
