@@ -110,6 +110,7 @@ const initialState = {
         { name: '숙박', code: 32 },
         { name: '쇼핑', code: 38 },
         { name: '음식점', code: 39 },
+        { name: '좋아요', code: 0 },
     ],
 };
 

@@ -114,12 +114,14 @@ const ErrorText = styled.div`
 const PlannerInfoModal = ({
     modal,
     plannerInfoForm,
+    areas,
     plannerError,
     loading,
     onUpdatePlanner,
     onTogglePlannerInfoModal,
     onChangeField,
     onChangememberType,
+    onChangeAreaCode,
     onCloseError,
 }) => {
     const categoryList = [
@@ -128,8 +130,7 @@ const PlannerInfoModal = ({
         { name: '친구', code: 3 },
         { name: '가족', code: 4 },
     ];
-    const { title, expense, memberCount, memberTypeId } = { ...plannerInfoForm };
-
+    const { title, expense, memberCount, memberTypeId, areaCode } = { ...plannerInfoForm };
     return (
         <Modal
             modalVisible={modal.plannerInfo}
@@ -153,6 +154,14 @@ const PlannerInfoModal = ({
                     <Title placeholder="플래너 이름" type="text" name="title" onChange={onChangeField} value={title} />
                 </FlexDiv>
                 {plannerError && plannerError.title && <ErrorText>{plannerError.title}</ErrorText>}
+                <FlexDiv>
+                    <Label>지역</Label>
+                    <Select
+                        value={areas.find((item) => item.code == areaCode)}
+                        options={areas}
+                        onChange={onChangeAreaCode}
+                    />
+                </FlexDiv>
                 <FlexDiv>
                     <Label>여행 비용</Label>
                     <Funds

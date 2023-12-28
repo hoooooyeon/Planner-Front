@@ -13,14 +13,15 @@ import {
 
 const PlannerInfoModalContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, modal, account, loading, plannerInfoForm } = useSelector(
-        ({ plannerReducer, authReducer, loadingReducer }) => ({
+    const { planner, plannerError, modal, account, loading, plannerInfoForm, areas } = useSelector(
+        ({ plannerReducer, authReducer, loadingReducer, spotReducer }) => ({
             planner: plannerReducer.planner,
             plannerError: plannerReducer.plannerError,
             plannerInfoForm: plannerReducer.plannerInfoForm,
             modal: plannerReducer.modal,
             account: authReducer.account,
             loading: loadingReducer[UPDATE_PLANNER_TYPE],
+            areas: spotReducer.areas,
         }),
     );
 
@@ -37,6 +38,10 @@ const PlannerInfoModalContainer = () => {
 
     const onChangememberType = (memberType) => {
         dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'memberTypeId', value: memberType.code }));
+    };
+
+    const onChangeAreaCode = (area) => {
+        dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'areaCode', value: 'area.code' }));
     };
 
     const onUpdatePlanner = () => {
@@ -90,12 +95,14 @@ const PlannerInfoModalContainer = () => {
         <PlannerInfoModal
             modal={modal}
             plannerInfoForm={plannerInfoForm}
+            areas={areas}
             plannerError={plannerError}
             loading={loading}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onUpdatePlanner={onUpdatePlanner}
             onChangeField={onChangeField}
             onChangememberType={onChangememberType}
+            onChangeAreaCode={onChangeAreaCode}
             onCloseError={onCloseError}
         />
     );
