@@ -99,7 +99,7 @@ const MyPlannerListContainer = () => {
     useEffect(() => {
         if (accountId) {
             dispatch(initializeFormAction('myPlannerList'));
-            const queryString = { accountId, pageNum, itemCount: 10, sortCriteria: 2 };
+            const queryString = { accountId, pageNum, itemCount: 10, sortCriteria: 2, keyword: '' };
 
             dispatch(accountMyPlannerListLoadAction(queryString));
         }

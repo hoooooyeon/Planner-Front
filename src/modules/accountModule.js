@@ -112,12 +112,13 @@ export const accountImageUpdateAction = ({ accountId, formData }) => ({
     formData,
 });
 
-export const accountMyPlannerListLoadAction = ({ accountId, pageNum, itemCount, sortCriteria }) => ({
+export const accountMyPlannerListLoadAction = ({ accountId, pageNum, itemCount, sortCriteria, keyword }) => ({
     type: ACCOUNT_MY_PLANNER_LIST_LOAD_TYPE,
     accountId,
     pageNum,
     itemCount,
     sortCriteria,
+    keyword,
 });
 
 export const accountLikePlannerListLoadAction = ({

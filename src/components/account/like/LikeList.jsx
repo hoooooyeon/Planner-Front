@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import tempImage from '../../../images/temp.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamation } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../../common/Loading';
+import { replaceImageOnError } from '../../../lib/utils/imageReplace';
 
 const Container = styled.div`
     max-height: 48rem;
@@ -153,7 +153,11 @@ export const LikeList = (props) => {
                         list.map((item, i) => (
                             <ListItem key={i} onClick={() => handleItemClick(item)}>
                                 <ListItemImgBox>
-                                    <Img src={item.thumbnail ? item.thumbnail : item.image ? item.image : tempImage} />
+                                    <Img
+                                        alt={item.title}
+                                        src={item.image || item.image == '' ? item.image : item.thumbnail}
+                                        onError={(e) => replaceImageOnError(e, selectIndex == 1 ? 'planner' : 'spot')}
+                                    />
                                 </ListItemImgBox>
                                 <ListItemInfoBox>
                                     <b>{item.title}</b>
