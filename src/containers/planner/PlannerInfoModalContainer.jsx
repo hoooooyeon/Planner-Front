@@ -41,7 +41,7 @@ const PlannerInfoModalContainer = () => {
     };
 
     const onChangeAreaCode = (area) => {
-        dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'areaCode', value: 'area.code' }));
+        dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'areaCode', value: area.code }));
     };
 
     const onUpdatePlanner = () => {
