@@ -137,6 +137,7 @@ const SpotList = ({
 }) => {
     const itemRef = useRef();
     const { message } = { ...spotError };
+
     return (
         <SpotListBlock>
             <SpotSlider sliderSpots={sliderSpots} />
@@ -147,7 +148,7 @@ const SpotList = ({
                     resultKeyword={resultKeyword}
                     curKeyword={curKeyword}
                     spotData={spotData}
-                    contentTypeList={contentTypeList}
+                    contentTypes={contentTypeList}
                     loading={loading}
                     onClickArea={onClickArea}
                     onChangeContentTypeId={onChangeContentTypeId}

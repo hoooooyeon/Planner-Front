@@ -13,19 +13,20 @@ import {
 
 const PlannerInfoModalContainer = () => {
     const dispatch = useDispatch();
-    const { planner, plannerError, modal, account, loading, plannerInfoForm } = useSelector(
-        ({ plannerReducer, authReducer, loadingReducer }) => ({
+    const { planner, plannerError, modal, account, loading, plannerInfoForm, areas } = useSelector(
+        ({ plannerReducer, authReducer, loadingReducer, spotReducer }) => ({
             planner: plannerReducer.planner,
             plannerError: plannerReducer.plannerError,
             plannerInfoForm: plannerReducer.plannerInfoForm,
             modal: plannerReducer.modal,
             account: authReducer.account,
             loading: loadingReducer[UPDATE_PLANNER_TYPE],
+            areas: spotReducer.areas,
         }),
     );
 
     const { accountId } = { ...account };
-    const { plannerId, planDateStart, planDateEnd, title, expense, memberCount, memberTypeId, creator } = {
+    const { plannerId, planDateStart, planDateEnd, title, expense, memberCount, memberTypeId, areaCode } = {
         ...planner,
     };
     const { plannerInfo } = { ...modal };
@@ -39,6 +40,10 @@ const PlannerInfoModalContainer = () => {
         dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'memberTypeId', value: memberType.code }));
     };
 
+    const onChangeAreaCode = (area) => {
+        dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'areaCode', value: area.code }));
+    };
+
     const onUpdatePlanner = () => {
         if (accountId === planner.accountId) {
             const form = { ...plannerInfoForm };
@@ -47,16 +52,17 @@ const PlannerInfoModalContainer = () => {
             if (Object.keys(validState).length > 0) {
                 dispatch(plannerValidateFieldAction(validState));
             } else {
-                const { title, expense, memberCount, memberTypeId } = { ...plannerInfoForm };
+                const { title, expense, memberCount, memberTypeId, areaCode } = { ...plannerInfoForm };
 
                 const queryString = {
                     plannerId,
-                    title: title,
+                    title,
                     planDateStart,
                     planDateEnd,
-                    expense: expense,
-                    memberCount: memberCount,
-                    memberTypeId: memberTypeId,
+                    expense,
+                    memberCount,
+                    memberTypeId,
+                    areaCode,
                 };
                 dispatch(updatePlannerAction(queryString));
                 dispatch(plannerInitializePropertyAction('plannerError'));
@@ -69,6 +75,7 @@ const PlannerInfoModalContainer = () => {
         dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'expense', value: expense }));
         dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'memberCount', value: memberCount }));
         dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'memberTypeId', value: memberTypeId }));
+        dispatch(changePlannerFieldAction({ form: 'plannerInfoForm', name: 'areaCode', value: areaCode }));
     }, [plannerInfo]);
 
     // 플래너정보수정모달 토글
@@ -88,12 +95,14 @@ const PlannerInfoModalContainer = () => {
         <PlannerInfoModal
             modal={modal}
             plannerInfoForm={plannerInfoForm}
+            areas={areas}
             plannerError={plannerError}
             loading={loading}
             onTogglePlannerInfoModal={onTogglePlannerInfoModal}
             onUpdatePlanner={onUpdatePlanner}
             onChangeField={onChangeField}
             onChangememberType={onChangememberType}
+            onChangeAreaCode={onChangeAreaCode}
             onCloseError={onCloseError}
         />
     );

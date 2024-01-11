@@ -10,36 +10,48 @@ import {
 import ShareList from '../../../components/planner/list/ShareList';
 import { useState } from 'react';
 import { removeSpaceText } from '../../../lib/utils/spaceRemove';
+import { loadAreasAction } from '../../../modules/spotModule';
 
 const ShareListContainer = () => {
     const dispatch = useDispatch();
-    const { sharePlanners, plannerError, plannerData, loading, keywordData } = useSelector(
-        ({ plannerReducer, loadingReducer }) => ({
+    const { sharePlanners, plannerError, plannerData, loading, keywordData, areas } = useSelector(
+        ({ plannerReducer, loadingReducer, spotReducer }) => ({
             sharePlanners: plannerReducer.sharePlanners,
             plannerError: plannerReducer.plannerError,
             planner: plannerReducer.planner,
             plannerData: plannerReducer.plannerData,
             keywordData: plannerReducer.keywordData,
             loading: loadingReducer[LOAD_SHARE_PLANNER_LIST_TYPE],
+            areas: spotReducer.areas,
         }),
     );
 
     const { pageNum } = { ...plannerData };
     const { curKeyword, resultKeyword } = { ...keywordData };
     const [sortCriteria, setSortCriteria] = useState(2);
+    const [areaCode, setAreaCode] = useState(0);
     const drag = useRef(false);
 
-    // 플래너 검색 순위 설정
+    useEffect(() => {
+        dispatch(loadAreasAction());
+    }, []);
+
+    // 플래너 검색 조건 선택
     const onChangeSort = (num) => {
         setSortCriteria(num);
+    };
+
+    // 플래너 지역 조건 선택
+    const onChangeAreaCode = (code) => {
+        setAreaCode(code.code);
     };
 
     // 공유 플래너리스트 가져오기
     useEffect(() => {
         dispatch(plannerInitializePropertyAction('sharePlanners'));
-        const queryString = { itemCount: 12, sortCriteria, pageNum, keyword: resultKeyword };
+        const queryString = { itemCount: 12, sortCriteria, pageNum, keyword: resultKeyword, areaCode };
         dispatch(loadSharePlannerListAction(queryString));
-    }, [dispatch, pageNum, resultKeyword, sortCriteria]);
+    }, [dispatch, pageNum, resultKeyword, sortCriteria, areaCode]);
 
     // 플래너 선택
     const onClickPlanner = (plannerId) => {
@@ -114,6 +126,8 @@ const ShareListContainer = () => {
             plannerError={plannerError}
             keywordData={keywordData}
             sortCriteria={sortCriteria}
+            areas={areas}
+            areaCode={areaCode}
             drag={drag}
             loading={loading}
             page={pageNum}
@@ -122,6 +136,7 @@ const ShareListContainer = () => {
             handleSearchPlanner={handleSearchPlanner}
             handleCleanKeyword={handleCleanKeyword}
             onChangeSort={onChangeSort}
+            onChangeAreaCode={onChangeAreaCode}
             onCloseError={onCloseError}
             onIndexPage={onIndexPage}
             onNextPage={onNextPage}

@@ -154,13 +154,15 @@ const SpotSearchForm = ({
     resultKeyword,
     curKeyword,
     spotData,
-    contentTypeList,
+    contentTypes,
     loading,
     onClickArea,
     onChangeContentTypeId,
     onChangeCurKeyword,
     onChangeResultKeyword,
 }) => {
+    const areaList = areas.slice(1);
+    const contentTypeList = contentTypes.slice(0, 7);
     return (
         <>
             <FormDiv>
@@ -172,8 +174,8 @@ const SpotSearchForm = ({
                             <SelectBox>
                                 <Label>지역</Label>
                                 <Select
-                                    value={areas.find((item) => item.code == spotData.areaCode)}
-                                    options={areas}
+                                    value={areaList.find((item) => item.code == spotData.areaCode)}
+                                    options={areaList}
                                     onChange={onClickArea}
                                 />
                             </SelectBox>

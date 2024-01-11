@@ -10,22 +10,22 @@ import {
     accountLikePlannerListLoadAction,
     accountLikeSpotListLoadAction,
     accountLoadAction,
-    accountMyPlannerListLoadAction,
     accountUpdateAction,
     changeFieldAction,
 } from '../../modules/accountModule';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import spotReducer, {
+import {
     changeDetailSpotAction,
     changeSpotDataAction,
+    loadAreasAction,
     loadDetailSpotAction,
 } from '../../modules/spotModule';
 
 const MyAccountContainer = () => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const { loading, auth, account, accountField, likeList, isLike, spotData } = useSelector(
+    const { loading, auth, account, accountField, likeList, isLike, spotData, areas } = useSelector(
         ({ loadingReducer, authReducer, accountReducer, spotReducer }) => ({
             loading: {
                 profileLoading: loadingReducer[ACCOUNT_LOAD_TYPE],
@@ -38,6 +38,7 @@ const MyAccountContainer = () => {
             accountField: accountReducer.accountField,
             likeList: accountReducer.likeList,
             spotData: spotReducer.spotData,
+            areas: spotReducer.areas,
             isLike: spotReducer.isLike,
         }),
     );
@@ -56,7 +57,6 @@ const MyAccountContainer = () => {
                 accountId,
                 ...data,
             };
-
             if (data.postType === 1) {
                 dispatch(accountLikePlannerListLoadAction(queryString));
             } else if (data.postType === 2) {
@@ -106,6 +106,15 @@ const MyAccountContainer = () => {
         }
     }, [contentId, isLike]);
 
+    // 지역 로드
+    useEffect(() => {
+        dispatch(loadAreasAction());
+    }, []);
+
+    const handleAreaCodeChange = (code) => {
+        dispatch(changeFieldAction({ form: 'likeList', name: 'areaCode', value: code.code }));
+    };
+
     if (!auth) {
         alert('정상적인 접근이 아닙니다.');
         history.push('/');
@@ -117,6 +126,7 @@ const MyAccountContainer = () => {
             account={auth}
             accountField={accountField}
             likeList={likeList}
+            areas={areas}
             onProfileLoad={handleProfileLoad}
             onLikeListLoad={handleLikeListLoad}
             onProfileChange={handleProfileChange}
@@ -124,6 +134,7 @@ const MyAccountContainer = () => {
             onProfileImageUpdate={handleProfileImageUpdate}
             onLikePlannerClick={handleLikePlannerClick}
             onLikeSpotClick={handleLikeSpotClick}
+            onAreaCodeChange={handleAreaCodeChange}
         />
     );
 };

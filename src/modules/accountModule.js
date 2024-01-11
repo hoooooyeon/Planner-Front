@@ -112,12 +112,13 @@ export const accountImageUpdateAction = ({ accountId, formData }) => ({
     formData,
 });
 
-export const accountMyPlannerListLoadAction = ({ accountId, pageNum, itemCount, sortCriteria, keyword }) => ({
+export const accountMyPlannerListLoadAction = ({ accountId, pageNum, itemCount, sortCriteria, areaCode, keyword }) => ({
     type: ACCOUNT_MY_PLANNER_LIST_LOAD_TYPE,
     accountId,
     pageNum,
     itemCount,
     sortCriteria,
+    areaCode,
     keyword,
 });
 
@@ -128,6 +129,7 @@ export const accountLikePlannerListLoadAction = ({
     keyword,
     postType,
     pageNum,
+    areaCode,
 }) => ({
     type: ACCOUNT_LIKE_PLANNER_LIST_LOAD_TYPE,
     accountId,
@@ -136,9 +138,18 @@ export const accountLikePlannerListLoadAction = ({
     keyword,
     postType,
     pageNum,
+    areaCode,
 });
 
-export const accountLikeSpotListLoadAction = ({ accountId, itemCount, sortCriteria, keyword, postType, pageNum }) => ({
+export const accountLikeSpotListLoadAction = ({
+    accountId,
+    itemCount,
+    sortCriteria,
+    keyword,
+    postType,
+    pageNum,
+    areaCode,
+}) => ({
     type: ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE,
     accountId,
     itemCount,
@@ -146,6 +157,7 @@ export const accountLikeSpotListLoadAction = ({ accountId, itemCount, sortCriter
     keyword,
     postType,
     pageNum,
+    areaCode,
 });
 
 export const accountNotificationLoadAction = (accountId) => ({
@@ -250,6 +262,7 @@ const initialState = {
     likeList: {
         likePlannerList: {},
         likeSpotList: {},
+        areaCode: 0,
     },
     notifications: [],
     accountUpdate: false,

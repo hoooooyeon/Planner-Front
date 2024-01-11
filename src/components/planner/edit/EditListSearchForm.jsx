@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import Loading from '../../common/Loading';
 import Select from '../../common/Select';
+import { useEffect } from 'react';
 
 const MenuList = styled.div`
     padding: 1rem 0 0.8rem;
@@ -203,8 +204,9 @@ const CenterDiv = styled.div`
 const EditListSearchForm = ({
     keywordData,
     spotData,
+    likeList,
     areas,
-    contentTypeList,
+    contentTypes,
     loading,
     onChangeAreaIndex,
     onChangeContentTypeId,
@@ -213,10 +215,13 @@ const EditListSearchForm = ({
     onClickSearch,
     handleCleanKeyword,
 }) => {
-    const iconList = [faLandmarkFlag, faHotel, faRankingStar, faTrophy, faBed, faBagShopping, faUtensils];
+    const iconList = [faLandmarkFlag, faHotel, faRankingStar, faTrophy, faBed, faBagShopping, faUtensils, faHeart];
     const { curKeyword, resultKeyword } = { ...keywordData };
-    const { contentTypeId, areaCode } = { ...spotData };
+    const { contentTypeId } = { ...spotData };
     const [hoveredItemId, setHoveredItemId] = useState(null);
+
+    const areaCode = Object.keys(likeList.likeSpotList).length <= 0 ? spotData.areaCode : likeList.areaCode;
+    const areaList = Object.keys(likeList.likeSpotList).length <= 0 ? areas.slice(1) : areas;
 
     const onOpenName = (itemId) => {
         setHoveredItemId(itemId);
@@ -238,15 +243,14 @@ const EditListSearchForm = ({
                         <SelectBox>
                             <Label>지역</Label>
                             <Select
-                                value={areas.find((item) => item.code == spotData.areaCode)}
-                                options={areas}
+                                value={areaList.find((item) => item.code == areaCode)}
+                                options={areaList}
                                 onChange={onChangeAreaIndex}
                             />
                         </SelectBox>
                     </SelectDiv>
-
                     <MenuList>
-                        {contentTypeList.map((c, i) => (
+                        {contentTypes.map((c, i) => (
                             <MenuItem
                                 onClick={() => {
                                     onChangeContentTypeId(c.code);
@@ -260,17 +264,6 @@ const EditListSearchForm = ({
                                 {hoveredItemId === i && <IconName>{c.name}</IconName>}
                             </MenuItem>
                         ))}
-                        <MenuItem
-                            onClick={() => {
-                                onIndexPage(1);
-                                onChangeContentTypeId(0);
-                            }}
-                            onMouseEnter={() => onOpenName(7)}
-                            onMouseLeave={onCloseName}
-                        >
-                            <MenuIcon icon={faHeart} aria-current={contentTypeId === 0 ? 'cur' : null} />
-                            {hoveredItemId === 7 && <IconName>좋아요</IconName>}
-                        </MenuItem>
                     </MenuList>
                     <Form>
                         <SearchBox>

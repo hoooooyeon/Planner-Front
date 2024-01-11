@@ -5,6 +5,7 @@ import { removeSpaceText } from '../../../lib/utils/spaceRemove';
 import {
     accountLikeSpotListLoadAction,
     ACCOUNT_LIKE_SPOT_LIST_LOAD_TYPE,
+    changeFieldAction,
     initializeAction,
     initializeFormAction,
 } from '../../../modules/accountModule';
@@ -100,7 +101,7 @@ const EditListContainer = () => {
         if (contentTypeId !== 0 && areas.length > 0 && resultKeyword.length === 0) {
             const queryString = { areaCode, contentTypeId, pageNo: page, numOfRows };
             dispatch(initializeFormAction('likeList'));
-            dispatch(spotInitializeFormAction('spots'));
+            // dispatch(spotInitializeFormAction('spots'));
             dispatch(loadSpotsAction(queryString));
         }
     }, [dispatch, areaCode, page, contentTypeId, resultKeyword, areas]);
@@ -130,7 +131,11 @@ const EditListContainer = () => {
 
     // 지역 선택
     const onChangeAreaIndex = (area) => {
-        dispatch(changeSpotDataAction({ property: 'areaCode', value: area.code }));
+        if (contentTypeId == 0) {
+            dispatch(changeFieldAction({ form: 'likeList', name: 'areaCode', value: area.code }));
+        } else {
+            dispatch(changeSpotDataAction({ property: 'areaCode', value: area.code }));
+        }
     };
 
     // 플래너 키워드 타이핑
@@ -151,7 +156,7 @@ const EditListContainer = () => {
     // 여행지 키워드로 조회
     useEffect(() => {
         if (resultKeyword.length !== 0) {
-            dispatch(spotInitializeFormAction('spots'));
+            // dispatch(spotInitializeFormAction('spots'));
             const queryString = { areaCode, contentTypeId, keyword: resultKeyword, pageNo: page, numOfRows };
             dispatch(searchSpotAction(queryString));
         }
@@ -160,6 +165,7 @@ const EditListContainer = () => {
     // 여행지 좋아요리스트 로드
     useEffect(() => {
         if (accountId && contentTypeId === 0) {
+            const { areaCode } = { ...likeList };
             const queryString = {
                 accountId,
                 itemCount: 12,
@@ -167,12 +173,13 @@ const EditListContainer = () => {
                 keyword: resultKeyword,
                 postType: 2,
                 pageNum: page,
+                areaCode,
             };
             dispatch(spotInitializeFormAction('spots'));
-            dispatch(initializeFormAction('likeList'));
+            // dispatch(initializeFormAction('likeList'));
             dispatch(accountLikeSpotListLoadAction(queryString));
         }
-    }, [dispatch, accountId, resultKeyword, contentTypeId, page, detail.likeState]);
+    }, [dispatch, accountId, resultKeyword, contentTypeId, page, detail.likeState, likeList.areaCode]);
 
     // 여행 정보 및 검색 키워드 초기화
     useEffect(() => {
@@ -216,7 +223,7 @@ const EditListContainer = () => {
     useEffect(() => {
         setPage(1);
         dispatch(plannerInitializePropertyAction('keywordData'));
-    }, [areaCode, contentTypeId]);
+    }, [spotData.areaCode, likeList.areaCode, contentTypeId]);
 
     // 키워드 검색시 페이지 리셋.
     useEffect(() => {
@@ -247,7 +254,7 @@ const EditListContainer = () => {
             spotData={spotData}
             navList={navList}
             contentTypeList={contentTypeList}
-            likeSpotList={likeSpotList}
+            likeList={likeList}
             totalCount={totalCount.current}
             page={page}
             itemIndex={numOfRows}

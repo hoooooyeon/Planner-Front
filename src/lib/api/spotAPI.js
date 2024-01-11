@@ -19,8 +19,8 @@ export const loadDetailSpot = ({ contentId }) => {
 };
 
 // 여행지 좋아요 추가
-export const addSpotLike = ({ contentId, title, image }) => {
-    return client.post(`${baseUrl}/likes`, { contentId, title, image });
+export const addSpotLike = ({ contentId, title, image, areaCode }) => {
+    return client.post(`${baseUrl}/likes`, { contentId, title, image, areaCode });
 };
 
 // 여행지 좋아요 삭제

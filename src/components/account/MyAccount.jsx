@@ -82,6 +82,7 @@ const MyAccount = ({
     account,
     accountField,
     likeList,
+    areas,
     onProfileLoad,
     onLikeListLoad,
     onProfileChange,
@@ -89,6 +90,7 @@ const MyAccount = ({
     onProfileImageUpdate,
     onLikePlannerClick,
     onLikeSpotClick,
+    onAreaCodeChange,
 }) => {
     const [menu, setMenu] = useState(1);
 
@@ -124,9 +126,11 @@ const MyAccount = ({
                                 <LikeListView
                                     loading={loading}
                                     likeLists={likeList}
+                                    areas={areas}
                                     onLikeListLoad={onLikeListLoad}
                                     onLikePlannerClick={onLikePlannerClick}
                                     onLikeSpotClick={onLikeSpotClick}
+                                    onAreaCodeChange={onAreaCodeChange}
                                 ></LikeListView>
                             );
                         }

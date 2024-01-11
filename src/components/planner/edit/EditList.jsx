@@ -160,7 +160,7 @@ const EditList = ({
     spots,
     onCreateLocation,
     onOpenDetail,
-    likeSpotList,
+    likeList,
     totalCount,
     page,
     loading,
@@ -188,6 +188,8 @@ const EditList = ({
     const [resizeMobileNav, setResizeMobileNav] = useState(false);
     const [resizeWindowNav, setResizeWindowNav] = useState(false);
     const [isPlanModal, setIsPlanModal] = useState(false);
+
+    const { likeSpotList } = { ...likeList };
 
     // 창 크기에 따른 nav 자동 종료
     const resizeWindowNavClose = () => {
@@ -246,8 +248,9 @@ const EditList = ({
                 <EditListSearchForm
                     keywordData={keywordData}
                     spotData={spotData}
+                    likeList={likeList}
                     areas={areas}
-                    contentTypeList={contentTypeList}
+                    contentTypes={contentTypeList}
                     likeKeyword={likeKeyword}
                     loading={loading.areasLoading}
                     onChangeAreaIndex={onChangeAreaIndex}

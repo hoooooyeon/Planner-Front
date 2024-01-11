@@ -43,11 +43,12 @@ export const loadSpotsAction = ({ areaCode, contentTypeId, pageNo, numOfRows }) 
 });
 export const loadDetailSpotAction = ({ contentId }) => ({ type: LOAD_DETAIL_SPOT_TYPE, contentId });
 export const changeDetailSpotAction = (spotInfo) => ({ type: CHANGE_DETAIL_SPOT_TYPE, spotInfo });
-export const addSpotLikeAction = ({ contentId, title, image }) => ({
+export const addSpotLikeAction = ({ contentId, title, image, areaCode }) => ({
     type: ADD_SPOT_LIKE_TYPE,
     contentId,
     title,
     image,
+    areaCode,
 });
 export const removeSpotLikeAction = ({ contentId }) => ({ type: REMOVE_SPOT_LIKE_TYPE, contentId });
 export const searchSpotAction = ({ areaCode, contentTypeId, keyword, numOfRows, pageNo }) => ({
@@ -109,15 +110,18 @@ const initialState = {
         { name: '숙박', code: 32 },
         { name: '쇼핑', code: 38 },
         { name: '음식점', code: 39 },
+        { name: '좋아요', code: 0 },
     ],
 };
 
 function spotReducer(state = initialState, action) {
     switch (action.type) {
         case LOAD_AREAS_SUCCESS_TYPE:
+            const areaList = action.payload.data.items;
+            areaList.unshift({ rnum: '0', code: '0', name: '전체' });
             return {
                 ...state,
-                areas: action.payload.data.items,
+                areas: areaList,
             };
         case LOAD_DETAIL_SPOT_FAILURE_TYPE:
             return {
