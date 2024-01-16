@@ -13,17 +13,20 @@ import {
     initializeForm,
     loginAction,
 } from '../../modules/authModule';
+import { useCookies } from 'react-cookie';
 
 const LoginContainer = ({ history, type }) => {
     const dispatch = useDispatch();
-    const { loading, form, token, account, authError, state } = useSelector(({ authReducer, loadingReducer }) => ({
-        loading: { loginLoading: loadingReducer[LOGIN_TYPE] },
-        form: authReducer[type],
-        account: authReducer.account,
-        token: authReducer.token,
-        authError: authReducer.authError,
-        state: authReducer.state,
-    }));
+    const { loading, form, account, accessToken, authError, state } = useSelector(
+        ({ authReducer, loadingReducer }) => ({
+            loading: { loginLoading: loadingReducer[LOGIN_TYPE] },
+            form: authReducer[type],
+            account: authReducer.account,
+            accessToken: authReducer.accessToken,
+            authError: authReducer.authError,
+            state: authReducer.state,
+        }),
+    );
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -48,14 +51,14 @@ const LoginContainer = ({ history, type }) => {
     }, [dispatch, state.message]);
 
     useEffect(() => {
-        if (token) {
-            localStorage.setItem('token', token);
-            tokenUse();
-        }
-    }, [token]);
-
-    useEffect(() => {
         if (account) {
+            // 액세스 토큰 설정
+            if (accessToken) {
+                localStorage.setItem('accessToken', accessToken);
+                tokenUse(accessToken);
+            }
+
+            // 홈으로 이동
             history.push('/');
         }
     }, [account]);

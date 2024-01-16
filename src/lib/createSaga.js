@@ -16,11 +16,18 @@ export default function createSaga(type, request) {
             });
         }
         catch (e) {
-            yield put({
-                type: failure,
-                payload: e.response.data,
-                response: e.response
-            });
+            if (e.code == 'ERR_CANCELED') {
+                yield put({
+                    type: `${type}_REQUEST_CANCLED`,
+                });
+            }
+            else {
+                yield put({
+                    type: failure,
+                    payload: e.response.data,
+                    response: e.response
+                });
+            }
         }
         yield put(loadingFinishAction(type));
     }

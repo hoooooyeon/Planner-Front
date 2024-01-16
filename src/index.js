@@ -15,6 +15,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import ScrollTop from './components/common/ScrollTop';
 import { tokenUse } from './lib/api/client';
 import { ThemeProvider } from 'styled-components';
+import { CookiesProvider } from 'react-cookie';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -24,7 +25,7 @@ export const persistor = persistStore(store);
 
 sagaMiddleware.run(rootSaga);
 
-tokenUse();
+// tokenUse();
 
 const theme = {
     mainColor: '#54507b', // 메인 색상 (푸터, 텍스트호버색, ...)
@@ -46,16 +47,18 @@ const theme = {
 
 //  ${props => props.theme.};
 ReactDOM.render(
-    <Provider store={store}>
-        <BrowserRouter>
-            <ScrollTop />
-            <ThemeProvider theme={theme}>
-                <PersistGate persistor={persistor}>
-                    <App />
-                </PersistGate>
-            </ThemeProvider>
-        </BrowserRouter>
-    </Provider>,
+    <CookiesProvider>
+        <Provider store={store}>
+            <BrowserRouter>
+                <ScrollTop />
+                <ThemeProvider theme={theme}>
+                    <PersistGate persistor={persistor}>
+                        <App />
+                    </PersistGate>
+                </ThemeProvider>
+            </BrowserRouter>
+        </Provider>
+    </CookiesProvider>,
     document.getElementById('root'),
 );
 

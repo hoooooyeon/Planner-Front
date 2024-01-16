@@ -26,3 +26,7 @@ export const emailCodeCheck = ({ email, code }) => {
 // export const phoneCodeCheck = ({ userName, phone, code }) => {
 //     return client.post(`${baseUrl}//authentication-code/check`, { userName, phone, code });
 // };
+
+export const tokenReissue = () => {
+    return client.post(`${baseUrl}/token-reissue`);
+}
