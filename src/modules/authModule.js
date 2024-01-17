@@ -34,6 +34,10 @@ const PHONE_CODE_REQUEST_FAILURE_TYPE = 'auth/PHONE_CODE_REQUEST_FAILURE';
 // const phoneCodeCheckSuccessType = 'auth/PHONE_CODE_CHECK_SUCCESS_TYPE';
 // const phoneCodeCheckFailureType = 'auth/PHONE_CODE_CHECK_FAILURE_TYPE';
 
+export const TOKEN_REISSUE_TYPE = 'auth/TOKEN_REISSUE';
+export const TOKEN_REISSUE_SUCCESS_TYPE = 'auth/TOKEN_REISSUE_SUCCESS';
+const TOKEN_REISSUE_FAILURE_TYPE = 'auth/TOKEN_REISSUE_FAILURE';
+
 // 액션함수
 export const initialize = () => ({
     type: INITIALIZE_TYPE,
@@ -91,16 +95,22 @@ export const emailCodeCheckAction = ({ email, code }) => ({
     code
 });
 
+export const tokenRissueAction = () => ({
+    type: TOKEN_REISSUE_TYPE
+});
+
 export const loginSaga = createSaga(LOGIN_TYPE, authAPI.login);
 export const registerSaga = createSaga(REGISTER_TYPE, authAPI.register);
 export const emailCodeRequestSaga = createSaga(EMAIL_CODE_REQUEST_TYPE, authAPI.emailCodeRequest);
 export const emailCodeCheckSaga = createSaga(EMAIL_CODE_CHECK_TYPE, authAPI.emailCodeCheck);
+export const tokenReissueSaga = createSaga(TOKEN_REISSUE_TYPE, authAPI.tokenReissue);
 
 export function* authSaga() {
     yield takeLatest(LOGIN_TYPE, loginSaga);
     yield takeLatest(REGISTER_TYPE, registerSaga);
     yield takeLatest(EMAIL_CODE_REQUEST_TYPE, emailCodeRequestSaga);
     yield takeLatest(EMAIL_CODE_CHECK_TYPE, emailCodeCheckSaga);
+    yield takeLatest(TOKEN_REISSUE_TYPE, tokenReissueSaga);
 }
 
 const initialState = {
@@ -124,7 +134,7 @@ const initialState = {
     },
     registerSuccess: false,
     account: undefined,
-    token: '',
+    accessToken: '',
     authError: {},
     state: {
         state: false,
@@ -160,9 +170,10 @@ function authReducer(state = initialState, action) {
         case LOGIN_SUCCESS_TYPE: {
             return {
                 ...state,
-                account: action.payload.data,
-                state: { ...action.payload },
-                token: action.payload.token,
+                account: action.payload.data.user,
+                accessToken: 'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwbGFubmVyIiwiaWF0IjoxNzAzODI5MTAzLCJleHAiOjE3MDM4MjkxMDMsInVzZXJJZCI6MX0.gQ5sBc0j72i7xfgS-6bi8tlxRXihTllp5k7eHPFTv9Y',
+                // accessToken: action.payload.data.accessToken,
+                state: { ...action.payload }
             };
         }
         case REGISTER_SUCCESS_TYPE: {
@@ -176,6 +187,9 @@ function authReducer(state = initialState, action) {
         }
         case EMAIL_CODE_CHECK_SUCCESS_TYPE: {
             return { ...state, emailConfirm: { ...state.emailConfirm, emailCodeCheck: true } };
+        }
+        case TOKEN_REISSUE_SUCCESS_TYPE: {
+            return { ...state, accessToken: action.payload.data.accessToken };
         }
         case LOGIN_FAILURE_TYPE:
         case REGISTER_FAILURE_TYPE:
