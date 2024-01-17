@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 import Auth from '../../components/account/Auth';
 import { tokenUse } from '../../lib/api/client';
-import validUtil from '../../lib/utils/validationCheck';
 import {
     LOGIN_TYPE,
     changeField,
@@ -13,7 +11,6 @@ import {
     initializeForm,
     loginAction,
 } from '../../modules/authModule';
-import { useCookies } from 'react-cookie';
 
 const LoginContainer = ({ history, type }) => {
     const dispatch = useDispatch();

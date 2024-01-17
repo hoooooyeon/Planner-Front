@@ -1,21 +1,18 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
 
-import createSagaMiddleware from 'redux-saga';
-import { applyMiddleware, createStore } from 'redux';
-import persistedReducer, { rootSaga } from './modules';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import { Provider } from 'react-redux';
+import { applyMiddleware, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
-import ScrollTop from './components/common/ScrollTop';
-import { tokenUse } from './lib/api/client';
+import createSagaMiddleware from 'redux-saga';
 import { ThemeProvider } from 'styled-components';
-import { CookiesProvider } from 'react-cookie';
+import ScrollTop from './components/common/ScrollTop';
+import persistedReducer, { rootSaga } from './modules';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -47,18 +44,16 @@ const theme = {
 
 //  ${props => props.theme.};
 ReactDOM.render(
-    <CookiesProvider>
-        <Provider store={store}>
-            <BrowserRouter>
-                <ScrollTop />
-                <ThemeProvider theme={theme}>
-                    <PersistGate persistor={persistor}>
-                        <App />
-                    </PersistGate>
-                </ThemeProvider>
-            </BrowserRouter>
-        </Provider>
-    </CookiesProvider>,
+    <Provider store={store}>
+        <BrowserRouter>
+            <ScrollTop />
+            <ThemeProvider theme={theme}>
+                <PersistGate persistor={persistor}>
+                    <App />
+                </PersistGate>
+            </ThemeProvider>
+        </BrowserRouter>
+    </Provider>,
     document.getElementById('root'),
 );
 
