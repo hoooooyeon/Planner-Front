@@ -171,8 +171,7 @@ function authReducer(state = initialState, action) {
             return {
                 ...state,
                 account: action.payload.data.user,
-                accessToken: 'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwbGFubmVyIiwiaWF0IjoxNzAzODI5MTAzLCJleHAiOjE3MDM4MjkxMDMsInVzZXJJZCI6MX0.gQ5sBc0j72i7xfgS-6bi8tlxRXihTllp5k7eHPFTv9Y',
-                // accessToken: action.payload.data.accessToken,
+                accessToken: action.payload.data.accessToken,
                 state: { ...action.payload }
             };
         }
