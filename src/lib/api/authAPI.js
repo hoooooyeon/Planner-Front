@@ -7,7 +7,7 @@ export const login = ({ email, password }) => {
 };
 
 export const logout = () => {
-    return client.get(`${baseUrl}/logout`);
+    return client.delete(`${baseUrl}/logout`);
 }
 
 export const register = ({ email, password, username, nickname, phone }) => {
