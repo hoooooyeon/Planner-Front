@@ -121,7 +121,7 @@ const RegisterContainer = ({ history, type }) => {
     // 상태 초기화
     useEffect(() => {
         return () => {
-            dispatch(initialize());
+            dispatch(initializeForm('register'));
             dispatch(initializeError());
         };
     }, [dispatch]);
