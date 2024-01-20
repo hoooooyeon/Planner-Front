@@ -28,11 +28,11 @@ const rootPersistConfig = {
     ],
 };
 
-// const authPersistConfig = {
-//     key: 'authReducer',
-//     storage,
-//     whitelist: ['account', 'token'],
-// };
+const authPersistConfig = {
+    key: 'authReducer',
+    storage,
+    whitelist: ['account'],
+};
 
 const spotPersistConfig = {
     key: 'spotReducer',
@@ -42,7 +42,7 @@ const spotPersistConfig = {
 
 const rootReducer = combineReducers({
     loadingReducer,
-    authReducer,
+    authReducer: persistReducer(authPersistConfig, authReducer),
     accountReducer,
     plannerReducer,
     spotReducer: persistReducer(spotPersistConfig, spotReducer),
