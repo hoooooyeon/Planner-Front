@@ -268,8 +268,11 @@ const Header = ({
                         onNotificationInitialize={onNotificationInitialize}
                     />
                     <Account styled={styled} onClick={onClickDropDown}>
-                        {/* <img className="user-img" src="logo192.png"></img> */}
-                        <StyledFontAwesomeIcon icon={faCircleUser} />
+                        {account && account.image ? (
+                            <img className="user-img" src={`/api/users/${account.accountId}/images`}></img>
+                        ) : (
+                            <StyledFontAwesomeIcon icon={faCircleUser} />
+                        )}
                         {account.nickname}
                     </Account>
                     {dropDown && (
