@@ -54,7 +54,8 @@ const RegisterContainer = ({ history, type }) => {
         );
     };
 
-    const handleEmailConfirmClick = () => {
+    const handleEmailConfirmClick = (e) => {
+        e.preventDefault();
         let form = null;
         const { email, code } = emailConfirm;
 

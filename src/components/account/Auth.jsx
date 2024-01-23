@@ -29,7 +29,7 @@ const LogoText = styled.b`
     font-size: 2rem;
 `;
 
-const FormBox = styled.div`
+const FormBox = styled.form`
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -84,7 +84,7 @@ const Auth = ({ loading, type, form, onChange, onSubmit, authError }) => {
         <Container>
             <ContentBox>
                 <LogoText>한국다봄</LogoText>
-                <FormBox>
+                <FormBox onSubmit={onSubmit}>
                     <LabelTextBox
                         type="email"
                         name="email"
