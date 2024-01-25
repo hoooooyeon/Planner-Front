@@ -62,7 +62,7 @@ const LoginContainer = ({ history, type }) => {
 
     useEffect(() => {
         return () => {
-            dispatch(initialize());
+            dispatch(initializeForm('login'));
             dispatch(initializeError());
         };
     }, [dispatch]);

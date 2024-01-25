@@ -54,7 +54,8 @@ const RegisterContainer = ({ history, type }) => {
         );
     };
 
-    const handleEmailConfirmClick = () => {
+    const handleEmailConfirmClick = (e) => {
+        e.preventDefault();
         let form = null;
         const { email, code } = emailConfirm;
 
@@ -121,7 +122,7 @@ const RegisterContainer = ({ history, type }) => {
     // 상태 초기화
     useEffect(() => {
         return () => {
-            dispatch(initialize());
+            dispatch(initializeForm('register'));
             dispatch(initializeError());
         };
     }, [dispatch]);

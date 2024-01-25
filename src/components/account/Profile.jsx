@@ -153,7 +153,7 @@ const Profile = ({
                 <ProfileInfoBlock>
                     <ProfileImageBlock>
                         <ProfileImage
-                            src={account ? `${process.env.PUBLIC_URL}/${account.image}` : tempAccountImage}
+                            src={account && account.image ? `/api/users/${account.accountId}/images` : tempAccountImage}
                             onError={handleImageLoadError}
                         ></ProfileImage>
                         <ImageModifyBtn onClick={handleModalShow}>변경</ImageModifyBtn>

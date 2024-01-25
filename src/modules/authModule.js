@@ -14,6 +14,10 @@ export const LOGIN_TYPE = 'auth/LOGIN';
 const LOGIN_SUCCESS_TYPE = 'auth/LOGIN_SUCCESS';
 const LOGIN_FAILURE_TYPE = 'auth/LOGIN_FAILURE';
 
+export const LOGOUT_TYPE = 'auth/LOGOUT';
+const LOGOUT_SUCCESS_TYPE = 'auth/LOGOUT_SUCCESS';
+const LOGOUT_FAILURE_TYPE = 'auth/LOGOUT_FAILURE';
+
 export const REGISTER_TYPE = 'auth/REGISTER';
 const REGISTER_SUCCESS_TYPE = 'auth/REGISTER_SUCCESS';
 const REGISTER_FAILURE_TYPE = 'auth/REGISTER_FAILURE';
@@ -75,6 +79,10 @@ export const loginAction = ({ email, password }) => ({
     password,
 });
 
+export const logoutAction = () => ({
+    type: LOGOUT_TYPE
+});
+
 export const registerAction = ({ email, password, username, nickname, phone }) => ({
     type: REGISTER_TYPE,
     email,
@@ -100,6 +108,7 @@ export const tokenRissueAction = () => ({
 });
 
 export const loginSaga = createSaga(LOGIN_TYPE, authAPI.login);
+export const logoutSaga = createSaga(LOGOUT_TYPE, authAPI.logout);
 export const registerSaga = createSaga(REGISTER_TYPE, authAPI.register);
 export const emailCodeRequestSaga = createSaga(EMAIL_CODE_REQUEST_TYPE, authAPI.emailCodeRequest);
 export const emailCodeCheckSaga = createSaga(EMAIL_CODE_CHECK_TYPE, authAPI.emailCodeCheck);
@@ -107,6 +116,7 @@ export const tokenReissueSaga = createSaga(TOKEN_REISSUE_TYPE, authAPI.tokenReis
 
 export function* authSaga() {
     yield takeLatest(LOGIN_TYPE, loginSaga);
+    yield takeLatest(LOGOUT_TYPE, logoutSaga);
     yield takeLatest(REGISTER_TYPE, registerSaga);
     yield takeLatest(EMAIL_CODE_REQUEST_TYPE, emailCodeRequestSaga);
     yield takeLatest(EMAIL_CODE_CHECK_TYPE, emailCodeCheckSaga);
@@ -132,6 +142,7 @@ const initialState = {
         emailCodeRequest: false,
         emailCodeCheck: false
     },
+    logout: false,
     registerSuccess: false,
     account: undefined,
     accessToken: '',
@@ -146,13 +157,7 @@ function authReducer(state = initialState, action) {
     switch (action.type) {
         case INITIALIZE_TYPE: {
             return {
-                ...state,
-                login: initialState.login,
-                register: initialState.register,
-                authentication: initialState.authentication,
-                emailConfirm: initialState.emailConfirm,
-                registerSuccess: initialState.registerSuccess,
-                state: initialState.state,
+                ...initialState
             };
         }
         case INITIALIZE_FROM_TYPE: {
@@ -175,6 +180,9 @@ function authReducer(state = initialState, action) {
                 state: { ...action.payload }
             };
         }
+        case LOGOUT_SUCCESS_TYPE: {
+            return { ...initialState, logout: true };
+        }
         case REGISTER_SUCCESS_TYPE: {
             return { ...state, registerSuccess: true };
         }
@@ -191,6 +199,7 @@ function authReducer(state = initialState, action) {
             return { ...state, accessToken: action.payload.data.accessToken };
         }
         case LOGIN_FAILURE_TYPE:
+        case LOGOUT_FAILURE_TYPE:
         case REGISTER_FAILURE_TYPE:
         case EMAIL_CODE_REQUEST_FAILURE_TYPE:
         case EMAIL_CODE_CHECK_FAILURE_TYPE: {

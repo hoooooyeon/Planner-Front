@@ -153,8 +153,8 @@ const AccountBox = styled.div`
 const Header = ({
     loading,
     account,
-    handlePurge,
     onChangePage,
+    onLogout,
     notifications,
     onNotificationLoad,
     onInviteReject,
@@ -268,15 +268,18 @@ const Header = ({
                         onNotificationInitialize={onNotificationInitialize}
                     />
                     <Account styled={styled} onClick={onClickDropDown}>
-                        {/* <img className="user-img" src="logo192.png"></img> */}
-                        <StyledFontAwesomeIcon icon={faCircleUser} />
+                        {account && account.image ? (
+                            <img className="user-img" src={`/api/users/${account.accountId}/images`}></img>
+                        ) : (
+                            <StyledFontAwesomeIcon icon={faCircleUser} />
+                        )}
                         {account.nickname}
                     </Account>
                     {dropDown && (
                         <DropDown>
                             <DropDownMenu>
                                 <li onClick={() => onChangePage('Profile')}>마이페이지</li>
-                                <li onClick={handlePurge}>로그아웃</li>
+                                <li onClick={onLogout}>로그아웃</li>
                             </DropDownMenu>
                         </DropDown>
                     )}
@@ -289,7 +292,7 @@ const Header = ({
                     </li>
                 </AccountList>
             )}
-            <SideNav styled={styled} account={account} handlePurge={handlePurge} onChangePage={onChangePage} />
+            <SideNav styled={styled} account={account} onLogout={onLogout} onChangePage={onChangePage} />
         </HeaderBlock>
     );
 };

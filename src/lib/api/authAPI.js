@@ -6,6 +6,10 @@ export const login = ({ email, password }) => {
     return client.post(`${baseUrl}/login`, { email, password });
 };
 
+export const logout = () => {
+    return client.delete(`${baseUrl}/logout`);
+}
+
 export const register = ({ email, password, username, nickname, phone }) => {
     return client.post(`${baseUrl}/register`, { email, password, username, nickname, phone });
 };

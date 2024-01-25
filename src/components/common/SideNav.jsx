@@ -84,7 +84,7 @@ const IconBox = styled.div`
     }
 `;
 
-const SideNav = ({ styled, handlePurge, onChangePage, account }) => {
+const SideNav = ({ styled, onLogout, onChangePage, account }) => {
     const navRef = useRef();
     const [navOpen, setNavOpen] = useState(false);
     const { nickname } = { ...account };
@@ -153,7 +153,7 @@ const SideNav = ({ styled, handlePurge, onChangePage, account }) => {
                 {account ? (
                     <>
                         <li onClick={() => onChangePage('Profile')}>마이페이지</li>
-                        <li onClick={handlePurge}>로그아웃</li>
+                        <li onClick={onLogout}>로그아웃</li>
                     </>
                 ) : (
                     <li onClick={() => onChangePage('Login')}>로그인</li>
