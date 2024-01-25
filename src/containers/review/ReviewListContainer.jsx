@@ -26,8 +26,8 @@ const ReviewListContainer = ({ history, location, match }) => {
         dispatch(loadReviewListAction(uiState));
     };
 
-    const handleSelectAreaCode = ({ id }) => {
-        dispatch(changeUIStateAction({ property: 'areaCode', value: id }));
+    const handleSelectAreaCode = (id) => {
+        dispatch(changeUIStateAction({ property: 'areaCode', value: id.code }));
     };
 
     const handleSelectSortCriteria = (SortNum) => {
@@ -79,7 +79,7 @@ const ReviewListContainer = ({ history, location, match }) => {
     // 리스트 가져오기
     useEffect(() => {
         loadList(uiState);
-    }, [dispatch, uiState.pageNum]);
+    }, [dispatch, uiState.pageNum, uiState.areaCode]);
 
     // 지역 가져오기
     useEffect(() => {
