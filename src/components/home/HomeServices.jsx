@@ -49,6 +49,7 @@ const OverviewBox = styled.div`
     color: ${(props) => props.theme.secondaryColor};
     p {
         font-size: 0.8rem;
+        text-align: center;
     }
     p + p {
         margin-top: 0;
