@@ -14,7 +14,7 @@ const LoadingCircle = styled.div`
     border: 8px solid ${(props) => props.theme.outlineColor};
     border-top: 8px solid ${(props) => props.theme.mainColor};
     animation: ${loadingAnimation} 1s linear infinite;
-    margin: 0.625rem auto;
+    margin: 0 auto;
     ${(props) =>
         props.size === 'normal' &&
         css`
