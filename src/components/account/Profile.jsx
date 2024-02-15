@@ -156,7 +156,9 @@ const Profile = ({
                             src={account && account.image ? `/api/users/${account.accountId}/images` : tempAccountImage}
                             onError={handleImageLoadError}
                         ></ProfileImage>
-                        <ImageModifyBtn onClick={handleModalShow}>변경</ImageModifyBtn>
+                        <ImageModifyBtn type="button" onClick={handleModalShow}>
+                            변경
+                        </ImageModifyBtn>
                     </ProfileImageBlock>
                     <ProfileTextBoxBlock>
                         <StyledLabelTextBox name={'username'} label={'이름'} value={username} readOnly />
