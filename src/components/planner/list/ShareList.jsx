@@ -46,7 +46,6 @@ const Shares = styled.ul`
 const ShareItem = styled.li`
     flex-shrink: 0;
     width: 200px;
-    height: 200px;
     float: left;
     position: relative;
     box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
@@ -55,7 +54,6 @@ const ShareItem = styled.li`
     cursor: pointer;
     @media all and (min-width: 769px) {
         width: 24%;
-        height: auto;
     }
     &:hover {
         box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
@@ -69,7 +67,7 @@ const InfoBox = styled.div`
     height: 2.5rem;
     margin: 0;
     padding: 0.5rem;
-    box-shadow: 0px 1px 3px ${(props) => props.theme.shadowColor};
+    box-shadow: 0 -1px 1px ${(props) => props.theme.shadowColor};
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -216,7 +214,7 @@ const ShareList = ({
                 )}
                 <PageBox>
                     <Pagination
-                        totalCount={sharePlanners.totalCount || 0}
+                        totalCount={sharePlanners.totalCount}
                         page={page}
                         pageSize={5}
                         itemCount={12}
