@@ -275,7 +275,7 @@ const EditRouteList = ({
         { label: '비행기', value: 1 },
         { label: '기차', value: 2 },
         { label: '버스', value: 3 },
-        { label: '택시', value: 4 },
+        { label: '자동차', value: 4 },
         { label: '오토바이', value: 5 },
         { label: '도보', value: 6 },
     ];

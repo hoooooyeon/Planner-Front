@@ -168,10 +168,11 @@ const InfoPostList = ({
                             ) : (
                                 <>
                                     {planMemos &&
-                                        planMemos.map((memo) => {
+                                        planMemos.map((memo, i) => {
                                             return (
                                                 <InfoPostItem
                                                     key={memo.memoId}
+                                                    number={i}
                                                     memo={memo}
                                                     onDeleteMemo={onDeleteMemo}
                                                     onLoadMemo={onLoadMemo}

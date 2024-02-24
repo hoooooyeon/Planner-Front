@@ -118,10 +118,11 @@ const RouteSpotName = styled.div`
     transform: translate(-50%, -50%);
     box-shadow: 0px 1px 6px ${(props) => props.theme.shadowColor};
     padding: 0.3rem 0.4rem;
-
+    width: 6rem;
     @media all and (min-width: 1025px) {
         padding: 0.4rem 0.5rem;
         top: 97%;
+        width: 8rem;
     }
 `;
 
