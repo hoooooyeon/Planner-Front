@@ -33,8 +33,10 @@ const SpotDetailModalContainer = () => {
     // 여행지 좋아요 토글.
     const onToggleDetailLike = () => {
         if (likeState) {
+            console.log(likeState);
             dispatch(removeSpotLikeAction({ contentId }));
         } else {
+            console.log(likeState);
             dispatch(addSpotLikeAction({ title, contentId, image, areaCode }));
         }
     };

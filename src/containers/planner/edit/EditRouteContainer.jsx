@@ -52,7 +52,17 @@ const EditRouteContainer = () => {
         }),
     );
 
-    const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId, areaCode } = {
+    const {
+        plannerId,
+        plans,
+        title,
+        planDateStart,
+        planDateEnd,
+        expense,
+        memberCount,
+        memberTypeId,
+        areaCode = 0,
+    } = {
         ...planner,
     };
     const { planId } = { ...plannerData };
@@ -116,7 +126,11 @@ const EditRouteContainer = () => {
 
     // 출발일, 종료일 업데이트
     useEffect(() => {
-        if (planDateStart && planDateEnd) {
+        if (
+            planDateStart &&
+            planDateEnd
+            //  && startDate && endDate && areaCode
+        ) {
             const queryString = {
                 plannerId,
                 title,
@@ -125,7 +139,7 @@ const EditRouteContainer = () => {
                 expense,
                 memberCount,
                 memberTypeId,
-                areaCode,
+                // areaCode,
             };
             dispatch(updatePlannerAction(queryString));
         }
