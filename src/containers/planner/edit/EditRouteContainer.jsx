@@ -52,7 +52,17 @@ const EditRouteContainer = () => {
         }),
     );
 
-    const { plannerId, plans, title, planDateStart, planDateEnd, expense, memberCount, memberTypeId, creator } = {
+    const {
+        plannerId,
+        plans,
+        title,
+        planDateStart,
+        planDateEnd,
+        expense,
+        memberCount,
+        memberTypeId,
+        areaCode = 0,
+    } = {
         ...planner,
     };
     const { planId } = { ...plannerData };
@@ -125,6 +135,7 @@ const EditRouteContainer = () => {
                 expense,
                 memberCount,
                 memberTypeId,
+                areaCode,
             };
             dispatch(updatePlannerAction(queryString));
         }

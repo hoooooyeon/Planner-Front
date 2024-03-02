@@ -60,14 +60,14 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     }
 `;
 
-const InfoPostItem = ({ account, planner, memo, onDeleteMemo, onLoadMemo }) => {
+const InfoPostItem = ({ account, planner, memo, onDeleteMemo, onLoadMemo, number }) => {
     const { memoId, title } = memo;
     const { accountId } = { ...account };
 
     return (
         <PostItem>
             <PostHeader>
-                <Number>{memoId}</Number>
+                <Number>{number + 1}</Number>
                 <Title>{title}</Title>
             </PostHeader>
             <ButtonBox>

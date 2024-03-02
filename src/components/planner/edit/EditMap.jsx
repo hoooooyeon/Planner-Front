@@ -425,11 +425,17 @@ const EditMap = ({
         });
     }, [map]);
 
+    const [areaBool, setAreaBool] = useState();
+    const getAreaBool = useCallback((bool) => {
+        setAreaBool(bool);
+    });
     // 지도 중심 좌표 얻기
     useEffect(() => {
         if (map) {
             // 지도의 중심 좌표 얻기
             kakao.maps.event.addListener(map, 'mouseup', getMapCenter);
+            kakao.maps.event.addListener(map, 'mousedown', () => getAreaBool(true));
+            kakao.maps.event.addListener(map, 'mouseup', () => getAreaBool(false));
         }
     }, [map, getMapCenter, kakao.maps.event]);
 
@@ -573,7 +579,7 @@ const EditMap = ({
                 },
             },
         ];
-        if (map) {
+        if (map && areaBool) {
             let arr = [];
             let polyline;
             let coordArr = [];
@@ -595,6 +601,7 @@ const EditMap = ({
                     return coordArr;
                 });
                 onChangeAreaIndex(areaArr[num].code);
+                console.log(areaArr[num].code);
             }
         }
     }, [centerCoord, kakao.maps.LatLng, kakao.maps.Polyline, map]);
