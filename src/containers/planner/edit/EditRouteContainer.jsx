@@ -126,11 +126,7 @@ const EditRouteContainer = () => {
 
     // 출발일, 종료일 업데이트
     useEffect(() => {
-        if (
-            planDateStart &&
-            planDateEnd
-            //  && startDate && endDate && areaCode
-        ) {
+        if (planDateStart && planDateEnd) {
             const queryString = {
                 plannerId,
                 title,
@@ -139,7 +135,7 @@ const EditRouteContainer = () => {
                 expense,
                 memberCount,
                 memberTypeId,
-                // areaCode,
+                areaCode,
             };
             dispatch(updatePlannerAction(queryString));
         }
