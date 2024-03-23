@@ -1,6 +1,7 @@
 import { takeLatest } from 'redux-saga/effects';
 import createSaga from '../lib/createSaga';
 import * as authAPI from '../lib/api/authAPI';
+import { PURGE } from 'redux-persist';
 
 // 액션 타입
 const INITIALIZE_TYPE = 'auth/INITIALIZE';
@@ -155,7 +156,8 @@ const initialState = {
 
 function authReducer(state = initialState, action) {
     switch (action.type) {
-        case INITIALIZE_TYPE: {
+        case INITIALIZE_TYPE:
+        case PURGE: {
             return {
                 ...initialState
             };

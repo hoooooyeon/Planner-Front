@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { invitationInitializeAction, inviteAcceptAction, inviteRejectAction } from '../../modules/invitationModule';
 import { notificationInitializeAction, notifyDeleteAction, notifyReadAction } from '../../modules/notificationModule';
 import { initialize, logoutAction } from '../../modules/authModule';
+import { tokenUse } from '../../lib/api/client';
 
 const HeaderContainer = () => {
     const history = useHistory();
@@ -50,7 +51,10 @@ const HeaderContainer = () => {
     };
 
     useEffect(() => {
-        handleNotificationLoad();
+        if (account) {
+            tokenUse(localStorage.getItem('accessToken'));
+            handleNotificationLoad();
+        }
     }, [dispatch, account]);
 
     const handleNotificationInitialize = () => {
