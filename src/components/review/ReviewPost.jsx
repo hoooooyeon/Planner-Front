@@ -85,12 +85,21 @@ const ReviewPost = ({
     const [plannerConfirmModal, setPlannerConfirmModal] = useState(false);
 
     const { title, content } = reviewData || {};
+    const editorRef = useRef();
+
+    const getFileList = () => {
+        const elements = editorRef.current.root.querySelectorAll('img');
+        if (elements.length != 0) {
+            const list = Array.from(elements).map((item) => item.src.split('/').pop());
+            return list;
+        }
+    };
 
     const handleWriteClick = () => {
         if (!selectPlanner) {
             setPlannerConfirmModal(true);
         } else {
-            onWritePost();
+            onWritePost(getFileList());
             setPlannerConfirmModal(false);
         }
     };
@@ -100,7 +109,7 @@ const ReviewPost = ({
     };
 
     const handleModalConfirm = () => {
-        onWritePost();
+        onWritePost(getFileList());
     };
 
     useEffect(() => {
@@ -130,12 +139,13 @@ const ReviewPost = ({
                 />
                 <PostContentBox>
                     <Editor
+                        ref={editorRef}
                         content={content}
                         onChangeText={onChangeText}
                         isEdit={isEdit}
                         newFileList={newFileList}
                         onFileUpload={onFileUpload}
-                        fileListUpdate={fileListUpdate}
+                        // fileListUpdate={fileListUpdate}
                     />
                 </PostContentBox>
             </PostMain>

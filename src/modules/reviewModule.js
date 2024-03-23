@@ -92,14 +92,12 @@ export const changePageAction = (page) => ({
 
 export const writeReviewAction = (review) => ({
     type: WRITE_REVIEW_TYPE,
-    ...review,
+    ...review
 });
 
-export const updateReviewAction = ({ reviewId, title, content }) => ({
+export const updateReviewAction = (review) => ({
     type: UPDATE_REVIEW_TYPE,
-    reviewId,
-    title,
-    content
+    ...review
 });
 
 export const deleteReviewAction = (reviewId) => ({
