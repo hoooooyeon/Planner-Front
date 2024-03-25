@@ -1,12 +1,15 @@
 import Quill from 'quill';
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import ImageResize from 'quill-image-resize';
 
 const Container = styled.div`
     .ql-editor img {
         max-width: 100%;
     }
 `;
+
+Quill.register('modules/imageResize', ImageResize);
 
 const Editor = ({ content, onChangeText, isEdit, newFileList, onFileUpload, fileListUpdate }) => {
     const quillElement = useRef(null);
@@ -23,6 +26,7 @@ const Editor = ({ content, onChangeText, isEdit, newFileList, onFileUpload, file
                     [{ list: 'ordered' }, { list: 'bullet' }],
                     ['blockquote', 'code-block', 'link', 'image'],
                 ],
+                imageResize: {},
             },
         });
 
