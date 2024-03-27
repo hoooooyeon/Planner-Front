@@ -1,6 +1,7 @@
 import createSaga from '../lib/createSaga';
 import { takeLatest } from 'redux-saga/effects';
 import * as accountAPI from '../lib/api/accountAPI';
+import { PURGE } from 'redux-persist';
 
 // 액션 타입
 const INITIALIZE_TYPE = 'account/INITIALIZE';
@@ -271,7 +272,8 @@ const initialState = {
 
 function accountReducer(state = initialState, action) {
     switch (action.type) {
-        case INITIALIZE_TYPE: {
+        case INITIALIZE_TYPE:
+        case PURGE: {
             return { ...initialState };
         }
         case INITIALIZE_FORM_TYPE: {

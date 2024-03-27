@@ -57,10 +57,11 @@ const ReviewWriteEditContainer = ({ location, history }) => {
         }
     };
 
-    const handleWritePost = () => {
+    const handleWritePost = (fileList) => {
         const data = {
             ...review,
             writerId: account.accountId,
+            fileList,
         };
 
         if (selectPlanner) {
@@ -80,9 +81,9 @@ const ReviewWriteEditContainer = ({ location, history }) => {
         dispatch(fileUploadAction({ property: 'review', formData }));
     };
 
-    const fileListUpdate = (fileList) => {
-        dispatch(changeContentAction({ key: 'fileList', value: fileList }));
-    };
+    // const fileListUpdate = (fileList) => {
+    //     dispatch(changeContentAction({ key: 'fileList', value: fileList }));
+    // };
 
     const handlePlannerListLoad = (type) => {
         const { accountId } = account;
@@ -138,7 +139,7 @@ const ReviewWriteEditContainer = ({ location, history }) => {
             onCancel={handleCancel}
             onWritePost={handleWritePost}
             onFileUpload={handleFileUpload}
-            fileListUpdate={fileListUpdate}
+            // fileListUpdate={fileListUpdate}
             isEdit={isEdit}
             plannerList={plannerList}
             onPlannerListLoad={handlePlannerListLoad}

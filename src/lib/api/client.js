@@ -3,9 +3,11 @@ import PromiseHolder from '../utils/PromiseHolder';
 import { put } from 'redux-saga/effects';
 import { TOKEN_REISSUE_SUCCESS_TYPE, TOKEN_REISSUE_TYPE } from '../../modules/authModule';
 import { CanceledError } from '../../../node_modules/axios/index';
+import { persistStore } from 'redux-persist';
+import { persistor } from '../../index';
 
-const controller = new AbortController();
-const abortSignal = controller.signal;
+let controller = new AbortController();
+let abortSignal = controller.signal;
 
 const client = axios.create({ signal: abortSignal });
 
@@ -19,6 +21,14 @@ const AuthorizationHeaderEdit = (config) => {
     config.headers.Authorization = `Bearer ${accessToken}`;
     return config;
 };
+
+const abortSignalChange = () => {
+    // AbortController는 일회용이므로 새로 생성하여 시그널을 교체하여 axios 요청을 취소할 수 있게 된다.
+    controller = new AbortController();
+    abortSignal = controller.signal;
+
+    client.defaults.signal = abortSignal;
+}
 
 export const tokenUse = (accessToken) => {
     client.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
@@ -78,7 +88,11 @@ client.interceptors.response.use((res) => {
             controller.abort();
             holder.resolve();
             tokenReissue = false;
+            persistor.purge();
             localStorage.removeItem('accessToken');
+
+            abortSignalChange();
+            // history.pushState("/");
 
             return Promise.reject(error);
         }

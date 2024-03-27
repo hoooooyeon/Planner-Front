@@ -1,6 +1,7 @@
 import Quill from 'quill';
-import { useEffect, useRef } from 'react';
+import { forwardRef, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import ImageResize from 'quill-image-resize';
 
 const Container = styled.div`
     .ql-editor img {
@@ -8,9 +9,13 @@ const Container = styled.div`
     }
 `;
 
-const Editor = ({ content, onChangeText, isEdit, newFileList, onFileUpload, fileListUpdate }) => {
-    const quillElement = useRef(null);
-    const quillInstance = useRef(null);
+Quill.register('modules/imageResize', ImageResize);
+
+const Editor = forwardRef((props, ref) => {
+    const { content, onChangeText, isEdit, newFileList, onFileUpload, fileListUpdate } = props;
+
+    const quillElement = useRef();
+    const quillInstance = ref;
 
     useEffect(() => {
         quillInstance.current = new Quill(quillElement.current, {
@@ -23,6 +28,7 @@ const Editor = ({ content, onChangeText, isEdit, newFileList, onFileUpload, file
                     [{ list: 'ordered' }, { list: 'bullet' }],
                     ['blockquote', 'code-block', 'link', 'image'],
                 ],
+                imageResize: {},
             },
         });
 
@@ -71,19 +77,13 @@ const Editor = ({ content, onChangeText, isEdit, newFileList, onFileUpload, file
                     const delta = quill.insertEmbed(quill.getSelection(), 'image', src, 'user');
                 });
             }
-            const elements = quill.root.querySelectorAll('img');
-            if (elements.length != 0) {
-                const list = Array.from(elements).map((item) => item.src.split('/').pop());
-                fileListUpdate(list);
-            }
         }
     }, [newFileList]);
-
     return (
         <>
             <Container ref={quillElement}></Container>
         </>
     );
-};
+});
 
 export default Editor;

@@ -3,8 +3,8 @@ import qs from 'qs';
 
 const basePath = '/api/reviews'
 
-export const writeReview = ({ plannerId, title, writerId, content }) => {
-    return client.post(`${basePath}`, { plannerId, title, writerId, content });
+export const writeReview = ({ plannerId, title, writerId, content, fileList }) => {
+    return client.post(`${basePath}`, { plannerId, title, writerId, content, fileNames: fileList });
 };
 
 export const loadReviewList = ({ type, ...queryString }) => {
@@ -15,8 +15,8 @@ export const loadReview = ({ reviewId }) => {
     return client.get(`${basePath}/${reviewId}`);
 };
 
-export const updateReview = ({ reviewId, title, content }) => {
-    return client.patch(`${basePath}/${reviewId}`, { reviewId, title, content });
+export const updateReview = ({ reviewId, title, content, fileList }) => {
+    return client.patch(`${basePath}/${reviewId}`, { reviewId, title, content, fileNames: fileList });
 };
 
 export const deleteReview = ({ reviewId }) => {

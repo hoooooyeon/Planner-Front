@@ -77,7 +77,7 @@ const ReviewList = ({ loading, list, onItemClick }) => {
             {list && list.length > 0 ? (
                 list.map((v, i) => (
                     <ReviewListItem key={i} onClick={() => onItemClick(v.reviewId)}>
-                        <img src={v.thumbnail ? v.thumbnail : tempImage} />
+                        <img src={v.thumbnail ? `/api/upload/files/${v.thumbnail}` : tempImage} />
                         <ReviewItemTitle>{v.title}</ReviewItemTitle>
                         <LocationText>서울</LocationText>
                     </ReviewListItem>
