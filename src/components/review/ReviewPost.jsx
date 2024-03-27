@@ -90,7 +90,7 @@ const ReviewPost = ({
     const getFileList = () => {
         const elements = editorRef.current.root.querySelectorAll('img');
         if (elements.length != 0) {
-            const list = Array.from(elements).map((item) => item.src.split('/').pop());
+            const list = Array.from(elements).map((item) => decodeURI(item.src.split('/').pop()));
             return list;
         }
     };
