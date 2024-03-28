@@ -103,6 +103,7 @@ const ReviewListContainer = ({ history, location, match }) => {
             page={pageNum}
             totalCount={totalCount}
             pageSize={itemCount}
+            itemCount={itemCount}
             onPageChange={handlePageChange}
             onNextPage={handleNextPage}
             onPreviousPage={handlePreviousPage}
