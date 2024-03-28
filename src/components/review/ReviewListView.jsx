@@ -118,6 +118,7 @@ const ReviewListView = ({
     page,
     totalCount,
     pageSize,
+    itemCount,
     onPageChange,
     onNextPage,
     onPreviousPage,
@@ -166,6 +167,7 @@ const ReviewListView = ({
                     page={page}
                     totalCount={totalCount}
                     pageSize={pageSize}
+                    itemCount={itemCount}
                     onPageChange={onPageChange}
                     onNextPage={onNextPage}
                     onPreviousPage={onPreviousPage}
