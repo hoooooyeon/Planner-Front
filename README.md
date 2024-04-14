@@ -39,6 +39,18 @@
 </details>
 
 <details>
+<summary>마이페이지</summary>
+<div markdown="1">
+
+
+https://github.com/taesooooo/Planner-Front/assets/46530081/abb620ad-b601-47f0-8cd9-d606d6c9550f
+
+  - 사용자의 정보를 표시하고 수정 할 수 있습니다.
+  - 사용자가 좋아요한 플래너 및 여행지 리스트를 표시합니다.
+</div>
+</details>
+
+<details>
 <summary>플래너</summary>
 <div markdown="1">
 1. 플래너 리스트 페이지
@@ -62,6 +74,7 @@
 
 4. 플래너 수정 페이지
 
+
 ![plannerEdit-ezgif com-video-to-gif-converter](https://github.com/hoooooyeon/todolist/assets/92985196/6bfbb40c-dfd2-4169-a880-fbe597c86fcc)
    
 - 메뉴 버튼을 눌러 플래너 정보 수정, 멤버 관리를 할 수 있습니다.
@@ -77,11 +90,17 @@
 <details>
 <summary>리뷰</summary>
 <div markdown="1">
-1. 리뷰 리스트 페이지
+1. 리뷰 리스트 페이지, 리뷰 페이지
+  
+https://github.com/taesooooo/Planner-Front/assets/46530081/290f2dfc-d822-4dc3-9747-858b652208e2
+
 - 사용자들이 만든 여행지 플래너를 바탕으로 해당 여행지 플래너의 후기를 작성한 리스트를 나열합니다.
-2. 리뷰 페이지
 - 사용자가 작성한 리뷰 페이지를 나타냅니다. 작성자는 수정 또는 삭제할 수 있습니다.
-3. 리뷰 수정 페이지
+- 리뷰에 관한 댓글을 작성 할 수 있습니다.
+
+2. 리뷰 수정 페이지
+
+https://github.com/taesooooo/Planner-Front/assets/46530081/08575cc2-c554-406c-8883-4c188430643a
 - 사용자가 작성한 리뷰를 수정합니다.
 </div>
 </details>
